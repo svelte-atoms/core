@@ -1,0 +1,103 @@
+{
+	"name": "@svelte-atoms/core",
+	"version": "1.0.0",
+	"description": "A modern, composable UI component library for Svelte 5",
+	"framework": "Svelte 5",
+	"language": "TypeScript",
+	"license": "MIT",
+
+	"documentation": {
+		"root": "./docs",
+		"entry_point": "./docs/README.md",
+		"required_reading": [
+			"./docs/README.md",
+			"./docs/overview.md",
+			"./docs/agent.md",
+			"./docs/philosophy.md"
+		],
+		"quick_reference": "./docs/quick-reference.md",
+		"patterns": "./docs/common-patterns.md",
+		"components_index": "./docs/components/README.MD",
+		"naming_conventions": "./docs/naming-convention.md"
+	},
+
+	"rules": {
+		"always_use_high_level_api": true,
+		"never_use_bond_state_directly": true,
+		"use_svelte_5_runes": true,
+		"no_legacy_stores": true,
+		"show_complete_code": true,
+		"include_all_imports": true
+	},
+
+	"naming_conventions": {
+		"files": "kebab-case",
+		"variables": "camelCase",
+		"components": "PascalCase",
+		"component_usage": "Component.SubComponent"
+	},
+
+	"import_pattern": "import { Component } from '@svelte-atoms/core/components/component'",
+
+	"svelte_version": "5.x",
+
+	"component_categories": {
+		"layout": ["Card", "Stack", "Layer", "Divider", "List", "Virtual", "Portal"],
+		"forms": ["Input", "Textarea", "Checkbox", "Radio", "Form", "Label"],
+		"interactive": [
+			"Button",
+			"Dropdown",
+			"Combobox",
+			"Accordion",
+			"Collapsible",
+			"Tabs",
+			"Tree",
+			"DataGrid"
+		],
+		"overlay": ["Dialog", "Drawer", "Popover", "Tooltip", "Toast", "ContextMenu"],
+		"navigation": ["Menu", "Breadcrumb", "Sidebar", "Link"],
+		"display": ["Avatar", "Badge", "Icon", "Alert", "Scrollable"],
+		"utilities": ["Atom"]
+	},
+
+	"common_props": {
+		"all_components": ["class", "style", "id", "as"],
+		"state_binding": ["bind:value", "bind:open", "bind:checked", "bind:selected"],
+		"animation": ["initial", "enter", "exit", "animate"],
+		"lifecycle": ["onmount", "ondestroy"]
+	},
+
+	"styling": {
+		"default": "headless (unstyled)",
+		"supports": ["TailwindCSS", "custom CSS", "CSS modules"],
+		"class_prop": true
+	},
+
+	"git_commit_rules": {
+		"tense": "present",
+		"include_filename": false,
+		"format": "action description"
+	},
+
+	"examples": {
+		"basic_component": "<Component.Root><Component.SubComponent /></Component.Root>",
+		"with_state": "let value = $state(''); <Component.Root bind:value />",
+		"with_styling": "<Component.Root class=\"bg-blue-500 text-white\" />",
+		"import": "import { Component } from '@svelte-atoms/core/components/component'"
+	},
+
+	"anti_patterns": [
+		"new XBond(state)",
+		"new XState(() => ({}))",
+		"import { writable } from 'svelte/store'",
+		"export let prop",
+		"<!-- ... rest of code ... -->"
+	],
+
+	"external_resources": {
+		"svelte_5_docs": "https://svelte.dev/docs",
+		"tailwindcss": "https://tailwindcss.com/docs",
+		"aria_practices": "https://www.w3.org/WAI/ARIA/apg/",
+		"repository": "https://github.com/ryu-man/svelte-atoms"
+	}
+}

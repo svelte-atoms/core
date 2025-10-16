@@ -1,0 +1,3 @@
+[data-type='avatar'][data-error='true'] > img {
+	display: none;
+}

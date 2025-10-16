@@ -1,0 +1,49 @@
+<script module lang="ts">
+	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+
+	export type TeleportProps<
+		E extends HtmlElementTagName = 'div',
+		B extends Base = Base
+	> = HtmlAtomProps<E, B> & {
+		portal?: string;
+	};
+</script>
+
+<script lang="ts" generics="E extends HtmlElementTagName = 'div', B extends Base = Base">
+	import type { HTMLAttributes } from 'svelte/elements';
+	import { PortalsBond } from './portals';
+	import { RootBond } from '$svelte-atoms/core/components/root/bond.svelte';
+	import { port } from './utils';
+
+	type Element = HtmlElementType<E>;
+
+	let { portal, as, base, children, ...restProps }: TeleportProps<E, B> & HTMLAttributes<Element> =
+		$props();
+
+	const portalsBond = PortalsBond.get();
+	const rootBond = RootBond.get();
+
+	const portalBond = $derived(
+		portalsBond?.state?.get(portal!) ?? rootBond?.state?.getPortal(portal!)
+	);
+	const targetElement = $derived(portalBond?.targetElement);
+
+	function _port(node: HTMLElement) {
+		const hidden = node.hidden;
+
+		node.hidden = true;
+
+		const unport = port(node, targetElement);
+
+		node.hidden = hidden;
+
+		return unport;
+	}
+</script>
+
+{#if targetElement && portal}
+	<HtmlAtom {@attach _port} as={as as E} {base} {...restProps}>
+		{@render children?.({ portal: portalBond })}
+	</HtmlAtom>
+{/if}

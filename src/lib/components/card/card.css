@@ -1,0 +1,27 @@
+.card-header {
+	grid-area: header;
+}
+
+.card-subtitle {
+	grid-area: subtitle;
+}
+
+.card-title {
+	grid-area: title;
+}
+
+.card-description {
+	grid-area: description;
+}
+
+.card-media {
+	grid-area: media;
+}
+
+.card-content {
+	grid-area: content;
+}
+
+.card-footer {
+	grid-area: footer;
+}

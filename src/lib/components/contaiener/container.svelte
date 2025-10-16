@@ -1,0 +1,67 @@
+<script lang="ts">
+	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { getPreset } from '$svelte-atoms/core/context';
+	import { toClassValue } from '$svelte-atoms/core/utils';
+	import type { ContainerProps } from './types';
+
+	const preset = getPreset('container');
+
+	let {
+		class: klass = '',
+		type = 'inline-size',
+		name = undefined,
+		as = preset?.as ?? 'div',
+		base = preset?.base as B,
+		clientWidth = $bindable(0),
+		clientHeight = $bindable(0),
+		onmount = undefined,
+		ondestroy = undefined,
+		animate = undefined,
+		enter = undefined,
+		exit = undefined,
+		initial = undefined,
+		children = undefined,
+		...restProps
+	}: ContainerProps = $props();
+
+	const containerTypeStype = $derived(type ? `container-type: ${type};` : '');
+	const containerNameStyle = $derived(name ? `container-name: ${name};` : '');
+</script>
+
+<HtmlAtom
+	{@attach (node) => {
+		const updateSize = () => {
+			clientWidth = node.clientWidth;
+			clientHeight = node.clientHeight;
+		};
+		updateSize();
+
+		const resizeObserver = new ResizeObserver(() => {
+			updateSize();
+		});
+		resizeObserver.observe(node);
+
+		return {
+			destroy() {
+				resizeObserver.disconnect();
+			}
+		};
+	}}
+	{as}
+	{base}
+	class={[
+		'flex w-full',
+		toClassValue.apply(null, [preset?.class]),
+		toClassValue.apply(null, [klass])
+	]}
+	style={[containerTypeStype, containerNameStyle].filter(Boolean).join('; ')}
+	onmount={onmount?.bind(null)}
+	ondestroy={ondestroy?.bind(null)}
+	animate={animate?.bind(null)}
+	enter={enter?.bind(null)}
+	exit={exit?.bind(null)}
+	initial={initial?.bind(null)}
+	{...restProps}
+>
+	{@render children?.({ clientWidth, clientHeight })}
+</HtmlAtom>

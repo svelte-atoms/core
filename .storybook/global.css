@@ -1,0 +1,20 @@
+html,
+body.sb-show-main {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0 !important;
+	/* background-color: whitesmoke !important; */
+}
+
+#storybook-root {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+}
+
+#storybook-root[hidden='true'] {
+	display: none;
+}

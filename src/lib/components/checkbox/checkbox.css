@@ -1,0 +1,16 @@
+.checkbox-root {
+	display: grid;
+	grid-template-areas: 'stack';
+}
+
+.checkbox-root .checkbox-indicator {
+	grid-area: stack;
+}
+
+.checkbox-root .checkbox-indeterminate {
+	grid-area: stack;
+}
+
+.checkbox-root .checkbox-input {
+	grid-area: stack;
+}

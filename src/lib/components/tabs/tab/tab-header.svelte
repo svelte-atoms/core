@@ -1,0 +1,84 @@
+<script module lang="ts">
+	export type TabHeaderProps<
+		E extends keyof HTMLElementTagNameMap = 'button',
+		B extends Base = Base
+	> = HtmlAtomProps<E, B> & {
+		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+		onpointerdown?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
+	};
+</script>
+
+<script
+	lang="ts"
+	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
+>
+	import type { Snippet } from 'svelte';
+	import { TabBond } from './bond.svelte';
+	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { getPreset } from '$svelte-atoms/core/context';
+
+	const bond = TabBond.get();
+
+	const isActive = $derived(bond?.state.isActive);
+	const isDisabled = $derived(bond?.state.props.disabled);
+
+	const preset = getPreset('tab.header');
+
+	let {
+		class: klass = '',
+		as = preset?.as ?? 'button',
+		base = preset?.base as B,
+		children,
+		onpointerdown,
+		onmount = undefined,
+		ondestroy = undefined,
+		animate = undefined,
+		enter = undefined,
+		exit = undefined,
+		initial = undefined,
+		...restProps
+	}: TabHeaderProps = $props();
+
+	const headerProps = $derived({
+		...bond?.header(),
+		...restProps
+	});
+
+	function handlePointerDown(ev: PointerEvent) {
+		if (isDisabled) return;
+
+		onpointerdown?.(ev, { tab: bond });
+
+		if (ev.defaultPrevented) {
+			return;
+		}
+
+		bond?.state.select();
+	}
+</script>
+
+<HtmlAtom
+	as="button"
+	class={[
+		'text-foreground/60 hover:text-foreground/80 active:text-foreground/100 flex cursor-pointer items-center px-2 py-2 text-sm font-medium transition-colors duration-100',
+		isActive && 'text-primary',
+		isDisabled && 'opacity-50',
+		toClassValue.apply(bond, [preset?.class]),
+		toClassValue.apply(bond, [klass])
+	]}
+	onmount={onmount?.bind(bond.state)}
+	ondestroy={ondestroy?.bind(bond.state)}
+	enter={enter?.bind(bond.state)}
+	exit={exit?.bind(bond.state)}
+	initial={initial?.bind(bond.state)}
+	animate={animate?.bind(bond.state)}
+	type="button"
+	disabled={isDisabled}
+	onpointerdown={handlePointerDown}
+	{...headerProps}
+>
+	{@render children?.({
+		tab: bond
+	})}
+</HtmlAtom>

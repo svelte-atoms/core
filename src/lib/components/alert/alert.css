@@ -1,0 +1,18 @@
+.alert-title {
+	grid-area: title;
+}
+.alert-description {
+	grid-area: description;
+}
+.alert-icon {
+	grid-area: icon;
+}
+.alert-content {
+	grid-area: content;
+}
+.alert-close-button {
+	grid-area: close-button;
+}
+.alert-actions {
+	grid-area: actions;
+}

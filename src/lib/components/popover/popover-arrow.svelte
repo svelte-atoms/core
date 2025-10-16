@@ -1,0 +1,121 @@
+<script module lang="ts">
+	export type PopoverArrowProps<
+		E extends keyof HTMLElementTagNameMap = 'div',
+		B extends Base = Base
+	> = HtmlAtomProps<E, B>;
+</script>
+
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import type { HTMLAttributes } from 'svelte/elements';
+	import { animate as motion } from 'motion';
+	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { getPreset } from '$svelte-atoms/core/context';
+	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { PopoverBond } from './bond.svelte';
+
+	type Element = HTMLElementTagNameMap[E];
+
+	const bond = PopoverBond.get();
+
+	if (!bond) {
+		throw new Error('');
+	}
+
+	const preset = getPreset('popover.arrow');
+
+	let {
+		class: klass = '',
+		as = preset?.as ?? ('div' as const),
+		base = preset?.base as B,
+		children = undefined,
+		onmount = undefined,
+		ondestroy = undefined,
+		animate = _animate,
+		enter = undefined,
+		exit = undefined,
+		initial = undefined,
+		...restProps
+	}: PopoverArrowProps<E, B> & HTMLAttributes<Element> = $props();
+
+	const position = $derived(bond.position);
+	const middlewareArrowData = $derived(position?.middlewareData?.arrow);
+	const isReady = $derived(!!middlewareArrowData);
+	const side = $derived(position?.placement?.split('-')[0] ?? 'top');
+
+	// Rotation based on placement side
+	const rotation = $derived.by(() => {
+		switch (side) {
+			case 'top':
+				return 180;
+			case 'bottom':
+				return 0;
+			case 'left':
+				return 90;
+			case 'right':
+				return -90;
+			default:
+				return 0;
+		}
+	});
+
+	function _animate(node: HTMLElement) {
+		if (!middlewareArrowData) {
+			return;
+		}
+
+		const { x, y } = middlewareArrowData;
+
+		const isMainAxis = side === 'top' || side === 'bottom';
+
+		const crossAxisStyle = isMainAxis
+			? {
+					left: 0
+				}
+			: {
+					top: 0
+				};
+
+		motion(
+			node,
+			{
+				x: x ?? 0,
+				y: y ?? 0,
+				opacity: 1,
+				...crossAxisStyle
+			},
+			{ duration: 0 }
+		);
+	}
+</script>
+
+<HtmlAtom
+	class={[
+		'text-border pointer-events-none absolute opacity-0',
+		toClassValue.apply(bond, [preset?.class]),
+		toClassValue.apply(bond, [klass])
+	]}
+	onmount={onmount?.bind(bond.state)}
+	ondestroy={ondestroy?.bind(bond.state)}
+	animate={animate?.bind(bond.state)}
+	enter={enter?.bind(bond.state)}
+	exit={exit?.bind(bond.state)}
+	initial={initial?.bind(bond.state)}
+	style="{side}: 100%;"
+	{as}
+	{...bond.arrow(restProps)}
+>
+	{#if children}
+		{@render children({ popover: bond })}
+	{:else}
+		<svg
+			width="12"
+			height="12"
+			viewBox="0 0 12 12"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			style="transform: rotate({rotation}deg);"
+		>
+			<path d="M0 12L6 6L12 12H0Z" fill="currentColor" stroke="none" />
+		</svg>
+	{/if}
+</HtmlAtom>
