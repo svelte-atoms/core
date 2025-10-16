@@ -4,11 +4,11 @@
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ryu-man/svelte-atoms.git"
+		"url": "https://github.com/svelte-atoms/core.git"
 	},
-	"homepage": "https://github.com/ryu-man/svelte-atoms#readme",
+	"homepage": "https://github.com/svelte-atoms/core#readme",
 	"bugs": {
-		"url": "https://github.com/ryu-man/svelte-atoms/issues"
+		"url": "https://github.com/svelte-atoms/core/issues"
 	},
 	"author": "Abdel <rioman19@gmail.com>",
 	"license": "MIT",
