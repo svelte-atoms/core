@@ -4,7 +4,7 @@
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/svelte-atoms/core.git"
+		"url": "git+https://github.com/svelte-atoms/core.git"
 	},
 	"homepage": "https://github.com/svelte-atoms/core#readme",
 	"bugs": {
