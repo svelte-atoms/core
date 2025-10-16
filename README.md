@@ -53,7 +53,6 @@ Our comprehensive collection of UI components with implementation status:
 - ✅ **Sidebar** - Collapsible side navigation
 - ✅ **Tabs** - Tabbed interfaces
 - ✅ **Tree** - Hierarchical data structures
-- ❌ **Navigation** - Main navigation component
 - ❌ **Stepper** - Multi-step process indicator
 - ❌ **Pagination** - Page navigation controls
 
@@ -68,7 +67,6 @@ Our comprehensive collection of UI components with implementation status:
 - ✅ **Switch** - Toggle controls
 - ✅ **Textarea** - Multi-line text inputs
 - ✅ **Form** - Form validation and state management
-- ❌ **Select** - Standard dropdown select
 - ❌ **DatePicker** - Date selection component
 - ❌ **TimePicker** - Time selection component
 - ❌ **FileUpload** - File upload component
@@ -85,8 +83,8 @@ Our comprehensive collection of UI components with implementation status:
 - ✅ **Label** - Form labels
 - ✅ **Link** - Navigation links
 - ✅ **List** - Structured lists
+- ✅ **Card** - Content containers
 - ❌ **Table** - Simple data tables
-- ❌ **Card** - Content containers
 - ❌ **Chip** - Compact information display
 - ❌ **Progress** - Progress indicators
 - ❌ **Skeleton** - Loading placeholders
@@ -110,14 +108,6 @@ Our comprehensive collection of UI components with implementation status:
 - ❌ **Notification** - System notifications
 - ❌ **Spotlight** - Feature highlighting
 
-### Media & Graphics
-
-- ❌ **Image** - Enhanced image component
-- ❌ **Gallery** - Image gallery component
-- ❌ **Carousel** - Content carousel
-- ❌ **Video** - Video player component
-- ❌ **Chart** - Data visualization charts
-
 ### Utilities & Layout
 
 - ✅ **Portal** - Declare a portal anywhere in DOM
@@ -125,10 +115,10 @@ Our comprehensive collection of UI components with implementation status:
 - ✅ **Root** - Application root container
 - ✅ **Layer** - Layer management utility
 - ✅ **Collapsible** - Generic collapsible wrapper
-- ❌ **Container** - Layout container
+- ✅ **Container** - Layout container
+- ✅ **Scrollable** - Custom scrollbar component
 - ❌ **Spacer** - Space management utility
 - ❌ **Responsive** - Responsive utilities
-- ❌ **ScrollArea** - Custom scrollbar component
 - ❌ **VirtualList** - Virtual scrolling list
 
 ### Status: **35/65** components implemented (54%)
@@ -163,11 +153,11 @@ Each component follows a consistent Bond pattern:
 ```typescript
 class MyComponentBond extends Bond<MyComponentBondState> {
 	static CONTEXT_KEY = '@atoms/context/my-component';
-	
+
 	static get(): MyComponentBond | undefined {
 		return getContext(MyComponentBond.CONTEXT_KEY);
 	}
-	
+
 	static set(bond: MyComponentBond): MyComponentBond {
 		return setContext(MyComponentBond.CONTEXT_KEY, bond);
 	}
@@ -382,7 +372,7 @@ For more control, you can use the Bond system directly:
 
 @svelte-atoms/core is completely headless, giving you full control over styling. Here are some approaches:
 
-### CSS Classes
+### Using Vanilla CSS
 
 ```css
 /* Default button styles */
@@ -399,7 +389,7 @@ For more control, you can use the Bond system directly:
 }
 ```
 
-### CSS-in-JS with Style Props
+### Using Tailwind CSS
 
 ```svelte
 <Button.Root class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
@@ -407,31 +397,9 @@ For more control, you can use the Bond system directly:
 </Button.Root>
 ```
 
-### Custom CSS Variables
-
-```css
-:root {
-	--atomic-primary: #3b82f6;
-	--atomic-secondary: #6b7280;
-	--atomic-success: #10b981;
-	--atomic-danger: #ef4444;
-	--atomic-warning: #f59e0b;
-}
-
-.atomic-button {
-	background-color: var(--atomic-primary);
-	color: white;
-}
-```
-
 ---
 
 ## 🧪 Development
-
-### Prerequisites
-
-- Node.js 18+
-- Bun (recommended) or npm
 
 ### Setup
 
@@ -464,22 +432,6 @@ For more control, you can use the Bond system directly:
    # or
    npm run storybook
    ```
-
-### Testing
-
-```bash
-# Run all tests
-bun test
-
-# Unit tests only
-bun test:unit
-
-# E2E tests only
-bun test:e2e
-
-# Run tests in watch mode
-bun test:unit --watch
-```
 
 ### Building
 
