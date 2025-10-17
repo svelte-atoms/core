@@ -11,11 +11,12 @@
 
 	let {
 		class: klass = '',
-		as = 'g' as T,
-		initial = (node) => ({}),
-		enter = (node) => ({}),
-		exit = (node) => ({}),
-		animate = (node) => {},
+		as = 'div' as T,
+		global = true,
+		initial = undefined,
+		enter = undefined,
+		exit = undefined,
+		animate = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
 		children = undefined,
@@ -24,58 +25,62 @@
 
 	let node = $state<Element>();
 
-	let hasIntroTransition = $state(false);
-	let isEntered = false;
-
-	const checkIfEntered = () => isEntered;
+	let hasIntroTransitionStarted: boolean | undefined = $state(undefined);
+	let skipFirstAnimate = true;
 
 	$effect(() => {
+		if (!node) return;
+
 		const unmount = untrack(() => onmount?.(node!));
 
-		if (!hasIntroTransition) {
-			isEntered = true;
+		if (!enter || typeof hasIntroTransitionStarted === 'undefined') {
+			skipFirstAnimate = false;
 		}
 
 		return () => {
-			if (typeof unmount === 'function') unmount(node);
+			if (typeof unmount === 'function') unmount(node!);
 			ondestroy?.(node!);
 		};
+	});
+
+	$effect(() => {
+		if (!node) return;
+
+		if (skipFirstAnimate) {
+			skipFirstAnimate = false;
+			return;
+		}
+
+		animate?.(node);
 	});
 
 	const elementProps = $derived({
 		[createAttachmentKey()]: (n: Element) => {
 			node = n;
 		},
-		[createAttachmentKey()]: _animate,
-
 		class: cn(toClassValue(klass)),
 		onintrostart: () => {
-			hasIntroTransition = true;
-			isEntered = false;
+			hasIntroTransitionStarted = true;
 		},
 		onintroend: () => {
-			isEntered = true;
-		},
-		onoutroend: () => {
-			isEntered = false;
+			hasIntroTransitionStarted = false;
 		},
 		...restProps
 	});
 
 	function _enter(node: Element) {
 		initial?.(node);
-
-		return () => enter(node);
+		return () => {
+			const { duration = 0, delay = 0, easing = undefined } = enter?.(node) ?? {};
+			return { duration, delay, easing };
+		};
 	}
 
 	function _exit(node: Element) {
-		return () => exit(node);
-	}
-
-	function _animate(node: Element) {
-		if (!checkIfEntered()) return;
-
-		return animate(node);
+		return () => {
+			const { duration = 0, delay = 0, easing = undefined } = exit?.(node) ?? {};
+			return { duration, delay, easing };
+		};
 	}
 </script>
 
