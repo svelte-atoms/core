@@ -1,7 +1,3 @@
-export {
-	default as HtmlAtom,
-	type HtmlAtomProps,
-	type Base,
-	type ComponentBase,
-	type SnippetBase
-} from './html-atom.svelte';
+export { default as HtmlAtom } from './html-atom.svelte';
+
+export * from './types';
