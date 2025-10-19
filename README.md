@@ -14,11 +14,11 @@
 
 ### 🧱 **Bond Architecture**
 
-Built around the concept of "Bonds" - self-contained, reusable state management classes that encapsulate component state and DOM interactions. Each component uses the Bond pattern for consistent, predictable behavior.
+Built around the concept of "Bonds" - self-contained, reusable state management classes that encapsulate component state and DOM interactions. Each component uses the Bond pattern for consistent, predictable behavior across complex interactions. Simple components like Button don't require the Bond pattern as they have minimal state management needs.
 
 ### 🔗 **Context-Driven Communication**
 
-Components seamlessly communicate through Svelte's context API using standardized static methods (`Bond.get()` / `Bond.set()`), enabling powerful parent-child relationships without prop drilling.
+Components seamlessly communicate through Svelte's context API using standardized static methods (`Bond.get()` / `Bond.set()`) of the Bond class, enabling powerful parent-child relationships without prop drilling.
 
 ### ♿ **Accessibility First**
 
@@ -48,80 +48,84 @@ Our comprehensive collection of UI components with implementation status:
 
 ### Layout & Navigation
 
-- ✅ **Accordion** - Collapsible content sections
-- ✅ **Breadcrumb** - Navigation hierarchy
-- ✅ **Sidebar** - Collapsible side navigation
-- ✅ **Tabs** - Tabbed interfaces
-- ✅ **Tree** - Hierarchical data structures
-- ❌ **Stepper** - Multi-step process indicator
-- ❌ **Pagination** - Page navigation controls
+| Component                                       | Description                  | Status |
+| ----------------------------------------------- | ---------------------------- | ------ |
+| [**Accordion**](docs/components/accordion.md)   | Collapsible content sections | ✅     |
+| [**Breadcrumb**](docs/components/breadcrumb.md) | Navigation hierarchy         | ✅     |
+| [**Sidebar**](docs/components/sidebar.md)       | Collapsible side navigation  | ✅     |
+| [**Tabs**](docs/components/tabs.md)             | Tabbed interfaces            | ✅     |
+| [**Tree**](docs/components/tree.md)             | Hierarchical data structures | ✅     |
+| **Stepper**                                     | Multi-step process indicator | ❌     |
+| **Pagination**                                  | Page navigation controls     | ❌     |
 
 ### Forms & Input
 
-- ✅ **Button** - Interactive buttons with variants
-- ✅ **Checkbox** - Multi-select inputs
-- ✅ **Combobox** - Searchable select inputs
-- ✅ **Input** - Text input fields
-- ✅ **Radio** - Single-select inputs
-- ✅ **Slider** - Range input controls
-- ✅ **Switch** - Toggle controls
-- ✅ **Textarea** - Multi-line text inputs
-- ✅ **Form** - Form validation and state management
-- ❌ **DatePicker** - Date selection component
-- ❌ **TimePicker** - Time selection component
-- ❌ **FileUpload** - File upload component
-- ❌ **ColorPicker** - Color selection component
-- ❌ **Rating** - Star rating component
+| Component                                   | Description                          | Status |
+| ------------------------------------------- | ------------------------------------ | ------ |
+| [**Button**](docs/components/button.md)     | Interactive buttons with variants    | ✅     |
+| [**Checkbox**](docs/components/checkbox.md) | Multi-select inputs                  | ✅     |
+| [**Combobox**](docs/components/combobox.md) | Searchable select inputs             | ✅     |
+| [**Input**](docs/components/input.md)       | Text input fields                    | ✅     |
+| [**Radio**](docs/components/radio.md)       | Single-select inputs                 | ✅     |
+| **Slider**                                  | Range input controls                 | ❌     |
+| **Switch**                                  | Toggle controls                      | ❌     |
+| [**Textarea**](docs/components/textarea.md) | Multi-line text inputs               | ✅     |
+| [**Form**](docs/components/form.md)         | Form validation and state management | ✅     |
+| **DatePicker**                              | Date selection component             | ❌     |
+| **TimePicker**                              | Time selection component             | ❌     |
+| **FileUpload**                              | File upload component                | ❌     |
+| **ColorPicker**                             | Color selection component            | ❌     |
+| **Rating**                                  | Star rating component                | ❌     |
 
 ### Data Display
 
-- ✅ **Avatar** - User profile images
-- ✅ **Badge** - Status indicators
-- ✅ **DataGrid** - Advanced data tables
-- ✅ **Divider** - Content separators
-- ✅ **Icon** - Scalable icons
-- ✅ **Label** - Form labels
-- ✅ **Link** - Navigation links
-- ✅ **List** - Structured lists
-- ✅ **Card** - Content containers
-- ❌ **Table** - Simple data tables
-- ❌ **Chip** - Compact information display
-- ❌ **Progress** - Progress indicators
-- ❌ **Skeleton** - Loading placeholders
-- ❌ **Timeline** - Event timeline display
-- ❌ **Calendar** - Date display component
-- ❌ **Stats** - Statistical data display
+| Component                                   | Description                 | Status |
+| ------------------------------------------- | --------------------------- | ------ |
+| [**Avatar**](docs/components/avatar.md)     | User profile images         | ✅     |
+| [**Badge**](docs/components/badge.md)       | Status indicators           | ✅     |
+| [**DataGrid**](docs/components/datagrid.md) | Advanced data tables        | ✅     |
+| [**Divider**](docs/components/divider.md)   | Content separators          | ✅     |
+| [**Icon**](docs/components/icon.md)         | Scalable icons              | ✅     |
+| [**Label**](docs/components/label.md)       | Form labels                 | ✅     |
+| [**Link**](docs/components/link.md)         | Navigation links            | ✅     |
+| [**List**](docs/components/list.md)         | Structured lists            | ✅     |
+| [**Card**](docs/components/card.md)         | Content containers          | ✅     |
+| **Table**                                   | Simple data tables          | ❌     |
+| **Chip**                                    | Compact information display | ❌     |
+| **Progress**                                | Progress indicators         | ❌     |
+| **Skeleton**                                | Loading placeholders        | ❌     |
+| **Timeline**                                | Event timeline display      | ❌     |
+| **Calendar**                                | Date display component      | ❌     |
 
 ### Overlays & Feedback
 
-- ✅ **Dialog** - Modal dialogs
-- ✅ **Dropdown** - Contextual menus
-- ✅ **Popover** - Contextual information
-- ✅ **Slideover** - Side panel overlays
-- ✅ **Toast** - Notification messages
-- ✅ **Tooltip** - Contextual hints
-- ✅ **ContextMenu** - Right-click menus
-- ❌ **Alert** - Alert messages
-- ❌ **Banner** - Full-width notifications
-- ❌ **Modal** - Standard modal dialogs
-- ❌ **Drawer** - Slide-out panels
-- ❌ **Notification** - System notifications
-- ❌ **Spotlight** - Feature highlighting
+| Component                                         | Description              | Status |
+| ------------------------------------------------- | ------------------------ | ------ |
+| [**Dialog**](docs/components/dialog.md)           | Modal dialogs            | ✅     |
+| [**Dropdown**](docs/components/dropdown.md)       | Contextual menus         | ✅     |
+| [**Popover**](docs/components/popover.md)         | Contextual information   | ✅     |
+| [**Toast**](docs/components/toast.md)             | Notification messages    | ✅     |
+| [**Tooltip**](docs/components/tooltip.md)         | Contextual hints         | ✅     |
+| [**ContextMenu**](docs/components/contextmenu.md) | Right-click menus        | ✅     |
+| [**Drawer**](docs/components/drawer.md)           | Slide-out panels         | ✅     |
+| [**Alert**](docs/components/alert.md)             | Alert messages           | ✅     |
+| **Banner**                                        | Full-width notifications | ❌     |
+| **Spotlight**                                     | Feature highlighting     | ❌     |
 
 ### Utilities & Layout
 
-- ✅ **Portal** - Declare a portal anywhere in DOM
-- ✅ **Teleport** - Render content in a specific portal
-- ✅ **Root** - Application root container
-- ✅ **Layer** - Layer management utility
-- ✅ **Collapsible** - Generic collapsible wrapper
-- ✅ **Container** - Layout container
-- ✅ **Scrollable** - Custom scrollbar component
-- ❌ **Spacer** - Space management utility
-- ❌ **Responsive** - Responsive utilities
-- ❌ **VirtualList** - Virtual scrolling list
-
-### Status: **35/65** components implemented (54%)
+| Component                                         | Description                         | Status |
+| ------------------------------------------------- | ----------------------------------- | ------ |
+| [**Portal**](docs/components/portal.md)           | Declare a portal anywhere in DOM    | ✅     |
+| **Teleport**                                      | Render content in a specific portal | ✅     |
+| **Root**                                          | Application root container          | ✅     |
+| [**Layer**](docs/components/layer.md)             | Layer management utility            | ✅     |
+| [**Collapsible**](docs/components/collapsible.md) | Generic collapsible wrapper         | ✅     |
+| **Container**                                     | Layout container                    | ✅     |
+| [**Scrollable**](docs/components/scrollable.md)   | Custom scrollbar component          | ✅     |
+| [**Stack**](docs/components/stack.md)             | Flexible layout stacking component  | ✅     |
+| **Spacer**                                        | Space management utility            | ❌     |
+| **VirtualList**                                   | Virtual scrolling list              | ❌     |
 
 ---
 
@@ -131,10 +135,9 @@ The library is organized into distinct layers for maximum maintainability and ex
 
 ```
 src/lib/
-├── atoms/          # 30+ Core UI components
+├── components/          # 30+ Core UI components
 ├── shared/         # Base classes (Bond, BondState) and utilities
 ├── helpers/        # Helper functions and components
-├── actions/        # Svelte actions for behaviors
 ├── attachments/    # DOM attachment utilities
 ├── runes/          # Reactive utilities (Svelte 5 runes)
 ├── types/          # TypeScript type definitions
@@ -171,7 +174,17 @@ class MyComponentBond extends Bond<MyComponentBondState> {
 ### Installation
 
 ```bash
+# npm
 npm install @svelte-atoms/core
+
+# yarn
+yarn install @svelte-atoms/core
+
+# pnpm
+pnpm add @svelte-atoms/core
+
+# bun
+bun add @svelte-atoms/core
 ```
 
 ### Basic Usage
@@ -185,7 +198,7 @@ npm install @svelte-atoms/core
 </script>
 
 <!-- Simple Button -->
-<Button.Root onclick={() => (dialogOpen = true)}>Open Dialog</Button.Root>
+<Button onclick={() => (dialogOpen = true)}>Open Dialog</Button>
 
 <!-- Dialog with Input -->
 <Dialog.Root bind:open={dialogOpen}>
@@ -194,7 +207,9 @@ npm install @svelte-atoms/core
 			<Dialog.Title>Enter your name</Dialog.Title>
 		</Dialog.Header>
 		<Dialog.Body>
-			<Input.Root bind:value={inputValue} placeholder="Your name..." />
+			<Input.Root>
+				<Input.Value bind:value={inputValue} placeholder="Your name...">
+			</Input.Root>
 		</Dialog.Body>
 		<Dialog.Footer>
 			<Button.Root onclick={() => (dialogOpen = false)}>Cancel</Button.Root>
@@ -212,19 +227,28 @@ For more control, you can use the Bond system directly:
 <script lang="ts">
 	import { DialogBond, DialogBondState } from '@svelte-atoms/core/dialog';
 
+	const { open = false, disable = false } = $props();
+
+	const bondProps = defineState(
+		[
+			defineProperty(
+				'open',
+				() => open,
+				(v) => (open = v)
+			),
+			defineProperty('disable', () => disable)
+		],
+		{
+			// Other props
+		}
+	);
+
 	// Create dialog state
-	const dialogState = new DialogBondState(() => ({
-		open: false,
-		disabled: false,
-		extend: {}
-	}));
+	const dialogState = new DialogBondState(() => bondProps);
 
 	// Create dialog bond
-	const dialogBond = new DialogBond(dialogState);
-	DialogBond.set(dialogBond); // Make available via context
-
-	// Reactive values
-	const isOpen = $derived(dialogBond.state.props.open);
+	// Make available via context
+	const dialogBond = new DialogBond(dialogState).share();
 </script>
 
 <div {...dialogBond.root()}>
@@ -232,7 +256,7 @@ For more control, you can use the Bond system directly:
 		Toggle Dialog
 	</button>
 
-	{#if isOpen}
+	{#if open}
 		<div {...dialogBond.overlay()}>
 			<div {...dialogBond.content()}>
 				<h2 {...dialogBond.title()}>Dialog Title</h2>
@@ -265,17 +289,20 @@ For more control, you can use the Bond system directly:
 </script>
 
 <Dropdown.Root multiple bind:values={selectedValues}>
-	<Dropdown.Trigger>
-		Select options ({selectedValues.length} selected)
-	</Dropdown.Trigger>
+	<!-- Access internal bond -->
+	{#snippet children({ dropdown })}
+		<Dropdown.Trigger>
+			Select options ({selectedValues.length} selected)
+		</Dropdown.Trigger>
 
-	<Dropdown.Content>
-		{#each options as option}
-			<Dropdown.Item value={option.value}>
-				{option.label}
-			</Dropdown.Item>
-		{/each}
-	</Dropdown.Content>
+		<Dropdown.Content>
+			{#each options as option}
+				<Dropdown.Item value={option.value}>
+					{option.label}
+				</Dropdown.Item>
+			{/each}
+		</Dropdown.Content>
+	{/snippet}
 </Dropdown.Root>
 ```
 
@@ -295,33 +322,33 @@ For more control, you can use the Bond system directly:
 	let errors = {};
 </script>
 
-<Form.Root {schema} bind:value={formData} bind:errors>
-	<Form.Field name="email">
-		<Form.Label>Email</Form.Label>
-		<Form.Control>
+<Form {schema} bind:value={formData} bind:errors>
+	<Field name="email">
+		<Field.Label>Email</Field.Label>
+		<Field.Control>
 			<Input.Root type="email" placeholder="Enter your email" bind:value={formData.email} />
-		</Form.Control>
+		</Field.Control>
 		{#if errors.email}
 			<Form.Error>{errors.email}</Form.Error>
 		{/if}
-	</Form.Field>
+	</.Field>
 
-	<Form.Field name="password">
-		<Form.Label>Password</Form.Label>
-		<Form.Control>
+	<Field name="password">
+		<Field.Label>Password</Field.Label>
+		<Field.Control>
 			<Input.Root
 				type="password"
 				placeholder="Enter your password"
 				bind:value={formData.password}
 			/>
-		</Form.Control>
+		</Field.Control>
 		{#if errors.password}
-			<Form.Error>{errors.password}</Form.Error>
+			<Field.Error>{errors.password}</Field.Error>
 		{/if}
-	</Form.Field>
+	</.Field>
 
-	<Button.Root type="submit">Submit</Button.Root>
-</Form.Root>
+	<Button type="submit">Submit</Button>
+</Form>
 ```
 
 #### Data Grid with Sorting and Selection
@@ -341,26 +368,26 @@ For more control, you can use the Bond system directly:
 
 <DataGrid.Root {data} bind:selectedRows multiple>
 	<DataGrid.Header>
-		<DataGrid.Row>
-			<DataGrid.HeaderCell>
-				<Checkbox.Root />
-			</DataGrid.HeaderCell>
-			<DataGrid.HeaderCell sortable="name">Name</DataGrid.HeaderCell>
-			<DataGrid.HeaderCell sortable="email">Email</DataGrid.HeaderCell>
-			<DataGrid.HeaderCell>Role</DataGrid.HeaderCell>
-		</DataGrid.Row>
+		<DataGrid.Tr>
+			<DataGrid.Th>
+				<Checkbox />
+			</DataGrid.Th>
+			<DataGrid.Th sortable="name">Name</DataGrid.Th>
+			<DataGrid.Th sortable="email">Email</DataGrid.Th>
+			<DataGrid.Th>Role</DataGrid.Th>
+		</DataGrid.Tr>
 	</DataGrid.Header>
 
 	<DataGrid.Body>
 		{#each data as row}
-			<DataGrid.Row value={row.id}>
-				<DataGrid.Cell>
+			<DataGrid.Tr value={row.id}>
+				<DataGrid.Td>
 					<Checkbox.Root value={row.id} />
-				</DataGrid.Cell>
-				<DataGrid.Cell>{row.name}</DataGrid.Cell>
-				<DataGrid.Cell>{row.email}</DataGrid.Cell>
-				<DataGrid.Cell>{row.role}</DataGrid.Cell>
-			</DataGrid.Row>
+				</DataGrid.Td>
+				<DataGrid.Td>{row.name}</DataGrid.Td>
+				<DataGrid.Td>{row.email}</DataGrid.Td>
+				<DataGrid.Td>{row.role}</DataGrid.Td>
+			</DataGrid.Tr>
 		{/each}
 	</DataGrid.Body>
 </DataGrid.Root>
@@ -392,9 +419,7 @@ For more control, you can use the Bond system directly:
 ### Using Tailwind CSS
 
 ```svelte
-<Button.Root class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-	Styled Button
-</Button.Root>
+<Button class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">Styled Button</Button>
 ```
 
 ---
@@ -445,11 +470,11 @@ bun run build-storybook
 
 ---
 
-## 🤝 Contributing
+<!-- ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details. -->
 
-### Development Workflow
+<!-- ### Development Workflow
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -457,7 +482,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 4. Run the test suite: `bun test`
 5. Commit your changes: `git commit -m 'Add amazing feature'`
 6. Push to the branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+7. Open a Pull Request -->
 
 ### Creating New Components
 
@@ -467,12 +492,12 @@ When adding new components, follow these guidelines:
 
    ```
    src/lib/atoms/my-component/
-   ├── bond.svelte.ts          # Core bond logic (Bond + BondState classes)
-   ├── index.ts                # Public exports
-   ├── components.ts          # Component exports
-   ├── my-component-root.svelte
+   ├── bond.svelte.ts          		# Core bond logic (Bond + BondState classes)
+   ├── index.ts                		# Public exports
+   ├── atoms.ts          			# Component exports
+   ├── my-component-root.svelte		# Use namespace pattern when building complex component
    ├── my-component-content.svelte
-   └── README.md              # Component documentation
+   └── README.md              		# Component documentation
    ```
 
 2. **Implement accessibility features:**
@@ -524,6 +549,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 ## 🙏 Acknowledgements
 
 - [Svelte](https://svelte.dev/) - The amazing framework that powers this library
+- [Motion](https://motion.dev/) - For handling internal default animations
 - [Floating UI](https://floating-ui.com/) - For advanced positioning logic
 - [Tailwind CSS](https://tailwindcss.com/) - For styling
 - [Storybook](https://storybook.js.org/) - For component documentation and testing
@@ -534,9 +560,9 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 <div align="center">
   <p>Built with ❤️ by the Svelte Atoms team</p>
-  <p>
+  <!-- <p>
     <a href="https://github.com/ryu-man/svelte-atoms">GitHub</a> •
     <a href="https://svelte-atoms.dev">Documentation</a> •
     <a href="https://storybook.svelte-atoms.dev">Storybook</a>
-  </p>
+  </p> -->
 </div>
