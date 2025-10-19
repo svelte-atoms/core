@@ -12,7 +12,7 @@
 
 	type Element = ElementType<E>;
 
-	const preset = getPreset('stack');
+	const preset = getPreset('input.root');
 
 	let {
 		class: klass = '',

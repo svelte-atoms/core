@@ -1,6 +1,6 @@
 import type { Component, Snippet } from 'svelte';
 import { type HtmlElementTagName } from '$svelte-atoms/core/components/element';
-import type { HtmlElementProps } from '../element/types';
+import type { HtmlElementProps, ElementType } from '../element/types';
 
 export type ComponentBase = Component;
 export type SnippetBase = Snippet;
@@ -13,3 +13,5 @@ export type HtmlAtomProps<
 > = HtmlElementProps<E> & {
 	base?: B;
 };
+
+export type { ElementType };
