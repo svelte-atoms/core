@@ -89,6 +89,10 @@ export class DropdownItemBondState<T> extends BondState<DropdownItemBondProps<T>
 		return this.props.value;
 	}
 
+	get data() {
+		return this.props.data;
+	}
+
 	get isSelected() {
 		return this.dropdown?.props.values?.includes(this.props.value) ?? false;
 	}
