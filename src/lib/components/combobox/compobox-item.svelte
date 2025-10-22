@@ -17,8 +17,6 @@
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -55,8 +53,6 @@
 			bond?.state.close();
 		})(node);
 	}}
-	{as}
-	{base}
 	{bond}
 	preset="combobox.item"
 	class={['$preset', klass]}
