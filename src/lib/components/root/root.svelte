@@ -73,7 +73,7 @@
 	)}
 	{...restProps}
 >
-	<Portals id="root fixed">
+	<Portals id="root">
 		{#if portals}
 			{@render portals?.()}
 		{:else}
