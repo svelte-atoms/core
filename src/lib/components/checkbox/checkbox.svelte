@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { circOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import type { CheckboxProps } from './types';
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { DURATION } from '$svelte-atoms/core/shared';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
 	import './checkbox.css';
+	import { DURATION } from '$svelte-atoms/core/shared';
+	import { circOut } from 'svelte/easing';
 
 	let {
 		class: klass = '',
@@ -136,8 +136,8 @@
 				class={[
 					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
 				]}
-				enter={scale}
-				enterConfig={{ duration: DURATION.fast, easing: circOut, start: 0.6 }}
+				enter={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
+				exit={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
 			>
 				<Icon class="h-full p-0" src={CheckmarkRegularIcon} />
 			</HtmlAtom>
