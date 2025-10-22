@@ -94,6 +94,7 @@
 
 <Teleport
 	{as}
+	{bond}
 	portal="root.l1"
 	class={[
 		'pointer-events-auto h-full w-full overflow-hidden bg-transparent',
