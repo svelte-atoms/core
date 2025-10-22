@@ -26,7 +26,7 @@
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
 	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { type TransitionFunction } from '$svelte-atoms/core/helpers/html-element.svelte';
+	import { type TransitionFunction } from '$svelte-atoms/core/components/element';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
