@@ -1,5 +1,5 @@
-import type { HtmlAtomProps } from '$lib/helpers';
 import type { Snippet } from 'svelte';
+import type { HtmlAtomProps } from '../atom';
 
 export type ContainerProps = HtmlAtomProps<'button'> & {
 	type?: 'inline-size' | 'size';
