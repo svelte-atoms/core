@@ -209,9 +209,8 @@
 						<span class="text-yellow-400">type=</span><span class="text-green-400">"submit"</span>
 					</div>
 					<div class="ml-4">
-						<span class="text-yellow-400">disabled=</span><span class="text-green-400"
-							>{loading}</span
-						>
+						<span class="text-yellow-400">disabled=</span>
+						<span class="text-green-400">{`{loading}`}</span>
 					</div>
 					<div class="ml-4">
 						<span class="text-yellow-400">class=</span><span class="text-green-400"
@@ -219,9 +218,8 @@
 						>
 					</div>
 					<div class="ml-4">
-						<span class="text-yellow-400">onclick=</span><span class="text-green-400"
-							>{handleClick}</span
-						>
+						<span class="text-yellow-400">onclick=</span>
+						<span class="text-green-400">{`{handleClick}`}</span>
 					</div>
 					<div><span class="text-blue-400">&gt;</span></div>
 					<div class="ml-4 text-gray-300">Submit Form</div>
