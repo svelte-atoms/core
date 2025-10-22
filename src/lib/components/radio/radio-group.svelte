@@ -1,10 +1,7 @@
 <script lang="ts">
 	import { setRadioGroupContext, type RadioGroupContext } from './context';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
-
-	const preset = getPreset('radio.group');
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 
 	let {
 		class: klass = '',
@@ -12,7 +9,6 @@
 		readonly = false,
 		required = false,
 		name = undefined,
-		base = preset?.base as B,
 		value = $bindable(),
 		children,
 		oninput = undefined,
@@ -40,14 +36,6 @@
 	});
 </script>
 
-<HtmlAtom
-	class={[
-		'flex flex-col gap-1',
-		toClassValue.apply(null, [preset?.class, {}]),
-		toClassValue.apply(null, [klass, {}])
-	]}
-	{base}
-	{...restProps}
->
+<HtmlAtom preset="radio.group" class={['flex flex-col gap-1', '$preset', klass]} {...restProps}>
 	{@render children?.()}
 </HtmlAtom>

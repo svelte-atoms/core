@@ -2,9 +2,7 @@
 	import { DropdownBond } from './bond.svelte';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = DropdownBond.get();
 
@@ -12,12 +10,9 @@
 		throw new Error('DropdownValue must be used within a Dropdown');
 	}
 
-	const preset = getPreset('dropdown.value');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
+		as = 'div' as T,
 		value,
 		children,
 		onmount = undefined,
@@ -41,11 +36,12 @@
 
 <HtmlAtom
 	{as}
-	{base}
+	{bond}
+	preset="dropdown.value"
 	class={[
 		'dropdown-value bg-foreground/5 inline-flex flex-nowrap items-center gap-1 rounded-xs px-1 whitespace-nowrap',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

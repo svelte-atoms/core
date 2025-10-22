@@ -1,9 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { ComboboxBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/dropdown/atoms';
-	import { Root as InputRoot } from '$svelte-atoms/core/components/input/atoms';
 	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue, cn } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = ComboboxBond.get();
@@ -17,7 +15,6 @@
 	let {
 		class: klass = '',
 		as = preset?.as ?? 'button',
-		base = preset?.base ?? InputRoot,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -31,8 +28,9 @@
 
 <Trigger
 	{as}
-	{base}
-	class={['h-8 w-40', toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="dropdown.trigger"
+	class={['h-8 w-40', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

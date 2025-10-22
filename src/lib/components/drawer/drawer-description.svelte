@@ -15,19 +15,15 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { DrawerBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	const bond = DrawerBond.get();
-	const preset = getPreset('drawer.description');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('p' as E),
-		base = preset?.base as B,
+		as = 'p' as E,
 		children,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -46,8 +42,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="drawer.description"
+	class={['$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

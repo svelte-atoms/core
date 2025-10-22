@@ -17,23 +17,25 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	type Element = ElementType<E>;
 
-	const preset = getPreset('label');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'label',
-		base = preset?.base as B,
+		as = 'label' as E,
 		for: labelfor = null,
 		children,
 		...restProps
 	}: LabelProps<E, B> & HTMLAttributes<Element> = $props();
 </script>
 
-<HtmlAtom class={['font-medium', klass]} for={labelfor} {as} {base} {...restProps}>
+<HtmlAtom
+	{as}
+	preset="label"
+	class={['font-medium', '$preset', klass]}
+	for={labelfor}
+	{...restProps}
+>
 	{@render children?.()}
 </HtmlAtom>

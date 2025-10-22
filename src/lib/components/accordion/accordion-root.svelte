@@ -19,19 +19,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { AccordionBond, AccordionState, type AccordionStateProps } from './bond.svelte';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
-
-	const preset = getPreset('accordion');
 
 	let {
 		value = $bindable(undefined),
 		values = $bindable([]),
 		data = $bindable([]),
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base,
 		multiple = false,
 		collapsible = false,
 		disabled = false,
@@ -75,13 +70,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'bg-card flex list-none flex-col',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="accordion"
+	class={['bg-card flex list-none flex-col', '$preset', klass]}
+	{bond}
 	{...rootProps}
 >
 	{@render children?.({ accordion: bond })}

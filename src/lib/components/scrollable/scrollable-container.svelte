@@ -13,14 +13,9 @@
 	import type { Override } from '$svelte-atoms/core/types';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
-
-	const preset = getPreset('scrollable.content');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -49,9 +44,13 @@
 			bond.state.props.scrollHeight = node.scrollHeight;
 		})(node);
 	}}
-	{as}
-	{base}
-	class={['scrollable-container border-border h-full max-h-full w-full overflow-auto', klass]}
+	{bond}
+	preset="scrollable.container"
+	class={[
+		'scrollable-container border-border h-full max-h-full w-full overflow-auto',
+		'$preset',
+		klass
+	]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

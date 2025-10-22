@@ -1,17 +1,13 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Stack } from '../stack';
-	import { TabsBond } from './bond.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$lib/utils';
+	import { TabsBond } from './bond.svelte';
+	import { Stack } from '../stack';
 
 	const bond = TabsBond.get();
-	const preset = getPreset('tabs.body');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
+		as = 'div' as E,
 		children,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -29,11 +25,9 @@
 </script>
 
 <Stack.Root
-	class={[
-		'tabs-body relative flex-1',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="tabs.body"
+	class={['tabs-body relative flex-1', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
@@ -41,7 +35,6 @@
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	{as}
-	{base}
 	{...bodyProps}
 >
 	{@render children?.({ tabs: bond })}

@@ -17,23 +17,18 @@
 <script lang="ts" generics="T, E extends HtmlElementTagName, B extends Base = Base">
 	import { untrack, type Snippet } from 'svelte';
 	import { nanoid } from 'nanoid';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { DataGridTrBond, DataGridTrBondState, type DataGridTrBondProps } from './bond.svelte';
 	import { getDatagridHeaderContext, type DatagridContext } from '../context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Factory } from '$svelte-atoms/core/types';
 	import './datagrid-tr.css';
 
 	const context_header = getDatagridHeaderContext();
 
-	const preset = getPreset('datagrid.tr');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		value = nanoid(),
 		rows = 'auto',
 		data = undefined,
@@ -83,16 +78,16 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
+	{bond}
+	preset="datagrid.tr"
 	class={[
 		'datagrid-tr border-border items-center border-b bg-transparent',
 		!isHeader &&
 			'hover:bg-foreground/5 active:bg-foreground/10 transition-colors duration-100 last:border-b-0',
 		isHeader && 'header-tr',
 		isSelected && 'bg-foreground/3',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	style="--rows:{rows}"
 	enter={enter?.bind(bond.state)}

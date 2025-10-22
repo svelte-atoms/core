@@ -14,21 +14,16 @@
 >
 	import type { Snippet } from 'svelte';
 	import { TabBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = TabBond.get();
 
 	const isActive = $derived(bond?.state.isActive);
 	const isDisabled = $derived(bond?.state.props.disabled);
 
-	const preset = getPreset('tab.header');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'button',
-		base = preset?.base as B,
+		as = 'button' as E,
 		children,
 		onpointerdown,
 		onmount = undefined,
@@ -59,13 +54,15 @@
 </script>
 
 <HtmlAtom
+	{bond}
+	preset="tab.header"
 	as="button"
 	class={[
 		'text-foreground/60 hover:text-foreground/80 active:text-foreground/100 flex cursor-pointer items-center px-2 py-2 text-sm font-medium transition-colors duration-100',
 		isActive && 'text-primary',
 		isDisabled && 'opacity-50',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

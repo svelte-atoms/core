@@ -2,18 +2,12 @@
 	import { setDatagridHeaderContext } from './context';
 	import type { DatagridHeaderProps } from './types';
 	import { DataGridBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = DataGridBond.get();
 
-	const preset = getPreset('datagrid.header');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -40,13 +34,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'col-span-full grid grid-cols-subgrid',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="datagrid.header"
+	class={['col-span-full grid grid-cols-subgrid', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

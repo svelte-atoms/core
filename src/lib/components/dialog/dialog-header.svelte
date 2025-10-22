@@ -7,16 +7,10 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { DialogBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('dialog.header');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -36,13 +30,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'flex w-full px-4 text-xl',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="dialog.header"
+	class={['flex w-full px-4 text-xl', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

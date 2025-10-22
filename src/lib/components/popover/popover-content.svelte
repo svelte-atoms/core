@@ -25,10 +25,8 @@
 	import { type Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
 	import { PortalBond, Teleport } from '$svelte-atoms/core/components/portal';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { PopoverBond } from './bond.svelte';
 
 	type Element = HtmlElementType<E>;
@@ -40,12 +38,8 @@
 		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
 	}
 
-	const preset = getPreset('popover.content');
-
 	let {
 		class: klass = '',
-		base = preset?.base as B,
-		as = preset?.as ?? ('div' as E),
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -133,10 +127,12 @@
 	{...bond.content({ onchange: _containerInitial })}
 >
 	<HtmlAtom
+		{bond}
+		preset="popover.content"
 		class={[
 			'popover-content border-border bg-background rounded-md border p-2 opacity-0 shadow-lg',
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
+			'$preset',
+			klass
 		]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
@@ -144,8 +140,6 @@
 		animate={animate?.bind(bond.state)}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}
-		{as}
-		{base}
 		{...restProps}
 	>
 		{@render children?.({ popover: bond })}

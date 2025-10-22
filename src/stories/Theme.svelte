@@ -12,14 +12,16 @@
 		},
 		accordion: {
 			as: 'ul',
-			class: 'w-full max-w-md rounded-md p-4'
+			class: 'w-full max-w-md rounded-md p-4 accordion-preset'
 		},
 		'accordion.item': {
 			as: 'li',
 			class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-2 py-2'
 		},
 		'accordion.item.header': {
-			class: ({ bond }) => [bond.state.isActive ? 'text-foreground/100' : 'text-foreground/50']
+			class: function () {
+				return [this.state.isActive ? 'text-foreground/100' : 'text-foreground/50'];
+			}
 		},
 		'accordion.item.body': {
 			class: 'overflow-hidden'
@@ -41,9 +43,6 @@
 		},
 		'collapsible.body': {
 			class: 'text-sm px-4'
-		},
-		'popover.trigger': {
-			class: 'bg-foreground/5 hover:bg-foreground/10 active:bg-foreground/20 rounded-md p-2 px-4'
 		},
 		'popover.content': {
 			class: ''

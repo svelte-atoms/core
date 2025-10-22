@@ -9,18 +9,13 @@
 	import { DialogBond } from './bond.svelte';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import Close from '$svelte-atoms/core/icons/icon-close.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = DialogBond.get();
 
-	const preset = getPreset('dialog.close-button');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('button' as E),
-		base = preset?.base as B,
+		as = 'button' as E,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -44,12 +39,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[
-		'cursor-pointer',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="dialog.close-button"
+	class={['cursor-pointer', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

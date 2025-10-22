@@ -5,9 +5,8 @@
 	import { ComboboxBond } from './bond.svelte';
 	import { Item } from '$svelte-atoms/core/components/dropdown/atoms';
 	import { DropdownItemBond } from '$svelte-atoms/core/components/dropdown/item/bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+
 	import { on } from '$svelte-atoms/core/attachments';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = ComboboxBond.get() as ComboboxBond<{}>;
@@ -16,12 +15,8 @@
 		throw new Error('Combobox atom was not found');
 	}
 
-	const preset = getPreset('combobox.item');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -58,9 +53,9 @@
 			bond?.state.close();
 		})(node);
 	}}
-	{as}
-	{base}
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="combobox.item"
+	class={['$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

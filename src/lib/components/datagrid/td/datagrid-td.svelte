@@ -16,19 +16,13 @@
 	import type { Snippet } from 'svelte';
 	import type { DataGridTdBond } from './bond.svelte';
 	import { DataGridBond } from '../bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = DataGridBond.get();
 
-	const preset = getPreset('datagrid.th');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -69,13 +63,9 @@
 		{@attach (node) => {
 			element = node;
 		}}
-		{as}
-		{base}
-		class={[
-			'flex h-full items-center py-2 text-left',
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
-		]}
+		{bond}
+		preset="datagrid.td"
+		class={['flex h-full items-center py-2 text-left', '$preset', klass]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
 		initial={initial?.bind(bond.state)}

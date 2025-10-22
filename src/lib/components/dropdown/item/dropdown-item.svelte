@@ -10,8 +10,7 @@
 	} from './bond.svelte';
 	import { DropdownBond } from '../bond.svelte';
 	import { Item } from '$svelte-atoms/core/components/menu/atoms';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const dropdown = DropdownBond.get();
@@ -20,10 +19,9 @@
 		throw new Error('<DropdownItem> must be used within a <Dropdown>.');
 	}
 
-	const preset = getPreset('dropdown.item');
-
 	let {
 		class: klass = '',
+		preset = 'dropdown.item',
 		value = nanoid(),
 		data = undefined,
 		factory = _factory,
@@ -47,7 +45,7 @@
 		const item = dropdown?.state.item(value);
 
 		if (item) {
-			return item;
+			return item as DropdownItemBond;
 		}
 
 		const bondProps = defineState<DropdownItemBondProps<D>>([
@@ -55,7 +53,7 @@
 			defineProperty('data', () => data)
 		]);
 		const bondState = new DropdownItemBondState(() => bondProps);
-		return new DropdownItemBond(bondState).share();
+		return new DropdownItemBond(bondState);
 	}
 
 	function _onclick(ev: MouseEvent) {
@@ -79,11 +77,13 @@
 
 <Item
 	{@attach (node) => (bond.elements.root = node)}
+	{bond}
+	{preset}
 	class={[
 		bond.state.isHighlighted && 'bg-foreground/10',
 		bond.state.isSelected && 'bg-accent/10',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

@@ -2,10 +2,7 @@
 	import { getRadioGroupContext } from './context';
 	import { Stack } from '../stack';
 	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('radio');
 
 	const radioGroupContext = getRadioGroupContext();
 
@@ -15,7 +12,6 @@
 		group = $bindable(),
 		id = undefined,
 		name = undefined,
-		base = preset?.base as B,
 		disabled = false,
 		required = false,
 		readonly = false,
@@ -74,27 +70,27 @@
 </script>
 
 <Stack.Root
+	preset="radio"
 	class={[
 		'text-foreground box-border inline-flex aspect-square size-4 max-w-fit cursor-pointer place-items-center rounded-full border p-[3px]',
 		isDisabled && 'pointer-events-none opacity-50',
-		toClassValue.apply(null, [preset?.class, {}]),
+		'$preset',
 		toClassValue.apply(null, [klass, {}])
 	]}
 	as="label"
-	{base}
 	{...restProps}
 >
 	<Stack.Item class="pointer-events-none flex size-full">
 		<input
 			bind:group={proxy.current}
+			{id}
+			{value}
 			class="pointer-events-auto size-0 opacity-0"
 			type="radio"
 			name={_name ?? name}
 			disabled={isDisabled}
 			required={isRequired}
 			readonly={isReadonly}
-			{id}
-			{value}
 			onchange={handleChange}
 			oninput={handleInput}
 		/>

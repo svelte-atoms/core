@@ -3,21 +3,15 @@
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import { DataGridThBond } from './bond.svelte';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$lib/utils';
 
 	const bond = DataGridThBond.get();
-
-	const preset = getPreset('datagrid.sort-icon');
 
 	const isSortable = $derived(bond.state.isSortable);
 	const directionAsNumber = $derived(+(bond.state.props.direction === 'asc'));
 
 	let {
 		class: klass = '',
-		as = preset?.as,
-		base = preset?.base as B,
 		onmount = undefined,
 		ondestroy = undefined,
 		animate = _animate,
@@ -38,9 +32,9 @@
 
 {#if !!isSortable}
 	<HtmlAtom
-		{as}
-		{base}
-		class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+		{bond}
+		preset="datagrid.sort-icon"
+		class={['$preset', klass]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
 		initial={initial?.bind(bond.state)}

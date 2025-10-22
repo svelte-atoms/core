@@ -4,6 +4,7 @@
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { clickoutPopover } from './attachments.svelte';
 	import { animate } from 'motion';
+	import { Button } from '../button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -31,7 +32,7 @@
 						<RenderScan duration={400} />
 					{/if} -->
 
-					<Popover_.Trigger class="items-center gap-4">
+					<Popover_.Trigger base={Button} class="items-center gap-4">
 						<div>Open Popover</div>
 						<Popover_.Indicator />
 					</Popover_.Trigger>

@@ -14,20 +14,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import type { Override } from '$svelte-atoms/core/types';
 	import { DrawerBond } from './bond.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	type Element = HTMLElementTagNameMap[E];
 
-	const preset = getPreset('drawer.body');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -47,9 +41,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="drawer.body"
+	class={['$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

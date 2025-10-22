@@ -9,6 +9,7 @@
 		checked?: boolean;
 		class?: string;
 		type?: HTMLInputTypeAttribute | null;
+		preset?: PresetModuleName | (string & {});
 		children?: Snippet<[]>;
 	};
 </script>
@@ -16,14 +17,13 @@
 <script>
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
-	import { InputBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
+	import { toClassValue } from '$svelte-atoms/core/utils';
+	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import { InputBond } from './bond.svelte';
 
 	const bond = InputBond.get();
-
-	const preset = getPreset('input.value');
 
 	let {
 		value = $bindable(),
@@ -33,10 +33,13 @@
 		checked = $bindable(),
 		class: klass = '',
 		type = 'text',
+		preset: presetKey = 'input.value',
 		onchange = undefined,
 		oninput = undefined,
 		...restProps
 	}: InputProps = $props();
+
+	const preset = getPreset(presetKey as PresetModuleName);
 
 	const valueProps = $derived({
 		...(bond?.input?.() ?? {}),
@@ -81,11 +84,6 @@
 </script>
 
 <input
-	class={[
-		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
 	{type}
 	bind:value={
 		() => value,
@@ -96,6 +94,11 @@
 			}
 		}
 	}
+	class={[
+		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
+		toClassValue(bond, preset?.class),
+		toClassValue(bond, klass)
+	]}
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}

@@ -1,19 +1,13 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { circOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import type { CheckboxProps } from './types';
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { DURATION } from '$svelte-atoms/core/shared';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import './checkbox.css';
-
-	const preset = getPreset('checkbox');
-	const checkmarkPreset = getPreset('checkbox.checkmark');
-	const indeterminatePreset = getPreset('checkbox.indeterminate');
+	import { DURATION } from '$svelte-atoms/core/shared';
+	import { circOut } from 'svelte/easing';
 
 	let {
 		class: klass = '',
@@ -21,7 +15,6 @@
 		indeterminate = $bindable(),
 		value = $bindable(undefined),
 		group = $bindable([]),
-		base = preset?.base as B,
 		id,
 		checkedContent,
 		indeterminateContent,
@@ -77,19 +70,19 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <HtmlAtom
+	preset="checkbox"
 	as="button"
 	class={[
 		'checkbox-root border-border outline-primary bg-foreground/5 aspect-square h-5 w-fit cursor-pointer rounded-sm border outline-0 outline-offset-2 transition-colors duration-100',
 		checked && 'bg-foreground',
 		!checked && '',
-		toClassValue.apply(null, [preset?.class]),
-		toClassValue.apply(null, [klass]),
+		'$preset',
+		klass,
 		'relative'
 	]}
 	{enter}
 	{exit}
 	{initial}
-	{base}
 	onclick={handleClick}
 	{...restProps}
 >
@@ -114,41 +107,40 @@
 	{#if indeterminate}
 		{#if indeterminateContent}
 			<HtmlAtom
-				class={[
-					'checkbox-indeterminate flex size-full items-center justify-center p-1',
-					toClassValue.apply(null, [indeterminatePreset?.class])
-				]}
+				preset="checkbox.indeterminate"
+				class={['checkbox-indeterminate flex size-full items-center justify-center p-1']}
 				base={indeterminateContent}
 			/>
 		{:else}
-			<div
+			<HtmlAtom
+				preset="checkbox.indeterminate"
 				class={[
-					'checkbox-indeterminate text-foreground flex size-full items-center justify-center p-1',
-					toClassValue.apply(null, [indeterminatePreset?.class])
+					'checkbox-indeterminate text-foreground flex size-full items-center justify-center p-1'
 				]}
 			>
 				<div class={['size-full rounded-xs bg-current']}></div>
-			</div>
+			</HtmlAtom>
 		{/if}
 	{:else if checked === true}
 		{#if checkedContent}
 			<HtmlAtom
+				preset="checkbox.checkmark"
 				class={[
-					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5',
-					toClassValue.apply(null, [checkmarkPreset?.class])
+					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
 				]}
 				base={checkedContent}
 			/>
 		{:else}
-			<div
+			<HtmlAtom
+				preset="checkbox.checkmark"
 				class={[
-					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5',
-					toClassValue.apply(null, [checkmarkPreset?.class])
+					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
 				]}
-				transition:scale={{ duration: DURATION.fast, easing: circOut, start: 0.6 }}
+				enter={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
+				exit={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
 			>
 				<Icon class="h-full p-0" src={CheckmarkRegularIcon} />
-			</div>
+			</HtmlAtom>
 		{/if}
 	{/if}
 </HtmlAtom>

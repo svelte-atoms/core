@@ -7,19 +7,13 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	type Element = ElementType<E>;
 
 	const bond = InputBond.get();
 
-	const preset = getPreset('input.placeholder');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		children = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
@@ -48,10 +42,11 @@
 
 {#if shouldShowPlaceholder}
 	<HtmlAtom
+		preset="input.placeholder"
 		class={[
 			'pointer-events-none absolute inset-0 flex h-full w-full items-center px-1 leading-1 outline-none',
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
+			'$preset',
+			klass
 		]}
 		style="left:{bond?.elements?.input?.offsetLeft ?? 0}px"
 		{...placeholderProps}

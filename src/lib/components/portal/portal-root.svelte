@@ -30,8 +30,6 @@
 	let {
 		class: klass = '',
 		id,
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -78,13 +76,8 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'pointer-events-none',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
-	{as}
-	{base}
+	{bond}
+	class={['pointer-events-none', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

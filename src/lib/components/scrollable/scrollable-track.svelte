@@ -12,16 +12,11 @@
 	import type { Snippet } from 'svelte';
 	import { ScrollableBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('scrollable.track');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
+
 		orientation = undefined,
 		children = undefined,
 		onmount = undefined,
@@ -53,13 +48,13 @@
 
 {#if (isOpen || isScrolling) && hasScroll}
 	<HtmlAtom
-		{as}
-		{base}
+		{bond}
+		preset="scrollable.track"
 		class={[
 			'scrollable-track bg-foreground/10 hover:bg-foreground/15 border-border absolute z-10 rounded transition-opacity',
 			{ vertical: 'inset-y-0 right-0 w-2', horizontal: 'inset-x-0 bottom-0 h-2' }[orientation],
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
+			'$preset',
+			klass
 		]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}

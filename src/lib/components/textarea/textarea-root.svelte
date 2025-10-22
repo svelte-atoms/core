@@ -4,6 +4,6 @@
 	let { children, ...restProps } = $props();
 </script>
 
-<Input.Root {...restProps}>
+<Input.Root preset="textarea" {...restProps}>
 	{@render children?.()}
 </Input.Root>

@@ -2,13 +2,10 @@
 	import { animate as motion } from 'motion';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from './bond.svelte';
 
 	const bond = PopoverBond.get();
-	const preset = getPreset('popover.indicator');
 
 	let {
 		class: klass = '',
@@ -25,11 +22,9 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'flex items-center justify-center',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="popover.indicator"
+	class={['flex items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

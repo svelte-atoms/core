@@ -40,7 +40,6 @@
 		children = undefined,
 		class: klass = '',
 		as = preset?.as ?? 'dialog',
-		base = preset?.base as B,
 		disabled = false,
 		onclose = undefined,
 		onmount = undefined,
@@ -95,13 +94,13 @@
 
 <Teleport
 	{as}
-	{base}
+	{bond}
 	portal="root.l1"
 	class={[
 		'pointer-events-auto h-full w-full overflow-hidden bg-transparent',
 		!open && 'pointer-events-none',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	closeby="none"
 	onmount={onmount?.bind(bond.state)}

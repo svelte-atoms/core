@@ -20,8 +20,6 @@
 
 	let {
 		open = $bindable(false),
-		as = 'div' as T,
-		base = undefined,
 		class: klass = '',
 		disabled = false,
 		extend = {},
@@ -62,9 +60,8 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[toClassValue.apply(bond, [klass])]}
+	{bond}
+	class={['$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

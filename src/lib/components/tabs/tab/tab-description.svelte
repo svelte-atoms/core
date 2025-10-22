@@ -9,18 +9,14 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
 	import type { Snippet } from 'svelte';
-	import { TabBond } from './bond.svelte';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { TabBond } from './bond.svelte';
 
 	const bond = TabBond.get();
-	const preset = getPreset('tab.description');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('p' as E),
-		base = preset?.base as B,
+		as = 'p' as E,
 		children,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -38,7 +34,9 @@
 </script>
 
 <HtmlAtom
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="tab.description"
+	class={['$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
@@ -46,7 +44,6 @@
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	{as}
-	{base}
 	{...descriptionProps}
 >
 	{@render children?.({ tab: bond })}

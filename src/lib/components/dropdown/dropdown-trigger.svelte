@@ -4,7 +4,7 @@
 	export type DropdownTriggerProps<
 		T extends keyof HTMLElementTagNameMap,
 		B extends Base = Base
-	> = PopoverTriggerProps<T, S> & {
+	> = PopoverTriggerProps<T, B> & {
 		children?: Snippet<[{ dropdown?: DropdownBond }]>;
 	};
 </script>
@@ -13,8 +13,6 @@
 	import type { Snippet } from 'svelte';
 	import { DropdownBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
-	import { toClassValue, cn } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = DropdownBond.get();
@@ -23,12 +21,9 @@
 		throw new Error('dropdown atom was not found');
 	}
 
-	const preset = getPreset('dropdown.trigger');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'button',
-		base = preset?.base as B,
+		as = 'button' as T,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -37,17 +32,14 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: DropdownTriggerProps<T, S> = $props();
+	}: DropdownTriggerProps<T, B> = $props();
 </script>
 
 <Trigger
 	{as}
-	{base}
-	class={[
-		'relative flex h-auto min-h-10 flex-wrap items-center',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="dropdown.trigger"
+	class={['relative flex h-auto min-h-10 flex-wrap items-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

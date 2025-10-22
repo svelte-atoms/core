@@ -3,15 +3,12 @@
 	import { DropdownBond } from './bond.svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { toClassValue, cn } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = DropdownBond.get() as DropdownBond;
 
 	if (!bond) {
 		throw new Error('Combobox atom was not found');
 	}
-
-	const preset = getPreset('dropdown.query');
 
 	let {
 		class: klass = '',
@@ -44,11 +41,9 @@
 
 <Input.Value
 	bind:value={bond.state.query}
-	class={[
-		'inline-flex w-min flex-1 py-1',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="dropdown.query"
+	class={['inline-flex w-min flex-1 py-1', '$preset', klass]}
+	{bond}
 	onpointerdown={(ev) => {
 		ev.stopPropagation();
 

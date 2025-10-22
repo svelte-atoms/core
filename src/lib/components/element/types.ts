@@ -1,9 +1,10 @@
 import type { Snippet } from 'svelte';
-import type { ClassValue, HTMLAttributes, SVGAttributes } from 'svelte/elements';
+import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
+import type { ClassValue } from '$svelte-atoms/core/utils';
 
 export type ElementProps<T extends ElementTagName> = Record<string, unknown> & {
-	class?: ClassValue;
+	class?: ClassValue | ClassValue[];
 	as?: T | (string & {});
 	global?: boolean;
 	initial?: NodeFunction<T>;
@@ -14,7 +15,7 @@ export type ElementProps<T extends ElementTagName> = Record<string, unknown> & {
 	ondestroy?: NodeFunction<T>;
 	children?: Snippet;
 
-	[key: string]: any;
+	[key: string]: unknown;
 };
 
 export type HtmlElementTagName = keyof HTMLElementTagNameMap;

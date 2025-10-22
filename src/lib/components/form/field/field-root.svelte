@@ -21,7 +21,7 @@
 </script>
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { onDestroy, type Component, type Snippet } from 'svelte';
+	import { onDestroy, type Snippet } from 'svelte';
 	import { FieldBond, FieldBondState, type FieldStateProps } from './bond.svelte';
 	import { FormBond } from '../bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
@@ -32,19 +32,14 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	type Element = ElementType<E>;
 
 	const formBond = FormBond.get();
 
-	const preset = getPreset('field');
-
 	let {
 		value = $bindable(),
 		class: klass = '',
-		as = preset?.class ?? ('div' as E),
-		base = preset?.base as B,
 		name = undefined,
 		schema = undefined,
 		validator = undefined,
@@ -88,6 +83,6 @@
 	}
 </script>
 
-<HtmlAtom class={['flex flex-col', klass]} {as} {base} {...rootProps}>
+<HtmlAtom preset="field" class={['flex flex-col', '$preset', klass]} {...rootProps}>
 	{@render children?.({ field: bond })}
 </HtmlAtom>

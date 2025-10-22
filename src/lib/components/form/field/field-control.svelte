@@ -15,20 +15,15 @@
 
 <script lang="ts" generics="B extends Base<{value: unknown}>">
 	import type { Snippet } from 'svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import type { Override } from '$svelte-atoms/core/types';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { FieldBond } from './bond.svelte';
 
 	const bond = FieldBond.get();
 	const name = $derived(bond?.state?.props?.name);
 
-	const preset = getPreset('field.control');
-
 	let {
 		class: klass = '',
-		base = preset?.base as B,
 		value = $bindable(),
 		checked = $bindable(),
 		children = undefined,
@@ -50,15 +45,12 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'flex items-center',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
-	{base}
+	{bond}
 	{value}
 	{checked}
 	{name}
+	preset="field.control"
+	class={['flex items-center', '$preset', klass]}
 	oninput={handleInput}
 	{...controlProps}
 >

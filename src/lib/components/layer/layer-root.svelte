@@ -8,19 +8,14 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { toClassValue, cn, defineState } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { defineState } from '$svelte-atoms/core/utils';
 
 	type Element = ElementType<E>;
 
 	const rootAtom = RootBond.get();
 
-	const preset = getPreset('layer');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -56,13 +51,8 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'pointer-events-none absolute inset-0',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="layer"
+	class={['pointer-events-none absolute inset-0', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
