@@ -20,8 +20,7 @@
 		},
 		'accordion.item.header': {
 			class: function () {
-				const bond = this;
-				return [bond.state.isActive ? 'text-foreground/100' : 'text-foreground/50'];
+				return [this.state.isActive ? 'text-foreground/100' : 'text-foreground/50'];
 			}
 		},
 		'accordion.item.body': {
