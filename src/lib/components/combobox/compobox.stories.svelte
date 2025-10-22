@@ -34,7 +34,8 @@
 		<ACombobox.Root bind:open bind:value>
 			{#snippet children({ combobox })}
 				<ACombobox.Trigger
-					class="hover:bg-foreground/5 active:bg-foreground/10 h-10 min-w-sm items-center gap-0 rounded-sm p-1 transition-colors duration-200"
+					base={Input.Root}
+					class="h-10 min-w-sm items-center gap-0 rounded-sm p-1 transition-colors duration-200"
 				>
 					<Input.Icon class="text-foreground/50">$</Input.Icon>
 					<Divider class="mx-1" vertical />
