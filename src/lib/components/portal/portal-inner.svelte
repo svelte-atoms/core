@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { PortalBond } from './bond.svelte';
-	import { toClassValue, cn } from '$svelte-atoms/core/utils';
+	import { toClassValue } from '$svelte-atoms/core/utils';
 	import {
 		HtmlAtom,
 		type ElementType,
