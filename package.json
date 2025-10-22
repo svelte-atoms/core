@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-atoms/core",
-	"version": "1.0.0-alpha.17",
+	"version": "1.0.0-alpha.18",
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
@@ -25,8 +25,9 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
 		"test:e2e": "playwright test",
-		"storybook": "storybook dev -p 6006 --no-open",
-		"build-storybook": "storybook build"
+		"storybook:dev": "storybook dev -p 6006 --no-open",
+		"storybook:build": "storybook build",
+		"storybook:serve": "bunx http-server ./storybook-static"
 	},
 	"files": [
 		"dist",

@@ -1,12 +1,9 @@
 <script>
-	import { cn } from '$svelte-atoms/core/utils';
+	import { Input } from '../input';
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { children, ...restProps } = $props();
 </script>
 
-<div
-	class={['border-stroke-0/50 bg-background-0 w-full rounded-lg border p-2', klass]}
-	{...restProps}
->
+<Input.Root {...restProps}>
 	{@render children?.()}
-</div>
+</Input.Root>

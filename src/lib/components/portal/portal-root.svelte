@@ -20,7 +20,7 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { toClassValue, cn, defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { getPreset } from '$svelte-atoms/core/context';
 
 	type Element = ElementType<E>;

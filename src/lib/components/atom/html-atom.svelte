@@ -17,7 +17,7 @@
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const isSnippet = typeof base === 'function' && base.name !== 'wrapper';
+	const isSnippet = $derived(typeof base === 'function' && base.length === 1 && !base.prototype);
 
 	const snippet = $derived(base as SnippetBase);
 
@@ -27,7 +27,7 @@
 </script>
 
 {#if isSnippet}
-	{@render snippet({ class: cn(klass), as, children, ...restProps })}
+	{@render snippet({ class: cn(klass), as, base, children, ...restProps })}
 {:else}
 	<Component class={cn(klass)} {as} {...restProps}>
 		{@render children?.()}

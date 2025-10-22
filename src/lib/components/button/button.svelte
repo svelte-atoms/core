@@ -24,7 +24,7 @@
 <HtmlAtom
 	as="button"
 	class={[
-		'button text-foreground bg-foreground/10 hover:bg-foreground/15 active:bg-foreground/20 w-fit cursor-pointer rounded-md px-3 py-2 transition-colors duration-200',
+		'button text-primary-foreground bg-primary hover:bg-primary/95 active:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground w-fit cursor-pointer rounded-md px-3 py-2 transition-colors duration-200',
 		toClassValue.apply(null, [preset?.class]),
 		toClassValue.apply(null, [klass])
 	]}

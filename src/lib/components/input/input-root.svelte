@@ -71,7 +71,7 @@
 
 <HtmlAtom
 	class={[
-		'border-border text-foreground bg-background relative flex h-10 items-center overflow-hidden rounded-md border',
+		'border-border text-foreground bg-input relative flex h-10 items-center overflow-hidden rounded-md border',
 		toClassValue.apply(bond, [preset?.class]),
 		toClassValue.apply(bond, [klass])
 	]}
