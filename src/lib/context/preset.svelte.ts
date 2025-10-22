@@ -3,7 +3,7 @@ import { merge } from 'es-toolkit';
 import type { ClassValue } from '$svelte-atoms/core/utils';
 import type { Base } from '$svelte-atoms/core/components/atom';
 
-export type ModuleName =
+export type PresetModuleName =
 	| 'accordion'
 	| 'accordion.item.body'
 	| 'accordion.item.header'
@@ -50,7 +50,7 @@ export type ModuleName =
 	| 'field'
 	| 'form'
 	| 'icon'
-	| 'input.root'
+	| 'input'
 	| 'input.value'
 	| 'input.placeholder'
 	| 'label'
@@ -126,16 +126,16 @@ export type PresetEntry = {
 	as?: string;
 	base?: Base;
 };
-export type Preset = Record<ModuleName, PresetEntry>;
+export type Preset = Record<PresetModuleName, PresetEntry>;
 
 const CONTEXT_KEY = '@svelte-atoms/context/preset';
 
-export function getPreset<K extends ModuleName>(key: K): PresetEntry | undefined;
+export function getPreset<K extends PresetModuleName>(key: K): PresetEntry | undefined;
 export function getPreset(): Partial<Preset> | undefined;
 export function getPreset(...args: unknown[]) {
 	const context = getContext<Partial<Preset> | undefined>(CONTEXT_KEY);
 	if (args.length) {
-		const key = args[0] as ModuleName;
+		const key = args[0] as PresetModuleName;
 
 		return context?.[key];
 	}

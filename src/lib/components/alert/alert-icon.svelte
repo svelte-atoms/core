@@ -10,19 +10,15 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { AlertBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import { type HtmlAtomProps, type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = AlertBond.get();
 
-	const preset = getPreset('alert.icon');
-
 	let {
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		class: klass = '',
+		base = Icon,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -39,11 +35,14 @@
 	});
 </script>
 
-<Icon
+<HtmlAtom
+	{bond}
+	{base}
+	preset="alert.icon"
 	class={[
 		'alert-icon inline-flex aspect-square h-5 items-center justify-center rounded-full text-sm font-medium',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
@@ -53,9 +52,5 @@
 	initial={initial?.bind(bond.state)}
 	{...iconProps}
 >
-	{#if base}
-		<HtmlAtom {base} />
-	{:else}
-		{@render children?.({ alert: bond! })}
-	{/if}
-</Icon>
+	{@render children?.({ alert: bond! })}
+</HtmlAtom>

@@ -18,8 +18,10 @@
 </script>
 
 <HtmlAtom
+	preset="avatar"
 	class={[
 		'border-border bg-card hover:bg-card/95 active:bg-card/90 relative flex aspect-square h-10 items-center justify-center overflow-hidden rounded-full border text-sm font-semibold',
+		'$preset',
 		klass
 	]}
 	data-type="avatar"

@@ -11,17 +11,13 @@
 	import type { Snippet } from 'svelte';
 	import { ScrollableBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = ScrollableBond.get();
-	const preset = getPreset('scrollable.content');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -38,13 +34,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'scrollable-content border-border h-full max-h-full',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="scrollable.content"
+	class={['scrollable-content border-border h-full max-h-full', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

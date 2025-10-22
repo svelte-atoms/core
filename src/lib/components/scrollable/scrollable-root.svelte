@@ -20,7 +20,7 @@
 	import type { Snippet } from 'svelte';
 	import { ScrollableBond, ScrollableState, type ScrollableStateProps } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
@@ -111,11 +111,9 @@
 
 <HtmlAtom
 	{as}
-	class={[
-		'scrollable-root border-border relative box-content overflow-hidden',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="scrollable"
+	class={['scrollable-root border-border relative box-content overflow-hidden', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

@@ -7,18 +7,14 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { CardBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = CardBond.get();
 
-	const preset = getPreset('card.footer');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
+		as = 'div' as E,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -37,12 +33,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[
-		'card-footer flex items-center gap-2 px-4 py-4',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="card.footer"
+	class={['card-footer flex items-center gap-2 px-4 py-4', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

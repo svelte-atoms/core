@@ -1,18 +1,13 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { List } from '../list';
 	import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { List } from '../list';
 
 	const bond = PopoverBond.get();
 
-	const preset = getPreset('dropdown.item');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
+		preset: presetKey = 'menu.item',
 		children = undefined,
 		onclick = undefined,
 		onmount = undefined,
@@ -36,10 +31,12 @@
 </script>
 
 <List.Item
+	{bond}
+	preset={presetKey}
 	class={[
 		'border-border last:border-b-none hover:bg-foreground/5 active:bg-foreground/10 cursor-pointer border-b',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
@@ -47,8 +44,6 @@
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
-	{as}
-	{base}
 	onclick={_onclick}
 	{...restProps}
 >

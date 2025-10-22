@@ -11,23 +11,19 @@
 </script>
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base">
-	import type { Component, Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { DrawerBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	const bond = DrawerBond.get();
-	const preset = getPreset('drawer.title');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('h3' as E),
-		base = preset?.base as B,
+		as = 'h3' as E,
 		children,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -46,8 +42,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="drawer.title"
+	class={['$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

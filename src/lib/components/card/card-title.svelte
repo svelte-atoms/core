@@ -7,18 +7,14 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base">
 	import { CardBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = CardBond.get();
 
-	const preset = getPreset('card.title');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'h3',
-		base = preset?.base as B,
+		as = 'h3' as E,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -37,12 +33,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[
-		'card-title text-lg leading-none font-semibold tracking-tight',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="card.title"
+	class={['card-title text-lg leading-none font-semibold tracking-tight', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

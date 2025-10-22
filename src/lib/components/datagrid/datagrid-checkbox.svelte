@@ -10,20 +10,15 @@
 	import { DataGridBond } from './bond.svelte';
 	import { DataGridTrBond } from './tr/bond.svelte';
 	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import type { Base, HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
 	const datagridBond = DataGridBond.get();
 	const datagridTrBond = DataGridTrBond.get();
-
-	const preset = getPreset('datagrid.checkbox');
 
 	let {
 		class: klass = '',
 		value = undefined,
 		checked = $bindable(false),
-		base = preset?.base as Base,
 		onclick = undefined,
 		onchange = undefined,
 		onmount = undefined,
@@ -44,11 +39,7 @@
 
 	const isHeaderRow = $derived(datagridTrBond?.state.isHeader);
 
-	const classNames = $derived([
-		'datagrid-td-checkbox',
-		toClassValue.apply(datagridTrBond, [preset?.class, { bond: datagridTrBond }]),
-		toClassValue.apply(datagridTrBond, [klass, { bond: datagridTrBond }])
-	]);
+	const classNames = $derived(['datagrid-td-checkbox', '$preset', klass]);
 
 	function handleInputTd(ev: Event, { checked = false }) {
 		onchange?.(ev, { checked });
@@ -82,8 +73,9 @@
 	<!-- content here -->
 	<Checkbox
 		{value}
-		{base}
 		{onclick}
+		bond={datagridTrBond}
+		preset="datagrid.checkbox"
 		class={classNames}
 		checked={isAllRowsSelected}
 		enter={enter?.bind(datagridTrBond)}
@@ -99,8 +91,9 @@
 	<!-- else content here -->
 	<Checkbox
 		{value}
-		{base}
 		{onclick}
+		bond={datagridTrBond}
+		preset="datagrid.checkbox"
 		class={classNames}
 		checked={datagridTrBond.state.isSelected}
 		enter={enter?.bind(datagridTrBond)}

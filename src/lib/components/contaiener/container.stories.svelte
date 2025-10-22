@@ -10,16 +10,14 @@
 
 <Story name="Container">
 	<Root class="p-4">
-		{#snippet children({ args })}
-			<ContainerCmp class="flex-col items-center gap-4">
-				<div class="flex w-full gap-4">
-					{#each { length: 5 } as _, i (i)}
-						<div class="bg-foreground h-80 flex-1 rounded-lg"></div>
-					{/each}
-				</div>
+		<ContainerCmp class="flex flex-col items-center gap-4 w-full">
+			<div class="flex w-full gap-4">
+				{#each { length: 5 } as _, i (i)}
+					<div class="bg-foreground h-80 flex-1 rounded-lg"></div>
+				{/each}
+			</div>
 
-				<div class="bg-foreground h-80 w-[50cqw] rounded-lg"></div>
-			</ContainerCmp>
-		{/snippet}
+			<div class="bg-foreground h-80 w-[50cqw] rounded-lg"></div>
+		</ContainerCmp>
 	</Root>
 </Story>

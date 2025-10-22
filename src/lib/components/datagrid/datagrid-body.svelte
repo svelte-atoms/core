@@ -16,12 +16,8 @@
 
 	const bond = DataGridBond.get();
 
-	const preset = getPreset('datagrid.body');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -34,9 +30,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[klass, 'contents']}
+	{bond}
+	preset="datagrid.body"
+	class={['$preset', klass, 'contents']}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

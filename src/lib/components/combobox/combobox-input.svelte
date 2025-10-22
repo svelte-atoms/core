@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { ComboboxBond } from './bond.svelte';
 
@@ -10,8 +8,6 @@
 	if (!bond) {
 		throw new Error('Combobox atom was not found');
 	}
-
-	const preset = getPreset('combobox.input');
 
 	let {
 		class: klass = '',
@@ -43,11 +39,8 @@
 
 <Input.Value
 	{value}
-	class={[
-		'flex-1 py-1',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="combobox.input"
+	class={['flex-1 py-1', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

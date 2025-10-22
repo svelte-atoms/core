@@ -12,16 +12,10 @@
 	import type { Snippet } from 'svelte';
 	import { ScrollableBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('scrollable.thumb');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		orientation,
 		onmount = undefined,
@@ -70,13 +64,14 @@
 </script>
 
 <HtmlAtom
-	{as}
+	{bond}
+	preset="scrollable.thumb"
 	class={[
 		'scrollable-thumb border-border bg-foreground/10 hover:bg-foreground/20 absolute cursor-grab rounded-md active:cursor-grabbing',
 		orientation === 'horizontal' ? 'scrollable-thumb-x' : 'scrollable-thumb-y',
 		{ horizontal: 'h-full', vertical: 'w-full' }[orientation],
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

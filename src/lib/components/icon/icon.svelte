@@ -16,33 +16,27 @@
 >
 	import type { Component, Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 
 	type Element = HtmlElementType<'div'>;
 
-	const preset = getPreset('icon');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		src = undefined,
+		preset = 'icon',
 		children = undefined,
 		...restProps
 	}: IconProps<Src, E, B> & HTMLAttributes<Element> = $props();
 </script>
 
 <HtmlAtom
+	{preset}
 	class={[
 		'icon inline-flex aspect-square h-6 items-center justify-center leading-none text-current',
-		toClassValue.apply(null, [preset?.class, {}]),
-		toClassValue.apply(null, [klass, {}])
+		'$preset',
+		klass
 	]}
-	{as}
-	{base}
 	{...restProps}
 >
 	{#if src}

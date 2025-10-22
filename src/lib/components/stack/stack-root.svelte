@@ -6,32 +6,18 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+
 	import './stack.css';
 
 	type Element = ElementType<E>;
 
-	const preset = getPreset('stack.root');
-
 	let {
 		class: klass = '',
-		as = preset?.as,
-		base = preset?.base as B,
 		children,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 </script>
 
-<HtmlAtom
-	class={[
-		'stack-root flex flex-1',
-		toClassValue.apply(null, [preset?.class, {}]),
-		toClassValue.apply(null, [klass, {}])
-	]}
-	{as}
-	{base}
-	{...restProps}
->
+<HtmlAtom preset="stack.root" class={['stack-root flex flex-1', '$preset', klass]} {...restProps}>
 	{@render children?.()}
 </HtmlAtom>

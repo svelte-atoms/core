@@ -1,5 +1,5 @@
 export {
-	type ModuleName,
+	type PresetModuleName as ModuleName,
 	type Preset,
 	type PresetEntry,
 	getPreset,

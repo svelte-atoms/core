@@ -2,14 +2,13 @@
 	export type DialogDescriptionProps<
 		T extends keyof HTMLElementTagNameMap,
 		B extends Base = Base
-	> = HtmlAtomProps<T, C>;
+	> = HtmlAtomProps<T, B>;
 </script>
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
 	import { DialogBond } from './bond.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 
 	const preset = getPreset('dialog.description');
 
@@ -38,7 +37,7 @@
 <HtmlAtom
 	{as}
 	{base}
-	class={[toClassValue.apply(bond, [preset?.class]), toClassValue.apply(bond, [klass])]}
+	class={['$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

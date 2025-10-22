@@ -13,21 +13,15 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { TreeBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { TreeBond } from './bond.svelte';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	const bond = TreeBond.get();
 
-	const preset = getPreset('tree.header');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onpointerdown = undefined,
 		onmount = undefined,
@@ -56,11 +50,9 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'cursor-pointer',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="tree.header"
+	class={['cursor-pointer', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
@@ -68,8 +60,6 @@
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	onpointerdown={handlePointerDown}
-	{as}
-	{base}
 	{...headerProps}
 >
 	{@render children?.({ tree: bond })}

@@ -1,19 +1,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { CardBond, CardBondState, type CardBondProps } from './bond.svelte';
 	import type { CardRootProps } from './types';
-	import { defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineState } from '$svelte-atoms/core/utils';
 	import { defineProperty } from '$svelte-atoms/core/utils/state';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import './card.css';
-
-	const preset = getPreset('card');
 
 	let {
 		class: klass = '',
 		disabled = false,
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		factory = _factory,
 		children = undefined,
 		onclick = undefined,
@@ -74,14 +69,14 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
+	preset="card"
 	class={[
 		'card bg-card border-border flex flex-col gap-2 overflow-clip rounded-lg border shadow-sm',
 		disabledStyles,
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
+	{bond}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

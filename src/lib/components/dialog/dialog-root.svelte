@@ -15,18 +15,14 @@
 	import { animate as motion } from 'motion';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('dialog');
 
 	let {
 		class: klass = '',
 		open = $bindable(false),
 		disabled = false,
-		as = preset?.as ?? ('dialog' as E),
-		base = preset?.base as B,
+		as = 'dialog' as E,
 		factory = _factory,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -94,13 +90,14 @@
 
 <Teleport
 	{as}
-	{base}
+	{bond}
+	preset="dialog"
 	portal="root.l1"
 	class={[
 		'pointer-events-auto fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/10 opacity-0',
 		!open && 'pointer-events-none',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

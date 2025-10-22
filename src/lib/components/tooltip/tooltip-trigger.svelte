@@ -32,6 +32,6 @@
 	}
 </script>
 
-<Trigger onmount={tooltip} {...restProps}>
+<Trigger preset="tooltip.trigger" onmount={tooltip} {...restProps}>
 	{@render children?.()}
 </Trigger>

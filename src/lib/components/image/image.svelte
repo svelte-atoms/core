@@ -14,12 +14,14 @@
 </script>
 
 <HtmlAtom
+	preset="image"
+	as="div"
 	class={[
 		'flex items-center justify-center overflow-hidden rounded-lg',
 		hasError && 'bg-foreground/5',
+		'$preset',
 		toClassValue(klass, { error: hasError })
 	]}
-	as="div"
 	{...restProps}
 >
 	<img

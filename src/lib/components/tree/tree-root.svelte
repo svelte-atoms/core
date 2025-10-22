@@ -16,7 +16,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import { getPreset } from '$svelte-atoms/core/context';
 
@@ -70,11 +70,9 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'flex flex-col',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="tree"
+	class={['flex flex-col', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

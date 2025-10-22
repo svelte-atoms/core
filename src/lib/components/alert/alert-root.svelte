@@ -19,15 +19,10 @@
 	import { AlertBond, AlertBondState, type AlertBondProps } from './bond.svelte';
 	import { toClassValue, cn, defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import './alert.css';
-
-	const preset = getPreset('alert');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		dismissible = false,
 		dismissed = $bindable(false),
 		disabled = false,
@@ -97,6 +92,7 @@
 </script>
 
 <HtmlAtom
+	preset="alert"
 	class={[
 		'alert relative flex gap-3 rounded-md border p-4 transition-all duration-200',
 		// Base styles
@@ -106,17 +102,16 @@
 			'pointer-events-none opacity-60': disabled,
 			'pointer-events-none opacity-0': dismissed
 		},
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
+	{bond}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
-	{as}
-	{base}
 	{...rootProps}
 >
 	{@render children?.({ alert: bond })}

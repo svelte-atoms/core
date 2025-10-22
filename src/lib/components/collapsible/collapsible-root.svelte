@@ -20,12 +20,9 @@
 	import type { Snippet } from 'svelte';
 	import { nanoid } from 'nanoid';
 	import type { Factory, Override } from '$svelte-atoms/core/types';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { CollapsibleBond, CollapsibleState, type CollapsibleStateProps } from './bond.svelte';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('collapsible');
 
 	let {
 		open = $bindable(false),
@@ -34,7 +31,6 @@
 		data = undefined,
 		disabled = false,
 		as = 'div' as E,
-		base = preset?.base as B,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -75,11 +71,9 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'flex w-full flex-col overflow-hidden',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="collapsible"
+	class={['flex w-full flex-col overflow-hidden', '$preset', klass]}
+	{bond}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
@@ -87,7 +81,6 @@
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	{as}
-	{base}
 	{...rootProps}
 >
 	{@render children?.({ collapsible: bond })}

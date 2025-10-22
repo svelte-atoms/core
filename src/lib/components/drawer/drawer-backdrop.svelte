@@ -10,20 +10,15 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond } from './bond.svelte';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	const bond = DrawerBond.get();
-	const preset = getPreset('drawer.backdrop');
 
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		onmount = undefined,
 		ondestroy = undefined,
 		animate = undefined,
@@ -39,13 +34,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'absolute inset-0 z-0 bg-black/30',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="drawer.backdrop"
+	class={['absolute inset-0 z-0 bg-black/30', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

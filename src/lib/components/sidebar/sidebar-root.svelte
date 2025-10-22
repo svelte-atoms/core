@@ -19,19 +19,14 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
-	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Override } from '$svelte-atoms/core/types';
-
-	const preset = getPreset('sidebar');
 
 	let {
 		open = $bindable(false),
 		class: klass = '',
 		disabled = false,
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -77,13 +72,9 @@
 </script>
 
 <HtmlAtom
-	{as}
-	{base}
-	class={[
-		'flex min-h-full w-full flex-1 flex-nowrap',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	{bond}
+	preset="sidebar"
+	class={['flex min-h-full w-full flex-1 flex-nowrap', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

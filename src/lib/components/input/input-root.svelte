@@ -8,19 +8,15 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	type Element = ElementType<E>;
 
-	const preset = getPreset('input.root');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('div' as E),
-		base = preset?.base as B,
 		value,
 		checked = undefined,
 		files = [],
+		preset = 'input',
 		children = undefined,
 		factory = _factory,
 		...restProps
@@ -70,13 +66,13 @@
 </script>
 
 <HtmlAtom
+	{preset}
 	class={[
 		'border-border text-foreground bg-input relative flex h-10 items-center overflow-hidden rounded-md border',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	]}
-	{as}
-	{base}
+	{bond}
 	{...rootProps}
 >
 	{@render children?.({ input: bond })}

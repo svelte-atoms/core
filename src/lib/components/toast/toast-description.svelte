@@ -9,14 +9,12 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { ToastBond } from './bond';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
 	const bond = ToastBond.get();
 
 	let {
 		as = 'p' as T,
-		base = undefined,
 		class: klass = '',
 		children = undefined,
 		onmount = undefined,
@@ -31,8 +29,9 @@
 
 <HtmlAtom
 	{as}
-	{base}
-	class={[toClassValue.apply(bond, [klass])]}
+	{bond}
+	preset="toast.description"
+	class={['$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

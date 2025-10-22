@@ -3,16 +3,12 @@
 </script>
 
 <script lang="ts">
-	import { toClassValue, cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
+	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
 	import { Portal, ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
 	import { Stack } from '../stack';
-	import { getPreset } from '$svelte-atoms/core/context/preset.svelte';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, MathmlElement, SvgElement } from '$svelte-atoms/core/components/element';
-
-	const rootPreset = getPreset('root');
-	const portalsPreset = getPreset('root.portals');
 
 	let { class: klass = '', children = undefined, portals = undefined, ...restProps } = $props();
 
@@ -66,10 +62,11 @@
 	{@attach (node) => {
 		bond.rootElement = node;
 	}}
+	preset="root"
 	class={cn(
 		'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start font-sans',
-		toClassValue.apply(bond, [rootPreset?.class]),
-		toClassValue.apply(bond, [klass])
+		'$preset',
+		klass
 	)}
 	{...restProps}
 >
@@ -78,10 +75,8 @@
 			{@render portals?.()}
 		{:else}
 			<Stack.Root
-				class={[
-					'portals pointer-events-none absolute inset-0 z-1 overflow-hidden',
-					toClassValue.apply(bond, [portalsPreset?.class])
-				]}
+				preset="root.portals"
+				class={['portals pointer-events-none absolute inset-0 z-1 overflow-hidden', '$preset']}
 			>
 				<Portal.Outer base={Stack.Item} id="root.l0">
 					<Portal.Inner />

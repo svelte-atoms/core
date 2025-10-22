@@ -11,20 +11,16 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { AlertBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	const bond = AlertBond.get();
 
-	const preset = getPreset('alert.close-button');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? ('button' as E),
-		base = preset?.base as B,
+		as = 'button' as E,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -45,6 +41,9 @@
 
 {#if isDismissible}
 	<HtmlAtom
+		{as}
+		{bond}
+		preset="alert.close-button"
 		class={[
 			'alert-close-button absolute top-2 right-2 rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 			'focus:ring-2 focus:ring-offset-1 focus:outline-none',
@@ -54,8 +53,8 @@
 				'focus:ring-yellow-500': bond?.state.variant === 'warning',
 				'focus:ring-red-500': bond?.state.variant === 'error'
 			},
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
+			'$preset',
+			klass
 		]}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}
@@ -63,8 +62,6 @@
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
 		initial={initial?.bind(bond.state)}
-		{as}
-		{base}
 		{...closeButtonProps}
 	>
 		{@render children?.({ alert: bond! })}

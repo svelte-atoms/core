@@ -11,21 +11,15 @@
 	import type { Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
 	import { AccordionItemBond } from './bond.svelte';
-	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = AccordionItemBond.get();
 	const isOpen = $derived(bond?.state?.isOpen ?? false);
 
-	const preset = getPreset('accordion.item.indicator');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -47,19 +41,14 @@
 </script>
 
 <HtmlAtom
-	class={[
-		'pointer-events-none flex items-center justify-center',
-		toClassValue.apply(bond, [preset?.class]),
-		toClassValue.apply(bond, [klass])
-	]}
+	preset="accordion.item.indicator"
+	class={['pointer-events-none flex items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
-	{as}
-	{base}
 	{...indicatorProps}
 >
 	{#if children}

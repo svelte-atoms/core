@@ -24,11 +24,8 @@
 	import { DataGridThBond, DataGridThBondState, type DataGridThBondProps } from './bond.svelte';
 	import type { Direction, SortableType } from '$svelte-atoms/core/types';
 	import type { DatagridContext } from '../context';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-
-	const preset = getPreset('datagrid.th');
 
 	let {
 		class: klass = '',
@@ -37,8 +34,6 @@
 		direction = 'asc',
 		screen = undefined,
 		hidden = false,
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		sortable = undefined,
 		factory = _factory,
 		children = undefined,
@@ -106,15 +101,16 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 {#if !hidden}
 	<HtmlAtom
-		{as}
 		{@attach (node) => {
 			bond.elements.root = node;
 		}}
+		{bond}
+		preset="datagrid.th"
 		class={[
 			'flex cursor-pointer py-1 font-medium select-none',
 			!!sortable && 'sortable',
-			toClassValue.apply(bond, [preset?.class]),
-			toClassValue.apply(bond, [klass])
+			'$preset',
+			klass
 		]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
