@@ -96,8 +96,8 @@
 	}
 	class={[
 		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
-		toClassValue.bind(bond, preset?.class),
-		toClassValue.bind(bond, klass)
+		toClassValue(bond, preset?.class),
+		toClassValue(bond, klass)
 	]}
 	onchange={handleChange}
 	oninput={handleInput}
