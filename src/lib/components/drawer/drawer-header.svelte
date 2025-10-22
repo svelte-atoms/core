@@ -41,6 +41,7 @@
 
 <HtmlAtom
 	{bond}
+	preset="drawer.header"
 	class={['$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
