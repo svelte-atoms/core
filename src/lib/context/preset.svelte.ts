@@ -1,7 +1,10 @@
 import { getContext, setContext } from 'svelte';
+import type { ClassValue } from 'svelte/elements';
 import { merge } from 'es-toolkit';
-import type { ClassValue } from '$svelte-atoms/core/utils';
 import type { Base } from '$svelte-atoms/core/components/atom';
+import type { Bond } from '../shared';
+
+const CONTEXT_KEY = '@svelte-atoms/context/preset';
 
 export type PresetModuleName =
 	| 'accordion'
@@ -121,14 +124,20 @@ export type PresetModuleName =
 	| 'radio.group'
 	| 'container';
 
-export type PresetEntry = {
+export type PresetEntryRecord = {
+	[key: string]: unknown;
 	class?: ClassValue;
 	as?: string;
 	base?: Base;
 };
-export type Preset = Record<PresetModuleName, PresetEntry>;
 
-const CONTEXT_KEY = '@svelte-atoms/context/preset';
+export type PresetEntry = (
+	this: Bond | undefined | null,
+	bond: Bond | undefined | null,
+	...args: any[]
+) => PresetEntryRecord;
+
+export type Preset = Record<PresetModuleName, PresetEntry>;
 
 export function getPreset<K extends PresetModuleName>(key: K): PresetEntry | undefined;
 export function getPreset(): Partial<Preset> | undefined;

@@ -21,7 +21,9 @@
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const preset = $derived(presetKey ? getPreset(presetKey as PresetModuleName) : undefined);
+	const preset = $derived(
+		presetKey ? getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]) : undefined
+	);
 
 	const _klass = $derived.by(() => {
 		const klasses = Array.isArray(klass) ? klass : [klass];
@@ -33,14 +35,14 @@
 		if (hasPresetPlaceholder) {
 			return klasses.map((cls) => {
 				if (typeof cls === 'string' && cls.includes('$preset')) {
-					return cls.replace('$preset', cn(toClassValue.apply(bond, [preset?.class])));
+					return cls.replace('$preset', cn(preset?.class));
 				}
 
 				return toClassValue.apply(bond, [cls]);
 			});
 		}
 
-		return [preset?.class ?? '', '$preset', klass].map((arg) => toClassValue.apply(bond, [arg]));
+		return [preset?.class ?? '', toClassValue.apply(bond, [klass])];
 	});
 
 	const _base = $derived(base ?? preset?.base);
