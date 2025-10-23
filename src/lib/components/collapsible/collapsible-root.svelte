@@ -30,7 +30,6 @@
 		value = nanoid(),
 		data = undefined,
 		disabled = false,
-		as = 'div' as E,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -71,16 +70,15 @@
 </script>
 
 <HtmlAtom
+	{bond}
 	preset="collapsible"
 	class={['flex w-full flex-col overflow-hidden', '$preset', klass]}
-	{bond}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
-	{as}
 	{...rootProps}
 >
 	{@render children?.({ collapsible: bond })}
