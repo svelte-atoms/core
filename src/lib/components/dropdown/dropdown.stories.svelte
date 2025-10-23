@@ -57,17 +57,13 @@
 					}}
 				>
 					<!-- Display selected values with animation -->
-					<ADropdown.Values>
-						{#snippet children({ items })}
-							{#each items as item (item.id)}
-								<div animate:flip={{ duration: 200 }}>
-									<ADropdown.Value value={item.value} class="text-foreground/80">
-										{item.text}
-									</ADropdown.Value>
-								</div>
-							{/each}
-						{/snippet}
-					</ADropdown.Values>
+					{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
+						<div animate:flip={{ duration: 200 }}>
+							<ADropdown.Value value={item.value} class="text-foreground/80">
+								{item.text}
+							</ADropdown.Value>
+						</div>
+					{/each}
 
 					<!-- Inline search input within the trigger -->
 					<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
