@@ -40,6 +40,10 @@ Leverages Svelte's fine-grained reactivity system for optimal performance and sm
 
 Components are headless by default, giving you complete control over styling while providing sensible defaults.
 
+### 🎨 **Composable**
+
+Build complex UIs by combining simple, reusable components. Each component is designed to work seamlessly with others through the Bond pattern and context API. Create sophisticated features like multi-level dropdowns, nested accordions, or custom form controls by composing atomic components together.
+
 ---
 
 ## 📦 Available Components
@@ -267,6 +271,85 @@ For more control, you can use the Bond system directly:
 	{/if}
 </div>
 ```
+
+### Advanced Usage With Composition
+
+This example demonstrates the power of component composition by combining `Dropdown`, `Input`, and animation capabilities to create a searchable multi-select dropdown with smooth transitions:
+
+```svelte
+<script lang="ts">
+	import { Dropdown, Input, Root, filter } from '@svelte-atoms/core';
+	import { flip } from 'svelte/animate';
+
+	// Sample data
+	let data = [
+		{ id: 1, value: 'apple', text: 'Apple' },
+		{ id: 2, value: 'banana', text: 'Banana' },
+		{ id: 3, value: 'cherry', text: 'Cherry' },
+		{ id: 4, value: 'date', text: 'Date' },
+		{ id: 5, value: 'elderberry', text: 'Elderberry' }
+	];
+
+	let open = $state(false);
+	// Filter items based on search query
+	const dd = filter(
+		() => data,
+		(query, item) => item.text.toLowerCase().includes(query.toLowerCase())
+	);
+</script>
+
+<Root class="items-center justify-center p-4">
+	<!-- Multi-select dropdown with search functionality -->
+	<Dropdown.Root
+		bind:open
+		multiple
+		keys={data.map((item) => item.value)}
+		onquerychange={(q) => (dd.query = q)}
+	>
+		{#snippet children({ dropdown })}
+			<!-- Compose Dropdown.Trigger with Input.Root for a custom trigger -->
+			<Dropdown.Trigger
+				base={Input.Root}
+				class="h-auto min-h-12 max-w-sm min-w-sm items-center gap-2 rounded-sm px-4 transition-colors duration-200"
+				onclick={(ev) => {
+					ev.preventDefault();
+
+					dropdown.state.open();
+				}}
+			>
+				<!-- Display selected values with animation -->
+				{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
+					<div animate:flip={{ duration: 200 }}>
+						<ADropdown.Value value={item.value} class="text-foreground/80">
+							{item.text}
+						</ADropdown.Value>
+					</div>
+				{/each}
+
+				<!-- Inline search input within the trigger -->
+				<Dropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
+			</Dropdown.Trigger>
+
+			<!-- Dropdown list with filtered items -->
+			<Dropdown.List>
+				{#each dd.current as item (item.id)}
+					<div animate:flip={{ duration: 200 }}>
+						<Dropdown.Item value={item.value}>{item.text}</Dropdown.Item>
+					</div>
+				{/each}
+			</Dropdown.List>
+		{/snippet}
+	</Dropdown.Root>
+</Root>
+```
+
+**Key composition features demonstrated:**
+
+- **Component Fusion**: Using `base={Input.Root}` to compose Dropdown.Trigger with Input styling and behavior
+- **Snippet Patterns**: Accessing internal state through snippets for custom rendering
+- **Reactive Filtering**: Combining search query state with reactive effects for real-time filtering
+- **Smooth Animations**: Using Svelte's `flip` animation for seamless list transitions
+- **Multi-Select State**: Managing complex selection state through the Bond pattern
 
 ---
 
