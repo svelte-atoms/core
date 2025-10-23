@@ -23,17 +23,12 @@
 
 	let node = $state<Element>();
 
-	let hasIntroTransitionStarted: boolean | undefined = $state(undefined);
-	let skipFirstAnimate = true;
+	let skipFirstAnimate = $state(!!enter);
 
 	$effect(() => {
 		if (!node) return;
 
 		const unmount = untrack(() => onmount?.(node!));
-
-		if (!enter || typeof hasIntroTransitionStarted === 'undefined') {
-			skipFirstAnimate = false;
-		}
 
 		return () => {
 			if (typeof unmount === 'function') unmount(node!);
@@ -42,14 +37,17 @@
 	});
 
 	$effect(() => {
-		if (!node) return;
+		const fn = animate;
 
-		if (skipFirstAnimate) {
+		if (!node) return;
+		const shouldSkip = untrack(() => skipFirstAnimate);
+
+		if (shouldSkip) {
 			skipFirstAnimate = false;
 			return;
 		}
 
-		animate?.(node);
+		fn?.(node);
 	});
 
 	const elementProps = $derived({
@@ -57,12 +55,6 @@
 			node = n;
 		},
 		class: cn(toClassValue(klass)),
-		onintrostart: () => {
-			hasIntroTransitionStarted = true;
-		},
-		onintroend: () => {
-			hasIntroTransitionStarted = false;
-		},
 		...restProps
 	});
 
