@@ -23,23 +23,20 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap='dialog', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
-	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { type TransitionFunction } from '$svelte-atoms/core/helpers/html-element.svelte';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { type TransitionFunction } from '$svelte-atoms/core/components/element';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 
 	type Element = HTMLElementTagNameMap[E];
-
-	const preset = getPreset('drawer');
 
 	let {
 		open = $bindable(false),
 		children = undefined,
 		class: klass = '',
-		as = preset?.as ?? 'dialog',
+		as = 'dialog',
 		disabled = false,
 		onclose = undefined,
 		onmount = undefined,
@@ -96,6 +93,7 @@
 	{as}
 	{bond}
 	portal="root.l1"
+	preset="drawer"
 	class={[
 		'pointer-events-auto h-full w-full overflow-hidden bg-transparent',
 		!open && 'pointer-events-none',

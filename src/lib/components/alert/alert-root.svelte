@@ -17,7 +17,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { AlertBond, AlertBondState, type AlertBondProps } from './bond.svelte';
-	import { toClassValue, cn, defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import './alert.css';
 

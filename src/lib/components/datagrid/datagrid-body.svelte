@@ -10,7 +10,6 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { DataGridBond } from './bond.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	export type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 

@@ -1,7 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { ComboboxBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/dropdown/atoms';
-	import { getPreset } from '$svelte-atoms/core/context';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = ComboboxBond.get();
@@ -10,11 +9,9 @@
 		throw new Error('Combobox atom was not found');
 	}
 
-	const preset = getPreset('combobox.trigger');
-
 	let {
 		class: klass = '',
-		as = preset?.as ?? 'button',
+		as = 'button',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
