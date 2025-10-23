@@ -1,11 +1,9 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Collapsible as ACollapsible } from '.';
-	import { Root as CoolapsibleRoot } from './atoms';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
-	import gsap from 'gsap';
-	import { linear } from 'svelte/easing';
-	import { toTransitionConfig } from '$svelte-atoms/core/utils/gsap';
+
+	import { animate as motion } from 'motion';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -30,38 +28,39 @@
 				{@const isOpen = collapsible.state.props.open}
 
 				<ACollapsible.Header class="">
-					<div>Hello Atoms UI 1</div>
+					<div>Hello Atoms UI 1 {isOpen}</div>
 					<ACollapsible.Indicator />
 				</ACollapsible.Header>
 
 				<ACollapsible.Body
-					initial={(node) => {
-						gsap.set(node, {
-							opacity: 0,
-							height: 0,
-							pointerEvents: isOpen ? 'all' : 'none'
-						});
-					}}
+					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						const tween = gsap.to(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							duration: 0.2,
-							ease: linear
-						});
-						return toTransitionConfig(tween);
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{
+								duration: 0.2,
+								ease: 'linear'
+							}
+						);
+						return { duration: 0.2 };
 					}}
 					exit={(node) => {
-						const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
-						return toTransitionConfig(tween);
+						motion(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: 'linear' });
+						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						gsap.to(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							pointerEvents: isOpen ? 'all' : 'none',
-							duration: 0.1
-						});
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{ duration: 0.2, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="py-2">
@@ -83,35 +82,34 @@
 				</ACollapsible.Header>
 
 				<ACollapsible.Body
-					initial={(node) => {
-						gsap.set(node, {
-							opacity: 0,
-							height: 0,
-							pointerEvents: isOpen ? 'all' : 'none'
-						});
-					}}
+					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						const tween = gsap.to(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							duration: 0.2,
-							ease: linear
-						});
-
-						return toTransitionConfig(tween);
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{
+								duration: 0.2,
+								ease: 'linear'
+							}
+						);
+						return { duration: 0.2 };
 					}}
 					exit={(node) => {
-						const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
-
-						return toTransitionConfig(tween);
+						motion(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: 'linear' });
+						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						gsap.to(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							pointerEvents: isOpen ? 'all' : 'none',
-							duration: 0.1
-						});
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{ duration: 0.1, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="py-2">
@@ -133,34 +131,34 @@
 				</ACollapsible.Header>
 
 				<ACollapsible.Body
-					initial={(node) => {
-						gsap.set(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							pointerEvents: isOpen ? 'all' : 'none'
-						});
-					}}
+					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						const tween = gsap.to(node, {
-							opacity: +isOpen,
-							height: 'auto',
-							duration: 0.2,
-							ease: linear
-						});
-
-						return toTransitionConfig(tween);
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{
+								duration: 0.2,
+								ease: 'linear'
+							}
+						);
+						return { duration: 0.2 };
 					}}
 					exit={(node) => {
-						const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
-						return toTransitionConfig(tween);
+						motion(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: 'linear' });
+						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						gsap.to(node, {
-							opacity: +isOpen,
-							height: isOpen ? 'auto' : 0,
-							pointerEvents: isOpen ? 'all' : 'none',
-							duration: 0.1
-						});
+						motion(
+							node,
+							{
+								opacity: +isOpen,
+								height: isOpen ? 'auto' : 0
+							},
+							{ duration: 0.1, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="py-2">
