@@ -50,19 +50,31 @@ export class CollapsibleBond extends Bond<
 	}
 
 	header(props: Record<string, unknown> = {}) {
+		const isDisabled = this.state?.props?.disabled ?? false;
+		const isOpen = this.state?.props?.open ?? false;
+		const isButton = this.elements.header instanceof HTMLButtonElement;
+
 		return {
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'aria-expanded': this.state?.props?.open ?? false,
+			'aria-disabled': isDisabled ? 'true' : 'false',
+			'aria-expanded': isOpen ? 'true' : 'false',
 			'aria-controls': `collapsible-body-${this.id}`,
-			disabled: this.elements.header instanceof HTMLButtonElement ? this.state?.props.disabled : '',
-			role: this.elements.header instanceof HTMLButtonElement ? undefined : 'button',
-			tabindex: this.state?.props?.open ? 0 : -1, // Make focusable if open
+			disabled: isButton ? isDisabled : undefined,
+			role: isButton ? undefined : 'button',
+			tabindex: isButton ? undefined : isDisabled ? -1 : 0,
 			id: `collapsible-header-${this.id}`,
 			'data-atom': this.id ?? '',
 			'data-kind': 'collapsible-header',
 			...props,
 			onclick: () => {
-				this.state.toggle();
+				if (!isDisabled) {
+					this.state.toggle();
+				}
+			},
+			onkeydown: (e: KeyboardEvent) => {
+				if (!isDisabled && (e.key === 'Enter' || e.key === ' ')) {
+					e.preventDefault();
+					this.state.toggle();
+				}
 			},
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.header = node;
@@ -71,13 +83,15 @@ export class CollapsibleBond extends Bond<
 	}
 
 	body(props: Record<string, unknown> = {}) {
+		const isOpen = this.state?.props?.open ?? false;
+
 		return {
 			'aria-labelledby': `collapsible-header-${this.id}`,
-			'aria-hidden': !this.state?.props?.open, // Hide when closed
-			role: 'region', // Announce as a region
+			role: 'region',
 			id: `collapsible-body-${this.id}`,
 			'data-atom': this.id ?? '',
 			'data-kind': 'collapsible-body',
+			inert: isOpen ? undefined : true,
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.body = node;
