@@ -12,7 +12,6 @@
 	import { ScrollableBond } from './bond.svelte';
 	import type { Override } from '$svelte-atoms/core/types';
 	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
 
 	const bond = ScrollableBond.get();
 

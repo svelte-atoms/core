@@ -4,10 +4,11 @@ import type { ClassValue as SvelteClassValue } from 'svelte/elements';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export type ClassValueFunction = <T = unknown>(this: T, ...args: unknown[]) => SvelteClassValue;
+export type ClassValueFunction = <T = unknown>(bond: T, ...args: unknown[]) => SvelteClassValue;
 export type ClassValue = SvelteClassValue | ClassValueFunction | undefined;
 
-export function cn(...inputs: SvelteClassValue[]) {
+export type Cn = SvelteClassValue | undefined | false;
+export function cn(...inputs: Cn[]) {
 	return twMerge(clsx(...inputs));
 }
 

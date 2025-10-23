@@ -10,7 +10,7 @@
 
 <Story name="Container">
 	<Root class="p-4">
-		<ContainerCmp class="flex flex-col items-center gap-4 w-full">
+		<ContainerCmp class="flex w-full flex-col items-center gap-4">
 			<div class="flex w-full gap-4">
 				{#each { length: 5 } as _, i (i)}
 					<div class="bg-foreground h-80 flex-1 rounded-lg"></div>

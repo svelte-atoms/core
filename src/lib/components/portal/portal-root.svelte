@@ -20,12 +20,9 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 
 	type Element = ElementType<E>;
-
-	const preset = getPreset('portal');
 
 	let {
 		class: klass = '',
@@ -45,7 +42,7 @@
 	const portalsBond = PortalsBond.get();
 
 	const bondProps = defineState<PortalStateProps>([defineProperty('id', () => id)]);
-	const bond = factory(bondProps) as PortalBond;
+	const bond = factory(bondProps).share() as PortalBond;
 
 	portalsBond?.state.set(id, bond);
 
@@ -67,7 +64,7 @@
 
 	function _factory(props: typeof bondProps) {
 		const portalState = new PortalState(() => props);
-		return new PortalBond(portalState).share();
+		return new PortalBond(portalState);
 	}
 
 	export function getBond() {
@@ -77,6 +74,7 @@
 
 <HtmlAtom
 	{bond}
+	preset="portal"
 	class={['pointer-events-none', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

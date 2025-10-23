@@ -39,7 +39,7 @@
 		...restProps
 	}: InputProps = $props();
 
-	const preset = getPreset(presetKey as PresetModuleName);
+	const preset = getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]);
 
 	const valueProps = $derived({
 		...(bond?.input?.() ?? {}),
@@ -96,7 +96,7 @@
 	}
 	class={[
 		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
-		toClassValue(bond, preset?.class),
+		preset?.class,
 		toClassValue(bond, klass)
 	]}
 	onchange={handleChange}

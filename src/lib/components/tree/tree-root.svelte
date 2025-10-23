@@ -18,16 +18,11 @@
 	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { getPreset } from '$svelte-atoms/core/context';
-
-	const preset = getPreset('tree');
 
 	let {
 		open = $bindable(false),
 		disabled = false,
 		class: klass = '',
-		as = preset?.as ?? 'div',
-		base = preset?.base as B,
 		children = undefined,
 		factory = _factory,
 		onmount = undefined,
