@@ -2,7 +2,7 @@
 	export type InputPortals = 'input.l0' | 'input.l1' | 'input.l2' | 'input.l3';
 
 	export type InputProps = {
-		value?: string;
+		value?: ClassValue;
 		files?: File[];
 		date?: Date | null;
 		number?: number;
@@ -19,7 +19,7 @@
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue, type ClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { InputBond } from './bond.svelte';
 
@@ -94,11 +94,11 @@
 			}
 		}
 	}
-	class={[
+	class={cn(
 		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
 		preset?.class,
-		toClassValue(bond, klass)
-	]}
+		toClassValue(klass, bond)
+	)}
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}

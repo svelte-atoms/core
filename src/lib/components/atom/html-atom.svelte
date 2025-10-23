@@ -38,11 +38,11 @@
 					return cls.replace('$preset', cn(preset?.class));
 				}
 
-				return toClassValue.apply(bond, [cls]);
+				return toClassValue.apply(bond, [cls, bond]);
 			});
 		}
 
-		return [preset?.class ?? '', toClassValue.apply(bond, [klass])];
+		return [preset?.class ?? '', toClassValue.apply(bond, [klass, bond])];
 	});
 
 	const _base = $derived(base ?? preset?.base);

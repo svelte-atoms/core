@@ -1,8 +1,7 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', S extends Shell = Shell">
-	import { onMount, type Component } from 'svelte';
+	import { onMount } from 'svelte';
 	import { DropdownBond } from './bond.svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
-	import { toClassValue, cn } from '$svelte-atoms/core/utils';
 
 	const bond = DropdownBond.get() as DropdownBond;
 
@@ -41,14 +40,9 @@
 
 <Input.Value
 	bind:value={bond.state.query}
-	preset="dropdown.query"
-	class={['inline-flex w-min flex-1 py-1', '$preset', klass]}
 	{bond}
-	onpointerdown={(ev) => {
-		ev.stopPropagation();
-
-		bond.state.open();
-	}}
+	preset="dropdown.query"
+	class={['inline-flex h-auto w-auto flex-1 py-1', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
