@@ -28,7 +28,7 @@
 				{@const isOpen = collapsible.state.props.open}
 
 				<ACollapsible.Header class="">
-					<div>Hello Atoms UI 1 {isOpen}</div>
+					<div>Hello Atoms UI 1</div>
 					<ACollapsible.Indicator />
 				</ACollapsible.Header>
 
