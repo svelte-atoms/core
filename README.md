@@ -522,23 +522,17 @@ This example demonstrates the power of component composition by combining `Dropd
 
    ```bash
    bun install
-   # or
-   npm install
    ```
 
 3. **Start development server:**
 
    ```bash
    bun dev
-   # or
-   npm run dev
    ```
 
 4. **Run Storybook:**
    ```bash
    bun run storybook:dev
-   # or
-   npm run storybook:dev
    ```
 
 ### Building
