@@ -40,7 +40,7 @@ Leverages Svelte's fine-grained reactivity system for optimal performance and sm
 
 Components are headless by default, giving you complete control over styling while providing sensible defaults.
 
-### 🎨 **Composable**
+### 🧩 **Composable**
 
 Build complex UIs by combining simple, reusable components. Each component is designed to work seamlessly with others through the Bond pattern and context API. Create sophisticated features like multi-level dropdowns, nested accordions, or custom form controls by composing atomic components together.
 
@@ -522,23 +522,17 @@ This example demonstrates the power of component composition by combining `Dropd
 
    ```bash
    bun install
-   # or
-   npm install
    ```
 
 3. **Start development server:**
 
    ```bash
    bun dev
-   # or
-   npm run dev
    ```
 
 4. **Run Storybook:**
    ```bash
-   bun storybook
-   # or
-   npm run storybook
+   bun run storybook:dev
    ```
 
 ### Building
@@ -548,7 +542,7 @@ This example demonstrates the power of component composition by combining `Dropd
 bun run build
 
 # Build Storybook
-bun run build-storybook
+bun run storybook:build
 ```
 
 ---

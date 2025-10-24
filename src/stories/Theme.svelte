@@ -19,7 +19,6 @@
 			class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-2 py-2'
 		}),
 		'accordion.item.header': (bond) => {
-			console.log('bond in preset:', bond);
 			return defineState([
 				defineProperty('class', () => [
 					bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50'
@@ -39,13 +38,13 @@
 			class: 'pr-2 pl-4'
 		}),
 		collapsible: () => ({
-			class: 'max-w-md rounded-md border border-border'
+			class: 'max-w-md rounded-md border border-border p-2'
 		}),
 		'collapsible.header': () => ({
-			class: 'px-4 py-2 hover:bg-foreground/5 active:bg-foreground/10 flex cursor-pointer'
+			class: 'px-2 py-2 hover:bg-foreground/5 active:bg-foreground/10 flex cursor-pointer rounded'
 		}),
 		'collapsible.body': () => ({
-			class: 'text-sm px-4'
+			class: 'text-sm px-2'
 		}),
 		'popover.content': () => ({
 			class: ''
