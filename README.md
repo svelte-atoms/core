@@ -536,9 +536,9 @@ This example demonstrates the power of component composition by combining `Dropd
 
 4. **Run Storybook:**
    ```bash
-   bun storybook
+   bun run storybook:dev
    # or
-   npm run storybook
+   npm run storybook:dev
    ```
 
 ### Building
@@ -548,7 +548,7 @@ This example demonstrates the power of component composition by combining `Dropd
 bun run build
 
 # Build Storybook
-bun run build-storybook
+bun run storybook:build
 ```
 
 ---
