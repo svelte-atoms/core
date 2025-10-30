@@ -3,7 +3,7 @@
 	import type { Base, ComponentBase, HtmlAtomProps, SnippetBase } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue, type ClassValue } from '$svelte-atoms/core/utils';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 
@@ -22,28 +22,10 @@
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const preset = $derived(
-		presetKey ? getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]) : undefined
+		presetKey ? getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]) : undefined
 	);
 
-	const _klass = $derived.by(() => {
-		const klasses = Array.isArray(klass) ? klass : [klass];
-
-		const hasPresetPlaceholder = klasses.some(
-			(cls) => typeof cls === 'string' && cls.includes('$preset')
-		);
-
-		if (hasPresetPlaceholder) {
-			return klasses.map((cls) => {
-				if (typeof cls === 'string' && cls.includes('$preset')) {
-					return cls.replace('$preset', cn(preset?.class));
-				}
-
-				return toClassValue.apply(bond, [cls, bond]);
-			});
-		}
-
-		return [preset?.class ?? '', toClassValue.apply(bond, [klass, bond])];
-	});
+	const _klass = $derived(compilePresetPlaceholder(klass));
 
 	const _base = $derived(base ?? preset?.base);
 	const _as = $derived(as ?? preset?.as);
@@ -59,6 +41,24 @@
 	const atom = rootBond?.state?.props?.renderers?.html ?? HtmlElement;
 
 	const Component = $derived(base ?? atom) as ComponentBase;
+
+	function compilePresetPlaceholder(klass: ClassValue): ReturnType<typeof toClassValue> {
+		if (Array.isArray(klass)) {
+			return klass.map((k) => compilePresetPlaceholder(k));
+		}
+
+		const compiled = toClassValue.apply(bond, [klass, bond]);
+
+		if (Array.isArray(compiled)) {
+			return compiled.map((c) => compilePresetPlaceholder(c));
+		}
+
+		if (typeof compiled === 'string') {
+			return compiled.replace('$preset', cn(preset?.class));
+		}
+
+		return compiled;
+	}
 </script>
 
 {#if isSnippet}
