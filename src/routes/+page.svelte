@@ -91,16 +91,9 @@
 </svelte:head>
 
 <!-- Hero Section -->
-<section
-	class="mb-20 flex min-h-[900px] overflow-visible pt-40"
-	{@attach (node) => {
-		const h = window?.innerHeight;
-
-		node.style.minHeight = `${Math.floor(h) * 0.9}px`;
-	}}
->
+<section class="flex min-h-[768px] overflow-visible pt-40">
 	<div class="relative flex flex-1 items-center justify-center">
-		<AnimatedAtoms />
+		<!-- <AnimatedAtoms /> -->
 
 		<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<div class="text-center">
@@ -111,7 +104,7 @@
 							animate(node, {
 								opacity: 1,
 								filter: ['brightness(.5)', 'brightness(1.5)'],
-								duration: 1000,
+								duration: 4000,
 								loop: true,
 								alternate: true
 							});
@@ -126,7 +119,8 @@
 							animate(node, {
 								opacity: 1,
 								filter: ['brightness(.5)', 'brightness(1.5)'],
-								duration: 1000,
+								duration: 2000,
+								delay: 400,
 								loop: true,
 								alternate: true
 							});
