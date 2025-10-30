@@ -2,6 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Input as AInput } from '.';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
+	import { Label } from '../label';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -21,14 +22,17 @@
 
 <Story name="Input" args={{}}>
 	<Root class="p-4">
-		<AInput.Root>
-			<AInput.Icon class="text-foreground box-content px-0">$</AInput.Icon>
-			<AInput.Value class="border-border box-content border-x px-2 py-2">
-				<!--  -->
-			</AInput.Value>
-			<AInput.Icon class="text-foreground box-content px-2">.00</AInput.Icon>
+		<div class="flex flex-col">
+			<Label for="price-input">Price</Label>
+			<AInput.Root>
+				<AInput.Icon class="text-foreground box-content px-0">$</AInput.Icon>
+				<AInput.Value id="price-input" class="border-border box-content border-x px-2 py-2">
+					<!--  -->
+				</AInput.Value>
+				<AInput.Icon class="text-foreground box-content px-2">.00</AInput.Icon>
 
-			<AInput.Placeholder class="text-foreground/20 pl-2">Hello World</AInput.Placeholder>
-		</AInput.Root>
+				<AInput.Placeholder class="text-foreground/20 pl-2">Hello World</AInput.Placeholder>
+			</AInput.Root>
+		</div>
 	</Root>
 </Story>
