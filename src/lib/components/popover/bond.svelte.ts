@@ -59,7 +59,6 @@ export class PopoverBond<
 	static CONTEXT_KEY = '@atomic-sv/bonds/popover';
 
 	#position = $state<ComputePositionReturn>();
-	#isReady = Promise.withResolvers();
 
 	constructor(state: State) {
 		super(state);
@@ -67,10 +66,6 @@ export class PopoverBond<
 
 	get position() {
 		return this.#position;
-	}
-
-	get isReady() {
-		return this.#isReady.promise;
 	}
 
 	trigger(props: Record<string, unknown> = {}) {
@@ -117,7 +112,6 @@ export class PopoverBond<
 							...props,
 							onchange: (node: HTMLElement, position: ComputePositionReturn) => {
 								this.#position = position;
-								this.#isReady.resolve(position);
 							}
 						});
 
