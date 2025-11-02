@@ -10,7 +10,13 @@
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, MathmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 
-	let { class: klass = '', children = undefined, portals = undefined, ...restProps } = $props();
+	let {
+		class: klass = '',
+		base = undefined,
+		children = undefined,
+		portals = undefined,
+		...restProps
+	} = $props();
 
 	let html: typeof HtmlElement | undefined = HtmlElement;
 	let svg: typeof SvgElement | undefined = undefined;
@@ -58,46 +64,58 @@
 	const bond = new RootBond(bondState).share();
 </script>
 
-<HtmlAtom
-	{@attach (node) => {
-		bond.rootElement = node;
-	}}
-	preset="root"
-	class={cn(
-		'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start font-sans',
-		'$preset',
-		klass
-	)}
-	{...restProps}
->
-	<Portals id="root">
+<Portals id="root">
+	<HtmlAtom
+		{@attach (node) => {
+			bond.rootElement = node;
+		}}
+		{base}
+		preset="root"
+		class={cn(
+			'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start font-sans',
+			'$preset',
+			klass
+		)}
+		{...restProps}
+	>
 		{#if portals}
 			{@render portals?.()}
 		{:else}
-			<Stack.Root
-				preset="root.portals"
-				class={['portals pointer-events-none absolute inset-0 z-1 overflow-hidden', '$preset']}
+			<Portal.Outer
+				base={Stack.Item}
+				id="root.l0"
+				class="pointer-events-none absolute inset-0 z-10 overflow-hidden"
 			>
-				<Portal.Outer base={Stack.Item} id="root.l0">
-					<Portal.Inner />
-				</Portal.Outer>
+				<Portal.Inner />
+			</Portal.Outer>
 
-				<Portal.Outer base={Stack.Item} id="root.l1">
-					<Portal.Inner />
-				</Portal.Outer>
+			<Portal.Outer
+				base={Stack.Item}
+				id="root.l1"
+				class="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+			>
+				<Portal.Inner />
+			</Portal.Outer>
 
-				<Portal.Outer base={Stack.Item} id="root.l2">
-					<Portal.Inner />
-				</Portal.Outer>
+			<Portal.Outer
+				base={Stack.Item}
+				id="root.l2"
+				class="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+			>
+				<Portal.Inner />
+			</Portal.Outer>
 
-				<Portal.Outer base={Stack.Item} id="root.l3">
-					<Portal.Inner />
-				</Portal.Outer>
-			</Stack.Root>
+			<Portal.Outer
+				base={Stack.Item}
+				id="root.l3"
+				class="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+			>
+				<Portal.Inner />
+			</Portal.Outer>
 		{/if}
 
 		<ActivePortal id="root.l0">
 			{@render children?.()}
 		</ActivePortal>
-	</Portals>
-</HtmlAtom>
+	</HtmlAtom>
+</Portals>
