@@ -1,5 +1,12 @@
 export { type StateDefiner, defineProperty, defineState } from './state';
-
+export {
+	defineVariants,
+	type VariantDefinition,
+	type VariantProps,
+	type VariantValue,
+	type ExtractVariants,
+	type VariantPropsType
+} from './variant';
 import type { ClassValue as SvelteClassValue } from 'svelte/elements';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
