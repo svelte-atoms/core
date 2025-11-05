@@ -28,6 +28,31 @@
 		'accordion.item.body': () => ({
 			class: 'overflow-hidden'
 		}),
+		button: () => ({
+			variants: {
+				variant: {
+					primary: {
+						class: 'bg-primary text-primary-foreground hover:bg-primary/80'
+					},
+					secondary: {
+						class: 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+					},
+					destructive: {
+						class: 'bg-destructive text-destructive-foreground hover:bg-destructive/80'
+					},
+					outline: {
+						class:
+							'bg-transparent hover:bg-foreground/5 active:bg-foreground/10 border border-border text-foreground'
+					},
+					ghost: {
+						class: 'hover:bg-accent hover:text-accent-foreground'
+					}
+				}
+			},
+			defaults: {
+				variant: 'primary'
+			}
+		}),
 		datagrid: () => ({
 			class: 'bg-card rounded-md gap-x-2 border border-border overflow-hidden'
 		}),

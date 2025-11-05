@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-atoms/core",
-	"version": "1.0.0-alpha.24",
+	"version": "1.0.0-alpha.25",
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
@@ -31,6 +31,7 @@
 	},
 	"files": [
 		"dist",
+		"llm",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],

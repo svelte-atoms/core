@@ -129,6 +129,9 @@ export type PresetEntryRecord = {
 	class?: ClassValue;
 	as?: string;
 	base?: Base;
+	variants?: Record<string, Record<string, any>>;
+	compounds?: Array<Record<string, any>>;
+	defaults?: Record<string, any>;
 };
 
 export type PresetEntry = (
