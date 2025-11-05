@@ -34,16 +34,16 @@
 	);
 
 	const presetProps = $derived(preset?.variants);
-	
+
 	// Resolve local variants - either VariantDefinition or function
 	const localVariants = $derived.by(() => {
 		if (!variants) return undefined;
-		
+
 		// If it's a function, call it directly
 		if (typeof variants === 'function') {
 			return variants(bond as Bond, restProps);
 		}
-		
+
 		// Otherwise it's a VariantDefinition, resolve it
 		return resolveVariants(variants, bond as Bond, restProps);
 	});
@@ -78,22 +78,24 @@
 			compounds: preset?.compounds ?? [],
 			defaults: preset?.defaults ?? {}
 		};
-		
+
 		const presetResolved = resolveVariants(presetVariantDef, bond as Bond, restProps);
-		
+
 		// Merge the resolved variant props
 		// Local variant classes and attributes override preset
-		const presetClasses = Array.isArray(presetResolved.class) ? presetResolved.class : [presetResolved.class];
-		const localClasses = Array.isArray(localVariants?.class) ? localVariants.class : [localVariants?.class];
-		
+		const presetClasses = Array.isArray(presetResolved.class)
+			? presetResolved.class
+			: [presetResolved.class];
+		const localClasses = Array.isArray(localVariants?.class)
+			? localVariants.class
+			: [localVariants?.class];
+
 		return {
 			class: [...presetClasses, ...localClasses].filter(Boolean),
 			...presetResolved,
 			...localVariants
 		};
 	});
-
-	$inspect(mergedVariants);
 
 	const _klass = $derived([compilePresetPlaceholder(klass), mergedVariants?.class ?? '']);
 
