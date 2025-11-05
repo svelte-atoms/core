@@ -12,7 +12,6 @@
 	import { getPreset } from '$svelte-atoms/core/context';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import type { Bond } from '$svelte-atoms/core/shared';
-	import { merge } from 'es-toolkit';
 
 	type Element = HTMLElementTagNameMap[E];
 
