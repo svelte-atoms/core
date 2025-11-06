@@ -254,7 +254,7 @@ function popover(bond: PopoverBond) {
 			return;
 		}
 
-		node.style.minWidth = bond.elements.trigger.clientWidth + 'px';
+		bond.elements.content.style.minWidth = bond.elements.trigger.clientWidth + 'px';
 
 		const middleware: ComputePositionConfig['middleware'] = [];
 
