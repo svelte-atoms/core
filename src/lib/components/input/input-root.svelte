@@ -1,16 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { HTMLAttributes } from 'svelte/elements';
 	import { InputBond, InputState, type InputStateProps } from './bond.svelte';
-	import { defineProperty, defineState, toClassValue } from '$svelte-atoms/core/utils';
-	import {
-		HtmlAtom,
-		type ElementType,
-		type HtmlAtomProps,
-		type Base
-	} from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { InputRootProps } from './types';
-
-	type Element = ElementType<E>;
 
 	let {
 		class: klass = '',
@@ -69,7 +61,7 @@
 <HtmlAtom
 	{preset}
 	class={[
-		'border-border text-foreground bg-input relative flex h-10 items-center overflow-hidden rounded-md border w-auto',
+		'border-border text-foreground bg-input relative flex h-10 w-auto items-center overflow-hidden rounded-md border',
 		'$preset',
 		klass
 	]}
