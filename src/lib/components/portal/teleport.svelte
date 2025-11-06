@@ -6,7 +6,7 @@
 		E extends HtmlElementTagName = 'div',
 		B extends Base = Base
 	> = HtmlAtomProps<E, B> & {
-		portal?: string;
+		portal?: string | PortalBond;
 	};
 </script>
 
@@ -15,6 +15,7 @@
 	import { PortalsBond } from './portals';
 	import { RootBond } from '$svelte-atoms/core/components/root/bond.svelte';
 	import { port } from './utils';
+	import type { PortalBond } from '.';
 
 	type Element = HtmlElementType<E>;
 
@@ -24,9 +25,14 @@
 	const portalsBond = PortalsBond.get();
 	const rootBond = RootBond.get();
 
-	const portalBond = $derived(
-		portalsBond?.state?.get(portal!) ?? rootBond?.state?.getPortal(portal!)
-	);
+	const portalBond = $derived.by(() => {
+		if (typeof portal === 'string') {
+			return portalsBond?.state?.get(portal!) ?? rootBond?.state?.getPortal(portal!);
+		}
+
+		return portal;
+	});
+
 	const targetElement = $derived(portalBond?.targetElement);
 
 	function _port(node: HTMLElement) {

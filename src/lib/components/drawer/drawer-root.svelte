@@ -15,7 +15,7 @@
 	> & {
 		open?: boolean;
 		disabled?: boolean;
-		portal?: string;
+		portal?: string | PortalBond;
 		onclose?: (event: Event, bond: DrawerBond) => void;
 		factory?: Factory<DrawerBond>;
 	};
@@ -30,6 +30,7 @@
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
+	import type { PortalBond } from '../portal';
 
 	type Element = HTMLElementTagNameMap[E];
 
