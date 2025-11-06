@@ -69,7 +69,7 @@
 <HtmlAtom
 	{preset}
 	class={[
-		'border-border text-foreground bg-input relative flex h-10 items-center overflow-hidden rounded-md border',
+		'border-border text-foreground bg-input relative flex h-10 items-center overflow-hidden rounded-md border w-auto',
 		'$preset',
 		klass
 	]}
