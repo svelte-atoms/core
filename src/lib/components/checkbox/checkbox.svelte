@@ -60,8 +60,17 @@
 			return;
 		}
 
-		checked = !checked;
+		// Handle indeterminate → checked → unchecked cycle
+		if (indeterminate) {
+			// Indeterminate → checked
+			indeterminate = false;
+			checked = true;
+		} else {
+			// Toggle checked state
+			checked = !checked;
+		}
 
+		// Trigger input event manually if needed
 		handleInput(ev);
 	}
 </script>
@@ -70,9 +79,9 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <HtmlAtom
 	preset="checkbox"
-	as="label"
+	as="div"
 	class={[
-		'checkbox-root border-border outline-primary bg-foreground/5 aspect-square h-5 w-fit cursor-pointer rounded-sm border outline-0 outline-offset-2 transition-colors duration-100',
+		'checkbox-root border-border outline-primary bg-input text-foreground aspect-square h-5 w-fit cursor-pointer rounded-sm border outline-0 outline-offset-2 transition-colors duration-100',
 		isChecked && 'bg-foreground',
 		'$preset',
 		klass,
@@ -92,7 +101,7 @@
 		bind:group
 		bind:indeterminate
 		type="checkbox"
-		class="checkbox-input"
+		class="checkbox-input pointer-events-none"
 		{value}
 		{id}
 		{name}
@@ -108,14 +117,16 @@
 		{#if indeterminateContent}
 			<HtmlAtom
 				preset="checkbox.indeterminate"
-				class={['checkbox-indeterminate flex size-full items-center justify-center p-1']}
+				class={[
+					'checkbox-indeterminate pointer-events-none flex size-full items-center justify-center p-1'
+				]}
 				base={indeterminateContent}
 			/>
 		{:else}
 			<HtmlAtom
 				preset="checkbox.indeterminate"
 				class={[
-					'checkbox-indeterminate text-foreground flex size-full items-center justify-center p-1'
+					'checkbox-indeterminate text-foreground pointer-events-none flex size-full items-center justify-center  p-1'
 				]}
 			>
 				<div class={['size-full rounded-xs bg-current']}></div>
