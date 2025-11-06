@@ -114,7 +114,7 @@
 			</Portal.Outer>
 		{/if}
 
-		<ActivePortal id="root.l0">
+		<ActivePortal portal="root.l0">
 			{@render children?.()}
 		</ActivePortal>
 	</HtmlAtom>

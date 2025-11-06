@@ -1,23 +1,7 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type PopoverRootProps = {
-		open?: boolean;
-		disabled?: boolean;
-		placements?: Placement[];
-		placement?: Placement;
-		offset?: number;
-		extend?: Record<string, unknown>;
-		factory?: Factory<PopoverBond>;
-		children?: Snippet<[{ popover: PopoverBond }]>;
-	};
-</script>
-
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Placement } from '@floating-ui/dom';
 	import { PopoverState, PopoverBond, type PopoverStateProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import type { PopoverRootProps } from './types';
 
 	let {
 		open = $bindable(false),
@@ -25,6 +9,7 @@
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
 		placement = 'bottom-start',
 		offset = 0,
+		portal = undefined,
 		extend = {},
 		factory = _factory,
 		children = undefined
@@ -42,7 +27,8 @@
 			defineProperty('disabled', () => disabled),
 			defineProperty('placement', () => placement),
 			defineProperty('offset', () => offset),
-			defineProperty('placements', () => placements ?? [])
+			defineProperty('placements', () => placements ?? []),
+			defineProperty('portal', () => portal)
 		],
 		() => ({ extend })
 	);

@@ -13,6 +13,7 @@ import {
 import { debounce } from 'es-toolkit';
 import { getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import type { PortalBond } from '../portal';
 
 export type PopoverParams = {
 	apply?: (
@@ -30,6 +31,7 @@ export type PopoverStateProps<T extends Record<string, unknown> = Record<string,
 		placements: Placement[];
 		placement: Placement | undefined;
 		offset: number;
+		portal?: string | PortalBond;
 		extend: T;
 	};
 

@@ -1,10 +1,16 @@
 <script>
 	import { PortalsBond } from './portals/bond.svelte';
 
-	let { id, children = undefined } = $props();
+	let { portal, children = undefined } = $props();
 
 	const portalsBond = PortalsBond.get();
-	const activePortal = portalsBond?.state.get(id)?.share();
+	const activePortal = (() => {
+		if (typeof portal === 'string') {
+			return portalsBond?.state?.get(portal) ?? undefined;
+		}
+
+		return portal;
+	})()?.share();
 
 	if (!portalsBond) {
 		throw new Error('Portals bond is not found');
