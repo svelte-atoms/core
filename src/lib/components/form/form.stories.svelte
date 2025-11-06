@@ -72,7 +72,7 @@
 
 				<div class="flex flex-col">
 					<Field.Root name="is admin" schema={personSchema.shape.isAdmin}>
-						<Field.Label>Is Admin</Field.Label>
+						<Field.Label>Is Admin?</Field.Label>
 						<Field.Control base={Checkbox} />
 					</Field.Root>
 				</div>
