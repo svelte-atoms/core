@@ -7,7 +7,7 @@
 	> = Override<
 		HtmlAtomProps<E, B>,
 		{
-			children?: Snippet<[{ slideover: DrawerBond }]>;
+			children?: Snippet<[{ drawer: DrawerBond }]>;
 			initial?: (node: HTMLElement, bond: DrawerBond) => void;
 			enter?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
 			exit?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
@@ -30,7 +30,7 @@
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
-	import type { PortalBond } from '../portal';
+	import { ActivePortal, type PortalBond } from '../portal';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -112,5 +112,7 @@
 	animate={animate?.bind(bond.state)}
 	{...rootProps}
 >
-	{@render children?.({ drawer: bond })}
+	<ActivePortal portal={portal ?? 'root.l1'}>
+		{@render children?.({ drawer: bond })}
+	</ActivePortal>
 </Teleport>
