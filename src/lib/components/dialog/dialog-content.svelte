@@ -7,8 +7,9 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { animate as motion } from 'motion';
-	import { DialogBond } from './bond.svelte';
+	import { DURATION } from '$svelte-atoms/core/shared';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { DialogBond } from './bond.svelte';
 
 	const bond = DialogBond.get();
 
@@ -32,20 +33,16 @@
 	const open = $derived(bond?.state?.props?.open ?? false);
 
 	function _animate(node: HTMLElement) {
+		if (open) {
+			bond?.elements.root?.show?.();
+		}
+
 		motion(
 			node,
 			{ scale: 0.9 + 0.1 * +open, opacity: +open },
 			{
-				duration: 0.3,
-				ease: 'anticipate',
-				onComplete: () => {
-					if (!open) {
-						const root = bond?.elements.root;
-
-						root?.close?.();
-						console.log(root);
-					}
-				}
+				duration: DURATION.normal / 1000,
+				ease: 'anticipate'
 			}
 		);
 	}
