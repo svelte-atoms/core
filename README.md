@@ -5,8 +5,8 @@
 **@svelte-atoms/core** is a comprehensive Svelte component library that provides fundamental building blocks ("atoms") for creating sophisticated, interactive design systems. Each component is designed with accessibility, type safety, and developer experience in mind. Built with Svelte 5 runes for optimal reactivity and performance.
 
 [![npm version](https://img.shields.io/npm/v/@svelte-atoms/core.svg)](https://www.npmjs.com/package/@svelte-atoms/core)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/svelte-atoms/core)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
 ---
 
