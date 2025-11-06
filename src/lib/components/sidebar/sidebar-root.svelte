@@ -1,27 +1,8 @@
-<script module lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type SlideoverRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ sidebar?: SidebarBond }]>;
-		}
-	> & {
-		open?: boolean;
-		disabled?: boolean;
-		factory?: Factory<SidebarBond>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import type { Override } from '$svelte-atoms/core/types';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
+	import type { SlideoverRootProps } from './types';
 
 	let {
 		open = $bindable(false),
