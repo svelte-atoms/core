@@ -84,8 +84,8 @@
 	{bond}
 	{preset}
 	class={[
-		bond.state.isHighlighted && 'bg-foreground/10',
-		bond.state.isSelected && 'bg-accent/10 hover:bg-accent/15 active:bg-accent/20',
+		bond.state.isHighlighted && 'bg-foreground/5',
+		bond.state.isSelected && 'bg-primary/5 hover:bg-primary/10 active:bg-primary/15',
 		'$preset',
 		klass
 	]}
