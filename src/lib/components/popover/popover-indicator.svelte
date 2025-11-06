@@ -24,7 +24,7 @@
 <HtmlAtom
 	{bond}
 	preset="popover.indicator"
-	class={['flex items-center justify-center', '$preset', klass]}
+	class={['border-border flex items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

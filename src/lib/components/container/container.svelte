@@ -42,7 +42,7 @@
 		};
 	}}
 	preset="container"
-	class={['$preset', klass]}
+	class={['border-border', '$preset', klass]}
 	style={[containerTypeStype, containerNameStyle].filter(Boolean).join('; ')}
 	onmount={onmount?.bind(null)}
 	ondestroy={ondestroy?.bind(null)}

@@ -39,7 +39,7 @@
 <HtmlAtom
 	{bond}
 	preset="collapsible.header"
-	class={['flex cursor-pointer items-center gap-2', '$preset', klass]}
+	class={['border-border flex cursor-pointer items-center gap-2', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

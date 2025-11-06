@@ -45,7 +45,7 @@
 <HtmlAtom
 	preset="tab.body"
 	class={[
-		'tab-body pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col',
+		'tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col',
 		'$preset',
 		klass
 	]}

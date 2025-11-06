@@ -18,6 +18,10 @@
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 </script>
 
-<HtmlAtom preset="stack.root" class={['stack-root flex flex-1', '$preset', klass]} {...restProps}>
+<HtmlAtom
+	preset="stack.root"
+	class={['stack-root border-border flex flex-1', '$preset', klass]}
+	{...restProps}
+>
 	{@render children?.()}
 </HtmlAtom>

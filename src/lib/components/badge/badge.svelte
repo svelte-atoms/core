@@ -8,7 +8,7 @@
 <HtmlAtom
 	preset="badge"
 	class={[
-		'bg-foreground/10 text-foreground inline-flex h-auto items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+		'bg-foreground/10 border-border text-foreground inline-flex h-auto items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
 		'$preset',
 		klass
 	]}

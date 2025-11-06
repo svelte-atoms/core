@@ -44,7 +44,7 @@
 	{as}
 	{bond}
 	preset="drawer.description"
-	class={['$preset', klass]}
+	class={['border-border', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

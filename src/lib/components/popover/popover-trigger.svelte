@@ -42,7 +42,7 @@
 	{as}
 	{bond}
 	{preset}
-	class={['flex w-fit cursor-pointer rounded-md p-2', '$preset', klass]}
+	class={['border-border flex w-fit cursor-pointer rounded-md p-2', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

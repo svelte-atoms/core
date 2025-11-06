@@ -37,7 +37,7 @@
 <HtmlAtom
 	{bond}
 	preset="tree.indicator"
-	class={['aspect-square h-fit', '$preset', klass]}
+	class={['border-border aspect-square h-fit', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

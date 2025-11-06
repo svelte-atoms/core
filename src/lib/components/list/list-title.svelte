@@ -7,7 +7,7 @@
 <HtmlAtom
 	{as}
 	preset="list.title"
-	class={['mb-1 flex w-full px-6 py-1 font-medium', '$preset', klass]}
+	class={['border-border mb-1 flex w-full px-6 py-1 font-medium', '$preset', klass]}
 	{...restProps}
 >
 	{@render children?.()}

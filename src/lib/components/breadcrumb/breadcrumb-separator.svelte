@@ -7,7 +7,7 @@
 <HtmlAtom
 	{as}
 	preset="breadcrumb.separator"
-	class={['text-stroke-0/50 px-0', '$preset', klass]}
+	class={['text-stroke-0/50 border-border px-0', '$preset', klass]}
 	data-kind="breadcrumb-separator"
 	{...restProps}
 >

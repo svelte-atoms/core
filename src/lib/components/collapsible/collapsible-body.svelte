@@ -39,7 +39,7 @@
 <HtmlAtom
 	{bond}
 	preset="collapsible.body"
-	class={['$preset', klass]}
+	class={['border-border', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

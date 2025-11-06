@@ -13,7 +13,7 @@
 <HtmlAtom
 	{as}
 	preset={presetKey}
-	class={['flex w-full gap-2 px-4 py-1', '$preset', klass]}
+	class={['border-border flex w-full gap-2 px-4 py-1', '$preset', klass]}
 	{...restProps}
 >
 	{@render children?.()}

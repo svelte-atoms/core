@@ -71,7 +71,7 @@
 
 <HtmlAtom
 	preset="accordion"
-	class={['bg-card flex list-none flex-col', '$preset', klass]}
+	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}
 	{bond}
 	{...rootProps}
 >

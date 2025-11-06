@@ -4,6 +4,10 @@
 	let { class: klass = '', children, ...restProps } = $props();
 </script>
 
-<HtmlAtom preset="stack.item" class={['stack-item flex flex-1', '$preset', klass]} {...restProps}>
+<HtmlAtom
+	preset="stack.item"
+	class={['stack-item border-border flex flex-1', '$preset', klass]}
+	{...restProps}
+>
 	{@render children?.()}
 </HtmlAtom>

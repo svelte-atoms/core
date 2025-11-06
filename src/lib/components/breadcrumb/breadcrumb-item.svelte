@@ -9,7 +9,7 @@
 	{href}
 	preset="breadcrumb.item"
 	class={[
-		'hover:text-primary hover:bg-primary/5 flex gap-2 rounded-lg px-2 py-1',
+		'hover:text-primary hover:bg-primary/5 border-border flex gap-2 rounded-lg px-2 py-1',
 		'$preset',
 		klass
 	]}

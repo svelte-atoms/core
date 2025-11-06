@@ -72,7 +72,7 @@
 <HtmlAtom
 	{bond}
 	preset="collapsible"
-	class={['flex w-full flex-col overflow-hidden', '$preset', klass]}
+	class={['border-border flex w-full flex-col overflow-hidden', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

@@ -94,7 +94,7 @@
 	preset="dialog"
 	portal="root.l1"
 	class={[
-		'pointer-events-auto fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/10 opacity-0',
+		'border-border pointer-events-auto fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/10 opacity-0',
 		!open && 'pointer-events-none',
 		'$preset',
 		klass

@@ -67,7 +67,7 @@
 <HtmlAtom
 	{bond}
 	preset="tree"
-	class={['flex flex-col', '$preset', klass]}
+	class={['border-border flex flex-col', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

@@ -48,7 +48,7 @@
 <HtmlAtom
 	{bond}
 	preset="collapsible.indicator"
-	class={['flex size-4 items-center justify-center', '$preset', klass]}
+	class={['border-border flex size-4 items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

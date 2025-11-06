@@ -33,7 +33,7 @@
 <HtmlAtom
 	{bond}
 	preset="portal.inner"
-	class={['relative size-full', '$preset', klass]}
+	class={['border-border relative size-full', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

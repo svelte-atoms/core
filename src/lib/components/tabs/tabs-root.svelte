@@ -53,7 +53,7 @@
 <HtmlAtom
 	{bond}
 	preset="tabs"
-	class={['flex w-full flex-1 flex-col gap-2', '$preset', klass]}
+	class={['border-border flex w-full flex-1 flex-col gap-2', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

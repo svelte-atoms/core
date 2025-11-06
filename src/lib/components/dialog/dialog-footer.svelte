@@ -32,7 +32,7 @@
 <HtmlAtom
 	{bond}
 	preset="dialog.footer"
-	class={['flex px-4', '$preset', klass]}
+	class={['border-border', 'flex px-4', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

@@ -107,7 +107,7 @@
 		{bond}
 		preset="datagrid.th"
 		class={[
-			'flex cursor-pointer py-1 font-medium select-none',
+			'border-border flex cursor-pointer py-1 font-medium select-none',
 			!!sortable && 'sortable',
 			'$preset',
 			klass

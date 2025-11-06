@@ -35,7 +35,7 @@
 	{as}
 	{bond}
 	preset="card.description"
-	class={['card-description text-sm text-gray-500', '$preset', klass]}
+	class={['card-description border-border text-sm text-gray-500', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

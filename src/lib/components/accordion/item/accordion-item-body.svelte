@@ -37,7 +37,7 @@
 {#if isOpen}
 	<HtmlAtom
 		preset="accordion.item.body"
-		class={['box-content', '$preset', klass]}
+		class={['border-border box-content', '$preset', klass]}
 		{bond}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}

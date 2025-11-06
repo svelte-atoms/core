@@ -38,7 +38,7 @@
 	{as}
 	{bond}
 	preset="alert.title"
-	class={['alert-title text-sm leading-tight font-medium', '$preset', klass]}
+	class={['alert-title border-border text-sm leading-tight font-medium', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

@@ -39,7 +39,7 @@
 	{as}
 	{bond}
 	preset="dropdown.trigger"
-	class={['relative flex h-auto min-h-10 flex-wrap items-center', '$preset', klass]}
+	class={['border-border relative flex h-auto min-h-10 flex-wrap items-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

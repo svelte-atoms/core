@@ -39,7 +39,7 @@
 <HtmlAtom
 	{bond}
 	preset="alert.actions"
-	class={['alert-actions mt-3 flex items-center gap-2', '$preset', klass]}
+	class={['alert-actions border-border mt-3 flex items-center gap-2', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

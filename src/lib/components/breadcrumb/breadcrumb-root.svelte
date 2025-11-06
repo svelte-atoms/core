@@ -7,7 +7,7 @@
 <HtmlAtom
 	{as}
 	preset="breadcrumb"
-	class={['flex flex-nowrap items-center gap-1', '$preset', klass]}
+	class={['border-border flex flex-nowrap items-center gap-1', '$preset', klass]}
 	data-kind="breadcrumb-root"
 	{...restProps}
 >

@@ -90,7 +90,7 @@
 <HtmlAtom
 	{bond}
 	preset="popover.arrow"
-	class={['text-border pointer-events-none absolute opacity-0', '$preset', klass]}
+	class={['text-border border-border pointer-events-none absolute opacity-0', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

@@ -35,7 +35,11 @@
 	{as}
 	{bond}
 	preset="card.title"
-	class={['card-title text-lg leading-none font-semibold tracking-tight', '$preset', klass]}
+	class={[
+		'card-title border-border text-lg leading-none font-semibold tracking-tight',
+		'$preset',
+		klass
+	]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

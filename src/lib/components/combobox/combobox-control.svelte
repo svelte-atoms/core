@@ -40,7 +40,7 @@
 <Input.Control
 	{value}
 	preset="combobox.control"
-	class={['flex-1 py-1', '$preset', klass]}
+	class={['border-border flex-1 py-1', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
