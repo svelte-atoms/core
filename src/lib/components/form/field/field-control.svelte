@@ -44,10 +44,10 @@
 		}
 
 		bond.state.props.value = value = detail?.value;
-		bond.state.props.files = detail?.files ?? [];
-		bond.state.props.date = detail?.date ?? null;
-		bond.state.props.number = detail?.number ?? null;
-		bond.state.props.checked = detail?.checked ?? false;
+		bond.state.props.files = files = detail?.files ?? [];
+		bond.state.props.date = date = detail?.date ?? null;
+		bond.state.props.number = number = detail?.number ?? null;
+		bond.state.props.checked = checked = detail?.checked ?? false;
 	}
 </script>
 
