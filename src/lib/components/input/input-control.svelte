@@ -105,12 +105,4 @@
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}
-	{@attach (node) => {
-		if (type === 'file') {
-			return on('input', () => {
-				files = Array.from(node.files || []);
-				bond!.state.props.files = files;
-			})(node);
-		}
-	}}
 />
