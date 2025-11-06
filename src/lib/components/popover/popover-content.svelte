@@ -131,7 +131,7 @@
 		{bond}
 		preset="popover.content"
 		class={[
-			'popover-content bg-background border-border rounded-md border p-2 opacity-0 shadow-lg',
+			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg',
 			'$preset',
 			klass
 		]}
