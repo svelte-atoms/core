@@ -37,9 +37,9 @@
 	);
 </script>
 
-<Input.Value
+<Input.Control
 	{value}
-	preset="combobox.input"
+	preset="combobox.control"
 	class={['flex-1 py-1', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

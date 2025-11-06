@@ -44,7 +44,7 @@
 							<Field.Label>First Name</Field.Label>
 							<Input.Root>
 								<Field.Control
-									base={Input.Value}
+									base={Input.Control}
 									placeholder="Enter your first name"
 									onblur={() => {
 										const results = field?.state.validate();
@@ -65,7 +65,7 @@
 					<Field.Root name="last name" schema={personSchema.shape.lastName}>
 						<Field.Label>Last Name</Field.Label>
 						<Input.Root>
-							<Field.Control base={Input.Value} placeholder="Enter your last name" />
+							<Field.Control base={Input.Control} placeholder="Enter your last name" />
 						</Input.Root>
 					</Field.Root>
 				</div>

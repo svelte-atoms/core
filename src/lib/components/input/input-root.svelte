@@ -8,6 +8,7 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
+	import type { InputRootProps } from './types';
 
 	type Element = ElementType<E>;
 
@@ -20,7 +21,7 @@
 		children = undefined,
 		factory = _factory,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
+	}: InputRootProps<E, B> = $props();
 
 	const bondProps = defineState<InputStateProps>([
 		defineProperty(

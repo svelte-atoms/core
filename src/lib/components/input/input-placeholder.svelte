@@ -34,8 +34,6 @@
 			return !bond?.state.props.files?.length;
 		}
 
-		console.log(!bond?.state.props.value);
-
 		return !bond?.state.props.value;
 	});
 </script>
@@ -44,7 +42,7 @@
 	<HtmlAtom
 		preset="input.placeholder"
 		class={[
-			'pointer-events-none absolute inset-0 flex h-full w-full items-center px-1 leading-1 outline-none',
+			'text-muted-foreground pointer-events-none absolute inset-0 flex h-full w-full items-center px-1 leading-1 outline-none',
 			'$preset',
 			klass
 		]}
