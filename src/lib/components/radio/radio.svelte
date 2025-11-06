@@ -72,7 +72,7 @@
 <Stack.Root
 	preset="radio"
 	class={[
-		'text-foreground box-border inline-flex aspect-square size-4 max-w-fit cursor-pointer place-items-center rounded-full border p-0',
+		'text-foreground bg-input box-border inline-flex aspect-square size-4 max-w-fit cursor-pointer place-items-center rounded-full border p-0',
 		isDisabled && 'pointer-events-none opacity-50',
 		'$preset',
 		toClassValue.apply(null, [klass, {}])
