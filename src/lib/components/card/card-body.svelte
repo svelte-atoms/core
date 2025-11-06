@@ -32,7 +32,7 @@
 <HtmlAtom
 	{bond}
 	preset="card.content"
-	class={['card-content px-4', '$preset', klass]}
+	class={['card-content border-border px-4', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

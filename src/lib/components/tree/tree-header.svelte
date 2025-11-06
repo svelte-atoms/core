@@ -52,7 +52,7 @@
 <HtmlAtom
 	{bond}
 	preset="tree.header"
-	class={['cursor-pointer', '$preset', klass]}
+	class={['border-border cursor-pointer', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

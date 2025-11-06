@@ -4,6 +4,11 @@
 	let { class: klass = '', as = 'ul' as T, children = undefined, ...restProps } = $props();
 </script>
 
-<HtmlAtom {as} preset="list.root" class={['flex flex-col', '$preset', klass]} {...restProps}>
+<HtmlAtom
+	{as}
+	preset="list.root"
+	class={['border-border flex flex-col', '$preset', klass]}
+	{...restProps}
+>
 	{@render children?.()}
 </HtmlAtom>

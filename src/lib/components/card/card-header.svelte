@@ -35,7 +35,7 @@
 	{as}
 	{bond}
 	preset="card.header"
-	class={['card-header flex flex-col space-y-1.5 px-4 py-4', '$preset', klass]}
+	class={['card-header border-border flex flex-col space-y-1.5 px-4 py-4', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

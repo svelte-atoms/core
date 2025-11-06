@@ -27,7 +27,7 @@
 <Stack.Root
 	{bond}
 	preset="tabs.body"
-	class={['tabs-body relative flex-1', '$preset', klass]}
+	class={['tabs-body border-border relative flex-1', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

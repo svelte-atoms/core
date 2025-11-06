@@ -39,7 +39,7 @@
 	{bond}
 	preset="dropdown.value"
 	class={[
-		'dropdown-value bg-foreground/5 inline-flex flex-nowrap items-center gap-1 rounded-xs px-1 whitespace-nowrap',
+		'dropdown-value border-border bg-foreground/5 inline-flex flex-nowrap items-center gap-1 rounded-xs px-1 whitespace-nowrap',
 		'$preset',
 		klass
 	]}

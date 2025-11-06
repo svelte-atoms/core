@@ -45,7 +45,7 @@
 <HtmlAtom
 	{bond}
 	preset="datagrid"
-	class={['datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
+	class={['border-border', 'datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
 	style="--template-columns:{bond.state.template}"
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

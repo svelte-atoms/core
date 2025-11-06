@@ -35,7 +35,7 @@
 	{as}
 	{bond}
 	preset="card.footer"
-	class={['card-footer flex items-center gap-2 px-4 py-4', '$preset', klass]}
+	class={['card-footer border-border flex items-center gap-2 px-4 py-4', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

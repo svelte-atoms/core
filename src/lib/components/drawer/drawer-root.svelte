@@ -95,7 +95,7 @@
 	portal="root.l1"
 	preset="drawer"
 	class={[
-		'pointer-events-auto h-full w-full overflow-hidden bg-transparent',
+		'border-border pointer-events-auto h-full w-full overflow-hidden bg-transparent',
 		!open && 'pointer-events-none',
 		'$preset',
 		klass

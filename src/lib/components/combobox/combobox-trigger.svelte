@@ -27,7 +27,7 @@
 	{as}
 	{bond}
 	preset="dropdown.trigger"
-	class={['h-8 w-40', '$preset', klass]}
+	class={['border-border h-8 w-40', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

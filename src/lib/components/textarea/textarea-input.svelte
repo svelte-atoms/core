@@ -2,4 +2,5 @@
 	let { class: klass = '', value = $bindable(), ...restProps } = $props();
 </script>
 
-<textarea class={['w-full outline-none', '$preset', klass]} bind:value {...restProps}></textarea>
+<textarea class={['border-border w-full outline-none', '$preset', klass]} bind:value {...restProps}
+></textarea>

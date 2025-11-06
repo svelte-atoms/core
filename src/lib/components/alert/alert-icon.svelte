@@ -40,7 +40,7 @@
 	{base}
 	preset="alert.icon"
 	class={[
-		'alert-icon inline-flex aspect-square h-5 items-center justify-center rounded-full text-sm font-medium',
+		'alert-icon border-border inline-flex aspect-square h-5 items-center justify-center rounded-full text-sm font-medium',
 		'$preset',
 		klass
 	]}

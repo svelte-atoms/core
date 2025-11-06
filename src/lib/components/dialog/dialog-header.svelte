@@ -32,7 +32,7 @@
 <HtmlAtom
 	{bond}
 	preset="dialog.header"
-	class={['flex w-full px-4 text-xl', '$preset', klass]}
+	class={['border-border', 'flex w-full px-4 text-xl', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

@@ -37,7 +37,7 @@
 <HtmlAtom
 	{bond}
 	preset="tree.body"
-	class={['pl-4', '$preset', klass]}
+	class={['border-border pl-4', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

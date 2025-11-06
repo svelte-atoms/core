@@ -42,7 +42,7 @@
 
 <HtmlAtom
 	preset="accordion.item.indicator"
-	class={['pointer-events-none flex items-center justify-center', '$preset', klass]}
+	class={['border-border pointer-events-none flex items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

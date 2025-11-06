@@ -67,7 +67,12 @@
 	<Stack.Item
 		{bond}
 		preset="tab"
-		class={['tab-root flex flex-col', !isActive && 'pointer-events-none', '$preset', klass]}
+		class={[
+			'border-border tab-root flex flex-col',
+			!isActive && 'pointer-events-none',
+			'$preset',
+			klass
+		]}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}
 		enter={enter?.bind(bond.state)}

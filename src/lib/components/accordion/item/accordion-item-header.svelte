@@ -40,7 +40,11 @@
 	{as}
 	{bond}
 	preset="accordion.item.header"
-	class={['relative box-border flex w-full cursor-pointer items-center', '$preset', klass]}
+	class={[
+		'border-border relative box-border flex w-full cursor-pointer items-center',
+		'$preset',
+		klass
+	]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}

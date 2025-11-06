@@ -35,7 +35,7 @@
 	{as}
 	{bond}
 	preset="card.subtitle"
-	class={['card-subtitle text-sm font-medium text-gray-600', '$preset', klass]}
+	class={['card-subtitle border-border text-sm font-medium text-gray-600', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

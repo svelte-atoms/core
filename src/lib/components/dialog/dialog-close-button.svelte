@@ -41,7 +41,7 @@
 	{as}
 	{bond}
 	preset="dialog.close-button"
-	class={['cursor-pointer', '$preset', klass]}
+	class={['border-border cursor-pointer', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

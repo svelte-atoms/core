@@ -31,7 +31,7 @@
 	{as}
 	{bond}
 	preset="toast.description"
-	class={['$preset', klass]}
+	class={['border-border', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

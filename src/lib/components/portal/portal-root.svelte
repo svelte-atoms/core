@@ -75,7 +75,7 @@
 <HtmlAtom
 	{bond}
 	preset="portal"
-	class={['pointer-events-none', '$preset', klass]}
+	class={['border-border pointer-events-none', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

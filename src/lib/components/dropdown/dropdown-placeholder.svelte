@@ -29,7 +29,7 @@
 		{bond}
 		preset="dropdown.placeholder"
 		class={[
-			'absolute inset-0 flex h-full w-full items-center px-2 leading-1 opacity-50 outline-none',
+			'border-border absolute inset-0 flex h-full w-full items-center px-2 leading-1 opacity-50 outline-none',
 			'$preset',
 			klass
 		]}

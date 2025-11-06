@@ -25,7 +25,7 @@
 <HtmlAtom
 	{bond}
 	preset="tabs.header"
-	class={['border-border relative flex min-w-full', '$preset', klass]}
+	class={['border-border border-border relative flex min-w-full', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

@@ -31,7 +31,7 @@
 <HtmlAtom
 	{bond}
 	preset="datagrid.body"
-	class={['$preset', klass, 'contents']}
+	class={['border-border', '$preset', klass, 'contents']}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

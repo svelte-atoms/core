@@ -38,7 +38,7 @@
 	);
 </script>
 
-<Input.Value
+<Input.Control
 	bind:value={bond.state.query}
 	{bond}
 	preset="dropdown.query"

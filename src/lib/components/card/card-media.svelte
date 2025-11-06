@@ -35,7 +35,7 @@
 	{as}
 	{bond}
 	preset="card.media"
-	class={['card-media overflow-hidden', '$preset', klass]}
+	class={['card-media border-border overflow-hidden', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}

@@ -26,7 +26,7 @@
 	{base}
 	{bond}
 	preset="menu.list"
-	class={['bg-background overflow-hidden p-0', '$preset', klass]}
+	class={['bg-background border-border overflow-hidden p-0', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}

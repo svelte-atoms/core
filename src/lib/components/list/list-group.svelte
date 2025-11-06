@@ -8,7 +8,7 @@
 <HtmlAtom
 	preset="list.group"
 	class={[
-		'rounded-b-inherit rounded-t-inherit flex flex-col',
+		'rounded-b-inherit rounded-t-inherit border-border flex flex-col',
 		'$preset',
 		toClassValue.apply(null, [klass, {}])
 	]}
