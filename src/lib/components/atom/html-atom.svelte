@@ -97,7 +97,7 @@
 	});
 
 	const _klass = $derived(
-		cn(klass, mergedVariants?.class ?? '').replace('$preset', cn(preset?.class))
+		cn(klass, mergedVariants?.class ?? '').replaceAll('$preset', cn(preset?.class))
 	);
 
 	const _base = $derived(base ?? preset?.base);
