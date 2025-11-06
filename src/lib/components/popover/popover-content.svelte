@@ -28,6 +28,7 @@
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
+	import { DURATION } from '$svelte-atoms/core/shared';
 
 	type Element = HtmlElementType<E>;
 
@@ -110,7 +111,7 @@
 				opacity: +isOpen,
 				y: (isOpen ? 0 : -1) * dy * 8
 			},
-			{ duration: 0.2 }
+			{ duration: DURATION.fast / 1000 }
 		);
 	}
 </script>
