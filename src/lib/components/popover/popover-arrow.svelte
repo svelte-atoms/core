@@ -1,15 +1,9 @@
-<script module lang="ts">
-	export type PopoverArrowProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { animate as motion } from 'motion';
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from './bond.svelte';
+	import type { PopoverArrowProps } from './types';
 
 	type Element = HTMLElementTagNameMap[E];
 

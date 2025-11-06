@@ -1,39 +1,30 @@
-<script module lang="ts">
-	import type { Override } from '$svelte-atoms/core/types';
-
-	export type AnimateParams = {
-		x: number;
-		y: number;
-		xOffset: number;
-		yOffset: number;
-		open: boolean;
-	};
-
-	export type PopoverOverlayProps<T extends HtmlElementTagName, B extends Base = Base> = Override<
-		HtmlAtomProps<T, B>,
-		{
-			children?: Snippet<[{ popover?: PopoverBond }]>;
-		}
-	>;
-
-	const k: PopoverOverlayProps<'div'> = {
-		class: []
-	};
-</script>
-
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { type Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
-	import { PortalBond, Teleport } from '$svelte-atoms/core/components/portal';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { PortalBond, PortalsBond, Teleport } from '$svelte-atoms/core/components/portal';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
 	import { DURATION } from '$svelte-atoms/core/shared';
+	import type { AnimateParams, PopoverContentProps } from './types';
 
 	type Element = HtmlElementType<E>;
 
 	const bond = PopoverBond.get();
-	const activePortalBond = PortalBond.get();
+	const activePortalBond = (() => {
+		const key = bond.state.props.portal;
+		if (key instanceof PortalBond) {
+			return key;
+		}
+
+		let portal: PortalBond | undefined | null = undefined;
+
+		if (typeof key === 'string') {
+			portal = PortalsBond.get()?.state.get(key);
+			console.error('portal was not found');
+		}
+
+		return portal ?? PortalBond.get();
+	})();
 
 	if (!bond) {
 		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
@@ -49,7 +40,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: PopoverOverlayProps<E, B> = $props();
+	}: PopoverContentProps<E, B> = $props();
 
 	const isOpen = $derived(bond.state.isOpen && !!bond.elements.trigger);
 	const portalId = $derived(activePortalBond?.id);

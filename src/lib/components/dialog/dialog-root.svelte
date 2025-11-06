@@ -5,6 +5,7 @@
 	> = HtmlAtomProps<E, B> & {
 		open?: boolean;
 		disabled?: boolean;
+		portal?: string;
 		factory?: (props: DialogBondProps) => DialogBond;
 		children?: Snippet<[{ dialog: DialogBond }]>;
 	};
@@ -24,6 +25,7 @@
 		open = $bindable(false),
 		disabled = false,
 		as = 'dialog' as E,
+		portal = undefined,
 		factory = _factory,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -95,7 +97,7 @@
 	{as}
 	{bond}
 	preset="dialog"
-	portal="root.l1"
+	portal={portal ?? 'root.l1'}
 	class={[
 		'border-border pointer-events-auto fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/10 opacity-0',
 		!open && 'pointer-events-none',
@@ -116,7 +118,7 @@
 	{...rootProps}
 >
 	<!-- <div class="w-full h-full flex items-center justify-center"> -->
-	<ActivePortal id="root.l1">
+	<ActivePortal id={portal ?? 'root.l1'}>
 		{@render children?.({ dialog: bond })}
 	</ActivePortal>
 	<!-- </div> -->

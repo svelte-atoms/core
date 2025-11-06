@@ -1,16 +1,7 @@
-<script module lang="ts">
-	export type PopoverTriggerProps<
-		T extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = HtmlAtomProps<T, B> & {
-		children?: Snippet<[{ popover?: PopoverBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from './bond.svelte';
+	import type { PopoverTriggerProps } from './types';
 
 	const bond = PopoverBond.get();
 

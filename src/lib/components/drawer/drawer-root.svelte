@@ -15,6 +15,7 @@
 	> & {
 		open?: boolean;
 		disabled?: boolean;
+		portal?: string;
 		onclose?: (event: Event, bond: DrawerBond) => void;
 		factory?: Factory<DrawerBond>;
 	};
@@ -38,6 +39,7 @@
 		class: klass = '',
 		as = 'dialog',
 		disabled = false,
+		portal = undefined,
 		onclose = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -92,7 +94,7 @@
 <Teleport
 	{as}
 	{bond}
-	portal="root.l1"
+	portal={portal ?? 'root.l1'}
 	preset="drawer"
 	class={[
 		'border-border pointer-events-auto h-full w-full overflow-hidden bg-transparent',
