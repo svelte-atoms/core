@@ -87,15 +87,6 @@
 			}
 		}
 	}
-	bind:files={
-		() => toFileList(files ?? []),
-		(v) => {
-			files = Array.from(v ?? []);
-			if (bond) {
-				bond.state.props.files = files;
-			}
-		}
-	}
 	class={cn(
 		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
 		preset?.class,
@@ -105,4 +96,13 @@
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}
+	
+	{@attach (node) => {
+		if (type === 'file') {
+			return on('input', () => {
+				files = Array.from(node.files || []);
+				bond!.state.props.files = files;
+			})(node);
+		}
+	}}
 />
