@@ -1,27 +1,15 @@
 <script module lang="ts">
 	export type InputPortals = 'input.l0' | 'input.l1' | 'input.l2' | 'input.l3';
-
-	export type InputProps = {
-		value?: ClassValue;
-		files?: File[];
-		date?: Date | null;
-		number?: number;
-		checked?: boolean;
-		class?: string;
-		type?: HTMLInputTypeAttribute | null;
-		preset?: PresetModuleName | (string & {});
-		children?: Snippet<[]>;
-	};
 </script>
 
-<script>
-	import type { Snippet } from 'svelte';
-	import type { HTMLInputTypeAttribute } from 'svelte/elements';
+<script lang="ts" generics="B extends Base = Base">
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
-	import { cn, toClassValue, type ClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
+	import type { InputControlProps } from './types';
 
 	const bond = InputBond.get();
 
@@ -33,11 +21,11 @@
 		checked = $bindable(),
 		class: klass = '',
 		type = 'text',
-		preset: presetKey = 'input.value',
+		preset: presetKey = 'input.control',
 		onchange = undefined,
 		oninput = undefined,
 		...restProps
-	}: InputProps = $props();
+	}: InputControlProps<B> = $props();
 
 	const preset = getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]);
 
@@ -81,10 +69,15 @@
 			event: ev
 		});
 	}
+
+	function toFileList(files: File[]) {
+		const dataTransfer = new DataTransfer();
+		files.forEach((file) => dataTransfer.items.add(file));
+		return dataTransfer.files;
+	}
 </script>
 
 <input
-	{type}
 	bind:value={
 		() => value,
 		(v) => {
@@ -95,10 +88,11 @@
 		}
 	}
 	class={cn(
-		'h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
+		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
 		preset?.class,
 		toClassValue(klass, bond)
 	)}
+	type={type ?? 'text'}
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}

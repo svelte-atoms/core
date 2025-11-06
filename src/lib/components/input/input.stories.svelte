@@ -26,9 +26,9 @@
 			<Label for="price-input">Price</Label>
 			<AInput.Root>
 				<AInput.Icon class="text-foreground box-content px-0">$</AInput.Icon>
-				<AInput.Value id="price-input" class="border-border box-content border-x px-2 py-2">
+				<AInput.Control id="price-input" class="border-border box-content border-x px-2 py-2">
 					<!--  -->
-				</AInput.Value>
+				</AInput.Control>
 				<AInput.Icon class="text-foreground box-content px-2">.00</AInput.Icon>
 
 				<AInput.Placeholder class="text-foreground/20 pl-2">Hello World</AInput.Placeholder>

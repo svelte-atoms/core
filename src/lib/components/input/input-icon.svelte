@@ -7,7 +7,7 @@
 <Icon
 	preset="input.icon"
 	class={[
-		'flex aspect-square h-full items-center justify-center bg-transparent text-sm leading-0',
+		'border-border flex aspect-square h-full items-center justify-center bg-transparent text-sm leading-0',
 		'$preset',
 		klass
 	]}
