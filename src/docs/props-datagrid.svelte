@@ -4,24 +4,24 @@
 	let { data = [] } = $props();
 </script>
 
-<div class="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+<div class="border-border bg-card overflow-x-auto rounded-lg border">
 	<DataGrid.Root class="min-w-full">
-		<DataGrid.Header class="bg-gray-50">
+		<DataGrid.Header class="bg-muted">
 			<DataGrid.Tr>
 				<DataGrid.Th
-					class="border-b border-gray-200 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+					class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
 					>Prop</DataGrid.Th
 				>
 				<DataGrid.Th
-					class="border-b border-gray-200 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+					class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
 					>Type</DataGrid.Th
 				>
 				<DataGrid.Th
-					class="border-b border-gray-200 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+					class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
 					>Default</DataGrid.Th
 				>
 				<DataGrid.Th
-					class="border-b border-gray-200 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+					class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
 					width="2fr">Description</DataGrid.Th
 				>
 			</DataGrid.Tr>
@@ -30,16 +30,16 @@
 		<DataGrid.Body>
 			{#each data as item (item)}
 				<DataGrid.Tr>
-					<DataGrid.Td class="px-6 py-4 font-mono text-sm whitespace-nowrap text-purple-600"
+					<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
 						>{item.name}</DataGrid.Td
 					>
-					<DataGrid.Td class="px-6 py-4 text-sm whitespace-nowrap text-gray-600"
+					<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
 						>{item.type}</DataGrid.Td
 					>
-					<DataGrid.Td class="px-6 py-4 text-sm whitespace-nowrap text-gray-600"
+					<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
 						>{item.default}</DataGrid.Td
 					>
-					<DataGrid.Td class="px-6 py-4 text-sm whitespace-nowrap text-gray-600"
+					<DataGrid.Td class="text-foreground px-6 py-4 text-sm whitespace-nowrap"
 						>{item.description}</DataGrid.Td
 					>
 				</DataGrid.Tr>
