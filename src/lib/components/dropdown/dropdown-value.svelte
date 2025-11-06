@@ -28,8 +28,6 @@
 		ev.preventDefault();
 		ev.stopPropagation();
 
-		console.log('unselect', value);
-
 		bond?.state.unselect([value]);
 	}
 </script>

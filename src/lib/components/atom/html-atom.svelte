@@ -96,7 +96,9 @@
 		};
 	});
 
-	const _klass = $derived([compilePresetPlaceholder(klass), mergedVariants?.class ?? '']);
+	const _klass = $derived(
+		cn(klass, mergedVariants?.class ?? '').replaceAll('$preset', cn(preset?.class))
+	);
 
 	const _base = $derived(base ?? preset?.base);
 	const _as = $derived(as ?? preset?.as);
@@ -120,24 +122,6 @@
 	const atom = rootBond?.state?.props?.renderers?.html ?? HtmlElement;
 
 	const Component = $derived(base ?? atom) as ComponentBase;
-
-	function compilePresetPlaceholder(klass: ClassValue): ReturnType<typeof toClassValue> {
-		if (Array.isArray(klass)) {
-			return klass.map((k) => compilePresetPlaceholder(k));
-		}
-
-		const compiled = toClassValue.apply(bond, [klass, bond]);
-
-		if (Array.isArray(compiled)) {
-			return compiled.map((c) => compilePresetPlaceholder(c));
-		}
-
-		if (typeof compiled === 'string') {
-			return compiled.replace('$preset', cn(preset?.class));
-		}
-
-		return compiled;
-	}
 
 	/**
 	 * Resolve variant definition to props

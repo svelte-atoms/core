@@ -1,21 +1,7 @@
-<script module lang="ts">
-	import type { Snippet } from 'svelte';
-
-	export type SlideoverContentProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ sidebar?: SidebarBond<any> }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond } from './bond.svelte';
-	import type { Override } from '$svelte-atoms/core/types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { SlideoverContentProps } from './types';
 
 	const bond = SidebarBond.get();
 

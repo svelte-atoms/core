@@ -13,10 +13,11 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
-	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+	import { DURATION } from '$svelte-atoms/core/shared';
+	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 
 	let {
 		class: klass = '',
@@ -59,19 +60,21 @@
 	}
 
 	function _animate(node: HTMLDialogElement) {
-		if (open) {
-			bond.elements.root?.show?.();
-			motion(
-				node,
-				{
-					opacity: +open
-				},
-				{
-					duration: 0,
-					ease: 'anticipate'
+		motion(
+			node,
+			{
+				opacity: +open
+			},
+			{
+				duration: DURATION.normal / 1000,
+				ease: 'anticipate',
+				onComplete: () => {
+					if (!open) {
+						node?.close?.();
+					}
 				}
-			);
-		}
+			}
+		);
 	}
 
 	function onclickDialogElement(ev: MouseEvent) {

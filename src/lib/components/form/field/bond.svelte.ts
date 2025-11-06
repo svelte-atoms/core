@@ -76,6 +76,10 @@ export type FieldStateProps<
 	readonly: boolean;
 	name?: string;
 	value?: Value;
+	files?: File[];
+	date?: Date | null;
+	number?: number;
+	checked?: boolean;
 	schema?: Schema;
 	validator?: ValidationAdapter<Schema, Value>;
 	onvalidation?: (errors: ValidationError[]) => void;
@@ -158,7 +162,7 @@ export class FieldBondState<
 	constructor(props: () => Props) {
 		super(props);
 
-		this.#form = FormBond.get().state;
+		this.#form = FormBond.get()?.state;
 
 		if (!this.#form) {
 			throw new Error(
@@ -169,6 +173,22 @@ export class FieldBondState<
 
 	get value() {
 		return this.props.value;
+	}
+
+	get files() {
+		return this.props.files;
+	}
+
+	get date() {
+		return this.props.date;
+	}
+
+	get number() {
+		return this.props.number;
+	}
+
+	get checked() {
+		return this.props.checked;
 	}
 
 	get errors() {

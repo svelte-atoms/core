@@ -41,6 +41,11 @@
 	const unmount = bond.mount();
 	$effect(() => unmount);
 
+	const rootProps = $derived({
+		...bond?.root?.(),
+		...restProps
+	});
+
 	function _factory() {
 		const item = dropdown?.state.item(value);
 
@@ -56,7 +61,7 @@
 		return new DropdownItemBond(bondState);
 	}
 
-	function _onclick(ev: MouseEvent) {
+	function handleClick(ev: MouseEvent) {
 		onclick?.(ev);
 
 		if (ev.defaultPrevented) {
@@ -76,12 +81,11 @@
 </script>
 
 <Item
-	{@attach (node) => (bond.elements.root = node)}
 	{bond}
 	{preset}
 	class={[
-		bond.state.isHighlighted && 'bg-foreground/10',
-		bond.state.isSelected && 'bg-accent/10',
+		bond.state.isHighlighted && 'bg-foreground/5',
+		bond.state.isSelected && 'bg-primary/5 hover:bg-primary/10 active:bg-primary/15',
 		'$preset',
 		klass
 	]}
@@ -91,8 +95,8 @@
 	animate={animate?.bind(bond.state)}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
-	onclick={_onclick}
-	{...restProps}
+	onclick={handleClick}
+	{...rootProps}
 >
 	{@render children?.({ dropdownItem: bond })}
 </Item>

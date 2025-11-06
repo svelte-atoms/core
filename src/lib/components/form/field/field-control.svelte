@@ -26,6 +26,9 @@
 		class: klass = '',
 		value = $bindable(),
 		checked = $bindable(),
+		number = $bindable(),
+		date = $bindable(),
+		files = $bindable(),
 		children = undefined,
 		oninput = undefined,
 		...restProps
@@ -41,6 +44,10 @@
 		}
 
 		bond.state.props.value = value = detail?.value;
+		bond.state.props.files = files = detail?.files ?? [];
+		bond.state.props.date = date = detail?.date ?? null;
+		bond.state.props.number = number = detail?.number ?? null;
+		bond.state.props.checked = checked = detail?.checked ?? false;
 	}
 </script>
 

@@ -27,12 +27,12 @@
 				<div class="flex items-center gap-8">
 					<a href="/" class="group flex items-center space-x-3">
 						<div
-							class=" flex h-10 w-10 transform items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105"
+							class=" flex h-12 w-12 transform items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105"
 						>
 							<Logo class="text-palette-proton" />
 						</div>
 						<div>
-							<h1 class="bg-gradient-to-r text-xl font-bold text-palette-ion">Atomic SV</h1>
+							<h1 class="bg-gradient-to-r text-xl font-bold text-palette-ion">Atoms</h1>
 							<p class="text-xs text-gray-500 dark:text-gray-400">UI Component Library</p>
 						</div>
 					</a>

@@ -58,8 +58,8 @@
 	preset="tab.header"
 	as="button"
 	class={[
-		'border-border text-foreground/60 hover:text-foreground/80 active:text-foreground/100 flex cursor-pointer items-center px-2 py-2 text-sm font-medium transition-colors duration-100',
-		isActive && 'text-primary',
+		'border-border text-foreground/60 hover:text-foreground/80 active:text-foreground/100 bg-foreground/0 hover:bg-foreground/5 active:bg-foreground/10 flex cursor-pointer items-center px-2 py-2 text-sm font-medium transition-colors duration-100',
+		isActive && 'text-primary bg-accent/10 hover:bg-accent/15 active:bg-accent/20',
 		isDisabled && 'opacity-50',
 		'$preset',
 		klass
