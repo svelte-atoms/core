@@ -2,6 +2,7 @@ import type { PopoverStateProps } from '$svelte-atoms/core/components/popover/bo
 import { getContext, setContext } from 'svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { DropdownBond, DropdownBondState } from '../bond.svelte';
+import { createAttachmentKey } from 'svelte/attachments';
 
 export type DropdownItemBondProps<T> = BondStateProps & {
 	value: string;
@@ -60,6 +61,15 @@ export class DropdownItemBond<T = unknown> extends Bond<
 
 	share() {
 		return DropdownItemBond.set<T>(this) as this;
+	}
+
+	root() {
+		return {
+			'data-selected': this.state.isSelected,
+			[createAttachmentKey()]: (node: HTMLElement) => {
+				this.elements.root = node;
+			}
+		};
 	}
 
 	static get(): DropdownItemBond | undefined {
