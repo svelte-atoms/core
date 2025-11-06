@@ -7,9 +7,9 @@
 	import { getPreset } from '$svelte-atoms/core/context';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputControlProps } from './types';
-	import type { Base } from '../atom';
 
 	const bond = InputBond.get();
 
@@ -96,7 +96,6 @@
 	onchange={handleChange}
 	oninput={handleInput}
 	{...valueProps}
-	
 	{@attach (node) => {
 		if (type === 'file') {
 			return on('input', () => {
