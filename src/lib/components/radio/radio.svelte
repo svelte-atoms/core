@@ -72,7 +72,7 @@
 <Stack.Root
 	preset="radio"
 	class={[
-		'text-foreground box-border inline-flex aspect-square size-4 max-w-fit cursor-pointer place-items-center rounded-full border p-[3px]',
+		'text-foreground box-border inline-flex aspect-square size-4 max-w-fit cursor-pointer place-items-center rounded-full border p-0',
 		isDisabled && 'pointer-events-none opacity-50',
 		'$preset',
 		toClassValue.apply(null, [klass, {}])
@@ -99,11 +99,11 @@
 	{#if isChecked}
 		{#if checkedContent}
 			<HtmlAtom
-				class="rounded-inherit pointer-events-none size-full bg-current"
+				class="rounded-inherit pointer-events-none size-1/2 bg-current"
 				base={checkedContent}
 			/>
 		{:else}
-			<Stack.Item class="rounded-inherit pointer-events-none size-full bg-current"></Stack.Item>
+			<Stack.Item class="rounded-inherit pointer-events-none size-1/2 bg-current"></Stack.Item>
 		{/if}
 	{/if}
 </Stack.Root>

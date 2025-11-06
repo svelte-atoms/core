@@ -20,22 +20,22 @@
 				<div class="flex h-full w-full flex-col items-center justify-center">
 					<RadioGroupComponent class="gap-4" name="choice" bind:value>
 						<label class="flex items-center gap-2">
-							<RadioComponent class="size-8 p-1.5" value="t1" />
+							<RadioComponent class="size-8" value="t1" />
 							<div>Test 1</div>
 						</label>
 
 						<label class="flex items-center gap-2">
-							<RadioComponent class="size-8 p-1.5" value="t2" />
+							<RadioComponent class="size-8" value="t2" />
 							<div>Test 2</div>
 						</label>
 
 						<label class="flex items-center gap-2">
-							<RadioComponent class="size-8 p-1.5" value="t3" />
+							<RadioComponent class="size-8" value="t3" />
 							<div>Test 3</div>
 						</label>
 
 						<label class="flex items-center gap-2">
-							<RadioComponent class="size-8 p-1.5" value="t4" />
+							<RadioComponent class="size-8" value="t4" />
 							<div>Test 4</div>
 						</label>
 					</RadioGroupComponent>
