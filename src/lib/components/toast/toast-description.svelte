@@ -1,15 +1,9 @@
-<script module lang="ts">
-	export type ToastDescriptionProps<T extends keyof HTMLElementTagNameMap> = HtmlAtomProps<T> & {
-		as?: T;
-		children?: Snippet<[{ toast?: ToastBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import type { ToastDescriptionProps } from './types';
 	import { ToastBond } from './bond';
-	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+	export type { ToastDescriptionProps } from './types';
 
 	const bond = ToastBond.get();
 

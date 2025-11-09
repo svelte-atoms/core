@@ -1,23 +1,12 @@
-<script module lang="ts">
-	export type IconProps<
-		Src extends Component = Component,
-		E extends HtmlElementTagName = 'div',
-		B extends Base = Base
-	> = {
-		class?: string;
-		src?: Src;
-		children?: Snippet;
-	} & HtmlAtomProps<E, B>;
-</script>
-
 <script
 	lang="ts"
 	generics="Src extends Component = Component, E extends HtmlElementTagName = 'div', B extends Base = Base"
 >
-	import type { Component, Snippet } from 'svelte';
+	import type { Component } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+	import type { IconProps } from './types';
 
 	type Element = HtmlElementType<'div'>;
 

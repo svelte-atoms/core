@@ -1,16 +1,9 @@
-<script module lang="ts">
-	import type { Snippet } from 'svelte';
-
-	export type DatagridCheckboxProps = HtmlAtomProps & {
-		children?: Snippet;
-	};
-</script>
-
 <script lang="ts">
+	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
+	import type { DatagridCheckboxProps } from './types';
 	import { DataGridBond } from './bond.svelte';
 	import { DataGridTrBond } from './tr/bond.svelte';
-	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
-	import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+	export type { DatagridCheckboxProps } from './types';
 
 	const datagridBond = DataGridBond.get();
 	const datagridTrBond = DataGridTrBond.get();

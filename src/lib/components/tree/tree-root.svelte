@@ -1,23 +1,8 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type TreeRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		class?: string;
-		open?: boolean;
-		disabled?: boolean;
-		factory?: Factory<TreeBond>;
-		children?: Snippet<[{ tree: TreeBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
+	import type { TreeRootProps } from './types';
 
 	let {
 		open = $bindable(false),

@@ -1,8 +1,5 @@
-<script module lang="ts">
-	export type ComboboxRootProps = {};
-</script>
-
 <script lang="ts" generics="D">
+	import type { ComboboxRootProps } from './types';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { ComboboxBond, ComboboxBondState, type ComboboxBondProps } from './bond.svelte';
 
@@ -20,7 +17,7 @@
 		factory = _factory,
 		children = undefined,
 		...restProps
-	} = $props();
+	}: ComboboxRootProps = $props();
 
 	const bondProps = defineState<ComboboxBondProps>(
 		[

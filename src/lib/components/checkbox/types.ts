@@ -1,7 +1,13 @@
 import { type Component, type Snippet } from 'svelte';
 import { type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
-export type CheckboxProps = HtmlAtomProps<'button'> & {
+/**
+ * Extend this interface to add custom checkbox properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CheckboxExtendProps {}
+
+export interface CheckboxProps extends HtmlAtomProps<'button'>, CheckboxExtendProps {
 	value?: string;
 	group?: string[];
 	checked?: boolean;
@@ -11,4 +17,4 @@ export type CheckboxProps = HtmlAtomProps<'button'> & {
 	children?: Snippet<[]>;
 	onclick?: (ev?: Event) => void;
 	onchange?: (ev?: Event, options?: { checked: boolean }) => void;
-};
+}

@@ -1,17 +1,10 @@
-<script module lang="ts">
-	export type DatagridBodyProps<
-		E extends HtmlElementTagName,
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ datagrid?: DataGridBond<E> }]>;
-	};
-</script>
-
-<script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import type { Snippet } from 'svelte';
+<script lang="ts" generics="T, E extends HtmlElementTagName, B extends Base = Base">
+	import type { DatagridBodyProps } from './types';
 	import { DataGridBond } from './bond.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import type { HtmlElementTagName } from '../element';
 	export type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
+	export type { DatagridBodyProps } from './types';
 
 	const bond = DataGridBond.get();
 
@@ -25,7 +18,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: DatagridBodyProps<E, B> = $props();
+	}: DatagridBodyProps<T, E, B> = $props();
 </script>
 
 <HtmlAtom

@@ -1,28 +1,9 @@
-<script module lang="ts">
-	export type CollapsibleRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ collapsible: CollapsibleBond }]>;
-		}
-	> & {
-		open?: boolean;
-		value?: string;
-		data?: any;
-		disabled?: boolean;
-		factory?: Factory<CollapsibleBond>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { nanoid } from 'nanoid';
-	import type { Factory, Override } from '$svelte-atoms/core/types';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CollapsibleBond, CollapsibleState, type CollapsibleStateProps } from './bond.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { CollapsibleRootProps } from './types';
 
 	let {
 		open = $bindable(false),

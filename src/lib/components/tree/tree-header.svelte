@@ -1,20 +1,8 @@
-<script module lang="ts">
-	export type TreeHeaderProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		class?: string;
-		open?: boolean;
-		disabled?: boolean;
-		children?: Snippet<[{ tree: TreeBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TreeBond } from './bond.svelte';
+	import type { TreeHeaderProps } from './types';
 
 	type Element = HTMLElementTagNameMap[E];
 

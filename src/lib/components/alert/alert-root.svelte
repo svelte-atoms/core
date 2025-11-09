@@ -1,24 +1,8 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type AlertRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		dismissible?: boolean;
-		dismissed?: boolean;
-		disabled?: boolean;
-		extend?: Record<string, unknown>;
-		factory?: Factory<AlertBond>;
-		children?: Snippet<[{ alert: AlertBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { AlertBond, AlertBondState, type AlertBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AlertBond, AlertBondState, type AlertBondProps } from './bond.svelte';
+	import type { AlertRootProps } from './types';
 	import './alert.css';
 
 	let {

@@ -1,3 +1,4 @@
+export * from './types';
 export { Root as Form } from './atoms';
 export { Field } from './field';
 

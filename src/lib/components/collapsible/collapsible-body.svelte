@@ -1,20 +1,7 @@
-<script module lang="ts">
-	export type CollapsibleBodyProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ collapsible?: CollapsibleBond }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CollapsibleBond } from './bond.svelte';
-	import type { Override } from '$svelte-atoms/core/types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { CollapsibleBodyProps } from './types';
 
 	const bond = CollapsibleBond.get();
 

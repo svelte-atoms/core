@@ -1,8 +1,8 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
-	import { setDatagridHeaderContext } from './context';
-	import type { DatagridHeaderProps } from './types';
-	import { DataGridBond } from './bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { setDatagridHeaderContext } from './context';
+	import { DataGridBond } from './bond.svelte';
+	import type { DatagridHeaderProps } from './types';
 
 	const bond = DataGridBond.get();
 

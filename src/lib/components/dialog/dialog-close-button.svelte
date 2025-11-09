@@ -1,15 +1,12 @@
-<script module lang="ts">
-	export type DialogCloseButtonProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = HtmlAtomProps<E, B>;
-</script>
-
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { DialogBond } from './bond.svelte';
+<script
+	lang="ts"
+	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
+>
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import Close from '$svelte-atoms/core/icons/icon-close.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { DialogBond } from './bond.svelte';
+	import type { DialogCloseButtonProps } from './types';
 
 	const bond = DialogBond.get();
 

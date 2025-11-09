@@ -1,19 +1,10 @@
-<script lang="ts" module>
-	export type AccordionItemIndicatorProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ accordionItem: AccordionItemBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
-	import { AccordionItemBond } from './bond.svelte';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AccordionItemBond } from './bond.svelte';
+	import type { AccordionItemIndicatorProps } from './types';
 
 	const bond = AccordionItemBond.get();
 	const isOpen = $derived(bond?.state?.isOpen ?? false);

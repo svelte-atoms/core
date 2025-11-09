@@ -1,26 +1,8 @@
-<script module>
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type AccordionRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		value?: string;
-		values?: string[];
-		data?: unknown;
-		multiple?: boolean;
-		collapsible?: boolean;
-		disabled?: boolean;
-		factory?: Factory<AccordionBond>;
-		children?: Snippet<[{ accordion: AccordionBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { AccordionBond, AccordionState, type AccordionStateProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import type { AccordionRootProps } from './types';
 
 	let {
 		value = $bindable(undefined),

@@ -1,22 +1,8 @@
-<script module lang="ts">
-	export type DrawerBodyProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			as?: E;
-			children?: Snippet<[{ drawer?: DrawerBond }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Override } from '$svelte-atoms/core/types';
+	import type { DrawerBodyProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
 	type Element = HTMLElementTagNameMap[E];
 

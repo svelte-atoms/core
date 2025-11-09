@@ -1,36 +1,11 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type SlideoverRootProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ drawer: DrawerBond }]>;
-			initial?: (node: HTMLElement, bond: DrawerBond) => void;
-			enter?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
-			exit?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
-		}
-	> & {
-		open?: boolean;
-		disabled?: boolean;
-		portal?: string | PortalBond;
-		onclose?: (event: Event, bond: DrawerBond) => void;
-		factory?: Factory<DrawerBond>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap='dialog', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Override } from '$svelte-atoms/core/types';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { type TransitionFunction } from '$svelte-atoms/core/components/element';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
-	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
-	import { ActivePortal, type PortalBond } from '../portal';
+	import type { SlideoverRootProps } from './types';
+	import { ActivePortal } from '../portal';
 
 	type Element = HTMLElementTagNameMap[E];
 

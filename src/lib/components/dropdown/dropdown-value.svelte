@@ -1,8 +1,8 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { DropdownBond } from './bond.svelte';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
+	import { DropdownBond } from './bond.svelte';
 
 	const bond = DropdownBond.get();
 

@@ -1,24 +1,10 @@
-<script module lang="ts">
-	export type CollapsibleHeaderProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ collapsible?: CollapsibleBond }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
-	import { CollapsibleBond } from './bond.svelte';
 	import { Icon } from '$svelte-atoms/core/components/icon';
-
-	import type { Override } from '$svelte-atoms/core/types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
+	import { CollapsibleBond } from './bond.svelte';
+	import type { CollapsibleIndicatorProps } from './types';
 
 	const bond = CollapsibleBond.get();
 	const isOpen = $derived(bond?.state.props.open ?? false);
@@ -33,8 +19,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: CollapsibleHeaderProps<E, B> = $props();
-
+	}: CollapsibleIndicatorProps<E, B> = $props();
 	const indicatorProps = $derived({
 		...bond?.indicator(),
 		...restProps

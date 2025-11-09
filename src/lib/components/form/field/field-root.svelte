@@ -1,39 +1,10 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type FieldRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			disabled: boolean;
-			readonly: boolean;
-			name?: string;
-			value?: any;
-			schema?: Schema;
-			parse: (schema: Schema) => void;
-			extend: any;
-			factory?: Factory<FieldBond>;
-			children?: Snippet<[{ field?: FieldBond }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { onDestroy, type Snippet } from 'svelte';
-	import { FieldBond, FieldBondState, type FieldStateProps } from './bond.svelte';
-	import { FormBond } from '../bond.svelte';
-	import type { Override } from '$svelte-atoms/core/types';
+	import { onDestroy } from 'svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import {
-		HtmlAtom,
-		type ElementType,
-		type HtmlAtomProps,
-		type Base
-	} from '$svelte-atoms/core/components/atom';
-
-	type Element = ElementType<E>;
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { FieldBond, FieldBondState, type FieldStateProps } from './bond.svelte';
+	import type { FieldRootProps } from '../types';
+	import { FormBond } from '../bond.svelte';
 
 	const formBond = FormBond.get();
 
@@ -46,7 +17,7 @@
 		factory = _factory,
 		children = undefined,
 		...restProps
-	}: FieldRootProps<E, B, Extension, Schema> = $props();
+	}: FieldRootProps<E, B> = $props();
 
 	const bondProps = defineState<FieldStateProps>([
 		defineProperty(

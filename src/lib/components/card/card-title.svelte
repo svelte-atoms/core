@@ -1,14 +1,7 @@
-<script module lang="ts">
-	export type CardTitleProps<
-		E extends keyof HTMLElementTagNameMap = 'h3',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B>;
-</script>
-
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CardBond } from './bond.svelte';
-
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	export type { CardTitleProps } from './types';
 
 	const bond = CardBond.get();
 

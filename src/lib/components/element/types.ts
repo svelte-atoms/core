@@ -3,7 +3,7 @@ import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
 import type { ClassValue } from '$svelte-atoms/core/utils';
 
-export type ElementProps<T extends ElementTagName> = Record<string, unknown> & {
+export interface ElementProps<T extends ElementTagName> extends Record<string, unknown> {
 	class?: ClassValue | ClassValue[];
 	as?: T | (string & {});
 	global?: boolean;
@@ -16,15 +16,18 @@ export type ElementProps<T extends ElementTagName> = Record<string, unknown> & {
 	children?: Snippet;
 
 	[key: string]: unknown;
-};
+}
 
 export type HtmlElementTagName = keyof HTMLElementTagNameMap;
 export type SvgElementTagName = keyof SVGElementTagNameMap;
 export type MathMLElementTagName = keyof MathMLElementTagNameMap;
 
-export type HtmlElementProps<T extends HtmlElementTagName = 'div'> = ElementProps<T>;
-export type SvgElementProps<T extends SvgElementTagName = 'g'> = ElementProps<T>;
-export type MathMLElementProps<T extends MathMLElementTagName> = ElementProps<T>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface MathMLElementProps<T extends MathMLElementTagName> extends ElementProps<T> {}
 
 export type ElementTagName = HtmlElementTagName | SvgElementTagName | MathMLElementTagName;
 
@@ -46,8 +49,11 @@ export type ElementAttributes<T extends ElementTagName> = T extends HtmlElementT
 		? SVGAttributes<ElementType<T>>
 		: never;
 
-export type TransitionFunction<T extends ElementTagName> = (
-	node: ElementType<T>
-) => Partial<TransitionConfig>;
+export interface TransitionFunction<T extends ElementTagName> {
+	(node: ElementType<T>): Partial<TransitionConfig>;
+}
 
-export type NodeFunction<T extends ElementTagName> = (node: ElementType<T>, ...args: any[]) => any;
+export interface NodeFunction<T extends ElementTagName> {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	(node: ElementType<T>, ...args: any[]): any;
+}

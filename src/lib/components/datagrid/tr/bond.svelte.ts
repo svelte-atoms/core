@@ -1,7 +1,7 @@
-import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import { DataGridBond } from '../bond.svelte';
+import { createAttachmentKey } from 'svelte/attachments';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { DataGridBond } from '../bond.svelte';
 
 export type DataGridTrBondProps<T = unknown> = BondStateProps & {
 	value?: string;
@@ -54,6 +54,8 @@ export class DataGridTrBond<
 	root(props: Record<string, unknown> = {}) {
 		return {
 			'data-kind': DATAGRID_TR_ELEMENTS_KIND.root,
+			'data-header': this.state.isHeader ? 'true' : undefined,
+			'data-selected': this.state.isSelected ? 'true' : undefined,
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.root = node;

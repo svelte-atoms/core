@@ -1,29 +1,85 @@
 import type { Snippet } from 'svelte';
 import type { DataGridBond } from './bond.svelte';
 import type { CheckboxProps } from '../checkbox/types';
+import type { Factory } from '$svelte-atoms/core/types';
+import type { DataGridTrBond } from './tr/bond.svelte';
+import type { DataGridThBond } from './th/bond.svelte';
+import type { HtmlAtomProps, Base } from '../atom';
+import type { HtmlElementTagName } from '../element';
+import type { Override } from '$svelte-atoms/core/types';
 
-export type DatagridContext<T = unknown> = DataGridBond<T> | { [key: string]: unknown };
+/**
+ * Extend this interface to add custom datagrid root properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridRootExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid header properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridHeaderExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid body properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridBodyExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid footer properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridFooterExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid th properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridThExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid td properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridTdExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid checkbox properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridCheckboxExtendProps {}
+
+/**
+ * Extend this interface to add custom datagrid tr properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface DatagridTrExtendProps {}
+
+export interface DatagridContext<T = unknown> extends DataGridBond<T> {
+	[key: string]: unknown;
+}
 
 export type Direction = 'asc' | 'desc';
 
-export type Row<T = unknown> = {
+export interface Row<T = unknown> {
 	value: string;
 	data: T;
-};
+}
 
-export type SelectedRows<T = unknown> = {
+export interface SelectedRows<T = unknown> {
 	[id: string]: T;
-};
+}
 
 export type SortableType = string | (<T>(d: T) => string | number | boolean | Date);
 
-export type SortBy = {
+export interface SortBy {
 	id: string;
 	direction: Direction;
 	by?: SortableType;
-};
+}
 
-export type Column = {
+export interface Column {
 	id: string;
 	name: () => string;
 	index: () => number;
@@ -32,69 +88,83 @@ export type Column = {
 	screen?: string;
 	width?: string;
 	hidden: () => boolean;
-};
+}
 
-export type DatagridRootProps<T> = {
+export interface DatagridRootProps<T> extends DatagridRootExtendProps {
 	class?: string;
 	template?: string;
 	values?: string[];
 	data?: T[];
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
-};
+}
 
-export type DatagridHeaderProps<T> = {
+export interface DatagridHeaderProps<T> extends DatagridHeaderExtendProps {
 	class?: string;
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
-};
+}
 
-export type DatagridBodyProps<T> = {
+export interface DatagridBodyProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base>
+	extends DatagridBodyExtendProps {
 	class?: string;
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
-};
+}
 
-export type DatagridFooterProps<T> = {
+export interface DatagridFooterProps<T> extends DatagridFooterExtendProps {
 	class?: string;
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
-};
+}
 
-export type DatagridThProps<T> = {
+export interface DatagridThProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> extends Override<
+			HtmlAtomProps<E, B>,
+			{
+				children?: Snippet<[{ th: DatagridContext<T> }]>;
+			}
+		>,
+		DatagridThExtendProps {
+	id?: string;
 	class?: string;
 	width?: string;
 	direction?: Direction;
 	screen?: string;
 	sortable?: boolean | SortableType;
-	readonly element?: HTMLElement;
-	children?: Snippet<
-		[
-			{
-				context: DatagridContext<T>;
-			}
-		]
-	>;
-};
+	hidden?: boolean;
+	factory?: () => DataGridThBond<T>;
+}
 
-export type DatagridTdProps<T> = {
+export interface DatagridTdProps<T> extends DatagridTdExtendProps {
 	class?: string;
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
 	onclick?: (ev: Event, options: { context?: DatagridContext<T> }) => void;
-};
+}
 
-export type DatagridCheckboxProps = CheckboxProps & {
+export interface DatagridCheckboxProps
+	extends Omit<CheckboxProps, 'children'>,
+		DatagridCheckboxExtendProps {
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext }]>;
-};
+}
 
-export type DatagridTrProps<T> = {
+export interface DatagridTrProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base>
+	extends Override<
+			HtmlAtomProps<E, B>,
+			{
+				children?: Snippet<[{ tr: DatagridContext<T> }]>;
+			}
+		>,
+		DatagridTrExtendProps {
 	class?: string;
 	value?: string;
 	rows?: string;
 	data?: T;
-	readonly element?: HTMLElement;
-	children?: Snippet<[{ context: DatagridContext<T> }]>;
-	onclick?: (ev: Event, options: { context?: DatagridContext<T> }) => void;
-};
+	factory?: Factory<DataGridTrBond<T>>;
+	onclick?: (ev: Event, options: { tr?: DatagridContext<T> }) => void;
+}

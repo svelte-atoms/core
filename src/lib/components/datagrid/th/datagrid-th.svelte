@@ -1,31 +1,10 @@
-<script module lang="ts">
-	export type DatagridThProps = HtmlAtomProps<'div'> & {
-		id?: string;
-		class?: string;
-		width?: string;
-		direction?: Direction;
-		screen?: string;
-		sortable?: boolean | SortableType;
-		hidden?: boolean;
-		factory?: () => DataGridThBond<unknown>;
-		children?: Snippet<
-			[
-				{
-					th: DatagridContext;
-				}
-			]
-		>;
-	};
-</script>
-
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { nanoid } from 'nanoid';
-	import { DataGridThBond, DataGridThBondState, type DataGridThBondProps } from './bond.svelte';
-	import type { Direction, SortableType } from '$svelte-atoms/core/types';
-	import type { DatagridContext } from '../context';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type Base, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { DataGridThBond, DataGridThBondState, type DataGridThBondProps } from './bond.svelte';
+	import type { DatagridContext } from '../context';
+	import type { DatagridThProps } from '../types';
 
 	let {
 		class: klass = '',

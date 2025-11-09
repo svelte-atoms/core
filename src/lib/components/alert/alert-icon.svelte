@@ -1,18 +1,8 @@
-<script module lang="ts">
-	export type AlertIconProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ alert: AlertBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { AlertBond } from './bond.svelte';
-
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { type HtmlAtomProps, type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { AlertBond } from './bond.svelte';
+	import type { AlertIconProps } from './types';
 
 	const bond = AlertBond.get();
 

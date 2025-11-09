@@ -1,27 +1,13 @@
-<script module>
-	export type AccordionItemRootProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ accordionItem: AccordionItemBond }]>;
-		value?: string;
-		data?: any;
-		disabled?: boolean;
-		factory?: Factory<AccordionItemBond>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { nanoid } from 'nanoid';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import {
 		AccordionItemBond,
 		AccordionItemBondState,
 		type AccordionItemBondProps
 	} from './bond.svelte';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import type { Factory } from '$svelte-atoms/core/types';
+	import type { AccordionItemRootProps } from './types';
 
 	let {
 		class: klass = '',
