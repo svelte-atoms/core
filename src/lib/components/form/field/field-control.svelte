@@ -1,23 +1,7 @@
-<script module lang="ts">
-	export type FieldInputProps<B extends Base<{ value?: unknown }>> = Override<
-		HtmlAtomProps<any, B>,
-		{
-			value?: any;
-			valueAsDate?: Date;
-			valueAsNumber?: number;
-			checked?: boolean;
-			files?: File[] | null;
-			oninput?: (ev: CustomEvent, detail?: { value: any }) => void;
-			children?: Snippet;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="B extends Base<{value: unknown}>">
-	import type { Snippet } from 'svelte';
-	import type { Override } from '$svelte-atoms/core/types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { FieldBond } from './bond.svelte';
+	import type { FieldControlProps } from '../types';
 
 	const bond = FieldBond.get();
 	const name = $derived(bond?.state?.props?.name);
@@ -32,8 +16,7 @@
 		children = undefined,
 		oninput = undefined,
 		...restProps
-	}: FieldInputProps<B> = $props();
-
+	}: FieldControlProps<B> = $props();
 	const controlProps = $derived({ ...bond.control(), ...restProps });
 
 	function handleInput(ev: CustomEvent, detail: any) {

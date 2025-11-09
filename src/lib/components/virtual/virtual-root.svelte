@@ -1,26 +1,7 @@
-<script module lang="ts">
-	export type VirtualListViewportProps<T> = {
-		class?: string;
-		data: T[];
-		itemHeight?: number; // Optional for dynamic heights
-		overscan?: number; // Buffer items to render above/below viewport
-		onScroll?: (scrollTop: number) => void;
-		scrollToIndex?: number; // Scroll to specific item
-		header?: Snippet;
-		children: Snippet<
-			[
-				{
-					items: { index: number; data: T }[];
-				}
-			]
-		>;
-	};
-</script>
-
 <script lang="ts" generics="T">
+	import type { VirtualListViewportProps } from './types';
 	import { throttle } from 'es-toolkit';
-
-	import { onMount, tick, type Snippet } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 
 	let {

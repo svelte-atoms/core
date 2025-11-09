@@ -1,4 +1,5 @@
 export * as Menu from './atoms';
+export * from './types';
 export {
 	PopoverBond,
 	type PopoverDomElements,

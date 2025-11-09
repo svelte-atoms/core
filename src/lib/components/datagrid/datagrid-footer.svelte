@@ -1,7 +1,7 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DataGridBond } from './bond.svelte';
 	import type { DatagridFooterProps } from './types';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = DataGridBond.get();
 

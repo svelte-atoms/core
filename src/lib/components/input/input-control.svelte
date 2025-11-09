@@ -1,7 +1,3 @@
-<script module lang="ts">
-	export type InputPortals = 'input.l0' | 'input.l1' | 'input.l2' | 'input.l3';
-</script>
-
 <script lang="ts" generics="B extends Base = Base">
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';

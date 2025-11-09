@@ -1,24 +1,11 @@
-<script module lang="ts">
-	export type DialogProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		open?: boolean;
-		disabled?: boolean;
-		portal?: string | PortalBond;
-		factory?: (props: DialogBondProps) => DialogBond;
-		children?: Snippet<[{ dialog: DialogBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import { animate as motion } from 'motion';
-	import { Teleport, ActivePortal, PortalBond } from '$svelte-atoms/core/components/portal';
+	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DURATION } from '$svelte-atoms/core/shared';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
+	import type { DialogProps } from './types';
 
 	let {
 		class: klass = '',

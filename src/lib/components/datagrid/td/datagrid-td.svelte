@@ -1,23 +1,9 @@
-<script module lang="ts">
-	export type DatagridTdProps<
-		D,
-		E extends HtmlElementTagName,
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		value?: string;
-		rows?: string;
-		data?: D;
-		children?: Snippet<[{ td?: DataGridTdBond<D> }]>;
-		onclick?: (ev: Event, options: { td?: DataGridTdBond<D> }) => void;
-	};
-</script>
-
 <script lang="ts" generics="D,E extends HtmlElementTagName, B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import type { DataGridTdBond } from './bond.svelte';
 	import { DataGridBond } from '../bond.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
+	import type { DataGridTdBond } from './bond.svelte';
+	export type { DatagridTdProps } from '../types';
 
 	const bond = DataGridBond.get();
 

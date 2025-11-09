@@ -1,16 +1,11 @@
 <script module lang="ts">
-	export type PortalOuterProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		id: RootPortals | (string & {});
-		children?: Snippet;
-	};
+	export type { PortalOuterProps } from './types';
 </script>
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { PortalOuterProps } from './types';
 	import { PortalsBond, PortalBond, PortalState, type PortalStateProps } from '.';
 	import { RootBond } from '$svelte-atoms/core/components/root';
 	import type { RootPortals } from '$svelte-atoms/core/components/root/root.svelte';

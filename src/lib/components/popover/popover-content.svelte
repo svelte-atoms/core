@@ -3,8 +3,8 @@
 	import { PortalBond, PortalsBond, Teleport } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
-	import { PopoverBond } from './bond.svelte';
 	import { DURATION } from '$svelte-atoms/core/shared';
+	import { PopoverBond } from './bond.svelte';
 	import type { AnimateParams, PopoverContentProps } from './types';
 
 	type Element = HtmlElementType<E>;

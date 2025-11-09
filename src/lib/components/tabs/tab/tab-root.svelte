@@ -4,8 +4,8 @@
 >
 	import { nanoid } from 'nanoid';
 	import { animate as motion } from 'motion';
-	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { Stack } from '$svelte-atoms/core/components/stack';

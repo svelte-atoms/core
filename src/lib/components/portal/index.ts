@@ -1,3 +1,4 @@
+export * from './types';
 export * as Portal from './atoms';
 export { PortalBond, PortalState, type PortalStateProps } from './bond.svelte';
 export { portal } from './attachements.svelte';

@@ -1,15 +1,6 @@
-<script module lang="ts">
-	export type TabDescriptionProps<
-		E extends keyof HTMLElementTagNameMap = 'p',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { TabDescriptionProps } from '../types';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TabBond } from './bond.svelte';
 
 	const bond = TabBond.get();

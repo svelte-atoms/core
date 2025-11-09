@@ -1,16 +1,7 @@
-<script module lang="ts">
-	export type SlideoverBackdropProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		as?: E;
-		class?: string;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { SlideoverBackdropProps } from './types';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond } from './bond.svelte';
 
 	type Element = HTMLElementTagNameMap[E];

@@ -1,15 +1,9 @@
-<script module lang="ts">
-	export type DialogContentProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = HtmlAtomProps<E, B>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { animate as motion } from 'motion';
 	import { DURATION } from '$svelte-atoms/core/shared';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DialogBond } from './bond.svelte';
+	import type { DialogContentProps } from './types';
 
 	const bond = DialogBond.get();
 

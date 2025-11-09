@@ -1,17 +1,12 @@
 <script module lang="ts">
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
-
-	export type TeleportProps<
-		E extends HtmlElementTagName = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		portal?: string | PortalBond;
-	};
+	export type { TeleportProps } from './types';
 </script>
 
 <script lang="ts" generics="E extends HtmlElementTagName = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { TeleportProps } from './types';
+	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PortalsBond } from './portals';
 	import { RootBond } from '$svelte-atoms/core/components/root/bond.svelte';
 	import { port } from './utils';

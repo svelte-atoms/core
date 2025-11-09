@@ -1,17 +1,7 @@
-<script lang="ts" module>
-	export type CollapsibleHeaderProps<
-		E extends keyof HTMLElementTagNameMap = 'div',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> &
-		TreeBondProps & {
-			children?: Snippet<[{ tree?: TreeBond }]>;
-		};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { TreeBond, type TreeBondProps } from './bond.svelte';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { TreeBond } from './bond.svelte';
+	import type { TreeIndicatorProps } from './types';
 
 	const bond = TreeBond.get();
 
@@ -26,7 +16,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: CollapsibleHeaderProps<E, B> = $props();
+	}: TreeIndicatorProps<E, B> = $props();
 
 	const indicatorProps = $derived({
 		...bond?.indicator(),

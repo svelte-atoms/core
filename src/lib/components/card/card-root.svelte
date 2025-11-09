@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { CardBond, CardBondState, type CardBondProps } from './bond.svelte';
-	import type { CardRootProps } from './types';
 	import { defineState } from '$svelte-atoms/core/utils';
 	import { defineProperty } from '$svelte-atoms/core/utils/state';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { CardBond, CardBondState, type CardBondProps } from './bond.svelte';
+	import type { CardRootProps } from './types';
 	import './card.css';
 
 	let {

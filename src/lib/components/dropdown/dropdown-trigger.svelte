@@ -1,19 +1,8 @@
-<script module lang="ts">
-	import type { PopoverTriggerProps } from '$svelte-atoms/core/components/popover/popover-trigger.svelte';
-
-	export type DropdownTriggerProps<
-		T extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = PopoverTriggerProps<T, B> & {
-		children?: Snippet<[{ dropdown?: DropdownBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
-	import { DropdownBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
 	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { DropdownBond } from './bond.svelte';
+	import type { DropdownTriggerProps } from './types';
 
 	const bond = DropdownBond.get();
 

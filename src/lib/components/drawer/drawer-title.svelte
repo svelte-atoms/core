@@ -1,21 +1,8 @@
-<script module lang="ts">
-	export type SlideoverTitleProps<
-		E extends keyof HTMLElementTagNameMap,
-		B extends Base = Base
-	> = Override<
-		HtmlAtomProps<E, B>,
-		{
-			children?: Snippet<[{ drawer?: DrawerBond }]>;
-		}
-	>;
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond } from './bond.svelte';
-	import type { Override } from '$svelte-atoms/core/types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import type { SlideoverTitleProps } from './types';
 
 	type Element = HTMLElementTagNameMap[E];
 

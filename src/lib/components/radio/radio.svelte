@@ -1,4 +1,4 @@
-<script lang="ts" generics="B extends Base = Base">
+<script lang="ts">
 	import { getRadioGroupContext } from './context';
 	import { Stack } from '../stack';
 	import { toClassValue } from '$svelte-atoms/core/utils';

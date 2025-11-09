@@ -1,21 +1,33 @@
-import type { HTMLAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
-import type { Base, ElementType, HtmlAtomProps } from '../atom';
-import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { HTMLInputTypeAttribute } from 'svelte/elements';
+import type { Base, HtmlAtomProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
 
-export type InputRootProps<
+/**
+ * Extend this interface to add custom input root properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputRootExtendProps {}
+
+/**
+ * Extend this interface to add custom input control properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputControlExtendProps {}
+
+export interface InputRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	HTMLAttributes<ElementType<E>> & {
-		value?: string | number | string[] | null;
-		checked?: boolean;
-		files?: File[] | null;
-		children?: Snippet<[]>;
-	};
+> extends HtmlAtomProps<E, B>,
+		InputRootExtendProps {
+	value?: string | number | string[] | null;
+	checked?: boolean;
+	files?: File[] | null;
+	children?: Snippet<[]>;
+}
 
-type InputControlBaseProps = {
+interface InputControlBaseProps {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	value?: any;
 	files?: File[];
 	date?: Date | null;
@@ -24,7 +36,8 @@ type InputControlBaseProps = {
 	class?: string;
 	type?: HTMLInputTypeAttribute | null;
 	children?: Snippet<[]>;
-};
+}
 
-export type InputControlProps<B extends Base = Base> = HtmlAtomProps<'input', B> &
-	Override<HTMLAttributes<HTMLInputElement>, InputControlBaseProps>;
+export interface InputControlProps<B extends Base = Base>
+	extends Override<HtmlAtomProps<'input', B>, InputControlBaseProps>,
+		InputControlExtendProps {}

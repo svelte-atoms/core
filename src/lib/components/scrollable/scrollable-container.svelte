@@ -1,19 +1,12 @@
 <script module lang="ts">
-	export type ScrollableContainerProps<T extends keyof HTMLElementTagNameMap> = Override<
-		HtmlAtomProps<T>,
-		{
-			children?: Snippet;
-		}
-	>;
+	export type { ScrollableContainerProps } from './types';
 </script>
 
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
-	import type { Snippet } from 'svelte';
+	import type { ScrollableContainerProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
-	import type { Override } from '$svelte-atoms/core/types';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
-	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
-
+	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	let {
 		class: klass = '',
 		children = undefined,

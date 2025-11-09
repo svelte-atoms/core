@@ -1,23 +1,7 @@
-<script module lang="ts">
-	import type { Snippet } from 'svelte';
-
-	export type LabelProps<
-		E extends keyof HTMLElementTagNameMap = 'label',
-		B extends Base = Base
-	> = HtmlAtomProps<E, B> & {
-		for?: string | null;
-		children?: Snippet<[]>;
-	};
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'label', B extends Base = Base">
-	import {
-		HtmlAtom,
-		type ElementType,
-		type HtmlAtomProps,
-		type Base
-	} from '$svelte-atoms/core/components/atom';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
+	import type { LabelProps } from './types';
 
 	type Element = ElementType<E>;
 

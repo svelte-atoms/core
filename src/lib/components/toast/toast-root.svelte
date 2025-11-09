@@ -1,22 +1,9 @@
-<script module lang="ts">
-	import type { Factory } from '$svelte-atoms/core/types';
-
-	export type ToastRootProps<T extends keyof HTMLElementTagNameMap> = HtmlAtomProps<T> & {
-		as?: T;
-		open?: boolean;
-		disabled?: boolean;
-		extend?: Record<string, unknown>;
-		factory?: Factory<ToastBond>;
-		children?: Snippet<[{ toast?: ToastBond }]>;
-	};
-</script>
-
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { ToastBond, ToastBondState, type ToastBondProps } from './bond';
-	import { toClassValue, defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import type { ToastRootProps } from './types';
 
 	let {
 		open = $bindable(false),

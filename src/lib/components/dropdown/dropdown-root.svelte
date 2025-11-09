@@ -1,6 +1,6 @@
 <script lang="ts" generics="T">
-	import { DropdownBond, DropdownBondState, type DropdownStateProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { DropdownBond, DropdownBondState, type DropdownStateProps } from './bond.svelte';
 
 	let {
 		open = $bindable(false),
