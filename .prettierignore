@@ -5,5 +5,15 @@ yarn.lock
 bun.lock
 bun.lockb
 
+# Build output
+dist/
+.svelte-kit/
+
 # Miscellaneous
 /static/
+
+# Docs (contains code examples with ellipsis)
+docs/README.md
+docs/SUMMARY.md
+docs/agent.md
+docs/quick-reference.md

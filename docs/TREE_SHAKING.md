@@ -9,12 +9,14 @@ This library is optimized for tree-shaking to ensure users only bundle the compo
 The library provides multiple entry points via package.json `exports`:
 
 ### Main Entry Point
+
 ```javascript
 // Imports everything - not recommended for production
 import * as Core from '@svelte-atoms/core';
 ```
 
 ### Subpath Imports (Recommended)
+
 ```javascript
 // Import specific components - recommended for optimal tree-shaking
 import { Button } from '@svelte-atoms/core/button';
@@ -23,12 +25,14 @@ import { Accordion, AccordionItem } from '@svelte-atoms/core/accordion';
 ```
 
 ### Atoms/Sub-component Imports
+
 ```javascript
 // Import component atoms directly
 import * as Card from '@svelte-atoms/core/card/atoms';
 ```
 
 ### Utility Imports
+
 ```javascript
 // Import utilities
 import { cn, defineVariants } from '@svelte-atoms/core/utils';
@@ -51,9 +55,10 @@ All components are available as subpath exports:
 ### sideEffects
 
 The package.json includes:
+
 ```json
 {
-  "sideEffects": ["**/*.css"]
+	"sideEffects": ["**/*.css"]
 }
 ```
 
@@ -96,10 +101,10 @@ import * as Card from '@svelte-atoms/core/card/atoms';
 
 // Usage
 <Card.Root>
-  <Card.Header>
-    <Card.Title>Title</Card.Title>
-  </Card.Header>
-</Card.Root>
+	<Card.Header>
+		<Card.Title>Title</Card.Title>
+	</Card.Header>
+</Card.Root>;
 ```
 
 ## Bundler Configuration
@@ -116,13 +121,13 @@ Most modern bundlers (Vite, Rollup, webpack 5+) handle tree-shaking automaticall
 ```javascript
 // vite.config.js
 export default {
-  build: {
-    rollupOptions: {
-      // No special configuration needed
-      // Tree-shaking works automatically
-    }
-  }
-}
+	build: {
+		rollupOptions: {
+			// No special configuration needed
+			// Tree-shaking works automatically
+		}
+	}
+};
 ```
 
 ### SvelteKit Example
@@ -146,6 +151,7 @@ To verify tree-shaking is working:
 ## Example: Before and After
 
 ### Before (Not Optimized)
+
 ```javascript
 // Importing from main entry
 import { Button, Card, Input } from '@svelte-atoms/core';
@@ -153,6 +159,7 @@ import { Button, Card, Input } from '@svelte-atoms/core';
 ```
 
 ### After (Optimized)
+
 ```javascript
 // Using subpath imports
 import { Button } from '@svelte-atoms/core/button';

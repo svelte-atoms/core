@@ -201,19 +201,21 @@ bun add @svelte-atoms/core
 	import { Button } from '@svelte-atoms/core/button';
 	import { Card } from '@svelte-atoms/core/card';
 	import { Input } from '@svelte-atoms/core/input';
-	
+
 	// ❌ Not recommended - May bundle more than needed
 	// import { Button, Card, Input } from '@svelte-atoms/core';
 </script>
 ```
 
 **Key optimizations:**
+
 - ✅ Package marked with `sideEffects: ["**/*.css"]` for aggressive tree-shaking
 - ✅ ES module format for modern bundlers
 - ✅ 80+ subpath exports for granular imports
 - ✅ Separate exports for atoms, utilities, and sub-components
 
 **Available import patterns:**
+
 ```javascript
 // Component imports
 import { Button } from '@svelte-atoms/core/button';
