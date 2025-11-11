@@ -191,6 +191,46 @@ pnpm add @svelte-atoms/core
 bun add @svelte-atoms/core
 ```
 
+### Tree-Shaking & Bundle Optimization
+
+@svelte-atoms/core is optimized for tree-shaking to ensure you only bundle the components you use. For optimal bundle sizes, use **subpath imports**:
+
+```svelte
+<script lang="ts">
+	// ✅ Recommended - Only bundles Button component
+	import { Button } from '@svelte-atoms/core/button';
+	import { Card } from '@svelte-atoms/core/card';
+	import { Input } from '@svelte-atoms/core/input';
+
+	// ❌ Not recommended - May bundle more than needed
+	// import { Button, Card, Input } from '@svelte-atoms/core';
+</script>
+```
+
+**Key optimizations:**
+
+- ✅ Package marked with `sideEffects: ["**/*.css"]` for aggressive tree-shaking
+- ✅ ES module format for modern bundlers
+- ✅ 80+ subpath exports for granular imports
+- ✅ Separate exports for atoms, utilities, and sub-components
+
+**Available import patterns:**
+
+```javascript
+// Component imports
+import { Button } from '@svelte-atoms/core/button';
+import { Accordion, AccordionItem } from '@svelte-atoms/core/accordion';
+
+// Atoms (sub-component) imports
+import * as Card from '@svelte-atoms/core/card/atoms';
+
+// Utility imports
+import { cn, defineVariants } from '@svelte-atoms/core/utils';
+import { Bond, BondState } from '@svelte-atoms/core/shared';
+```
+
+📖 **[Read the complete Tree-Shaking Guide →](docs/TREE_SHAKING.md)**
+
 ### Basic Usage
 
 ```svelte
