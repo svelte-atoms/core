@@ -15,23 +15,22 @@
 		children = undefined
 	}: PopoverRootProps = $props();
 
-	const bondProps = defineState<PopoverStateProps>(
-		[
-			defineProperty(
-				'open',
-				() => open,
-				(v) => {
-					open = v;
-				}
-			),
-			defineProperty('disabled', () => disabled),
-			defineProperty('placement', () => placement),
-			defineProperty('offset', () => offset),
-			defineProperty('placements', () => placements ?? []),
-			defineProperty('portal', () => portal)
-		],
-		() => ({ extend })
-	);
+	const bondProps = defineState<PopoverStateProps>([
+		defineProperty(
+			'open',
+			() => open,
+			(v) => {
+				open = v;
+			}
+		),
+		defineProperty('disabled', () => disabled),
+		defineProperty('placement', () => placement),
+		defineProperty('offset', () => offset),
+		defineProperty('placements', () => placements ?? []),
+		defineProperty('portal', () => portal),
+		defineProperty('extend', () => extend)
+	]);
+
 	const bond = factory(bondProps).share();
 
 	function _factory(props: typeof bondProps) {
