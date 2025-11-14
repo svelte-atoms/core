@@ -5,8 +5,18 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), devtoolsJson()],
+	build: {
+		target: 'esnext',
+		minify: 'esbuild',
+		sourcemap: true,
+		reportCompressedSize: false
+	},
+	optimizeDeps: {
+		include: ['clsx', 'tailwind-merge', 'es-toolkit', 'date-fns']
+	},
 	test: {
 		expect: { requireAssertions: true },
+		globals: true,
 		projects: [
 			{
 				extends: './vite.config.ts',
@@ -16,7 +26,8 @@ export default defineConfig({
 					browser: {
 						enabled: true,
 						provider: 'playwright',
-						instances: [{ browser: 'chromium' }]
+						instances: [{ browser: 'chromium' }],
+						headless: true
 					},
 					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 					exclude: ['src/lib/server/**'],
