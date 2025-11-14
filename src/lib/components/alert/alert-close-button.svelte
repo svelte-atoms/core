@@ -3,9 +3,10 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { AlertBond } from './bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertCloseButtonProps } from './types';
+	import { Icon } from '../icon';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -40,6 +41,7 @@
 		{preset}
 		class={[
 			'alert-close-button border-border flex items-center justify-center rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
+			'$preset',
 			klass
 		]}
 		onmount={onmount?.bind(bond.state)}
@@ -50,16 +52,19 @@
 		initial={initial?.bind(bond.state)}
 		{...closeButtonProps}
 	>
-		{@render children?.({ alert: bond! })}
-		{#if !children}
-			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M6 18L18 6M6 6l12 12"
-				/>
-			</svg>
+		{#if children}
+			{@render children({ alert: bond! })}
+		{:else}
+			<Icon class="h-full">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</Icon>
 		{/if}
 	</HtmlAtom>
 {/if}
