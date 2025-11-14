@@ -267,10 +267,10 @@
 			"svelte": "./dist/components/portal/atoms.js",
 			"default": "./dist/components/portal/atoms.js"
 		},
-		"./qrcode": {
-			"types": "./dist/components/qrcode/index.d.ts",
-			"svelte": "./dist/components/qrcode/index.js",
-			"default": "./dist/components/qrcode/index.js"
+		"./qr-code": {
+			"types": "./dist/components/qr-code/index.d.ts",
+			"svelte": "./dist/components/qr-code/index.js",
+			"default": "./dist/components/qr-code/index.js"
 		},
 		"./radio": {
 			"types": "./dist/components/radio/index.d.ts",
