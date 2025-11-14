@@ -31,7 +31,7 @@
 		'Dec'
 	];
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { class: klass = '', preset = 'datepicker.months', children, ...restProps } = $props();
 
 	function enter(node: HTMLElement) {
 		animate(
@@ -75,7 +75,6 @@
 
 {#if datePicker.state.isMonthsPickerOpen}
 	<HtmlAtom
-		preset="date-picker.months"
 		class={['absolute inset-0 z-1 flex flex-col gap-2 bg-inherit opacity-0', '$preset', klass]}
 		enter={(node) => {
 			animate(
@@ -101,6 +100,7 @@
 				duration: 100
 			};
 		}}
+		{preset}
 		{...restProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col gap-2" {enter} {exit}>

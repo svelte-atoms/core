@@ -128,6 +128,11 @@ export type PresetModuleName =
 	| 'calendar.header'
 	| 'calendar.weekday'
 	| 'calendar.body'
+	| 'datepicker.trigger'
+	| 'datepicker.calendar'
+	| 'datepicker.years'
+	| 'datepicker.months'
+	| 'datepicker.header';
 
 export type PresetEntryRecord = {
 	[key: string]: unknown;

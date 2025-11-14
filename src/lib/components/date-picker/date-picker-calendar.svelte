@@ -6,7 +6,12 @@
 	const datePickerBond = DatePickerBond.get();
 	const datePickerBondProps = $derived(datePickerBond?.state.props);
 
-	let { class: klass = '', children: datePickerChildren, ...restProps } = $props();
+	let {
+		class: klass = '',
+		preset = 'datepicker.calendar',
+		children: datePickerChildren,
+		...restProps
+	} = $props();
 
 	const calendarProps = $derived({
 		...datePickerBond?.content(),
@@ -26,6 +31,7 @@
 	class={['relative overflow-hidden p-0', klass]}
 	base={Root}
 	onchange={handleChange}
+	{preset}
 	{...calendarProps}
 >
 	{#snippet children({ calendar })}

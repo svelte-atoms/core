@@ -7,7 +7,7 @@
 	const datePickerBond = DatePickerBond.get();
 	const calendarBond = CalendarBond.get();
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { class: klass = '', preset = 'datepicker.header', children, ...restProps } = $props();
 
 	const calendarBondProps = $derived(datePickerBond?.state?.props);
 
@@ -33,8 +33,8 @@
 
 <HtmlAtom
 	as="nav"
-	preset="date-picker.nav"
 	class={['border-border flex items-center justify-between gap-2 border-b p-2', '$preset', klass]}
+	{preset}
 	{...restProps}
 >
 	{#if children}

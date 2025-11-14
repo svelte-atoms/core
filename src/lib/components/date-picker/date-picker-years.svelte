@@ -27,7 +27,7 @@
 		return years;
 	});
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { class: klass = '', preset = 'datepicker.years', children, ...restProps } = $props();
 
 	let scrollTimeout: NodeJS.Timeout | undefined = undefined;
 
@@ -91,7 +91,6 @@
 
 {#if datePicker.state.isYearsPickerOpen}
 	<HtmlAtom
-		preset="date-picker.years"
 		class={['absolute inset-0 z-2 flex flex-col gap-2 bg-inherit opacity-0', '$preset', klass]}
 		enter={(node) => {
 			animate(
@@ -118,6 +117,7 @@
 			};
 		}}
 		onwheel={handleWheel}
+		{preset}
 		{...restProps}
 	>
 		{#if children}
