@@ -102,6 +102,16 @@
 			"svelte": "./dist/components/button/index.js",
 			"default": "./dist/components/button/index.js"
 		},
+		"./calendar": {
+			"types": "./dist/components/calendar/index.d.ts",
+			"svelte": "./dist/components/calendar/index.js",
+			"default": "./dist/components/calendar/index.js"
+		},
+		"./calendar/atoms": {
+			"types": "./dist/components/calendar/atoms.d.ts",
+			"svelte": "./dist/components/calendar/atoms.js",
+			"default": "./dist/components/calendar/atoms.js"
+		},
 		"./card": {
 			"types": "./dist/components/card/index.d.ts",
 			"svelte": "./dist/components/card/index.js",
@@ -428,10 +438,12 @@
 	"dependencies": {
 		"@floating-ui/dom": "^1.7.0",
 		"clsx": "^2.1.1",
+		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
 		"gsap": "^3.13.0",
 		"motion": "^12.23.22",
 		"nanoid": "^5.1.5",
-		"tailwind-merge": "^3.2.0"
+		"tailwind-merge": "^3.2.0",
+		"uqr": "^0.1.2"
 	}
 }
