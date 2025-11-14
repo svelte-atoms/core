@@ -9,6 +9,7 @@
 	let {
 		class: klass = '',
 		base = Icon,
+		preset = 'alert.icon',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -28,7 +29,7 @@
 <HtmlAtom
 	{bond}
 	{base}
-	preset="alert.icon"
+	{preset}
 	class={[
 		'alert-icon border-border inline-flex aspect-square h-5 items-center justify-center rounded-full text-sm font-medium',
 		'$preset',

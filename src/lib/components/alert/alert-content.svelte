@@ -10,6 +10,7 @@
 
 	let {
 		class: klass = '',
+		preset = 'alert.content',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -28,7 +29,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="alert.content"
+	{preset}
 	class={['alert-content border-border flex-1 space-y-1', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

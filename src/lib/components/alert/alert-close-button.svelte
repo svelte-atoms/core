@@ -14,6 +14,7 @@
 	let {
 		class: klass = '',
 		as = 'button' as E,
+		preset = 'alert.close-button',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -36,7 +37,7 @@
 	<HtmlAtom
 		{as}
 		{bond}
-		preset="alert.close-button"
+		{preset}
 		class={[
 			'alert-close-button border-border absolute top-2 right-2 rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 			'focus:ring-2 focus:ring-offset-1 focus:outline-none',

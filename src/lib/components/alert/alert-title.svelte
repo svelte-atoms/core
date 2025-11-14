@@ -8,6 +8,7 @@
 	let {
 		as = 'h4' as E,
 		class: klass = '',
+		preset = 'alert.title',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -27,7 +28,7 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="alert.title"
+	{preset}
 	class={['alert-title border-border text-sm leading-tight font-medium', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

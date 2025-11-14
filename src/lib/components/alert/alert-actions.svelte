@@ -10,6 +10,7 @@
 
 	let {
 		class: klass = '',
+		preset = 'alert.actions',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -28,7 +29,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="alert.actions"
+	{preset}
 	class={['alert-actions border-border mt-3 flex items-center gap-2', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
