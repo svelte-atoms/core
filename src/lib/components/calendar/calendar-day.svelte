@@ -13,6 +13,7 @@
 
 	let {
 		class: klass = '',
+		preset = 'calendar.day',
 		day,
 		as = 'button',
 		children = undefined,
@@ -55,7 +56,7 @@
 
 <HtmlAtom
 	{as}
-	preset="calendar.day"
+	{preset}
 	class={[
 		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground h-12 cursor-pointer border-b border-l p-1 transition-colors',
 		day.offmonth && 'text-muted-foreground bg-muted/30',

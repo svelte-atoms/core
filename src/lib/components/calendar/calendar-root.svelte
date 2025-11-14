@@ -9,6 +9,7 @@
 
 	let {
 		class: klass = '',
+		preset = 'calendar',
 		value = $bindable(),
 		range = $bindable([undefined, undefined]),
 		pivote = $bindable(new Date()),
@@ -202,6 +203,6 @@
 	}
 </script>
 
-<HtmlAtom preset="calendar" class={cn('h-full w-full', klass)} data-atom="calendar-root" {...rootProps}>
+<HtmlAtom {preset} class={cn('h-full w-full', klass)} data-atom="calendar-root" {...rootProps}>
 	{@render children?.({ calendar: bond })}
 </HtmlAtom>

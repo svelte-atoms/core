@@ -12,7 +12,7 @@
 	let {
 		class: klass = '',
 		weekday,
-		element = $bindable(undefined),
+		preset = 'calendar.body',
 		children = undefined,
 		...restProps
 	} = $props();
@@ -86,7 +86,11 @@
 	}
 </script>
 
-<HtmlAtom preset="calendar.body" class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)} {...bodyProps}>
+<HtmlAtom
+	class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)}
+	{preset}
+	{...bodyProps}
+>
 	{#each currentMonth?.days ?? [] as day (day.id)}
 		{#if children}
 			{@render children?.({ day })}

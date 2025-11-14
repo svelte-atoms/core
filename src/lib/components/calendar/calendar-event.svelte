@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { cn } from '$svelte-atoms/core/utils';
-	import { CalendarBond } from './bond.svelte';
+	import { HtmlAtom } from '../atom';
 
-	const calendarBond = CalendarBond.get();
-
-	let { class: klass = '', element = $bindable(undefined), children } = $props();
+	let {
+		class: klass = '',
+		preset = 'calendar.event',
+		element = $bindable(undefined),
+		children,
+		...restProps
+	} = $props();
 </script>
 
-<div bind:this={element} class={cn('calendar-event', klass)}>
+<HtmlAtom {preset} class={cn('calendar-event', klass)} {...restProps}>
 	{@render children?.()}
-</div>
+</HtmlAtom>

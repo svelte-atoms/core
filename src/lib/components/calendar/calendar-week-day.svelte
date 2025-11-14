@@ -7,6 +7,7 @@
 
 	let {
 		class: klass = '',
+		preset = 'calendar.weekday',
 		isWeekend,
 		element = $bindable(undefined),
 		children = undefined,
@@ -20,7 +21,7 @@
 </script>
 
 <HtmlAtom
-	preset="calendar.weekday"
+	{preset}
 	class={cn(
 		'calendar-week-day h-fit px-2 py-2 text-center text-sm font-medium',
 		isWeekend ? 'text-primary' : '',

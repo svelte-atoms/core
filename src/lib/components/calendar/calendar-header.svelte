@@ -7,7 +7,7 @@
 	const calendarBond = CalendarBond.get();
 	const currentMonth = $derived(calendarBond?.state.props.currentMonth);
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { class: klass = '', preset = 'calendar.header', children, ...restProps } = $props();
 
 	const headerProps = $derived({
 		...calendarBond?.header(),
@@ -16,7 +16,7 @@
 </script>
 
 <HtmlAtom
-	preset="calendar.header"
+	{preset}
 	class={cn(
 		'calendar-header border-border col-span-full grid h-fit grid-cols-subgrid border-b',
 		klass

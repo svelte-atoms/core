@@ -31,6 +31,7 @@ export type CalendarRange = [Date | undefined, Date | undefined];
 
 export interface CalendarRootProps {
 	class?: string;
+	preset?: string;
 
 	value?: Date;
 	range?: CalendarRange;
@@ -62,7 +63,10 @@ export interface CalendarRootProps {
 
 export interface CalendarDayProps {
 	class?: string;
+	preset?: string;
 	day: Day;
+	as?: string;
+	onclick?: () => void;
 	readonly element?: HTMLElement;
 	children?: Snippet<
 		[
