@@ -79,7 +79,7 @@
 <HtmlAtom
 	{preset}
 	class={[
-		'alert border-border relative flex gap-3 rounded-md border p-4 transition-all duration-200',
+		'alert border-border relative flex gap-1 rounded-md border p-4 transition-all duration-200',
 		// Base styles
 		'bg-background text-foreground',
 		// State styles
