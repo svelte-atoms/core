@@ -3,7 +3,6 @@
 	import { Popover as Popover_ } from '.';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { clickoutPopover } from './attachments.svelte';
-	import { animate } from 'motion';
 	import { Button } from '../button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -42,20 +41,6 @@
 							atom.state.close();
 						})}
 						class="bg-card"
-						animate={function (this, node) {
-							const isOpen = this.isOpen;
-
-							const m = animate(
-								node,
-								{
-									y: (isOpen ? 0 : -1) * 8,
-									opacity: +isOpen
-								},
-								{
-									duration: 0.1
-								}
-							);
-						}}
 					>
 						<div>Hello World !</div>
 						<Popover_.Arrow />
