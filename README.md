@@ -75,7 +75,7 @@ Our comprehensive collection of UI components with implementation status:
 | **Switch**                                  | Toggle controls                      | ❌     |
 | [**Textarea**](docs/components/textarea.md) | Multi-line text inputs               | ✅     |
 | [**Form**](docs/components/form.md)         | Form validation and state management | ✅     |
-| **DatePicker**                              | Date selection component             | ❌     |
+| **DatePicker**                              | Date selection component             | ✅     |
 | **TimePicker**                              | Time selection component             | ❌     |
 | **FileUpload**                              | File upload component                | ❌     |
 | **ColorPicker**                             | Color selection component            | ❌     |
@@ -99,7 +99,8 @@ Our comprehensive collection of UI components with implementation status:
 | **Progress**                                | Progress indicators         | ❌     |
 | **Skeleton**                                | Loading placeholders        | ❌     |
 | **Timeline**                                | Event timeline display      | ❌     |
-| **Calendar**                                | Date display component      | ❌     |
+| **Calendar**                                | Date display component      | ✅     |
+| **QRCode**                                  | QR code generator           | ✅     |
 
 ### Overlays & Feedback
 
@@ -350,6 +351,216 @@ This example demonstrates the power of component composition by combining `Dropd
 - **Reactive Filtering**: Combining search query state with reactive effects for real-time filtering
 - **Smooth Animations**: Using Svelte's `flip` animation for seamless list transitions
 - **Multi-Select State**: Managing complex selection state through the Bond pattern
+
+### Creating Custom Variants
+
+@svelte-atoms/core provides a powerful variant system using `defineVariants()` that allows you to create type-safe, reusable component variations with support for compound variants, defaults, and bond state integration.
+
+#### Basic Variant Definition
+
+```typescript
+import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+const buttonVariants = defineVariants({
+	class: 'inline-flex items-center justify-center rounded-md font-medium transition-colors',
+	variants: {
+		variant: {
+			primary: 'bg-blue-500 text-white hover:bg-blue-600',
+			secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+			ghost: 'hover:bg-gray-100'
+		},
+		size: {
+			sm: 'h-8 px-3 text-sm',
+			md: 'h-10 px-4',
+			lg: 'h-12 px-6 text-lg'
+		}
+	},
+	compounds: [
+		{
+			variant: 'primary',
+			size: 'lg',
+			class: 'shadow-md font-semibold'
+		}
+	],
+	defaults: {
+		variant: 'primary',
+		size: 'md'
+	}
+});
+
+// Extract type-safe props
+type ButtonVariantProps = VariantPropsType<typeof buttonVariants>;
+```
+
+#### Local vs Global Variants
+
+**Local Variants** - Define variants directly in your component:
+
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+	const buttonVariants = defineVariants({
+		class: 'rounded-md font-medium',
+		variants: {
+			variant: {
+				primary: 'bg-blue-500 text-white',
+				secondary: 'bg-gray-500 text-white'
+			},
+			size: {
+				sm: 'px-2 py-1 text-sm',
+				md: 'px-4 py-2 text-base'
+			}
+		},
+		defaults: {
+			variant: 'primary',
+			size: 'md'
+		}
+	});
+
+	type ButtonProps = VariantPropsType<typeof buttonVariants> & {
+		disabled?: boolean;
+		class?: string;
+	};
+
+	let { variant, size, disabled = false, class: klass = '', ...props }: ButtonProps = $props();
+
+	const variantProps = $derived(buttonVariants(null, { variant, size }));
+</script>
+
+<HtmlAtom
+	as="button"
+	variants={variantProps}
+	{disabled}
+	class={[variantProps.class, klass]}
+	{...props}
+>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+**Global Variants** - Define variants in your theme/preset configuration:
+
+```typescript
+// +layout.svelte or theme configuration
+import { setPreset } from '@svelte-atoms/core/context';
+
+setPreset({
+	button: () => ({
+		class: 'inline-flex items-center justify-center rounded-md font-medium transition-colors',
+		variants: {
+			variant: {
+				default: {
+					class: 'bg-primary text-primary-foreground hover:bg-primary/90'
+				},
+				destructive: {
+					class: 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+				},
+				outline: {
+					class: 'border border-input bg-background hover:bg-accent'
+				}
+			},
+			size: {
+				default: 'h-10 px-4 py-2',
+				sm: 'h-9 px-3',
+				lg: 'h-11 px-8'
+			}
+		},
+		compounds: [
+			{
+				variant: 'default',
+				size: 'lg',
+				class: 'text-base font-semibold'
+			}
+		],
+		defaults: {
+			variant: 'default',
+			size: 'default'
+		}
+	})
+});
+```
+
+#### Extending Global Variants
+
+Combine global presets with local extensions:
+
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants } from '@svelte-atoms/core/utils';
+
+	// Extend preset variants with local additions
+	const extendedVariants = defineVariants({
+		variants: {
+			variant: {
+				// Add new variants not in preset
+				gradient: {
+					class: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+				},
+				neon: {
+					class: 'bg-black text-green-400 border-2 border-green-400'
+				}
+			},
+			// Add new variant dimension
+			animated: {
+				true: 'animate-pulse',
+				false: ''
+			}
+		},
+		defaults: {
+			animated: false
+		}
+	});
+
+	let { variant, size, animated, ...props } = $props();
+</script>
+
+<HtmlAtom
+	preset="button"
+	variants={extendedVariants}
+	as="button"
+	{variant}
+	{size}
+	{animated}
+	{...props}
+>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+#### Bond-Reactive Variants
+
+Variants can react to component state through the Bond pattern:
+
+```typescript
+const accordionVariants = defineVariants({
+	class: 'border rounded-md transition-all',
+	variants: {
+		state: {
+			open: (bond) => ({
+				class: bond?.state?.isOpen ? 'bg-blue-50 border-blue-200' : 'bg-white',
+				'aria-expanded': bond?.state?.isOpen,
+				'data-state': bond?.state?.isOpen ? 'open' : 'closed'
+			})
+		}
+	}
+});
+
+// Usage with bond
+const bond = AccordionBond.get();
+const variantProps = $derived(accordionVariants(bond, { state: 'open' }));
+```
+
+**Variant Features:**
+
+- ✅ **Type Safety** - Automatic TypeScript inference
+- ✅ **Compound Variants** - Apply styles when multiple conditions match
+- ✅ **Default Values** - Specify fallback variant values
+- ✅ **Bond Integration** - Access component state for reactive styling
+- ✅ **Return Attributes** - Not just classes, any HTML attributes
+- ✅ **Extensible** - Combine global presets with local variants
 
 ---
 
