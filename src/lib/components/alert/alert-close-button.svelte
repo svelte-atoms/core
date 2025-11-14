@@ -40,8 +40,6 @@
 		{preset}
 		class={[
 			'alert-close-button border-border flex items-center justify-center rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
-			'focus:ring-2 focus:ring-offset-1 focus:outline-none',
-			'$preset',
 			klass
 		]}
 		onmount={onmount?.bind(bond.state)}
