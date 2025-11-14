@@ -4,6 +4,7 @@
 	import { Alert as AAlert } from './index';
 	import { Button } from '$svelte-atoms/core/components/button';
 	import { Icon } from '$svelte-atoms/core/components/icon';
+	import { cn } from '$svelte-atoms/core/utils';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Alert',
@@ -28,12 +29,13 @@
 	});
 </script>
 
-{#snippet alertLayout({ children, ...args })}
-	{@const gridTemplateAreas = `"icon title close-button" "description description description" "content content content" "actions actions actions"`}
+{#snippet alertLayout({ children, class: klass, ...args })}
+	{@const gridTemplateAreas = `"icon title close-button" ". description description" "content content content" "actions actions actions"`}
 	{@const gridTemplateColumns = `auto 1fr auto`}
 
 	<div
 		{...args}
+		class={cn(klass, 'grid items-center')}
 		style:grid-template-areas={gridTemplateAreas}
 		style:grid-template-columns={gridTemplateColumns}
 	>
@@ -47,39 +49,37 @@
 			<h2 class="text-2xl font-bold">Alert Variants</h2>
 
 			<!-- Info Alert -->
-			<AAlert.Root variant="info">
+			<AAlert.Root base={alertLayout} variant="info">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<circle cx="12" cy="12" r="10"></circle>
 						<path d="M12 16v-4M12 8h.01"></path>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>New Feature Available</AAlert.Title>
-					<AAlert.Description>
-						We've added dark mode support to your dashboard. Try it out in the settings panel.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>New Feature Available</AAlert.Title>
+				<AAlert.Description>
+					We've added dark mode support to your dashboard. Try it out in the settings panel.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
 			<!-- Success Alert -->
-			<AAlert.Root variant="success">
+			<AAlert.Root base={alertLayout} variant="success">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 						<polyline points="22 4 12 14.01 9 11.01"></polyline>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Changes Saved Successfully</AAlert.Title>
-					<AAlert.Description>
-						Your profile settings have been updated and synced across all devices.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>Changes Saved Successfully</AAlert.Title>
+				<AAlert.Description>
+					Your profile settings have been updated and synced across all devices.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
 			<!-- Warning Alert -->
-			<AAlert.Root variant="warning">
+			<AAlert.Root base={alertLayout} variant="warning">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path
@@ -89,17 +89,16 @@
 						<line x1="12" y1="17" x2="12.01" y2="17"></line>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Storage Almost Full</AAlert.Title>
-					<AAlert.Description>
-						You're using 90% of your storage quota. Consider upgrading your plan or removing unused
-						files.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>Storage Almost Full</AAlert.Title>
+				<AAlert.Description>
+					You're using 90% of your storage quota. Consider upgrading your plan or removing unused
+					files.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
 			<!-- Error Alert -->
-			<AAlert.Root variant="error">
+			<AAlert.Root base={alertLayout} variant="error">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<circle cx="12" cy="12" r="10"></circle>
@@ -107,12 +106,11 @@
 						<line x1="9" y1="9" x2="15" y2="15"></line>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Payment Failed</AAlert.Title>
-					<AAlert.Description>
-						We couldn't process your payment. Please check your payment method and try again.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>Payment Failed</AAlert.Title>
+				<AAlert.Description>
+					We couldn't process your payment. Please check your payment method and try again.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 		</div>
 	</Root>
@@ -123,21 +121,20 @@
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Dismissible Alerts</h2>
 
-			<AAlert.Root variant="info" dismissible bind:dismissed={dismissedState}>
+			<AAlert.Root base={alertLayout} variant="info" dismissible bind:dismissed={dismissedState}>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<circle cx="12" cy="12" r="10"></circle>
 						<path d="M12 16v-4M12 8h.01"></path>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Cookie Preferences</AAlert.Title>
-					<AAlert.Description>
-						We use cookies to enhance your experience. You can manage your preferences in settings.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>Cookie Preferences</AAlert.Title>
+				<AAlert.Description>
+					We use cookies to enhance your experience. You can manage your preferences in settings.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -150,7 +147,7 @@
 				<Button onclick={() => (dismissedState = false)}>Restore Alert</Button>
 			{/if}
 
-			<AAlert.Root variant="warning" dismissible>
+			<AAlert.Root base={alertLayout} variant="warning" dismissible>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path
@@ -160,15 +157,13 @@
 						<line x1="12" y1="17" x2="12.01" y2="17"></line>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Beta Feature Warning</AAlert.Title>
-					<AAlert.Description>
-						You're using a beta feature. Some functionality may be unstable or change without
-						notice.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Title>Beta Feature Warning</AAlert.Title>
+				<AAlert.Description>
+					You're using a beta feature. Some functionality may be unstable or change without notice.
+				</AAlert.Description>
+				<AAlert.Content></AAlert.Content>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -185,27 +180,26 @@
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Alerts with Action Buttons</h2>
 
-			<AAlert.Root variant="info">
+			<AAlert.Root base={alertLayout} variant="info">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
 						<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>System Update Available</AAlert.Title>
-					<AAlert.Description>
-						A new version is ready to install. Update now to get the latest features and security
-						improvements.
-					</AAlert.Description>
-					<AAlert.Actions>
-						<Button variant="primary" size="sm">Update Now</Button>
-						<Button variant="ghost" size="sm">Remind Me Later</Button>
-					</AAlert.Actions>
-				</AAlert.Content>
+				<AAlert.Title>System Update Available</AAlert.Title>
+				<AAlert.Description>
+					A new version is ready to install. Update now to get the latest features and security
+					improvements.
+				</AAlert.Description>
+				<AAlert.Actions>
+					<Button variant="primary" size="sm">Update Now</Button>
+					<Button variant="ghost" size="sm">Remind Me Later</Button>
+				</AAlert.Actions>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
-			<AAlert.Root variant="error" dismissible>
+			<AAlert.Root base={alertLayout} variant="error" dismissible>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<circle cx="12" cy="12" r="10"></circle>
@@ -213,18 +207,17 @@
 						<line x1="9" y1="9" x2="15" y2="15"></line>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Verification Required</AAlert.Title>
-					<AAlert.Description>
-						Your account needs verification before you can access premium features.
-					</AAlert.Description>
-					<AAlert.Actions>
-						<Button variant="destructive" size="sm">Verify Account</Button>
-						<Button variant="outline" size="sm">Learn More</Button>
-					</AAlert.Actions>
-				</AAlert.Content>
+				<AAlert.Title>Verification Required</AAlert.Title>
+				<AAlert.Description>
+					Your account needs verification before you can access premium features.
+				</AAlert.Description>
+				<AAlert.Actions>
+					<Button variant="destructive" size="sm">Verify Account</Button>
+					<Button variant="outline" size="sm">Learn More</Button>
+				</AAlert.Actions>
+				<AAlert.Content></AAlert.Content>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -233,22 +226,21 @@
 				</AAlert.CloseButton>
 			</AAlert.Root>
 
-			<AAlert.Root variant="success">
+			<AAlert.Root base={alertLayout} variant="success">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 						<polyline points="22 4 12 14.01 9 11.01"></polyline>
 					</svg>
 				</AAlert.Icon>
-				<AAlert.Content>
-					<AAlert.Title>Backup Completed</AAlert.Title>
-					<AAlert.Description>
-						All your data has been backed up successfully. Last backup: just now.
-					</AAlert.Description>
-					<AAlert.Actions>
-						<Button variant="outline" size="sm">View Details</Button>
-					</AAlert.Actions>
-				</AAlert.Content>
+				<AAlert.Title>Backup Completed</AAlert.Title>
+				<AAlert.Description>
+					All your data has been backed up successfully. Last backup: just now.
+				</AAlert.Description>
+				<AAlert.Actions>
+					<Button variant="outline" size="sm">View Details</Button>
+				</AAlert.Actions>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 		</div>
 	</Root>
@@ -260,29 +252,20 @@
 			<h2 class="text-2xl font-bold">Minimal Alerts</h2>
 
 			<AAlert.Root variant="info">
-				<AAlert.Content>
-					<AAlert.Description>
-						Quick tip: Press Ctrl+K to open the command palette.
-					</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Content>Quick tip: Press Ctrl+K to open the command palette.</AAlert.Content>
 			</AAlert.Root>
 
 			<AAlert.Root variant="success">
-				<AAlert.Content>
-					<AAlert.Description>Your changes have been saved automatically.</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Content>Your changes have been saved automatically.</AAlert.Content>
 			</AAlert.Root>
 
 			<AAlert.Root variant="warning">
-				<AAlert.Content>
-					<AAlert.Description>Your session will expire in 5 minutes.</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Content>Your session will expire in 5 minutes.</AAlert.Content>
+				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
 			<AAlert.Root variant="error">
-				<AAlert.Content>
-					<AAlert.Description>Connection lost. Attempting to reconnect...</AAlert.Description>
-				</AAlert.Content>
+				<AAlert.Content>Connection lost. Attempting to reconnect...</AAlert.Content>
 			</AAlert.Root>
 		</div>
 	</Root>
@@ -294,7 +277,7 @@
 			<h2 class="text-2xl font-bold">Real-World Use Cases</h2>
 
 			<!-- Newsletter Subscription -->
-			<AAlert.Root base={alertLayout} class="grid" variant="success" dismissible>
+			<AAlert.Root base={alertLayout} variant="success" dismissible>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
@@ -308,7 +291,7 @@
 				</AAlert.Description>
 				<AAlert.Content></AAlert.Content>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -318,7 +301,7 @@
 			</AAlert.Root>
 
 			<!-- API Rate Limit -->
-			<AAlert.Root base={alertLayout} class="grid" variant="warning">
+			<AAlert.Root base={alertLayout} variant="warning">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<circle cx="12" cy="12" r="10"></circle>
@@ -331,13 +314,13 @@
 				</AAlert.Description>
 				<AAlert.Content></AAlert.Content>
 				<AAlert.Actions>
-					<Button variant="outline" size="sm">Upgrade Plan</Button>
+					<Button variant="primary" size="sm">Upgrade Plan</Button>
 					<Button variant="ghost" size="sm">View Usage</Button>
 				</AAlert.Actions>
 			</AAlert.Root>
 
 			<!-- Maintenance Notice -->
-			<AAlert.Root base={alertLayout} class="grid" variant="info">
+			<AAlert.Root base={alertLayout} variant="info">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path
@@ -352,12 +335,12 @@
 				</AAlert.Description>
 				<AAlert.Content></AAlert.Content>
 				<AAlert.Actions>
-					<Button variant="outline" size="sm">Add to Calendar</Button>
+					<Button variant="primary" size="sm">Add to Calendar</Button>
 				</AAlert.Actions>
 			</AAlert.Root>
 
 			<!-- Security Alert -->
-			<AAlert.Root base={alertLayout} class="grid" variant="error" dismissible>
+			<AAlert.Root base={alertLayout} variant="error" dismissible>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -370,7 +353,7 @@
 					your account immediately.
 				</AAlert.Description>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -380,12 +363,12 @@
 				<AAlert.Content></AAlert.Content>
 				<AAlert.Actions>
 					<Button variant="destructive" size="sm">Secure Account</Button>
-					<Button variant="outline" size="sm">This Was Me</Button>
+					<Button variant="ghost" size="sm">This Was Me</Button>
 				</AAlert.Actions>
 			</AAlert.Root>
 
 			<!-- Trial Ending -->
-			<AAlert.Root base={alertLayout} class="grid" variant="warning" dismissible>
+			<AAlert.Root base={alertLayout} variant="warning" dismissible>
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -401,7 +384,7 @@
 				</AAlert.Description>
 				<AAlert.Content></AAlert.Content>
 				<AAlert.CloseButton>
-					<Icon>
+					<Icon class="h-full">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<line x1="18" y1="6" x2="6" y2="18"></line>
 							<line x1="6" y1="6" x2="18" y2="18"></line>
