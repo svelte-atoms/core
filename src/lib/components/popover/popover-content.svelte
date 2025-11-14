@@ -59,12 +59,12 @@
 	const xOffset = $derived(dx * offset);
 	const yOffset = $derived(dy * offset);
 
+	const openAsNumber = $derived(+isOpen);
+	const deltaArrow = $derived(position?.middlewareData?.arrow ? 1 : 0);
+
 	let isInitialized = false;
 
 	function _containerInitial(this: typeof bond.state, node: Element) {
-		const openAsNumber = +this.isOpen;
-
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
 
@@ -81,8 +81,6 @@
 			return;
 		}
 
-		const openAsNumber = +this.isOpen;
-
 		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
@@ -93,17 +91,58 @@
 		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
 	}
 
+	let isOpened = false;
+
 	function _animate(this: typeof bond.state, node: Element) {
 		const isOpen = this.isOpen;
+
+		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
+		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
+
+		const _x = openAsNumber * dx;
+		const _y = openAsNumber * dy;
+
+		const getTransformOrigin = () => {
+			switch (placement) {
+				case 'top':
+				case 'top-start':
+				case 'top-end':
+					return 'bottom';
+				case 'bottom':
+				case 'bottom-start':
+				case 'bottom-end':
+					return 'top';
+				case 'left':
+				case 'left-start':
+				case 'left-end':
+					return 'right';
+				case 'right':
+				case 'right-start':
+				case 'right-end':
+					return 'left';
+				default:
+					return 'center';
+			}
+		};
+
+		const transformOrigin = getTransformOrigin();
+
+		const from = isOpened ? 1 : 0.95;
 
 		motion(
 			node,
 			{
-				opacity: +isOpen,
-				y: (isOpen ? 0 : -1) * dy * 8
+				opacity: openAsNumber,
+				y: _y + dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
+				x: _x + dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
+				scaleY: dy ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
+				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
+				transformOrigin
 			},
 			{ duration: DURATION.fast / 1000 }
 		);
+
+		isOpened = isOpen;
 	}
 </script>
 
