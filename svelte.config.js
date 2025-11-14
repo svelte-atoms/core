@@ -15,9 +15,6 @@ const config = {
 	extensions: ['.svelte', '.svx'],
 	vitePlugin: {
 		inspector: {}
-	},
-	compilerOptions: {
-		runes: true
 	}
 };
 
