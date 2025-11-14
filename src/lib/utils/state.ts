@@ -13,7 +13,7 @@ export function defineState<T extends object>(
 	return outcome as T;
 }
 
-export function defineProperty<T extends object, R>(
+export function defineProperty<T extends Record<string, unknown>, R>(
 	property: keyof T | (string & {}),
 	get: () => R,
 	set?: (value: R) => void
@@ -25,7 +25,8 @@ export function defineProperty<T extends object, R>(
 
 		return Object.defineProperty(base, property, {
 			get: get,
-			set: set
+			set: set,
+			enumerable: true
 		});
 	};
 }
