@@ -29,6 +29,7 @@
 			class: 'overflow-hidden'
 		}),
 		button: () => ({
+			class: '',
 			variants: {
 				variant: {
 					primary: {
