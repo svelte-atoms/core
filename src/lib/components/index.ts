@@ -36,3 +36,4 @@ export * from './element';
 export * from './atom';
 export * from './container';
 export * from './calendar';
+export * from './date-picker';
