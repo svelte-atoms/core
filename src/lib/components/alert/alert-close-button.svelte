@@ -39,14 +39,8 @@
 		{bond}
 		{preset}
 		class={[
-			'alert-close-button border-border absolute top-2 right-2 rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
+			'alert-close-button border-border flex items-center justify-center rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 			'focus:ring-2 focus:ring-offset-1 focus:outline-none',
-			{
-				'focus:ring-blue-500': bond?.state.variant === 'info',
-				'focus:ring-green-500': bond?.state.variant === 'success',
-				'focus:ring-yellow-500': bond?.state.variant === 'warning',
-				'focus:ring-red-500': bond?.state.variant === 'error'
-			},
 			'$preset',
 			klass
 		]}
