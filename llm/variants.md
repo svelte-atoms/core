@@ -195,50 +195,66 @@ setPreset({
 - Local variant classes (ghost, loading)
 - Merged intelligently - local overrides preset
 
-```typescript
-import { defineVariants } from '@svelte-atoms/core/utils';
+## Basic Usage
 
-const buttonVariants = defineVariants({
-	class: 'rounded-md font-medium transition-colors',
-	variants: {
-		variant: {
-			primary: 'bg-blue-500 text-white hover:bg-blue-600',
-			secondary: 'bg-gray-500 text-white hover:bg-gray-600',
-			danger: 'bg-red-500 text-white hover:bg-red-600'
-		},
-		size: {
-			sm: 'px-2 py-1 text-sm',
-			md: 'px-4 py-2 text-base',
-			lg: 'px-6 py-3 text-lg'
-		}
-	},
-	compounds: [
-		{
-			variant: 'primary',
-			size: 'lg',
-			class: 'shadow-lg' // Applied when both conditions match
-		}
-	],
-	defaults: {
-		variant: 'primary',
-		size: 'md'
-	}
-});
-```
+**Key Pattern:** `defineVariants()` returns a **function** that you pass to `HtmlAtom`. The component calls this function internally with bond and props.
 
 ```svelte
-<script>
-	import { buttonVariants } from './variants';
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants } from '@svelte-atoms/core/utils';
+
+	// defineVariants returns a FUNCTION
+	const variants = defineVariants({
+		class: 'rounded-md font-medium transition-colors',
+		variants: {
+			variant: {
+				primary: {
+					class: 'bg-blue-500 text-white hover:bg-blue-600'
+				},
+				secondary: {
+					class: 'bg-gray-500 text-white hover:bg-gray-600'
+				},
+				danger: {
+					class: 'bg-red-500 text-white hover:bg-red-600'
+				}
+			},
+			size: {
+				sm: 'px-2 py-1 text-sm',
+				md: 'px-4 py-2 text-base',
+				lg: 'px-6 py-3 text-lg'
+			}
+		},
+		compounds: [
+			{
+				variant: 'primary',
+				size: 'lg',
+				class: 'shadow-lg' // Applied when both conditions match
+			}
+		],
+		defaults: {
+			variant: 'primary',
+			size: 'md'
+		}
+	});
 
 	let { variant, size, ...props } = $props();
-
-	const variantProps = buttonVariants({ variant, size });
 </script>
 
-<HtmlAtom {...variantProps} {...props}>
+<!-- Pass the variant FUNCTION to HtmlAtom -->
+<!-- HtmlAtom will call it internally: variants(bond, { variant, size }) -->
+<HtmlAtom {variants} {variant} {size} {...props}>
 	{@render children?.()}
 </HtmlAtom>
 ```
+
+**How it works:**
+
+1. `defineVariants(config)` → returns a function
+2. You pass this function to `HtmlAtom` via `{variants}`  
+3. `HtmlAtom` internally calls `variants(bond, restProps)`
+4. The function returns `{ class: [...], ...attributes }`
+5. `HtmlAtom` applies these to the rendered element
 
 ## Key Features
 
@@ -264,9 +280,12 @@ const accordionVariants = defineVariants({
 	}
 });
 
-// Usage:
-const bond = AccordionBond.get();
-const variantProps = accordionVariants(bond, { state: 'open' });
+// Usage in component:
+let { state = 'open', ...props } = $props();
+
+<HtmlAtom {variants} {state} {...props}>
+	{@render children?.()}
+</HtmlAtom>
 ```
 
 ### 2. Return Both Classes and Attributes
@@ -291,7 +310,7 @@ const buttonVariants = defineVariants({
 	}
 });
 
-// Returns: { class: '...', 'aria-label': '...', 'data-variant': '...', ... }
+// When called by HtmlAtom, returns: { class: [...], 'aria-label': '...', 'data-variant': '...', ... }
 ```
 
 ### 3. Compound Variants
@@ -353,8 +372,10 @@ const buttonVariants = defineVariants({
 	}
 });
 
-// Call without props - uses defaults
-buttonVariants(null); // Returns variant='primary', size='md'
+// Pass to HtmlAtom - uses defaults when props not provided
+<HtmlAtom {variants} {...props}>
+	{@render children?.()}
+</HtmlAtom>
 ```
 
 ## Complete Examples
@@ -419,9 +440,41 @@ setPreset({
 </HtmlAtom>
 ```
 
-### Example 2: Local Variants Only
+### Example 2: Local Variants with HtmlAtom
 
-````svelte
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants } from '@svelte-atoms/core/utils';
+
+	const buttonVariants = defineVariants({
+		class: 'inline-flex items-center justify-center rounded-md font-medium',
+		variants: {
+			variant: {
+				primary: 'bg-blue-500 text-white hover:bg-blue-600',
+				secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+				ghost: 'hover:bg-gray-100'
+			},
+			size: {
+				sm: 'h-8 px-3 text-sm',
+				md: 'h-10 px-4',
+				lg: 'h-12 px-6 text-lg'
+			}
+		},
+		defaults: {
+			variant: 'primary',
+			size: 'md'
+		}
+	});
+
+	let { variant, size, ...props } = $props();
+</script>
+
+<HtmlAtom {variants} as="button" {variant} {size} {...props}>
+	{@render children?.()}
+</HtmlAtom>
+```
+
 ### Example 3: Extending Preset with Local Variants
 
 Combine global preset variants with component-specific variants:
@@ -468,51 +521,50 @@ Combine global preset variants with component-specific variants:
 </HtmlAtom>
 ````
 
-### Example 4: Reactive Variants with Bond State
+### Example 4: Alert Component with Compound Variants
 
-<script>
-  import { HtmlAtom } from '@svelte-atoms/core';
-  import { defineVariants } from '@svelte-atoms/core/utils';
-  
-  const alertVariants = defineVariants({
-    class: 'rounded-lg p-4 border',
-    variants: {
-      variant: {
-        info: 'bg-blue-50 border-blue-200 text-blue-900',
-        success: 'bg-green-50 border-green-200 text-green-900',
-        warning: 'bg-yellow-50 border-yellow-200 text-yellow-900',
-        error: 'bg-red-50 border-red-200 text-red-900'
-      },
-      size: {
-        sm: 'text-sm p-2',
-        md: 'text-base p-4',
-        lg: 'text-lg p-6'
-      }
-    },
-    compounds: [
-      {
-        variant: 'error',
-        size: 'lg',
-        class: 'font-bold',
-        role: 'alert',
-        'aria-live': 'assertive'
-      }
-    ],
-    defaults: {
-      variant: 'info',
-      size: 'md'
-    }
-  });
-  
-  let { variant, size, ...props } = $props();
-  
-  const bond = null; // or get from context if needed
-  const variantProps = alertVariants(bond, { variant, size });
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants } from '@svelte-atoms/core/utils';
+
+	const alertVariants = defineVariants({
+		class: 'rounded-lg p-4 border',
+		variants: {
+			variant: {
+				info: 'bg-blue-50 border-blue-200 text-blue-900',
+				success: 'bg-green-50 border-green-200 text-green-900',
+				warning: 'bg-yellow-50 border-yellow-200 text-yellow-900',
+				error: 'bg-red-50 border-red-200 text-red-900'
+			},
+			size: {
+				sm: 'text-sm p-2',
+				md: 'text-base p-4',
+				lg: 'text-lg p-6'
+			}
+		},
+		compounds: [
+			{
+				variant: 'error',
+				size: 'lg',
+				class: 'font-bold',
+				role: 'alert',
+				'aria-live': 'assertive'
+			}
+		],
+		defaults: {
+			variant: 'info',
+			size: 'md'
+		}
+	});
+
+	let { variant, size, ...props } = $props();
 </script>
 
-<HtmlAtom {...variantProps} {...props}>
-{@render children?.()}
+<HtmlAtom {variants} {variant} {size} {...props}>
+	{@render children?.()}
 </HtmlAtom>
+```
 
 ````
 
@@ -547,14 +599,11 @@ Combine global preset variants with component-specific variants:
     }
   });
 
-  const bond = AccordionBond.get();
-
-  // Automatically reactive - updates when bond state changes
-  const variantProps = $derived(accordionVariants(bond, { state: 'open' }));
+  let { state = 'open', ...props } = $props();
 </script>
 
-<HtmlAtom {...variantProps}>
-  {@render children?.({ accordion: bond })}
+<HtmlAtom {variants} {state} {...props}>
+  {@render children?.()}
 </HtmlAtom>
 ````
 
@@ -612,12 +661,12 @@ Combine global preset variants with component-specific variants:
 	});
 
 	let { variant, size, ...props } = $props();
-
-	const bond = null; // or get from context if needed
-	const variantProps = buttonVariants(bond, { variant, size });
 </script>
 
-<HtmlAtom as="button" {...variantProps} {...props}>Click me</HtmlAtom>
+<!-- Pass the variant function to HtmlAtom -->
+<HtmlAtom {variants} as="button" {variant} {size} {...props}>
+	Click me
+</HtmlAtom>
 ```
 
 ### Benefits After Migration
@@ -658,17 +707,21 @@ export const cardVariants = defineVariants({
 });
 ```
 
-### 2. Use $derived for Reactive Variants
+### 2. Pass Variants Function to Components
 
-When using bond state, wrap the variant call in `$derived`:
+Always pass the variant function (not the result) to `HtmlAtom`:
 
 ```svelte
 <script>
-	const bond = AccordionBond.get();
-
-	// Reactive - updates when bond state changes
-	const variantProps = $derived(accordionVariants(bond, { state: 'open' }));
+	const variants = defineVariants({ ... });
+	
+	let { variant, size, ...props } = $props();
 </script>
+
+<!-- Correct: Pass the function -->
+<HtmlAtom {variants} {variant} {size} {...props}>
+	{@render children?.()}
+</HtmlAtom>
 ```
 
 ### 3. Extend with Additional Classes
@@ -677,11 +730,12 @@ Merge variant classes with custom classes:
 
 ```svelte
 <script>
-	const bond = null; // or get from context if needed
-	const variantProps = buttonVariants(bond, { variant, size });
+	let { variant, size, class: klass = '', ...props } = $props();
 </script>
 
-<HtmlAtom class={[variantProps.class, 'custom-class']} {...variantProps} />
+<HtmlAtom {variants} {variant} {size} class={['custom-class', klass]} {...props}>
+	{@render children?.()}
+</HtmlAtom>
 ```
 
 ### 4. Type Props from Variants
@@ -698,6 +752,499 @@ type ButtonProps = VariantPropsType<typeof buttonVariants> & {
 };
 ```
 
+## Creating Variants: Local vs Global
+
+### Local Variants (Component-Specific)
+
+Create variants directly in your component file when they're only used in one place:
+
+```svelte
+<!-- my-button.svelte -->
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+	// Define variants locally
+	const buttonVariants = defineVariants({
+		class: 'inline-flex items-center justify-center rounded-md font-medium',
+		variants: {
+			variant: {
+				primary: 'bg-blue-500 text-white hover:bg-blue-600',
+				secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
+				ghost: 'hover:bg-gray-100'
+			},
+			size: {
+				sm: 'h-8 px-3 text-sm',
+				md: 'h-10 px-4',
+				lg: 'h-12 px-6 text-lg'
+			}
+		},
+		compounds: [
+			{
+				variant: 'primary',
+				size: 'lg',
+				class: 'shadow-md font-semibold'
+			},
+			{
+				variant: 'secondary',
+				size: 'sm',
+				class: 'text-xs'
+			}
+		],
+		defaults: {
+			variant: 'primary',
+			size: 'md'
+		}
+	});
+
+	// Extract variant prop types
+	type ButtonVariantProps = VariantPropsType<typeof buttonVariants>;
+
+	// Define component props extending variant props
+	type ButtonProps = ButtonVariantProps & {
+		disabled?: boolean;
+		onclick?: (e: MouseEvent) => void;
+		class?: string;
+	};
+
+	let { variant, size, disabled = false, class: klass = '', ...props }: ButtonProps = $props();
+
+	const variants = buttonVariants; // The variant function
+</script>
+
+<HtmlAtom {variants} as="button" {variant} {size} {disabled} class={klass} {...props}>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+**Use local variants when:**
+
+- The component is unique and won't be reused elsewhere
+- You need quick prototyping
+- Variants are tightly coupled to the component logic
+
+### Global Variants (Preset-Based)
+
+Define variants globally in your theme/preset configuration for reusable components:
+
+```typescript
+// +layout.svelte or theme.svelte
+import { setPreset } from '@svelte-atoms/core/context';
+
+setPreset({
+	// Global button variants
+	button: () => ({
+		class:
+			'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2',
+		variants: {
+			variant: {
+				default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+				destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+				outline: 'border border-input bg-background hover:bg-accent',
+				secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+				ghost: 'hover:bg-accent hover:text-accent-foreground',
+				link: 'text-primary underline-offset-4 hover:underline'
+			},
+			size: {
+				default: 'h-10 px-4 py-2',
+				sm: 'h-9 px-3',
+				lg: 'h-11 px-8',
+				icon: 'h-10 w-10'
+			}
+		},
+		compounds: [
+			{
+				variant: 'default',
+				size: 'lg',
+				class: 'text-base font-semibold'
+			}
+		],
+		defaults: {
+			variant: 'default',
+			size: 'default'
+		}
+	}),
+
+	// Global card variants
+	card: () => ({
+		class: 'rounded-lg border bg-card text-card-foreground shadow-sm',
+		variants: {
+			variant: {
+				default: 'border-border',
+				elevated: 'shadow-lg',
+				outlined: 'border-2'
+			}
+		},
+		defaults: {
+			variant: 'default'
+		}
+	})
+});
+```
+
+```svelte
+<!-- button.svelte - Consume global variants -->
+<script lang="ts">
+  import { HtmlAtom } from '@svelte-atoms/core';
+
+  // Type-safe props based on preset
+  type ButtonProps = {
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+    size?: 'default' | 'sm' | 'lg' | 'icon';
+    disabled?: boolean;
+    class?: string;
+  };
+
+  let {
+    variant,
+    size,
+    disabled = false,
+    class: klass = '',
+    ...props
+  }: ButtonProps = $props();
+</script>
+
+<HtmlAtom
+  preset="button"  <!-- Uses global preset variants -->
+  as="button"
+  {variant}
+  {size}
+  {disabled}
+  class={klass}
+  {...props}
+>
+  {@render children?.()}
+</HtmlAtom>
+```
+
+**Use global variants when:**
+
+- Building a design system with consistent styling
+- Components are used across multiple pages/features
+- You want centralized theme control
+- You need to support theme switching
+
+### Extending Global Variants Locally
+
+Combine the best of both worlds - use global presets as a base and extend with local variants:
+
+```svelte
+<!-- special-button.svelte -->
+<script lang="ts">
+  import { HtmlAtom } from '@svelte-atoms/core';
+  import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+  // Local variants that extend the global preset
+  const extendedVariants = defineVariants({
+    variants: {
+      variant: {
+        // Add new variants not in preset
+        gradient: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600',
+        neon: 'bg-black text-green-400 border-2 border-green-400 hover:bg-green-400 hover:text-black',
+        glass: 'bg-white/10 backdrop-blur-lg border border-white/20 hover:bg-white/20'
+      },
+      // Add new variant dimension
+      animated: {
+        true: 'animate-pulse',
+        false: ''
+      },
+      shadow: {
+        none: '',
+        sm: 'shadow-sm',
+        md: 'shadow-md',
+        lg: 'shadow-lg'
+      }
+    },
+    defaults: {
+      animated: false,
+      shadow: 'none'
+    }
+  });
+
+  // Extract extended variant types
+  type ExtendedVariantProps = VariantPropsType<typeof extendedVariants>;
+
+  // Combine preset variants with extended variants
+  type SpecialButtonProps = {
+    // Preset variant types
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'gradient' | 'neon' | 'glass';
+    size?: 'default' | 'sm' | 'lg' | 'icon';
+    // Extended variant types
+    animated?: boolean;
+    shadow?: 'none' | 'sm' | 'md' | 'lg';
+    disabled?: boolean;
+    class?: string;
+  };
+
+  let {
+    variant,
+    size,
+    animated,
+    shadow,
+    disabled = false,
+    class: klass = '',
+    ...props
+  }: SpecialButtonProps = $props();
+</script>
+
+<HtmlAtom
+  preset="button"              <!-- Gets base global variants -->
+  variants={extendedVariants}  <!-- Extends with local variants -->
+  as="button"
+  {variant}
+  {size}
+  {animated}
+  {shadow}
+  {disabled}
+  class={klass}
+  {...props}
+>
+  {@render children?.()}
+</HtmlAtom>
+```
+
+## Type-Safe Component Props with Variants
+
+### Method 1: Manual Type Definition (Preset-based)
+
+When using presets, manually define the variant types based on your preset configuration:
+
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+
+	// Manually typed based on preset definition
+	type ButtonProps = {
+		variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+		size?: 'default' | 'sm' | 'lg' | 'icon';
+		disabled?: boolean;
+		class?: string;
+		onclick?: (e: MouseEvent) => void;
+	};
+
+	let { variant, size, disabled = false, class: klass = '', ...props }: ButtonProps = $props();
+</script>
+
+<HtmlAtom preset="button" as="button" {variant} {size} {disabled} class={klass} {...props}>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+### Method 2: Extract Types from defineVariants
+
+For local variants, use `VariantPropsType` to automatically extract types:
+
+```svelte
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+	const buttonVariants = defineVariants({
+		class: 'rounded-md',
+		variants: {
+			variant: {
+				primary: 'bg-blue-500',
+				secondary: 'bg-gray-500',
+				danger: 'bg-red-500'
+			},
+			size: {
+				sm: 'text-sm',
+				md: 'text-base',
+				lg: 'text-lg'
+			},
+			fullWidth: {
+				true: 'w-full',
+				false: 'w-auto'
+			}
+		},
+		defaults: {
+			variant: 'primary',
+			size: 'md',
+			fullWidth: false
+		}
+	});
+
+	// Automatically extract variant prop types
+	type ButtonVariantProps = VariantPropsType<typeof buttonVariants>;
+	// Result: { variant?: 'primary' | 'secondary' | 'danger'; size?: 'sm' | 'md' | 'lg'; fullWidth?: boolean }
+
+	// Extend with additional props
+	type ButtonProps = ButtonVariantProps & {
+		disabled?: boolean;
+		onclick?: (e: MouseEvent) => void;
+		class?: string;
+	};
+
+	let {
+		variant,
+		size,
+		fullWidth,
+		disabled = false,
+		class: klass = '',
+		...props
+	}: ButtonProps = $props();
+</script>
+
+<HtmlAtom {variants} as="button" {variant} {size} {fullWidth} {disabled} class={klass} {...props}>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+### Method 3: Shared Variant Types
+
+Create reusable variant type definitions:
+
+```typescript
+// types/button.ts
+import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+
+export const buttonVariants = defineVariants({
+	class: 'inline-flex items-center justify-center rounded-md font-medium',
+	variants: {
+		variant: {
+			primary: 'bg-blue-500 text-white',
+			secondary: 'bg-gray-200 text-gray-900',
+			ghost: 'hover:bg-gray-100'
+		},
+		size: {
+			sm: 'h-8 px-3 text-sm',
+			md: 'h-10 px-4',
+			lg: 'h-12 px-6 text-lg'
+		}
+	},
+	defaults: {
+		variant: 'primary',
+		size: 'md'
+	}
+});
+
+// Export the variant types
+export type ButtonVariantProps = VariantPropsType<typeof buttonVariants>;
+
+// Export full component props
+export type ButtonProps = ButtonVariantProps & {
+	disabled?: boolean;
+	onclick?: (e: MouseEvent) => void;
+	class?: string;
+};
+```
+
+```svelte
+<!-- button.svelte -->
+<script lang="ts">
+	import { HtmlAtom } from '@svelte-atoms/core';
+	import { buttonVariants, type ButtonProps } from './types/button';
+
+	const variants = buttonVariants; // The function from the shared file
+
+	let { variant, size, disabled = false, class: klass = '', ...props }: ButtonProps = $props();
+</script>
+
+<HtmlAtom {variants} as="button" {variant} {size} {disabled} class={klass} {...props}>
+	{@render children?.()}
+</HtmlAtom>
+```
+
+### Method 4: Component with Bond State Types
+
+For components using the Bond pattern:
+
+```typescript
+// accordion-item.svelte
+<script lang="ts">
+  import { HtmlAtom } from '@svelte-atoms/core';
+  import { defineVariants, type VariantPropsType } from '@svelte-atoms/core/utils';
+  import { AccordionBond } from './bond.svelte';
+
+  const accordionVariants = defineVariants({
+    class: 'border rounded-md',
+    variants: {
+      state: {
+        open: (bond) => ({
+          class: bond?.state?.isOpen ? 'bg-blue-50' : 'bg-white',
+          'aria-expanded': bond?.state?.isOpen
+        })
+      },
+      bordered: {
+        true: 'border-2',
+        false: 'border'
+      }
+    },
+    defaults: {
+      bordered: false
+    }
+  });
+
+  // Extract variant types
+  type AccordionVariantProps = VariantPropsType<typeof accordionVariants>;
+
+  // Extend with component-specific props
+  type AccordionItemProps = Omit<AccordionVariantProps, 'state'> & {
+    value: string;
+    disabled?: boolean;
+    class?: string;
+  };
+
+  let {
+    value,
+    bordered,
+    disabled = false,
+    class: klass = '',
+    ...props
+  }: AccordionItemProps = $props();
+
+  const variants = accordionVariants; // The variant function
+</script>
+
+<HtmlAtom {variants} {bordered} class={klass} {...props}>
+  {@render children?.()}
+</HtmlAtom>
+```
+
+### Best Practices for Typed Variants
+
+1. **Always extract types from defineVariants**
+
+   ```typescript
+   const variants = defineVariants({...});
+   type VariantProps = VariantPropsType<typeof variants>;
+   ```
+
+2. **Extend variant types with component props**
+
+   ```typescript
+   type ComponentProps = VariantProps & {
+   	disabled?: boolean;
+   	onclick?: () => void;
+   };
+   ```
+
+3. **Use Omit for bond-driven variants**
+
+   ```typescript
+   // Remove 'state' from props since it's driven by bond
+   type Props = Omit<VariantProps, 'state'> & { ... };
+   ```
+
+4. **Share types across related components**
+
+   ```typescript
+   // types/card.ts
+   export type CardVariantProps = VariantPropsType<typeof cardVariants>;
+   export type CardHeaderProps = { class?: string };
+   export type CardBodyProps = { class?: string };
+   ```
+
+5. **Document variant options in JSDoc**
+   ```typescript
+   /**
+    * Button component with multiple variants
+    * @param variant - Visual style: 'primary' | 'secondary' | 'ghost'
+    * @param size - Size variant: 'sm' | 'md' | 'lg'
+    */
+   type ButtonProps = VariantPropsType<typeof buttonVariants> & {...};
+   ```
+
 ## Summary
 
 `defineVariants()` provides:
@@ -707,6 +1254,8 @@ type ButtonProps = VariantPropsType<typeof buttonVariants> & {
 ✅ **Reactive** - Access bond state for dynamic styling  
 ✅ **Powerful** - Base classes, compound variants, defaults  
 ✅ **Flexible** - Return both classes and attributes  
-✅ **Clean** - No manual object merging or conditionals
+✅ **Clean** - No manual object merging or conditionals  
+✅ **Extensible** - Combine global presets with local variants  
+✅ **Type extraction** - Use `VariantPropsType` for automatic type inference
 
 Inspired by Class Variance Authority but integrated with @svelte-atoms/core's bond system.
