@@ -40,7 +40,7 @@
 		{bond}
 		{preset}
 		class={[
-			'alert-close-button border-border flex items-center justify-center rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
+			'alert-close-button border-border flex size-6 items-center justify-center rounded p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 			'$preset',
 			klass
 		]}
