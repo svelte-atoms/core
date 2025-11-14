@@ -8,6 +8,7 @@
 	let {
 		class: klass = '',
 		as = 'p' as E,
+		preset = 'alert.description',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -26,7 +27,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="alert.description"
+	{preset}
 	class={['alert-description border-border mt-1 text-sm leading-relaxed', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

@@ -102,6 +102,16 @@
 			"svelte": "./dist/components/button/index.js",
 			"default": "./dist/components/button/index.js"
 		},
+		"./calendar": {
+			"types": "./dist/components/calendar/index.d.ts",
+			"svelte": "./dist/components/calendar/index.js",
+			"default": "./dist/components/calendar/index.js"
+		},
+		"./calendar/atoms": {
+			"types": "./dist/components/calendar/atoms.d.ts",
+			"svelte": "./dist/components/calendar/atoms.js",
+			"default": "./dist/components/calendar/atoms.js"
+		},
 		"./card": {
 			"types": "./dist/components/card/index.d.ts",
 			"svelte": "./dist/components/card/index.js",
@@ -126,6 +136,16 @@
 			"types": "./dist/components/combobox/atoms.d.ts",
 			"svelte": "./dist/components/combobox/atoms.js",
 			"default": "./dist/components/combobox/atoms.js"
+		},
+		"./date-picker": {
+			"types": "./dist/components/date-picker/index.d.ts",
+			"svelte": "./dist/components/date-picker/index.js",
+			"default": "./dist/components/date-picker/index.js"
+		},
+		"./date-picker/atoms": {
+			"types": "./dist/components/date-picker/atoms.d.ts",
+			"svelte": "./dist/components/date-picker/atoms.js",
+			"default": "./dist/components/date-picker/atoms.js"
 		},
 		"./datagrid": {
 			"types": "./dist/components/datagrid/index.d.ts",
@@ -246,6 +266,11 @@
 			"types": "./dist/components/portal/atoms.d.ts",
 			"svelte": "./dist/components/portal/atoms.js",
 			"default": "./dist/components/portal/atoms.js"
+		},
+		"./qr-code": {
+			"types": "./dist/components/qr-code/index.d.ts",
+			"svelte": "./dist/components/qr-code/index.js",
+			"default": "./dist/components/qr-code/index.js"
 		},
 		"./radio": {
 			"types": "./dist/components/radio/index.d.ts",
@@ -428,10 +453,12 @@
 	"dependencies": {
 		"@floating-ui/dom": "^1.7.0",
 		"clsx": "^2.1.1",
+		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
 		"gsap": "^3.13.0",
 		"motion": "^12.23.22",
 		"nanoid": "^5.1.5",
-		"tailwind-merge": "^3.2.0"
+		"tailwind-merge": "^3.2.0",
+		"uqr": "^0.1.2"
 	}
 }

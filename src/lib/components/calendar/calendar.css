@@ -1,0 +1,26 @@
+[data-atom='calendar-root'] {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: auto 1fr;
+	/* 
+		--icare-root-background-color: color-mix(in srgb, black 5%, white 100%);
+		--icare-root-background-color-hover: color-mix(in srgb, black 5%, white 100%);
+		--icare-root-background-color-active: color-mix(in srgb, black 5%, white 100%);
+
+		--icare-root-text-color: black;
+
+		--icare-disabled-background-color: black;
+		--icare-disabled-text-color: black;
+
+		--icare-selected-background-color: black;
+		--icare-selected-text-color: white;
+
+		--icare-today-background-color: black;
+		--icare-today-text-color: black;
+
+		--icare-weekend-background-color: black;
+		--icare-weekend-text-color: black;
+
+		--icare-offmonth-background-color: black;
+		--icare-offmonth-text-color: black; */
+}

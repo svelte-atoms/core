@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-export type BondStateProps = Record<string, unknown> & { id?: string };
+export type BondStateProps = { id?: string };
 export type BondElements = Record<string, Element | undefined>;
 
 export abstract class Bond<

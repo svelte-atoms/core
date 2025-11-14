@@ -3,9 +3,10 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { AlertBond } from './bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertCloseButtonProps } from './types';
+	import { Icon } from '../icon';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -14,6 +15,7 @@
 	let {
 		class: klass = '',
 		as = 'button' as E,
+		preset = 'alert.close-button',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -36,16 +38,9 @@
 	<HtmlAtom
 		{as}
 		{bond}
-		preset="alert.close-button"
+		{preset}
 		class={[
-			'alert-close-button border-border absolute top-2 right-2 rounded p-1 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
-			'focus:ring-2 focus:ring-offset-1 focus:outline-none',
-			{
-				'focus:ring-blue-500': bond?.state.variant === 'info',
-				'focus:ring-green-500': bond?.state.variant === 'success',
-				'focus:ring-yellow-500': bond?.state.variant === 'warning',
-				'focus:ring-red-500': bond?.state.variant === 'error'
-			},
+			'alert-close-button border-border flex size-6 items-center justify-center rounded p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 			'$preset',
 			klass
 		]}
@@ -57,16 +52,19 @@
 		initial={initial?.bind(bond.state)}
 		{...closeButtonProps}
 	>
-		{@render children?.({ alert: bond! })}
-		{#if !children}
-			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M6 18L18 6M6 6l12 12"
-				/>
-			</svg>
+		{#if children}
+			{@render children({ alert: bond! })}
+		{:else}
+			<Icon class="h-full">
+				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</Icon>
 		{/if}
 	</HtmlAtom>
 {/if}

@@ -5,7 +5,17 @@
 	import { defineVariants } from '$svelte-atoms/core/utils/variant';
 
 	const { Story } = defineMeta({
-		title: 'ATOMS/Button'
+		title: 'ATOMS/Button',
+		argTypes: {
+			variant: {
+				control: 'select',
+				options: ['primary', 'secondary', 'destructive', 'outline', 'ghost'],
+				description: 'Button variant style',
+				table: {
+					defaultValue: { summary: 'primary' }
+				}
+			}
+		}
 	});
 </script>
 
@@ -29,7 +39,8 @@
 						'bg-transparent hover:bg-foreground/5 active:bg-foreground/10 border border-border text-foreground'
 				},
 				ghost: {
-					class: 'hover:bg-accent hover:text-accent-foreground'
+					class:
+						'bg-transparent text-foreground hover:bg-foreground/5 active:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
 				}
 			}
 		},
@@ -41,17 +52,9 @@
 </script>
 
 <Story name="Button">
-	<Root class="p-4">
-		{#snippet children({ args })}
-			<ButtonCmp variant="primary">Clicke me</ButtonCmp>
-		{/snippet}
-	</Root>
-</Story>
-
-<Story name="Button - Local Variants">
-	<Root class="p-4">
-		{#snippet children({ args })}
+	{#snippet template(args)}
+		<Root class="p-4">
 			<ButtonCmp {variants} {...args}>Clicke me</ButtonCmp>
-		{/snippet}
-	</Root>
+		</Root>
+	{/snippet}
 </Story>

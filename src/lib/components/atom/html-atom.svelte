@@ -1,17 +1,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Base, ComponentBase, HtmlAtomProps, SnippetBase } from './types';
+	import type { Base, HtmlAtomProps, SnippetBase } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
-	import {
-		cn,
-		toClassValue,
-		type ClassValue,
-		type VariantDefinition
-	} from '$svelte-atoms/core/utils';
+	import { cn, type ClassValue, type VariantDefinition } from '$svelte-atoms/core/utils';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import type { Bond } from '$svelte-atoms/core/shared';
+	import SnippetRenderer from './snippet-renderer.svelte';
+	import type { Component } from 'svelte';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -121,7 +118,18 @@
 
 	const atom = rootBond?.state?.props?.renderers?.html ?? HtmlElement;
 
-	const Component = $derived(base ?? atom) as ComponentBase;
+	const renderer = $derived.by(() => {
+		if (isSnippet)
+			return {
+				component: SnippetRenderer,
+				props: { snippet: snippet, class: _klass, as: _as, children, ..._restProps }
+			};
+
+		return {
+			component: base ?? atom,
+			props: { class: _klass, as: _as, ..._restProps }
+		};
+	}) as { component: Component; props: Record<string, any> };
 
 	/**
 	 * Resolve variant definition to props
@@ -192,10 +200,6 @@
 	}
 </script>
 
-{#if isSnippet}
-	{@render snippet({ class: _klass, as: _as, base: _base, children, ..._restProps })}
-{:else}
-	<Component class={_klass} as={_as} {..._restProps}>
-		{@render children?.()}
-	</Component>
-{/if}
+<renderer.component {...renderer.props}>
+	{@render children?.()}
+</renderer.component>
