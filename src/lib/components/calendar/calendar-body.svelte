@@ -86,7 +86,7 @@
 	}
 </script>
 
-<HtmlAtom class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)} {...bodyProps}>
+<HtmlAtom preset="calendar.body" class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)} {...bodyProps}>
 	{#each currentMonth?.days ?? [] as day (day.id)}
 		{#if children}
 			{@render children?.({ day })}
@@ -101,6 +101,3 @@
 		{/if}
 	{/each}
 </HtmlAtom>
-
-<style>
-</style>

@@ -202,6 +202,6 @@
 	}
 </script>
 
-<HtmlAtom class={cn('h-full w-full', klass)} data-atom="calendar-root" {...rootProps}>
+<HtmlAtom preset="calendar" class={cn('h-full w-full', klass)} data-atom="calendar-root" {...rootProps}>
 	{@render children?.({ calendar: bond })}
 </HtmlAtom>

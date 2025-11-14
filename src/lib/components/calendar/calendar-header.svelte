@@ -16,6 +16,7 @@
 </script>
 
 <HtmlAtom
+	preset="calendar.header"
 	class={cn(
 		'calendar-header border-border col-span-full grid h-fit grid-cols-subgrid border-b',
 		klass

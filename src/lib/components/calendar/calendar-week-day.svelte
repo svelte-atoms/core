@@ -20,6 +20,7 @@
 </script>
 
 <HtmlAtom
+	preset="calendar.weekday"
 	class={cn(
 		'calendar-week-day h-fit px-2 py-2 text-center text-sm font-medium',
 		isWeekend ? 'text-primary' : '',

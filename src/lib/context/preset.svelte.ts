@@ -122,7 +122,12 @@ export type PresetModuleName =
 	| 'checkbox.indeterminate'
 	| 'radio'
 	| 'radio.group'
-	| 'container';
+	| 'container'
+	| 'calendar'
+	| 'calendar.day'
+	| 'calendar.header'
+	| 'calendar.weekday'
+	| 'calendar.body'
 
 export type PresetEntryRecord = {
 	[key: string]: unknown;
