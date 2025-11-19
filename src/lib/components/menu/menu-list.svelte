@@ -10,6 +10,7 @@
 		class: klass = '',
 		as = 'ul' as T,
 		base = List.Root as B,
+		preset="menu.list",
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -25,7 +26,7 @@
 	{as}
 	{base}
 	{bond}
-	preset="menu.list"
+	{preset}
 	class={['bg-background border-border overflow-hidden p-0', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
