@@ -2,14 +2,14 @@
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
-	import type { SlideoverRootProps } from './types';
+	import type { SidebarRootProps } from './types';
 
 	let {
 		open = $bindable(false),
 		disabled = false,
 		factory = _factory,
 		children = undefined
-	}: SlideoverRootProps<E, B> = $props();
+	}: SidebarRootProps<E, B> = $props();
 
 	const bondProps = defineState<SidebarBondProps>(
 		[

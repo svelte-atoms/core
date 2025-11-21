@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond } from './bond.svelte';
-	import type { SlideoverContentProps } from './types';
+	import type { SidebarRootProps } from './types';
 
 	const bond = SidebarBond.get();
 
@@ -15,7 +15,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	}: SlideoverContentProps<E, B> = $props();
+	}: SidebarRootProps<E, B> = $props();
 
 	const contentProps = $derived({
 		...bond?.content(),
