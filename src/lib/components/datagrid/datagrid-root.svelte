@@ -11,7 +11,6 @@
 		values = $bindable([]),
 		template = undefined,
 		fallbackTemplate = "auto",
-		data = [],
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
