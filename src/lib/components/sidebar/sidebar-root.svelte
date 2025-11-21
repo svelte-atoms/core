@@ -21,8 +21,7 @@
 				}
 			),
 			defineProperty('disabled', () => disabled)
-		],
-		() => ({})
+		]
 	);
 
 	const bond = factory(bondProps).share();
