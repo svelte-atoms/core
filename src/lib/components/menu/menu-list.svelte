@@ -10,7 +10,7 @@
 		class: klass = '',
 		as = 'ul' as T,
 		base = List.Root as B,
-		preset="menu.list",
+		preset = 'menu.list',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,

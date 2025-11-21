@@ -10,7 +10,7 @@
 		class: klass = '',
 		values = $bindable([]),
 		template = undefined,
-		fallbackTemplate = "auto",
+		fallbackTemplate = 'auto',
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
