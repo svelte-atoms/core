@@ -23,7 +23,7 @@
 		variants = undefined,
 		children: childrenProp = undefined,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
+	}: HtmlAtomProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
 
 	const preset = $derived(
 		presetKey ? getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]) : undefined
