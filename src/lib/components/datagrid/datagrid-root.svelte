@@ -10,6 +10,7 @@
 		class: klass = '',
 		values = $bindable([]),
 		template = undefined,
+		fallbackTemplate = "auto",
 		data = [],
 		factory = _factory,
 		children = undefined,
@@ -46,7 +47,7 @@
 	{bond}
 	preset="datagrid"
 	class={['border-border', 'datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
-	style="--template-columns:{bond.state.template}"
+	style="--template-columns:{bond.state.template ?? fallbackTemplate}"
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
