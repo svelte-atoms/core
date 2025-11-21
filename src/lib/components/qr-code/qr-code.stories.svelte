@@ -16,7 +16,10 @@
 		<Root>
 			{#snippet children({})}
 				<div class="flex h-full w-full items-center justify-center">
-					<QrCodeComponent value="Hello World" />
+					<QrCodeComponent
+						class="text-primary-foreground bg-primary size-64 rounded-2xl p-1"
+						value="Hello World 123"
+					/>
 				</div>
 			{/snippet}
 		</Root>
