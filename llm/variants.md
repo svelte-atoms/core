@@ -251,7 +251,7 @@ setPreset({
 **How it works:**
 
 1. `defineVariants(config)` → returns a function
-2. You pass this function to `HtmlAtom` via `{variants}`  
+2. You pass this function to `HtmlAtom` via `{variants}`
 3. `HtmlAtom` internally calls `variants(bond, restProps)`
 4. The function returns `{ class: [...], ...attributes }`
 5. `HtmlAtom` applies these to the rendered element
@@ -519,7 +519,7 @@ Combine global preset variants with component-specific variants:
 >
   {@render children?.()}
 </HtmlAtom>
-````
+```
 
 ### Example 4: Alert Component with Compound Variants
 
@@ -664,9 +664,7 @@ Combine global preset variants with component-specific variants:
 </script>
 
 <!-- Pass the variant function to HtmlAtom -->
-<HtmlAtom {variants} as="button" {variant} {size} {...props}>
-	Click me
-</HtmlAtom>
+<HtmlAtom {variants} as="button" {variant} {size} {...props}>Click me</HtmlAtom>
 ```
 
 ### Benefits After Migration
