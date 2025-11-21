@@ -3,11 +3,17 @@
 	import { DatePickerBond } from './bond.svelte';
 	import { CalendarBond } from '../calendar/bond.svelte';
 	import { Icon } from '../icon';
+	import type { DatePickerHeaderProps } from './types';
 
 	const datePickerBond = DatePickerBond.get();
 	const calendarBond = CalendarBond.get();
 
-	let { class: klass = '', preset = 'datepicker.header', children, ...restProps } = $props();
+	let {
+		class: klass = '',
+		preset = 'datepicker.header',
+		children,
+		...restProps
+	}: DatePickerHeaderProps = $props();
 
 	const calendarBondProps = $derived(datePickerBond?.state?.props);
 
@@ -37,69 +43,58 @@
 	{preset}
 	{...restProps}
 >
-	{#if children}
-		{@render children?.({
-			datePicker: datePickerBond,
-			calendar: calendarBond,
-			monthName,
-			year,
-			onPrevious: handlePreviousMonth,
-			onNext: handleNextMonth
-		})}
-	{:else}
-		<!-- Previous Month Button -->
-		<button
-			type="button"
-			class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-			onclick={handlePreviousMonth}
-			aria-label="Previous month"
-		>
-			<Icon class="size-5">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="size-full"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<path d="M15 18l-6-6 6-6" />
-				</svg>
-			</Icon>
-		</button>
+	<!-- Previous Month Button -->
+	<button
+		type="button"
+		class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+		onclick={handlePreviousMonth}
+		aria-label="Previous month"
+	>
+		<Icon class="size-5">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="size-full"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M15 18l-6-6 6-6" />
+			</svg>
+		</Icon>
+	</button>
 
-		<!-- Month and Year Display -->
-		<button
-			class="text-foreground h-full flex-1 cursor-pointer text-center text-sm font-semibold"
-			onclick={handleMonthPicker}
-		>
-			{monthName}
-			{year}
-		</button>
+	<!-- Month and Year Display -->
+	<button
+		class="text-foreground h-full flex-1 cursor-pointer text-center text-sm font-semibold"
+		onclick={handleMonthPicker}
+	>
+		{monthName}
+		{year}
+	</button>
 
-		<!-- Next Month Button -->
-		<button
-			type="button"
-			class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-			onclick={handleNextMonth}
-			aria-label="Next month"
-		>
-			<Icon class="size-5">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="size-full"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<path d="M9 18l6-6-6-6" />
-				</svg>
-			</Icon>
-		</button>
-	{/if}
+	<!-- Next Month Button -->
+	<button
+		type="button"
+		class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+		onclick={handleNextMonth}
+		aria-label="Next month"
+	>
+		<Icon class="size-5">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="size-full"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path d="M9 18l6-6-6-6" />
+			</svg>
+		</Icon>
+	</button>
 </HtmlAtom>

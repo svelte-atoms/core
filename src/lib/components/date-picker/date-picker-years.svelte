@@ -1,33 +1,36 @@
 <script lang="ts">
-	import { HtmlAtom } from '../atom';
-	import { PopoverBond } from '../popover';
-	import { Icon } from '../icon';
-	import { DatePickerBond } from './bond.svelte';
+	import { animate } from 'motion';
 	import { getYear, setYear } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
-	import { animate } from 'motion';
+	import { DatePickerBond } from './bond.svelte';
+	import type { DatePickerYearsProps } from './types';
+	import { HtmlAtom } from '../atom';
+	import { Icon } from '../icon';
 
-	const popover = PopoverBond.get();
 	const datePicker = DatePickerBond.get();
-	const calendar = datePicker.calendar;
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
-	let yearPivote = $state(pivote.getFullYear());
+	let pivoteYear = $derived(pivote.getFullYear());
 
 	const currentYear = $derived(getYear(pivote));
 
 	// Generate array of years to display (12 years: current ±5)
 	const yearsGrid = $derived.by(() => {
 		const years = [];
-		const startYear = yearPivote - 5;
+		const startYear = pivoteYear - 5;
 		for (let i = 0; i < 12; i++) {
 			years.push(startYear + i);
 		}
 		return years;
 	});
 
-	let { class: klass = '', preset = 'datepicker.years', children, ...restProps } = $props();
+	let {
+		class: klass = '',
+		preset = 'datepicker.years',
+		children,
+		...restProps
+	}: DatePickerYearsProps = $props();
 
 	let scrollTimeout: NodeJS.Timeout | undefined = undefined;
 
@@ -58,11 +61,11 @@
 	}
 
 	function handlePreviousYear() {
-		yearPivote = yearPivote - 1;
+		pivoteYear = pivoteYear - 1;
 	}
 
 	function handleNextYear() {
-		yearPivote = yearPivote + 1;
+		pivoteYear = pivoteYear + 1;
 	}
 
 	function handleYearSelect(year: number) {
@@ -84,7 +87,7 @@
 		// Debounce the scroll event to avoid rapid year changes
 		scrollTimeout = setTimeout(() => {
 			const direction = event.deltaY > 0 ? 1 : -1; // Positive = scroll down = next year
-			yearPivote = yearPivote + direction;
+			pivoteYear = pivoteYear + direction;
 		}, 50);
 	}
 </script>
@@ -120,95 +123,83 @@
 		{preset}
 		{...restProps}
 	>
-		{#if children}
-			{@render children?.({
-				calendar,
-				popover,
-				currentYear,
-				yearsGrid,
-				onPrevious: handlePreviousYear,
-				onNext: handleNextYear,
-				onYearSelect: handleYearSelect
-			})}
-		{:else}
-			<HtmlAtom class="flex flex-1 flex-col" {enter} {exit}>
-				<!-- Navigation Bar -->
-				<nav
-					class="border-border text-foreground flex h-12 items-center justify-between gap-2 border-b px-2 py-2"
+		<HtmlAtom class="flex flex-1 flex-col" {enter} {exit}>
+			<!-- Navigation Bar -->
+			<nav
+				class="border-border text-foreground flex h-12 items-center justify-between gap-2 border-b px-2 py-2"
+			>
+				<!-- Previous Year Button -->
+				<button
+					type="button"
+					class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+					onclick={handlePreviousYear}
+					aria-label="Previous year"
 				>
-					<!-- Previous Year Button -->
-					<button
-						type="button"
-						class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-						onclick={handlePreviousYear}
-						aria-label="Previous year"
-					>
-						<Icon class="size-5">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="size-full"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M15 18l-6-6 6-6" />
-							</svg>
-						</Icon>
-					</button>
-
-					<!-- Year Display -->
-					<div class="text-foreground flex-1 text-center text-sm font-semibold">
-						{currentYear}
-					</div>
-
-					<!-- Next Year Button -->
-					<button
-						type="button"
-						class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
-						onclick={handleNextYear}
-						aria-label="Next year"
-					>
-						<Icon class="size-5">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="size-full"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M9 18l6-6-6-6" />
-							</svg>
-						</Icon>
-					</button>
-				</nav>
-
-				<!-- Years Grid -->
-				<div class="grid flex-1 grid-cols-4 gap-1 px-2 py-2">
-					{#each yearsGrid as year}
-						{@const isSelected = year === pivote.getFullYear()}
-						{@const isCurrent = year === currentYear}
-						<button
-							type="button"
-							class={cn(
-								'hover:bg-foreground/10 active:bg-foreground/20 rounded-md px-3 py-2 text-sm transition-colors',
-								isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90',
-								isCurrent && !isSelected && 'ring-foreground/20 ring-1'
-							)}
-							onclick={() => handleYearSelect(year)}
-							aria-label="Select year {year}"
-							aria-current={isSelected ? 'date' : undefined}
+					<Icon class="size-5">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="size-full"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
 						>
-							{year}
-						</button>
-					{/each}
+							<path d="M15 18l-6-6 6-6" />
+						</svg>
+					</Icon>
+				</button>
+
+				<!-- Year Display -->
+				<div class="flex-1">
+					<!-- {currentYear} -->
 				</div>
-			</HtmlAtom>
-		{/if}
+
+				<!-- Next Year Button -->
+				<button
+					type="button"
+					class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+					onclick={handleNextYear}
+					aria-label="Next year"
+				>
+					<Icon class="size-5">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="size-full"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M9 18l6-6-6-6" />
+						</svg>
+					</Icon>
+				</button>
+			</nav>
+
+			<!-- Years Grid -->
+			<div class="grid flex-1 grid-cols-4 gap-1 px-2 py-2">
+				{#each yearsGrid as year}
+					{@const isSelected = year === pivote.getFullYear()}
+					{@const isCurrent = year === currentYear}
+					<button
+						type="button"
+						class={cn(
+							'hover:bg-foreground/10 active:bg-foreground/20 rounded-md px-3 py-2 text-sm transition-colors',
+							isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90',
+							isCurrent && !isSelected && 'ring-foreground/20 ring-1'
+						)}
+						onclick={() => handleYearSelect(year)}
+						aria-label="Select year {year}"
+						aria-current={isSelected ? 'date' : undefined}
+					>
+						{year}
+					</button>
+				{/each}
+			</div>
+		</HtmlAtom>
 	</HtmlAtom>
 {/if}

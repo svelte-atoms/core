@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { HtmlAtom } from '../atom';
-	import { PopoverBond } from '../popover';
-	import { DatePickerBond } from './bond.svelte';
+	import { animate } from 'motion';
 	import { getYear, getMonth, setMonth } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
-	import { animate } from 'motion';
+	import { HtmlAtom } from '../atom';
+	import { DatePickerBond } from './bond.svelte';
+	import type { DatePickerMonthsProps } from './types';
 
-	const popover = PopoverBond.get();
 	const datePicker = DatePickerBond.get();
-	const calendar = datePicker.calendar;
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
@@ -31,7 +29,12 @@
 		'Dec'
 	];
 
-	let { class: klass = '', preset = 'datepicker.months', children, ...restProps } = $props();
+	let {
+		class: klass = '',
+		preset = 'datepicker.months',
+		children,
+		...restProps
+	}: DatePickerMonthsProps = $props();
 
 	function enter(node: HTMLElement) {
 		animate(
@@ -104,47 +107,36 @@
 		{...restProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col gap-2" {enter} {exit}>
-			{#if children}
-				{@render children?.({
-					calendar,
-					popover,
-					currentYear,
-					currentMonth,
-					monthsGrid,
-					onMonthSelect: handleMonthSelect
-				})}
-			{:else}
-				<!-- Year Display -->
-				<nav
-					class="border-border text-foreground flex h-12 items-center justify-center gap-2 border-b px-2 py-2"
+			<!-- Year Display -->
+			<nav
+				class="border-border text-foreground flex h-12 items-center justify-center gap-2 border-b px-2 py-2"
+			>
+				<button
+					class="text-foreground cursor-pointer text-center text-sm font-semibold"
+					onclick={handleYearPicker}
 				>
-					<button
-						class="text-foreground cursor-pointer text-center text-sm font-semibold"
-						onclick={handleYearPicker}
-					>
-						{currentYear}
-					</button>
-				</nav>
+					{currentYear}
+				</button>
+			</nav>
 
-				<!-- Months Grid -->
-				<div class="grid flex-1 grid-cols-3 gap-1 px-2 pb-2">
-					{#each monthsGrid as month, index}
-						{@const isSelected = index === currentMonth}
-						<button
-							type="button"
-							class={cn(
-								'hover:bg-foreground/10 active:bg-foreground/20 rounded-md px-3 py-2 text-sm transition-colors',
-								isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90'
-							)}
-							onclick={() => handleMonthSelect(index)}
-							aria-label="Select {month}"
-							aria-current={isSelected ? 'date' : undefined}
-						>
-							{month}
-						</button>
-					{/each}
-				</div>
-			{/if}
+			<!-- Months Grid -->
+			<div class="grid flex-1 grid-cols-3 gap-1 px-2 pb-2">
+				{#each monthsGrid as month, index}
+					{@const isSelected = index === currentMonth}
+					<button
+						type="button"
+						class={cn(
+							'hover:bg-foreground/10 active:bg-foreground/20 rounded-md px-3 py-2 text-sm transition-colors',
+							isSelected && 'bg-primary text-primary-foreground hover:bg-primary/90'
+						)}
+						onclick={() => handleMonthSelect(index)}
+						aria-label="Select {month}"
+						aria-current={isSelected ? 'date' : undefined}
+					>
+						{month}
+					</button>
+				{/each}
+			</div>
 		</HtmlAtom>
 	</HtmlAtom>
 {/if}
