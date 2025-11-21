@@ -21,7 +21,7 @@
 		preset: presetKey = undefined,
 		bond = undefined,
 		variants = undefined,
-		children = undefined,
+		children: childrenProp = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -122,7 +122,7 @@
 		if (isSnippet)
 			return {
 				component: SnippetRenderer,
-				props: { snippet: snippet, class: _klass, as: _as, children, ..._restProps }
+				props: { snippet: snippet, class: _klass, as: _as, children: childrenProp, ..._restProps }
 			};
 
 		return {
@@ -201,5 +201,7 @@
 </script>
 
 <renderer.component {...renderer.props}>
-	{@render children?.()}
+	{#snippet children(args)}
+		{@render childrenProp?.(args)}
+	{/snippet}
 </renderer.component>
