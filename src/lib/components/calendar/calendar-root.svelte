@@ -27,8 +27,6 @@
 
 	const monthCurrentDays = $derived(generator(pivote));
 
-	$inspect(min, max, monthCurrentDays);
-
 	const monthCurrent: Month = $derived.by(() => {
 		const start = monthCurrentDays.at(0) as Day;
 		const end = monthCurrentDays.at(-1) as Day;

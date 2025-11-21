@@ -8,12 +8,7 @@
 </script>
 
 <script>
-	import CalendarHeader from './calendar-header.svelte';
 	import { Root } from '../root';
-	import { Card } from '../card';
-
-	let value = $state(undefined);
-	let checked = $state(false);
 </script>
 
 <Story name="Calendar">
