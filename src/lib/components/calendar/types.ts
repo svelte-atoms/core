@@ -1,5 +1,4 @@
 import type { Snippet } from 'svelte';
-import type { CalendarContext } from './context';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { CalendarBond } from './bond.svelte';
 
