@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { isBefore, isSameDay, isWithinInterval } from 'date-fns';
-	import { cn } from '$svelte-atoms/core/utils';
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
 	import { HtmlAtom } from '../atom';

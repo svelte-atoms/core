@@ -8,15 +8,15 @@ import type { Base, HtmlAtomProps } from '../atom';
  * Extend this interface to add custom slideover root properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SlideoverRootExtendProps {}
+export interface SidebarRootExtendProps {}
 
 /**
  * Extend this interface to add custom slideover content properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SlideoverContentExtendProps {}
+export interface SidebarContentExtendProps {}
 
-export interface SlideoverRootProps<
+export interface SidebarRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > extends Override<
@@ -25,13 +25,13 @@ export interface SlideoverRootProps<
 				children?: Snippet<[{ sidebar?: SidebarBond }]>;
 			}
 		>,
-		SlideoverRootExtendProps {
+		SidebarRootExtendProps {
 	open?: boolean;
 	disabled?: boolean;
 	factory?: Factory<SidebarBond>;
 }
 
-export interface SlideoverContentProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
+export interface SidebarContentProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
 	extends Override<
 			HtmlAtomProps<E, B>,
 			{
@@ -39,4 +39,4 @@ export interface SlideoverContentProps<E extends keyof HTMLElementTagNameMap, B 
 				children?: Snippet<[{ sidebar?: SidebarBond<any> }]>;
 			}
 		>,
-		SlideoverContentExtendProps {}
+		SidebarContentExtendProps {}

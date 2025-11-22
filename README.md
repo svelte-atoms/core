@@ -14,11 +14,7 @@
 
 ### 🧱 **Bond Architecture**
 
-Built around the concept of "Bonds" - self-contained, reusable state management classes that encapsulate component state and DOM interactions. Each component uses the Bond pattern for consistent, predictable behavior across complex interactions. Simple components like Button don't require the Bond pattern as they have minimal state management needs.
-
-### 🔗 **Context-Driven Communication**
-
-Components seamlessly communicate through Svelte's context API using standardized static methods (`Bond.get()` / `Bond.set()`) of the Bond class, enabling powerful parent-child relationships without prop drilling.
+Self-contained state management classes that encapsulate component logic and DOM interactions. Bonds communicate through Svelte's context API using standardized `Bond.get()` / `Bond.set()` methods, enabling parent-child relationships without prop drilling.
 
 ### ♿ **Accessibility First**
 

@@ -7,7 +7,7 @@
 	const calendarBond = CalendarBond.get();
 	const currentMonth = $derived(calendarBond?.state.props.currentMonth);
 
-	let { class: klass = '', preset = 'calendar.header', children, ...restProps } = $props();
+	let { class: klass = '', preset = 'calendar.header', ...restProps } = $props();
 
 	const headerProps = $derived({
 		...calendarBond?.header(),
@@ -24,10 +24,6 @@
 	{...headerProps}
 >
 	{#each (currentMonth?.days ?? []).filter((d) => d.week == 1) as day}
-		{#if children}
-			{@render children?.(day)}
-		{:else}
-			<CalendarWeekDay isWeekend={day.weekend}>{day.name}</CalendarWeekDay>
-		{/if}
+		<CalendarWeekDay isWeekend={day.weekend}>{day.name}</CalendarWeekDay>
 	{/each}
 </HtmlAtom>

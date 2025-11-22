@@ -28,25 +28,27 @@
 <Story name="Sidebar" args={{}}>
 	<Root class="">
 		<Sidebar_.Root class="" bind:open={isOpen}>
-			<Sidebar_.Content
-				class="flex flex-col border-r px-6 py-10 whitespace-nowrap"
-				initial={(node) => gsap.set(node, { width: isOpen ? 240 : 96 })}
-				animate={(node) =>
-					gsap.to(node, { width: isOpen ? 240 : 96, duration: 0.2, ease: cubicOut })}
-			>
-				<div>
-					<button
-						{@attach (node) => {
-							const bond = SidebarBond.get();
-							return on('click', (ev) => {
-								bond?.state.toggle?.();
-							})(node);
-						}}>Open</button
-					>
-				</div>
-			</Sidebar_.Content>
+			<div class="flex size-full">
+				<Sidebar_.Content
+					class="flex flex-col border-r px-6 py-10 whitespace-nowrap"
+					initial={(node) => gsap.set(node, { width: isOpen ? 240 : 96 })}
+					animate={(node) =>
+						gsap.to(node, { width: isOpen ? 240 : 96, duration: 0.2, ease: cubicOut })}
+				>
+					<div>
+						<button
+							{@attach (node) => {
+								const bond = SidebarBond.get();
+								return on('click', (ev) => {
+									bond?.state.toggle?.();
+								})(node);
+							}}>Open</button
+						>
+					</div>
+				</Sidebar_.Content>
 
-			<div class="bg-foreground/2 flex-1 p-8">Hello World!</div>
+				<main class="bg-foreground/2 flex-1 p-8">Hello World!</main>
+			</div>
 		</Sidebar_.Root>
 	</Root>
 </Story>

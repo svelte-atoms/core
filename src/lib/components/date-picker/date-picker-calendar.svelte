@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { Content } from '../popover/atoms';
-	import { Root } from '../calendar/atoms';
+	import {
+		Root,
+		Header as CalendarHeader,
+		Body as CalendarBody,
+		Day as CalendarDay
+	} from '../calendar/atoms';
 	import { DatePickerBond } from './bond.svelte';
+	import DatePickerHeader from './date-picker-header.svelte';
+	import DatePickerMonths from './date-picker-months.svelte';
+	import DatePickerYears from './date-picker-years.svelte';
+	import { HtmlAtom } from '../atom';
+	import type { CalendarRange, Day as CalendarDayType } from '../calendar/types';
+	import type { DatePickerCalendarProps } from './types';
 
 	const datePickerBond = DatePickerBond.get();
 	const datePickerBondProps = $derived(datePickerBond?.state.props);
@@ -9,9 +20,15 @@
 	let {
 		class: klass = '',
 		preset = 'datepicker.calendar',
-		children: datePickerChildren,
+		children: childrenProp,
+		Header = DatePickerHeader,
+		Weekdays = CalendarHeader,
+		Body = CalendarBody,
+		Day = CalendarDay,
+		Months = DatePickerMonths,
+		Years = DatePickerYears,
 		...restProps
-	} = $props();
+	}: DatePickerCalendarProps = $props();
 
 	const calendarProps = $derived({
 		...datePickerBond?.content(),
@@ -19,7 +36,7 @@
 		...restProps
 	});
 
-	function handleChange(ev: CustomEvent, { range, pivote }) {
+	function handleChange(_: CustomEvent, { range, pivote }: { range: CalendarRange; pivote: Date }) {
 		if (!datePickerBond) return;
 
 		datePickerBond.state.props.range = range;
@@ -34,9 +51,17 @@
 	{preset}
 	{...calendarProps}
 >
-	{#snippet children({ calendar })}
-		{@render datePickerChildren?.({
-			datePicker: datePickerBond
-		})}
-	{/snippet}
+	<HtmlAtom base={Header} class="col-span-full" />
+	<HtmlAtom base={Weekdays} />
+
+	<HtmlAtom base={Body}>
+		{#snippet children({ day }: { day: CalendarDayType })}
+			<HtmlAtom base={Day} {day} class="flex items-center justify-center">
+				<span class="value">{day.dayOfMonth}</span>
+			</HtmlAtom>
+		{/snippet}
+	</HtmlAtom>
+
+	<HtmlAtom base={Months} />
+	<HtmlAtom base={Years} />
 </Content>

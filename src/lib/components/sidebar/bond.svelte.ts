@@ -28,24 +28,12 @@ export class SidebarBond<
 	content(props: Record<string, unknown> = {}) {
 		return {
 			'aria-expanded': this.state?.props?.open ?? false,
+			'aria-disabled': this.state?.props?.disabled ?? false,
 			'data-atom': this.id,
 			'data-kind': 'sidebar-content',
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.content = node;
-			}
-		};
-	}
-
-	root(props: Record<string, unknown> = {}) {
-		return {
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'data-open': this.state?.props?.open ?? false,
-			'data-atom': this.id,
-			'data-kind': 'sidebar-root',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
 			}
 		};
 	}

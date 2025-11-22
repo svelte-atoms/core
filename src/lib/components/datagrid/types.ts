@@ -93,8 +93,8 @@ export interface Column {
 export interface DatagridRootProps<T> extends DatagridRootExtendProps {
 	class?: string;
 	template?: string;
+	fallbackTemplate?: string;
 	values?: string[];
-	data?: T[];
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
 }

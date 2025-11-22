@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { startOfDay } from 'date-fns';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { Root } from '../popover/atoms';
 	import type { CalendarRange } from '../calendar/types';
 	import { DatePickerBond, DatePickerBondState, type DatePickerBondProps } from './bond.svelte';
+	import type { DatePickerRootProps } from './types';
 
 	let {
 		open = $bindable(false),
@@ -19,7 +20,7 @@
 		factory = _factory,
 		children,
 		...restProps
-	} = $props();
+	}: DatePickerRootProps = $props();
 
 	const seed = {};
 

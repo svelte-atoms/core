@@ -13,7 +13,7 @@ export interface ElementProps<T extends ElementTagName> extends Record<string, u
 	animate?: NodeFunction<T>;
 	onmount?: NodeFunction<T>;
 	ondestroy?: NodeFunction<T>;
-	children?: Snippet;
+	children?: Snippet<unknown[]>;
 
 	[key: string]: unknown;
 }
