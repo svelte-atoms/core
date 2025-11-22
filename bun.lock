@@ -6,6 +6,7 @@
       "name": "@svelte-atoms/core",
       "dependencies": {
         "@floating-ui/dom": "^1.7.0",
+        "@qrcode-js/browser": "^1.2.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "es-toolkit": "^1.37.2",
@@ -187,6 +188,10 @@
     "@polka/url": ["@polka/url@1.0.0-next.29", "", {}, "sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww=="],
 
     "@publint/pack": ["@publint/pack@0.1.2", "", {}, "sha512-S+9ANAvUmjutrshV4jZjaiG8XQyuJIZ8a4utWmN/vW1sgQ9IfBnPndwkmQYw53QmouOIytT874u65HEmu6H5jw=="],
+
+    "@qrcode-js/browser": ["@qrcode-js/browser@1.2.0", "", { "dependencies": { "@qrcode-js/core": "^1.2.0" } }, "sha512-Xea0Rp7UgN9FdocAyY8/0HhBBY7T4F8r/ww8OsoVcC1ftj1XwD9wn5n2yWCwzuYW3rNmBweJGMaYp5hTvwFscQ=="],
+
+    "@qrcode-js/core": ["@qrcode-js/core@1.2.0", "", {}, "sha512-ebwoLU3DPne43moTpApKxSnbpGa9MBsGiKObhDKSw/7nKOhc5OkfLYQA7o8OBUaiRvls1ejsmQzBYIoMMedLKQ=="],
 
     "@rollup/rollup-android-arm-eabi": ["@rollup/rollup-android-arm-eabi@4.52.4", "", { "os": "android", "cpu": "arm" }, "sha512-BTm2qKNnWIQ5auf4deoetINJm2JzvihvGb9R6K/ETwKLql/Bb3Eg2H1FBp1gUb4YGbydMA3jcmQTR73q7J+GAA=="],
 

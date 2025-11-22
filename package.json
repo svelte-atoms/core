@@ -452,6 +452,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.7.0",
+		"@qrcode-js/browser": "^1.2.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
