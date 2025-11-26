@@ -144,11 +144,7 @@ export type PresetEntryRecord = {
 	defaults?: Record<string, any>;
 };
 
-export type PresetEntry = (
-	this: Bond | undefined | null,
-	bond: Bond | undefined | null,
-	...args: any[]
-) => PresetEntryRecord;
+export type PresetEntry = (bond: Bond | undefined | null, ...args: any[]) => PresetEntryRecord;
 
 export type Preset = Record<PresetModuleName, PresetEntry>;
 
