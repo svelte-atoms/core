@@ -456,10 +456,8 @@
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
-		"gsap": "^3.13.0",
 		"motion": "^12.23.22",
 		"nanoid": "^5.1.5",
-		"tailwind-merge": "^3.2.0",
-		"uqr": "^0.1.2"
+		"tailwind-merge": "^3.2.0"
 	}
 }
