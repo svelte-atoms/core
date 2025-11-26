@@ -12,7 +12,7 @@
 
 	let {
 		class: klass = '',
-		base = undefined,
+		base,
 		children = undefined,
 		portals = undefined,
 		...restProps
@@ -65,7 +65,7 @@
 </script>
 
 <Portals id="root">
-	<HtmlAtom
+	<Stack.Root
 		{@attach (node) => {
 			bond.rootElement = node;
 		}}
@@ -117,5 +117,5 @@
 		<ActivePortal portal="root.l0">
 			{@render children?.()}
 		</ActivePortal>
-	</HtmlAtom>
+	</Stack.Root>
 </Portals>
