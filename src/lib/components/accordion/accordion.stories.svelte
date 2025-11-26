@@ -2,9 +2,8 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Accordion as AAccordion, AccordionItem } from '.';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
-	import gsap from 'gsap';
 	import { linear } from 'svelte/easing';
-	import { toTransitionConfig } from '$svelte-atoms/core/utils/gsap';
+	import { animate } from 'motion';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -34,23 +33,27 @@
 
 					<AccordionItem.Body
 						initial={(node) => {
-							gsap.set(node, { opacity: 0, height: 0 });
+							Object.assign(node.style, { opacity: 0, height: 0 });
 						}}
 						enter={function (node) {
-							console.log(this);
-							const tween = gsap.to(node, {
-								opacity: 1,
-								height: 'auto',
-								duration: 0.2,
-								ease: linear
-							});
+							animate(
+								node,
+								{
+									opacity: 1,
+									height: 'auto'
+								},
+								{
+									duration: 0.2,
+									ease: linear
+								}
+							);
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 						exit={(node) => {
-							const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
+							animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 					>
 						<div class="p-2">
@@ -69,22 +72,27 @@
 
 					<AccordionItem.Body
 						initial={(node) => {
-							gsap.set(node, { opacity: 0, height: 0 });
+							Object.assign(node.style, { opacity: 0, height: 0 });
 						}}
 						enter={(node) => {
-							const tween = gsap.to(node, {
-								opacity: 1,
-								height: 'auto',
-								duration: 0.2,
-								ease: linear
-							});
+							animate(
+								node,
+								{
+									opacity: 1,
+									height: 'auto'
+								},
+								{
+									duration: 0.2,
+									ease: linear
+								}
+							);
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 						exit={(node) => {
-							const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
+							animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 					>
 						<div class="p-2">
@@ -103,22 +111,27 @@
 
 					<AccordionItem.Body
 						initial={(node) => {
-							gsap.set(node, { opacity: 0, height: 0 });
+							Object.assign(node.style, { opacity: 0, height: 0 });
 						}}
 						enter={(node) => {
-							const tween = gsap.to(node, {
-								opacity: 1,
-								height: 'auto',
-								duration: 0.2,
-								ease: linear
-							});
+							animate(
+								node,
+								{
+									opacity: 1,
+									height: 'auto'
+								},
+								{
+									duration: 0.2,
+									ease: linear
+								}
+							);
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 						exit={(node) => {
-							const tween = gsap.to(node, { opacity: 0, height: 0, duration: 0.2, ease: linear });
+							animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
 
-							return toTransitionConfig(tween);
+							return { duration: 0.2 };
 						}}
 					>
 						<div class="p-2">
