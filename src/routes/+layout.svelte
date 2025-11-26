@@ -9,7 +9,7 @@
 	import { Scrollable } from '$lib/components/scrollable';
 	import { ScrollableBond } from '$lib/components/scrollable/bond.svelte';
 	import { on } from '$lib/attachments/event.svelte';
-	import gsap from 'gsap';
+	import { animate as motion } from 'motion';
 
 	let { children } = $props();
 	let darkMode = $state(false);
@@ -84,33 +84,21 @@
 		<Scrollable.Track
 			orientation="vertical"
 			class="inset-y-0 right-0 w-[2px] rounded-md bg-palette-solar/30 transition-colors  hover:bg-palette-solar/50"
-			initial={(node) => gsap.set(node, { opacity: 0, right: 0, top: 0, bottom: 0 })}
-			enter={(node) => {
-				const tween = gsap.to(node, {
-					opacity: 1,
-					duration: 0.3,
-					right: 16,
-					top: 16,
-					bottom: 16,
-					ease: 'power2.out'
-				});
+			initial={(node: HTMLElement) => {
+				node.style.opacity = '0';
+			}}
+			enter={(node: HTMLElement) => {
+				motion(node, { opacity: [0, 1] as any }, { duration: 0.3, easing: [0.4, 0, 0.2, 1] });
 
 				return {
-					duration: tween.duration() * 1000
+					duration: 300
 				};
 			}}
-			exit={(node) => {
-				const tween = gsap.to(node, {
-					opacity: 0,
-					right: 0,
-					top: 0,
-					bottom: 0,
-					duration: 0.3,
-					ease: 'power2.out'
-				});
+			exit={(node: HTMLElement) => {
+				motion(node, { opacity: [1, 0] as any }, { duration: 0.3, easing: [0.4, 0, 0.2, 1] });
 
 				return {
-					duration: tween.duration() * 1000
+					duration: 300
 				};
 			}}
 		>
