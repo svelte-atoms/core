@@ -2,18 +2,20 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
+	import { animate as motion } from 'motion';
 
 	const bond = SidebarBond.get();
 
 	let {
 		class: klass = '',
+		width = 'auto',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = undefined,
+		animate = _animate,
 		enter = undefined,
 		exit = undefined,
-		initial = undefined,
+		initial = _initial,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
@@ -21,6 +23,15 @@
 		...bond?.content(),
 		...restProps
 	});
+
+	const isOpen = $derived(bond?.state.props.open);
+
+	function _initial(node: HTMLElement) {
+		motion(node, { width: isOpen ? width : 0 }, { duration: 0 });
+	}
+	function _animate(node: HTMLElement) {
+		motion(node, { width: isOpen ? width : 0 }, { duration: 0.3, ease: 'anticipate' });
+	}
 </script>
 
 <HtmlAtom
