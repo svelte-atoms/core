@@ -25,6 +25,13 @@
 		...restProps
 	}: HtmlAtomProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
 
+	/**
+	 * Resolve variant definition to props
+	 */
+	// Cache for resolved variants to avoid recomputation
+	// Key: JSON stringified combination of variant props
+	const variantCache = new Map<string, Record<string, any>>();
+
 	// Memoize preset resolution - only recompute when presetKey or bond changes
 	const preset = $derived.by(() => {
 		if (!presetKey) return undefined;
@@ -140,13 +147,6 @@
 			props: { class: _klass, as: _as, ..._restProps }
 		};
 	}) as { component: Component; props: Record<string, any> };
-
-	/**
-	 * Resolve variant definition to props
-	 */
-	// Cache for resolved variants to avoid recomputation
-	// Key: JSON stringified combination of variant props
-	const variantCache = new Map<string, Record<string, any>>();
 
 	function resolveVariants(
 		def: VariantDefinition<any>,
