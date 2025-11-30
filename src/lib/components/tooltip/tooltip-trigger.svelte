@@ -7,16 +7,16 @@
 	let { onmount, children, ...restProps } = $props();
 
 	function tooltip(node: HTMLElement) {
-		const onpointerenter = async (ev: PointerEvent) => {
-			await popoverBond?.isReady;
+		const onpointerenter = async () => {
 			popoverBond?.state.open();
+			node.addEventListener('pointerleave', onpointerleave);
 		};
-		const onpointerleave = (ev: PointerEvent) => {
+		const onpointerleave = () => {
 			popoverBond?.state.close();
+			node.removeEventListener('pointerleave', onpointerleave);
 		};
 
 		node.addEventListener('pointerenter', onpointerenter);
-		node.addEventListener('pointerleave', onpointerleave);
 
 		const cleanup = () => {
 			node.removeEventListener('pointerenter', onpointerenter);
