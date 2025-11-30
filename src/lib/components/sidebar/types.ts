@@ -28,6 +28,7 @@ export interface SidebarRootProps<
 		SidebarRootExtendProps {
 	open?: boolean;
 	disabled?: boolean;
+	width?: string | number
 	factory?: Factory<SidebarBond>;
 }
 
