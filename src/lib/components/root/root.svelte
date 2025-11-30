@@ -72,7 +72,7 @@
 		{base}
 		preset="root"
 		class={cn(
-			'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start font-sans',
+			'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start justify-stretch font-sans',
 			'$preset',
 			klass
 		)}
