@@ -49,7 +49,7 @@
 		<Playground.Preview>
 			<div class="flex items-center justify-center p-8">
 				<div
-					class={`w-full max-w-md ${selectedVariant === 'card' ? 'rounded-lg border border-gray-200 bg-white p-6 shadow-sm' : ''}`}
+					class={`w-full max-w-md ${selectedVariant === 'card' ? 'rounded-lg border border-border bg-white p-6 shadow-sm' : ''}`}
 				>
 					<Form
 						class={`space-y-4 ${selectedSize === 'sm' ? 'text-sm' : selectedSize === 'lg' ? 'text-lg' : ''}`}
@@ -91,7 +91,7 @@
 								<div class="flex items-center space-x-2">
 									<Field.Control
 										type="checkbox"
-										class="rounded border-gray-300 text-purple-600 focus:ring-purple-500 disabled:opacity-50"
+										class="rounded border-border text-purple-600 focus:ring-purple-500 disabled:opacity-50"
 										component={Input.Root}
 									>
 										<Input.Value />
@@ -118,7 +118,7 @@
 							<Button
 								type="button"
 								onclick={resetForm}
-								class={`border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 ${
+								class={`border border-border text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 ${
 									selectedSize === 'sm'
 										? 'px-3 py-1.5 text-xs'
 										: selectedSize === 'lg'
@@ -143,7 +143,7 @@
 					<label class="mb-2 block text-sm font-medium text-gray-700">Variant</label>
 					<Dropdown.Root
 						id="style-select"
-						class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+						class="block w-full rounded-md border border-border px-3 py-2 text-sm"
 					>
 						<Dropdown.Trigger class="w-full" component={Input.Root}>
 							<Dropdown.Values>
@@ -170,7 +170,7 @@
 					<label class="mb-2 block text-sm font-medium text-gray-700">Size</label>
 					<select
 						bind:value={selectedSize}
-						class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
+						class="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
 						{#each sizes as size}
 							<option value={size.value}>{size.label}</option>
@@ -182,7 +182,7 @@
 					<input
 						type="checkbox"
 						bind:checked={isDisabled}
-						class="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+						class="rounded border-border text-purple-600 focus:ring-purple-500"
 					/>
 					<label class="text-sm text-gray-700">Disabled</label>
 				</div>

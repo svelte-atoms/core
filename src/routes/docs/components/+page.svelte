@@ -7,224 +7,224 @@
 			description: 'Collapsible content sections for organizing information',
 			category: 'Layout',
 			status: 'Stable',
-			href: '/components/accordion'
+			href: '/docs/components/accordion'
 		},
 		{
 			name: 'Avatar',
 			description: 'Display user profile pictures or initials',
 			category: 'Display',
 			status: 'Stable',
-			href: '/components/avatar'
+			href: '/docs/components/avatar'
 		},
 		{
 			name: 'Badge',
 			description: 'Small status indicators for displaying metadata',
 			category: 'Display',
 			status: 'Stable',
-			href: '/components/badge'
+			href: '/docs/components/badge'
 		},
 		{
 			name: 'Breadcrumb',
 			description: 'Navigation helper showing page hierarchy',
 			category: 'Navigation',
 			status: 'Stable',
-			href: '/components/breadcrumb'
+			href: '/docs/components/breadcrumb'
 		},
 		{
 			name: 'Button',
 			description: 'Interactive element for triggering actions',
 			category: 'Form',
 			status: 'Stable',
-			href: '/components/button'
+			href: '/docs/components/button'
 		},
 		{
 			name: 'Checkbox',
 			description: 'Selection control for multiple choices',
 			category: 'Form',
 			status: 'Stable',
-			href: '/components/checkbox'
+			href: '/docs/components/checkbox'
 		},
 		{
 			name: 'Collapsible',
 			description: 'Show and hide content with smooth transitions',
 			category: 'Layout',
 			status: 'Stable',
-			href: '/components/collapsible'
+			href: '/docs/components/collapsible'
 		},
 		{
 			name: 'Combobox',
 			description: 'Searchable dropdown for selecting from options',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/combobox'
+			href: '/docs/components/combobox'
 		},
 		{
 			name: 'Context Menu',
 			description: 'Right-click menu for contextual actions',
 			category: 'Overlay',
 			status: 'Beta',
-			href: '/components/contextmenu'
+			href: '/docs/components/contextmenu'
 		},
 		{
 			name: 'DataGrid',
 			description: 'Advanced data table with sorting and filtering',
 			category: 'Display',
 			status: 'Beta',
-			href: '/components/datagrid'
+			href: '/docs/components/datagrid'
 		},
 		{
 			name: 'Dialog',
 			description: 'Modal dialogs for important user interactions',
 			category: 'Overlay',
 			status: 'Stable',
-			href: '/components/dialog'
+			href: '/docs/components/dialog'
 		},
 		{
 			name: 'Divider',
 			description: 'Visual separator for content sections',
 			category: 'Layout',
 			status: 'Stable',
-			href: '/components/divider'
+			href: '/docs/components/divider'
 		},
 		{
 			name: 'Dropdown',
 			description: 'Dropdown menu for actions and navigation',
 			category: 'Navigation',
 			status: 'Stable',
-			href: '/components/dropdown'
+			href: '/docs/components/dropdown'
 		},
 		{
 			name: 'Form',
 			description: 'Form controls with validation and layout',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/form'
+			href: '/docs/components/form'
 		},
 		{
 			name: 'Icon',
 			description: 'Scalable vector icons for UI elements',
 			category: 'Display',
 			status: 'Stable',
-			href: '/components/icon'
+			href: '/docs/components/icon'
 		},
 		{
 			name: 'Input',
 			description: 'Text input fields with various types',
 			category: 'Form',
 			status: 'Stable',
-			href: '/components/input'
+			href: '/docs/components/input'
 		},
 		{
 			name: 'Label',
 			description: 'Labels for form controls and content',
 			category: 'Form',
 			status: 'Stable',
-			href: '/components/label'
+			href: '/docs/components/label'
 		},
 		{
 			name: 'Link',
 			description: 'Styled links for navigation and actions',
 			category: 'Navigation',
 			status: 'Stable',
-			href: '/components/link'
+			href: '/docs/components/link'
 		},
 		{
 			name: 'List',
 			description: 'Organized lists with various styles',
 			category: 'Display',
 			status: 'Beta',
-			href: '/components/list'
+			href: '/docs/components/list'
 		},
 		{
 			name: 'Menu',
 			description: 'Navigation menu with nested items',
 			category: 'Navigation',
 			status: 'Beta',
-			href: '/components/menu'
+			href: '/docs/components/menu'
 		},
 		{
 			name: 'Popover',
 			description: 'Floating content container',
 			category: 'Overlay',
 			status: 'Beta',
-			href: '/components/popover'
+			href: '/docs/components/popover'
 		},
 		{
 			name: 'Portal',
 			description: 'Render content outside component tree',
 			category: 'Utility',
 			status: 'Stable',
-			href: '/components/portal'
+			href: '/docs/components/portal'
 		},
 		{
 			name: 'Radio',
 			description: 'Single selection from multiple options',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/radio'
+			href: '/docs/components/radio'
 		},
 		{
 			name: 'Sidebar',
 			description: 'Collapsible navigation sidebar',
 			category: 'Layout',
 			status: 'Beta',
-			href: '/components/sidebar'
+			href: '/docs/components/sidebar'
 		},
 		{
 			name: 'Slideover',
 			description: 'Side panel that slides into view',
 			category: 'Overlay',
 			status: 'Beta',
-			href: '/components/slideover'
+			href: '/docs/components/slideover'
 		},
 		{
 			name: 'Slider',
 			description: 'Range input for selecting values',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/slider'
+			href: '/docs/components/slider'
 		},
 		{
 			name: 'Switch',
 			description: 'Toggle control for binary choices',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/switch'
+			href: '/docs/components/switch'
 		},
 		{
 			name: 'Tabs',
 			description: 'Organize content in tabbed interface',
 			category: 'Navigation',
 			status: 'Beta',
-			href: '/components/tabs'
+			href: '/docs/components/tabs'
 		},
 		{
 			name: 'Textarea',
 			description: 'Multi-line text input field',
 			category: 'Form',
 			status: 'Beta',
-			href: '/components/textarea'
+			href: '/docs/components/textarea'
 		},
 		{
 			name: 'Toast',
 			description: 'Notification messages',
 			category: 'Feedback',
 			status: 'Beta',
-			href: '/components/toast'
+			href: '/docs/components/toast'
 		},
 		{
 			name: 'Tooltip',
 			description: 'Contextual help text on hover',
 			category: 'Overlay',
 			status: 'Beta',
-			href: '/components/tooltip'
+			href: '/docs/components/tooltip'
 		},
 		{
 			name: 'Tree',
 			description: 'Hierarchical data display',
 			category: 'Display',
 			status: 'Beta',
-			href: '/components/tree'
+			href: '/docs/components/tree'
 		}
 	];
 
@@ -298,7 +298,7 @@
 			<input
 				type="text"
 				placeholder="Search components..."
-				class="block w-full rounded-md border border-gray-300 bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+				class="block w-full rounded-md border border-border bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-600 focus:outline-none"
 				bind:value={searchQuery}
 			/>
 		</div>
@@ -321,23 +321,23 @@
 
 	<!-- Stats -->
 	<div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-		<div class="rounded-lg border border-gray-200 bg-white p-4 text-center">
+		<div class="rounded-lg border border-border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-purple-600">{components.length}</div>
 			<div class="text-sm text-gray-600">Total Components</div>
 		</div>
-		<div class="rounded-lg border border-gray-200 bg-white p-4 text-center">
+		<div class="rounded-lg border border-border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-green-600">
 				{components.filter((c) => c.status === 'Stable').length}
 			</div>
 			<div class="text-sm text-gray-600">Stable</div>
 		</div>
-		<div class="rounded-lg border border-gray-200 bg-white p-4 text-center">
+		<div class="rounded-lg border border-border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-blue-600">
 				{components.filter((c) => c.status === 'Beta').length}
 			</div>
 			<div class="text-sm text-gray-600">Beta</div>
 		</div>
-		<div class="rounded-lg border border-gray-200 bg-white p-4 text-center">
+		<div class="rounded-lg border border-border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-pink-600">{categories.length - 1}</div>
 			<div class="text-sm text-gray-600">Categories</div>
 		</div>
@@ -349,7 +349,7 @@
 			{#each filteredComponents as component}
 				<a
 					href={component.href}
-					class="group block transform rounded-lg border border-gray-200 bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"
+					class="group block transform rounded-lg border border-border bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"
 				>
 					<div class="mb-3 flex items-start justify-between">
 						<h3

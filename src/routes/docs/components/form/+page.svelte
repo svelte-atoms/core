@@ -90,6 +90,35 @@
 		/>
 	</Section>
 
+	<Section title="Preset Configuration" description="Customize the form appearance using presets">
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Form and Field components by defining presets in your configuration:
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+
+const preset = createPreset({
+  form: () => ({
+    class: 'space-y-4'
+  }),
+  'form.field': () => ({
+    class: 'space-y-2'
+  }),
+  'form.field.label': () => ({
+    class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+  }),
+  'form.field.description': () => ({
+    class: 'text-xs text-muted-foreground'
+  }),
+  'form.field.error': () => ({
+    class: 'text-xs text-destructive'
+  })
+});`}</code></pre>
+			</div>
+		</div>
+	</Section>
+
 	<Section title="Examples" description="Explore different form variations and use cases">
 		<div class="space-y-8">
 			<DemoExample title="Basic Form" description="Simple form with text inputs" code={basicCode}>

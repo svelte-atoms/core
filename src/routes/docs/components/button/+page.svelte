@@ -57,6 +57,45 @@
 		/>
 	</Section>
 
+	<Section title="Preset Configuration" description="Customize the button appearance using presets">
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Button components by defining presets in your configuration:
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+
+const preset = createPreset({
+  button: () => ({
+    class: 'px-3 py-2 h-12 disabled:opacity-50 disabled:pointer-events-none items-center transition-colors duration-100',
+    variants: {
+      variant: {
+        primary: {
+          class: 'bg-primary text-primary-foreground hover:bg-primary/80'
+        },
+        secondary: {
+          class: 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+        },
+        destructive: {
+          class: 'bg-destructive text-destructive-foreground hover:bg-destructive/80'
+        },
+        outline: {
+          class: 'bg-foreground/0 border border-border hover:border-foreground/25'
+        },
+        ghost: {
+          class: 'bg-transparent hover:bg-accent/90 text-accent-foreground'
+        }
+      }
+    },
+    defaults: {
+      variant: 'primary'
+    }
+  })
+});`}</code></pre>
+			</div>
+		</div>
+	</Section>
+
 	<Section title="Examples" description="Explore different button variations and use cases">
 		<div class="space-y-8">
 			<DemoExample

@@ -66,6 +66,32 @@
 		/>
 	</Section>
 
+	<Section title="Preset Configuration" description="Customize the accordion appearance using presets">
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Accordion components by defining presets in your configuration:
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+
+const preset = createPreset({
+  accordion: () => ({
+    class: 'divide-y divide-border rounded-lg border border-border'
+  }),
+  'accordion.item': () => ({
+    class: ''
+  }),
+  'accordion.item.header': () => ({
+    class: 'flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium hover:bg-accent/50 transition-colors'
+  }),
+  'accordion.item.body': () => ({
+    class: 'px-4 py-3 text-sm text-muted-foreground'
+  })
+});`}</code></pre>
+			</div>
+		</div>
+	</Section>
+
 	<Section title="Examples" description="Explore different accordion variations and use cases">
 		<div class="space-y-8">
 			<DemoExample

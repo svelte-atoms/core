@@ -58,6 +58,23 @@
 		/>
 	</Section>
 
+	<Section title="Preset Configuration" description="Customize the checkbox appearance using presets">
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Checkbox components by defining presets in your configuration:
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+
+const preset = createPreset({
+  checkbox: () => ({
+    class: 'h-4 w-4 rounded border border-primary text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+  })
+});`}</code></pre>
+			</div>
+		</div>
+	</Section>
+
 	<Section title="Examples" description="Explore different checkbox variations and use cases">
 		<div class="space-y-8">
 			<DemoExample title="Basic Checkbox" description="Simple checkbox with label" code={basicCode}>

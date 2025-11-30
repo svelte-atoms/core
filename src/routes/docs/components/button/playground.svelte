@@ -9,7 +9,7 @@
 
 <Playground.Root class="mb-12 text-gray-900">
 	<Playground.Header class="mb-6 text-2xl font-bold text-gray-900">Playground</Playground.Header>
-	<Playground.Content class="gap-x-4 rounded-lg border border-gray-200 p-6">
+	<Playground.Content class="gap-x-4 rounded-lg border border-border p-6">
 		<!-- Controls -->
 		<Playground.Controls class="space-y-4">
 			<div class="space-y-3">
@@ -19,7 +19,7 @@
 					>
 					<Dropdown.Root
 						id="style-select"
-						class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+						class="block w-full rounded-md border border-border px-3 py-2 text-sm"
 					>
 						<Dropdown.Trigger class="w-full" component={Input.Root}>
 							<Dropdown.Values>
@@ -45,7 +45,7 @@
 					<label for="size-select" class="mb-1 block text-sm font-medium text-gray-700">Size</label>
 					<Dropdown.Root
 						id="style-select"
-						class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+						class="block w-full rounded-md border border-border px-3 py-2 text-sm"
 					>
 						<Dropdown.Trigger class="w-full" component={Input.Root}>
 							<Dropdown.Values>
