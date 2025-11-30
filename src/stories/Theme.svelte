@@ -8,7 +8,7 @@
 
 	const preset: Partial<Preset> = {
 		root: () => ({
-			class: 'flex flex-col items-center justify-center p-4'
+			class: 'flex flex-col p-4'
 		}),
 		accordion: () => ({
 			as: 'ul',
