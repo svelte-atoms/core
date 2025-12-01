@@ -19,6 +19,7 @@
 			children: [
 				{ title: 'Atoms', href: '/docs/atoms' },
 				{ title: 'Bonds', href: '/docs/bonds' },
+				{ title: 'Preset System', href: '/docs/preset' },
 				{ title: 'Styling', href: '/docs/styling' },
 				{ title: 'Accessibility', href: '/docs/accessibility' },
 			]
@@ -72,9 +73,7 @@
 </script>
 
 <div class="mx-auto flex max-w-[1800px] items-start gap-8 px-6 lg:px-8">
-	<aside class="sticky top-16 hidden w-64 shrink-0 overflow-y-auto lg:block" style="height: calc(100vh - 4rem);">
-		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
-	</aside>
+	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
 	<main class="flex-1 min-w-0 py-8">
 		{@render children?.()}
