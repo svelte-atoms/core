@@ -35,11 +35,9 @@ export const preset: Partial<Preset> = {
 		class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-2 py-2'
 	}),
 	'accordion.item.header': (bond) => {
-		return defineState([
-			defineProperty('class', () => [
-				bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50'
-			])
-		]);
+		return () => ({
+			class: [bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
+		});
 	},
 	'accordion.item.body': () => ({
 		class: 'overflow-hidden'
