@@ -9,6 +9,7 @@
 	import type { Bond } from '$svelte-atoms/core/shared';
 	import SnippetRenderer from './snippet-renderer.svelte';
 	import type { Component } from 'svelte';
+	import { call } from '$svelte-atoms/core/utils/function';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -35,7 +36,9 @@
 	// Memoize preset resolution - only recompute when presetKey or bond changes
 	const preset = $derived.by(() => {
 		if (!presetKey) return undefined;
-		return getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]);
+		const result = getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]);
+		// Handle deferred preset result (factory function)
+		return call(result);
 	});
 
 	const presetProps = $derived(preset?.variants);
