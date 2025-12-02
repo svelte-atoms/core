@@ -62,8 +62,8 @@
 		// Only preset variants (raw object from preset)
 		if (presetProps && !localVariants) {
 			// Convert preset variants to VariantDefinition-like structure
-			const variantDef = {
-				class: preset?.class,
+			const variantDef: VariantDefinition<any> = {
+				class: preset?.class ?? '',
 				variants: presetProps,
 				compounds: preset?.compounds ?? [],
 				defaults: preset?.defaults ?? {}
@@ -78,9 +78,9 @@
 
 		// Both exist - merge them
 		// When both preset and local variants exist, we need to merge the resolved props
-		const presetVariantDef = {
-			class: preset?.class,
-			variants: presetProps,
+		const presetVariantDef: VariantDefinition<any> = {
+			class: preset?.class ?? '',
+			variants: presetProps ?? {},
 			compounds: preset?.compounds ?? [],
 			defaults: preset?.defaults ?? {}
 		};
@@ -106,12 +106,27 @@
 	const presetClassString = $derived(cn(preset?.class));
 
 	const _klass = $derived.by(() => {
-		const merged = cn(klass, mergedVariants?.class ?? '');
-		// Early exit if no $preset placeholder
-		if (!merged.includes('$preset')) {
-			return merged;
+		const klassStr = cn(klass ?? '');
+		// Check for $preset placeholder first
+		if (!klassStr.includes('$preset')) {
+			// No placeholder - normal merge: variants override direct class
+			return cn(klass, mergedVariants?.class ?? '');
 		}
-		return merged.replaceAll('$preset', presetClassString);
+
+		// Has placeholder - calculate position and inject preset classes
+		const parts = klassStr.split('$preset');
+
+		// Only keep the last $preset placeholder
+		const beforeLastPlaceholder = parts.slice(0, -1).join('');
+		const afterLastPlaceholder = parts[parts.length - 1];
+
+		// Merge: before + preset + variants + after
+		return cn(
+			beforeLastPlaceholder,
+			presetClassString,
+			mergedVariants?.class ?? '',
+			afterLastPlaceholder
+		);
 	});
 
 	const _base = $derived(base ?? preset?.base);
@@ -228,7 +243,7 @@
 		if (variantCache.size > 100) {
 			// Clear oldest entry (first in Map)
 			const firstKey = variantCache.keys().next().value;
-			variantCache.delete(firstKey);
+			if (firstKey) variantCache.delete(firstKey);
 		}
 		variantCache.set(cacheKey, result);
 
@@ -237,7 +252,7 @@
 </script>
 
 <renderer.component {...renderer.props}>
-	{#snippet children(args)}
-		{@render childrenProp?.(args)}
+	{#snippet children(args: any)}
+		{@render (childrenProp as any)?.(args)}
 	{/snippet}
 </renderer.component>
