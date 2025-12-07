@@ -357,11 +357,6 @@
 			"svelte": "./dist/components/tooltip/atoms.js",
 			"default": "./dist/components/tooltip/atoms.js"
 		},
-		"./components": {
-			"types": "./dist/components/index.d.ts",
-			"svelte": "./dist/components/index.js",
-			"default": "./dist/components/index.js"
-		},
 		"./utils": {
 			"types": "./dist/utils/index.d.ts",
 			"svelte": "./dist/utils/index.js",
@@ -371,6 +366,10 @@
 			"types": "./dist/shared/index.d.ts",
 			"svelte": "./dist/shared/index.js",
 			"default": "./dist/shared/index.js"
+		},
+		"./tw": {
+			"svelte": "./dist/components/root/root.css",
+			"default": "./dist/components/root/root.css"
 		},
 		"./styles/root": {
 			"svelte": "./dist/components/root/root.css",
