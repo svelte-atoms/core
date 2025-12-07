@@ -8,7 +8,9 @@
 
 	function tooltip(node: HTMLElement) {
 		const onpointerenter = async () => {
-			popoverBond?.state.open();
+			requestAnimationFrame(()=> {
+				popoverBond?.state.open();
+			})
 			node.addEventListener('pointerleave', onpointerleave);
 		};
 		const onpointerleave = () => {
