@@ -107,13 +107,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the datagrid appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the datagrid appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for DataGrid components by defining presets in your configuration:
+				You can customize the default styles for DataGrid components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   datagrid: () => ({
@@ -131,7 +136,8 @@ const preset = createPreset({
   'datagrid.td': () => ({
     class: 'p-4 align-middle [&:has([role=checkbox])]:pr-0'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>

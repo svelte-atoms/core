@@ -21,10 +21,7 @@
 	const treeData = [
 		{
 			label: 'Documents',
-			children: [
-				{ label: 'Resume.pdf' },
-				{ label: 'CoverLetter.docx' }
-			]
+			children: [{ label: 'Resume.pdf' }, { label: 'CoverLetter.docx' }]
 		},
 		{
 			label: 'Photos',
@@ -33,10 +30,7 @@
 				{ label: 'Family.png' },
 				{
 					label: 'Events',
-					children: [
-						{ label: 'Birthday.jpg' },
-						{ label: 'Wedding.jpg' }
-					]
+					children: [{ label: 'Birthday.jpg' }, { label: 'Wedding.jpg' }]
 				}
 			]
 		},
@@ -47,7 +41,7 @@
 
 	function toggleExpanded(label: string) {
 		if (expanded.includes(label)) {
-			expanded = expanded.filter(l => l !== label);
+			expanded = expanded.filter((l) => l !== label);
 		} else {
 			expanded = [...expanded, label];
 		}
@@ -78,10 +72,12 @@
 	<Section title="Preset Configuration" description="Customize the tree appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Tree components by defining presets in your configuration:
+				You can customize the default styles for Tree components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   tree: () => ({
@@ -93,32 +89,23 @@ const preset = createPreset({
   'tree.children': () => ({
     class: 'pl-4 space-y-1 border-l border-border ml-2'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different tree variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Tree"
-				description="Simple hierarchical structure"
-				code={basicCode}
-			>
-				<Tree.Root class="border rounded p-4 max-w-md">
-					<Tree.Item 
-						label="Documents"
-						class="py-1"
-					>
+			<DemoExample title="Basic Tree" description="Simple hierarchical structure" code={basicCode}>
+				<Tree.Root class="max-w-md rounded border p-4">
+					<Tree.Item label="Documents" class="py-1">
 						<div class="ml-4 space-y-1">
 							<Tree.Item label="Resume.pdf" class="py-1" />
 							<Tree.Item label="CoverLetter.docx" class="py-1" />
 						</div>
 					</Tree.Item>
-					<Tree.Item 
-						label="Photos"
-						class="py-1"
-					>
+					<Tree.Item label="Photos" class="py-1">
 						<div class="ml-4 space-y-1">
 							<Tree.Item label="Vacation.jpg" class="py-1" />
 							<Tree.Item label="Family.png" class="py-1" />
@@ -137,7 +124,7 @@ const preset = createPreset({
   <\/Tree.Item>
 <\/Tree.Item>`}
 			>
-				<Tree.Root class="border rounded p-4 max-w-md">
+				<Tree.Root class="max-w-md rounded border p-4">
 					<Tree.Item label="src" class="py-1">
 						<div class="ml-4 space-y-1">
 							<Tree.Item label="components" class="py-1">

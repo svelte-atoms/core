@@ -53,10 +53,12 @@
 	<Section title="Preset Configuration" description="Customize the avatar appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Avatar components by defining presets in your configuration:
+				You can customize the default styles for Avatar components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   avatar: () => ({
@@ -73,18 +75,15 @@ const preset = createPreset({
       size: 'md'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different avatar variations and use cases">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Avatar"
-				description="Simple avatar with image"
-				code={basicCode}
-			>
+			<DemoExample title="Basic Avatar" description="Simple avatar with image" code={basicCode}>
 				<Avatar src="https://i.pravatar.cc/150?img=1" alt="User name" />
 			</DemoExample>
 

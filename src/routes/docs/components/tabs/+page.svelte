@@ -52,10 +52,12 @@
 	<Section title="Preset Configuration" description="Customize the tabs appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Tabs components by defining presets in your configuration:
+				You can customize the default styles for Tabs components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   tab: () => ({
@@ -67,50 +69,53 @@ const preset = createPreset({
   'tabs.content': () => ({
     class: 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different tab variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Tabs"
-				description="Simple tab navigation"
-				code={basicCode}
-			>
-				<Tabs.Root value={activeTab} onchange={(v: string) => activeTab = v}>
-					<Tabs.Header class="border-b flex gap-1">
-						<Tab 
-							value="tab1" 
-							class="px-4 py-2 border-b-2 {activeTab === 'tab1' ? 'border-primary' : 'border-transparent'}"
+			<DemoExample title="Basic Tabs" description="Simple tab navigation" code={basicCode}>
+				<Tabs.Root value={activeTab} onchange={(v: string) => (activeTab = v)}>
+					<Tabs.Header class="flex gap-1 border-b">
+						<Tab
+							value="tab1"
+							class="border-b-2 px-4 py-2 {activeTab === 'tab1'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Tab 1
 						</Tab>
-						<Tab 
+						<Tab
 							value="tab2"
-							class="px-4 py-2 border-b-2 {activeTab === 'tab2' ? 'border-primary' : 'border-transparent'}"
+							class="border-b-2 px-4 py-2 {activeTab === 'tab2'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Tab 2
 						</Tab>
-						<Tab 
+						<Tab
 							value="tab3"
-							class="px-4 py-2 border-b-2 {activeTab === 'tab3' ? 'border-primary' : 'border-transparent'}"
+							class="border-b-2 px-4 py-2 {activeTab === 'tab3'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Tab 3
 						</Tab>
 					</Tabs.Header>
-					
+
 					<Tabs.Body value="tab1" class="p-4">
-						<h3 class="font-semibold mb-2">Tab 1 Content</h3>
+						<h3 class="mb-2 font-semibold">Tab 1 Content</h3>
 						<p class="text-muted-foreground">This is the content for tab 1.</p>
 					</Tabs.Body>
 					<Tabs.Body value="tab2" class="p-4">
-						<h3 class="font-semibold mb-2">Tab 2 Content</h3>
+						<h3 class="mb-2 font-semibold">Tab 2 Content</h3>
 						<p class="text-muted-foreground">This is the content for tab 2.</p>
 					</Tabs.Body>
 					<Tabs.Body value="tab3" class="p-4">
-						<h3 class="font-semibold mb-2">Tab 3 Content</h3>
+						<h3 class="mb-2 font-semibold">Tab 3 Content</h3>
 						<p class="text-muted-foreground">This is the content for tab 3.</p>
 					</Tabs.Body>
 				</Tabs.Root>
@@ -128,47 +133,51 @@ const preset = createPreset({
   <Tabs.Body value="features">More content<\/Tabs.Body>
 <\/Tabs.Root>`}
 			>
-				<Tabs.Root value={exampleTab} onchange={(v: string) => exampleTab = v}>
-					<Tabs.Header class="border-b flex gap-1">
-						<Tab 
+				<Tabs.Root value={exampleTab} onchange={(v: string) => (exampleTab = v)}>
+					<Tabs.Header class="flex gap-1 border-b">
+						<Tab
 							value="overview"
-							class="px-4 py-2 border-b-2 {exampleTab === 'overview' ? 'border-primary' : 'border-transparent'}"
+							class="border-b-2 px-4 py-2 {exampleTab === 'overview'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Overview
 						</Tab>
-						<Tab 
+						<Tab
 							value="features"
-							class="px-4 py-2 border-b-2 {exampleTab === 'features' ? 'border-primary' : 'border-transparent'}"
+							class="border-b-2 px-4 py-2 {exampleTab === 'features'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Features
 						</Tab>
-						<Tab 
+						<Tab
 							value="pricing"
-							class="px-4 py-2 border-b-2 {exampleTab === 'pricing' ? 'border-primary' : 'border-transparent'}"
+							class="border-b-2 px-4 py-2 {exampleTab === 'pricing'
+								? 'border-primary'
+								: 'border-transparent'}"
 						>
 							Pricing
 						</Tab>
 					</Tabs.Header>
-					
-					<Tabs.Body value="overview" class="p-4 space-y-2">
+
+					<Tabs.Body value="overview" class="space-y-2 p-4">
 						<h3 class="font-semibold">Product Overview</h3>
 						<p class="text-muted-foreground text-sm">
 							Learn about our amazing product and all it has to offer.
 						</p>
 					</Tabs.Body>
-					<Tabs.Body value="features" class="p-4 space-y-2">
+					<Tabs.Body value="features" class="space-y-2 p-4">
 						<h3 class="font-semibold">Features</h3>
-						<ul class="text-muted-foreground text-sm list-disc list-inside space-y-1">
+						<ul class="text-muted-foreground list-inside list-disc space-y-1 text-sm">
 							<li>Feature 1: Fast performance</li>
 							<li>Feature 2: Easy to use</li>
 							<li>Feature 3: Highly customizable</li>
 						</ul>
 					</Tabs.Body>
-					<Tabs.Body value="pricing" class="p-4 space-y-2">
+					<Tabs.Body value="pricing" class="space-y-2 p-4">
 						<h3 class="font-semibold">Pricing Plans</h3>
-						<p class="text-muted-foreground text-sm">
-							Choose the plan that's right for you.
-						</p>
+						<p class="text-muted-foreground text-sm">Choose the plan that's right for you.</p>
 					</Tabs.Body>
 				</Tabs.Root>
 			</DemoExample>

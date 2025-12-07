@@ -45,27 +45,26 @@
 	<Section title="Preset Configuration" description="Customize the label appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Label components by defining presets in your configuration:
+				You can customize the default styles for Label components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   label: () => ({
     class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different label variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Label"
-				description="Simple label with input"
-				code={basicCode}
-			>
+			<DemoExample title="Basic Label" description="Simple label with input" code={basicCode}>
 				<div class="max-w-sm space-y-2">
 					<Label for="email">Email Address</Label>
 					<Input id="email" type="email" placeholder="you@example.com" />
@@ -96,9 +95,7 @@ const preset = createPreset({
 			>
 				<div class="max-w-sm space-y-2">
 					<Label for="bio">Bio</Label>
-					<p class="text-sm text-muted-foreground">
-						Tell us about yourself
-					</p>
+					<p class="text-muted-foreground text-sm">Tell us about yourself</p>
 					<Input id="bio" placeholder="I'm a developer..." />
 				</div>
 			</DemoExample>

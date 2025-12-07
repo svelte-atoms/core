@@ -162,8 +162,8 @@
 				<h3 class="mb-3 text-xl font-semibold text-gray-900">Your First Component</h3>
 				<p class="mb-4 text-gray-600">Here's a simple example using the Button component:</p>
 
-				<div class="overflow-hidden rounded-lg border border-border">
-					<div class="border-b border-border bg-gray-50 px-4 py-2">
+				<div class="border-border overflow-hidden rounded-lg border">
+					<div class="border-border border-b bg-gray-50 px-4 py-2">
 						<span class="text-sm font-medium text-gray-700">Example.svelte</span>
 					</div>
 					<div class="bg-gray-900 p-4 font-mono text-sm text-white">
@@ -308,7 +308,7 @@
 		<h2 class="mb-6 text-2xl font-bold text-gray-900 md:text-3xl">Next Steps</h2>
 
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-			<div class="rounded-lg border border-border p-6 transition-colors hover:border-purple-300">
+			<div class="border-border rounded-lg border p-6 transition-colors hover:border-purple-300">
 				<div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
 					<svg
 						class="h-5 w-5 text-purple-600"
@@ -337,7 +337,7 @@
 				</a>
 			</div>
 
-			<div class="rounded-lg border border-border p-6 transition-colors hover:border-blue-300">
+			<div class="border-border rounded-lg border p-6 transition-colors hover:border-blue-300">
 				<div class="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
 					<svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path

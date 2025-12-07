@@ -298,7 +298,7 @@
 			<input
 				type="text"
 				placeholder="Search components..."
-				class="block w-full rounded-md border border-border bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+				class="border-border block w-full rounded-md border bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-600 focus:outline-none"
 				bind:value={searchQuery}
 			/>
 		</div>
@@ -321,23 +321,23 @@
 
 	<!-- Stats -->
 	<div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-		<div class="rounded-lg border border-border bg-white p-4 text-center">
+		<div class="border-border rounded-lg border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-purple-600">{components.length}</div>
 			<div class="text-sm text-gray-600">Total Components</div>
 		</div>
-		<div class="rounded-lg border border-border bg-white p-4 text-center">
+		<div class="border-border rounded-lg border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-green-600">
 				{components.filter((c) => c.status === 'Stable').length}
 			</div>
 			<div class="text-sm text-gray-600">Stable</div>
 		</div>
-		<div class="rounded-lg border border-border bg-white p-4 text-center">
+		<div class="border-border rounded-lg border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-blue-600">
 				{components.filter((c) => c.status === 'Beta').length}
 			</div>
 			<div class="text-sm text-gray-600">Beta</div>
 		</div>
-		<div class="rounded-lg border border-border bg-white p-4 text-center">
+		<div class="border-border rounded-lg border bg-white p-4 text-center">
 			<div class="text-2xl font-bold text-pink-600">{categories.length - 1}</div>
 			<div class="text-sm text-gray-600">Categories</div>
 		</div>
@@ -349,7 +349,7 @@
 			{#each filteredComponents as component}
 				<a
 					href={component.href}
-					class="group block transform rounded-lg border border-border bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"
+					class="group border-border block transform rounded-lg border bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"
 				>
 					<div class="mb-3 flex items-start justify-between">
 						<h3

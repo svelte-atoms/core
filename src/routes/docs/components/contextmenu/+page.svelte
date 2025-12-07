@@ -54,7 +54,10 @@
 
 <svelte:head>
 	<title>Context Menu - Svelte Atoms</title>
-	<meta name="description" content="Right-click context menu with customizable items and actions." />
+	<meta
+		name="description"
+		content="Right-click context menu with customizable items and actions."
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -75,13 +78,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the context menu appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the context menu appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Contextmenu components by defining presets in your configuration:
+				You can customize the default styles for Contextmenu components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   contextmenu: () => ({
@@ -93,7 +101,8 @@ const preset = createPreset({
   'contextmenu.separator': () => ({
     class: '-mx-1 my-1 h-px bg-border'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
@@ -107,9 +116,7 @@ const preset = createPreset({
 			>
 				<Contextmenu.Root>
 					<Contextmenu.Trigger>
-						<div
-							class="rounded border border-border bg-background p-8 text-center hover:bg-muted"
-						>
+						<div class="border-border bg-background hover:bg-muted rounded border p-8 text-center">
 							Right-click me
 						</div>
 					</Contextmenu.Trigger>

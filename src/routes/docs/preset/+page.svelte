@@ -294,7 +294,7 @@ setPreset({
 
 	<!-- Overview -->
 	<Section title="Overview">
-		<div class="prose prose-slate max-w-none dark:prose-invert">
+		<div class="prose prose-slate dark:prose-invert max-w-none">
 			<p class="text-muted-foreground">
 				The Preset System is a sophisticated theming mechanism that allows you to define default
 				styles, variants, and behaviors for your components at different levels of your application
@@ -335,7 +335,7 @@ setPreset({
 				application:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{globalPresetCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{globalPresetCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -351,7 +351,7 @@ setPreset({
 				overriding specific styles:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{routePresetCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{routePresetCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -367,7 +367,7 @@ setPreset({
 				affecting the global theme:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{componentPresetCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{componentPresetCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -383,7 +383,7 @@ setPreset({
 				powerful for components like Alert, Card, Dialog, and Accordion:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{compoundPresetCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{compoundPresetCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -399,7 +399,7 @@ setPreset({
 				reactive styles based on component state:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{dynamicPresetCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{dynamicPresetCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -408,11 +408,11 @@ setPreset({
 	<Section title="The $preset Placeholder" description="Control preset insertion order">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				Use the <code class="bg-muted px-1.5 py-0.5 rounded">$preset</code> placeholder in class arrays
+				Use the <code class="bg-muted rounded px-1.5 py-0.5">$preset</code> placeholder in class arrays
 				to control exactly where preset classes are inserted:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{placeholderCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{placeholderCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -424,26 +424,33 @@ setPreset({
 	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				Beyond styling with classes, presets can set any HTML attributes including <code class="bg-muted px-1.5 py-0.5 rounded">data-*</code>,
-				<code class="bg-muted px-1.5 py-0.5 rounded">aria-*</code>, <code class="bg-muted px-1.5 py-0.5 rounded">role</code>, and more:
+				Beyond styling with classes, presets can set any HTML attributes including <code
+					class="bg-muted rounded px-1.5 py-0.5">data-*</code
+				>,
+				<code class="bg-muted rounded px-1.5 py-0.5">aria-*</code>,
+				<code class="bg-muted rounded px-1.5 py-0.5">role</code>, and more:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{attributesCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{attributesCode}</code></pre>
 			</div>
-			<div class="prose prose-sm prose-slate max-w-none dark:prose-invert">
+			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
 				<h4 class="text-foreground">Common Use Cases:</h4>
 				<ul class="text-muted-foreground">
 					<li>
-						<strong>Accessibility:</strong> Set <code>aria-*</code> attributes, <code>role</code>, <code>tabindex</code> for consistent a11y
+						<strong>Accessibility:</strong> Set <code>aria-*</code> attributes, <code>role</code>,
+						<code>tabindex</code> for consistent a11y
 					</li>
 					<li>
-						<strong>Testing:</strong> Add <code>data-testid</code> or <code>data-component</code> attributes for automated tests
+						<strong>Testing:</strong> Add <code>data-testid</code> or <code>data-component</code> attributes
+						for automated tests
 					</li>
 					<li>
-						<strong>Analytics:</strong> Include <code>data-analytics</code> or <code>data-tracking</code> attributes
+						<strong>Analytics:</strong> Include <code>data-analytics</code> or
+						<code>data-tracking</code> attributes
 					</li>
 					<li>
-						<strong>State Indicators:</strong> Use <code>data-state</code> or <code>data-variant</code> for CSS selectors
+						<strong>State Indicators:</strong> Use <code>data-state</code> or
+						<code>data-variant</code> for CSS selectors
 					</li>
 				</ul>
 			</div>
@@ -461,7 +468,7 @@ setPreset({
 				base presets with new variants, sizes, or completely new preset keys:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{extendingCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{extendingCode}</code></pre>
 			</div>
 		</div>
 	</Section>
@@ -473,9 +480,9 @@ setPreset({
 				The preset system includes several performance optimizations to ensure minimal overhead:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{performanceCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{performanceCode}</code></pre>
 			</div>
-			<div class="prose prose-sm prose-slate max-w-none dark:prose-invert">
+			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
 				<h4 class="text-foreground">Performance Benefits:</h4>
 				<ul class="text-muted-foreground">
 					<li>
@@ -502,10 +509,10 @@ setPreset({
 	<Section title="Best Practices">
 		<div class="space-y-4">
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{bestPracticesCode}</code></pre>
+				<pre class="overflow-x-auto text-sm"><code>{bestPracticesCode}</code></pre>
 			</div>
 
-			<div class="prose prose-sm prose-slate max-w-none dark:prose-invert">
+			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
 				<h4 class="text-foreground">Guidelines:</h4>
 				<ol class="text-muted-foreground">
 					<li>
@@ -542,11 +549,11 @@ setPreset({
 
 	<!-- Use Cases -->
 	<Section title="Common Use Cases">
-		<div class="prose prose-slate max-w-none dark:prose-invert">
+		<div class="prose prose-slate dark:prose-invert max-w-none">
 			<h4 class="text-foreground">1. Multi-Tenant Applications</h4>
 			<p class="text-muted-foreground text-sm">
-				Different organizations can have their own branded themes by setting presets based on
-				tenant configuration.
+				Different organizations can have their own branded themes by setting presets based on tenant
+				configuration.
 			</p>
 
 			<h4 class="text-foreground mt-6">2. Dark Mode Implementation</h4>
@@ -578,7 +585,7 @@ setPreset({
 		<div class="space-y-6">
 			<div>
 				<h4 class="text-foreground mb-2 text-sm font-semibold">setPreset(preset)</h4>
-				<p class="text-muted-foreground text-sm mb-2">
+				<p class="text-muted-foreground mb-2 text-sm">
 					Sets or merges preset configuration in the current context.
 				</p>
 				<div class="bg-muted rounded-lg p-3">
@@ -588,7 +595,7 @@ setPreset({
 
 			<div>
 				<h4 class="text-foreground mb-2 text-sm font-semibold">getPreset(key?)</h4>
-				<p class="text-muted-foreground text-sm mb-2">
+				<p class="text-muted-foreground mb-2 text-sm">
 					Retrieves preset configuration. If key is provided, returns specific preset entry;
 					otherwise returns all presets.
 				</p>
@@ -601,24 +608,25 @@ setPreset({
 
 			<div>
 				<h4 class="text-foreground mb-2 text-sm font-semibold">Preset Entry Function</h4>
-				<p class="text-muted-foreground text-sm mb-2">
+				<p class="text-muted-foreground mb-2 text-sm">
 					Preset entries are functions that receive the component bond and return configuration
 					objects.
 				</p>
 				<div class="bg-muted rounded-lg p-3">
-					<code class="text-xs"
-						>type PresetEntry = (bond: Bond | null) =&gt; PresetEntryRecord</code
+					<code class="text-xs">type PresetEntry = (bond: Bond | null) =&gt; PresetEntryRecord</code
 					>
 				</div>
 			</div>
 
 			<div>
 				<h4 class="text-foreground mb-2 text-sm font-semibold">PresetEntryRecord</h4>
-				<p class="text-muted-foreground text-sm mb-2">
-					The object returned by preset functions. Supports any HTML attributes including class, data-*, aria-*, role, etc.
+				<p class="text-muted-foreground mb-2 text-sm">
+					The object returned by preset functions. Supports any HTML attributes including class,
+					data-*, aria-*, role, etc.
 				</p>
 				<div class="bg-muted rounded-lg p-3">
-					<pre class="text-xs overflow-x-auto"><code>{`{
+					<pre class="overflow-x-auto text-xs"><code
+							>{`{
   class?: ClassValue;
   as?: string;
   base?: Base;
@@ -635,7 +643,8 @@ setPreset({
   // role?: string;
   // tabindex?: number;
   // etc.
-}`}</code></pre>
+}`}</code
+						></pre>
 				</div>
 			</div>
 		</div>

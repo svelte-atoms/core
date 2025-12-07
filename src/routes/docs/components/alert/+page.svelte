@@ -145,10 +145,12 @@
 	<Section title="Preset Configuration" description="Customize the alert appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Alert components by defining presets in your configuration:
+				You can customize the default styles for Alert components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   alert: () => ({
@@ -194,18 +196,38 @@ const preset = createPreset({
   'alert.close-button': () => ({
     class: 'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
-			<div class="bg-muted/50 rounded-lg border border-border p-4">
+			<div class="bg-muted/50 border-border rounded-lg border p-4">
 				<h4 class="text-foreground mb-2 text-sm font-semibold">Available Preset Keys</h4>
 				<ul class="text-muted-foreground space-y-1 text-sm">
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert</code> - Root container styles and variants</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.icon</code> - Icon container styles</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.title</code> - Title text styles</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.description</code> - Description text styles</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.content</code> - Content container styles</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.actions</code> - Actions container styles</li>
-					<li><code class="bg-background rounded px-1.5 py-0.5">alert.close-button</code> - Close button styles</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert</code> - Root container styles and
+						variants
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.icon</code> - Icon container styles
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.title</code> - Title text styles
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.description</code> - Description
+						text styles
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.content</code> - Content container
+						styles
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.actions</code> - Actions container
+						styles
+					</li>
+					<li>
+						<code class="bg-background rounded px-1.5 py-0.5">alert.close-button</code> - Close button
+						styles
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -213,10 +235,20 @@ const preset = createPreset({
 
 	<Section title="Examples" description="Explore different alert variations and use cases">
 		<div class="space-y-8">
-			<DemoExample title="Basic Alert" description="Simple alert with icon and title" code={basicCode}>
+			<DemoExample
+				title="Basic Alert"
+				description="Simple alert with icon and title"
+				code={basicCode}
+			>
 				<Alert.Root base={alertLayout} variant="primary">
 					<Alert.Icon>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							class="h-4 w-4"
+						>
 							<circle cx="12" cy="12" r="10"></circle>
 							<path d="M12 16v-4M12 8h.01"></path>
 						</svg>
@@ -237,7 +269,13 @@ const preset = createPreset({
 				<div class="space-y-4">
 					<Alert.Root base={alertLayout} variant="primary">
 						<Alert.Icon>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								class="h-4 w-4"
+							>
 								<circle cx="12" cy="12" r="10"></circle>
 								<path d="M12 16v-4M12 8h.01"></path>
 							</svg>
@@ -251,32 +289,54 @@ const preset = createPreset({
 
 					<Alert.Root base={alertLayout} variant="secondary">
 						<Alert.Icon>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								class="h-4 w-4"
+							>
 								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 								<polyline points="22 4 12 14.01 9 11.01"></polyline>
 							</svg>
 						</Alert.Icon>
 						<Alert.Title>Secondary Alert</Alert.Title>
-						<Alert.Description>This is a secondary alert for general notifications.</Alert.Description>
+						<Alert.Description
+							>This is a secondary alert for general notifications.</Alert.Description
+						>
 						<Alert.Content></Alert.Content>
 					</Alert.Root>
 
 					<Alert.Root base={alertLayout} variant="destructive">
 						<Alert.Icon>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								class="h-4 w-4"
+							>
 								<circle cx="12" cy="12" r="10"></circle>
 								<line x1="15" y1="9" x2="9" y2="15"></line>
 								<line x1="9" y1="9" x2="15" y2="15"></line>
 							</svg>
 						</Alert.Icon>
 						<Alert.Title>Destructive Alert</Alert.Title>
-						<Alert.Description>This is a destructive alert for errors and warnings.</Alert.Description>
+						<Alert.Description
+							>This is a destructive alert for errors and warnings.</Alert.Description
+						>
 						<Alert.Content></Alert.Content>
 					</Alert.Root>
 
 					<Alert.Root base={alertLayout} variant="outline">
 						<Alert.Icon>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								class="h-4 w-4"
+							>
 								<circle cx="12" cy="12" r="10"></circle>
 								<path d="M12 16v-4M12 8h.01"></path>
 							</svg>
@@ -297,14 +357,21 @@ const preset = createPreset({
 					{#if !dismissed}
 						<Alert.Root base={alertLayout} variant="primary" dismissible bind:dismissed>
 							<Alert.Icon>
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									class="h-4 w-4"
+								>
 									<circle cx="12" cy="12" r="10"></circle>
 									<path d="M12 16v-4M12 8h.01"></path>
 								</svg>
 							</Alert.Icon>
 							<Alert.Title>Cookie Preferences</Alert.Title>
 							<Alert.Description>
-								We use cookies to enhance your experience. You can manage your preferences in settings.
+								We use cookies to enhance your experience. You can manage your preferences in
+								settings.
 							</Alert.Description>
 							<Alert.Content></Alert.Content>
 							<Alert.CloseButton>
@@ -322,10 +389,20 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 
-			<DemoExample title="Alert with Actions" description="Alert with action buttons" code={actionsCode}>
+			<DemoExample
+				title="Alert with Actions"
+				description="Alert with action buttons"
+				code={actionsCode}
+			>
 				<Alert.Root base={alertLayout} variant="primary">
 					<Alert.Icon>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							class="h-4 w-4"
+						>
 							<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
 							<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
 						</svg>

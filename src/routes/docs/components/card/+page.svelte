@@ -91,10 +91,12 @@
 	<Section title="Preset Configuration" description="Customize the card appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Card components by defining presets in your configuration:
+				You can customize the default styles for Card components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   card: () => ({
@@ -125,14 +127,19 @@ const preset = createPreset({
   'card.footer': () => ({
     class: 'flex items-center p-6 pt-0'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different card variations and use cases">
 		<div class="space-y-8">
-			<DemoExample title="Basic Card" description="Simple card with header and content" code={basicCode}>
+			<DemoExample
+				title="Basic Card"
+				description="Simple card with header and content"
+				code={basicCode}
+			>
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>Card Title</Card.Title>
@@ -183,7 +190,11 @@ const preset = createPreset({
 				</Card.Root>
 			</DemoExample>
 
-			<DemoExample title="Card with Actions" description="Card with action buttons" code={actionsCode}>
+			<DemoExample
+				title="Card with Actions"
+				description="Card with action buttons"
+				code={actionsCode}
+			>
 				<Card.Root>
 					<Card.Header>
 						<Card.Title>Action Card</Card.Title>
@@ -192,10 +203,10 @@ const preset = createPreset({
 						<p>Content with actions.</p>
 					</Card.Body>
 					<Card.Footer>
-						<button class="rounded bg-primary px-4 py-2 text-primary-foreground">
+						<button class="bg-primary text-primary-foreground rounded px-4 py-2">
 							Primary Action
 						</button>
-						<button class="rounded border border-border px-4 py-2">Secondary</button>
+						<button class="border-border rounded border px-4 py-2">Secondary</button>
 					</Card.Footer>
 				</Card.Root>
 			</DemoExample>

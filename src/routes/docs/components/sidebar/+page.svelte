@@ -45,13 +45,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the sidebar appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the sidebar appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Sidebar components by defining presets in your configuration:
+				You can customize the default styles for Sidebar components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   sidebar: () => ({
@@ -66,32 +71,25 @@ const preset = createPreset({
       side: 'left'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different sidebar variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Left Sidebar"
-				description="Sidebar from the left side"
-				code={basicCode}
-			>
-				<Button onclick={() => leftOpen = true}>
-					Open Left Sidebar
-				</Button>
+			<DemoExample title="Left Sidebar" description="Sidebar from the left side" code={basicCode}>
+				<Button onclick={() => (leftOpen = true)}>Open Left Sidebar</Button>
 				{#if leftOpen}
-					<Sidebar 
-						bind:open={leftOpen} 
-						side="left"
-						class="w-64 bg-background border-r p-6"
-					>
-						<h3 class="font-semibold mb-4">Navigation</h3>
+					<Sidebar bind:open={leftOpen} side="left" class="bg-background w-64 border-r p-6">
+						<h3 class="mb-4 font-semibold">Navigation</h3>
 						<nav class="space-y-2">
-							<button class="block px-3 py-2 rounded hover:bg-muted w-full text-left">Home</button>
-							<button class="block px-3 py-2 rounded hover:bg-muted w-full text-left">About</button>
-							<button class="block px-3 py-2 rounded hover:bg-muted w-full text-left">Contact</button>
+							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left">Home</button>
+							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left">About</button>
+							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left"
+								>Contact</button
+							>
 						</nav>
 					</Sidebar>
 				{/if}
@@ -104,23 +102,15 @@ const preset = createPreset({
   <aside>Content</aside>
 </Sidebar>`}
 			>
-				<Button onclick={() => rightOpen = true}>
-					Open Right Sidebar
-				</Button>
+				<Button onclick={() => (rightOpen = true)}>Open Right Sidebar</Button>
 				{#if rightOpen}
-					<Sidebar 
-						bind:open={rightOpen} 
-						side="right"
-						class="w-80 bg-background border-l p-6"
-					>
-						<h3 class="font-semibold mb-4">Details</h3>
+					<Sidebar bind:open={rightOpen} side="right" class="bg-background w-80 border-l p-6">
+						<h3 class="mb-4 font-semibold">Details</h3>
 						<div class="space-y-3">
 							<p class="text-muted-foreground text-sm">
 								Additional information and details can be displayed here.
 							</p>
-							<Button size="sm" variant="outline" onclick={() => rightOpen = false}>
-								Close
-							</Button>
+							<Button size="sm" variant="outline" onclick={() => (rightOpen = false)}>Close</Button>
 						</div>
 					</Sidebar>
 				{/if}

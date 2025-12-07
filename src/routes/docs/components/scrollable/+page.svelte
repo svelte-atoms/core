@@ -29,7 +29,9 @@
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Scrollable' }]} />
+	<Breadcrumb
+		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Scrollable' }]}
+	/>
 
 	<PageHeader
 		title="Scrollable"
@@ -44,13 +46,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the scrollable appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the scrollable appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Scrollable components by defining presets in your configuration:
+				You can customize the default styles for Scrollable components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   scrollable: () => ({
@@ -66,7 +73,8 @@ const preset = createPreset({
       direction: 'vertical'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
@@ -78,8 +86,8 @@ const preset = createPreset({
 				description="Fixed height container with vertical scrolling"
 				code={basicCode}
 			>
-				<Scrollable height={200} class="border rounded">
-					<div class="p-4 space-y-4">
+				<Scrollable height={200} class="rounded border">
+					<div class="space-y-4 p-4">
 						{#each Array(20) as _, i}
 							<p class="text-muted-foreground">Line {i + 1} of scrollable content</p>
 						{/each}
@@ -92,10 +100,10 @@ const preset = createPreset({
 				description="Horizontal scrolling container"
 				code={horizontalCode}
 			>
-				<Scrollable direction="horizontal" class="border rounded p-4">
+				<Scrollable direction="horizontal" class="rounded border p-4">
 					<div class="flex gap-4">
 						{#each Array(10) as _, i}
-							<div class="bg-muted p-4 rounded whitespace-nowrap">
+							<div class="bg-muted rounded p-4 whitespace-nowrap">
 								Item {i + 1}
 							</div>
 						{/each}
@@ -108,11 +116,11 @@ const preset = createPreset({
 				description="Scroll in both directions"
 				code={`<Scrollable direction="both" height={300}>`}
 			>
-				<Scrollable direction="both" height={300} class="border rounded">
+				<Scrollable direction="both" height={300} class="rounded border">
 					<div class="p-4">
 						<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
 							{#each Array(50) as _, i}
-								<div class="bg-muted p-4 rounded text-center">
+								<div class="bg-muted rounded p-4 text-center">
 									{i + 1}
 								</div>
 							{/each}

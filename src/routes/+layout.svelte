@@ -21,7 +21,7 @@
 		theme.colorScheme === 'dark' ? 'dark' : 'light'
 	]}
 >
-	<div class="flex flex-col w-full">
+	<div class="flex w-full flex-col">
 		<Header />
 
 		<main class="flex-1">

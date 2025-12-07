@@ -28,11 +28,11 @@
 	});
 
 	function _initial(node: HTMLElement) {
-		motion(node, { x: isOpen ? 0 : -100+'%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
+		motion(node, { x: isOpen ? 0 : -100 + '%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
 	}
 
 	function _animate(node: HTMLElement) {
-		motion(node, { x: isOpen ? 0 : -100+'%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
+		motion(node, { x: isOpen ? 0 : -100 + '%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
 	}
 </script>
 

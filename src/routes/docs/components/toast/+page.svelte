@@ -48,10 +48,12 @@
 	<Section title="Preset Configuration" description="Customize the toast appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Toast components by defining presets in your configuration:
+				You can customize the default styles for Toast components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   toast: () => ({
@@ -69,26 +71,25 @@ const preset = createPreset({
       variant: 'default'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different toast notifications">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Toast"
-				description="Simple notification"
-				code={basicCode}
-			>
-				<Button onclick={() => { showToast = true; toastVariant = 'default'; }}>
+			<DemoExample title="Basic Toast" description="Simple notification" code={basicCode}>
+				<Button
+					onclick={() => {
+						showToast = true;
+						toastVariant = 'default';
+					}}
+				>
 					Show Toast
 				</Button>
 				{#if showToast && toastVariant === 'default'}
-					<Toast 
-						variant="default" 
-						onclose={() => showToast = false}
-					>
+					<Toast variant="default" onclose={() => (showToast = false)}>
 						This is a toast message
 					</Toast>
 				{/if}
@@ -102,44 +103,42 @@ const preset = createPreset({
 <Toast variant="warning">Warning!</Toast>`}
 			>
 				<div class="flex flex-wrap gap-2">
-					<Button 
+					<Button
 						variant="outline"
-						onclick={() => { showToast = true; toastVariant = 'success'; }}
+						onclick={() => {
+							showToast = true;
+							toastVariant = 'success';
+						}}
 					>
 						Success
 					</Button>
-					<Button 
+					<Button
 						variant="outline"
-						onclick={() => { showToast = true; toastVariant = 'error'; }}
+						onclick={() => {
+							showToast = true;
+							toastVariant = 'error';
+						}}
 					>
 						Error
 					</Button>
-					<Button 
+					<Button
 						variant="outline"
-						onclick={() => { showToast = true; toastVariant = 'warning'; }}
+						onclick={() => {
+							showToast = true;
+							toastVariant = 'warning';
+						}}
 					>
 						Warning
 					</Button>
 				</div>
 				{#if showToast && toastVariant === 'success'}
-					<Toast 
-						variant="success" 
-						onclose={() => showToast = false}
-					>
+					<Toast variant="success" onclose={() => (showToast = false)}>
 						Operation completed successfully!
 					</Toast>
 				{:else if showToast && toastVariant === 'error'}
-					<Toast 
-						variant="error" 
-						onclose={() => showToast = false}
-					>
-						Something went wrong!
-					</Toast>
+					<Toast variant="error" onclose={() => (showToast = false)}>Something went wrong!</Toast>
 				{:else if showToast && toastVariant === 'warning'}
-					<Toast 
-						variant="warning" 
-						onclose={() => showToast = false}
-					>
+					<Toast variant="warning" onclose={() => (showToast = false)}>
 						Please review your changes
 					</Toast>
 				{/if}

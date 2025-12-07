@@ -42,10 +42,12 @@
 	<Section title="Preset Configuration" description="Customize the menu appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Menu components by defining presets in your configuration:
+				You can customize the default styles for Menu components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   menu: () => ({
@@ -54,28 +56,19 @@ const preset = createPreset({
   'menu.item': () => ({
     class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different menu variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Menu"
-				description="Simple menu with items"
-				code={basicCode}
-			>
-				<Menu.List class="max-w-xs border rounded-lg">
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						Home
-					</Menu.Item>
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						About
-					</Menu.Item>
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						Contact
-					</Menu.Item>
+			<DemoExample title="Basic Menu" description="Simple menu with items" code={basicCode}>
+				<Menu.List class="max-w-xs rounded-lg border">
+					<Menu.Item class="hover:bg-muted px-4 py-2">Home</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2">About</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2">Contact</Menu.Item>
 				</Menu.List>
 			</DemoExample>
 
@@ -88,24 +81,14 @@ const preset = createPreset({
   <Menu.Item>Item 2</Menu.Item>
 </Menu>`}
 			>
-				<Menu.List class="max-w-xs border rounded-lg">
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						New File
-					</Menu.Item>
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						Open File
-					</Menu.Item>
+				<Menu.List class="max-w-xs rounded-lg border">
+					<Menu.Item class="hover:bg-muted px-4 py-2">New File</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2">Open File</Menu.Item>
 					<div class="my-1 border-t"></div>
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						Save
-					</Menu.Item>
-					<Menu.Item class="px-4 py-2 hover:bg-muted">
-						Save As...
-					</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2">Save</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2">Save As...</Menu.Item>
 					<div class="my-1 border-t"></div>
-					<Menu.Item class="px-4 py-2 hover:bg-muted text-red-600">
-						Exit
-					</Menu.Item>
+					<Menu.Item class="hover:bg-muted px-4 py-2 text-red-600">Exit</Menu.Item>
 				</Menu.List>
 			</DemoExample>
 
@@ -116,21 +99,21 @@ const preset = createPreset({
   Click me
 </Menu.Item>`}
 			>
-				<Menu.List class="max-w-xs border rounded-lg">
-					<Menu.Item 
-						class="px-4 py-2 hover:bg-muted cursor-pointer"
+				<Menu.List class="max-w-xs rounded-lg border">
+					<Menu.Item
+						class="hover:bg-muted cursor-pointer px-4 py-2"
 						onclick={() => alert('Profile clicked')}
 					>
 						Profile
 					</Menu.Item>
-					<Menu.Item 
-						class="px-4 py-2 hover:bg-muted cursor-pointer"
+					<Menu.Item
+						class="hover:bg-muted cursor-pointer px-4 py-2"
 						onclick={() => alert('Settings clicked')}
 					>
 						Settings
 					</Menu.Item>
-					<Menu.Item 
-						class="px-4 py-2 hover:bg-muted cursor-pointer"
+					<Menu.Item
+						class="hover:bg-muted cursor-pointer px-4 py-2"
 						onclick={() => alert('Logout clicked')}
 					>
 						Logout

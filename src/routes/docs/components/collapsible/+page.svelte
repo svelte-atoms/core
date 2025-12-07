@@ -47,7 +47,9 @@
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Collapsible' }]} />
+	<Breadcrumb
+		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Collapsible' }]}
+	/>
 
 	<PageHeader
 		title="Collapsible"
@@ -62,13 +64,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the collapsible appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the collapsible appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Collapsible components by defining presets in your configuration:
+				You can customize the default styles for Collapsible components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   collapsible: () => ({
@@ -80,7 +87,8 @@ const preset = createPreset({
   'collapsible.content': () => ({
     class: 'overflow-hidden text-sm text-muted-foreground px-4 py-3 border border-t-0 rounded-b-md border-border'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
@@ -93,7 +101,9 @@ const preset = createPreset({
 				code={basicCode}
 			>
 				<Collapsible.Root bind:open={demoOpen} class="border-border rounded-lg border">
-					<Collapsible.Header class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3">
+					<Collapsible.Header
+						class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3"
+					>
 						<span class="text-foreground font-medium">Click to toggle</span>
 						<Collapsible.Indicator>
 							<svg
@@ -102,7 +112,12 @@ const preset = createPreset({
 								stroke="currentColor"
 								viewBox="0 0 24 24"
 							>
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M19 9l-7 7-7-7"
+								/>
 							</svg>
 						</Collapsible.Indicator>
 					</Collapsible.Header>
@@ -122,19 +137,20 @@ const preset = createPreset({
 			>
 				<div class="space-y-4">
 					<Collapsible.Root bind:open={controlledOpen} class="border-border rounded-lg border">
-						<Collapsible.Header class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3">
+						<Collapsible.Header
+							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3"
+						>
 							<span class="text-foreground font-medium">Controlled Collapsible</span>
-							<span class="text-muted-foreground text-sm">{controlledOpen ? 'Open' : 'Closed'}</span>
+							<span class="text-muted-foreground text-sm">{controlledOpen ? 'Open' : 'Closed'}</span
+							>
 						</Collapsible.Header>
 						<Collapsible.Body class="border-border border-t px-4 py-3">
-							<p class="text-muted-foreground">
-								This collapsible is controlled by external state.
-							</p>
+							<p class="text-muted-foreground">This collapsible is controlled by external state.</p>
 						</Collapsible.Body>
 					</Collapsible.Root>
 					<button
-						class="rounded bg-primary px-4 py-2 text-white"
-						onclick={() => controlledOpen = !controlledOpen}
+						class="bg-primary rounded px-4 py-2 text-white"
+						onclick={() => (controlledOpen = !controlledOpen)}
 					>
 						Toggle from outside
 					</button>

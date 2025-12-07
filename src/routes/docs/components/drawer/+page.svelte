@@ -62,10 +62,12 @@
 	<Section title="Preset Configuration" description="Customize the drawer appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Drawer components by defining presets in your configuration:
+				You can customize the default styles for Drawer components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   drawer: () => ({
@@ -82,7 +84,8 @@ const preset = createPreset({
       side: 'right'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
@@ -94,26 +97,26 @@ const preset = createPreset({
 				description="Default drawer sliding from right"
 				code={basicCode}
 			>
-				<button
-					class="rounded bg-primary px-4 py-2 text-white"
-					onclick={() => rightOpen = true}
-				>
+				<button class="bg-primary rounded px-4 py-2 text-white" onclick={() => (rightOpen = true)}>
 					Open Right Drawer
 				</button>
 
 				<Drawer.Root bind:open={rightOpen}>
-					<Drawer.Content class="bg-background fixed right-0 top-0 h-full w-80 shadow-lg">
+					<Drawer.Content class="bg-background fixed top-0 right-0 h-full w-80 shadow-lg">
 						<Drawer.Header class="border-border border-b p-4">
-							<Drawer.Title class="text-foreground text-xl font-semibold">Drawer Title</Drawer.Title>
+							<Drawer.Title class="text-foreground text-xl font-semibold">Drawer Title</Drawer.Title
+							>
 						</Drawer.Header>
 						<div class="text-muted-foreground p-4">
 							<p>This is a drawer sliding from the right side of the screen.</p>
-							<p class="mt-4">Drawers are useful for navigation, filters, or showing additional details.</p>
+							<p class="mt-4">
+								Drawers are useful for navigation, filters, or showing additional details.
+							</p>
 						</div>
 						<Drawer.Footer class="border-border absolute bottom-0 w-full border-t p-4">
 							<button
-								class="w-full rounded bg-primary px-4 py-2 text-white"
-								onclick={() => rightOpen = false}
+								class="bg-primary w-full rounded px-4 py-2 text-white"
+								onclick={() => (rightOpen = false)}
 							>
 								Close
 							</button>
@@ -122,20 +125,13 @@ const preset = createPreset({
 				</Drawer.Root>
 			</DemoExample>
 
-			<DemoExample
-				title="Left Drawer"
-				description="Drawer from left side"
-				code={sidesCode}
-			>
-				<button
-					class="rounded bg-primary px-4 py-2 text-white"
-					onclick={() => leftOpen = true}
-				>
+			<DemoExample title="Left Drawer" description="Drawer from left side" code={sidesCode}>
+				<button class="bg-primary rounded px-4 py-2 text-white" onclick={() => (leftOpen = true)}>
 					Open Left Drawer
 				</button>
 
 				<Drawer.Root bind:open={leftOpen} side="left">
-					<Drawer.Content class="bg-background fixed left-0 top-0 h-full w-80 shadow-lg">
+					<Drawer.Content class="bg-background fixed top-0 left-0 h-full w-80 shadow-lg">
 						<Drawer.Header class="border-border border-b p-4">
 							<Drawer.Title class="text-foreground text-xl font-semibold">Navigation</Drawer.Title>
 						</Drawer.Header>

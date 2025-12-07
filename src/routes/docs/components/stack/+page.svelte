@@ -26,7 +26,10 @@
 
 <svelte:head>
 	<title>Stack - Svelte Atoms</title>
-	<meta name="description" content="Layout component for arranging elements vertically or horizontally." />
+	<meta
+		name="description"
+		content="Layout component for arranging elements vertically or horizontally."
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -48,10 +51,12 @@
 	<Section title="Preset Configuration" description="Customize the stack appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Stack components by defining presets in your configuration:
+				You can customize the default styles for Stack components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   stack: () => ({
@@ -74,22 +79,19 @@ const preset = createPreset({
       gap: 'md'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different stack layouts">
 		<div class="space-y-8">
-			<DemoExample
-				title="Vertical Stack"
-				description="Default vertical layout"
-				code={verticalCode}
-			>
+			<DemoExample title="Vertical Stack" description="Default vertical layout" code={verticalCode}>
 				<Stack direction="vertical" gap="md">
-					<div class="bg-muted p-4 rounded">Item 1</div>
-					<div class="bg-muted p-4 rounded">Item 2</div>
-					<div class="bg-muted p-4 rounded">Item 3</div>
+					<div class="bg-muted rounded p-4">Item 1</div>
+					<div class="bg-muted rounded p-4">Item 2</div>
+					<div class="bg-muted rounded p-4">Item 3</div>
 				</Stack>
 			</DemoExample>
 
@@ -99,9 +101,9 @@ const preset = createPreset({
 				code={horizontalCode}
 			>
 				<Stack direction="horizontal" gap="md">
-					<div class="bg-muted p-4 rounded">Item 1</div>
-					<div class="bg-muted p-4 rounded">Item 2</div>
-					<div class="bg-muted p-4 rounded">Item 3</div>
+					<div class="bg-muted rounded p-4">Item 1</div>
+					<div class="bg-muted rounded p-4">Item 2</div>
+					<div class="bg-muted rounded p-4">Item 3</div>
 				</Stack>
 			</DemoExample>
 
@@ -113,19 +115,19 @@ const preset = createPreset({
 			>
 				<div class="space-y-6">
 					<div>
-						<p class="text-muted-foreground text-sm mb-2">Small gap</p>
+						<p class="text-muted-foreground mb-2 text-sm">Small gap</p>
 						<Stack direction="horizontal" gap="sm">
-							<div class="bg-muted p-4 rounded">Item</div>
-							<div class="bg-muted p-4 rounded">Item</div>
-							<div class="bg-muted p-4 rounded">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
 						</Stack>
 					</div>
 					<div>
-						<p class="text-muted-foreground text-sm mb-2">Large gap</p>
+						<p class="text-muted-foreground mb-2 text-sm">Large gap</p>
 						<Stack direction="horizontal" gap="lg">
-							<div class="bg-muted p-4 rounded">Item</div>
-							<div class="bg-muted p-4 rounded">Item</div>
-							<div class="bg-muted p-4 rounded">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
+							<div class="bg-muted rounded p-4">Item</div>
 						</Stack>
 					</div>
 				</div>
@@ -136,10 +138,10 @@ const preset = createPreset({
 				description="Control alignment of items"
 				code={`<Stack align="center">Centered items<\/Stack>`}
 			>
-				<Stack direction="horizontal" gap="md" align="center" class="bg-muted/20 p-6 rounded">
-					<div class="bg-muted p-2 rounded text-xs">Small</div>
-					<div class="bg-muted p-4 rounded">Medium</div>
-					<div class="bg-muted p-8 rounded text-lg">Large</div>
+				<Stack direction="horizontal" gap="md" align="center" class="bg-muted/20 rounded p-6">
+					<div class="bg-muted rounded p-2 text-xs">Small</div>
+					<div class="bg-muted rounded p-4">Medium</div>
+					<div class="bg-muted rounded p-8 text-lg">Large</div>
 				</Stack>
 			</DemoExample>
 		</div>

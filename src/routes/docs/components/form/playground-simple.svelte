@@ -49,7 +49,7 @@
 		<Playground.Preview>
 			<div class="flex items-center justify-center p-8">
 				<div
-					class={`w-full max-w-md ${selectedVariant === 'card' ? 'rounded-lg border border-border bg-white p-6 shadow-sm' : ''}`}
+					class={`w-full max-w-md ${selectedVariant === 'card' ? 'border-border rounded-lg border bg-white p-6 shadow-sm' : ''}`}
 				>
 					<form
 						class={`space-y-4 ${selectedSize === 'sm' ? 'text-sm' : selectedSize === 'lg' ? 'text-lg' : ''}`}
@@ -63,7 +63,7 @@
 								bind:value={formData.name}
 								placeholder="Enter your name"
 								disabled={isDisabled}
-								class={`w-full rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
+								class={`border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
 									selectedSize === 'sm'
 										? 'px-2 py-1 text-xs'
 										: selectedSize === 'lg'
@@ -83,7 +83,7 @@
 								bind:value={formData.email}
 								placeholder="Enter your email"
 								disabled={isDisabled}
-								class={`w-full rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
+								class={`border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
 									selectedSize === 'sm'
 										? 'px-2 py-1 text-xs'
 										: selectedSize === 'lg'
@@ -103,7 +103,7 @@
 								placeholder="Enter your message"
 								rows="3"
 								disabled={isDisabled}
-								class={`w-full resize-none rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
+								class={`border-border w-full resize-none rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-500 ${
 									selectedSize === 'sm'
 										? 'px-2 py-1 text-xs'
 										: selectedSize === 'lg'
@@ -119,7 +119,7 @@
 								type="checkbox"
 								bind:checked={formData.subscribe}
 								disabled={isDisabled}
-								class="rounded border-border text-purple-600 focus:ring-purple-500 disabled:opacity-50"
+								class="border-border rounded text-purple-600 focus:ring-purple-500 disabled:opacity-50"
 							/>
 							<label for="subscribe" class="text-sm text-gray-700"> Subscribe to newsletter </label>
 						</div>
@@ -141,7 +141,7 @@
 							<Button
 								type="button"
 								onclick={resetForm}
-								class={`border border-border text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 ${
+								class={`border-border border text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 ${
 									selectedSize === 'sm'
 										? 'px-3 py-1.5 text-xs'
 										: selectedSize === 'lg'
@@ -169,7 +169,7 @@
 					<select
 						id="variant-select"
 						bind:value={selectedVariant}
-						class="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
+						class="border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
 						{#each variants as variant}
 							<option value={variant.value}>{variant.label}</option>
@@ -182,7 +182,7 @@
 					<select
 						id="size-select"
 						bind:value={selectedSize}
-						class="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
+						class="border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
 						{#each sizes as size}
 							<option value={size.value}>{size.label}</option>
@@ -195,7 +195,7 @@
 						id="disabled-checkbox"
 						type="checkbox"
 						bind:checked={isDisabled}
-						class="rounded border-border text-purple-600 focus:ring-purple-500"
+						class="border-border rounded text-purple-600 focus:ring-purple-500"
 					/>
 					<label for="disabled-checkbox" class="text-sm text-gray-700">Disabled</label>
 				</div>

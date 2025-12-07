@@ -36,7 +36,7 @@
 							Object.assign(node.style, { opacity: 0, height: 0 });
 						}}
 						enter={function (node) {
-							const d = .2;
+							const d = 0.2;
 							animate(
 								node,
 								{
@@ -48,13 +48,13 @@
 								}
 							);
 
-							return { duration: d*1000 };
+							return { duration: d * 1000 };
 						}}
 						exit={(node) => {
-							const d = .2;
+							const d = 0.2;
 							animate(node, { opacity: 0, height: 0 }, { duration: d });
 
-							return { duration: d*1000 };
+							return { duration: d * 1000 };
 						}}
 					>
 						<div class="p-2">

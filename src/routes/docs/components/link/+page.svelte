@@ -46,10 +46,12 @@
 	<Section title="Preset Configuration" description="Customize the link appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Link components by defining presets in your configuration:
+				You can customize the default styles for Link components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   link: () => ({
@@ -65,36 +67,25 @@ const preset = createPreset({
       variant: 'default'
     }
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different link variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Link"
-				description="Simple internal link"
-				code={basicCode}
-			>
+			<DemoExample title="Basic Link" description="Simple internal link" code={basicCode}>
 				<Link href="/docs">Documentation</Link>
 			</DemoExample>
 
-			<DemoExample
-				title="External Link"
-				description="Link to external website"
-				code={externalCode}
-			>
+			<DemoExample title="External Link" description="Link to external website" code={externalCode}>
 				<Link href="https://github.com" target="_blank" rel="noopener noreferrer">
 					Visit GitHub →
 				</Link>
 			</DemoExample>
 
-			<DemoExample
-				title="Link Variants"
-				description="Different link styles"
-				code={variantsCode}
-			>
+			<DemoExample title="Link Variants" description="Different link styles" code={variantsCode}>
 				<div class="space-x-4">
 					<Link variant="default" href="/docs">Default Link</Link>
 					<Link variant="muted" href="/docs">Muted Link</Link>
@@ -109,7 +100,7 @@ const preset = createPreset({
 <Link size="md">Medium Link</Link>
 <Link size="lg">Large Link</Link>`}
 			>
-				<div class="space-x-4 flex items-center">
+				<div class="flex items-center space-x-4">
 					<Link size="sm" href="/docs">Small</Link>
 					<Link size="md" href="/docs">Medium</Link>
 					<Link size="lg" href="/docs">Large</Link>

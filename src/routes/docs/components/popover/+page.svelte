@@ -41,13 +41,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the popover appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the popover appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Popover components by defining presets in your configuration:
+				You can customize the default styles for Popover components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   popover: () => ({
@@ -59,22 +64,19 @@ const preset = createPreset({
   'popover.content': () => ({
     class: 'w-full'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different popover variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Popover"
-				description="Simple popover with content"
-				code={basicCode}
-			>
+			<DemoExample title="Basic Popover" description="Simple popover with content" code={basicCode}>
 				<Popover>
 					<Button slot="trigger">Open Popover</Button>
-					<div class="p-4 max-w-xs">
-						<h4 class="font-semibold mb-2">Popover Title</h4>
+					<div class="max-w-xs p-4">
+						<h4 class="mb-2 font-semibold">Popover Title</h4>
 						<p class="text-muted-foreground text-sm">
 							This is the popover content with some helpful information.
 						</p>
@@ -126,10 +128,8 @@ const preset = createPreset({
 					<Popover bind:open={isOpen}>
 						<Button slot="trigger">Toggle Popover</Button>
 						<div class="p-4">
-							<p class="text-sm mb-3">Controlled popover content</p>
-							<Button size="sm" onclick={() => isOpen = false}>
-								Close
-							</Button>
+							<p class="mb-3 text-sm">Controlled popover content</p>
+							<Button size="sm" onclick={() => (isOpen = false)}>Close</Button>
 						</div>
 					</Popover>
 					<p class="text-muted-foreground text-sm">

@@ -155,9 +155,7 @@ import '@svelte-atoms/core/tw';`}</code
 				<Card.Body>
 					<div class="space-y-4">
 						<div>
-							<p class="text-muted-foreground mb-2 text-sm font-medium">
-								For Tailwind CSS v3:
-							</p>
+							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v3:</p>
 							<div class="bg-muted rounded-lg p-4">
 								<pre class="text-sm"><code
 										>{`// tailwind.config.js
@@ -173,9 +171,7 @@ export default {
 						</div>
 
 						<div>
-							<p class="text-muted-foreground mb-2 text-sm font-medium">
-								For Tailwind CSS v4:
-							</p>
+							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v4:</p>
 							<div class="bg-muted rounded-lg p-4">
 								<pre class="text-sm"><code
 										>{`/* app.css or main stylesheet */

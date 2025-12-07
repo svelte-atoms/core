@@ -72,13 +72,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the combobox appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the combobox appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Combobox components by defining presets in your configuration:
+				You can customize the default styles for Combobox components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   combobox: () => ({
@@ -96,7 +101,8 @@ const preset = createPreset({
   'combobox.item': () => ({
     class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground data-[selected=true]:bg-accent'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>

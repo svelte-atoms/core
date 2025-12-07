@@ -35,7 +35,9 @@
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]} />
+	<Breadcrumb
+		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]}
+	/>
 
 	<PageHeader
 		title="Breadcrumb"
@@ -50,19 +52,25 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the breadcrumb appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the breadcrumb appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Breadcrumb components by defining presets in your configuration:
+				You can customize the default styles for Breadcrumb components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   breadcrumb: () => ({
     class: 'flex items-center space-x-1 text-sm text-muted-foreground'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
@@ -74,12 +82,12 @@ const preset = createPreset({
 				description="Simple breadcrumb navigation"
 				code={basicCode}
 			>
-				<BreadcrumbComponent 
+				<BreadcrumbComponent
 					items={[
 						{ label: 'Home', href: '/' },
 						{ label: 'Components', href: '/docs/components' },
 						{ label: 'Breadcrumb' }
-					]} 
+					]}
 				/>
 			</DemoExample>
 
@@ -88,7 +96,7 @@ const preset = createPreset({
 				description="Use custom separator between items"
 				code={customSeparatorCode}
 			>
-				<BreadcrumbComponent 
+				<BreadcrumbComponent
 					items={[
 						{ label: 'Home', href: '/' },
 						{ label: 'Docs', href: '/docs' },

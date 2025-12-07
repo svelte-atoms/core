@@ -64,13 +64,18 @@
 		/>
 	</Section>
 
-	<Section title="Preset Configuration" description="Customize the dropdown appearance using presets">
+	<Section
+		title="Preset Configuration"
+		description="Customize the dropdown appearance using presets"
+	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Dropdown components by defining presets in your configuration:
+				You can customize the default styles for Dropdown components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   dropdown: () => ({
@@ -85,35 +90,24 @@ const preset = createPreset({
   'dropdown.item': () => ({
     class: 'block w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different dropdown variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic Dropdown"
-				description="Simple dropdown menu"
-				code={basicCode}
-			>
+			<DemoExample title="Basic Dropdown" description="Simple dropdown menu" code={basicCode}>
 				<Dropdown.Root bind:open={basicOpen}>
 					<Dropdown.Trigger>
-						<button class="rounded border px-4 py-2">
-							Open Menu
-						</button>
+						<button class="rounded border px-4 py-2"> Open Menu </button>
 					</Dropdown.Trigger>
-					
+
 					<Dropdown.List class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">
-							Profile
-						</Dropdown.Item>
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">
-							Settings
-						</Dropdown.Item>
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">
-							Logout
-						</Dropdown.Item>
+						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Profile</Dropdown.Item>
+						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Settings</Dropdown.Item>
+						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Logout</Dropdown.Item>
 					</Dropdown.List>
 				</Dropdown.Root>
 			</DemoExample>
@@ -125,18 +119,12 @@ const preset = createPreset({
 			>
 				<Dropdown.Root bind:open={separatorOpen}>
 					<Dropdown.Trigger>
-						<button class="rounded border px-4 py-2">
-							User Menu
-						</button>
+						<button class="rounded border px-4 py-2"> User Menu </button>
 					</Dropdown.Trigger>
-					
+
 					<Dropdown.List class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">
-							Profile
-						</Dropdown.Item>
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">
-							Settings
-						</Dropdown.Item>
+						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Profile</Dropdown.Item>
+						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Settings</Dropdown.Item>
 						<div class="border-border my-1 border-t"></div>
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2 text-red-600">
 							Logout

@@ -11,7 +11,7 @@
 				{ title: 'Introduction', href: '/docs' },
 				{ title: 'Installation', href: '/docs/installation' },
 				{ title: 'Quick Start', href: '/docs/quick-start' },
-				{ title: 'Philosophy', href: '/docs/philosophy' },
+				{ title: 'Philosophy', href: '/docs/philosophy' }
 			]
 		},
 		{
@@ -21,7 +21,7 @@
 				{ title: 'Bonds', href: '/docs/bonds' },
 				{ title: 'Preset System', href: '/docs/preset' },
 				{ title: 'Styling', href: '/docs/styling' },
-				{ title: 'Accessibility', href: '/docs/accessibility' },
+				{ title: 'Accessibility', href: '/docs/accessibility' }
 			]
 		},
 		{
@@ -58,7 +58,7 @@
 				{ title: 'Textarea', href: '/docs/components/textarea' },
 				{ title: 'Toast', href: '/docs/components/toast' },
 				{ title: 'Tooltip', href: '/docs/components/tooltip' },
-				{ title: 'Tree', href: '/docs/components/tree' },
+				{ title: 'Tree', href: '/docs/components/tree' }
 			]
 		},
 		{
@@ -66,28 +66,31 @@
 			children: [
 				{ title: 'Theming', href: '/docs/guides/theming' },
 				{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
-				{ title: 'Customization', href: '/docs/guides/customization' },
+				{ title: 'Customization', href: '/docs/guides/customization' }
 			]
-		},
+		}
 	];
 </script>
 
 <div class="mx-auto flex max-w-[1800px] items-start gap-8 px-6 lg:px-8">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
-	<main class="flex-1 min-w-0 py-8">
+	<main class="min-w-0 flex-1 py-8">
 		{@render children?.()}
 	</main>
 
-	<aside class="sticky top-16 hidden w-64 shrink-0 overflow-y-auto xl:block" style="height: calc(100vh - 4rem);">
+	<aside
+		class="sticky top-16 hidden w-64 shrink-0 overflow-y-auto xl:block"
+		style="height: calc(100vh - 4rem);"
+	>
 		<div class="py-6 text-sm">
 			<h4 class="mb-4 font-semibold">On this page</h4>
-			<nav class="space-y-2 text-muted-foreground">
-				<a href="#overview" class="block hover:text-foreground">Overview</a>
-				<a href="#installation" class="block hover:text-foreground">Installation</a>
-				<a href="#usage" class="block hover:text-foreground">Usage</a>
-				<a href="#api" class="block hover:text-foreground">API Reference</a>
-				<a href="#examples" class="block hover:text-foreground">Examples</a>
+			<nav class="text-muted-foreground space-y-2">
+				<a href="#overview" class="hover:text-foreground block">Overview</a>
+				<a href="#installation" class="hover:text-foreground block">Installation</a>
+				<a href="#usage" class="hover:text-foreground block">Usage</a>
+				<a href="#api" class="hover:text-foreground block">API Reference</a>
+				<a href="#examples" class="hover:text-foreground block">Examples</a>
 			</nav>
 		</div>
 	</aside>

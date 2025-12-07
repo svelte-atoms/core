@@ -93,10 +93,12 @@
 	<Section title="Preset Configuration" description="Customize the form appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Form and Field components by defining presets in your configuration:
+				You can customize the default styles for Form and Field components by defining presets in
+				your configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   form: () => ({
@@ -114,7 +116,8 @@ const preset = createPreset({
   'form.field.error': () => ({
     class: 'text-xs text-destructive'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>

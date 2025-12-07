@@ -48,10 +48,12 @@
 	<Section title="Preset Configuration" description="Customize the list appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for List components by defining presets in your configuration:
+				You can customize the default styles for List components by defining presets in your
+				configuration:
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-sm overflow-x-auto"><code>{`import { createPreset } from '@svelte-atoms/core';
+				<pre class="overflow-x-auto text-sm"><code
+						>{`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   list: () => ({
@@ -60,18 +62,15 @@ const preset = createPreset({
   'list.item': () => ({
     class: 'text-foreground'
   })
-});`}</code></pre>
+});`}</code
+					></pre>
 			</div>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different list variations">
 		<div class="space-y-8">
-			<DemoExample
-				title="Basic List"
-				description="Simple unordered list"
-				code={basicCode}
-			>
+			<DemoExample title="Basic List" description="Simple unordered list" code={basicCode}>
 				<List.Root class="space-y-2">
 					<List.Item class="text-muted-foreground">Item 1</List.Item>
 					<List.Item class="text-muted-foreground">Item 2</List.Item>
@@ -101,16 +100,16 @@ const preset = createPreset({
 <\/List.Root>`}
 			>
 				<List.Root class="space-y-1">
-					<List.Item 
-						clickable 
-						class="hover:bg-muted rounded px-3 py-2 cursor-pointer"
+					<List.Item
+						clickable
+						class="hover:bg-muted cursor-pointer rounded px-3 py-2"
 						onclick={() => alert('Item 1 clicked')}
 					>
 						Clickable Item 1
 					</List.Item>
-					<List.Item 
-						clickable 
-						class="hover:bg-muted rounded px-3 py-2 cursor-pointer"
+					<List.Item
+						clickable
+						class="hover:bg-muted cursor-pointer rounded px-3 py-2"
 						onclick={() => alert('Item 2 clicked')}
 					>
 						Clickable Item 2
