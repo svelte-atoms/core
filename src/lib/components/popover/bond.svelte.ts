@@ -110,7 +110,7 @@ export class PopoverBond<
 
 				if (!position) {
 					const init = async () => {
-						popover(this)(node, {
+						popover(this)({
 							...props,
 							onchange: (node: HTMLElement, position: ComputePositionReturn) => {
 								this.#position = position;
@@ -163,7 +163,6 @@ export class PopoverBond<
 				if (!this.state.isOpen) return;
 
 				return popover(this)(
-					node,
 					{
 						...props,
 						onchange: (node: HTMLElement, position: ComputePositionReturn) => {
@@ -245,47 +244,55 @@ export class PopoverState<
 }
 
 function popover(bond: PopoverBond) {
-	return (node: HTMLElement, props: Record<string, unknown>, updater?: typeof autoUpdate) => {
+	return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
 		const { offset: ofs, placements, placement } = bond.state.props;
 
-		if (!bond.elements.content) {
+		// Guard: ensure required elements exist
+		if (!bond.elements.content || !bond.elements.trigger) {
 			return;
 		}
 
-		if (!bond.elements.trigger) {
-			return;
+		const { content, trigger, arrow: arrowElement } = bond.elements;
+
+		// Set minimum width to match trigger
+		content.style.minWidth = `${trigger.clientWidth}px`;
+
+		// Build middleware stack
+		const middleware: ComputePositionConfig['middleware'] = [
+			offset(ofs),
+			flip({
+				fallbackPlacements: placements,
+				padding: 4
+			})
+		];
+
+		// Add arrow middleware if element exists
+		if (arrowElement) {
+			middleware.push(arrow({ element: arrowElement }));
 		}
 
-		bond.elements.content.style.minWidth = bond.elements.trigger.clientWidth + 'px';
+		// Debounce position change callback
+		const onchangeCallback = props.onchange as PopoverParams['onchange'];
+		const onchangeDebounced = debounce(
+			(node: HTMLElement, position: ComputePositionReturn) => {
+				onchangeCallback?.(node, position);
+			},
+			1000 / 60 // ~16ms for 60fps
+		);
 
-		const middleware: ComputePositionConfig['middleware'] = [];
-
-		if (bond.elements.arrow) {
-			middleware.push(arrow({ element: bond.elements.arrow }));
-		}
-
-		const onchangeDebounced = debounce((node, position) => {
-			props.onchange?.(node, position);
-		}, 1000 / 60);
-
+		// Compute position and notify listeners
 		const compute = async () => {
-			const position = await computePosition(bond.elements.trigger, node, {
-				placement,
-				middleware: [
-					offset(ofs),
-					flip({
-						fallbackPlacements: placements,
-						padding: 4
-					}),
-					...middleware
-				]
+			const position = await computePosition(trigger, content, {
+				placement: placement ?? 'bottom',
+				middleware
 			});
 
-			onchangeDebounced?.(node, position);
+			onchangeDebounced(content, position);
 		};
 
+		// Use auto-update if provided, otherwise compute once
 		if (updater) {
-			return updater(bond.elements.trigger, node, compute, {});
+			return updater(trigger, content, compute, {});
 		}
 
 		compute();
