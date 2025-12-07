@@ -26,7 +26,8 @@
 			{#snippet children({ sidebar })}
 				<div class="flex size-full">
 					<Sidebar_.Content
-						class="flex max-w-[300px] min-w-32 flex-col border-r px-6 py-10 whitespace-nowrap"
+						class="flex min-w-32 flex-col border-r px-6 py-10 whitespace-nowrap"
+						width="300px"
 					>
 						<div>
 							<button
