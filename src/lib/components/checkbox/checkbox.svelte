@@ -118,7 +118,7 @@
 			<HtmlAtom
 				preset="checkbox.indeterminate"
 				class={[
-					'checkbox-indeterminate pointer-events-none flex size-full items-center justify-center p-1'
+					'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-[inherit] bg-current'
 				]}
 				base={indeterminateContent}
 			/>
@@ -126,11 +126,9 @@
 			<HtmlAtom
 				preset="checkbox.indeterminate"
 				class={[
-					'checkbox-indeterminate text-foreground pointer-events-none flex size-full items-center justify-center  p-1'
+					'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-[inherit] bg-current'
 				]}
-			>
-				<div class={['size-full rounded-xs bg-current']}></div>
-			</HtmlAtom>
+			/>
 		{/if}
 	{:else if showCheckmark}
 		{#if checkedContent}
