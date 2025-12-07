@@ -1,6 +1,5 @@
 <script module>
-	import { cubicOut } from 'svelte/easing';
-	import gsap from 'gsap';
+	import { animate } from 'motion';
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Drawer as Drawer_ } from '.';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
@@ -30,13 +29,11 @@
 			class=" border backdrop-blur-md backdrop-grayscale-100"
 			bind:open={isOpen}
 			initial={(node) => {
-				gsap.set(node, { opacity: +isOpen });
+				animate(node, { opacity: +isOpen }, { duration: 0 });
 			}}
 			animate={(node) => {
-				gsap.to(node, {
-					opacity: +isOpen,
-					duration: 0.3,
-					onComplete: () => !isOpen && node.close?.()
+				animate(node, { opacity: +isOpen }, { duration: 0.3 }).finished.then(() => {
+					if (!isOpen) node.close?.();
 				});
 			}}
 			{@attach (node) => {
@@ -50,10 +47,10 @@
 			<Drawer_.Content
 				class="border-border flex min-h-full w-md flex-col border-r p-8 whitespace-nowrap shadow-md"
 				initial={(node) => {
-					gsap.set(node, { xPercent: isOpen ? 0 : -100, left: 0 });
+					animate(node, { x: isOpen ? 0 : -100 + '%' } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					gsap.to(node, { xPercent: isOpen ? 0 : -100, left: 0, duration: 0.2, ease: cubicOut });
+					animate(node, { y: isOpen ? 0 : -100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
 				}}
 			>
 				<Drawer_.Header class="flex items-center justify-between">
@@ -86,12 +83,10 @@
 		<Drawer_.Root
 			class=" border backdrop-blur-md backdrop-grayscale-100"
 			bind:open={isOpen}
-			initial={(node) => gsap.set(node, { opacity: +isOpen })}
+			initial={(node) => animate(node, { opacity: +isOpen }, { duration: 0 })}
 			animate={(node) => {
-				gsap.to(node, {
-					opacity: +isOpen,
-					duration: 0.3,
-					onComplete: () => !isOpen && node.close?.()
+				animate(node, { opacity: +isOpen }, { duration: 0.3 }).finished.then(() => {
+					if (!isOpen) node.close?.();
 				});
 			}}
 			{@attach (node) => {
@@ -105,10 +100,10 @@
 			<Drawer_.Content
 				class="border-border flex w-md min-w-full flex-col border-b p-8 whitespace-nowrap shadow-md"
 				initial={(node) => {
-					gsap.set(node, { yPercent: isOpen ? 0 : -100, top: 0 });
+					animate(node, { y: isOpen ? 0 : -100 + '%' } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					gsap.to(node, { yPercent: isOpen ? 0 : -100, top: 0, duration: 0.2, ease: cubicOut });
+					animate(node, { y: isOpen ? 0 : -100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
 				}}
 			>
 				<div>
@@ -132,13 +127,11 @@
 			class=" border backdrop-blur-md backdrop-grayscale-100"
 			bind:open={isOpen}
 			initial={(node) => {
-				gsap.set(node, { opacity: +isOpen });
+				animate(node, { opacity: +isOpen }, { duration: 0 });
 			}}
 			animate={(node) => {
-				gsap.to(node, {
-					opacity: +isOpen,
-					duration: 0.3,
-					onComplete: () => !isOpen && node.close?.()
+				animate(node, { opacity: +isOpen }, { duration: 0.3 }).finished.then(() => {
+					if (!isOpen) node.close?.();
 				});
 			}}
 			{@attach (node) => {
@@ -152,10 +145,10 @@
 			<Drawer_.Content
 				class="border-border shadow-foreground/50 inset-y-0 flex w-md flex-col border-l p-8 whitespace-nowrap shadow-lg"
 				initial={(node) => {
-					gsap.set(node, { xPercent: isOpen ? 0 : 100, right: 0 });
+					animate(node, { x: isOpen ? 0 : 100 + '%' } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					gsap.to(node, { xPercent: isOpen ? 0 : 100, right: 0, duration: 0.2, ease: cubicOut });
+					animate(node, { x: isOpen ? 0 : 100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
 				}}
 				{@attach on('click', (ev) => {
 					ev.stopPropagation();
@@ -182,13 +175,11 @@
 			class=" border backdrop-blur-md backdrop-grayscale-100"
 			bind:open={isOpen}
 			initial={(node) => {
-				gsap.set(node, { opacity: +isOpen });
+				animate(node, { opacity: +isOpen }, { duration: 0 });
 			}}
 			animate={(node) => {
-				gsap.to(node, {
-					opacity: +isOpen,
-					duration: 0.3,
-					onComplete: () => !isOpen && node.close?.()
+				animate(node, { opacity: +isOpen }, { duration: 0.3 }).finished.then(() => {
+					if (!isOpen) node.close?.();
 				});
 			}}
 			{@attach (node) => {
@@ -201,11 +192,11 @@
 		>
 			<Drawer_.Content
 				class="border-border flex w-md min-w-full flex-col border-t p-8 whitespace-nowrap shadow-md"
-				onmount={(node) => {
-					gsap.set(node, { yPercent: isOpen ? 0 : 100, bottom: 0 });
+				initial={(node) => {
+					animate(node, { y: isOpen ? 0 : 100 + '%' } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					gsap.to(node, { yPercent: isOpen ? 0 : 100, bottom: 0, duration: 0.2, ease: cubicOut });
+					animate(node, { y: isOpen ? 0 : 100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
 				}}
 			>
 				<div>

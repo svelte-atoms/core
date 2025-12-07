@@ -1,8 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Scrollable as Scrollable_ } from '.';
-	import { Root as ScrollableRoot } from './atoms';
-	import gsap from 'gsap';
+	import { animate } from 'motion';
 	import { ScrollableBond } from './bond.svelte';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
@@ -83,33 +82,19 @@
 						<Scrollable_.Track
 							orientation="vertical"
 							class="inset-y-0 right-0 w-[2px] rounded-md"
-							initial={(node) => gsap.set(node, { opacity: 0, right: 0, top: 0, bottom: 0 })}
+							initial={(node) => {
+								animate(node, { opacity: 0, right: 0, top: 0, bottom: 0 }, { duration: 0 });
+							}}
 							enter={(node) => {
-								const tween = gsap.to(node, {
-									opacity: 1,
-									duration: 0.3,
-									right: 8,
-									top: 8,
-									bottom: 8,
-									ease: 'power2.out'
-								});
-
+								animate(node, { opacity: 1, right: 8, top: 8, bottom: 8 }, { duration: 0.3, ease: 'easeOut' });
 								return {
-									duration: tween.duration() * 1000
+									duration: 300
 								};
 							}}
 							exit={(node) => {
-								const tween = gsap.to(node, {
-									opacity: 0,
-									right: 0,
-									top: 0,
-									bottom: 0,
-									duration: 0.3,
-									ease: 'power2.out'
-								});
-
+								animate(node, { opacity: 0, right: 0, top: 0, bottom: 0 }, { duration: 0.3, ease: 'easeOut' });
 								return {
-									duration: tween.duration() * 1000
+									duration: 300
 								};
 							}}
 						>

@@ -10,7 +10,6 @@
 <script lang="ts">
 	import { Card } from '.';
 	import { Root } from '$svelte-atoms/core/components/root';
-	import gsap from 'gsap';
 </script>
 
 <!-- Default Card -->
