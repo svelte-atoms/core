@@ -50,7 +50,7 @@
 					animate(node, { x: isOpen ? 0 : -100 + '%' } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					animate(node, { y: isOpen ? 0 : -100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
+					animate(node, { x: isOpen ? 0 : -100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
 				}}
 			>
 				<Drawer_.Header class="flex items-center justify-between">
@@ -145,10 +145,13 @@
 			<Drawer_.Content
 				class="border-border shadow-foreground/50 inset-y-0 flex w-md flex-col border-l p-8 whitespace-nowrap shadow-lg"
 				initial={(node) => {
-					animate(node, { x: isOpen ? 0 : 100 + '%' } as any, { duration: 0 });
+					animate(node, { x: isOpen ? 0 : 100 + '%', right: 0 } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					animate(node, { x: isOpen ? 0 : 100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
+					animate(node, { x: isOpen ? 0 : 100 + '%', right: 0 } as any, {
+						duration: 0.2,
+						ease: 'easeOut'
+					});
 				}}
 				{@attach on('click', (ev) => {
 					ev.stopPropagation();
@@ -193,10 +196,13 @@
 			<Drawer_.Content
 				class="border-border flex w-md min-w-full flex-col border-t p-8 whitespace-nowrap shadow-md"
 				initial={(node) => {
-					animate(node, { y: isOpen ? 0 : 100 + '%' } as any, { duration: 0 });
+					animate(node, { y: isOpen ? 0 : 100 + '%', bottom: 0 } as any, { duration: 0 });
 				}}
 				animate={(node) => {
-					animate(node, { y: isOpen ? 0 : 100 + '%' } as any, { duration: 0.2, ease: 'easeOut' });
+					animate(node, { y: isOpen ? 0 : 100 + '%', bottom: 0 } as any, {
+						duration: 0.2,
+						ease: 'easeOut'
+					});
 				}}
 			>
 				<div>
