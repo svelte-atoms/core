@@ -134,7 +134,7 @@ export type PresetModuleName =
 	| 'datepicker.months'
 	| 'datepicker.header';
 
-export type PresetEntryRecord = {
+export interface PresetEntryRecord {
 	[key: string]: unknown;
 	class?: ClassValue;
 	as?: string;
@@ -142,13 +142,12 @@ export type PresetEntryRecord = {
 	variants?: Record<string, Record<string, any>>;
 	compounds?: Array<Record<string, any>>;
 	defaults?: Record<string, any>;
-};
+}
 
 export type PresetEntry = (
-	this: Bond | undefined | null,
 	bond: Bond | undefined | null,
 	...args: any[]
-) => PresetEntryRecord;
+) => PresetEntryRecord | (() => PresetEntryRecord);
 
 export type Preset = Record<PresetModuleName, PresetEntry>;
 

@@ -13,7 +13,7 @@
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
 		placement = 'bottom-start',
-		offset = 4,
+		offset = 1,
 		factory = _factory,
 		children = undefined,
 		...restProps

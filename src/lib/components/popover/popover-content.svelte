@@ -99,9 +99,6 @@
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
 
-		const _x = openAsNumber * dx;
-		const _y = openAsNumber * dy;
-
 		const getTransformOrigin = () => {
 			switch (placement) {
 				case 'top':
@@ -133,8 +130,8 @@
 			node,
 			{
 				opacity: openAsNumber,
-				y: _y + dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
-				x: _x + dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
+				y: dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
+				x: dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
 				scaleY: dy ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
 				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
 				transformOrigin

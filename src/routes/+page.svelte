@@ -1,347 +1,695 @@
 <script lang="ts">
-	import Button from '$lib/components/button/button.svelte';
-	import Badge from '$lib/components/badge/badge.svelte';
-	import AnimatedAtoms from './animated-atoms.svelte';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
-	import FeatureCard from './feature-card.svelte';
-	import { animate, createTimeline, stagger, text } from 'animejs';
+	import { Button } from '$svelte-atoms/core/components/button';
+	import { Input } from '$svelte-atoms/core/components/input';
+	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Card } from '$svelte-atoms/core/components/card';
+	import { Alert } from '$svelte-atoms/core/components/alert';
+	import { Tabs, Tab } from '$svelte-atoms/core/components/tabs';
+	import { Dropdown } from '$svelte-atoms/core/components/dropdown';
+	import { Tooltip } from '$svelte-atoms/core/components/tooltip';
+	import { Popover } from '$svelte-atoms/core/components/popover';
+	import { Dialog } from '$svelte-atoms/core/components/dialog';
+	import { clickoutDrawer, Drawer } from '$svelte-atoms/core/components/drawer';
+	import { Sidebar } from '$svelte-atoms/core/components/sidebar';
+	import Icon from '$svelte-atoms/core/components/icon/icon.svelte';
+	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
 
-	let darkMode = $state(false);
+	let tabValue = $state('account');
+	let dropdownOpen = $state(false);
+	let tooltipOpen = $state(false);
+	let popoverOpen = $state(false);
+	let isDialogOpen = $state(false);
+	let isDrawerOpen = $state(false);
+	let sidebarOpen = $state(false);
 
-	onMount(() => {
-		if (browser) {
-			darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-			const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-			const handleChange = (e: MediaQueryListEvent) => {
-				darkMode = e.matches;
-			};
-
-			mediaQuery.addEventListener('change', handleChange);
-			return () => mediaQuery.removeEventListener('change', handleChange);
-		}
-	});
-
-	const features = [
-		{
-			title: 'Lightning Fast Reactions',
-			description:
-				'Built with Svelte 5 runes for instant reactivity and atomic-level performance optimization.',
-			icon: 'M13 10V3L4 14h7v7l9-11h-7z',
-			class:
-				'from-palette-ion/15 to-palette-ion/5 hover:from-palette-ion/20 hover:from-palette-ion/20 border border-palette-ion/10',
-			iconClass: 'bg-palette-ion/20'
-		},
-		{
-			title: 'Accessible',
-			description:
-				'ARIA-compliant components that seamlessly fuse accessibility with modern interactions.',
-			icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-			class:
-				'from-palette-energy/15 to-palette-energy/5 hover:from-palette-energy/20 border border-palette-energy/10',
-			iconClass: 'bg-palette-energy/20'
-		},
-		{
-			title: 'Composable Design',
-			description:
-				'Each component is atomically independent and perfectly tree-shakable for optimal bundle size.',
-			icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z',
-			class:
-				'from-palette-neutron/15 to-palette-neutron/5 hover:from-palette-neutron/20 border border-palette-neutron/10',
-			iconClass: 'bg-palette-neutron/20'
-		},
-		{
-			title: 'Headless & Stylable',
-			description:
-				'Seamlessly fuse your design system with atomic-level control over every visual aspect.',
-			icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',
-			secondaryIcon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z',
-			class:
-				'from-palette-fusion/15 to-palette-fusion/5 hover:from-palette-fusion/20 border border-palette-fusion/10',
-			iconClass: 'bg-palette-fusion/20'
-		},
-		{
-			title: 'TypeScript First',
-			description:
-				'First-class TypeScript support with reactive type inference for maximum developer productivity.',
-			icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
-			class:
-				'from-palette-steel/15 to-palette-steel/5 hover:from-palette-steel/20 border border-palette-steel/10',
-			iconClass: 'bg-palette-steel/20'
-		},
-		{
-			title: 'Developer Fusion',
-			description:
-				'Intuitive API that fuses simplicity with power, creating an exceptional developer experience.',
-			icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z',
-			class:
-				'from-palette-plasma/15  to-palette-plasma/5 hover:from-palette-plasma/20 border border-palette-plasma/10',
-			iconClass: 'bg-palette-plasma/20'
-		}
-	];
+	const fruits = $state(['apple', 'banana', 'cherry']);
 </script>
 
 <svelte:head>
-	<title>Atomic SV | Modern Svelte Component Library</title>
+	<title>Svelte Atoms — Modern Svelte 5 UI Library</title>
 	<meta
 		name="description"
-		content="A modular, accessible, and extensible Svelte UI component library built with Svelte 5."
+		content="A modern, modular, and accessible Svelte 5 UI component library built with composability at its core."
 	/>
 </svelte:head>
 
-<!-- Hero Section -->
-<section class="flex min-h-[768px] overflow-visible pt-40">
-	<div class="relative flex flex-1 items-center justify-center">
-		<!-- <AnimatedAtoms /> -->
-
-		<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<div class="text-center">
-				<h1 class="mb-6 text-4xl font-bold text-gray-900 md:text-6xl dark:text-gray-100">
-					Build <span
-						class="bg-gradient-to-r from-palette-atomic via-palette-ion to-palette-neutron bg-clip-text text-transparent"
-						{@attach (node) => {
-							animate(node, {
-								opacity: 1,
-								filter: ['brightness(.5)', 'brightness(1.5)'],
-								duration: 4000,
-								loop: true,
-								alternate: true
-							});
-						}}>Reactive UIs</span
-					><br />
-					with Atomic Fusion
-				</h1>
-				<p class="mx-auto mb-16 max-w-3xl text-xl text-gray-600 dark:text-gray-300">
-					Experience the fusion of reactive components with atomic precision. Built with <span
-						class="text-palette-fusion"
-						{@attach (node) => {
-							animate(node, {
-								opacity: 1,
-								filter: ['brightness(.5)', 'brightness(1.5)'],
-								duration: 2000,
-								delay: 400,
-								loop: true,
-								alternate: true
-							});
-						}}>Svelte 5</span
-					>
-					runes for lightning-fast reactions and seamless user experiences.
-				</p>
-				<div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-					<a href="/getting-started">
-						<Button
-							class="animate-pulse-glow hover:proton transform bg-gradient-to-r from-palette-ion to-palette-neutron/50 px-8 py-3 text-lg font-medium text-white shadow-lg transition-all duration-400 hover:scale-105 hover:to-palette-neutron/80 hover:shadow-xl"
-						>
-							Get Started
-						</Button>
-					</a>
-					<a href="/components">
-						<Button
-							class="dark:hover:palette-quantum/20 transform border border-palette-photon/50 bg-gradient-to-r from-palette-energy/10 to-red-500/10 px-8 py-3 text-lg font-medium text-palette-photon transition-all duration-200 hover:scale-105 hover:bg-orange-50 dark:border-palette-photon/50 dark:bg-gradient-to-r dark:from-palette-energy/10 dark:to-palette-energy/20 dark:text-palette-photon"
-						>
-							View Components
-						</Button>
-					</a>
-				</div>
-				<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-					<Badge
-						class="transform bg-palette-energy/10 px-3 py-1 text-palette-energy transition-transform hover:scale-105"
-						>Svelte 5 Ready</Badge
-					>
-
-					<Badge
-						class="transform bg-palette-energy/10 px-3 py-1 text-palette-energy transition-transform hover:scale-105"
-						>TypeScript</Badge
-					>
-
-					<Badge
-						class="transform bg-palette-energy/10 px-3 py-1 text-palette-energy transition-transform hover:scale-105"
-						>Accessible</Badge
-					>
-
-					<Badge
-						class="transform bg-palette-energy/10 px-3 py-1 text-palette-energy transition-transform hover:scale-105 "
-						>Reactive</Badge
-					>
-				</div>
-			</div>
+<div class="mx-auto max-w-5xl px-4 py-24 pb-32 sm:px-6 lg:px-8">
+	<!-- Hero Section -->
+	<div class="mb-32">
+		<div class="text-primary mb-6 text-sm font-semibold tracking-wider uppercase">
+			Svelte 5 Ready
 		</div>
+		<div class="mb-8 flex items-center justify-between">
+			<h1 class="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">Svelte Atoms</h1>
+		</div>
+		<p class="text-muted-foreground max-w-3xl text-xl leading-relaxed">
+			A modern, modular, and accessible UI component library built with composability at its core.
+			Powered by Svelte 5 Runes and the Bond architecture.
+		</p>
 	</div>
-</section>
 
-<!-- Features Section -->
-<section class="py-20">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-16 text-center">
-			<h2 class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
-				Why Choose Atomic Fusion?
-			</h2>
-			<p class="mx-auto max-w-2xl text-xl text-gray-600 dark:text-gray-300">
-				Experience the perfect reaction between performance and developer experience
-			</p>
-		</div>
-
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{#each features as feature}
-				<FeatureCard {feature} />
-			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Quick Start Section -->
-<section class="py-20">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-12 text-center">
-			<h2 class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
-				Start Your Fusion in Minutes
-			</h2>
-			<p class="text-xl text-gray-600 dark:text-gray-300">
-				Ignite atomic reactions in your project with reactive components
-			</p>
-		</div>
-
-		<div class="mx-auto max-w-4xl">
-			<div class="overflow-hidden rounded-2xl bg-palette-graphite/50 shadow-xl">
-				<div class="flex items-center justify-between px-6 py-4">
-					<div class="flex space-x-2">
-						<div class="h-3 w-3 rounded-full bg-red-500"></div>
-						<div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-						<div class="h-3 w-3 rounded-full bg-green-500"></div>
-					</div>
-					<div class="text-sm text-palette-black">Installation</div>
-				</div>
-				<div class="p-6">
-					<div class="space-y-4">
-						<div>
-							<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-								1. Install the package
-							</h3>
-							<div class="rounded-lg bg-palette-carbon/50 p-4 font-mono text-sm">
-								<span class="text-gray-500 dark:text-gray-400">$</span>
-								<span class="text-orange-600 dark:text-orange-400">npm install</span> @svelte-atoms/core
-							</div>
-						</div>
-
-						<div>
-							<h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-								2. Import and use components
-							</h3>
-							<div class="rounded-lg bg-palette-carbon/50 p-4 font-mono text-sm">
-								<div class="text-blue-600 dark:text-red-400">&lt;script&gt;</div>
-								<div class="ml-4 text-gray-700 dark:text-gray-300">
-									import {'{'} Button {'}'} from '@svelte-atoms/core/button';
-								</div>
-								<div class="text-blue-600 dark:text-red-400">&lt;/script&gt;</div>
-								<br />
-								<div class="text-blue-600 dark:text-red-400">&lt;Button&gt;</div>
-								<div class="ml-4 text-gray-700 dark:text-gray-300">React instantly!</div>
-								<div class="text-blue-600 dark:text-red-400">&lt;/Button&gt;</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="mt-12 text-center">
-			<a href="/getting-started">
-				<Button
-					class="transform bg-gradient-to-r from-palette-ion to-palette-neutron/50 px-6 py-3 font-medium text-white transition-all duration-200 hover:scale-105 hover:from-palette-ion hover:to-palette-neutron/80"
+	<!-- Main Grid -->
+	<div class="mb-16 grid gap-6 md:grid-cols-2">
+		<!-- Svelte 5 Native -->
+		<div
+			class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
+		>
+			<div class="text-primary mb-4">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
 				>
-					View Full Documentation
-				</Button>
+					<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+					<polyline points="14 2 14 8 20 8" />
+					<path d="M12 18v-6" />
+					<path d="m9 15 3 3 3-3" />
+				</svg>
+			</div>
+			<h3 class="mb-2 text-lg font-bold">Svelte 5 Native</h3>
+			<p class="text-muted-foreground mb-6">
+				Built from the ground up using Runes for fine-grained reactivity and optimal performance.
+			</p>
+			<a
+				href="/docs/overview"
+				class="text-foreground inline-flex items-center text-sm font-medium hover:underline"
+			>
+				Learn about Runes
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="ml-1"
+				>
+					<path d="m9 18 6-6-6-6" />
+				</svg>
+			</a>
+		</div>
+
+		<!-- Bond Architecture -->
+		<div
+			class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
+		>
+			<div class="text-primary mb-4">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<circle cx="12" cy="12" r="10" />
+					<path d="M12 2a7 7 0 1 0 10 10" />
+				</svg>
+			</div>
+			<h3 class="mb-2 text-lg font-bold">Bond Architecture</h3>
+			<p class="text-muted-foreground mb-6">
+				Self-contained state management that enables seamless parent-child communication without
+				prop drilling.
+			</p>
+			<a
+				href="/docs/philosophy"
+				class="text-foreground inline-flex items-center text-sm font-medium hover:underline"
+			>
+				Explore Bonds
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="ml-1"
+				>
+					<path d="m9 18 6-6-6-6" />
+				</svg>
+			</a>
+		</div>
+
+		<!-- Accessibility First -->
+		<div
+			class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
+		>
+			<div class="text-primary mb-4">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<circle cx="12" cy="8" r="5" />
+					<path d="M3 21v-7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v7" />
+				</svg>
+			</div>
+			<h3 class="mb-2 text-lg font-bold">Accessibility First</h3>
+			<p class="text-muted-foreground mb-6">
+				WAI-ARIA compliant with built-in keyboard navigation and focus management out of the box.
+			</p>
+			<a
+				href="/docs/accessibility"
+				class="text-foreground inline-flex items-center text-sm font-medium hover:underline"
+			>
+				Accessibility Guide
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="ml-1"
+				>
+					<path d="m9 18 6-6-6-6" />
+				</svg>
+			</a>
+		</div>
+
+		<!-- Headless & Stylable -->
+		<div
+			class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
+		>
+			<div class="text-primary mb-4">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+					<path d="m9 12 2 2 4-4" />
+				</svg>
+			</div>
+			<h3 class="mb-2 text-lg font-bold">Headless & Stylable</h3>
+			<p class="text-muted-foreground mb-6">
+				Unstyled by default. Full control over the look and feel using Tailwind CSS or your
+				preferred styling solution.
+			</p>
+			<a
+				href="/docs/styling"
+				class="text-foreground inline-flex items-center text-sm font-medium hover:underline"
+			>
+				Styling Guide
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="ml-1"
+				>
+					<path d="m9 18 6-6-6-6" />
+				</svg>
 			</a>
 		</div>
 	</div>
-</section>
 
-<!-- Component Preview Section -->
-<section class="py-20">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-16 text-center">
-			<h2 class="mb-4 text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
-				Reactive Component Gallery
-			</h2>
-			<p class="text-xl text-gray-600 dark:text-gray-300">
-				Experience the fusion of beauty and functionality
-			</p>
-		</div>
+	<!-- Get Started Section -->
+	<div class="mb-8">
+		<h2 class="mb-6 text-2xl font-bold">Get Started</h2>
+		<p class="text-muted-foreground mb-8 max-w-3xl">
+			Start building your design system today. Install the core package and start composing your
+			atoms.
+		</p>
 
-		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-			<div>
-				<h3 class="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
-					Atomic Component Library
-				</h3>
-				<p class="mb-6 text-gray-600 dark:text-gray-300">
-					From reactive buttons to dynamic data grids, each component creates perfect atomic
-					reactions. Designed for instant fusion with your existing systems.
-				</p>
-				<ul class="space-y-3">
-					<li class="flex items-center">
-						<div class="mr-3 h-2 w-2 rounded-full bg-orange-500"></div>
-						<span class="text-gray-700 dark:text-gray-300"
-							>Reactive Forms (Button, Input, Checkbox, etc.)</span
-						>
-					</li>
-					<li class="flex items-center">
-						<div class="mr-3 h-2 w-2 rounded-full bg-red-500"></div>
-						<span class="text-gray-700 dark:text-gray-300"
-							>Fusion Navigation (Menu, Breadcrumb, Tabs)</span
-						>
-					</li>
-					<li class="flex items-center">
-						<div class="mr-3 h-2 w-2 rounded-full bg-emerald-500"></div>
-						<span class="text-gray-700 dark:text-gray-300">Dynamic Data (DataGrid, List, Tree)</span
-						>
-					</li>
-					<li class="flex items-center">
-						<div class="mr-3 h-2 w-2 rounded-full bg-pink-500"></div>
-						<span class="text-gray-700 dark:text-gray-300"
-							>Floating Elements (Dialog, Tooltip, Popover)</span
-						>
-					</li>
-				</ul>
+		<div class="grid gap-6 md:grid-cols-2">
+			<!-- Install -->
+			<div
+				class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
+			>
+				<div class="text-primary mb-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+						<polyline points="7 10 12 15 17 10" />
+						<line x1="12" x2="12" y1="15" y2="3" />
+					</svg>
+				</div>
+				<h3 class="mb-2 text-lg font-bold">Install Package</h3>
+				<div class="bg-muted mt-2 rounded p-3 font-mono text-sm">
+					npm install @svelte-atoms/core
+				</div>
 			</div>
 
+			<!-- Components -->
 			<div
-				class="rounded-2xl border border-gray-200 bg-gradient-to-br from-orange-50/50 to-pink-50/50 p-8 dark:border dark:border-gray-800 dark:bg-gradient-to-br dark:from-orange-900/10 dark:to-pink-900/10"
+				class="bg-card border-border rounded-xl border p-6 shadow-sm transition-shadow hover:shadow-md"
 			>
-				<div class="space-y-6">
-					<div class="flex flex-wrap items-center gap-2 space-x-4">
-						<Button
-							class="bg-orange-500 px-4 py-2 text-white transition-colors hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700"
-						>
-							Primary
-						</Button>
-						<Button
-							class="border border-orange-500 px-4 py-2 text-orange-600 transition-colors hover:bg-orange-50 dark:border dark:border-orange-400 dark:text-orange-400 dark:hover:bg-orange-900/20"
-						>
-							Secondary
-						</Button>
-						<Button
-							class="bg-gray-200 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
-						>
-							Neutral
-						</Button>
-					</div>
-
-					<div class="flex flex-wrap items-center gap-2 space-x-2">
-						<Badge
-							class="bg-orange-100 px-2 py-1 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300"
-							>Reactive</Badge
-						>
-						<Badge
-							class="bg-emerald-100 px-2 py-1 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300"
-							>Fusion</Badge
-						>
-						<Badge class="bg-red-100 px-2 py-1 text-red-800 dark:bg-red-900/50 dark:text-red-300"
-							>Atomic</Badge
-						>
-					</div>
+				<div class="text-primary mb-4">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<rect width="7" height="7" x="3" y="3" rx="1" />
+						<rect width="7" height="7" x="14" y="3" rx="1" />
+						<rect width="7" height="7" x="14" y="14" rx="1" />
+						<rect width="7" height="7" x="3" y="14" rx="1" />
+					</svg>
 				</div>
+				<h3 class="mb-2 text-lg font-bold">Browse Components</h3>
+				<p class="text-muted-foreground mb-4">Explore our collection of accessible components.</p>
+				<a
+					href="/docs"
+					class="text-foreground inline-flex items-center text-sm font-medium hover:underline"
+				>
+					View Component Library
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="ml-1"
+					>
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+				</a>
 			</div>
 		</div>
 	</div>
-</section>
+
+	<!-- Examples Section -->
+	<div class="mb-16">
+		<h2 class="mb-6 text-2xl font-bold">Popular Components</h2>
+		<p class="text-muted-foreground mb-8 max-w-3xl">
+			Explore our most used components. Each one is fully customizable and accessible.
+		</p>
+
+		<div class="grid gap-6 md:grid-cols-3">
+			<!-- Button Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Button</h3>
+				<div class="flex flex-wrap gap-2">
+					<Button class="" variant="primary">Primary</Button>
+					<Button class="" variant="secondary">Secondary</Button>
+					<Button class="" variant="destructive">Destructive</Button>
+				</div>
+				<a
+					href="/docs/components/button"
+					class="text-muted-foreground hover:text-foreground mt-auto text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Input Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Input</h3>
+				<div class="space-y-3">
+					<Input.Root class="rounded-md">
+						<Input.Control placeholder="Enter your name..." class="px-3 py-2" />
+					</Input.Root>
+					<Input.Root class="rounded-md">
+						<Input.Control type="email" placeholder="email@example.com" class="px-3 py-2" />
+					</Input.Root>
+				</div>
+				<a
+					href="/docs/components/input"
+					class="text-muted-foreground hover:text-foreground mt-auto text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Card Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Card</h3>
+				<Card.Root class="border-border border">
+					<Card.Header>
+						<Card.Title class="text-base">Card Title</Card.Title>
+					</Card.Header>
+					<Card.Body class="pb-2">
+						<p class="text-muted-foreground text-sm">A container for grouping related content.</p>
+					</Card.Body>
+				</Card.Root>
+				<a
+					href="/docs/components/card"
+					class="text-muted-foreground hover:text-foreground text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Badge Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Badge</h3>
+				<div class="flex flex-1 items-center">
+					<div class="flex flex-wrap gap-2">
+						<Badge class="" variant="primary">Primary</Badge>
+						<Badge class="" variant="secondary">Secondary</Badge>
+						<Badge class="" variant="outline">Outline</Badge>
+					</div>
+				</div>
+				<a
+					href="/docs/components/badge"
+					class="text-muted-foreground hover:text-foreground mt-auto text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Alert Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Alert</h3>
+				<div class="flex flex-1 items-center">
+					<Alert.Root variant="primary" class="w-full">
+						<Alert.Icon>
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								class="h-4 w-4"
+							>
+								<circle cx="12" cy="12" r="10"></circle>
+								<path d="M12 16v-4M12 8h.01"></path>
+							</svg>
+						</Alert.Icon>
+						<Alert.Title class="text-sm font-medium">Session Expiring</Alert.Title>
+					</Alert.Root>
+				</div>
+				<a
+					href="/docs/components/alert"
+					class="text-muted-foreground hover:text-foreground mt-auto text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Tabs Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Tabs</h3>
+				<Tabs.Root bind:value={tabValue} onchange={() => {}} class="mb-4">
+					<Tabs.Header class="border-border border-b text-sm font-medium" />
+					<Tabs.Body>
+						<Tab.Root value="account">
+							<Tab.Header class="">Account</Tab.Header>
+							<Tab.Body class="mt-4">
+								<p class="text-muted-foreground text-sm">Manage your account settings</p>
+							</Tab.Body>
+						</Tab.Root>
+						<Tab.Root value="settings">
+							<Tab.Header class="">Settings</Tab.Header>
+							<Tab.Body class="mt-4">
+								<p class="text-muted-foreground text-sm">Configure your preferences</p>
+							</Tab.Body>
+						</Tab.Root>
+					</Tabs.Body>
+				</Tabs.Root>
+				<a
+					href="/docs/components/tabs"
+					class="text-muted-foreground hover:text-foreground mt-auto text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Dropdown Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Dropdown</h3>
+				<Dropdown.Root bind:open={dropdownOpen} keys={fruits} offset={2}>
+					{#snippet children({ dropdown })}
+						{@const selectedItem = dropdown.state.selectedItems?.at(0)}
+
+						<Dropdown.Trigger base={Button} class="w-full">
+							{#if selectedItem}
+								<div class="capitalize">{selectedItem.text}</div>
+							{:else}
+								<div>Select fruit</div>
+							{/if}
+
+							<Dropdown.Indicator class="ml-auto" />
+						</Dropdown.Trigger>
+						<Dropdown.List class="">
+							{#each fruits as fruit (fruit)}
+								<Dropdown.Item value={fruit} class="capitalize">{fruit}</Dropdown.Item>
+							{/each}
+						</Dropdown.List>
+					{/snippet}
+				</Dropdown.Root>
+				<a
+					href="/docs/components/dropdown"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Tooltip Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Tooltip</h3>
+				<Tooltip.Root bind:open={tooltipOpen} offset={1}>
+					<Tooltip.Trigger onmount={() => {}} base={Button} variant="outline" class="w-full">
+						Hover me
+					</Tooltip.Trigger>
+					<Tooltip.Content class="">
+						This is a helpful tooltip!
+						<Tooltip.Arrow />
+					</Tooltip.Content>
+				</Tooltip.Root>
+				<a
+					href="/docs/components/tooltip"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Popover Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Popover</h3>
+				<Popover.Root bind:open={popoverOpen} offset={0}>
+					{#snippet children()}
+						<Popover.Trigger base={Button} class="w-full">
+							<div>Open popover</div>
+
+							<Popover.Indicator class="ml-auto" />
+						</Popover.Trigger>
+						<Popover.Content class="">
+							<div class="space-y-2">
+								<h4 class="font-semibold">Popover Content</h4>
+								<p class="text-muted-foreground text-sm">You can put any content here.</p>
+							</div>
+							<Popover.Arrow />
+						</Popover.Content>
+					{/snippet}
+				</Popover.Root>
+				<a
+					href="/docs/components/popover"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Dialog Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Dialog</h3>
+				<Dialog.Root bind:open={isDialogOpen}>
+					<Dialog.Content class="">
+						<Dialog.Header class="mb-4">
+							<h4 class="text-lg font-semibold">Dialog Title</h4>
+							<Dialog.CloseButton class="ml-auto" />
+						</Dialog.Header>
+						<Dialog.Body class="">
+							<p class="text-muted-foreground mb-4 text-sm">
+								A modal dialog for important interactions. Perfect for confirmations, forms, or
+								displaying critical information that requires user attention.
+							</p>
+							<div class="bg-muted rounded-md p-3">
+								<p class="text-muted-foreground text-xs">
+									Supports keyboard navigation with Escape to close.
+								</p>
+							</div>
+						</Dialog.Body>
+						<Dialog.Footer class="">
+							<Button variant="outline" onclick={() => (isDialogOpen = false)}>Cancel</Button>
+							<Button onclick={() => (isDialogOpen = false)}>Confirm</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+
+				<div class="flex flex-1 items-center">
+					<Button class="w-full" onclick={() => (isDialogOpen = true)}>Open Dialog</Button>
+				</div>
+
+				<a
+					href="/docs/components/dialog"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Drawer Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class="text-lg font-semibold">Drawer</h3>
+				<Drawer.Root bind:open={isDrawerOpen}>
+					<Drawer.Content
+						class="bg-background border-border fixed top-0 left-0 h-full w-80 border-r p-6 shadow-lg"
+						{@attach clickoutDrawer()}
+					>
+						<Drawer.Header class="mb-4">
+							<Drawer.Title class="flex items-center text-lg font-semibold">
+								<div>Drawer Title</div>
+								<button onclick={() => (isDrawerOpen = false)} class="ml-auto h-4 cursor-pointer">
+									<Icon class="h-full">
+										<CloseIcon />
+									</Icon>
+								</button>
+							</Drawer.Title>
+							<Drawer.Description class="text-muted-foreground text-xs">
+								Slide-in panel for navigation or content.
+							</Drawer.Description>
+						</Drawer.Header>
+						<Drawer.Body>
+							<p class="text-muted-foreground mb-4 text-sm">
+								Slide-in panel for navigation or content. Ideal for sidebars, filters, or additional
+								context without leaving the current page.
+							</p>
+
+							<ul class="space-y-2 text-sm">
+								<li class="flex items-center gap-2">
+									<div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+									Navigate menus
+								</li>
+								<li class="flex items-center gap-2">
+									<div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+									Show filters
+								</li>
+								<li class="flex items-center gap-2">
+									<div class="bg-primary h-1.5 w-1.5 rounded-full"></div>
+									Display settings
+								</li>
+							</ul>
+						</Drawer.Body>
+					</Drawer.Content>
+				</Drawer.Root>
+
+				<div class="flex flex-1 items-center">
+					<Button class="w-full" onclick={() => (isDrawerOpen = true)}>Open Drawer</Button>
+				</div>
+
+				<a
+					href="/docs/components/drawer"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+
+			<!-- Sidebar Example -->
+			<div class="bg-card border-border flex flex-col gap-4 rounded-xl border p-6 shadow-sm">
+				<h3 class=" text-lg font-semibold">Sidebar</h3>
+				<div class="bg-muted border-border h-32 overflow-hidden rounded-md border">
+					<Sidebar.Root bind:open={sidebarOpen}>
+						<div class="flex h-full">
+							<Sidebar.Content
+								class="bg-background border-border flex min-w-fit flex-col border-r p-2"
+								width="128px"
+							>
+								<div class="text-muted-foreground text-xs">
+									{sidebarOpen ? 'Expanded' : 'Collapsed'}
+								</div>
+							</Sidebar.Content>
+							<div class="bg-muted flex-1 p-2">
+								<div class="text-muted-foreground text-xs">Content</div>
+							</div>
+						</div>
+					</Sidebar.Root>
+				</div>
+				<Button class="w-full" onclick={() => (sidebarOpen = !sidebarOpen)}>Toggle Sidebar</Button>
+				<a
+					href="/docs/components/sidebar"
+					class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+				>
+					View docs →
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Floating Search Bar -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 transform">
+	<button
+		class="bg-background border-border flex items-center gap-3 rounded-full border px-6 py-3 shadow-lg transition-transform hover:scale-105"
+	>
+		<span class="text-muted-foreground text-sm">Ask a question...</span>
+		<div class="text-muted-foreground flex items-center gap-1 text-xs">
+			<span>Ctrl+I</span>
+			<div class="bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="12"
+					height="12"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="text-primary"
+				>
+					<path d="M12 19V5" />
+					<path d="m5 12 7-7 7 7" />
+				</svg>
+			</div>
+		</div>
+	</button>
+</div>

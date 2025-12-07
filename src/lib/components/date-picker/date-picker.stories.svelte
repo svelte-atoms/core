@@ -7,7 +7,6 @@
 </script>
 
 <script lang="ts">
-	import { Root } from '../root';
 	import { DatePicker as ADatePicker } from '.';
 	import { Button } from '../button';
 	import { addDays, subDays } from 'date-fns';
@@ -20,23 +19,17 @@
 
 <Story name="Date Picker">
 	{#snippet children({ args })}
-		<Root>
-			{#snippet children({})}
-				<div class="flex h-fit items-center justify-center">
-					<ADatePicker.Root bind:value {min} {max}>
-						<ADatePicker.Trigger base={Button} class="w-sm gap-4">
-							{#if value}
-								<div>{value.toDateString()}</div>
-							{:else}
-								<div>Open Date Picker</div>
-							{/if}
+		<ADatePicker.Root bind:value {min} {max}>
+			<ADatePicker.Trigger base={Button} class="w-sm gap-4">
+				{#if value}
+					<div>{value.toDateString()}</div>
+				{:else}
+					<div>Open Date Picker</div>
+				{/if}
 
-							<ADatePicker.Indicator class="ml-auto" />
-						</ADatePicker.Trigger>
-						<ADatePicker.Calendar />
-					</ADatePicker.Root>
-				</div>
-			{/snippet}
-		</Root>
+				<ADatePicker.Indicator class="ml-auto" />
+			</ADatePicker.Trigger>
+			<ADatePicker.Calendar />
+		</ADatePicker.Root>
 	{/snippet}
 </Story>

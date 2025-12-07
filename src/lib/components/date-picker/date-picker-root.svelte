@@ -16,7 +16,7 @@
 		min = undefined,
 		max = undefined,
 		type = 'single',
-		offset = 2,
+		offset = 1,
 		factory = _factory,
 		children,
 		...restProps

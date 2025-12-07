@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Collapsible as ACollapsible } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 
 	import { animate as motion } from 'motion';
 
@@ -22,7 +21,7 @@
 </script>
 
 <Story name="Collapsible" args={{}}>
-	<Root class="gap-2 p-4">
+	<div class="flex w-full flex-col gap-2">
 		<ACollapsible.Root>
 			{#snippet children({ collapsible })}
 				{@const isOpen = collapsible.state.props.open}
@@ -169,5 +168,5 @@
 				</ACollapsible.Body>
 			{/snippet}
 		</ACollapsible.Root>
-	</Root>
+	</div>
 </Story>

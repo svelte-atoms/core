@@ -24,7 +24,7 @@
 <HtmlAtom
 	{bond}
 	preset="popover.indicator"
-	class={['border-border flex items-center justify-center', '$preset', klass]}
+	class={['border-border flex h-5 items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
@@ -36,6 +36,7 @@
 		{@render children?.({ popover: bond })}
 	{:else}
 		<Icon
+			class="h-full"
 			src={IconArrowDown}
 			animate={(node) => motion(node, { rotate: 180 * +isOpen }, { duration: 0.2 })}
 		/>

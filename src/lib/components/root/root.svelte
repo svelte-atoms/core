@@ -12,7 +12,7 @@
 
 	let {
 		class: klass = '',
-		base = undefined,
+		base,
 		children = undefined,
 		portals = undefined,
 		...restProps
@@ -65,14 +65,14 @@
 </script>
 
 <Portals id="root">
-	<HtmlAtom
+	<Stack.Root
 		{@attach (node) => {
 			bond.rootElement = node;
 		}}
 		{base}
 		preset="root"
 		class={cn(
-			'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start font-sans',
+			'atom-root bg-background text-foreground relative flex w-full flex-1 flex-col items-start justify-stretch font-sans',
 			'$preset',
 			klass
 		)}
@@ -117,5 +117,5 @@
 		<ActivePortal portal="root.l0">
 			{@render children?.()}
 		</ActivePortal>
-	</HtmlAtom>
+	</Stack.Root>
 </Portals>

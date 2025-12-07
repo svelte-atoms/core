@@ -8,7 +8,7 @@
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
 		placement = 'bottom-start',
-		offset = 0,
+		offset = 1,
 		portal = undefined,
 		extend = {},
 		factory = _factory,

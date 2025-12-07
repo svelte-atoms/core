@@ -71,7 +71,7 @@
 <HtmlAtom
 	preset="card"
 	class={[
-		'card bg-card border-border flex flex-col gap-2 overflow-clip rounded-lg border shadow-sm',
+		'card bg-card border-border flex flex-col overflow-clip rounded-lg border shadow-sm',
 		disabledStyles,
 		'$preset',
 		klass

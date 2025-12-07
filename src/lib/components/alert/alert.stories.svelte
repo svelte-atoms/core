@@ -1,6 +1,5 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { Alert as AAlert } from './index';
 	import { Button } from '$svelte-atoms/core/components/button';
 	import { Icon } from '$svelte-atoms/core/components/icon';
@@ -44,7 +43,7 @@
 {/snippet}
 
 <Story name="All Variants">
-	<Root class="space-y-6 p-8">
+	<div class="space-y-6 p-8">
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Alert Variants</h2>
 
@@ -113,11 +112,11 @@
 				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 		</div>
-	</Root>
+	</div>
 </Story>
 
 <Story name="Dismissible">
-	<Root class="space-y-6 p-8">
+	<div class="space-y-6 p-8">
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Dismissible Alerts</h2>
 
@@ -172,11 +171,11 @@
 				</AAlert.CloseButton>
 			</AAlert.Root>
 		</div>
-	</Root>
+	</div>
 </Story>
 
 <Story name="With Actions">
-	<Root class="space-y-6 p-8">
+	<div class="space-y-6 p-8">
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Alerts with Action Buttons</h2>
 
@@ -243,11 +242,11 @@
 				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 		</div>
-	</Root>
+	</div>
 </Story>
 
 <Story name="Minimal">
-	<Root class="space-y-6 p-8">
+	<div class="space-y-6 p-8">
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Minimal Alerts</h2>
 
@@ -268,11 +267,11 @@
 				<AAlert.Content>Connection lost. Attempting to reconnect...</AAlert.Content>
 			</AAlert.Root>
 		</div>
-	</Root>
+	</div>
 </Story>
 
 <Story name="Real-World Examples">
-	<Root class="space-y-6 p-8">
+	<div class="space-y-6 p-8">
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Real-World Use Cases</h2>
 
@@ -397,5 +396,5 @@
 				</AAlert.Actions>
 			</AAlert.Root>
 		</div>
-	</Root>
+	</div>
 </Story>

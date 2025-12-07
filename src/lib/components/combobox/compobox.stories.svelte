@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Combobox as ACombobox } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Divider } from '$svelte-atoms/core/components/divider';
 
@@ -30,25 +29,23 @@
 </script>
 
 <Story name="Combobox" args={{}}>
-	<Root class="items-center justify-center p-4">
-		<ACombobox.Root bind:open bind:value>
-			{#snippet children({ combobox })}
-				<ACombobox.Trigger
-					base={Input.Root}
-					class="h-10 min-w-sm items-center gap-0 rounded-sm p-1 transition-colors duration-200"
-				>
-					<Input.Icon class="text-foreground/50">$</Input.Icon>
-					<Divider class="mx-1" vertical />
-					<ACombobox.Input class="px-1" placeholder="Select a language" />
-				</ACombobox.Trigger>
-				<ACombobox.List>
-					{#each array.filter((item) => !combobox.state.query || item.label
-								.toLowerCase()
-								.includes(combobox.state.query)) as item (item.value)}
-						<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
-					{/each}
-				</ACombobox.List>
-			{/snippet}
-		</ACombobox.Root>
-	</Root>
+	<ACombobox.Root bind:open bind:value>
+		{#snippet children({ combobox })}
+			<ACombobox.Trigger
+				base={Input.Root}
+				class="h-10 min-w-sm items-center gap-0 rounded-sm p-1 transition-colors duration-200"
+			>
+				<Input.Icon class="text-foreground/50">$</Input.Icon>
+				<Divider class="mx-1" vertical />
+				<ACombobox.Input class="px-1" placeholder="Select a language" />
+			</ACombobox.Trigger>
+			<ACombobox.List>
+				{#each array.filter((item) => !combobox.state.query || item.label
+							.toLowerCase()
+							.includes(combobox.state.query)) as item (item.value)}
+					<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
+				{/each}
+			</ACombobox.List>
+		{/snippet}
+	</ACombobox.Root>
 </Story>

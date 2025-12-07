@@ -79,35 +79,33 @@ export function closeDrawer(onclick?: (ev: MouseEvent) => void) {
 export function clickoutDrawer(onclickout?: (ev: PointerEvent) => void) {
 	const bond = DrawerBond.get();
 
-	return clickout((ev: PointerEvent) => {
-		if (!bond) return;
+	return clickout(
+		(ev: PointerEvent) => {
+			if (!bond) return;
 
-		if (!bond.state.props.open) {
-			return;
+			if (!bond.state.props.open) {
+				return;
+			}
+
+			const target = ev.target as Element;
+
+			if (bond.elements.content?.contains(target)) {
+				return;
+			}
+
+			console.log('clickoutDrawer invoked', bond.state.props.open);
+
+			onclickout?.(ev);
+
+			if (ev.defaultPrevented) {
+				return;
+			}
+
+			bond.state.close();
+		},
+		{
+			capture: true,
+			passive: true
 		}
-
-		const target = ev.target as Element;
-
-		if (!bond.elements.root.contains(target)) {
-			return;
-		}
-
-		if (bond.elements.content?.contains(target)) {
-			return;
-		}
-
-		onclickout?.(ev);
-
-		return on(
-			'click',
-			(ev, bond) => {
-				if (bond?.elements?.content?.contains(ev.target)) {
-					return;
-				}
-
-				bond?.state?.close?.();
-			},
-			DrawerBond.get
-		);
-	});
+	);
 }

@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Menu as AMenu } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { Button } from '$svelte-atoms/core/components/button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -22,15 +21,13 @@
 </script>
 
 <Story name="Menu" args={{}}>
-	<Root class="p-4">
-		<AMenu.Root bind:open offset={4}>
-			<AMenu.Trigger base={Button}>Select a language</AMenu.Trigger>
-			<AMenu.List>
-				<AMenu.Item>Arabic</AMenu.Item>
-				<AMenu.Item>English</AMenu.Item>
-				<AMenu.Item>Spanish</AMenu.Item>
-				<AMenu.Item>Italian</AMenu.Item>
-			</AMenu.List>
-		</AMenu.Root>
-	</Root>
+	<AMenu.Root bind:open offset={4}>
+		<AMenu.Trigger base={Button}>Select a language</AMenu.Trigger>
+		<AMenu.List>
+			<AMenu.Item>Arabic</AMenu.Item>
+			<AMenu.Item>English</AMenu.Item>
+			<AMenu.Item>Spanish</AMenu.Item>
+			<AMenu.Item>Italian</AMenu.Item>
+		</AMenu.List>
+	</AMenu.Root>
 </Story>

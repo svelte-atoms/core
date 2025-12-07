@@ -9,6 +9,7 @@
 	import type { Bond } from '$svelte-atoms/core/shared';
 	import SnippetRenderer from './snippet-renderer.svelte';
 	import type { Component } from 'svelte';
+	import { call } from '$svelte-atoms/core/utils/function';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -25,9 +26,20 @@
 		...restProps
 	}: HtmlAtomProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
 
-	const preset = $derived(
-		presetKey ? getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]) : undefined
-	);
+	/**
+	 * Resolve variant definition to props
+	 */
+	// Cache for resolved variants to avoid recomputation
+	// Key: JSON stringified combination of variant props
+	const variantCache = new Map<string, Record<string, any>>();
+
+	// Memoize preset resolution - only recompute when presetKey or bond changes
+	const preset = $derived.by(() => {
+		if (!presetKey) return undefined;
+		const result = getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]);
+		// Handle deferred preset result (factory function)
+		return call(result);
+	});
 
 	const presetProps = $derived(preset?.variants);
 
@@ -45,6 +57,7 @@
 	});
 
 	// Merge preset variants with local variants
+	// Memoized to avoid recomputation when inputs haven't changed
 	const mergedVariants = $derived.by(() => {
 		// No variants at all
 		if (!presetProps && !localVariants) return undefined;
@@ -52,8 +65,8 @@
 		// Only preset variants (raw object from preset)
 		if (presetProps && !localVariants) {
 			// Convert preset variants to VariantDefinition-like structure
-			const variantDef = {
-				class: preset?.class,
+			const variantDef: VariantDefinition<any> = {
+				class: preset?.class ?? '',
 				variants: presetProps,
 				compounds: preset?.compounds ?? [],
 				defaults: preset?.defaults ?? {}
@@ -68,9 +81,9 @@
 
 		// Both exist - merge them
 		// When both preset and local variants exist, we need to merge the resolved props
-		const presetVariantDef = {
-			class: preset?.class,
-			variants: presetProps,
+		const presetVariantDef: VariantDefinition<any> = {
+			class: preset?.class ?? '',
+			variants: presetProps ?? {},
 			compounds: preset?.compounds ?? [],
 			defaults: preset?.defaults ?? {}
 		};
@@ -93,9 +106,31 @@
 		};
 	});
 
-	const _klass = $derived(
-		cn(klass, mergedVariants?.class ?? '').replaceAll('$preset', cn(preset?.class))
-	);
+	const presetClassString = $derived(cn(preset?.class));
+
+	const _klass = $derived.by(() => {
+		const klassStr = cn(klass ?? '');
+		// Check for $preset placeholder first
+		if (!klassStr.includes('$preset')) {
+			// No placeholder - normal merge: variants override direct class
+			return cn(klass, mergedVariants?.class ?? '');
+		}
+
+		// Has placeholder - calculate position and inject preset classes
+		const parts = klassStr.split('$preset');
+
+		// Only keep the last $preset placeholder
+		const beforeLastPlaceholder = parts.slice(0, -1).join('');
+		const afterLastPlaceholder = parts[parts.length - 1];
+
+		// Merge: before + preset + variants + after
+		return cn(
+			beforeLastPlaceholder,
+			presetClassString,
+			mergedVariants?.class ?? '',
+			afterLastPlaceholder
+		);
+	});
 
 	const _base = $derived(base ?? preset?.base);
 	const _as = $derived(as ?? preset?.as);
@@ -131,9 +166,6 @@
 		};
 	}) as { component: Component; props: Record<string, any> };
 
-	/**
-	 * Resolve variant definition to props
-	 */
 	function resolveVariants(
 		def: VariantDefinition<any>,
 		bond: Bond | null | undefined,
@@ -143,6 +175,18 @@
 
 		// Merge props with defaults
 		const finalProps = { ...defaults, ...props };
+
+		// Create cache key from final props (only variant-related props)
+		const variantKeys = variantMap ? Object.keys(variantMap) : [];
+		const relevantProps = Object.fromEntries(
+			Object.entries(finalProps).filter(([key]) => variantKeys.includes(key))
+		);
+		const cacheKey = JSON.stringify({ relevantProps, baseClass, compounds });
+
+		// Check cache
+		if (variantCache.has(cacheKey)) {
+			return variantCache.get(cacheKey)!;
+		}
 
 		const classes: ClassValue[] = [];
 		const attributes: Record<string, any> = {};
@@ -193,15 +237,25 @@
 			}
 		}
 
-		return {
+		const result = {
 			class: classes,
 			...attributes
 		};
+
+		// Store in cache (limit cache size to prevent memory leaks)
+		if (variantCache.size > 100) {
+			// Clear oldest entry (first in Map)
+			const firstKey = variantCache.keys().next().value;
+			if (firstKey) variantCache.delete(firstKey);
+		}
+		variantCache.set(cacheKey, result);
+
+		return result;
 	}
 </script>
 
 <renderer.component {...renderer.props}>
-	{#snippet children(args)}
-		{@render childrenProp?.(args)}
+	{#snippet children(args: any)}
+		{@render (childrenProp as any)?.(args)}
 	{/snippet}
 </renderer.component>

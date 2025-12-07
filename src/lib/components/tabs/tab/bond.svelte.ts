@@ -54,7 +54,10 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 	}
 
 	root(props?: Record<string, unknown>) {
-		return {};
+		return {
+			'data-active': this.state.isActive,
+			'data-kind': 'tab-root'
+		};
 	}
 
 	header(props?: Record<string, unknown>) {
@@ -136,7 +139,7 @@ export class TabBondState<T> extends BondState<TabBondProps<T>> {
 	constructor(props: () => TabBondProps<T>) {
 		super(props);
 
-		this.#tabsState = TabsBond.get()?.state as TabsBondState<T> | undefined;
+		this.#tabsState = TabsBond.get()?.state as TabsBondState<T>;
 	}
 
 	get isActive() {

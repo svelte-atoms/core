@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Popover as Popover_ } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { clickoutPopover } from './attachments.svelte';
 	import { Button } from '../button';
 
@@ -24,29 +23,27 @@
 
 <Story name="Popover" args={{}}>
 	{#snippet children(args)}
-		<Root class="overflow-clip p-4">
-			<Popover_.Root bind:open offset={0} {...args}>
-				{#snippet children({ popover })}
-					<!-- {#if dev}
+		<Popover_.Root bind:open offset={0} {...args}>
+			{#snippet children({ popover })}
+				<!-- {#if dev}
 						<RenderScan duration={400} />
 					{/if} -->
 
-					<Popover_.Trigger base={Button} class="items-center gap-4">
-						<div>Open Popover</div>
-						<Popover_.Indicator />
-					</Popover_.Trigger>
+				<Popover_.Trigger base={Button} class="items-center gap-4">
+					<div>Open Popover</div>
+					<Popover_.Indicator />
+				</Popover_.Trigger>
 
-					<Popover_.Content
-						{@attach clickoutPopover((ev, atom) => {
-							atom.state.close();
-						})}
-						class="bg-card"
-					>
-						<div>Hello World !</div>
-						<Popover_.Arrow />
-					</Popover_.Content>
-				{/snippet}
-			</Popover_.Root>
-		</Root>
+				<Popover_.Content
+					{@attach clickoutPopover((ev, atom) => {
+						atom.state.close();
+					})}
+					class="bg-card"
+				>
+					<div>Hello World !</div>
+					<Popover_.Arrow />
+				</Popover_.Content>
+			{/snippet}
+		</Popover_.Root>
 	{/snippet}
 </Story>

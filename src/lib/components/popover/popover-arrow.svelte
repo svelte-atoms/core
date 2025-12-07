@@ -98,14 +98,14 @@
 		{@render children({ popover: bond })}
 	{:else}
 		<svg
-			width="12"
-			height="12"
-			viewBox="0 0 12 12"
+			width="16"
+			height="8"
+			viewBox="0 0 16 8"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			style="transform: rotate({rotation}deg);"
 		>
-			<path d="M0 12L6 6L12 12H0Z" fill="currentColor" stroke="none" />
+			<path d="M0 8C2 8 6 4 8 0C10 4 14 8 16 8H0Z" fill="currentColor" />
 		</svg>
 	{/if}
 </HtmlAtom>

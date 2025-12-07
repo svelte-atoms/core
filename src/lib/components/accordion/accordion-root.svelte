@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { AccordionBond, AccordionState, type AccordionStateProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AccordionBond, AccordionState, type AccordionStateProps } from './bond.svelte';
 	import type { AccordionRootProps } from './types';
 
 	let {
