@@ -36,6 +36,7 @@
 		{@render children?.({ popover: bond })}
 	{:else}
 		<Icon
+			class="h-full"
 			src={IconArrowDown}
 			animate={(node) => motion(node, { rotate: 180 * +isOpen }, { duration: 0.2 })}
 		/>
