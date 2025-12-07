@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Accordion as AAccordion, AccordionItem } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { linear } from 'svelte/easing';
 	import { animate } from 'motion';
 
@@ -23,126 +22,124 @@
 
 <Story name="Accordion" args={{ collapsible: false, multiple: false, disabled: false }}>
 	{#snippet children(args)}
-		<Root class="flex items-center justify-center p-4">
-			<AAccordion class="backdrop-blur-sm" {...args}>
-				<AccordionItem.Root>
-					<AccordionItem.Header>
-						<div>Hello Atomic UI 1</div>
-						<AccordionItem.Indicator />
-					</AccordionItem.Header>
+		<AAccordion class="backdrop-blur-sm" {...args}>
+			<AccordionItem.Root>
+				<AccordionItem.Header>
+					<div>Hello Atomic UI 1</div>
+					<AccordionItem.Indicator />
+				</AccordionItem.Header>
 
-					<AccordionItem.Body
-						initial={(node) => {
-							Object.assign(node.style, { opacity: 0, height: 0 });
-						}}
-						enter={function (node) {
-							const d = 0.2;
-							animate(
-								node,
-								{
-									opacity: 1,
-									height: 'auto'
-								},
-								{
-									duration: d
-								}
-							);
+				<AccordionItem.Body
+					initial={(node) => {
+						Object.assign(node.style, { opacity: 0, height: 0 });
+					}}
+					enter={function (node) {
+						const d = 0.2;
+						animate(
+							node,
+							{
+								opacity: 1,
+								height: 'auto'
+							},
+							{
+								duration: d
+							}
+						);
 
-							return { duration: d * 1000 };
-						}}
-						exit={(node) => {
-							const d = 0.2;
-							animate(node, { opacity: 0, height: 0 }, { duration: d });
+						return { duration: d * 1000 };
+					}}
+					exit={(node) => {
+						const d = 0.2;
+						animate(node, { opacity: 0, height: 0 }, { duration: d });
 
-							return { duration: d * 1000 };
-						}}
-					>
-						<div class="p-2">
-							Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-							tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-							dolor diam nascetur.
-						</div>
-					</AccordionItem.Body>
-				</AccordionItem.Root>
+						return { duration: d * 1000 };
+					}}
+				>
+					<div class="p-2">
+						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+						dolor diam nascetur.
+					</div>
+				</AccordionItem.Body>
+			</AccordionItem.Root>
 
-				<AccordionItem.Root>
-					<AccordionItem.Header>
-						<div>Hello Atomic UI 2</div>
-						<AccordionItem.Indicator />
-					</AccordionItem.Header>
+			<AccordionItem.Root>
+				<AccordionItem.Header>
+					<div>Hello Atomic UI 2</div>
+					<AccordionItem.Indicator />
+				</AccordionItem.Header>
 
-					<AccordionItem.Body
-						initial={(node) => {
-							Object.assign(node.style, { opacity: 0, height: 0 });
-						}}
-						enter={(node) => {
-							animate(
-								node,
-								{
-									opacity: 1,
-									height: 'auto'
-								},
-								{
-									duration: 0.2,
-									ease: linear
-								}
-							);
+				<AccordionItem.Body
+					initial={(node) => {
+						Object.assign(node.style, { opacity: 0, height: 0 });
+					}}
+					enter={(node) => {
+						animate(
+							node,
+							{
+								opacity: 1,
+								height: 'auto'
+							},
+							{
+								duration: 0.2,
+								ease: linear
+							}
+						);
 
-							return { duration: 0.2 };
-						}}
-						exit={(node) => {
-							animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
+						return { duration: 0.2 };
+					}}
+					exit={(node) => {
+						animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
 
-							return { duration: 0.2 };
-						}}
-					>
-						<div class="p-2">
-							Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-							tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-							dolor diam nascetur.
-						</div>
-					</AccordionItem.Body>
-				</AccordionItem.Root>
+						return { duration: 0.2 };
+					}}
+				>
+					<div class="p-2">
+						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+						dolor diam nascetur.
+					</div>
+				</AccordionItem.Body>
+			</AccordionItem.Root>
 
-				<AccordionItem.Root>
-					<AccordionItem.Header>
-						<div>Hello Atomic UI 3</div>
-						<AccordionItem.Indicator />
-					</AccordionItem.Header>
+			<AccordionItem.Root>
+				<AccordionItem.Header>
+					<div>Hello Atomic UI 3</div>
+					<AccordionItem.Indicator />
+				</AccordionItem.Header>
 
-					<AccordionItem.Body
-						initial={(node) => {
-							Object.assign(node.style, { opacity: 0, height: 0 });
-						}}
-						enter={(node) => {
-							animate(
-								node,
-								{
-									opacity: 1,
-									height: 'auto'
-								},
-								{
-									duration: 0.2,
-									ease: linear
-								}
-							);
+				<AccordionItem.Body
+					initial={(node) => {
+						Object.assign(node.style, { opacity: 0, height: 0 });
+					}}
+					enter={(node) => {
+						animate(
+							node,
+							{
+								opacity: 1,
+								height: 'auto'
+							},
+							{
+								duration: 0.2,
+								ease: linear
+							}
+						);
 
-							return { duration: 0.2 };
-						}}
-						exit={(node) => {
-							animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
+						return { duration: 0.2 };
+					}}
+					exit={(node) => {
+						animate(node, { opacity: 0, height: 0 }, { duration: 0.2, ease: linear });
 
-							return { duration: 0.2 };
-						}}
-					>
-						<div class="p-2">
-							Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-							tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-							dolor diam nascetur.
-						</div>
-					</AccordionItem.Body>
-				</AccordionItem.Root>
-			</AAccordion>
-		</Root>
+						return { duration: 0.2 };
+					}}
+				>
+					<div class="p-2">
+						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+						dolor diam nascetur.
+					</div>
+				</AccordionItem.Body>
+			</AccordionItem.Root>
+		</AAccordion>
 	{/snippet}
 </Story>

@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Dropdown as ADropdown } from '.';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { flip } from 'svelte/animate';
 	import { filter } from './runes.svelte';
@@ -37,47 +36,45 @@
 </script>
 
 <Story name="Dropdown" args={{}}>
-	<Root class="items-center justify-center p-4">
-		<!-- Multi-select dropdown with search functionality -->
-		<ADropdown.Root
-			bind:open
-			keys={data.map((item) => item.value)}
-			multiple
-			onquerychange={(q) => (dd.query = q)}
-		>
-			{#snippet children({ dropdown })}
-				<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
-				<ADropdown.Trigger
-					base={Input.Root}
-					class="h-auto min-h-12 max-w-sm min-w-sm items-center gap-2 rounded-sm px-4 transition-colors duration-200"
-					onclick={(ev) => {
-						ev.preventDefault();
+	<!-- Multi-select dropdown with search functionality -->
+	<ADropdown.Root
+		bind:open
+		keys={data.map((item) => item.value)}
+		multiple
+		onquerychange={(q) => (dd.query = q)}
+	>
+		{#snippet children({ dropdown })}
+			<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
+			<ADropdown.Trigger
+				base={Input.Root}
+				class="h-auto min-h-12 max-w-sm min-w-sm items-center gap-2 rounded-sm px-4 transition-colors duration-200"
+				onclick={(ev) => {
+					ev.preventDefault();
 
-						dropdown.state.open();
-					}}
-				>
-					<!-- Display selected values with animation -->
-					{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
-						<div animate:flip={{ duration: 200 }}>
-							<ADropdown.Value value={item.value} class="text-foreground/80">
-								{item.text}
-							</ADropdown.Value>
-						</div>
-					{/each}
+					dropdown.state.open();
+				}}
+			>
+				<!-- Display selected values with animation -->
+				{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
+					<div animate:flip={{ duration: 200 }}>
+						<ADropdown.Value value={item.value} class="text-foreground/80">
+							{item.text}
+						</ADropdown.Value>
+					</div>
+				{/each}
 
-					<!-- Inline search input within the trigger -->
-					<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
-				</ADropdown.Trigger>
+				<!-- Inline search input within the trigger -->
+				<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
+			</ADropdown.Trigger>
 
-				<!-- ADropdown list with filtered items -->
-				<ADropdown.List>
-					{#each dd.current as item (item.id)}
-						<div animate:flip={{ duration: 200 }}>
-							<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
-						</div>
-					{/each}
-				</ADropdown.List>
-			{/snippet}
-		</ADropdown.Root>
-	</Root>
+			<!-- ADropdown list with filtered items -->
+			<ADropdown.List>
+				{#each dd.current as item (item.id)}
+					<div animate:flip={{ duration: 200 }}>
+						<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
+					</div>
+				{/each}
+			</ADropdown.List>
+		{/snippet}
+	</ADropdown.Root>
 </Story>

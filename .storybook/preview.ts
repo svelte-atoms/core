@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/svelte';
-import Theme from '../src/stories/Theme.svelte';
+import StoryRoot from '../src/stories/StoryRoot.svelte';
 import './global.css';
 import '../src/lib/components/root/root.css';
 
@@ -14,7 +14,7 @@ const preview: Preview = {
 	},
 	decorators: [
 		(story) => ({
-			Component: Theme,
+			Component: StoryRoot,
 			props: {
 				story
 			}

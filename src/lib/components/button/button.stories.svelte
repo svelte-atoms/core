@@ -1,6 +1,5 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import ButtonCmp from './button.svelte';
 
 	const { Story } = defineMeta({
@@ -23,8 +22,6 @@
 
 <Story name="Button">
 	{#snippet template(args)}
-		<Root class="p-4">
-			<ButtonCmp {...args}>Click me</ButtonCmp>
-		</Root>
+		<ButtonCmp {...args}>Click me</ButtonCmp>
 	{/snippet}
 </Story>

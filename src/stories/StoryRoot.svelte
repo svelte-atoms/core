@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cn, colorScheme, defineProperty, defineState } from '$lib';
 	import { setPreset, type Preset } from '$lib/context';
+	import Root from '$svelte-atoms/core/components/root/root.svelte';
 
 	let { children = undefined } = $props();
 
@@ -68,7 +69,7 @@
 			class: 'pr-2 pl-4'
 		}),
 		collapsible: () => ({
-			class: 'max-w-md rounded-md border border-border p-2'
+			class: 'rounded-md border border-border p-2'
 		}),
 		'collapsible.header': () => ({
 			class: 'px-2 py-2 hover:bg-foreground/5 active:bg-foreground/10 flex cursor-pointer rounded'
@@ -130,6 +131,8 @@
 	setPreset(preset);
 </script>
 
-<div class={cn('contents', scheme.current)}>
-	{@render children?.()}
-</div>
+<Root class={[scheme.current]}>
+	<div class="h-full w-full flex flex-col items-center justify-center">
+		{@render children?.()}
+	</div>
+</Root>

@@ -7,7 +7,6 @@
 	import { Tree as Tree_ } from '.';
 	import { tree } from './attachments.svelte';
 	import { TreeBond } from './bond.svelte';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -27,32 +26,35 @@
 </script>
 
 <Story name="Tree" args={{}}>
-	<Root class="p-4">
-		<Tree_.Root class="" bind:open>
-			{#if dev}
-				<RenderScan duration={300} />
-			{/if}
+	<Tree_.Root class="" bind:open>
+		{#if dev}
+			<RenderScan duration={300} />
+		{/if}
 
-			<Tree_.Header>Vehicles</Tree_.Header>
+		<Tree_.Header>Vehicles</Tree_.Header>
 
-			<Tree_.Body
-				class="border-l border-l-neutral-200"
-				onmount={(node) => {
-					const bond = TreeBond.get();
-					const isOpen = untrack(() => bond?.state.props.open ?? false);
-					animate(node, { height: +isOpen ? 'auto' : 0, opacity: +isOpen }, { duration: 0 });
-				}}
-				{@attach tree((node, bond) => {
-					const isOpen = bond?.state.props.open ?? false;
-					animate(node, {
+		<Tree_.Body
+			class="border-l border-l-neutral-200"
+			onmount={(node) => {
+				const bond = TreeBond.get();
+				const isOpen = untrack(() => bond?.state.props.open ?? false);
+				animate(node, { height: +isOpen ? 'auto' : 0, opacity: +isOpen }, { duration: 0 });
+			}}
+			{@attach tree((node, bond) => {
+				const isOpen = bond?.state.props.open ?? false;
+				animate(
+					node,
+					{
 						height: +isOpen ? 'auto' : 0,
 						opacity: +isOpen,
 						pointerEvents: isOpen ? 'all' : 'none'
-					}, { duration: 0.1 });
-				})}
-			>
-				<Tree_.Root>
-					<Tree_.Header>Cars</Tree_.Header>
+					},
+					{ duration: 0.1 }
+				);
+			})}
+		>
+			<Tree_.Root>
+				<Tree_.Header>Cars</Tree_.Header>
 				<Tree_.Body
 					class="border-l border-l-neutral-200"
 					onmount={(node) => {
@@ -63,21 +65,25 @@
 					animate={(node) => {
 						const bond = TreeBond.get();
 						const isOpen = bond?.state.props.open ?? false;
-						animate(node, {
-							height: +isOpen ? 'auto' : 0,
-							opacity: +isOpen,
-							pointerEvents: isOpen ? 'all' : 'none'
-						}, { duration: 0.1 });
+						animate(
+							node,
+							{
+								height: +isOpen ? 'auto' : 0,
+								opacity: +isOpen,
+								pointerEvents: isOpen ? 'all' : 'none'
+							},
+							{ duration: 0.1 }
+						);
 					}}
-					>
-						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-						dolor diam nascetur.
-					</Tree_.Body>
-				</Tree_.Root>
+				>
+					Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+					tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+					dolor diam nascetur.
+				</Tree_.Body>
+			</Tree_.Root>
 
-				<Tree_.Root>
-					<Tree_.Header>Trucks</Tree_.Header>
+			<Tree_.Root>
+				<Tree_.Header>Trucks</Tree_.Header>
 				<Tree_.Body
 					class="border-l border-l-neutral-200"
 					onmount={(node) => {
@@ -87,21 +93,25 @@
 					}}
 					{@attach tree((node, bond) => {
 						const isOpen = bond?.state.props.open ?? false;
-						animate(node, {
-							height: +isOpen ? 'auto' : 0,
-							opacity: +isOpen,
-							pointerEvents: isOpen ? 'all' : 'none'
-						}, { duration: 0.1 });
+						animate(
+							node,
+							{
+								height: +isOpen ? 'auto' : 0,
+								opacity: +isOpen,
+								pointerEvents: isOpen ? 'all' : 'none'
+							},
+							{ duration: 0.1 }
+						);
 					})}
-					>
-						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-						dolor diam nascetur.
-					</Tree_.Body>
-				</Tree_.Root>
+				>
+					Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+					tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+					dolor diam nascetur.
+				</Tree_.Body>
+			</Tree_.Root>
 
-				<Tree_.Root>
-					<Tree_.Header>Bikes</Tree_.Header>
+			<Tree_.Root>
+				<Tree_.Header>Bikes</Tree_.Header>
 				<Tree_.Body
 					class="border-l border-l-neutral-200"
 					onmount={(node) => {
@@ -111,19 +121,22 @@
 					}}
 					{@attach tree((node, bond) => {
 						const isOpen = bond?.state.props.open ?? false;
-						animate(node, {
-							height: +isOpen ? 'auto' : 0,
-							opacity: +isOpen,
-							pointerEvents: isOpen ? 'all' : 'none'
-						}, { duration: 0.1 });
+						animate(
+							node,
+							{
+								height: +isOpen ? 'auto' : 0,
+								opacity: +isOpen,
+								pointerEvents: isOpen ? 'all' : 'none'
+							},
+							{ duration: 0.1 }
+						);
 					})}
-					>
-						Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
-						tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
-						dolor diam nascetur.
-					</Tree_.Body>
-				</Tree_.Root>
-			</Tree_.Body>
-		</Tree_.Root>
-	</Root>
+				>
+					Mauris et habitasse cubilia potenti at condimentum iaculis nam. Ante fusce litora
+					tristique letius libero. Curabitur vitae cursus consectetur feugiat aenean viverra vel
+					dolor diam nascetur.
+				</Tree_.Body>
+			</Tree_.Root>
+		</Tree_.Body>
+	</Tree_.Root>
 </Story>

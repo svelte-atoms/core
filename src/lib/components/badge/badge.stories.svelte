@@ -1,6 +1,5 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { Badge as BadgeModule } from '.';
 
 	const { Story } = defineMeta({
@@ -9,9 +8,5 @@
 </script>
 
 <Story name="Badge">
-	<Root>
-		{#snippet children({ args })}
-			<BadgeModule>Badge</BadgeModule>
-		{/snippet}
-	</Root>
+	<BadgeModule>Badge</BadgeModule>
 </Story>
