@@ -136,7 +136,7 @@
 				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
 				transformOrigin
 			},
-			{ duration: DURATION.fast / 1000 }
+			{ duration: DURATION.quick / 1000 }
 		);
 
 		isOpened = isOpen;
