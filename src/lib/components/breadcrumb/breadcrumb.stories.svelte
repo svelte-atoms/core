@@ -8,9 +8,9 @@
 </script>
 
 <Story name="Breadcrumb">
-		<BreadcrumbModule.Root>
-			<BreadcrumbModule.Item href="/">Home</BreadcrumbModule.Item>
-			<BreadcrumbModule.Separator>/</BreadcrumbModule.Separator>
-			<BreadcrumbModule.Item href="/vehicles">Vehicles</BreadcrumbModule.Item>
-		</BreadcrumbModule.Root>
+	<BreadcrumbModule.Root>
+		<BreadcrumbModule.Item href="/">Home</BreadcrumbModule.Item>
+		<BreadcrumbModule.Separator>/</BreadcrumbModule.Separator>
+		<BreadcrumbModule.Item href="/vehicles">Vehicles</BreadcrumbModule.Item>
+	</BreadcrumbModule.Root>
 </Story>
