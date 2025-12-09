@@ -13,4 +13,6 @@ export {
 	DrawerBondState
 } from './bond.svelte';
 
+export { animateDrawerContent, animateDrawerRoot } from './motion';
+
 export * from './types';
