@@ -44,6 +44,7 @@
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
+	tabIndex={0}
 	onclick={_onclick}
 	{...restProps}
 >
