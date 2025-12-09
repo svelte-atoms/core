@@ -1,7 +1,7 @@
 <script module>
 	import { animate } from 'motion';
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Drawer as Drawer_ } from '.';
+	import { clickoutDrawer, Drawer as Drawer_ } from '.';
 	import { DrawerBond } from './bond.svelte';
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 
@@ -29,17 +29,13 @@
 		bind:open={isOpen}
 		class=" border backdrop-blur-md backdrop-grayscale-100"
 		animate={animateDrawerRoot({})}
-		{@attach (node) => {
-			const bond = DrawerBond.get();
-
-			return on('click', (ev) => {
-				bond?.state?.close?.();
-			})(node);
-		}}
 	>
 		<Drawer_.Content
 			class="border-border flex min-h-full w-md flex-col border-r p-8 whitespace-nowrap shadow-md"
 			animate={animateDrawerContent({ ease: 'easeOut', side: 'left' })}
+			{@attach clickoutDrawer((_, bond) => {
+				bond?.state?.close?.();
+			})}
 		>
 			<Drawer_.Header class="flex items-center justify-between">
 				<div class="flex flex-col">
@@ -70,17 +66,13 @@
 		bind:open={isOpen}
 		class=" border backdrop-blur-md backdrop-grayscale-100"
 		animate={animateDrawerRoot({})}
-		{@attach (node) => {
-			const bond = DrawerBond.get();
-
-			return on('click', (ev) => {
-				bond?.state?.close?.();
-			})(node);
-		}}
 	>
 		<Drawer_.Content
 			class="border-border flex w-md min-w-full flex-col border-b p-8 whitespace-nowrap shadow-md"
 			animate={animateDrawerContent({ ease: 'easeOut', side: 'top' })}
+			{@attach clickoutDrawer((_, bond) => {
+				bond?.state?.close?.();
+			})}
 		>
 			<div>
 				<div>Svelte Fluent</div>
@@ -101,19 +93,12 @@
 		bind:open={isOpen}
 		class=" border backdrop-blur-md backdrop-grayscale-100"
 		animate={animateDrawerRoot({})}
-		{@attach (node) => {
-			const bond = DrawerBond.get();
-
-			return on('click', (ev) => {
-				bond?.state?.close?.();
-			})(node);
-		}}
 	>
 		<Drawer_.Content
 			class="border-border shadow-foreground/50 inset-y-0 flex w-md flex-col border-l p-8 whitespace-nowrap shadow-sm"
 			animate={animateDrawerContent({ ease: 'easeOut', side: 'right' })}
-			{@attach on('click', (ev) => {
-				ev.stopPropagation();
+			{@attach clickoutDrawer((_, bond) => {
+				bond?.state?.close?.();
 			})}
 		>
 			<div>
@@ -138,17 +123,13 @@
 			animate(node, { opacity: +isOpen }, { duration: 0 });
 		}}
 		animate={animateDrawerRoot()}
-		{@attach (node) => {
-			const bond = DrawerBond.get();
-
-			return on('click', (ev) => {
-				bond?.state?.close?.();
-			})(node);
-		}}
 	>
 		<Drawer_.Content
 			class="border-border flex w-md min-w-full flex-col border-t p-8 whitespace-nowrap shadow-md"
 			animate={animateDrawerContent({ ease: 'easeOut', side: 'bottom' })}
+			{@attach clickoutDrawer((_, bond) => {
+				bond?.state?.close?.();
+			})}
 		>
 			<div>
 				<div>Svelte Fluent</div>
