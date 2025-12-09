@@ -52,11 +52,11 @@
 	{...calendarProps}
 >
 	<HtmlAtom base={Header} class="col-span-full" />
-	<HtmlAtom base={Weekdays} />
+	<HtmlAtom base={Weekdays} class="border-0" />
 
 	<HtmlAtom base={Body}>
 		{#snippet children({ day }: { day: CalendarDayType })}
-			<HtmlAtom base={Day} {day} class="flex items-center justify-center">
+			<HtmlAtom base={Day} {day} class="flex items-center justify-center border-0">
 				<span class="value">{day.dayOfMonth}</span>
 			</HtmlAtom>
 		{/snippet}
