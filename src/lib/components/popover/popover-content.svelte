@@ -1,11 +1,10 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { animate as motion } from 'motion';
 	import { PortalBond, PortalsBond, Teleport } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
-	import { DURATION } from '$svelte-atoms/core/shared';
 	import { PopoverBond } from './bond.svelte';
 	import type { AnimateParams, PopoverContentProps } from './types';
+	import { animatePopoverContent } from './motion';
 
 	type Element = HtmlElementType<E>;
 
@@ -35,7 +34,7 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = _animate,
+		animate = animatePopoverContent(),
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
@@ -45,26 +44,26 @@
 	const isOpen = $derived(bond.state.isOpen && !!bond.elements.trigger);
 	const portalId = $derived(activePortalBond?.id);
 
-	const position = $derived(bond.position);
-	const placement = $derived(position?.placement);
-
-	const x = $derived(position?.x ?? 0);
-	const y = $derived(position?.y ?? 0);
-
-	const dy = $derived(placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0);
-	const dx = $derived(placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0);
-
-	const offset = $derived(bond.state.props.offset);
-
-	const xOffset = $derived(dx * offset);
-	const yOffset = $derived(dy * offset);
-
-	const openAsNumber = $derived(+isOpen);
-	const deltaArrow = $derived(position?.middlewareData?.arrow ? 1 : 0);
-
 	let isInitialized = false;
 
 	function _containerInitial(this: typeof bond.state, node: Element) {
+		const position = bond.position;
+		const placement = position?.placement;
+
+		const x = position?.x ?? 0;
+		const y = position?.y ?? 0;
+
+		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
+		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
+
+		const offset = bond.state.props.offset;
+
+		const xOffset = dx * offset;
+		const yOffset = dy * offset;
+
+		const openAsNumber = +isOpen;
+		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
+
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
 
@@ -81,7 +80,23 @@
 			return;
 		}
 
+		const position = bond.position;
+		const placement = position?.placement;
+
+		const x = position?.x ?? 0;
+		const y = position?.y ?? 0;
+
+		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
+		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
+
+		const offset = bond.state.props.offset;
+
+		const xOffset = dx * offset;
+		const yOffset = dy * offset;
+
+		const openAsNumber = +isOpen;
 		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
+
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
 
@@ -90,66 +105,12 @@
 
 		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
 	}
-
-	let isOpened = false;
-
-	function _animate(this: typeof bond.state, node: Element) {
-		const isOpen = this.isOpen;
-
-		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
-		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
-
-		const getTransformOrigin = () => {
-			switch (placement) {
-				case 'top':
-				case 'top-start':
-				case 'top-end':
-					return 'bottom';
-				case 'bottom':
-				case 'bottom-start':
-				case 'bottom-end':
-					return 'top';
-				case 'left':
-				case 'left-start':
-				case 'left-end':
-					return 'right';
-				case 'right':
-				case 'right-start':
-				case 'right-end':
-					return 'left';
-				default:
-					return 'center';
-			}
-		};
-
-		const transformOrigin = getTransformOrigin();
-
-		const from = isOpened ? 1 : 0.95;
-
-		motion(
-			node,
-			{
-				opacity: openAsNumber,
-				y: dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
-				x: dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
-				scaleY: dy ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
-				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
-				transformOrigin
-			},
-			{ duration: DURATION.quick / 1000 }
-		);
-
-		isOpened = isOpen;
-	}
 </script>
 
 <Teleport
 	portal={portalId ?? 'root.l0'}
 	as="div"
-	class={[
-		'pointer-events-auto absolute top-0 left-0 h-min w-fit',
-		!isOpen && 'pointer-events-none'
-	]}
+	class="absolute top-0 left-0 h-min w-fit outline-none"
 	initial={_containerInitial?.bind(bond.state)}
 	animate={_containerAnimate?.bind(bond.state)}
 	{...bond.content({ onchange: _containerInitial })}
@@ -158,7 +119,8 @@
 		{bond}
 		preset="popover.content"
 		class={[
-			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg',
+			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg outline-none',
+			isOpen && 'pointer-events-auto',
 			'$preset',
 			klass
 		]}
