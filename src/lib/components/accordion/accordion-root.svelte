@@ -56,9 +56,9 @@
 </script>
 
 <HtmlAtom
-	preset="accordion"
-	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}
+	{preset}
 	{bond}
+	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}
 	{...rootProps}
 >
 	{@render children?.({ accordion: bond })}

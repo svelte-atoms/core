@@ -15,6 +15,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion.item.body',
 		...restProps
 	}: AccordionItemBodyProps<E, B> = $props();
 
@@ -26,9 +27,9 @@
 
 {#if isOpen}
 	<HtmlAtom
-		preset="accordion.item.body"
-		class={['border-border box-content', '$preset', klass]}
+		{preset}
 		{bond}
+		class={['border-border box-content', '$preset', klass]}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}
 		animate={animate?.bind(bond.state)}
