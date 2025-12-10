@@ -21,7 +21,7 @@
 </script>
 
 <Story name="Accordion" args={{ collapsible: false, multiple: false, disabled: false }}>
-	{#snippet children(args)}
+	{#snippet template(args)}
 		<AAccordion class="backdrop-blur-sm" {...args}>
 			<AccordionItem.Root>
 				<AccordionItem.Header>
