@@ -7,4 +7,9 @@ export {
 	PopoverState,
 	type PopoverStateProps,
 	type TriggerParams
-} from '$svelte-atoms/core/components/popover/bond.svelte';
+} from '../popover';
+
+export type {
+	AnimatePopoverContentParams as AnimateMenuContentParams,
+	animatePopoverContent as animateMenuContent
+} from '../popover/motion';
