@@ -7,6 +7,8 @@ import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 export type AccordionItemBondProps = BondStateProps & {
 	value: string;
 	disabled: boolean;
+	multiple: boolean;
+	collapsible: boolean;
 };
 
 export type AccordionItemBondElements = {

@@ -20,6 +20,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion',
 		...restProps
 	}: AccordionRootProps<E, B> = $props();
 
@@ -31,7 +32,10 @@
 				values = v;
 				value = values[0];
 			}
-		)
+		),
+		defineProperty('multiple', () => multiple),
+		defineProperty('collapsible', () => collapsible),
+		defineProperty('disabled', () => disabled)
 	]);
 	const bond = factory(bondProps).share();
 
