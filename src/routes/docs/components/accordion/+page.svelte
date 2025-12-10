@@ -8,11 +8,33 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
-	const accordionCode = `<Accordion>
+	const basicAccordionCode = `<Accordion>
   <AccordionItem.Root>
+    <AccordionItem.Header>
+      What is Atomic SV?
+    </AccordionItem.Header>
+    <AccordionItem.Body>
+      Atomic SV is a modular, accessible, and extensible 
+      Svelte UI component library built with Svelte 5.
+    </AccordionItem.Body>
+  </AccordionItem.Root>
+  
+  <AccordionItem.Root>
+    <AccordionItem.Header>
+      How do I install it?
+    </AccordionItem.Header>
+    <AccordionItem.Body>
+      Simply run npm install atomic-sv
+    </AccordionItem.Body>
+  </AccordionItem.Root>
+</Accordion>`;
+
+	const collapsibleAccordionCode = `<Accordion>
+  <AccordionItem.Root collapsible>
     <AccordionItem.Header>
       What is Atomic SV?
     </AccordionItem.Header>
@@ -75,9 +97,9 @@
 				You can customize the default styles for Accordion components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   accordion: () => ({
@@ -92,9 +114,8 @@ const preset = createPreset({
   'accordion.item.body': () => ({
     class: 'px-4 py-3 text-sm text-muted-foreground'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -103,90 +124,89 @@ const preset = createPreset({
 			<DemoExample
 				title="Basic Accordion"
 				description="Simple accordion with collapsible sections"
-				code={accordionCode}
+				code={basicAccordionCode}
 			>
-				<Accordion class="border-border overflow-hidden rounded-lg border">
-					<AccordionItem.Root class="border-border border-b last:border-b-0">
-						<AccordionItem.Header
-							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3 text-left transition-colors"
-						>
-							<span class="text-foreground font-medium">What is Atomic SV?</span>
-							<AccordionItem.Indicator>
-								<svg
-									class="text-muted-foreground h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
-							</AccordionItem.Indicator>
-						</AccordionItem.Header>
-						<AccordionItem.Body class="text-muted-foreground px-4 pb-3 text-sm">
-							Atomic SV is a modular, accessible, and extensible Svelte UI component library built
-							with Svelte 5.
-						</AccordionItem.Body>
-					</AccordionItem.Root>
+				<div class="flex h-96 w-full items-center justify-center">
+					<Accordion class="border-border overflow-hidden rounded-lg border">
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">What is Atomic SV?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Atomic SV is a modular, accessible, and extensible Svelte UI component library built
+								with Svelte 5.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
 
-					<AccordionItem.Root class="border-border border-b last:border-b-0">
-						<AccordionItem.Header
-							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3 text-left transition-colors"
-						>
-							<span class="text-foreground font-medium">How do I install it?</span>
-							<AccordionItem.Indicator>
-								<svg
-									class="text-muted-foreground h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
-							</AccordionItem.Indicator>
-						</AccordionItem.Header>
-						<AccordionItem.Body class="text-muted-foreground px-4 pb-3 text-sm">
-							Simply run npm install @svelte-atoms/core to add it to your project. Import components
-							as needed.
-						</AccordionItem.Body>
-					</AccordionItem.Root>
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">How do I install it?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Simply run npm install @svelte-atoms/core to add it to your project. Import
+								components as needed.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
 
-					<AccordionItem.Root class="border-border border-b last:border-b-0">
-						<AccordionItem.Header
-							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3 text-left transition-colors"
-						>
-							<span class="text-foreground font-medium">Is it accessible?</span>
-							<AccordionItem.Indicator>
-								<svg
-									class="text-muted-foreground h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
-							</AccordionItem.Indicator>
-						</AccordionItem.Header>
-						<AccordionItem.Body class="text-muted-foreground px-4 pb-3 text-sm">
-							Yes, all Atomic SV components are built with accessibility in mind. They include
-							proper ARIA attributes, keyboard navigation, and screen reader support out of the box.
-						</AccordionItem.Body>
-					</AccordionItem.Root>
-				</Accordion>
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">Is it accessible?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Yes, all Atomic SV components are built with accessibility in mind. They include
+								proper ARIA attributes, keyboard navigation, and screen reader support out of the
+								box.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
+					</Accordion>
+				</div>
+			</DemoExample>
+
+			<DemoExample
+				title="Collapsible Accordion"
+				description="Simple accordion with collapsible sections"
+				code={collapsibleAccordionCode}
+			>
+				<div class="flex h-96 w-full items-center justify-center">
+					<Accordion class="border-border overflow-hidden rounded-lg border" collapsible>
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">What is Atomic SV?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Atomic SV is a modular, accessible, and extensible Svelte UI component library built
+								with Svelte 5.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
+
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">How do I install it?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Simply run npm install @svelte-atoms/core to add it to your project. Import
+								components as needed.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
+
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">Is it accessible?</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>
+								Yes, all Atomic SV components are built with accessibility in mind. They include
+								proper ARIA attributes, keyboard navigation, and screen reader support out of the
+								box.
+							</AccordionItem.Body>
+						</AccordionItem.Root>
+					</Accordion>
+				</div>
 			</DemoExample>
 
 			<DemoExample
@@ -194,64 +214,63 @@ const preset = createPreset({
 				description="Allow multiple sections to be open at once"
 				code={multipleCode}
 			>
-				<Accordion multiple={true} class="border-border overflow-hidden rounded-lg border">
-					<AccordionItem.Root class="border-border border-b last:border-b-0">
-						<AccordionItem.Header
-							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3 text-left transition-colors"
-						>
-							<span class="text-foreground font-medium">Section 1</span>
-							<AccordionItem.Indicator>
-								<svg
-									class="text-muted-foreground h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
-							</AccordionItem.Indicator>
-						</AccordionItem.Header>
-						<AccordionItem.Body class="text-muted-foreground px-4 pb-3 text-sm">
-							Multiple sections can be open at the same time.
-						</AccordionItem.Body>
-					</AccordionItem.Root>
+				<div class="flex h-96 w-full items-center justify-center">
+					<Accordion multiple={true} class="border-border overflow-hidden rounded-lg border">
+						<AccordionItem.Root class="border-border border-b last:border-b-0">
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">Section 1</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body
+								>Multiple sections can be open at the same time.</AccordionItem.Body
+							>
+						</AccordionItem.Root>
 
-					<AccordionItem.Root class="border-border border-b last:border-b-0">
-						<AccordionItem.Header
-							class="hover:bg-muted/50 flex w-full items-center justify-between px-4 py-3 text-left transition-colors"
-						>
-							<span class="text-foreground font-medium">Section 2</span>
-							<AccordionItem.Indicator>
-								<svg
-									class="text-muted-foreground h-5 w-5"
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M9 5l7 7-7 7"
-									/>
-								</svg>
-							</AccordionItem.Indicator>
-						</AccordionItem.Header>
-						<AccordionItem.Body class="text-muted-foreground px-4 pb-3 text-sm">
-							Opening this section won't close the others.
-						</AccordionItem.Body>
-					</AccordionItem.Root>
-				</Accordion>
+						<AccordionItem.Root>
+							<AccordionItem.Header>
+								<span class="text-foreground font-medium">Section 2</span>
+								<AccordionItem.Indicator class="ml-auto" />
+							</AccordionItem.Header>
+							<AccordionItem.Body>Opening this section won't close the others.</AccordionItem.Body>
+						</AccordionItem.Root>
+					</Accordion>
+				</div>
 			</DemoExample>
 		</div>
 	</Section>
 
 	<Section title="API Reference">
+		<div class="bg-muted/50 border-border mb-6 rounded-lg border p-4">
+			<div class="flex items-start gap-3">
+				<svg
+					class="text-primary mt-0.5 h-5 w-5 flex-shrink-0"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+					/>
+				</svg>
+				<div class="flex-1">
+					<h4 class="text-foreground mb-1 font-semibold">Shared Atom Props</h4>
+					<p class="text-muted-foreground text-sm">
+						All accordion components share common animation and lifecycle hooks: <code
+							class="bg-muted rounded px-1.5 py-0.5 text-xs">initial</code
+						>,
+						<code class="bg-muted rounded px-1.5 py-0.5 text-xs">animate</code>,
+						<code class="bg-muted rounded px-1.5 py-0.5 text-xs">enter</code>,
+						<code class="bg-muted rounded px-1.5 py-0.5 text-xs">exit</code>,
+						<code class="bg-muted rounded px-1.5 py-0.5 text-xs">onmount</code>, and
+						<code class="bg-muted rounded px-1.5 py-0.5 text-xs">ondestroy</code>. These are
+						referred to as <strong>atomProps</strong> in the tables below.
+					</p>
+				</div>
+			</div>
+		</div>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Accordion Props</h3>
@@ -274,6 +293,64 @@ const preset = createPreset({
 							type: 'string',
 							default: "''",
 							description: 'Additional CSS classes'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'accordion'",
+							description: 'Preset name for styling configuration'
+						},
+						{
+							name: '...atomProps',
+							type: 'AtomProps',
+							default: '-',
+							description:
+								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
+						},
+						{
+							name: '...htmlAttributes',
+							type: 'HTMLAttributes<HTMLDivElement>',
+							default: '-',
+							description: 'All standard HTML div attributes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Root Props</h3>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'accordion.item'",
+							description: 'Preset name for styling configuration'
+						},
+						{
+							name: '...atomProps',
+							type: 'AtomProps',
+							default: '-',
+							description:
+								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Content to render (typically Header and Body)'
+						},
+						{
+							name: '...htmlAttributes',
+							type: 'HTMLAttributes<HTMLDivElement>',
+							default: '-',
+							description: 'All standard HTML div attributes'
 						}
 					]}
 				/>
@@ -290,10 +367,107 @@ const preset = createPreset({
 							description: 'Additional CSS classes'
 						},
 						{
+							name: 'preset',
+							type: 'string',
+							default: "'accordion.item.header'",
+							description: 'Preset name for styling configuration'
+						},
+						{
+							name: '...atomProps',
+							type: 'AtomProps',
+							default: '-',
+							description:
+								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
+						},
+						{
 							name: 'children',
 							type: 'Snippet',
 							default: '-',
 							description: 'Content to render in the header'
+						},
+						{
+							name: '...htmlAttributes',
+							type: 'HTMLAttributes<HTMLButtonElement>',
+							default: '-',
+							description: 'All standard HTML button attributes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Body Props</h3>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'accordion.item.body'",
+							description: 'Preset name for styling configuration'
+						},
+						{
+							name: '...atomProps',
+							type: 'AtomProps',
+							default: '-',
+							description:
+								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Content to render in the body'
+						},
+						{
+							name: '...htmlAttributes',
+							type: 'HTMLAttributes<HTMLDivElement>',
+							default: '-',
+							description: 'All standard HTML div attributes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Indicator Props</h3>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'accordion.item.indicator'",
+							description: 'Preset name for styling configuration'
+						},
+						{
+							name: '...atomProps',
+							type: 'AtomProps',
+							default: '-',
+							description:
+								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Custom indicator content (icon, text, etc.)'
+						},
+						{
+							name: '...htmlAttributes',
+							type: 'HTMLAttributes<HTMLSpanElement>',
+							default: '-',
+							description: 'All standard HTML span attributes'
 						}
 					]}
 				/>
