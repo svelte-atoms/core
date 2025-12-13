@@ -3,18 +3,11 @@
 </script>
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { PortalOuterProps } from './types';
 	import { PortalsBond, PortalBond, PortalState, type PortalStateProps } from '.';
 	import { RootBond } from '$svelte-atoms/core/components/root';
-	import type { RootPortals } from '$svelte-atoms/core/components/root/root.svelte';
-	import {
-		HtmlAtom,
-		type ElementType,
-		type HtmlAtomProps,
-		type Base
-	} from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 
 	type Element = ElementType<E>;

@@ -26,8 +26,8 @@
 		<Popover_.Root bind:open offset={0} {...args}>
 			{#snippet children({ popover })}
 				<!-- {#if dev}
-						<RenderScan duration={400} />
-					{/if} -->
+					<RenderScan duration={400} />
+				{/if} -->
 
 				<Popover_.Trigger base={Button} class="items-center gap-4">
 					<div>Open Popover</div>
@@ -35,7 +35,7 @@
 				</Popover_.Trigger>
 
 				<Popover_.Content
-					{@attach clickoutPopover((ev, atom) => {
+					{@attach clickoutPopover((_, atom) => {
 						atom.state.close();
 					})}
 					class="bg-card"

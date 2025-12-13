@@ -1,4 +1,3 @@
-import { on } from '$svelte-atoms/core/attachments/event.svelte';
 import { clickout } from '$svelte-atoms/core/attachments/clickout.svelte';
 import { DrawerBond } from './bond.svelte';
 
@@ -76,7 +75,7 @@ export function closeDrawer(onclick?: (ev: MouseEvent) => void) {
 	};
 }
 
-export function clickoutDrawer(onclickout?: (ev: PointerEvent) => void) {
+export function clickoutDrawer(onclickout?: (ev: PointerEvent, bond?: DrawerBond) => void) {
 	const bond = DrawerBond.get();
 
 	return clickout(
@@ -93,9 +92,7 @@ export function clickoutDrawer(onclickout?: (ev: PointerEvent) => void) {
 				return;
 			}
 
-			console.log('clickoutDrawer invoked', bond.state.props.open);
-
-			onclickout?.(ev);
+			onclickout?.(ev, bond);
 
 			if (ev.defaultPrevented) {
 				return;

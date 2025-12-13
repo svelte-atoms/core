@@ -20,6 +20,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion',
 		...restProps
 	}: AccordionRootProps<E, B> = $props();
 
@@ -31,7 +32,10 @@
 				values = v;
 				value = values[0];
 			}
-		)
+		),
+		defineProperty('multiple', () => multiple),
+		defineProperty('collapsible', () => collapsible),
+		defineProperty('disabled', () => disabled)
 	]);
 	const bond = factory(bondProps).share();
 
@@ -52,9 +56,9 @@
 </script>
 
 <HtmlAtom
-	preset="accordion"
-	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}
+	{preset}
 	{bond}
+	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}
 	{...rootProps}
 >
 	{@render children?.({ accordion: bond })}

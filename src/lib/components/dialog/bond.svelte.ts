@@ -41,13 +41,38 @@ export class DialogBond<
 		return DialogBond.set(this) as this;
 	}
 
-	root(props: Record<string, unknown>) {
+	root() {
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.root);
 		const titleId = getElementId(this.id, DIALOG_ELEMENTS_KIND.title);
 		const descriptionId = getElementId(this.id, DIALOG_ELEMENTS_KIND.description);
 
-		const idOpened = this.state.props.open ?? false;
+		const isOpen = this.state.props.open ?? false;
 		const isDisabled = this.state.props.disabled ?? false;
+
+		// Focus trap handler
+		const focusTrap = (ev: KeyboardEvent) => {
+			const node = ev.currentTarget as HTMLElement;
+
+			if (ev.key === 'Tab') {
+				const focusableElements = node.querySelectorAll<HTMLElement>(
+					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+				);
+				const firstElement = focusableElements[0];
+				const lastElement = focusableElements[focusableElements.length - 1];
+
+				if (focusableElements.length === 0) return;
+
+				if (ev.shiftKey && document.activeElement === firstElement) {
+					ev.preventDefault();
+					lastElement?.focus();
+				} else if (!ev.shiftKey && document.activeElement === lastElement) {
+					ev.preventDefault();
+					firstElement?.focus();
+				}
+			}
+		};
+
+		let previousActiveElement: Element | null = null;
 
 		return {
 			id,
@@ -55,12 +80,49 @@ export class DialogBond<
 			'aria-modal': true,
 			'aria-labelledby': titleId,
 			'aria-describedby': descriptionId,
-			'aria-opened': idOpened,
-			'aria-disabled': isDisabled,
+			'aria-hidden': !isOpen,
+			inert: !isOpen ? '' : undefined,
 			'data-kind': DIALOG_ELEMENTS_KIND.root,
-			...props,
+			'data-open': isOpen,
+			onclick: (ev: MouseEvent) => {
+				// Close on backdrop click (clicking outside content)
+				if (ev.target === ev.currentTarget && !isDisabled) {
+					this.state.close();
+				}
+			},
+			onkeydown: (ev: KeyboardEvent) => {
+				focusTrap(ev);
+				// Close on Escape key
+				if (ev.key === 'Escape' && !isDisabled) {
+					ev.preventDefault();
+					this.state.close();
+				}
+			},
 			[createAttachmentKey()]: (node: HTMLDialogElement) => {
 				this.elements.root = node;
+
+				if (this.state.props.open) {
+					// Store current focus
+					previousActiveElement = document.activeElement;
+
+					// Focus first focusable element or dialog itself
+					setTimeout(() => {
+						const firstFocusable = node.querySelector<HTMLElement>(
+							'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+						);
+						if (firstFocusable) {
+							firstFocusable.focus();
+						} else {
+							node.focus();
+						}
+					}, 0);
+				} else {
+					console.log('restoring focus to', previousActiveElement);
+					// Restore focus to previous element
+					if (previousActiveElement instanceof HTMLElement) {
+						previousActiveElement.focus();
+					}
+				}
 			}
 		};
 	}
@@ -69,6 +131,7 @@ export class DialogBond<
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.content);
 		return {
 			id,
+			role: 'document',
 			'data-kind': DIALOG_ELEMENTS_KIND.content,
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
@@ -81,9 +144,10 @@ export class DialogBond<
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.header);
 		return {
 			id,
+			role: 'banner',
 			'data-kind': DIALOG_ELEMENTS_KIND.header,
 			...props,
-			[createAttachmentKey()]: (node) => {
+			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.header = node;
 			}
 		};
@@ -93,9 +157,11 @@ export class DialogBond<
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.title);
 		return {
 			id,
+			role: 'heading',
+			'aria-level': 2,
 			'data-kind': DIALOG_ELEMENTS_KIND.title,
 			...props,
-			[createAttachmentKey()]: (node) => {
+			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.title = node;
 			}
 		};
@@ -107,7 +173,7 @@ export class DialogBond<
 			id,
 			'data-kind': DIALOG_ELEMENTS_KIND.description,
 			...props,
-			[createAttachmentKey()]: (node) => {
+			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.description = node;
 			}
 		};
@@ -117,9 +183,11 @@ export class DialogBond<
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.body);
 		return {
 			id,
+			role: 'region',
+			'aria-live': 'polite',
 			'data-kind': DIALOG_ELEMENTS_KIND.body,
 			...props,
-			[createAttachmentKey()]: (node) => {
+			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.body = node;
 			}
 		};
@@ -129,9 +197,10 @@ export class DialogBond<
 		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.footer);
 		return {
 			id,
+			role: 'contentinfo',
 			'data-kind': DIALOG_ELEMENTS_KIND.footer,
 			...props,
-			[createAttachmentKey()]: (node) => {
+			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.footer = node;
 			}
 		};

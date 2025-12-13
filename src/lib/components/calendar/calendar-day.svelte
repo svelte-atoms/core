@@ -34,6 +34,8 @@
 	});
 
 	function handleClick() {
+		if (day.disabled) return;
+
 		if (isRange) {
 			const start = calendarBond?.state.props.start;
 			if (!start) {
@@ -58,13 +60,16 @@
 	{preset}
 	class={[
 		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground h-12 cursor-pointer border-b border-l p-1 transition-colors',
-		day.offmonth && 'text-muted-foreground bg-muted/30',
-		day.weekend && 'bg-muted/50',
+		day.offmonth && !day.disabled && 'text-muted-foreground/50 bg-muted/50',
+		day.weekend && 'bg-accent',
 		isSelected &&
 			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
 		isSelected && day.offmonth && 'bg-primary/70',
-		day.today && !isSelected && 'border-primary border-2 font-semibold',
-		day.disabled && 'pointer-events-none opacity-50',
+		day.today &&
+			!day.disabled &&
+			!isSelected &&
+			'border-primary bg-primary/5 border-2 font-semibold',
+		day.disabled && 'pointer-events-none opacity-25',
 		klass
 	]}
 	data-disabled={day.disabled}

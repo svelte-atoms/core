@@ -26,45 +26,41 @@
 		...restProps
 	}: AlertCloseButtonProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const isDismissible = $derived(bond?.state.isDismissible ?? false);
-
 	const closeButtonProps = $derived({
 		...bond?.closeButton(),
 		...restProps
 	});
 </script>
 
-{#if isDismissible}
-	<HtmlAtom
-		{as}
-		{bond}
-		{preset}
-		class={[
-			'alert-close-button border-border flex size-6 items-center justify-center rounded p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
-			'$preset',
-			klass
-		]}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
-		animate={animate?.bind(bond.state)}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
-		{...closeButtonProps}
-	>
-		{#if children}
-			{@render children({ alert: bond! })}
-		{:else}
-			<Icon class="h-full">
-				<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M6 18L18 6M6 6l12 12"
-					/>
-				</svg>
-			</Icon>
-		{/if}
-	</HtmlAtom>
-{/if}
+<HtmlAtom
+	{as}
+	{bond}
+	{preset}
+	class={[
+		'alert-close-button border-border flex size-6 items-center justify-center rounded p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
+		'$preset',
+		klass
+	]}
+	onmount={onmount?.bind(bond.state)}
+	ondestroy={ondestroy?.bind(bond.state)}
+	animate={animate?.bind(bond.state)}
+	enter={enter?.bind(bond.state)}
+	exit={exit?.bind(bond.state)}
+	initial={initial?.bind(bond.state)}
+	{...closeButtonProps}
+>
+	{#if children}
+		{@render children({ alert: bond! })}
+	{:else}
+		<Icon class="h-full">
+			<svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"
+				/>
+			</svg>
+		</Icon>
+	{/if}
+</HtmlAtom>

@@ -10,6 +10,7 @@
 		preset: presetKey = 'menu.item',
 		children = undefined,
 		onclick = undefined,
+		disabled = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
 		animate = undefined,
@@ -28,6 +29,19 @@
 
 		bond?.state.close();
 	}
+
+	function _onkeydown(ev: KeyboardEvent) {
+		if (disabled) return;
+
+		// Activate on Enter or Space
+		if (ev.key === 'Enter' || ev.key === ' ') {
+			ev.preventDefault();
+			// Call the click handler if provided
+			// cast to any to avoid strict event-type mismatch when forwarding
+			onclick?.(ev as unknown as MouseEvent);
+			bond?.state.close();
+		}
+	}
 </script>
 
 <List.Item
@@ -44,6 +58,10 @@
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
+	role="menuitem"
+	aria-disabled={disabled ? true : undefined}
+	tabIndex={disabled ? -1 : 0}
+	onkeydown={_onkeydown}
 	onclick={_onclick}
 	{...restProps}
 >

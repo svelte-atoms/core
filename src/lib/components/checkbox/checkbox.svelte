@@ -15,6 +15,7 @@
 		indeterminate = $bindable(false),
 		value = $bindable(undefined),
 		group = $bindable([]),
+		disabled = false,
 		id,
 		name,
 		checkedContent,
@@ -54,6 +55,8 @@
 	}
 
 	function handleClick(ev: MouseEvent) {
+		if(disabled) return;
+		
 		onclick?.(ev);
 
 		if (ev.defaultPrevented) {
@@ -100,11 +103,12 @@
 		bind:checked
 		bind:group
 		bind:indeterminate
-		type="checkbox"
-		class="checkbox-input pointer-events-none"
 		{value}
 		{id}
 		{name}
+		{disabled}
+		type="checkbox"
+		class="checkbox-input pointer-events-none"
 		onchange={handleChange}
 		oninput={handleInput}
 		{onblur}

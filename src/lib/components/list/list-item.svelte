@@ -4,7 +4,7 @@
 	let {
 		class: klass = '',
 		as = 'li' as T,
-		preset: presetKey = 'list.item',
+		preset = 'list.item',
 		children = undefined,
 		...restProps
 	} = $props();
@@ -12,7 +12,7 @@
 
 <HtmlAtom
 	{as}
-	preset={presetKey}
+	{preset}
 	class={['border-border flex w-full gap-2 px-4 py-1', '$preset', klass]}
 	{...restProps}
 >

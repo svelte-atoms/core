@@ -1,11 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { animate as motion } from 'motion';
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { DURATION } from '$svelte-atoms/core/shared';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 	import type { DialogProps } from './types';
+	import { animateDialogRoot } from './motion.svelte';
 
 	let {
 		class: klass = '',
@@ -16,7 +15,7 @@
 		factory = _factory,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = _animate,
+		animate = animateDialogRoot(),
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
@@ -39,31 +38,13 @@
 	const bond = _factory(bondProps).share();
 
 	const rootProps = $derived({
-		...bond?.root({}),
+		...bond?.root(),
 		...restProps
 	});
 
 	function _factory(props: typeof bondProps) {
 		const bondState = new DialogBondState(() => props);
 		return new DialogBond(bondState);
-	}
-
-	function _animate(node: HTMLDialogElement) {
-		motion(
-			node,
-			{
-				opacity: +open
-			},
-			{
-				duration: DURATION.normal / 1000,
-				ease: 'anticipate',
-				onComplete: () => {
-					if (!open) {
-						node?.close?.();
-					}
-				}
-			}
-		);
 	}
 
 	function onclickDialogElement(ev: MouseEvent) {
