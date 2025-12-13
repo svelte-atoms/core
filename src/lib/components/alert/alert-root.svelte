@@ -8,8 +8,6 @@
 	let {
 		class: klass = '',
 		preset = 'alert',
-		dismissible = false,
-		dismissed = $bindable(false),
 		disabled = false,
 		extend = {},
 		factory = _factory,
@@ -24,46 +22,14 @@
 	}: AlertRootProps<E, B> = $props();
 
 	const bondProps = defineState<AlertBondProps>(
-		[
-			defineProperty(
-				'dismissed',
-				() => dismissed,
-				(v) => {
-					dismissed = v;
-				}
-			)
-		],
-		() => ({ dismissible, disabled, extend })
+		[defineProperty('disabled', () => disabled)],
+		() => ({ disabled, extend })
 	);
 	const bond = factory(bondProps).share();
 
 	const rootProps = $derived({
 		...bond.root(),
 		...restProps
-	});
-
-	// Auto-hide logic for dismissed alerts
-	$effect(() => {
-		if (dismissed && bond.elements.root) {
-			// Add smooth transition out animation
-			const element = bond.elements.root;
-			element.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
-			element.style.opacity = '0';
-			element.style.transform = 'translateY(-10px)';
-
-			// Optional: Remove from DOM after animation
-			setTimeout(() => {
-				if (element?.parentNode) {
-					element.style.display = 'none';
-				}
-			}, 300);
-		} else if (!dismissed && bond.elements.root) {
-			// Restore visibility
-			const element = bond.elements.root;
-			element.style.display = '';
-			element.style.opacity = '1';
-			element.style.transform = 'translateY(0)';
-		}
 	});
 
 	function _factory(props: typeof bondProps) {
@@ -84,8 +50,7 @@
 		'bg-background text-foreground',
 		// State styles
 		{
-			'pointer-events-none opacity-60': disabled,
-			'pointer-events-none opacity-0': dismissed
+			'pointer-events-none opacity-50': disabled
 		},
 		'$preset',
 		klass

@@ -3,9 +3,6 @@ import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 
 export type AlertBondProps = BondStateProps & {
-	variant?: 'info' | 'success' | 'warning' | 'error';
-	dismissible?: boolean;
-	dismissed?: boolean;
 	disabled?: boolean;
 	extend?: Record<string, unknown>;
 };
@@ -34,8 +31,6 @@ export class AlertBond<
 	}
 
 	root(props: Record<string, unknown> = {}) {
-		const variant = this.state.props.variant ?? 'info';
-		const dismissed = this.state.props.dismissed ?? false;
 		const disabled = this.state.props.disabled ?? false;
 
 		return {
@@ -44,9 +39,6 @@ export class AlertBond<
 			'aria-labelledby': `alert-title-${this.id}`,
 			'aria-describedby': `alert-description-${this.id}`,
 			'aria-disabled': disabled,
-			'data-variant': variant,
-			'data-dismissed': dismissed,
-			'data-dismissible': this.state.props.dismissible ?? false,
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.root = node;
@@ -106,14 +98,10 @@ export class AlertBond<
 	}
 
 	closeButton(props: Record<string, unknown> = {}) {
-		const dismissed = this.state.props.dismissed ?? false;
-
 		return {
 			id: `alert-close-button-${this.id}`,
 			type: 'button',
 			'aria-label': 'Dismiss alert',
-			'aria-expanded': !dismissed,
-			onclick: () => this.state.dismiss(),
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.closeButton = node;
@@ -133,34 +121,5 @@ export class AlertBond<
 export class AlertBondState<Props extends AlertBondProps> extends BondState<Props> {
 	constructor(props: () => Props) {
 		super(props);
-	}
-
-	dismiss() {
-		if (this.props.dismissible && !this.props.disabled) {
-			// Update the dismissed state through props if mutable
-			const props = this.props as Props & { dismissed?: boolean };
-			if ('dismissed' in props) {
-				props.dismissed = true;
-			}
-		}
-	}
-
-	restore() {
-		const props = this.props as Props & { dismissed?: boolean };
-		if ('dismissed' in props) {
-			props.dismissed = false;
-		}
-	}
-
-	get isDismissed() {
-		return this.props.dismissed ?? false;
-	}
-
-	get isDismissible() {
-		return this.props.dismissible ?? false;
-	}
-
-	get variant() {
-		return this.props.variant ?? 'info';
 	}
 }
