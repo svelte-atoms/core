@@ -122,9 +122,11 @@
 								>{`<script>
   import '@svelte-atoms/core/styles/tw';
   import './app.css'; // Override @svelte-atoms/core styles here
+
+  let { children } = $props;
 </script>
 
-<slot />`}</code
+{@render children?.()}`}</code
 							></pre>
 					</div>
 				</Card.Body>

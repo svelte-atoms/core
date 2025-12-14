@@ -17,6 +17,7 @@
 	import { animateSidebarContent, Sidebar } from '$svelte-atoms/core/components/sidebar';
 	import Icon from '$svelte-atoms/core/components/icon/icon.svelte';
 	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
+	import { goto } from '$app/navigation';
 
 	let tabValue = $state('account');
 	let dropdownOpen = $state(false);
@@ -93,7 +94,7 @@
 
 		<!-- CTA Buttons -->
 		<div class="mb-12 flex flex-wrap items-center gap-4">
-			<Button size="lg" class="gap-2 px-6">
+			<Button size="lg" class="gap-2 px-6" onclick={() => goto('/docs/quick-start')}>
 				<Icon>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +113,7 @@
 				</Icon>
 				Get Started
 			</Button>
-			<Button variant="outline" size="lg" class="gap-2 px-6">
+			<Button variant="outline" size="lg" class="gap-2 px-6" onclick={()=> goto('/docs')}>
 				<Icon>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +132,7 @@
 				</Icon>
 				View Docs
 			</Button>
-			<Button variant="ghost" size="lg" class="gap-2 px-6">
+			<Button variant="ghost" size="lg" class="gap-2 px-6" onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}>
 				<Icon>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
