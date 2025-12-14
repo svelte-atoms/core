@@ -6,11 +6,9 @@
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { DataGridTrBond, DataGridTrBondState, type DataGridTrBondProps } from './bond.svelte';
 	import type { DatagridTrProps } from '../types';
-	import { getDatagridHeaderContext, type DatagridContext } from '../context';
+	import { type DatagridContext } from '../context';
 
 	import './datagrid-tr.css';
-
-	const context_header = getDatagridHeaderContext();
 
 	let {
 		class: klass = '',
@@ -37,8 +35,13 @@
 	]);
 	const bond = factory(bondProps).share();
 
-	const isHeader = $derived(context_header?.derived?.data?.header ?? false);
+	const isHeader = $derived(bond?.state.isHeader ?? false);
 	const isSelected = $derived(bond.state.isSelected);
+
+	const headerProps = $derived({
+		...bond.root(),
+		...restProps
+	});
 
 	const unmount = untrack(() => {
 		if (!isHeader) {
@@ -67,8 +70,7 @@
 	preset="datagrid.tr"
 	class={[
 		'datagrid-tr border-border items-center border-b bg-transparent',
-		!isHeader &&
-			'hover:bg-foreground/2 active:bg-foreground/4 transition-colors duration-100 last:border-b-0',
+		!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 transition-colors duration-100',
 		isHeader && 'header-tr',
 		isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6',
 		'$preset',
@@ -82,7 +84,7 @@
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	onclick={onclick_}
-	{...bond.root(restProps)}
+	{...headerProps}
 >
 	{@render children?.({ tr: bond as unknown as DatagridContext<T> })}
 </HtmlAtom>

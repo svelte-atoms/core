@@ -2,6 +2,7 @@ import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { DataGridBond } from '../bond.svelte';
+import { getDatagridHeaderContext } from '../context';
 
 export type DataGridTrBondProps<T = unknown> = BondStateProps & {
 	value?: string;
@@ -51,12 +52,11 @@ export class DataGridTrBond<
 		return this.datagrid.state.unmountRow(this.state.id);
 	}
 
-	root(props: Record<string, unknown> = {}) {
+	root() {
 		return {
 			'data-kind': DATAGRID_TR_ELEMENTS_KIND.root,
 			'data-header': this.state.isHeader ? 'true' : undefined,
 			'data-selected': this.state.isSelected ? 'true' : undefined,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.root = node;
 			}
@@ -78,6 +78,9 @@ export class DataGridTrBondState<
 > extends BondState<Props> {
 	static CONTEXT_KEY = '@atoms/context/datagrid/tr';
 
+	#datagrid = DataGridBond.get();
+	#isHeader: boolean = $state(!!getDatagridHeaderContext());
+
 	constructor(props: () => Props) {
 		super(props);
 	}
@@ -87,22 +90,22 @@ export class DataGridTrBondState<
 	}
 
 	get isSelected() {
-		return this.datagrid.props.values?.some((id) => id === this.id);
+		return this.datagrid?.props.values?.some((id) => id === this.id);
 	}
 
 	get isHeader() {
-		return this.props.header ?? false;
+		return this.#isHeader;
 	}
 
 	get datagrid() {
-		return DataGridBond.get().state;
+		return this.#datagrid?.state;
 	}
 
 	select() {
-		this.datagrid.select([this.id]);
+		this.datagrid?.select([this.id]);
 	}
 
 	unselect() {
-		this.datagrid.unselect([this.id]);
+		this.datagrid?.unselect([this.id]);
 	}
 }
