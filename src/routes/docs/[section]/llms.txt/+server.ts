@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { markdownToLLM, generateLLMHeader } from '../../../../../docs/markdown-to-llm';
+import { markdownToLLM, generateLLMHeader } from '$docs/markdown-to-llm';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const sectionName = params.section;
