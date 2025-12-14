@@ -18,7 +18,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
-		preset = "accordion.item.indicator",
+		preset = 'accordion.item.indicator',
 		...restProps
 	}: AccordionItemIndicatorProps<E, B> = $props();
 

@@ -55,8 +55,8 @@
 	}
 
 	function handleClick(ev: MouseEvent) {
-		if(disabled) return;
-		
+		if (disabled) return;
+
 		onclick?.(ev);
 
 		if (ev.defaultPrevented) {
