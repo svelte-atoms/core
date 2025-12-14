@@ -5,7 +5,7 @@ import {
 	markdownToLLM,
 	generateLLMHeader,
 	injectPropsIntoMarkdown
-} from '$lib/utils/markdown-to-llm';
+} from '../../../../../../docs/markdown-to-llm';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const componentName = params.component;

@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { markdownToLLM } from '$lib/utils/markdown-to-llm.js';
+import { markdownToLLM } from '../../../../docs/markdown-to-llm';
 
 export const GET: RequestHandler = async () => {
 	const docsPath = join(import.meta.dirname, 'transitions.md');
