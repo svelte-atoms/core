@@ -31,7 +31,6 @@
 	},
 	"files": [
 		"dist",
-		"llm",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
