@@ -80,7 +80,6 @@ export class DialogBond<
 			'aria-modal': true,
 			'aria-labelledby': titleId,
 			'aria-describedby': descriptionId,
-			'aria-hidden': !isOpen,
 			inert: !isOpen ? '' : undefined,
 			'data-kind': DIALOG_ELEMENTS_KIND.root,
 			'data-open': isOpen,
