@@ -18,7 +18,7 @@
 		animate = animateDrawerContent({ ease: 'easeOut', side: 'left' }),
 		enter = undefined,
 		exit = undefined,
-		initial = undefined,
+		initial = animateDrawerContent({ ease: 'easeOut', side: 'left', duration: 0 }),
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> = $props();
 
