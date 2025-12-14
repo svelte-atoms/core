@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { SlideoverContentProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { animate as motion } from 'motion';
+	import { animateDrawerContent } from './motion';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -15,10 +15,10 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = _animate,
+		animate = animateDrawerContent({ ease: 'easeOut', side: 'left' }),
 		enter = undefined,
 		exit = undefined,
-		initial = _initial,
+		initial = animateDrawerContent({ ease: 'easeOut', side: 'left', duration: 0 }),
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -26,17 +26,9 @@
 		...bond?.content(),
 		...restProps
 	});
-
-	function _initial(node: HTMLElement) {
-		motion(node, { x: isOpen ? 0 : -100 + '%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
-	}
-
-	function _animate(node: HTMLElement) {
-		motion(node, { x: isOpen ? 0 : -100 + '%', left: 0 }, { duration: 0.3, ease: 'anticipate' });
-	}
 </script>
 
-<HtmlAtom
+<Atom
 	preset="drawer.content"
 	class={[
 		'bg-card text-foreground border-border pointer-events-none absolute',
@@ -54,4 +46,4 @@
 	{...contentProps}
 >
 	{@render children?.({ drawer: bond })}
-</HtmlAtom>
+</Atom>

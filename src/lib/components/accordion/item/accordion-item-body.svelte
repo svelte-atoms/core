@@ -1,6 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { AccordionItemBond } from './bond.svelte';
+	import { enterAccordionItemBody, exitAccordionItemBody } from './motion.svelte';
 	import type { AccordionItemBodyProps } from './types';
 
 	const bond = AccordionItemBond.get();
@@ -12,9 +13,10 @@
 		onmount = undefined,
 		ondestroy = undefined,
 		animate = undefined,
-		enter = undefined,
-		exit = undefined,
+		enter = enterAccordionItemBody(),
+		exit = exitAccordionItemBody(),
 		initial = undefined,
+		preset = 'accordion.item.body',
 		...restProps
 	}: AccordionItemBodyProps<E, B> = $props();
 
@@ -26,9 +28,9 @@
 
 {#if isOpen}
 	<HtmlAtom
-		preset="accordion.item.body"
-		class={['border-border box-content', '$preset', klass]}
+		{preset}
 		{bond}
+		class={['border-border box-content h-0 opacity-0', '$preset', klass]}
 		onmount={onmount?.bind(bond.state)}
 		ondestroy={ondestroy?.bind(bond.state)}
 		animate={animate?.bind(bond.state)}

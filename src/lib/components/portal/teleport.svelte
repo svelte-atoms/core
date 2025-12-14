@@ -5,12 +5,11 @@
 <script lang="ts" generics="E extends HtmlElementTagName = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { TeleportProps } from './types';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PortalsBond } from './portals';
 	import { RootBond } from '$svelte-atoms/core/components/root/bond.svelte';
 	import { port } from './utils';
-	import type { PortalBond } from '.';
 
 	type Element = HtmlElementType<E>;
 

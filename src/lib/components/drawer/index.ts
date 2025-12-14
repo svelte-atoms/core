@@ -13,4 +13,8 @@ export {
 	DrawerBondState
 } from './bond.svelte';
 
+export * from './attachments.svelte';
+
+export * from './motion';
+
 export * from './types';

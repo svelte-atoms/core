@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
-import type { Factory, Override } from '$svelte-atoms/core/types';
+import type { Factory } from '$svelte-atoms/core/types';
 import type { AlertBond } from './bond.svelte';
 
 /**
@@ -48,7 +48,7 @@ export interface AlertCloseButtonExtendProps {}
 export interface AlertRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>,
+> extends HtmlAtomProps<E, B>,
 		AlertRootExtendProps {
 	dismissible?: boolean;
 	dismissed?: boolean;
@@ -61,65 +61,35 @@ export interface AlertRootProps<
 export interface AlertContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertContentExtendProps {}
 
 export interface AlertTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertTitleExtendProps {}
 
 export interface AlertDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertDescriptionExtendProps {}
 
 export interface AlertIconProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertIconExtendProps {}
 
 export interface AlertActionsProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertActionsExtendProps {}
 
 export interface AlertCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-			HtmlAtomProps<E, B>,
-			{
-				children?: Snippet<[{ alert: AlertBond }]>;
-			}
-		>,
+> extends HtmlAtomProps<E, B>,
 		AlertCloseButtonExtendProps {}

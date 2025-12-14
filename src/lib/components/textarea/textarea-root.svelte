@@ -1,9 +1,9 @@
 <script>
 	import { Input } from '../input';
 
-	let { children, ...restProps } = $props();
+	let { class: klass = '', children, ...restProps } = $props();
 </script>
 
-<Input.Root preset="textarea" {...restProps}>
+<Input.Root preset="textarea" class={['h-auto', klass]} {...restProps}>
 	{@render children?.()}
 </Input.Root>

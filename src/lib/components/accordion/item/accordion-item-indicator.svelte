@@ -18,6 +18,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion.item.indicator',
 		...restProps
 	}: AccordionItemIndicatorProps<E, B> = $props();
 
@@ -32,7 +33,7 @@
 </script>
 
 <HtmlAtom
-	preset="accordion.item.indicator"
+	{preset}
 	class={['border-border pointer-events-none flex items-center justify-center', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

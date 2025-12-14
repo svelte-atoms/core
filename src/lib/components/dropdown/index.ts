@@ -10,3 +10,8 @@ export {
 export { filter } from './runes.svelte';
 
 export * from './types';
+
+export type {
+	AnimatePopoverContentParams as AnimateDropdownContentParams,
+	animatePopoverContent as animateDropdownContent
+} from '../popover/motion';

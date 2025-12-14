@@ -6,4 +6,11 @@ export { default as Item } from './compobox-item.svelte';
  */
 export { default as Input } from './combobox-control.svelte';
 export { default as Control } from './combobox-control.svelte';
-export { Arrow, Indicator, List } from '$svelte-atoms/core/components/dropdown/atoms';
+export {
+	Arrow,
+	Indicator,
+	List,
+	Group,
+	Divider,
+	Title
+} from '$svelte-atoms/core/components/dropdown/atoms';

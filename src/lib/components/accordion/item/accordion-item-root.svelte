@@ -22,6 +22,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion.item',
 		...restProps
 	}: AccordionItemRootProps<E, B> = $props();
 
@@ -51,7 +52,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="accordion.item"
+	{preset}
 	class={['border-border', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}

@@ -14,6 +14,7 @@
 		enter = undefined,
 		exit = undefined,
 		initial = undefined,
+		preset = 'accordion.item.header',
 		...restProps
 	}: AccordionItemHeaderProps = $props();
 
@@ -29,7 +30,7 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="accordion.item.header"
+	{preset}
 	class={[
 		'border-border relative box-border flex w-full cursor-pointer items-center',
 		'$preset',

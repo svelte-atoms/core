@@ -20,6 +20,12 @@ export interface PopoverRootExtendProps {}
 export interface PopoverContentExtendProps {}
 
 /**
+ * Extend this interface to add custom popover indicator properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface PopoverIndicatorExtendProps {}
+
+/**
  * Extend this interface to add custom popover arrow properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -52,13 +58,14 @@ export interface AnimateParams {
 }
 
 export interface PopoverContentProps<T extends HtmlElementTagName, B extends Base = Base>
-	extends Override<
-			HtmlAtomProps<T, B>,
-			{
-				children?: Snippet<[{ popover?: PopoverBond }]>;
-			}
-		>,
+	extends HtmlAtomProps<T, B>,
 		PopoverContentExtendProps {}
+
+export interface PopoverIndicatorProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B>,
+		PopoverIndicatorExtendProps {}
 
 export interface PopoverArrowProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
@@ -67,7 +74,7 @@ export interface PopoverArrowProps<
 		PopoverArrowExtendProps {}
 
 export interface PopoverTriggerProps<T extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends Omit<HtmlAtomProps<T, B>, 'children'>,
+	extends HtmlAtomProps<T, B>,
 		PopoverTriggerExtendProps {
 	children?: Snippet<[{ popover?: PopoverBond }]>;
 }

@@ -4,7 +4,7 @@
 
 	const popoverBond = PopoverBond.get();
 
-	let { onmount, children, ...restProps } = $props();
+	let { onmount, children, onclick = undefined, ...restProps } = $props();
 
 	function tooltip(node: HTMLElement) {
 		const onpointerenter = async () => {
@@ -34,6 +34,6 @@
 	}
 </script>
 
-<Trigger preset="tooltip.trigger" onmount={tooltip} {...restProps}>
+<Trigger preset="tooltip.trigger" onmount={tooltip} {onclick} {...restProps}>
 	{@render children?.()}
 </Trigger>
