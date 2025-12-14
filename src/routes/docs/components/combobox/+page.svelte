@@ -8,8 +8,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { Input } from '$svelte-atoms/core';
 
 	let selected = $state<string[]>([]);
 	let query = $state('');
@@ -81,9 +83,9 @@
 				You can customize the default styles for Combobox components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   combobox: () => ({
@@ -101,9 +103,8 @@ const preset = createPreset({
   'combobox.item': () => ({
     class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground data-[selected=true]:bg-accent'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -116,7 +117,7 @@ const preset = createPreset({
 			>
 				<div class="max-w-sm">
 					<Combobox.Root bind:value={selected} bind:query>
-						<Combobox.Trigger>
+						<Combobox.Trigger base={Input.Root}>
 							<Combobox.Input placeholder="Select an option..." />
 						</Combobox.Trigger>
 
@@ -136,7 +137,7 @@ const preset = createPreset({
 			>
 				<div class="max-w-sm">
 					<Combobox.Root bind:value={selected} bind:query multiple>
-						<Combobox.Trigger>
+						<Combobox.Trigger base={Input.Root}>
 							<Combobox.Input placeholder="Select multiple options..." />
 						</Combobox.Trigger>
 

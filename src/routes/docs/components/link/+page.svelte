@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	const basicCode = `<Link href="/about">About Us</Link>`;
@@ -49,9 +50,9 @@
 				You can customize the default styles for Link components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   link: () => ({
@@ -67,9 +68,8 @@ const preset = createPreset({
       variant: 'default'
     }
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

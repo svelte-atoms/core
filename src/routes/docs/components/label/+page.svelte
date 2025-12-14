@@ -9,7 +9,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	const basicCode = `<Label for="email">Email Address</Label>
@@ -48,17 +49,16 @@
 				You can customize the default styles for Label components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   label: () => ({
     class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

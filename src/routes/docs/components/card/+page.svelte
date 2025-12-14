@@ -8,8 +8,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { cardRootProps } from './props';
 
 	const basicCode = `<script>
   import { Card } from '@svelte-atoms/core';
@@ -94,9 +96,9 @@
 				You can customize the default styles for Card components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   card: () => ({
@@ -127,9 +129,8 @@ const preset = createPreset({
   'card.footer': () => ({
     class: 'flex items-center p-6 pt-0'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -217,40 +218,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Card.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'variant',
-							type: "'default' | 'outlined' | 'elevated' | 'filled'",
-							default: "'default'",
-							description: 'Visual style variant'
-						},
-						{
-							name: 'size',
-							type: "'sm' | 'md' | 'lg'",
-							default: "'md'",
-							description: 'Card size'
-						},
-						{
-							name: 'clickable',
-							type: 'boolean',
-							default: 'false',
-							description: 'Makes the card interactive'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disables interaction'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={cardRootProps} />
 			</div>
 		</div>
 	</Section>

@@ -11,6 +11,13 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import {
+		accordionRootProps,
+		accordionItemRootProps,
+		accordionItemHeaderProps,
+		accordionItemBodyProps,
+		accordionItemIndicatorProps
+	} from './props';
 
 	const basicAccordionCode = `<Accordion>
   <AccordionItem.Root>
@@ -274,203 +281,27 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Accordion Props</h3>
-				<Props
-					data={[
-						{
-							name: 'multiple',
-							type: 'boolean',
-							default: 'false',
-							description: 'Allow multiple panels to be open simultaneously'
-						},
-						{
-							name: 'collapsible',
-							type: 'boolean',
-							default: 'true',
-							description: 'Allow panels to be collapsed when in single mode'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'accordion'",
-							description: 'Preset name for styling configuration'
-						},
-						{
-							name: '...atomProps',
-							type: 'AtomProps',
-							default: '-',
-							description:
-								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
-						},
-						{
-							name: '...htmlAttributes',
-							type: 'HTMLAttributes<HTMLDivElement>',
-							default: '-',
-							description: 'All standard HTML div attributes'
-						}
-					]}
-				/>
+				<Props data={accordionRootProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'accordion.item'",
-							description: 'Preset name for styling configuration'
-						},
-						{
-							name: '...atomProps',
-							type: 'AtomProps',
-							default: '-',
-							description:
-								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Content to render (typically Header and Body)'
-						},
-						{
-							name: '...htmlAttributes',
-							type: 'HTMLAttributes<HTMLDivElement>',
-							default: '-',
-							description: 'All standard HTML div attributes'
-						}
-					]}
-				/>
+				<Props data={accordionItemRootProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Header Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'accordion.item.header'",
-							description: 'Preset name for styling configuration'
-						},
-						{
-							name: '...atomProps',
-							type: 'AtomProps',
-							default: '-',
-							description:
-								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Content to render in the header'
-						},
-						{
-							name: '...htmlAttributes',
-							type: 'HTMLAttributes<HTMLButtonElement>',
-							default: '-',
-							description: 'All standard HTML button attributes'
-						}
-					]}
-				/>
+				<Props data={accordionItemHeaderProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Body Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'accordion.item.body'",
-							description: 'Preset name for styling configuration'
-						},
-						{
-							name: '...atomProps',
-							type: 'AtomProps',
-							default: '-',
-							description:
-								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Content to render in the body'
-						},
-						{
-							name: '...htmlAttributes',
-							type: 'HTMLAttributes<HTMLDivElement>',
-							default: '-',
-							description: 'All standard HTML div attributes'
-						}
-					]}
-				/>
+				<Props data={accordionItemBodyProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">AccordionItem.Indicator Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'accordion.item.indicator'",
-							description: 'Preset name for styling configuration'
-						},
-						{
-							name: '...atomProps',
-							type: 'AtomProps',
-							default: '-',
-							description:
-								'Animation (initial, animate, enter, exit) and lifecycle hooks (onmount, ondestroy)'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Custom indicator content (icon, text, etc.)'
-						},
-						{
-							name: '...htmlAttributes',
-							type: 'HTMLAttributes<HTMLSpanElement>',
-							default: '-',
-							description: 'All standard HTML span attributes'
-						}
-					]}
-				/>
+				<Props data={accordionItemIndicatorProps} />
 			</div>
 		</div>
 	</Section>

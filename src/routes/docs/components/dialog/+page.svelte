@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 
@@ -78,9 +79,9 @@
 				You can customize the default styles for Dialog components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   dialog: () => ({
@@ -101,9 +102,8 @@ const preset = createPreset({
   'dialog.footer': () => ({
     class: 'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

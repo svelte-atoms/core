@@ -22,7 +22,7 @@
 <div class="mb-12">
 	<div class="mb-4 flex items-center gap-4">
 		<h1 class="text-foreground text-4xl font-bold md:text-5xl">{title}</h1>
-		<Badge class="{statusStyles[status]} px-3 py-1 capitalize">{status}</Badge>
+		<!-- <Badge class="{statusStyles[status]} px-3 py-1 capitalize">{status}</Badge> -->
 	</div>
 	<p class="text-muted-foreground max-w-3xl text-xl">
 		{description}

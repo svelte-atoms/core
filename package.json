@@ -450,6 +450,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.7.0",
+		"@modelcontextprotocol/sdk": "^1.24.3",
 		"@qrcode-js/browser": "^1.2.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",

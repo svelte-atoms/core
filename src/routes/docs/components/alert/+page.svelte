@@ -10,22 +10,20 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 	import { cn } from '$lib/utils';
+	import {
+		alertRootProps,
+		alertActionsProps,
+		alertContentProps,
+		alertDescriptionProps,
+		alertIconProps,
+		alertTitleProps
+	} from './props';
 
 	let dismissed = $state(false);
-
-	const alertLayout = ({ children, class: klass, ...args }: any) => {
-		const gridTemplateAreas = `"icon title close-button" ". description description" "content content content" "actions actions actions"`;
-		const gridTemplateColumns = `auto 1fr auto`;
-
-		return {
-			...args,
-			class: cn(klass, 'grid items-center'),
-			style: `grid-template-areas: ${gridTemplateAreas}; grid-template-columns: ${gridTemplateColumns};`
-		};
-	};
 
 	const basicCode = `<script>
   import { Alert } from '@svelte-atoms/core';
@@ -126,6 +124,20 @@
 	<meta name="description" content="Display important messages and notifications to users." />
 </svelte:head>
 
+{#snippet alertLayout({ children, class: klass, ...args })}
+	{@const gridTemplateAreas = `"icon title close-button" ". description description" "content content content" "actions actions actions"`}
+	{@const gridTemplateColumns = `auto 1fr auto`}
+
+	<div
+		{...args}
+		class={cn(klass, 'grid items-center')}
+		style:grid-template-areas={gridTemplateAreas}
+		style:grid-template-columns={gridTemplateColumns}
+	>
+		{@render children?.()}
+	</div>
+{/snippet}
+
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Alert' }]} />
 
@@ -148,9 +160,9 @@
 				You can customize the default styles for Alert components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   alert: () => ({
@@ -196,9 +208,8 @@ const preset = createPreset({
   'alert.close-button': () => ({
     class: 'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 			<div class="bg-muted/50 border-border rounded-lg border p-4">
 				<h4 class="text-foreground mb-2 text-sm font-semibold">Available Preset Keys</h4>
 				<ul class="text-muted-foreground space-y-1 text-sm">
@@ -355,7 +366,7 @@ const preset = createPreset({
 			>
 				<div class="space-y-4">
 					{#if !dismissed}
-						<Alert.Root base={alertLayout} variant="primary" dismissible bind:dismissed>
+						<Alert.Root base={alertLayout} variant="primary">
 							<Alert.Icon>
 								<svg
 									viewBox="0 0 24 24"
@@ -374,7 +385,7 @@ const preset = createPreset({
 								settings.
 							</Alert.Description>
 							<Alert.Content></Alert.Content>
-							<Alert.CloseButton>
+							<Alert.CloseButton onclick={() => (dismissed = true)}>
 								<Icon class="h-full">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<line x1="18" y1="6" x2="6" y2="18"></line>
@@ -426,90 +437,32 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'variant',
-							type: "'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost'",
-							default: "'primary'",
-							description: 'Alert style variant'
-						},
-						{
-							name: 'dismissible',
-							type: 'boolean',
-							default: 'false',
-							description: 'Enable dismiss functionality'
-						},
-						{
-							name: 'dismissed',
-							type: 'boolean',
-							default: 'false',
-							description: 'Dismissal state (bindable)'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable alert interactions'
-						},
-						{
-							name: 'base',
-							type: 'Component | function',
-							default: '-',
-							description: 'Base component or layout function for custom styling'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={alertRootProps} />
 			</div>
 
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert Sub-components</h3>
-				<Props
-					data={[
-						{
-							name: 'Alert.Icon',
-							type: 'Component',
-							default: '-',
-							description: 'Container for the alert icon'
-						},
-						{
-							name: 'Alert.Title',
-							type: 'Component',
-							default: '-',
-							description: 'Alert title/heading'
-						},
-						{
-							name: 'Alert.Description',
-							type: 'Component',
-							default: '-',
-							description: 'Alert description text'
-						},
-						{
-							name: 'Alert.Content',
-							type: 'Component',
-							default: '-',
-							description: 'Additional content container'
-						},
-						{
-							name: 'Alert.Actions',
-							type: 'Component',
-							default: '-',
-							description: 'Container for action buttons'
-						},
-						{
-							name: 'Alert.CloseButton',
-							type: 'Component',
-							default: '-',
-							description: 'Dismiss button (requires dismissible=true)'
-						}
-					]}
-				/>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Title Props</h3>
+				<Props data={alertTitleProps} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Actions Props</h3>
+				<Props data={alertActionsProps} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Content Props</h3>
+				<Props data={alertContentProps} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Description Props</h3>
+				<Props data={alertDescriptionProps} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Icon Props</h3>
+				<Props data={alertIconProps} />
 			</div>
 		</div>
 	</Section>

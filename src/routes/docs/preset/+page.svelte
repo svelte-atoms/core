@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { PageHeader } from '$docs';
-	import { Breadcrumb } from '$docs/components';
-	import { Section } from '$docs';
+	import { Card } from '$svelte-atoms/core/components/card';
+	import { Badge } from '$svelte-atoms/core/components/badge';
 
 	const globalPresetCode = `// +layout.svelte (App Root)
 import { setPreset } from '@svelte-atoms/core/context';
@@ -283,350 +282,733 @@ setPreset({
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Documentation', href: '/docs' }, { label: 'Preset System' }]} />
-
-	<PageHeader
-		title="Preset System"
-		description="A powerful theming and styling system for global component configuration with hierarchical composition and reactive state support."
-		status="stable"
-	/>
+<div class="mx-auto max-w-4xl px-4 py-12">
+	<!-- Header -->
+	<div class="mb-12">
+		<h1 class="mb-4 text-4xl font-bold tracking-tight">Preset System</h1>
+		<p class="text-muted-foreground text-lg">
+			A powerful theming and styling system for global component configuration with hierarchical
+			composition and reactive state support.
+		</p>
+	</div>
 
 	<!-- Overview -->
-	<Section title="Overview">
-		<div class="prose prose-slate dark:prose-invert max-w-none">
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Overview</h2>
 			<p class="text-muted-foreground">
-				The Preset System is a sophisticated theming mechanism that allows you to define default
-				styles, variants, and behaviors for your components at different levels of your application
-				hierarchy. It uses Svelte's context system combined with deep merging to enable powerful
-				composition and extension patterns.
+				Define default styles, variants, and behaviors at any level of your application hierarchy.
 			</p>
-
-			<h3 class="text-foreground mt-8 text-lg font-semibold">Key Features</h3>
-			<ul class="text-muted-foreground">
-				<li>
-					<strong>Hierarchical Composition:</strong> Define base themes at app root, override at route
-					level, customize at component level
-				</li>
-				<li>
-					<strong>Deep Merging:</strong> Presets merge across context layers, allowing progressive enhancement
-				</li>
-				<li>
-					<strong>Variant Support:</strong> Define variant systems with defaults that work globally
-				</li>
-				<li>
-					<strong>Reactive State:</strong> Access component bond state for dynamic styling
-				</li>
-				<li>
-					<strong>Compound Components:</strong> Configure nested components using dot notation
-				</li>
-				<li>
-					<strong>Performance Optimized:</strong> Memoized resolution with early exit optimizations
-				</li>
-			</ul>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-6 border-2">
+			<Card.Body class="p-6">
+				<p class="text-muted-foreground leading-relaxed">
+					The Preset System is a sophisticated theming mechanism that uses Svelte's context system
+					combined with deep merging to enable powerful composition and extension patterns. Set base
+					themes at app root, override at route level, or customize at component level with full
+					type safety and reactive state support.
+				</p>
+			</Card.Body>
+		</Card.Root>
+
+		<div class="mb-6">
+			<h3 class="text-foreground mb-4 text-lg font-semibold">Key Features</h3>
+			<div class="grid gap-4 sm:grid-cols-2">
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Hierarchical Composition</h4>
+						<p class="text-muted-foreground text-sm">
+							Define base themes at app root, override at route level, customize at component level
+						</p>
+					</Card.Body>
+				</Card.Root>
+
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Deep Merging</h4>
+						<p class="text-muted-foreground text-sm">
+							Presets merge across context layers, allowing progressive enhancement
+						</p>
+					</Card.Body>
+				</Card.Root>
+
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Variant Support</h4>
+						<p class="text-muted-foreground text-sm">
+							Define variant systems with defaults that work globally
+						</p>
+					</Card.Body>
+				</Card.Root>
+
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Reactive State</h4>
+						<p class="text-muted-foreground text-sm">
+							Access component bond state for dynamic styling
+						</p>
+					</Card.Body>
+				</Card.Root>
+
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Compound Components</h4>
+						<p class="text-muted-foreground text-sm">
+							Configure nested components using dot notation
+						</p>
+					</Card.Body>
+				</Card.Root>
+
+				<Card.Root class="border-2">
+					<Card.Body class="p-4">
+						<h4 class="mb-2 font-semibold">Performance Optimized</h4>
+						<p class="text-muted-foreground text-sm">
+							Memoized resolution with early exit optimizations
+						</p>
+					</Card.Body>
+				</Card.Root>
+			</div>
+		</div>
+	</section>
 
 	<!-- Global Preset -->
-	<Section title="Global Preset Configuration" description="Define base theme at application root">
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Set up your base theme in the root layout to apply consistent styling across your entire
-				application:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Global Preset Configuration</h2>
+			<p class="text-muted-foreground">
+				Define base theme at application root for consistent styling.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{globalPresetCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">App Root Configuration</span>
+					<Badge variant="secondary" class="text-xs">+layout.svelte</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{globalPresetCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Route-Level Override -->
-	<Section
-		title="Route-Level Overrides"
-		description="Extend or override presets for specific routes"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Create route-specific themes that extend the global preset while adding new variants or
-				overriding specific styles:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Route-Level Overrides</h2>
+			<p class="text-muted-foreground">
+				Extend or override presets for specific routes and sections.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{routePresetCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Route Layout Override</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{routePresetCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Component-Level -->
-	<Section
-		title="Component-Level Customization"
-		description="Scope presets to specific component trees"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Apply presets at the component level to customize specific parts of your UI without
-				affecting the global theme:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Component-Level Customization</h2>
+			<p class="text-muted-foreground">
+				Scope presets to specific component trees without affecting global theme.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{componentPresetCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Component Scoped Preset</span>
+					<Badge variant="secondary" class="text-xs">Svelte</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{componentPresetCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Compound Components -->
-	<Section
-		title="Compound Component Presets"
-		description="Configure nested components using dot notation"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Use dot notation to style compound components and their children. This is especially
-				powerful for components like Alert, Card, Dialog, and Accordion:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Compound Component Presets</h2>
+			<p class="text-muted-foreground">
+				Configure nested components using dot notation for precise control.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{compoundPresetCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-4 border-2">
+			<Card.Body class="p-6">
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Use dot notation to style compound components and their children. This is especially
+					powerful for components like Alert, Card, Dialog, and Accordion. The pattern is <code
+						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'parent.child'</code
+					> for precise styling control.
+				</p>
+			</Card.Body>
+		</Card.Root>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Dot Notation Example</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{compoundPresetCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Reactive State -->
-	<Section
-		title="Reactive State-Based Styling"
-		description="Access component state for dynamic presets"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Preset functions receive the component's bond as a parameter, allowing you to create
-				reactive styles based on component state:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Reactive State-Based Styling</h2>
+			<p class="text-muted-foreground">
+				Access component state for dynamic, reactive preset styling.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{dynamicPresetCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-4 border-2">
+			<Card.Body class="p-6">
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Preset functions receive the component's bond as a parameter, giving you access to the
+					component's reactive state. Use this to create dynamic styles that update automatically
+					when component state changes. The function returns another function that returns the
+					preset object, allowing for reactive class computation based on bond state.
+				</p>
+			</Card.Body>
+		</Card.Root>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium"
+						>Accordion Active State Example</span
+					>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{`'accordion.item.header': (bond) => {
+  return () => ({
+    class: ['', bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
+  });
+}`}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- The $preset Placeholder -->
-	<Section title="The $preset Placeholder" description="Control preset insertion order">
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Use the <code class="bg-muted rounded px-1.5 py-0.5">$preset</code> placeholder in class arrays
-				to control exactly where preset classes are inserted:
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">The $preset Placeholder</h2>
+			<p class="text-muted-foreground">
+				Control exactly where preset classes are inserted in your class arrays.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{placeholderCode}</code></pre>
-			</div>
 		</div>
-	</Section>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Placeholder Usage</span>
+					<Badge variant="secondary" class="text-xs">Svelte</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{placeholderCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Additional Attributes -->
-	<Section
-		title="Setting HTML Attributes"
-		description="Presets can define any HTML attributes, not just classes"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				Beyond styling with classes, presets can set any HTML attributes including <code
-					class="bg-muted rounded px-1.5 py-0.5">data-*</code
-				>,
-				<code class="bg-muted rounded px-1.5 py-0.5">aria-*</code>,
-				<code class="bg-muted rounded px-1.5 py-0.5">role</code>, and more:
-			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{attributesCode}</code></pre>
-			</div>
-			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
-				<h4 class="text-foreground">Common Use Cases:</h4>
-				<ul class="text-muted-foreground">
-					<li>
-						<strong>Accessibility:</strong> Set <code>aria-*</code> attributes, <code>role</code>,
-						<code>tabindex</code> for consistent a11y
-					</li>
-					<li>
-						<strong>Testing:</strong> Add <code>data-testid</code> or <code>data-component</code> attributes
-						for automated tests
-					</li>
-					<li>
-						<strong>Analytics:</strong> Include <code>data-analytics</code> or
-						<code>data-tracking</code> attributes
-					</li>
-					<li>
-						<strong>State Indicators:</strong> Use <code>data-state</code> or
-						<code>data-variant</code> for CSS selectors
-					</li>
-				</ul>
-			</div>
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Setting HTML Attributes</h2>
+			<p class="text-muted-foreground">Presets can define any HTML attributes, not just classes.</p>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-4 border-2">
+			<Card.Body class="p-6">
+				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+					Beyond styling with classes, presets can set any HTML attributes including <code
+						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">data-*</code
+					>,
+					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code>,
+					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">role</code>, and
+					more.
+				</p>
+				<div>
+					<h4 class="mb-3 text-sm font-semibold">Common Use Cases:</h4>
+					<div class="space-y-2">
+						<div class="flex gap-2">
+							<div class="text-primary mt-0.5">•</div>
+							<div>
+								<span class="text-sm font-semibold">Accessibility:</span>
+								<span class="text-muted-foreground text-sm">
+									Set <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>aria-*</code
+									>,
+									<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">role</code>,
+									<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">tabindex</code>
+									for consistent a11y
+								</span>
+							</div>
+						</div>
+						<div class="flex gap-2">
+							<div class="text-primary mt-0.5">•</div>
+							<div>
+								<span class="text-sm font-semibold">Testing:</span>
+								<span class="text-muted-foreground text-sm">
+									Add <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>data-testid</code
+									>
+									or
+									<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>data-component</code
+									> attributes
+								</span>
+							</div>
+						</div>
+						<div class="flex gap-2">
+							<div class="text-primary mt-0.5">•</div>
+							<div>
+								<span class="text-sm font-semibold">Analytics:</span>
+								<span class="text-muted-foreground text-sm">
+									Include <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>data-analytics</code
+									> or tracking attributes
+								</span>
+							</div>
+						</div>
+						<div class="flex gap-2">
+							<div class="text-primary mt-0.5">•</div>
+							<div>
+								<span class="text-sm font-semibold">State Indicators:</span>
+								<span class="text-muted-foreground text-sm">
+									Use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>data-state</code
+									>
+									or
+									<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+										>data-variant</code
+									> for CSS selectors
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</Card.Body>
+		</Card.Root>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Attribute Configuration</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{attributesCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Extending Presets -->
-	<Section
-		title="Extending & Composing Presets"
-		description="Build upon existing preset definitions"
-	>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				The preset system uses deep merging to combine configurations. This allows you to extend
-				base presets with new variants, sizes, or completely new preset keys:
-			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{extendingCode}</code></pre>
-			</div>
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Extending & Composing Presets</h2>
+			<p class="text-muted-foreground">Build upon existing preset definitions with deep merging.</p>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-4 border-2">
+			<Card.Body class="p-6">
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					The preset system uses deep merging to combine configurations across context layers. This
+					allows you to extend base presets with new variants, sizes, or completely new preset keys
+					without losing existing definitions.
+				</p>
+			</Card.Body>
+		</Card.Root>
+
+		<Card.Root class="border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Deep Merge Example</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{extendingCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+	</section>
 
 	<!-- Performance -->
-	<Section title="Performance Optimizations" description="Built-in memoization and caching">
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				The preset system includes several performance optimizations to ensure minimal overhead:
-			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{performanceCode}</code></pre>
-			</div>
-			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
-				<h4 class="text-foreground">Performance Benefits:</h4>
-				<ul class="text-muted-foreground">
-					<li>
-						<strong>Memoized Resolution:</strong> Preset resolution only recomputes when preset key or
-						bond changes
-					</li>
-					<li>
-						<strong>Cached Class Strings:</strong> Preset class strings are computed once and reused
-					</li>
-					<li>
-						<strong>Early Exit:</strong> Components without
-						<code>$preset</code> placeholder skip string replacement entirely
-					</li>
-					<li>
-						<strong>Optimized for Lists:</strong> Repeated variant combinations benefit from Svelte's
-						reactive memoization
-					</li>
-				</ul>
-			</div>
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Performance Optimizations</h2>
+			<p class="text-muted-foreground">Built-in memoization and caching ensure minimal overhead.</p>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-6 border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Optimized Implementation</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{performanceCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+
+		<div class="grid gap-4 sm:grid-cols-2">
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Memoized Resolution</h4>
+					<p class="text-muted-foreground text-sm">
+						Preset resolution only recomputes when preset key or bond changes
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Cached Class Strings</h4>
+					<p class="text-muted-foreground text-sm">
+						Preset class strings are computed once and reused efficiently
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Early Exit</h4>
+					<p class="text-muted-foreground text-sm">
+						Components without <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+							>$preset</code
+						> placeholder skip processing
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">List Optimization</h4>
+					<p class="text-muted-foreground text-sm">
+						Repeated variant combinations benefit from Svelte's reactive memoization
+					</p>
+				</Card.Body>
+			</Card.Root>
+		</div>
+	</section>
 
 	<!-- Best Practices -->
-	<Section title="Best Practices">
-		<div class="space-y-4">
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code>{bestPracticesCode}</code></pre>
-			</div>
-
-			<div class="prose prose-sm prose-slate dark:prose-invert max-w-none">
-				<h4 class="text-foreground">Guidelines:</h4>
-				<ol class="text-muted-foreground">
-					<li>
-						<strong>Set global presets at app root</strong> - Define your base theme in
-						<code>+layout.svelte</code>
-					</li>
-					<li>
-						<strong>Override at route level</strong> - Use route layouts to customize sections of your
-						app
-					</li>
-					<li>
-						<strong>Use component-level sparingly</strong> - Only when specific component trees need
-						unique styling
-					</li>
-					<li>
-						<strong>Leverage dot notation</strong> -
-						<code>'card.title'</code> is more specific than <code>'card'</code>
-					</li>
-					<li>
-						<strong>Access bond state for reactivity</strong> - Use the bond parameter for dynamic styles
-					</li>
-					<li>
-						<strong>Merge, don't replace</strong> - Presets merge across contexts, build up configurations
-						gradually
-					</li>
-					<li>
-						<strong>Keep presets simple</strong> - Presets are for common patterns; use props for one-off
-						customizations
-					</li>
-				</ol>
-			</div>
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
+			<p class="text-muted-foreground">Guidelines for effective preset usage and patterns.</p>
 		</div>
-	</Section>
+
+		<Card.Root class="mb-6 border-2">
+			<Card.Body class="p-0">
+				<div
+					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+				>
+					<span class="text-muted-foreground text-sm font-medium">Do's and Don'ts</span>
+					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
+				</div>
+				<div class="bg-muted p-5">
+					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
+							>{bestPracticesCode}</code
+						></pre>
+				</div>
+			</Card.Body>
+		</Card.Root>
+
+		<div class="space-y-3">
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">1.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Set global presets at app root</p>
+							<p class="text-muted-foreground text-sm">
+								Define your base theme in <code
+									class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">+layout.svelte</code
+								> for consistent styling
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">2.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Override at route level</p>
+							<p class="text-muted-foreground text-sm">
+								Use route layouts to customize sections of your app without affecting global theme
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">3.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Use component-level sparingly</p>
+							<p class="text-muted-foreground text-sm">
+								Only when specific component trees need unique styling that can't be achieved at
+								route level
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">4.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Leverage dot notation for specificity</p>
+							<p class="text-muted-foreground text-sm">
+								<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+									>'card.title'</code
+								>
+								is more specific than
+								<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">'card'</code>
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">5.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Access bond state for reactivity</p>
+							<p class="text-muted-foreground text-sm">
+								Use the bond parameter in preset functions for dynamic, state-driven styles
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">6.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Merge, don't replace</p>
+							<p class="text-muted-foreground text-sm">
+								Presets merge across contexts - build up configurations gradually instead of
+								replacing
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-4">
+					<div class="flex gap-2">
+						<div class="text-primary mt-0.5 font-bold">7.</div>
+						<div>
+							<p class="mb-1 text-sm font-semibold">Keep presets simple</p>
+							<p class="text-muted-foreground text-sm">
+								Presets are for common patterns; use component props for one-off customizations
+							</p>
+						</div>
+					</div>
+				</Card.Body>
+			</Card.Root>
+		</div>
+	</section>
 
 	<!-- Use Cases -->
-	<Section title="Common Use Cases">
-		<div class="prose prose-slate dark:prose-invert max-w-none">
-			<h4 class="text-foreground">1. Multi-Tenant Applications</h4>
-			<p class="text-muted-foreground text-sm">
-				Different organizations can have their own branded themes by setting presets based on tenant
-				configuration.
-			</p>
-
-			<h4 class="text-foreground mt-6">2. Dark Mode Implementation</h4>
-			<p class="text-muted-foreground text-sm">
-				Toggle between light and dark presets at the root level to implement theme switching.
-			</p>
-
-			<h4 class="text-foreground mt-6">3. Dashboard vs Marketing Site</h4>
-			<p class="text-muted-foreground text-sm">
-				Use route-level presets to give your dashboard a compact, data-dense style while keeping
-				your marketing pages spacious and bold.
-			</p>
-
-			<h4 class="text-foreground mt-6">4. Component Library Theming</h4>
-			<p class="text-muted-foreground text-sm">
-				Provide default presets with your component library that consumers can easily override or
-				extend.
-			</p>
-
-			<h4 class="text-foreground mt-6">5. A/B Testing Styles</h4>
-			<p class="text-muted-foreground text-sm">
-				Conditionally apply different presets based on user segments or feature flags.
-			</p>
+	<section class="mb-16">
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">Common Use Cases</h2>
+			<p class="text-muted-foreground">Real-world scenarios where presets excel.</p>
 		</div>
-	</Section>
+
+		<div class="grid gap-4 sm:grid-cols-2">
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Multi-Tenant Applications</h4>
+					<p class="text-muted-foreground text-sm">
+						Different organizations can have their own branded themes by setting presets based on
+						tenant configuration.
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Dark Mode Implementation</h4>
+					<p class="text-muted-foreground text-sm">
+						Toggle between light and dark presets at the root level to implement theme switching.
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Dashboard vs Marketing Site</h4>
+					<p class="text-muted-foreground text-sm">
+						Use route-level presets for compact dashboard styles and spacious marketing page
+						layouts.
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Component Library Theming</h4>
+					<p class="text-muted-foreground text-sm">
+						Provide default presets with your library that consumers can easily override or extend.
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">A/B Testing Styles</h4>
+					<p class="text-muted-foreground text-sm">
+						Conditionally apply different presets based on user segments or feature flags.
+					</p>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 font-semibold">Responsive Styling</h4>
+					<p class="text-muted-foreground text-sm">
+						Adjust component variants based on viewport size or device capabilities.
+					</p>
+				</Card.Body>
+			</Card.Root>
+		</div>
+	</section>
 
 	<!-- API Reference -->
-	<Section title="API Reference">
-		<div class="space-y-6">
-			<div>
-				<h4 class="text-foreground mb-2 text-sm font-semibold">setPreset(preset)</h4>
-				<p class="text-muted-foreground mb-2 text-sm">
-					Sets or merges preset configuration in the current context.
-				</p>
-				<div class="bg-muted rounded-lg p-3">
-					<code class="text-xs">setPreset(preset: Partial&lt;Preset&gt;): void</code>
-				</div>
-			</div>
+	<section>
+		<div class="mb-8">
+			<h2 class="mb-2 text-3xl font-bold">API Reference</h2>
+			<p class="text-muted-foreground">Core functions and types for the preset system.</p>
+		</div>
 
-			<div>
-				<h4 class="text-foreground mb-2 text-sm font-semibold">getPreset(key?)</h4>
-				<p class="text-muted-foreground mb-2 text-sm">
-					Retrieves preset configuration. If key is provided, returns specific preset entry;
-					otherwise returns all presets.
-				</p>
-				<div class="bg-muted rounded-lg p-3">
-					<code class="text-xs"
-						>getPreset&lt;K&gt;(key?: K): PresetEntry | Partial&lt;Preset&gt;</code
-					>
-				</div>
-			</div>
+		<div class="space-y-4">
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 text-sm font-semibold">setPreset(preset)</h4>
+					<p class="text-muted-foreground mb-3 text-sm">
+						Sets or merges preset configuration in the current context.
+					</p>
+					<div class="bg-muted rounded-lg p-3">
+						<code class="text-xs">setPreset(preset: Partial&lt;Preset&gt;): void</code>
+					</div>
+				</Card.Body>
+			</Card.Root>
 
-			<div>
-				<h4 class="text-foreground mb-2 text-sm font-semibold">Preset Entry Function</h4>
-				<p class="text-muted-foreground mb-2 text-sm">
-					Preset entries are functions that receive the component bond and return configuration
-					objects.
-				</p>
-				<div class="bg-muted rounded-lg p-3">
-					<code class="text-xs">type PresetEntry = (bond: Bond | null) =&gt; PresetEntryRecord</code
-					>
-				</div>
-			</div>
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 text-sm font-semibold">getPreset(key?)</h4>
+					<p class="text-muted-foreground mb-3 text-sm">
+						Retrieves preset configuration. If key is provided, returns specific preset entry;
+						otherwise returns all presets.
+					</p>
+					<div class="bg-muted rounded-lg p-3">
+						<code class="text-xs"
+							>getPreset&lt;K&gt;(key?: K): PresetEntry | Partial&lt;Preset&gt;</code
+						>
+					</div>
+				</Card.Body>
+			</Card.Root>
 
-			<div>
-				<h4 class="text-foreground mb-2 text-sm font-semibold">PresetEntryRecord</h4>
-				<p class="text-muted-foreground mb-2 text-sm">
-					The object returned by preset functions. Supports any HTML attributes including class,
-					data-*, aria-*, role, etc.
-				</p>
-				<div class="bg-muted rounded-lg p-3">
-					<pre class="overflow-x-auto text-xs"><code
-							>{`{
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 text-sm font-semibold">Preset Entry Function</h4>
+					<p class="text-muted-foreground mb-3 text-sm">
+						Preset entries are functions that receive the component bond and return configuration
+						objects.
+					</p>
+					<div class="bg-muted rounded-lg p-3">
+						<code class="text-xs"
+							>type PresetEntry = (bond: Bond | null) =&gt; PresetEntryRecord</code
+						>
+					</div>
+				</Card.Body>
+			</Card.Root>
+
+			<Card.Root class="border-2">
+				<Card.Body class="p-5">
+					<h4 class="mb-2 text-sm font-semibold">PresetEntryRecord</h4>
+					<p class="text-muted-foreground mb-3 text-sm">
+						The object returned by preset functions. Supports any HTML attributes including class,
+						data-*, aria-*, role, etc.
+					</p>
+					<div class="bg-muted rounded-lg p-3">
+						<pre class="overflow-x-auto text-xs"><code class="text-foreground"
+								>{`{
   class?: ClassValue;
   as?: string;
   base?: Base;
@@ -644,9 +1026,10 @@ setPreset({
   // tabindex?: number;
   // etc.
 }`}</code
-						></pre>
-				</div>
-			</div>
+							></pre>
+					</div>
+				</Card.Body>
+			</Card.Root>
 		</div>
-	</Section>
+	</section>
 </div>

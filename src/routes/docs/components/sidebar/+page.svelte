@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Sidebar } from '$lib/components/sidebar';
+	import { Sidebar, animateSidebarContent } from '$lib/components/sidebar';
 	import { Button } from '$lib/components/button';
 	import {
 		PageHeader,
@@ -9,16 +9,82 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { sidebarRootProps, sidebarContentProps } from './props';
 
 	const basicCode = `<script lang="ts">
-  let isOpen = $state(false);
+  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
+  import { Button } from '@svelte-atoms/core/button';
+  
+  let leftOpen = $state(false);
 <\/script>
 
-<Sidebar bind:open={isOpen}>
-  <nav>Sidebar content</nav>
-</Sidebar>`;
+<Sidebar.Root bind:open={leftOpen}>
+  <div class="flex min-h-96 w-full">
+    <Sidebar.Content
+      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
+      class="overflow-hidden border-r p-4"
+    >
+      <h3 class="mb-4 font-semibold">Details</h3>
+      <div class="space-y-3">
+        <p class="text-muted-foreground w-40 text-sm">
+          Additional information and details can be displayed here.
+        </p>
+        <Button 
+          size="sm" 
+          variant="outline" 
+          onclick={() => (leftOpen = false)}
+        >
+          Close
+        </Button>
+      </div>
+    </Sidebar.Content>
+
+    <main class="flex-1 p-4">
+      <Button onclick={() => (leftOpen = true)}>
+        Open Left Sidebar
+      </Button>
+    </main>
+  </div>
+</Sidebar.Root>`;
+
+	const rightCode = `<script lang="ts">
+  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
+  import { Button } from '@svelte-atoms/core/button';
+  
+  let rightOpen = $state(false);
+<\/script>
+
+<Sidebar.Root bind:open={rightOpen}>
+  <div class="flex min-h-96 w-full">
+    <main class="flex-1">
+      <Button onclick={() => (rightOpen = true)}>
+        Open Right Sidebar
+      </Button>
+    </main>
+
+    <Sidebar.Content
+      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
+      class="border-l p-4"
+    >
+      <h3 class="mb-4 font-semibold">Details</h3>
+      <div class="space-y-3">
+        <p class="text-muted-foreground w-40 text-sm">
+          Additional information and details can be displayed here.
+        </p>
+        <Button 
+          size="sm" 
+          variant="outline" 
+          onclick={() => (rightOpen = false)}
+        >
+          Close
+        </Button>
+      </div>
+    </Sidebar.Content>
+  </div>
+</Sidebar.Root>`;
 
 	let leftOpen = $state(false);
 	let rightOpen = $state(false);
@@ -54,9 +120,9 @@
 				You can customize the default styles for Sidebar components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   sidebar: () => ({
@@ -71,49 +137,60 @@ const preset = createPreset({
       side: 'left'
     }
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different sidebar variations">
 		<div class="space-y-8">
 			<DemoExample title="Left Sidebar" description="Sidebar from the left side" code={basicCode}>
-				<Button onclick={() => (leftOpen = true)}>Open Left Sidebar</Button>
-				{#if leftOpen}
-					<Sidebar bind:open={leftOpen} side="left" class="bg-background w-64 border-r p-6">
-						<h3 class="mb-4 font-semibold">Navigation</h3>
-						<nav class="space-y-2">
-							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left">Home</button>
-							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left">About</button>
-							<button class="hover:bg-muted block w-full rounded px-3 py-2 text-left"
-								>Contact</button
-							>
-						</nav>
-					</Sidebar>
-				{/if}
+				<Sidebar.Root bind:open={leftOpen}>
+					<div class="flex min-h-96 w-full">
+						<Sidebar.Content
+							animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
+							class="overflow-hidden border-r p-4"
+						>
+							<h3 class="mb-4 font-semibold">Details</h3>
+							<div class="space-y-3">
+								<p class="text-muted-foreground w-40 text-sm">
+									Additional information and details can be displayed here.
+								</p>
+								<Button size="sm" variant="outline" onclick={() => (leftOpen = false)}>Close</Button
+								>
+							</div>
+						</Sidebar.Content>
+
+						<main class="flex-1 p-4">
+							<Button onclick={() => (leftOpen = true)}>Open Left Sidebar</Button>
+						</main>
+					</div>
+				</Sidebar.Root>
 			</DemoExample>
 
-			<DemoExample
-				title="Right Sidebar"
-				description="Sidebar from the right side"
-				code={`<Sidebar side="right" bind:open={rightOpen}>
-  <aside>Content</aside>
-</Sidebar>`}
-			>
-				<Button onclick={() => (rightOpen = true)}>Open Right Sidebar</Button>
-				{#if rightOpen}
-					<Sidebar bind:open={rightOpen} side="right" class="bg-background w-80 border-l p-6">
-						<h3 class="mb-4 font-semibold">Details</h3>
-						<div class="space-y-3">
-							<p class="text-muted-foreground text-sm">
-								Additional information and details can be displayed here.
-							</p>
-							<Button size="sm" variant="outline" onclick={() => (rightOpen = false)}>Close</Button>
-						</div>
-					</Sidebar>
-				{/if}
+			<DemoExample title="Right Sidebar" description="Sidebar from the right side" code={rightCode}>
+				<Sidebar.Root bind:open={rightOpen}>
+					<div class="flex min-h-96 w-full">
+						<main class="flex-1">
+							<Button onclick={() => (rightOpen = true)}>Open Right Sidebar</Button>
+						</main>
+
+						<Sidebar.Content
+							animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
+							class="border-l p-4"
+						>
+							<h3 class="mb-4 font-semibold">Details</h3>
+							<div class="space-y-3">
+								<p class="text-muted-foreground w-40 text-sm">
+									Additional information and details can be displayed here.
+								</p>
+								<Button size="sm" variant="outline" onclick={() => (rightOpen = false)}
+									>Close</Button
+								>
+							</div>
+						</Sidebar.Content>
+					</div>
+				</Sidebar.Root>
 			</DemoExample>
 		</div>
 	</Section>
@@ -121,41 +198,12 @@ const preset = createPreset({
 	<Section title="API Reference">
 		<div class="space-y-6">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Sidebar Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Sidebar open state'
-						},
-						{
-							name: 'side',
-							type: "'left' | 'right'",
-							default: "'left'",
-							description: 'Sidebar position'
-						},
-						{
-							name: 'backdrop',
-							type: 'boolean',
-							default: 'true',
-							description: 'Show backdrop overlay'
-						},
-						{
-							name: 'closeOnClickOutside',
-							type: 'boolean',
-							default: 'true',
-							description: 'Close on outside click'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Sidebar.Root Props</h3>
+				<Props data={[...sidebarRootProps]} />
+			</div>
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Sidebar.Content Props</h3>
+				<Props data={[...sidebarContentProps]} />
 			</div>
 		</div>
 	</Section>

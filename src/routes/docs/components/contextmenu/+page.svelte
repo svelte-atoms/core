@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	const basicCode = `<script>
@@ -87,9 +88,9 @@
 				You can customize the default styles for Contextmenu components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   contextmenu: () => ({
@@ -101,9 +102,8 @@ const preset = createPreset({
   'contextmenu.separator': () => ({
     class: '-mx-1 my-1 h-px bg-border'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

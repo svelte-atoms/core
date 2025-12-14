@@ -20,7 +20,7 @@
 			<!-- Logo -->
 			<a href="/" class="flex items-center gap-2">
 				<Logo class="h-8 w-8" />
-				<span class="text-xl font-bold">Atoms</span>
+				<span class="text-xl font-bold">Core UI</span>
 			</a>
 
 			<!-- Search -->
