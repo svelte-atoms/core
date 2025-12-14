@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn, colorScheme, defineProperty, defineState } from '$lib';
+	import { colorScheme } from '$lib';
 	import { setPreset, type Preset } from '$lib/context';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 
@@ -9,36 +9,34 @@
 
 	const preset: Partial<Preset> = {
 		root: () => ({
-			class: 'flex flex-col p-4'
+			class: 'flex flex-col p-0'
 		}),
 		accordion: () => ({
 			as: 'ul',
-			class: 'w-full max-w-md rounded-md p-4 accordion-preset'
+			class: 'w-full max-w-md rounded-md p-0'
 		}),
 		'accordion.item': () => ({
 			as: 'li',
-			class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-2 py-2'
+			class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-3 py-2'
 		}),
 		'accordion.item.header': (bond) => {
-			return defineState([
-				defineProperty('class', () => [
-					bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50'
-				])
-			]);
+			return () => ({
+				class: ['px-3', bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
+			});
 		},
 		'accordion.item.body': () => ({
 			class: 'overflow-hidden'
 		}),
 		button: () => ({
-			class: '',
+			class:
+				'px-3 py-2 h-12 disabled:opacity-50 disabled:pointer-events-none items-center transition-colors duration-100',
 			variants: {
 				variant: {
 					primary: {
 						class: 'bg-primary text-primary-foreground hover:bg-primary/80 active:bg-primary/90'
 					},
 					secondary: {
-						class:
-							'bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/90'
+						class: 'bg-secondary text-foreground hover:bg-secondary/80 active:bg-secondary/90'
 					},
 					destructive: {
 						class:
@@ -132,7 +130,7 @@
 </script>
 
 <Root class={[scheme.current]}>
-	<div class="h-full w-full flex flex-col items-center justify-center">
+	<div class="flex h-full w-full flex-col items-center justify-center">
 		{@render children?.()}
 	</div>
 </Root>
