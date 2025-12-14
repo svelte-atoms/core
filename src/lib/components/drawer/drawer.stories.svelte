@@ -2,8 +2,6 @@
 	import { animate } from 'motion';
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { clickoutDrawer, Drawer as Drawer_ } from '.';
-	import { DrawerBond } from './bond.svelte';
-	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
