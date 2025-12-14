@@ -8,8 +8,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { badgeProps } from './props';
 
 	const basicCode = `<Badge>Default</Badge>`;
 
@@ -58,9 +60,9 @@
 				You can customize the default styles for Badge components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   badge: () => ({
@@ -88,9 +90,8 @@ const preset = createPreset({
       variant: 'primary'
     }
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -132,28 +133,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Badge Props</h3>
-				<Props
-					data={[
-						{
-							name: 'variant',
-							type: "'default' | 'primary' | 'success' | 'warning' | 'error'",
-							default: "'default'",
-							description: 'Badge style variant'
-						},
-						{
-							name: 'size',
-							type: "'sm' | 'md' | 'lg'",
-							default: "'md'",
-							description: 'Badge size'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={badgeProps} />
 			</div>
 		</div>
 	</Section>

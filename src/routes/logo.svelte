@@ -15,46 +15,50 @@
 	// Calculate triangle points (equilateral, pointing up)
 	const center = size / 2;
 	const angleOffset = -Math.PI / 2; // Start at top (pointing up)
-	
-	const trianglePoints = [0, 120, 240].map(angle => {
-		const rad = (angle * Math.PI / 180) + angleOffset;
+
+	const trianglePoints = [0, 120, 240].map((angle) => {
+		const rad = (angle * Math.PI) / 180 + angleOffset;
 		return {
 			x: center + triangleRadius * Math.cos(rad),
 			y: center + triangleRadius * Math.sin(rad)
 		};
 	});
-	
+
 	// Create triangle path with subtle curved edges using quadratic bezier curves
 	const roundness = 0.15; // Control how rounded the corners are (0 = sharp, 1 = very round)
-	const trianglePath = trianglePoints.map((p, i) => {
-		const nextP = trianglePoints[(i + 1) % 3];
-		// Calculate control point between vertices for subtle rounding
-		const controlX = p.x + (nextP.x - p.x) * roundness;
-		const controlY = p.y + (nextP.y - p.y) * roundness;
-		const endX = p.x + (nextP.x - p.x) * (1 - roundness);
-		const endY = p.y + (nextP.y - p.y) * (1 - roundness);
-		
-		if (i === 0) {
-			return `M${controlX},${controlY} L${endX},${endY}`;
-		}
-		return `Q${p.x},${p.y} ${controlX},${controlY} L${endX},${endY}`;
-	}).join(' ') + ` Q${trianglePoints[0].x},${trianglePoints[0].y} ${trianglePoints[0].x + (trianglePoints[1].x - trianglePoints[0].x) * roundness},${trianglePoints[0].y + (trianglePoints[1].y - trianglePoints[0].y) * roundness} Z`;
+	const trianglePath =
+		trianglePoints
+			.map((p, i) => {
+				const nextP = trianglePoints[(i + 1) % 3];
+				// Calculate control point between vertices for subtle rounding
+				const controlX = p.x + (nextP.x - p.x) * roundness;
+				const controlY = p.y + (nextP.y - p.y) * roundness;
+				const endX = p.x + (nextP.x - p.x) * (1 - roundness);
+				const endY = p.y + (nextP.y - p.y) * (1 - roundness);
+
+				if (i === 0) {
+					return `M${controlX},${controlY} L${endX},${endY}`;
+				}
+				return `Q${p.x},${p.y} ${controlX},${controlY} L${endX},${endY}`;
+			})
+			.join(' ') +
+		` Q${trianglePoints[0].x},${trianglePoints[0].y} ${trianglePoints[0].x + (trianglePoints[1].x - trianglePoints[0].x) * roundness},${trianglePoints[0].y + (trianglePoints[1].y - trianglePoints[0].y) * roundness} Z`;
 
 	// Calculate small triangles in the gaps (pointing outward)
-	const smallTriangles = [0, 120, 240].map(angle => {
-		const rad = (angle * Math.PI / 180) + angleOffset;
+	const smallTriangles = [0, 120, 240].map((angle) => {
+		const rad = (angle * Math.PI) / 180 + angleOffset;
 		const tipDistance = outerRadius + smallTriangleSize * 0.3;
 		const baseDistance = outerRadius - smallTriangleSize * 0.5;
-		
+
 		// Tip of small triangle (pointing outward)
 		const tipX = center + tipDistance * Math.cos(rad);
 		const tipY = center + tipDistance * Math.sin(rad);
-		
+
 		// Base corners (perpendicular to radius)
 		const baseAngle1 = rad + Math.PI / 2;
 		const baseAngle2 = rad - Math.PI / 2;
 		const baseOffset = smallTriangleSize * 0.4;
-		
+
 		return {
 			path: `M${tipX},${tipY} L${center + baseDistance * Math.cos(rad) + baseOffset * Math.cos(baseAngle1)},${center + baseDistance * Math.sin(rad) + baseOffset * Math.sin(baseAngle1)} L${center + baseDistance * Math.cos(rad) + baseOffset * Math.cos(baseAngle2)},${center + baseDistance * Math.sin(rad) + baseOffset * Math.sin(baseAngle2)} Z`
 		};
@@ -85,11 +89,7 @@
 
 	<!-- Small triangles in the gaps - reinforcing the building block concept -->
 	{#each smallTriangles as triangle}
-		<path
-			d={triangle.path}
-			fill="currentColor"
-			class="opacity-60"
-		/>
+		<path d={triangle.path} fill="currentColor" class="opacity-60" />
 	{/each}
 
 	<!-- Core triangle - the fundamental building block -->

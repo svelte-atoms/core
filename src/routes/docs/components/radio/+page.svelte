@@ -9,8 +9,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { radioProps, radioGroupProps } from './props';
 
 	const basicCode = `<script lang="ts">
   let selected = $state('option1');
@@ -53,17 +55,16 @@
 				You can customize the default styles for Radio components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   radio: () => ({
     class: 'h-4 w-4 rounded-full border border-primary text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -122,65 +123,11 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">RadioGroup Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Selected value'
-						},
-						{
-							name: 'name',
-							type: 'string',
-							default: '-',
-							description: 'Group name'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable all radios'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={[...radioGroupProps]} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Radio Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Radio value'
-						},
-						{
-							name: 'id',
-							type: 'string',
-							default: '-',
-							description: 'Radio ID for label association'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable radio'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={[...radioProps]} />
 			</div>
 		</div>
 	</Section>

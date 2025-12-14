@@ -8,44 +8,37 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
-	const basicCode = `<Tree>
-  <Tree.Item label="Parent">
-    <Tree.Item label="Child 1" />
-    <Tree.Item label="Child 2" />
-  <\/Tree.Item>
-<\/Tree>`;
+	const basicCode = `<script lang="ts">
+  import { Tree } from '@svelte-atoms/core/tree';
+  
+  let open = $state(false);
+<\/script>
 
-	const treeData = [
-		{
-			label: 'Documents',
-			children: [{ label: 'Resume.pdf' }, { label: 'CoverLetter.docx' }]
-		},
-		{
-			label: 'Photos',
-			children: [
-				{ label: 'Vacation.jpg' },
-				{ label: 'Family.png' },
-				{
-					label: 'Events',
-					children: [{ label: 'Birthday.jpg' }, { label: 'Wedding.jpg' }]
-				}
-			]
-		},
-		{ label: 'Notes.txt' }
-	];
+<Tree.Root bind:open>
+  <Tree.Header>Documents</Tree.Header>
+  <Tree.Body>
+    <div>Resume.pdf</div>
+    <div>CoverLetter.docx</div>
+  </Tree.Body>
+</Tree.Root>`;
 
-	let expanded = $state<string[]>([]);
-
-	function toggleExpanded(label: string) {
-		if (expanded.includes(label)) {
-			expanded = expanded.filter((l) => l !== label);
-		} else {
-			expanded = [...expanded, label];
-		}
-	}
+	const nestedCode = `<Tree.Root>
+  <Tree.Header>src</Tree.Header>
+  <Tree.Body>
+    <Tree.Root>
+      <Tree.Header>components</Tree.Header>
+      <Tree.Body>
+        <div>Button.svelte</div>
+        <div>Input.svelte</div>
+      </Tree.Body>
+    </Tree.Root>
+    <div>app.ts</div>
+  </Tree.Body>
+</Tree.Root>`;
 </script>
 
 <svelte:head>
@@ -75,74 +68,65 @@
 				You can customize the default styles for Tree components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
-  tree: () => ({
+  'tree.root': () => ({
     class: 'space-y-1'
   }),
-  'tree.item': () => ({
-    class: 'cursor-pointer rounded px-2 py-1 hover:bg-accent transition-colors'
+  'tree.header': () => ({
+    class: 'cursor-pointer border-border flex items-center gap-2'
   }),
-  'tree.children': () => ({
-    class: 'pl-4 space-y-1 border-l border-border ml-2'
+  'tree.body': () => ({
+    class: 'pl-4 border-l border-border'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
 	<Section title="Examples" description="Explore different tree variations">
 		<div class="space-y-8">
-			<DemoExample title="Basic Tree" description="Simple hierarchical structure" code={basicCode}>
-				<Tree.Root class="max-w-md rounded border p-4">
-					<Tree.Item label="Documents" class="py-1">
-						<div class="ml-4 space-y-1">
-							<Tree.Item label="Resume.pdf" class="py-1" />
-							<Tree.Item label="CoverLetter.docx" class="py-1" />
-						</div>
-					</Tree.Item>
-					<Tree.Item label="Photos" class="py-1">
-						<div class="ml-4 space-y-1">
-							<Tree.Item label="Vacation.jpg" class="py-1" />
-							<Tree.Item label="Family.png" class="py-1" />
-						</div>
-					</Tree.Item>
-					<Tree.Item label="Notes.txt" class="py-1" />
+			<DemoExample title="Basic Tree" description="Collapsible tree structure" code={basicCode}>
+				<Tree.Root class="max-w-md space-y-2">
+					<Tree.Header class="hover:bg-muted rounded px-3 py-2">Documents</Tree.Header>
+					<Tree.Body class="space-y-1">
+						<div class="px-3 py-1 text-sm">Resume.pdf</div>
+						<div class="px-3 py-1 text-sm">CoverLetter.docx</div>
+					</Tree.Body>
 				</Tree.Root>
 			</DemoExample>
 
 			<DemoExample
 				title="Nested Tree"
-				description="Multiple levels of nesting"
-				code={`<Tree.Item label="Parent">
-  <Tree.Item label="Child">
-    <Tree.Item label="Grandchild" />
-  <\/Tree.Item>
-<\/Tree.Item>`}
+				description="Multiple levels of nesting with expandable sections"
+				code={nestedCode}
 			>
-				<Tree.Root class="max-w-md rounded border p-4">
-					<Tree.Item label="src" class="py-1">
-						<div class="ml-4 space-y-1">
-							<Tree.Item label="components" class="py-1">
-								<div class="ml-4 space-y-1">
-									<Tree.Item label="Button.svelte" class="py-1" />
-									<Tree.Item label="Input.svelte" class="py-1" />
-								</div>
-							</Tree.Item>
-							<Tree.Item label="utils" class="py-1">
-								<div class="ml-4 space-y-1">
-									<Tree.Item label="helpers.ts" class="py-1" />
-								</div>
-							</Tree.Item>
-							<Tree.Item label="app.ts" class="py-1" />
-						</div>
-					</Tree.Item>
-					<Tree.Item label="package.json" class="py-1" />
-				</Tree.Root>
+				<div class="max-w-md space-y-2">
+					<Tree.Root>
+						<Tree.Header class="hover:bg-muted rounded px-3 py-2">src</Tree.Header>
+						<Tree.Body class="space-y-2">
+							<Tree.Root>
+								<Tree.Header class="hover:bg-muted rounded px-3 py-2">components</Tree.Header>
+								<Tree.Body class="space-y-1">
+									<div class="px-3 py-1 text-sm">Button.svelte</div>
+									<div class="px-3 py-1 text-sm">Input.svelte</div>
+									<div class="px-3 py-1 text-sm">Card.svelte</div>
+								</Tree.Body>
+							</Tree.Root>
+							<Tree.Root>
+								<Tree.Header class="hover:bg-muted rounded px-3 py-2">utils</Tree.Header>
+								<Tree.Body class="space-y-1">
+									<div class="px-3 py-1 text-sm">helpers.ts</div>
+									<div class="px-3 py-1 text-sm">validators.ts</div>
+								</Tree.Body>
+							</Tree.Root>
+							<div class="px-3 py-1 text-sm">app.ts</div>
+						</Tree.Body>
+					</Tree.Root>
+				</div>
 			</DemoExample>
 		</div>
 	</Section>
@@ -154,41 +138,72 @@ const preset = createPreset({
 				<Props
 					data={[
 						{
+							name: 'open',
+							type: 'boolean',
+							default: 'false',
+							description: 'Controls whether the tree is expanded (bindable)'
+						},
+						{
+							name: 'disabled',
+							type: 'boolean',
+							default: 'false',
+							description: 'Whether the tree is disabled'
+						},
+						{
 							name: 'class',
 							type: 'string',
 							default: "''",
 							description: 'Additional CSS classes'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Tree content (Header and Body components)'
 						}
 					]}
 				/>
 			</div>
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Item Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Header Props</h3>
 				<Props
 					data={[
-						{
-							name: 'label',
-							type: 'string',
-							default: "''",
-							description: 'Item label text'
-						},
-						{
-							name: 'expanded',
-							type: 'boolean',
-							default: 'false',
-							description: 'Expanded state'
-						},
-						{
-							name: 'onclick',
-							type: '() => void',
-							default: '-',
-							description: 'Click handler'
-						},
 						{
 							name: 'class',
 							type: 'string',
 							default: "''",
 							description: 'Additional CSS classes'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Header content (clickable label)'
+						},
+						{
+							name: 'onpointerdown',
+							type: 'function',
+							default: '-',
+							description: 'Pointer down event handler'
+						}
+					]}
+				/>
+			</div>
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Body Props</h3>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						},
+						{
+							name: 'children',
+							type: 'Snippet',
+							default: '-',
+							description: 'Body content (nested trees or items)'
 						}
 					]}
 				/>

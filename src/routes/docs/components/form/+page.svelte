@@ -9,7 +9,8 @@
 		Installation,
 		AccessibilityInfo,
 		PageNavigation,
-		DemoExample
+		DemoExample,
+		CodeBlock
 	} from '$docs/components';
 	import { DataGrid } from '$lib/components/datagrid'; // Example form data
 	let basicFormData = $state({
@@ -96,9 +97,9 @@
 				You can customize the default styles for Form and Field components by defining presets in
 				your configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   form: () => ({
@@ -116,9 +117,8 @@ const preset = createPreset({
   'form.field.error': () => ({
     class: 'text-xs text-destructive'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

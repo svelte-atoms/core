@@ -8,8 +8,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { avatarProps } from './props';
 
 	const basicCode = `<Avatar src="/avatar.jpg" alt="User name" />`;
 
@@ -56,9 +58,9 @@
 				You can customize the default styles for Avatar components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   avatar: () => ({
@@ -75,9 +77,8 @@ const preset = createPreset({
       size: 'md'
     }
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -130,34 +131,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Avatar Props</h3>
-				<Props
-					data={[
-						{
-							name: 'src',
-							type: 'string',
-							default: '-',
-							description: 'Image source URL'
-						},
-						{
-							name: 'alt',
-							type: 'string',
-							default: "''",
-							description: 'Alternative text and fallback initials'
-						},
-						{
-							name: 'size',
-							type: "'sm' | 'md' | 'lg' | 'xl'",
-							default: "'md'",
-							description: 'Avatar size'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={avatarProps} />
 			</div>
 		</div>
 	</Section>

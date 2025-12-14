@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	interface User {
@@ -116,9 +117,9 @@
 				You can customize the default styles for DataGrid components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   datagrid: () => ({
@@ -136,9 +137,8 @@ const preset = createPreset({
   'datagrid.td': () => ({
     class: 'p-4 align-middle [&:has([role=checkbox])]:pr-0'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 

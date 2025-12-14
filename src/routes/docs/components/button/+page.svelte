@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	const buttonCode = `<script lang="ts">
@@ -63,9 +64,9 @@
 				You can customize the default styles for Button components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   button: () => ({
@@ -93,9 +94,8 @@ const preset = createPreset({
       variant: 'primary'
     }
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -119,21 +119,10 @@ const preset = createPreset({
 				code={variantsCode}
 			>
 				<div class="flex flex-wrap gap-3">
-					<Button
-						class="bg-primary hover:bg-primary/90 rounded-lg px-4 py-2 text-white transition-colors"
-					>
-						Primary Button
-					</Button>
-					<Button
-						class="bg-secondary hover:bg-secondary/90 rounded-lg px-4 py-2 text-white transition-colors"
-					>
-						Secondary Button
-					</Button>
-					<Button
-						class="border-border hover:bg-muted rounded-lg border px-4 py-2 transition-colors"
-					>
-						Outline Button
-					</Button>
+					<Button class="" variant="primary">Primary Button</Button>
+					<Button class="" variant="secondary">Secondary Button</Button>
+					<Button class="" variant="outline">Outline Button</Button>
+					<Button class="" variant="ghost">Outline Button</Button>
 				</div>
 			</DemoExample>
 
@@ -177,6 +166,12 @@ const preset = createPreset({
 	</Section>
 
 	<Section title="API Reference">
+		<div class="mb-4">
+			<p class="text-muted-foreground text-sm">
+				The Button component accepts all standard HTML button attributes, custom props, and preset
+				variants in addition to the props listed below.
+			</p>
+		</div>
 		<Props
 			data={[
 				{
@@ -208,6 +203,18 @@ const preset = createPreset({
 					type: 'function',
 					default: '-',
 					description: 'Click event handler'
+				},
+				{
+					name: '...presetProps',
+					type: 'string',
+					default: '-',
+					description: 'Any other preset props (variant, size, etc.)'
+				},
+				{
+					name: '...props',
+					type: 'HTMLButtonAttributes',
+					default: '-',
+					description: 'Any other HTML button attributes (aria-*, data-*, etc.)'
 				}
 			]}
 		/>

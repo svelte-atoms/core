@@ -1,4 +1,4 @@
-import { defineProperty, defineState, type Preset } from '$svelte-atoms/core';
+import { type Preset } from '$svelte-atoms/core';
 
 const buttonVariants = () => ({
 	variant: {
@@ -36,11 +36,11 @@ export const preset: Partial<Preset> = {
 	}),
 	'accordion.item.header': (bond) => {
 		return () => ({
-			class: [bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
+			class: ['', bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
 		});
 	},
 	'accordion.item.body': () => ({
-		class: 'overflow-hidden'
+		class: 'overflow-hidden mt-2'
 	}),
 	badge: () => {
 		const data = buttonVariants();
@@ -75,12 +75,12 @@ export const preset: Partial<Preset> = {
 	}),
 	'datagrid.tr': (bond) => {
 		const isSelected = bond?.state?.isSelected ?? false;
-		const isHeader = bond?.state?.props?.header ?? false;
+		const isHeader = bond?.state?.isHeader ?? false;
 
 		return {
 			class: [
-				'pr-8 pl-8 duration-100 transition-colors transition-colors duration-100 rounded-none last:border-b-0',
-				!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4',
+				'pr-8 pl-8 duration-100 transition-colors transition-colors duration-100 rounded-none',
+				!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 last:border-b-0',
 				isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6'
 			]
 		};
@@ -129,7 +129,7 @@ export const preset: Partial<Preset> = {
 			variant: {
 				primary: {
 					class:
-						'bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/10 border-primary border'
+						'bg-primary/5 text-primary hover:bg-primary/10 active:bg-primary/15 border-primary border'
 				},
 				secondary: {
 					class:

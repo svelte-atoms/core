@@ -8,7 +8,8 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
 
 	const basicCode = `<Textarea placeholder="Enter your message..." />`;
@@ -50,17 +51,16 @@
 				You can customize the default styles for Textarea components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   textarea: () => ({
     class: 'flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -71,14 +71,22 @@ const preset = createPreset({
 				description="Simple multi-line text input"
 				code={basicCode}
 			>
-				<Textarea placeholder="Enter your message..." class="max-w-lg" />
+				<Textarea.Root>
+					<Textarea.Control placeholder="Enter your message..." class="" />
+				</Textarea.Root>
 			</DemoExample>
 
 			<DemoExample title="Different Sizes" description="Control height with rows" code={rowsCode}>
 				<div class="max-w-lg space-y-4">
-					<Textarea rows={3} placeholder="Small (3 rows)" />
-					<Textarea rows={6} placeholder="Medium (6 rows)" />
-					<Textarea rows={10} placeholder="Large (10 rows)" />
+					<Textarea.Root>
+						<Textarea.Control rows={3} placeholder="Small (3 rows)" class="max-w-lg" />
+					</Textarea.Root>
+					<Textarea.Root>
+						<Textarea.Control rows={6} placeholder="Medium (6 rows)" class="max-w-lg" />
+					</Textarea.Root>
+					<Textarea.Root>
+						<Textarea.Control rows={10} placeholder="Large (10 rows)" class="max-w-lg" />
+					</Textarea.Root>
 				</div>
 			</DemoExample>
 
@@ -94,11 +102,13 @@ const preset = createPreset({
 <p>{message.length} / {maxLength}</p>`}
 			>
 				<div class="max-w-lg space-y-2">
-					<Textarea
-						bind:value={message}
-						maxlength={maxLength}
-						placeholder="Maximum 200 characters"
-					/>
+					<Textarea.Root>
+						<Textarea.Control
+							bind:value={message}
+							maxlength={maxLength}
+							placeholder="Maximum 200 characters"
+						/>
+					</Textarea.Root>
 					<p class="text-muted-foreground text-right text-sm">
 						{message.length} / {maxLength}
 					</p>
@@ -110,7 +120,9 @@ const preset = createPreset({
 				description="Non-editable textarea"
 				code={`<Textarea disabled placeholder="Disabled textarea" />`}
 			>
-				<Textarea disabled value="This textarea is disabled" class="max-w-lg" />
+				<Textarea.Root>
+					<Textarea.Control disabled value="This textarea is disabled" class="" />
+				</Textarea.Root>
 			</DemoExample>
 		</div>
 	</Section>

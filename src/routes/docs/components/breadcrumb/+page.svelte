@@ -8,8 +8,10 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		Props
+		Props,
+		CodeBlock
 	} from '$docs/components';
+	import { breadcrumbProps } from './props';
 
 	const basicCode = `<Breadcrumb 
   items={[
@@ -61,17 +63,16 @@
 				You can customize the default styles for Breadcrumb components by defining presets in your
 				configuration:
 			</p>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="overflow-x-auto text-sm"><code
-						>{`import { createPreset } from '@svelte-atoms/core';
+			<CodeBlock
+				lang="typescript"
+				code={`import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
   breadcrumb: () => ({
     class: 'flex items-center space-x-1 text-sm text-muted-foreground'
   })
-});`}</code
-					></pre>
-			</div>
+});`}
+			/>
 		</div>
 	</Section>
 
@@ -112,28 +113,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb Props</h3>
-				<Props
-					data={[
-						{
-							name: 'items',
-							type: 'Array<{ label: string, href?: string }>',
-							default: '[]',
-							description: 'Breadcrumb items to display'
-						},
-						{
-							name: 'separator',
-							type: 'string',
-							default: "'/'",
-							description: 'Separator between items'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={breadcrumbProps} />
 			</div>
 		</div>
 	</Section>
