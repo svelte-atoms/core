@@ -1,11 +1,11 @@
-import { animate } from 'motion';
+import { animate, type Easing } from 'motion';
 import { DURATION } from '$svelte-atoms/core/shared';
 import { DrawerBond } from '.';
 
 type AnimateDrawerContentParams = {
 	duration?: number;
 	delay?: number;
-	ease?: string;
+	ease?: Easing | Easing[];
 	side?: 'left' | 'right' | 'top' | 'bottom';
 };
 
@@ -31,7 +31,7 @@ export function animateDrawerContent(params: AnimateDrawerContentParams) {
 
 				[side]: 0
 			},
-			{ duration, easing: ease, delay }
+			{ duration, ease, delay }
 		);
 	};
 }
@@ -39,7 +39,7 @@ export function animateDrawerContent(params: AnimateDrawerContentParams) {
 type AnimateDrawerRootParams = {
 	duration?: number;
 	delay?: number;
-	ease?: string;
+	ease?: Easing | Easing[];
 };
 export function animateDrawerRoot(params: AnimateDrawerRootParams = {}) {
 	const { duration = DURATION.fast / 1000, delay = 0, ease = 'easeInOut' } = params;
