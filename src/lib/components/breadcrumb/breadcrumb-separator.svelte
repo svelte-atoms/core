@@ -11,5 +11,9 @@
 	data-kind="breadcrumb-separator"
 	{...restProps}
 >
-	{@render children?.()}
+	{#if children}
+		{@render children?.()}
+	{:else}
+		/
+	{/if}
 </HtmlAtom>
