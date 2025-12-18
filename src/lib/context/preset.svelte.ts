@@ -3,6 +3,7 @@ import type { ClassValue } from 'svelte/elements';
 import { merge } from 'es-toolkit';
 import type { Base } from '$svelte-atoms/core/components/atom';
 import type { Bond } from '../shared';
+import type { Attachment } from 'svelte/attachments';
 
 const CONTEXT_KEY = '@svelte-atoms/context/preset';
 
@@ -23,6 +24,7 @@ export type PresetModuleName =
 	| 'card.description'
 	| 'card.footer'
 	| 'card.header'
+	| 'card.body'
 	| 'card.media'
 	| 'card'
 	| 'card.subtitle'
@@ -142,6 +144,7 @@ export interface PresetEntryRecord {
 	variants?: Record<string, Record<string, any>>;
 	compounds?: Array<Record<string, any>>;
 	defaults?: Record<string, any>;
+	attachments?: Attachment[];
 }
 
 export type PresetEntry = (
