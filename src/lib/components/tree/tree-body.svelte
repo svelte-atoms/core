@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { TreeBond } from './bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { TreeBond } from './bond.svelte';
 	import type { TreeBodyProps } from './types';
+	import { animateTreeBody } from './motion.svelte';
 
 	const bond = TreeBond.get();
 
@@ -10,10 +11,10 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = undefined,
+		animate = animateTreeBody(),
 		enter = undefined,
 		exit = undefined,
-		initial = undefined,
+		initial = animateTreeBody({ duration: 0 }),
 		...restProps
 	}: TreeBodyProps<E, B> = $props();
 
