@@ -15,7 +15,7 @@
 
 {#snippet tree(item: PageContent)}
 	{#if item.children && item.children.length > 0}
-		<Tree.Root>
+		<Tree.Root open>
 			<Tree.Header class="hover:text-foreground/80 py-2 font-medium">{item.title}</Tree.Header>
 			<Tree.Body class="text-muted-foreground flex flex-col gap-1 pl-4 text-sm">
 				{#each item.children as child (child)}
