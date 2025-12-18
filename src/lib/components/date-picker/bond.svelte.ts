@@ -25,8 +25,6 @@ export class DatePickerBond<
 	Props extends DatePickerBondProps = DatePickerBondProps,
 	State extends DatePickerBondState<Props> = DatePickerBondState<Props>
 > extends PopoverBond<Props, State, DatePickerBondElements> {
-	static override CONTEXT_KEY = '@atoms/context/date-picker';
-
 	#calendarBond?: CalendarBond;
 
 	constructor(state: State) {
@@ -50,6 +48,7 @@ export class DatePickerBond<
 		const placeholder = this.state.props.placeholder ?? 'Select a date';
 
 		return {
+			...super.trigger(),
 			id: `date-picker-input-${this.id}`,
 			role: 'combobox',
 			'aria-expanded': this.state.props.open ?? false,
@@ -59,25 +58,20 @@ export class DatePickerBond<
 			placeholder,
 			disabled: isDisabled,
 			readonly: true,
-			tabindex: isDisabled ? -1 : 0,
-			[createAttachmentKey()]: (node: HTMLInputElement) => {
-				this.elements.trigger = node;
-			}
+			tabindex: isDisabled ? -1 : 0
 		};
 	}
 
 	content() {
 		return {
+			...super.content(),
 			id: `date-picker-calendar-${this.id}`,
 			role: 'dialog',
-			'aria-label': 'Choose date',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
+			'aria-label': 'Choose date'
 		};
 	}
 
-	clearButton(props: Record<string, unknown> = {}) {
+	clearButton() {
 		const hasValue = this.state.hasValue;
 
 		return {
@@ -85,7 +79,6 @@ export class DatePickerBond<
 			type: 'button',
 			'aria-label': 'Clear date',
 			tabindex: hasValue ? 0 : -1,
-			...props,
 			onclick: (ev: Event) => {
 				ev.preventDefault();
 				ev.stopPropagation();
