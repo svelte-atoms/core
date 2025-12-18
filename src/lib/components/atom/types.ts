@@ -18,6 +18,12 @@ export type Base<Args = any> =
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface HtmlAtomExtendProps {}
 
+type Variants =
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	| VariantDefinition<any>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	| ((bond: Bond, variantProps: Record<string, any>) => Record<string, any>);
+
 export interface HtmlAtomProps<
 	E extends HtmlElementTagName = HtmlElementTagName,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,10 +38,7 @@ export interface HtmlAtomProps<
 	 * - VariantDefinition: Static variant config with base, variants, compoundVariants, defaultVariants
 	 * - Function: Dynamic function that receives bond and props, returns props (legacy)
 	 */
-	variants?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-	| VariantDefinition<any>
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		| ((bond: Bond, variantProps: Record<string, any>) => Record<string, any>);
+	variants?: Variants;
 }
 
 export type { ElementType };
