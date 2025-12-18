@@ -20,14 +20,15 @@ export function animateSidebarContent(params: AnimateSidebarContentParams) {
 		'0': collapsedSize = '96px',
 		'1': expandedSize = 'auto'
 	} = params;
-
 	const bond = SidebarBond.get();
-	const isOpen = bond?.state.props.open ?? false;
-
-	const collapsedProp = axis === 'x' ? 'min-width' : 'min-height';
-	const prop = axis === 'x' ? 'width' : 'height';
-
+	
+	
 	return (node: HTMLElement) => {
+		const isOpen = bond?.state.props.open ?? false;
+	
+		const collapsedProp = axis === 'x' ? 'min-width' : 'min-height';
+		const prop = axis === 'x' ? 'width' : 'height';
+		
 		animate(
 			node,
 			{
