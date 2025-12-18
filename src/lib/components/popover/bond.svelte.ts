@@ -65,12 +65,7 @@ export class PopoverBond<
 		super(state);
 	}
 
-	trigger(
-		props: Record<string, unknown> & {
-			onclick?: (ev: PointerEvent) => void;
-			onkeydown?: (ev: KeyboardEvent) => void;
-		} = {}
-	) {
+	trigger() {
 		const isButtonElement = isBrowser()
 			? this.elements.trigger instanceof HTMLButtonElement
 			: false;
@@ -102,7 +97,6 @@ export class PopoverBond<
 				}
 
 				this.state.toggle();
-				props.onclick?.(ev);
 			},
 			onkeydown: (ev: KeyboardEvent) => {
 				if (isDisabled) return;
@@ -111,16 +105,13 @@ export class PopoverBond<
 				if (ev.key === 'Enter' || ev.key === ' ') {
 					ev.preventDefault();
 					this.state.toggle();
-					props.onkeydown?.(ev);
 				}
 				// Close on Escape
 				else if (ev.key === 'Escape' && isOpen) {
 					ev.preventDefault();
 					this.state.close();
-					props.onkeydown?.(ev);
 				}
 			},
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.trigger = node;
 
@@ -129,7 +120,6 @@ export class PopoverBond<
 				if (!position) {
 					const init = async () => {
 						popover(this)({
-							...props,
 							onchange: (_node: HTMLElement, position: ComputePositionReturn) => {
 								this.position = position;
 							}
@@ -152,11 +142,7 @@ export class PopoverBond<
 		};
 	}
 
-	content(
-		props: Record<string, unknown> & {
-			onchange?: (node: HTMLElement, position: ComputePositionReturn) => void;
-		} = {}
-	) {
+	content() {
 		const kind = POPOVER_ELEMENTS_KIND.content;
 		const id = getElementId(this.id, kind);
 		const triggerId = getElementId(this.id, POPOVER_ELEMENTS_KIND.trigger);
@@ -202,7 +188,6 @@ export class PopoverBond<
 			'data-kind': 'content',
 			'data-active': isActive,
 			onkeydown: isOpen ? focusTrap : undefined,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.content = node;
 
@@ -224,10 +209,8 @@ export class PopoverBond<
 
 				const cleanup = popover(this)(
 					{
-						...props,
 						onchange: (node: HTMLElement, position: ComputePositionReturn) => {
 							this.position = position;
-							props.onchange?.(node, position);
 						}
 					},
 					autoUpdate
@@ -240,7 +223,7 @@ export class PopoverBond<
 		};
 	}
 
-	indicator(props: Record<string, unknown> = {}) {
+	indicator() {
 		const kind = POPOVER_ELEMENTS_KIND.indicator;
 		const id = getElementId(this.id, kind);
 		const isOpen = this.state?.props?.open ?? false;
@@ -250,14 +233,13 @@ export class PopoverBond<
 			'aria-hidden': true,
 			'aria-live': isOpen ? 'polite' : 'off',
 			'data-kind': kind,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.indicator = node;
 			}
 		};
 	}
 
-	arrow(props: Record<string, unknown> = {}) {
+	arrow() {
 		const kind = POPOVER_ELEMENTS_KIND.arrow;
 		const id = getElementId(this.id, kind);
 
@@ -266,7 +248,6 @@ export class PopoverBond<
 			role: 'presentation',
 			'aria-hidden': true,
 			'data-kind': kind,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.arrow = node;
 			}
