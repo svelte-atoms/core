@@ -60,15 +60,15 @@
 				{ title: 'Tooltip', href: '/docs/components/tooltip' },
 				{ title: 'Tree', href: '/docs/components/tree' }
 			]
-		},
-		{
-			title: 'Guides',
-			children: [
-				{ title: 'Theming', href: '/docs/guides/theming' },
-				{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
-				{ title: 'Customization', href: '/docs/guides/customization' }
-			]
 		}
+		// {
+		// 	title: 'Guides',
+		// 	children: [
+		// 		{ title: 'Theming', href: '/docs/guides/theming' },
+		// 		{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
+		// 		{ title: 'Customization', href: '/docs/guides/customization' }
+		// 	]
+		// }
 	];
 </script>
 
