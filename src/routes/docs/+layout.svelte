@@ -38,7 +38,6 @@
 				{ title: 'Collapsible', href: '/docs/components/collapsible' },
 				{ title: 'Combobox', href: '/docs/components/combobox' },
 				{ title: 'Context Menu', href: '/docs/components/contextmenu', disabled: true },
-				{ title: 'DataTable', href: '/docs/components/datatable' },
 				{ title: 'DataGrid', href: '/docs/components/datagrid' },
 				{ title: 'Dialog', href: '/docs/components/dialog' },
 				{ title: 'Divider', href: '/docs/components/divider' },
