@@ -26,19 +26,6 @@
   </Collapsible.Content>
 </Collapsible.Root>`;
 
-	const controlledCode = `<script lang="ts">
-  let isOpen = $state(true);
-<\/script>
-
-<Collapsible.Root bind:open={isOpen}>
-  <Collapsible.Trigger>
-    <button>{isOpen ? 'Hide' : 'Show'} Details</button>
-  </Collapsible.Trigger>
-  <Collapsible.Content>
-    <p>Controlled collapsible content</p>
-  </Collapsible.Content>
-</Collapsible.Root>`;
-
 	let demoOpen = $state(false);
 	let controlledOpen = $state(true);
 </script>
