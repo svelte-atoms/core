@@ -31,9 +31,6 @@
 		<Drawer_.Content
 			class="border-border flex min-h-full w-md flex-col border-r p-8 whitespace-nowrap shadow-md"
 			animate={animateDrawerContent({ ease: 'easeOut', side: 'left' })}
-			{@attach clickoutDrawer((_, bond) => {
-				bond?.state?.close?.();
-			})}
 		>
 			<Drawer_.Header class="flex items-center justify-between">
 				<div class="flex flex-col">
