@@ -16,13 +16,18 @@
   let activeTab = $state('tab1');
 <\/script>
 
-<Tabs.Root value={activeTab}>
-  <Tabs.Header>
-    <Tab value="tab1">Tab 1<\/Tab>
-    <Tab value="tab2">Tab 2<\/Tab>
-  <\/Tabs.Header>
-  <Tabs.Body value="tab1">Content 1<\/Tabs.Body>
-  <Tabs.Body value="tab2">Content 2<\/Tabs.Body>
+<Tabs.Root bind:value={activeTab}>
+  <Tabs.Header />
+  <Tabs.Body>
+    <Tab.Root value="tab1">
+      <Tab.Header>Tab 1<\/Tab.Header>
+      <Tab.Body>Content 1<\/Tab.Body>
+    <\/Tab.Root>
+    <Tab.Root value="tab2">
+      <Tab.Header>Tab 2<\/Tab.Header>
+      <Tab.Body>Content 2<\/Tab.Body>
+    <\/Tab.Root>
+  <\/Tabs.Body>
 <\/Tabs.Root>`;
 
 	let activeTab = $state('tab1');
@@ -58,17 +63,26 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
-  tab: () => ({
-    class: 'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm'
+setPreset({
+  'tabs.root': () => ({
+    class: 'w-full'
   }),
-  'tabs.list': () => ({
-    class: 'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground'
+  'tabs.header': () => ({
+    class: 'border-b border-border'
   }),
-  'tabs.content': () => ({
-    class: 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+  'tabs.body': () => ({
+    class: 'relative'
+  }),
+  'tab': () => ({
+    class: 'px-4 py-2 transition-colors'
+  }),
+  'tab.header': () => ({
+    class: 'cursor-pointer'
+  }),
+  'tab.body': () => ({
+    class: 'p-4'
   })
 });`}
 			/>
@@ -78,45 +92,50 @@ const preset = createPreset({
 	<Section title="Examples" description="Explore different tab variations">
 		<div class="space-y-8">
 			<DemoExample title="Basic Tabs" description="Simple tab navigation" code={basicCode}>
-				<Tabs.Root value={activeTab} onchange={(v: string) => (activeTab = v)}>
-					<Tabs.Header class="flex gap-1 border-b">
-						<Tab
-							value="tab1"
-							class="border-b-2 px-4 py-2 {activeTab === 'tab1'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Tab 1
-						</Tab>
-						<Tab
-							value="tab2"
-							class="border-b-2 px-4 py-2 {activeTab === 'tab2'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Tab 2
-						</Tab>
-						<Tab
-							value="tab3"
-							class="border-b-2 px-4 py-2 {activeTab === 'tab3'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Tab 3
-						</Tab>
-					</Tabs.Header>
+				<Tabs.Root bind:value={activeTab}>
+					<Tabs.Header />
+					<Tabs.Body>
+						<Tab.Root value="tab1">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {activeTab === 'tab1'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Tab 1
+							</Tab.Header>
+							<Tab.Body class="p-4">
+								<h3 class="mb-2 font-semibold">Tab 1 Content</h3>
+								<p class="text-muted-foreground">This is the content for tab 1.</p>
+							</Tab.Body>
+						</Tab.Root>
 
-					<Tabs.Body value="tab1" class="p-4">
-						<h3 class="mb-2 font-semibold">Tab 1 Content</h3>
-						<p class="text-muted-foreground">This is the content for tab 1.</p>
-					</Tabs.Body>
-					<Tabs.Body value="tab2" class="p-4">
-						<h3 class="mb-2 font-semibold">Tab 2 Content</h3>
-						<p class="text-muted-foreground">This is the content for tab 2.</p>
-					</Tabs.Body>
-					<Tabs.Body value="tab3" class="p-4">
-						<h3 class="mb-2 font-semibold">Tab 3 Content</h3>
-						<p class="text-muted-foreground">This is the content for tab 3.</p>
+						<Tab.Root value="tab2">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {activeTab === 'tab2'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Tab 2
+							</Tab.Header>
+							<Tab.Body class="p-4">
+								<h3 class="mb-2 font-semibold">Tab 2 Content</h3>
+								<p class="text-muted-foreground">This is the content for tab 2.</p>
+							</Tab.Body>
+						</Tab.Root>
+
+						<Tab.Root value="tab3">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {activeTab === 'tab3'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Tab 3
+							</Tab.Header>
+							<Tab.Body class="p-4">
+								<h3 class="mb-2 font-semibold">Tab 3 Content</h3>
+								<p class="text-muted-foreground">This is the content for tab 3.</p>
+							</Tab.Body>
+						</Tab.Root>
 					</Tabs.Body>
 				</Tabs.Root>
 			</DemoExample>
@@ -124,60 +143,70 @@ const preset = createPreset({
 			<DemoExample
 				title="Content Example"
 				description="Tabs with rich content"
-				code={`<Tabs.Root value={exampleTab} onchange={(v) => exampleTab = v}>
-  <Tabs.Header>
-    <Tab value="overview">Overview<\/Tab>
-    <Tab value="features">Features<\/Tab>
-  <\/Tabs.Header>
-  <Tabs.Body value="overview">Content<\/Tabs.Body>
-  <Tabs.Body value="features">More content<\/Tabs.Body>
+				code={`<Tabs.Root bind:value={exampleTab}>
+  <Tabs.Header />
+  <Tabs.Body>
+    <Tab.Root value="overview">
+      <Tab.Header>Overview<\/Tab.Header>
+      <Tab.Body>Content<\/Tab.Body>
+    <\/Tab.Root>
+    <Tab.Root value="features">
+      <Tab.Header>Features<\/Tab.Header>
+      <Tab.Body>More content<\/Tab.Body>
+    <\/Tab.Root>
+  <\/Tabs.Body>
 <\/Tabs.Root>`}
 			>
-				<Tabs.Root value={exampleTab} onchange={(v: string) => (exampleTab = v)}>
-					<Tabs.Header class="flex gap-1 border-b">
-						<Tab
-							value="overview"
-							class="border-b-2 px-4 py-2 {exampleTab === 'overview'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Overview
-						</Tab>
-						<Tab
-							value="features"
-							class="border-b-2 px-4 py-2 {exampleTab === 'features'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Features
-						</Tab>
-						<Tab
-							value="pricing"
-							class="border-b-2 px-4 py-2 {exampleTab === 'pricing'
-								? 'border-primary'
-								: 'border-transparent'}"
-						>
-							Pricing
-						</Tab>
-					</Tabs.Header>
+				<Tabs.Root bind:value={exampleTab}>
+					<Tabs.Header />
+					<Tabs.Body>
+						<Tab.Root value="overview">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {exampleTab === 'overview'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Overview
+							</Tab.Header>
+							<Tab.Body class="space-y-2 p-4">
+								<h3 class="font-semibold">Product Overview</h3>
+								<p class="text-muted-foreground text-sm">
+									Learn about our amazing product and all it has to offer.
+								</p>
+							</Tab.Body>
+						</Tab.Root>
 
-					<Tabs.Body value="overview" class="space-y-2 p-4">
-						<h3 class="font-semibold">Product Overview</h3>
-						<p class="text-muted-foreground text-sm">
-							Learn about our amazing product and all it has to offer.
-						</p>
-					</Tabs.Body>
-					<Tabs.Body value="features" class="space-y-2 p-4">
-						<h3 class="font-semibold">Features</h3>
-						<ul class="text-muted-foreground list-inside list-disc space-y-1 text-sm">
-							<li>Feature 1: Fast performance</li>
-							<li>Feature 2: Easy to use</li>
-							<li>Feature 3: Highly customizable</li>
-						</ul>
-					</Tabs.Body>
-					<Tabs.Body value="pricing" class="space-y-2 p-4">
-						<h3 class="font-semibold">Pricing Plans</h3>
-						<p class="text-muted-foreground text-sm">Choose the plan that's right for you.</p>
+						<Tab.Root value="features">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {exampleTab === 'features'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Features
+							</Tab.Header>
+							<Tab.Body class="space-y-2 p-4">
+								<h3 class="font-semibold">Features</h3>
+								<ul class="text-muted-foreground list-inside list-disc space-y-1 text-sm">
+									<li>Feature 1: Fast performance</li>
+									<li>Feature 2: Easy to use</li>
+									<li>Feature 3: Highly customizable</li>
+								</ul>
+							</Tab.Body>
+						</Tab.Root>
+
+						<Tab.Root value="pricing">
+							<Tab.Header
+								class="border-b-2 px-4 py-2 {exampleTab === 'pricing'
+									? 'border-primary'
+									: 'border-transparent'}"
+							>
+								Pricing
+							</Tab.Header>
+							<Tab.Body class="space-y-2 p-4">
+								<h3 class="font-semibold">Pricing Plans</h3>
+								<p class="text-muted-foreground text-sm">Choose the plan that's right for you.</p>
+							</Tab.Body>
+						</Tab.Root>
 					</Tabs.Body>
 				</Tabs.Root>
 			</DemoExample>
@@ -185,16 +214,19 @@ const preset = createPreset({
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
+		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Root Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container for the entire tabs component.
+				</p>
 				<Props
 					data={[
 						{
 							name: 'value',
 							type: 'string',
 							default: "''",
-							description: 'Active tab value'
+							description: 'Active tab value (bindable)'
 						},
 						{
 							name: 'class',
@@ -205,15 +237,53 @@ const preset = createPreset({
 					]}
 				/>
 			</div>
+
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Tab Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Header</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container for tab headers. All Tab.Header components are rendered here.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Body</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container for Tab.Root components. Only the active tab's body is displayed.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tab.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Individual tab component containing header and body.
+				</p>
 				<Props
 					data={[
 						{
 							name: 'value',
 							type: 'string',
-							default: "''",
-							description: 'Tab identifier'
+							default: 'nanoid()',
+							description: 'Unique tab identifier'
 						},
 						{
 							name: 'disabled',
@@ -230,16 +300,31 @@ const preset = createPreset({
 					]}
 				/>
 			</div>
+
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Body Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tab.Header</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Clickable header for the tab, rendered in Tabs.Header.
+				</p>
 				<Props
 					data={[
 						{
-							name: 'value',
+							name: 'class',
 							type: 'string',
 							default: "''",
-							description: 'Content identifier matching Tab value'
-						},
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tab.Body</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Content area for the tab, displayed when active.
+				</p>
+				<Props
+					data={[
 						{
 							name: 'class',
 							type: 'string',

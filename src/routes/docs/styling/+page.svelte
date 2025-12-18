@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Alert } from '$svelte-atoms/core/components/alert';
 
 	const tailwindExample = `<!-- Layout & spacing -->
 <Card.Root class="max-w-sm p-4">
@@ -197,9 +198,27 @@ ${'<'}/div>`;
 <!-- Result: preset-classes component-classes user-classes -->`;
 </script>
 
-<div class="mx-auto max-w-4xl px-4 py-12">
+{#snippet SectionCard(title: string, code: string, description?: string)}
+	<Card.Root class="">
+		<Card.Header class="border-border py-2.5">
+			<h3 class="font-semibold">{title}</h3>
+		</Card.Header>
+		<Card.Body class="p-0">
+			{#if description}
+				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+					{@html description}
+				</p>
+			{/if}
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
+			</div>
+		</Card.Body>
+	</Card.Root>
+{/snippet}
+
+<div class="mx-auto grid max-w-4xl gap-16 px-4 py-12">
 	<!-- Header -->
-	<div class="mb-12">
+	<div>
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Styling System</h1>
 		<p class="text-muted-foreground text-lg">
 			A comprehensive guide to styling components with TailwindCSS, variants, presets, and the cn()
@@ -208,40 +227,36 @@ ${'<'}/div>`;
 	</div>
 
 	<!-- Overview -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Overview</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Overview</h2>
+			<p class="text-muted-foreground text-sm">
 				The styling system combines utility-first CSS with powerful variant definitions and global
 				theming.
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground leading-relaxed">
-					All components accept a <code
-						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">class</code
-					>
-					prop that supports strings, arrays with conditionals, and objects. The styling system is built
-					on TailwindCSS utility classes, enhanced with the
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">cn()</code> utility for
-					intelligent class merging, and integrated with the preset system for global theming.
-				</p>
-			</Card.Body>
-		</Card.Root>
+		<p class="text-muted-foreground leading-relaxed">
+			All components accept a <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+				>class</code
+			>
+			prop that supports strings, arrays with conditionals, and objects. The styling system is built
+			on TailwindCSS utility classes, enhanced with the
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">cn()</code> utility for intelligent
+			class merging, and integrated with the preset system for global theming.
+		</p>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Class Prop Formats</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">String</h4>
 						<code class="text-muted-foreground block text-xs">class="bg-primary text-white"</code>
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Array</h4>
 						<code class="text-muted-foreground block text-xs"
@@ -250,7 +265,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Object</h4>
 						<code class="text-muted-foreground block text-xs"
@@ -259,7 +274,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Mixed</h4>
 						<code class="text-muted-foreground block text-xs"
@@ -272,162 +287,68 @@ ${'<'}/div>`;
 	</section>
 
 	<!-- TailwindCSS -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">TailwindCSS Utilities</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">TailwindCSS Utilities</h2>
+			<p class="text-muted-foreground text-sm">
 				Use Tailwind utility classes for 90% of your styling needs with full responsive support.
 			</p>
 		</div>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Common Patterns</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{tailwindExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
-	</section>
-
-	<!-- Class Order -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Class Order Pattern</h2>
-			<p class="text-muted-foreground">
-				Follow a consistent ordering pattern for predictable styling and easier overrides.
-			</p>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Common Patterns</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{tailwindExample}</code></pre>
+			</div>
 		</div>
-
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-					The class order pattern ensures that classes are applied in a predictable sequence. Base
-					layout classes come first, followed by sizing and visual classes, then conditionals,
-					preset placeholders, and finally user-provided classes that have the highest priority.
-				</p>
-				<div class="space-y-2">
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">1.</div>
-						<div>
-							<span class="text-sm font-semibold">Base Layout:</span>
-							<span class="text-muted-foreground text-sm">flex, grid, relative, etc.</span>
-						</div>
-					</div>
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">2.</div>
-						<div>
-							<span class="text-sm font-semibold">Sizing:</span>
-							<span class="text-muted-foreground text-sm">w-full, h-12, px-4, gap-2</span>
-						</div>
-					</div>
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">3.</div>
-						<div>
-							<span class="text-sm font-semibold">Visual:</span>
-							<span class="text-muted-foreground text-sm">bg-primary, border, rounded, shadow</span>
-						</div>
-					</div>
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">4.</div>
-						<div>
-							<span class="text-sm font-semibold">Conditional:</span>
-							<span class="text-muted-foreground text-sm">isOpen && 'bg-accent'</span>
-						</div>
-					</div>
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">5.</div>
-						<div>
-							<span class="text-sm font-semibold">Preset:</span>
-							<span class="text-muted-foreground text-sm">'$preset' placeholder</span>
-						</div>
-					</div>
-					<div class="flex gap-2">
-						<div class="text-primary mt-0.5">6.</div>
-						<div>
-							<span class="text-sm font-semibold">User Classes:</span>
-							<span class="text-muted-foreground text-sm">klass (highest priority)</span>
-						</div>
-					</div>
-				</div>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Order Example</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{classOrderExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
 	</section>
 
 	<!-- cn() Utility -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">The cn() Utility</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">The cn() Utility</h2>
+			<p class="text-muted-foreground text-sm">
 				Intelligent class merging with automatic conflict resolution using clsx and tailwind-merge.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					The <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">cn()</code>
-					utility combines
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">clsx</code> for
-					conditional class handling with
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">tailwind-merge</code>
-					for intelligent Tailwind class conflict resolution. When conflicting utility classes are provided,
-					the last one wins.
-				</p>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Usage Examples</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{cnExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Usage Examples</h3>
+			</div>
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				The <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">cn()</code> utility
+				combines <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">clsx</code>
+				for conditional class handling with
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">tailwind-merge</code> for
+				intelligent Tailwind class conflict resolution. When conflicting utility classes are provided,
+				the last one wins.
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{cnExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Color Tokens -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">CSS Custom Properties</h2>
-			<p class="text-muted-foreground">
-				Use theme color tokens for consistent, theme-aware styling across your application.
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">CSS Custom Properties</h2>
+			<p class="text-muted-foreground text-sm">
+				Use theme color tokens for consistent, theme-aware styling across your application. The
+				library uses a token system following <a
+					href="https://ui.shadcn.com/docs/theming"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-primary hover:underline">shadcn/ui</a
+				> conventions for maximum compatibility and familiarity.
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-6">
+		<Card.Root class="mb-6 ">
+			<Card.Body class="">
 				<div class="mb-4">
 					<h4 class="mb-3 text-sm font-semibold">Available Color Tokens</h4>
 					<div class="grid gap-2 sm:grid-cols-2">
@@ -521,91 +442,106 @@ ${'<'}/div>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Color Token Usage</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{colorTokensExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		{@render SectionCard('Color Token Usage', colorTokensExample)}
 	</section>
 
 	<!-- Conditional Classes -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Conditional Styling</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Conditional Styling</h2>
+			<p class="text-muted-foreground text-sm">
 				Apply classes conditionally based on component state or props using arrays and ternary
 				operators.
 			</p>
 		</div>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Conditional Patterns</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{conditionalExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Usage Examples</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{conditionalExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Variant System -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Variant System</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Variant System</h2>
+			<p class="text-muted-foreground text-sm">
 				Define reusable component variants with full TypeScript support and bond state access.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					The <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
-						>defineVariants()</code
-					> utility provides a powerful way to create component styling variations. Variants can define
-					multiple styling dimensions (size, variant, state), support compound variants for conditional
-					styling when multiple conditions match, and access component bond state for reactive styling.
+		<Alert.Root variant="info">
+			<Alert.Title>Local vs Global Variants</Alert.Title>
+			<Alert.Description>
+				<p class="text-muted-foreground mb-3 text-sm leading-relaxed">
+					Variants can be defined in two ways:
 				</p>
-			</Card.Body>
-		</Card.Root>
+				<div class="grid gap-3">
+					<div class="flex gap-3">
+						<div class="text-primary mt-0.5">•</div>
+						<div>
+							<span class="text-sm font-semibold">Local Variants (Component-Level):</span>
+							<span class="text-muted-foreground text-sm">
+								Define variants directly in your component using <code
+									class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+									>defineVariants()</code
+								>. This approach is described below and is ideal for component-specific styling that
+								doesn't need to be shared across your application.
+							</span>
+						</div>
+					</div>
+					<div class="flex gap-3">
+						<div class="text-primary mt-0.5">•</div>
+						<div>
+							<span class="text-sm font-semibold">Global Variants (Preset System):</span>
+							<span class="text-muted-foreground text-sm">
+								Define variants globally using the preset system in your <code
+									class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+									>+layout.svelte</code
+								>
+								file. This allows you to set consistent styling for all components of a specific type
+								throughout your application. See the
+								<a href="/docs/preset" class="text-primary font-medium hover:underline"
+									>Preset Documentation</a
+								> for details on global variant configuration.
+							</span>
+						</div>
+					</div>
+				</div>
+			</Alert.Description>
+		</Alert.Root>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Basic Variant Definition</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{variantBasicExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<p class="mb-4 text-sm leading-relaxed">
+			The <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+				>defineVariants()</code
+			>
+			utility provides a powerful way to create component styling variations at the component level.
+			Variants can define multiple styling dimensions (size, variant, state), support compound variants
+			for conditional styling when multiple conditions match, and access component bond state for reactive
+			styling.
+		</p>
+		<p class="text-sm">
+			This example shows how to define variants at the component level. For global variants that
+			apply across your entire application, use the preset system instead.
+		</p>
+
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Basic Variant Definition</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{variantBasicExample}</code></pre>
+			</div>
+		</div>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Key Features</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Base Classes</h4>
 						<p class="text-muted-foreground text-sm">
@@ -614,7 +550,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Multiple Dimensions</h4>
 						<p class="text-muted-foreground text-sm">
@@ -623,7 +559,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Default Values</h4>
 						<p class="text-muted-foreground text-sm">
@@ -632,7 +568,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Type Safety</h4>
 						<p class="text-muted-foreground text-sm">
@@ -641,7 +577,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Compound Variants</h4>
 						<p class="text-muted-foreground text-sm">
@@ -650,7 +586,7 @@ ${'<'}/div>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Attribute Support</h4>
 						<p class="text-muted-foreground text-sm">
@@ -663,217 +599,159 @@ ${'<'}/div>`;
 	</section>
 
 	<!-- Compound Variants -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Compound Variants</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Compound Variants</h2>
+			<p class="text-muted-foreground text-sm">
 				Apply additional styling when multiple variant conditions match simultaneously.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Compound variants allow you to define styling that only applies when specific combinations
-					of variant values are active. This is useful for edge cases or special styling
-					requirements that go beyond single-dimension variants. Compounds can also set HTML
-					attributes like
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">role</code> and
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code> attributes.
-				</p>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Compound Example</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{compoundVariantsExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Usage Example</h3>
+			</div>
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				Compound variants allow you to define styling that only applies when specific combinations of
+				variant values are active. This is useful for edge cases or special styling requirements that
+				go beyond single-dimension variants. Compounds can also set HTML attributes like
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">role</code> and
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code> attributes.
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{compoundVariantsExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Reactive Variants -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Reactive Variants</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Reactive Variants</h2>
+			<p class="text-muted-foreground text-sm">
 				Access component bond state for dynamic, reactive variant styling.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					When you need variants to respond to component state, pass a function to <code
-						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineVariants()</code
-					>
-					that receives the component's bond. This enables reactive styling based on internal state like
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isOpen</code>,
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isActive</code>, or
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isDisabled</code>.
-				</p>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Usage Example</h3>
+			</div>
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				When you need variants to respond to component state, pass a function to <code
+					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineVariants()</code
 				>
-					<span class="text-muted-foreground text-sm font-medium">Bond State Access</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{reactiveVariantsExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+				that receives the component's bond. This enables reactive styling based on internal state like
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isOpen</code>,
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isActive</code>, or
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isDisabled</code>.
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{reactiveVariantsExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Preset Placeholder -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">The $preset Placeholder</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">The $preset Placeholder</h2>
+			<p class="text-muted-foreground text-sm">
 				Control exactly where preset classes are inserted in your class arrays.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					When using presets, the special <code
-						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'$preset'</code
-					>
-					string in your class array will be replaced with preset classes at that exact position. If
-					no
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'$preset'</code>
-					placeholder is present, preset classes are automatically prepended to your class array.
-				</p>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Usage Example</h3>
+			</div>
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				When using presets, the special <code
+					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'$preset'</code
 				>
-					<span class="text-muted-foreground text-sm font-medium">Placeholder Usage</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{presetPlaceholderExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+				string in your class array will be replaced with preset classes at that exact position. If no
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'$preset'</code>
+				placeholder is present, preset classes are automatically prepended to your class array.
+			</p>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{presetPlaceholderExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Inline Styles -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Inline Styles</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Inline Styles</h2>
+			<p class="text-muted-foreground text-sm">
 				Use inline styles sparingly, only for truly dynamic values that cannot be expressed with
 				classes.
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-					Inline styles should be reserved for values that change frequently or cannot be
-					predetermined, such as dynamic widths, transforms, or opacity values driven by user
-					interaction or animation. For static styling, always prefer Tailwind utility classes.
-				</p>
-				<div>
-					<h4 class="mb-3 text-sm font-semibold">When to Use Inline Styles:</h4>
-					<div class="space-y-2">
-						<div class="flex gap-2">
-							<div class="text-primary mt-0.5">✅</div>
-							<div>
-								<span class="text-muted-foreground text-sm"
-									>Dynamic dimensions (width, height) based on state</span
-								>
-							</div>
-						</div>
-						<div class="flex gap-2">
-							<div class="text-primary mt-0.5">✅</div>
-							<div>
-								<span class="text-muted-foreground text-sm"
-									>Transform values for animations (translate, rotate, scale)</span
-								>
-							</div>
-						</div>
-						<div class="flex gap-2">
-							<div class="text-primary mt-0.5">✅</div>
-							<div>
-								<span class="text-muted-foreground text-sm"
-									>Opacity transitions not covered by Tailwind</span
-								>
-							</div>
-						</div>
-						<div class="flex gap-2">
-							<div class="text-primary mt-0.5">❌</div>
-							<div>
-								<span class="text-muted-foreground text-sm"
-									>Static colors, padding, margins (use Tailwind)</span
-								>
-							</div>
-						</div>
-						<div class="flex gap-2">
-							<div class="text-primary mt-0.5">❌</div>
-							<div>
-								<span class="text-muted-foreground text-sm"
-									>Fixed dimensions or spacing (use Tailwind)</span
-								>
-							</div>
-						</div>
+		<p class="text-sm leading-relaxed">
+			Inline styles should be reserved for values that change frequently or cannot be predetermined,
+			such as dynamic widths, transforms, or opacity values driven by user interaction or animation.
+			For static styling, always prefer Tailwind utility classes.
+		</p>
+		<div>
+			<h4 class="mb-3 text-sm font-semibold">When to Use Inline Styles:</h4>
+			<div class="space-y-2">
+				<div class="flex gap-2">
+					<div class="text-primary mt-0.5">✅</div>
+					<div>
+						<span class="text-muted-foreground text-sm"
+							>Dynamic dimensions (width, height) based on state</span
+						>
 					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Inline Style Examples</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
+				<div class="flex gap-2">
+					<div class="text-primary mt-0.5">✅</div>
+					<div>
+						<span class="text-muted-foreground text-sm"
+							>Transform values for animations (translate, rotate, scale)</span
+						>
+					</div>
 				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{inlineStyleExample}</code
-						></pre>
+				<div class="flex gap-2">
+					<div class="text-primary mt-0.5">✅</div>
+					<div>
+						<span class="text-muted-foreground text-sm"
+							>Opacity transitions not covered by Tailwind</span
+						>
+					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
+				<div class="flex gap-2">
+					<div class="text-primary mt-0.5">❌</div>
+					<div>
+						<span class="text-muted-foreground text-sm"
+							>Static colors, padding, margins (use Tailwind)</span
+						>
+					</div>
+				</div>
+				<div class="flex gap-2">
+					<div class="text-primary mt-0.5">❌</div>
+					<div>
+						<span class="text-muted-foreground text-sm"
+							>Fixed dimensions or spacing (use Tailwind)</span
+						>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
 	<!-- Best Practices -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground">
+	<section class="grid gap-6">
+		<div class="grid gap-1">
+			<h2 class="text-3xl font-bold">Best Practices</h2>
+			<p class="text-muted-foreground text-sm">
 				Guidelines for effective styling that leads to maintainable, performant applications.
 			</p>
 		</div>
 
-		<div class="space-y-3">
-			<Card.Root class="border-2">
+		<div class="grid gap-3 md:grid-cols-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
@@ -888,22 +766,22 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
 						<div>
-							<h4 class="mb-1 font-semibold">Follow Class Order</h4>
+							<h4 class="mb-1 font-semibold">User Classes Override Last</h4>
 							<p class="text-muted-foreground text-sm">
-								Maintain consistent ordering: base → sizing → visual → conditional → $preset → user
-								classes. This ensures predictable overrides.
+								Always place user-provided classes (like the class prop) last in your class array to
+								ensure they can override component defaults and preset styles.
 							</p>
 						</div>
 					</div>
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
@@ -918,7 +796,7 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
@@ -934,7 +812,7 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
@@ -949,7 +827,7 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">6.</div>
@@ -966,7 +844,7 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">7.</div>
@@ -985,7 +863,7 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">8.</div>
@@ -1002,76 +880,5 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
-
-	<!-- Quick Reference -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Quick Reference</h2>
-			<p class="text-muted-foreground">
-				At-a-glance guide for choosing the right styling approach for your needs.
-			</p>
-		</div>
-
-		<Card.Root class="border-2">
-			<Card.Body class="p-6">
-				<div class="space-y-3">
-					<div class="border-border grid grid-cols-2 gap-4 border-b pb-3 text-sm font-semibold">
-						<div>Need</div>
-						<div>Use</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Static styling</div>
-						<div class="text-muted-foreground">TailwindCSS utility classes</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Theme colors</div>
-						<div class="text-muted-foreground">CSS custom properties (bg-primary)</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Global defaults</div>
-						<div class="text-muted-foreground">Preset system</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Conditional classes</div>
-						<div class="text-muted-foreground">Array syntax with && operator</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Component variants</div>
-						<div class="text-muted-foreground">defineVariants() utility</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Class merging</div>
-						<div class="text-muted-foreground">cn() utility function</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Responsive design</div>
-						<div class="text-muted-foreground">Tailwind breakpoints (md:, lg:, xl:)</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Dynamic values</div>
-						<div class="text-muted-foreground">Inline styles (sparingly)</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">State-based styling</div>
-						<div class="text-muted-foreground">Reactive variants with bond</div>
-					</div>
-
-					<div class="grid grid-cols-2 gap-4 text-sm">
-						<div class="text-foreground">Complex conditions</div>
-						<div class="text-muted-foreground">Compound variants</div>
-					</div>
-				</div>
-			</Card.Body>
-		</Card.Root>
 	</section>
 </div>

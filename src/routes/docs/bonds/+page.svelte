@@ -1,14 +1,31 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
-	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Alert } from '$svelte-atoms/core/components/alert';
+	import LinkCard from '$docs/components/link-card.svelte';
 </script>
+
+{#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
+	<div class="flex flex-col">
+		<div class="border-border py-2.5">
+			<h3 class="font-semibold">{title}</h3>
+		</div>
+		{#if description}
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				{@html description}
+			</p>
+		{/if}
+		<div class="bg-muted rounded-lg p-4">
+			<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
+		</div>
+	</div>
+{/snippet}
 
 <div class="mx-auto max-w-4xl px-4 py-12">
 	<!-- Header -->
 	<div class="mb-12">
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Bonds</h1>
 		<p class="text-muted-foreground text-lg">
-			A powerful state management pattern for building self-contained, composable components.
+			A powerful pattern for building compound components with shareable state.
 		</p>
 	</div>
 
@@ -17,207 +34,203 @@
 		<div class="mb-8">
 			<h2 class="mb-2 text-3xl font-bold">What Are Bonds?</h2>
 			<p class="text-muted-foreground">
-				Bonds are class-based state containers that manage component behavior, element references,
-				and expose a clean API.
+				Bonds are class-based state containers designed for building compound components that need
+				to share state across multiple parts.
 			</p>
 		</div>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-6">
-				<p class="text-muted-foreground mb-4 leading-relaxed">
-					A Bond is a two-part architecture: the <strong>BondState</strong> manages reactive props
-					and methods, while the <strong>Bond</strong> manages element references, generates element
-					props, and handles context sharing. This separation keeps concerns clear and code organized.
-				</p>
-				<p class="text-muted-foreground mb-4 leading-relaxed">
-					Bonds leverage Svelte 5's Runes API (<code
-						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$state`}</code
-					>,
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$derived`}</code>,
-					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$effect`}</code>)
-					and Svelte's context API for reactive state management and component communication.
-				</p>
-				<p class="text-muted-foreground leading-relaxed">
-					The Bond pattern uses <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
-						>createAttachmentKey()</code
-					> to automatically capture element references, making it easy to manage DOM elements and implement
-					advanced features like focus management, positioning, and animations.
-				</p>
-			</Card.Body>
-		</Card.Root>
+		<div class="space-y-4">
+			<p class="text-muted-foreground leading-relaxed">
+				A Bond is a two-part architecture: the <strong>BondState</strong> manages reactive props and
+				methods, while the <strong>Bond</strong> manages element references, generates element props,
+				and handles context sharing. This separation keeps concerns clear and code organized.
+			</p>
+			<p class="text-muted-foreground leading-relaxed">
+				Bonds leverage Svelte 5's Runes API (<code
+					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$state`}</code
+				>,
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$derived`}</code>,
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$effect`}</code>) and
+				Svelte's context API for reactive state management and component communication.
+			</p>
+			<p class="text-muted-foreground leading-relaxed">
+				The Bond pattern uses <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+					>createAttachmentKey()</code
+				> to automatically capture element references, making it easy to manage DOM elements and implement
+				advanced features like focus management, positioning, and animations.
+			</p>
+		</div>
 	</section>
 
 	<!-- Creating a Bond -->
-	<section class="mb-16">
-		<div class="mb-8">
+	<section class="mb-16 gap-4 flex flex-col">
+		<div class="mb-4">
 			<h2 class="mb-2 text-3xl font-bold">Creating a Bond</h2>
 			<p class="text-muted-foreground">
-				Bonds are created using class-based architecture with separate Bond and BondState classes.
+				Creating a bond requires four key pieces: a Bond class, a BondState class, bond state props
+				definition, and bond HTML element types.
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Bond State Class</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="text-sm leading-relaxed"><code class="text-foreground"
-							>{`import { Bond, BondState, type BondStateProps } from '@svelte-atoms/core';
+		{@render SectionCard(
+			'1. Define Bond State Props',
+			`import { type BondStateProps } from '@svelte-atoms/core';
 
-// Define props type
-export type CounterBondProps = BondStateProps & {
-  value: number;
+// Define the props type for your bond state
+export type MyComponentStateProps = BondStateProps & {
+  open: boolean;
   disabled: boolean;
-};
+  // Add your component-specific props
+};`
+		)}
 
-// Create BondState class
-export class CounterBondState extends BondState<CounterBondProps> {
-  constructor(props: () => CounterBondProps) {
+		{@render SectionCard(
+			'2. Define Bond HTML Elements',
+			`// Define the HTML elements your bond will manage
+export type MyComponentDomElements = {
+  root: HTMLElement;
+  trigger: HTMLElement;
+  content: HTMLElement;
+  // Add your component-specific elements
+};`
+		)}
+
+		{@render SectionCard(
+			'3. Create BondState Class',
+			`import { BondState } from '@svelte-atoms/core';
+
+// Create the BondState class to manage reactive state
+export class MyComponentState<
+  Props extends MyComponentStateProps = MyComponentStateProps
+> extends BondState<Props> {
+  constructor(props: () => Props) {
     super(props);
   }
   
-  // Derived values
-  get isEven() {
-    return this.props.value % 2 === 0;
-  }
-  
-  get isPositive() {
-    return this.props.value > 0;
+  // Derived state using $derived rune
+  get isOpen() {
+    return this.props.open ?? false;
   }
   
   // Methods to modify state
-  increment() {
-    this.props.value++;
+  open() {
+    this.props.open = true;
   }
   
-  decrement() {
-    this.props.value--;
+  close() {
+    this.props.open = false;
   }
   
-  reset() {
-    this.props.value = 0;
+  toggle() {
+    this.props.open = !this.props.open;
   }
-}`}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+}`
+		)}
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Bond Class</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="text-sm leading-relaxed"><code class="text-foreground"
-							>{`import { createAttachmentKey } from 'svelte/attachments';
+		{@render SectionCard(
+			'4. Create Bond Class',
+			`import { Bond } from '@svelte-atoms/core';
+import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
 
-export type CounterBondElements = {
-  root: HTMLElement;
-  display: HTMLElement;
-};
-
-export class CounterBond extends Bond<
-  CounterBondProps,
-  CounterBondState,
-  CounterBondElements
-> {
-  static CONTEXT_KEY = '@atoms/context/counter';
+// Create the Bond class to manage elements and props
+export class MyComponentBond<
+  Props extends MyComponentStateProps = MyComponentStateProps,
+  State extends MyComponentState<Props> = MyComponentState<Props>,
+  Elements extends MyComponentDomElements = MyComponentDomElements
+> extends Bond<Props, State, Elements> {
+  static CONTEXT_KEY = '@your-app/bonds/my-component';
   
-  constructor(state: CounterBondState) {
+  constructor(state: State) {
     super(state);
   }
   
-  // Share bond via context
-  share(): this {
-    return CounterBond.set(this) as this;
-  }
-  
-  // Generate props for elements
-  root(props: Record<string, unknown> = {}) {
+  // Generate props for root element
+  root() {
     return {
-      id: \`counter-\${this.id}\`,
-      'aria-disabled': this.state.props.disabled,
-      'data-kind': 'counter',
-      ...props,
+      id: \`component-\${this.id}\`,
+      'data-kind': 'component-root',
       [createAttachmentKey()]: (node: HTMLElement) => {
         this.elements.root = node;
       }
     };
   }
   
-  display(props: Record<string, unknown> = {}) {
+  // Generate props for trigger element
+  trigger() {
+    const isOpen = this.state?.props?.open ?? false;
+    const isDisabled = this.state?.props?.disabled ?? false;
+    
     return {
-      id: \`counter-display-\${this.id}\`,
-      'data-kind': 'counter-display',
-      ...props,
+      id: \`component-trigger-\${this.id}\`,
+      role: 'button',
+      'aria-expanded': isOpen,
+      'aria-disabled': isDisabled,
+      onclick: () => this.state.toggle(),
       [createAttachmentKey()]: (node: HTMLElement) => {
-        this.elements.display = node;
+        this.elements.trigger = node;
       }
     };
   }
   
+  // Generate props for content element
+  content() {
+    const isOpen = this.state?.props?.open ?? false;
+    
+    return {
+      id: \`component-content-\${this.id}\`,
+      'aria-hidden': !isOpen,
+      [createAttachmentKey()]: (node: HTMLElement) => {
+        this.elements.content = node;
+      }
+    };
+  }
+  
+  // Share bond via context for compound components
+  share(): this {
+    return MyComponentBond.set(this) as this;
+  }
+  
   // Context helpers
-  static get(): CounterBond | undefined {
-    return getContext(CounterBond.CONTEXT_KEY);
+  static override get(): MyComponentBond {
+    return getContext(MyComponentBond.CONTEXT_KEY);
   }
   
-  static set(bond: CounterBond): CounterBond {
-    return setContext(CounterBond.CONTEXT_KEY, bond);
+  static override set(bond: MyComponentBond) {
+    return setContext(MyComponentBond.CONTEXT_KEY, bond);
   }
-}`}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+}`
+		)}
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Using the Bond</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="text-sm leading-relaxed"><code class="text-foreground"
-							>{`<script lang="ts">
-  import { CounterBond, CounterBondState } from './bond.svelte';
+		{@render SectionCard(
+			'5. Using the Bond in Components',
+			`<script lang="ts">
+  import { MyComponentBond, MyComponentState } from './bond.svelte';
   
-  let value = $state(0);
+  let { open = $bindable(false), disabled = false } = $props();
   
-  // Create bond state
-  const bondState = new CounterBondState(() => ({
-    value,
-    disabled: false
+  // Create bond state with reactive props
+  const bondState = new MyComponentState(() => ({
+    open,
+    disabled
   }));
   
-  // Create and share bond
-  const bond = new CounterBond(bondState).share();
+  // Create and share bond for compound components
+  const bond = new MyComponentBond(bondState).share();
 </script>
 
+<!-- Root component spreads bond props -->
 <div {...bond.root()}>
-  <p {...bond.display()}>
-    Count: {bond.state.props.value}
-    {bond.state.isEven ? '(even)' : '(odd)'}
-  </p>
+  <button {...bond.trigger()}>
+    {bond.state.isOpen ? 'Close' : 'Open'}
+  </button>
   
-  <button onclick={() => bond.state.increment()}>+</button>
-  <button onclick={() => bond.state.decrement()}>-</button>
-  <button onclick={() => bond.state.reset()}>Reset</button>
-</div>`}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+  <div {...bond.content()}>
+    <p>Content goes here</p>
+    <button onclick={() => bond.state.close()}>Close</button>
+  </div>
+</div>`
+		)}
 	</section>
 
 	<!-- Key Features -->
@@ -229,8 +242,8 @@ export class CounterBond extends Bond<
 			</p>
 		</div>
 
-		<div class="space-y-6">
-			<Card.Root class="border-2">
+		<div class="grid gap-4 md:grid-cols-2">
+			<Card.Root class="">
 				<Card.Body class="p-6">
 					<div class="mb-3 flex items-start gap-4">
 						<div class="text-primary mt-1 flex-shrink-0">
@@ -260,7 +273,7 @@ export class CounterBond extends Bond<
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-6">
 					<div class="mb-3 flex items-start gap-4">
 						<div class="text-primary mt-1 flex-shrink-0">
@@ -298,7 +311,7 @@ export class CounterBond extends Bond<
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-6">
 					<div class="mb-3 flex items-start gap-4">
 						<div class="text-primary mt-1 flex-shrink-0">
@@ -328,7 +341,7 @@ export class CounterBond extends Bond<
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-6">
 					<div class="mb-3 flex items-start gap-4">
 						<div class="text-primary mt-1 flex-shrink-0">
@@ -361,7 +374,7 @@ export class CounterBond extends Bond<
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-6">
 					<div class="mb-3 flex items-start gap-4">
 						<div class="text-primary mt-1 flex-shrink-0">
@@ -403,19 +416,9 @@ export class CounterBond extends Bond<
 		</div>
 
 		<div class="space-y-6">
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">BondState: Props and Logic</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							BondState manages reactive props via a function that returns the props object. This
-							ensures fine-grained reactivity - only tracking what's accessed.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`export class TabsBondState extends BondState<TabsBondProps> {
+			{@render SectionCard(
+				'BondState: Props and Logic',
+				`export class TabsBondState extends BondState<TabsBondProps> {
   #items = new SvelteMap<string, TabBond>();
   
   // Derived computed property
@@ -436,26 +439,13 @@ export class CounterBond extends Bond<
   select(id: string) {
     this.props.value = id;  // Direct mutation
   }
-}`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+}`,
+				"BondState manages reactive props via a function that returns the props object. This ensures fine-grained reactivity - only tracking what's accessed."
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Bond: Elements and Props</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Bond manages element references and generates element props with proper ARIA
-							attributes, IDs, and attachment keys for automatic element capture.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`export class DialogBond extends Bond<
+			{@render SectionCard(
+				'Bond: Elements and Props',
+				`export class DialogBond extends Bond<
   DialogBondProps, 
   DialogBondState, 
   DialogBondElements
@@ -480,26 +470,13 @@ export class CounterBond extends Bond<
       }
     };
   }
-}`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+}`,
+				'Bond manages element references and generates element props with proper ARIA attributes, IDs, and attachment keys for automatic element capture.'
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Context Sharing</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Bonds provide static methods for context management, making it easy to share state
-							across component trees without prop drilling.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`// In Bond class
+			{@render SectionCard(
+				'Context Sharing',
+				`// In Bond class
 static get(): TreeBond | undefined {
   return getContext(TreeBond.CONTEXT_KEY);
 }
@@ -516,27 +493,13 @@ share(): this {
 const bond = new TreeBond(state).share();
 
 // In child component
-const parentBond = TreeBond.get();`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+const parentBond = TreeBond.get();`,
+				'Bonds provide static methods for context management, making it easy to share state across component trees without prop drilling.'
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Reactive Props Pattern</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Props are passed as a function to BondState, enabling fine-grained reactivity. Use
-							<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">defineState</code>
-							helper for bindable props.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`import { defineProperty, defineState } from '@svelte-atoms/core';
+			{@render SectionCard(
+				'Reactive Props Pattern',
+				`import { defineProperty, defineState } from '@svelte-atoms/core';
 
 let open = $bindable(false);
 
@@ -552,12 +515,9 @@ const bondProps = defineState<DialogBondProps>([
 }));
 
 // Pass as function
-const state = new DialogBondState(() => bondProps);`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+const state = new DialogBondState(() => bondProps);`,
+				'Props are passed as a function to BondState, enabling fine-grained reactivity. Use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">defineState</code> helper for bindable props.'
+			)}
 		</div>
 	</section>
 
@@ -571,19 +531,9 @@ const state = new DialogBondState(() => bondProps);`}</code
 		</div>
 
 		<div class="space-y-6">
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Root Component Pattern</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Root components create the bond, share it via context, and spread bond-generated props
-							onto elements.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`<script lang="ts">
+			{@render SectionCard(
+				'Root Component Pattern',
+				`<script lang="ts">
   import { TreeBond, TreeBondState } from './bond.svelte';
   
   let { open = $bindable(false), disabled = false } = $props();
@@ -602,26 +552,13 @@ const state = new DialogBondState(() => bondProps);`}</code
 <div {...bond.root()}>
   <button {...bond.header()}>Toggle</button>
   <div {...bond.body()}>Content</div>
-</div>`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+</div>`,
+				'Root components create the bond, share it via context, and spread bond-generated props onto elements.'
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Child Component Access</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Child components retrieve the bond from context and can access state, methods, and
-							elements.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`<script lang="ts">
+			{@render SectionCard(
+				'Child Component Access',
+				`<script lang="ts">
   import { TreeBond } from './bond.svelte';
   
   // Get bond from context
@@ -638,27 +575,13 @@ const state = new DialogBondState(() => bondProps);`}</code
 
 <button onclick={handleClick}>
   {bond?.state.props.open ? 'Close' : 'Open'}
-</button>`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+</button>`,
+				'Child components retrieve the bond from context and can access state, methods, and elements.'
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Factory Pattern</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Components accept a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-								>factory</code
-							> prop for custom bond creation, enabling extension and testing.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`let {
+			{@render SectionCard(
+				'Factory Pattern',
+				`let {
   factory = _factory,
   open = $bindable(false)
 } = $props();
@@ -671,27 +594,13 @@ const bond = factory(bondProps).share();
 function _factory(props) {
   const state = new TreeBondState(() => props);
   return new TreeBond(state);
-}`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+}`,
+				'Components accept a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">factory</code> prop for custom bond creation, enabling extension and testing.'
+			)}
 
-			<Card.Root class="border-2">
-				<Card.Body class="p-0">
-					<div class="border-border bg-muted/50 border-b px-4 py-2.5">
-						<h3 class="font-semibold">Accessing from Parent</h3>
-					</div>
-					<div class="p-6">
-						<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-							Parent components can access child bonds via exported <code
-								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">getBond()</code
-							> methods.
-						</p>
-						<div class="bg-muted rounded-lg p-4">
-							<pre class="text-xs leading-relaxed"><code class="text-foreground"
-									>{`<script lang="ts">
+			{@render SectionCard(
+				'Accessing from Parent',
+				`<script lang="ts">
   import TreeRoot from './tree-root.svelte';
   
   let treeRef: TreeRoot;
@@ -703,12 +612,9 @@ function _factory(props) {
 </script>
 
 <TreeRoot bind:this={treeRef} />
-<button onclick={handleClick}>Toggle Tree</button>`}</code
-								></pre>
-						</div>
-					</div>
-				</Card.Body>
-			</Card.Root>
+<button onclick={handleClick}>Toggle Tree</button>`,
+				'Parent components can access child bonds via exported <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">getBond()</code> methods.'
+			)}
 		</div>
 	</section>
 
@@ -721,8 +627,8 @@ function _factory(props) {
 			</p>
 		</div>
 
-		<div class="space-y-4">
-			<Card.Root class="border-2">
+		<div class="grid gap-4 md:grid-cols-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<div class="mb-2 flex items-center gap-2">
 						<div class="text-primary">
@@ -741,16 +647,16 @@ function _factory(props) {
 								<polyline points="22 4 12 14.01 9 11.01"></polyline>
 							</svg>
 						</div>
-						<h3 class="font-semibold">Complex Component State</h3>
+						<h3 class="font-semibold">Building Compound Components</h3>
 					</div>
 					<p class="text-muted-foreground text-sm">
-						When your component has multiple related pieces of state and behavior that need to stay
-						in sync.
+						When creating components with multiple parts that need to share state across separate
+						child components. This is the primary use case for bonds.
 					</p>
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<div class="mb-2 flex items-center gap-2">
 						<div class="text-primary">
@@ -769,15 +675,16 @@ function _factory(props) {
 								<polyline points="22 4 12 14.01 9 11.01"></polyline>
 							</svg>
 						</div>
-						<h3 class="font-semibold">Shared State</h3>
+						<h3 class="font-semibold">Shareable State Across Components</h3>
 					</div>
 					<p class="text-muted-foreground text-sm">
-						When multiple components need to access and modify the same state in a coordinated way.
+						When multiple child components need to access and modify the same state in a coordinated
+						way without prop drilling.
 					</p>
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<div class="mb-2 flex items-center gap-2">
 						<div class="text-primary">
@@ -804,7 +711,7 @@ function _factory(props) {
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<div class="mb-2 flex items-center gap-2">
 						<div class="text-primary">
@@ -832,38 +739,33 @@ function _factory(props) {
 			</Card.Root>
 		</div>
 
-		<Card.Root class="mt-6 border-2 border-amber-500/30 bg-amber-500/5">
-			<Card.Body class="p-5">
-				<div class="flex gap-3">
-					<div class="mt-0.5 flex-shrink-0 text-amber-600 dark:text-amber-400">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M21.73 18l-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
-							></path>
-							<path d="M12 9v4"></path>
-							<path d="M12 17h.01"></path>
-						</svg>
-					</div>
-					<div class="text-sm">
-						<p class="font-semibold">When Not to Use Bonds</p>
-						<p class="text-muted-foreground mt-1.5">
-							For simple components with a single piece of state, a plain <code
-								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`$state`}</code
-							> variable is often clearer. Don't over-engineer.
-						</p>
-					</div>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<Alert.Root variant="warning" class="mt-6">
+			<Alert.Title>
+				<Alert.Icon>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="12" cy="12" r="10" />
+						<line x1="12" y1="8" x2="12" y2="12" />
+						<line x1="12" y1="16" x2="12.01" y2="16" />
+					</svg>
+				</Alert.Icon>
+				<span>When Not to Use Bonds</span>
+			</Alert.Title>
+			<Alert.Content>
+				For simple components with a single piece of state, a plain <code
+					class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`$state`}</code
+				> variable is often clearer. Don't over-engineer.
+			</Alert.Content>
+		</Alert.Root>
 	</section>
 
 	<!-- Best Practices -->
@@ -873,19 +775,20 @@ function _factory(props) {
 			<p class="text-muted-foreground">Guidelines for working effectively with Bonds.</p>
 		</div>
 
-		<div class="space-y-4">
-			<Card.Root class="border-2">
+		<div class="grid gap-4 md:grid-cols-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Use Props as Functions</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
 						Always pass props to BondState as a function (<code
-							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">() =&gt; props</code
+							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs whitespace-nowrap"
+							>() =&gt; props</code
 						>) for fine-grained reactivity. This ensures only accessed properties trigger updates.
 					</p>
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Type Your Elements</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
@@ -897,7 +800,7 @@ function _factory(props) {
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Use Attachment Keys</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
@@ -909,19 +812,20 @@ function _factory(props) {
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Keep Context Keys Unique</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
 						Use descriptive, prefixed context keys like <code
 							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
 							>'@atoms/context/component-name'</code
-						> to avoid collisions with other context values.
+						> to avoid collisions with other context values. When extending from other existing bonds,
+						it's recommended to keep using the same context key to maintain compatibility.
 					</p>
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Spread Bond Props</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
@@ -933,7 +837,7 @@ function _factory(props) {
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="">
 				<Card.Body class="p-5">
 					<h3 class="mb-2 font-semibold">Export getBond()</h3>
 					<p class="text-muted-foreground text-sm leading-relaxed">
@@ -957,99 +861,55 @@ function _factory(props) {
 		</div>
 
 		<div class="grid gap-5 sm:grid-cols-2">
-			<Card.Root
-				class="group border-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+			<LinkCard
+				title="Philosophy"
+				description="Understand the design principles and architecture behind Bonds."
+				href="/docs/philosophy"
+				linkText="Read philosophy"
 			>
-				<Card.Body class="p-6">
-					<div class="text-primary mb-4 transition-transform group-hover:scale-110">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-							<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-						</svg>
-					</div>
-					<h3 class="mb-2 text-lg font-semibold">Philosophy</h3>
-					<p class="text-muted-foreground mb-4 text-sm">
-						Understand the design principles and architecture behind Bonds.
-					</p>
-					<a
-						href="/docs/philosophy"
-						class="text-primary inline-flex items-center gap-1 text-sm font-semibold transition-all hover:gap-2"
+				{#snippet icon()}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
 					>
-						Read philosophy
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M5 12h14M12 5l7 7-7 7" />
-						</svg>
-					</a>
-				</Card.Body>
-			</Card.Root>
+						<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+						<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+					</svg>
+				{/snippet}
+			</LinkCard>
 
-			<Card.Root
-				class="group border-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+			<LinkCard
+				title="Browse Components"
+				description="See Bonds in action with real component examples."
+				href="/docs"
+				linkText="View components"
 			>
-				<Card.Body class="p-6">
-					<div class="text-primary mb-4 transition-transform group-hover:scale-110">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<rect width="7" height="7" x="3" y="3" rx="1" />
-							<rect width="7" height="7" x="14" y="3" rx="1" />
-							<rect width="7" height="7" x="14" y="14" rx="1" />
-							<rect width="7" height="7" x="3" y="14" rx="1" />
-						</svg>
-					</div>
-					<h3 class="mb-2 text-lg font-semibold">Browse Components</h3>
-					<p class="text-muted-foreground mb-4 text-sm">
-						See Bonds in action with real component examples.
-					</p>
-					<a
-						href="/docs"
-						class="text-primary inline-flex items-center gap-1 text-sm font-semibold transition-all hover:gap-2"
+				{#snippet icon()}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
 					>
-						View components
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M5 12h14M12 5l7 7-7 7" />
-						</svg>
-					</a>
-				</Card.Body>
-			</Card.Root>
+						<rect width="7" height="7" x="3" y="3" rx="1" />
+						<rect width="7" height="7" x="14" y="3" rx="1" />
+						<rect width="7" height="7" x="14" y="14" rx="1" />
+						<rect width="7" height="7" x="3" y="14" rx="1" />
+					</svg>
+				{/snippet}
+			</LinkCard>
 		</div>
 	</section>
 </div>

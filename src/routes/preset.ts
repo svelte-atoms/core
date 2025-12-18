@@ -124,7 +124,7 @@ export const preset: Partial<Preset> = {
 		class: 'text-accent'
 	}),
 	alert: () => ({
-		class: 'relative gap-1 rounded-md border p-4 transition-all duration-200',
+		class: 'relative gap-1 flex flex-col rounded-md border p-4 transition-all duration-200',
 		variants: {
 			variant: {
 				primary: {
@@ -145,6 +145,13 @@ export const preset: Partial<Preset> = {
 				},
 				ghost: {
 					class: 'bg-transparent hover:bg-accent/90 active:bg-accent/100 text-accent-foreground'
+				},
+				warning: {
+					class:
+						'bg-yellow-500/5 text-yellow-500 border-yellow-500/50 border hover:bg-yellow-500/8 active:bg-yellow-500/10'
+				},
+				info: {
+					class: 'bg-blue-500/5 text-blue-500 border-blue-500/50 border hover:bg-blue-500/8 active:bg-blue-500/10'
 				}
 			}
 		},
@@ -156,10 +163,10 @@ export const preset: Partial<Preset> = {
 		class: 'inline-flex aspect-square size-4 shrink-0 items-center justify-center'
 	}),
 	'alert.content': () => ({
-		class: 'flex-1 space-y-1'
+		class: 'flex-1 space-y-1 text-sm'
 	}),
 	'alert.title': () => ({
-		class: 'text-md font-semibold leading-tight'
+		class: 'text-md font-semibold leading-tight flex items-center gap-1'
 	}),
 	'alert.description': () => ({
 		class: 'text-sm leading-relaxed opacity-90'
@@ -177,5 +184,29 @@ export const preset: Partial<Preset> = {
 	'tab.header': () => ({
 		class:
 			"text-muted-foreground data-[active='true']:text-primary hover:text-foreground data-[active='true']:border-b-primary border-b border-transparent px-4 py-2"
+	}),
+	card: () => ({
+		class: 'bg-card rounded-lg border border-border p-4 shadow-sm'
+	}),
+	'card.content': () => ({
+		class: 'space-y-2'
+	}),
+	'card.header': () => ({
+		class: 'font-semibold text-lg'
+	}),
+	'card.body': () => ({
+		class: ''
+	}),
+	'card.title': () => ({
+		class: 'font-medium text-md'
+	}),
+	'card.description': () => ({
+		class: 'text-sm text-muted-foreground'
+	}),
+	'card.subtitle': () => ({
+		class: 'text-sm text-muted-foreground'
+	}),
+	'card.media': () => ({
+		class: 'rounded-md overflow-hidden'
 	})
 };

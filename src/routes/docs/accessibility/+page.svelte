@@ -525,21 +525,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Component Examples</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{keyboardExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Component Examples</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{keyboardExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- ARIA Attributes -->
@@ -654,21 +647,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Automatic ARIA Management</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{ariaExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Automatic ARIA Management</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{ariaExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Focus Management -->
@@ -748,37 +734,23 @@ ${'<'}/script>`;
 			</div>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Trap Example</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{focusTrapExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col mb-6">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Trap Example</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{focusTrapExample}</code></pre>
+			</div>
+		</div>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Restoration Example</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{focusManagementExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Restoration Example</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{focusManagementExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Semantic HTML -->
@@ -802,21 +774,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Semantic Structure</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{semanticExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Semantic Structure</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{semanticExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Screen Reader Support -->
@@ -896,21 +861,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Screen Reader Patterns</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{screenReaderExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Screen Reader Patterns</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{screenReaderExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Custom Attributes -->
@@ -933,21 +891,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Variants with ARIA</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{customAttributesExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Variants with ARIA</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{customAttributesExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Disabled States -->
@@ -973,21 +924,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Disabled State Handling</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{disabledStateExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Disabled State Handling</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{disabledStateExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Visual Indicators -->
@@ -1013,21 +957,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Styles</span>
-					<Badge variant="secondary" class="text-xs">CSS</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{visualIndicatorsExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Styles</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{visualIndicatorsExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Reduced Motion -->
@@ -1051,21 +988,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Reduced Motion Pattern</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{reducedMotionExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Reduced Motion Pattern</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{reducedMotionExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Color Contrast -->
@@ -1088,21 +1018,14 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Accessible Color Pairs</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{colorContrastExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Accessible Color Pairs</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{colorContrastExample}</code></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Testing -->

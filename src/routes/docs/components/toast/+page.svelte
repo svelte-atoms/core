@@ -80,19 +80,19 @@ const preset = createPreset({
 	<Section title="Examples" description="Explore different toast notifications">
 		<div class="space-y-8">
 			<DemoExample title="Basic Toast" description="Simple notification" code={basicCode}>
-				<Button
-					onclick={() => {
-						showToast = true;
-						toastVariant = 'default';
-					}}
-				>
-					Show Toast
-				</Button>
-				{#if showToast && toastVariant === 'default'}
-					<Toast variant="default" onclose={() => (showToast = false)}>
-						This is a toast message
-					</Toast>
-				{/if}
+				<Toast.Root onclose={() => (showToast = false)}>
+					<Toast.Trigger
+						base={Button}
+						variant="secondary"
+						onclick={() => {
+							showToast = true;
+							toastVariant = 'default';
+						}}
+					>
+						Show Toast
+					</Toast.Trigger>
+					<Toast.Content>This is a toast message</Toast.Content>
+				</Toast.Root>
 			</DemoExample>
 
 			<DemoExample

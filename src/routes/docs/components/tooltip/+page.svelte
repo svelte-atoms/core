@@ -11,14 +11,25 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { Button } from '$svelte-atoms/core';
 
-	const basicCode = `<Tooltip content="This is a tooltip">
-  <button>Hover me</button>
-</Tooltip>`;
+	const basicCode = `<Tooltip.Root>
+  <Tooltip.Trigger>
+    <button>Hover me</button>
+  </Tooltip.Trigger>
+  <Tooltip.Content>
+    This is a tooltip
+  </Tooltip.Content>
+</Tooltip.Root>`;
 
-	const placementCode = `<Tooltip content="Top tooltip" placement="top">
-  <button>Top</button>
-</Tooltip>`;
+	const placementCode = `<Tooltip.Root placement="top">
+  <Tooltip.Trigger>
+    <button>Top</button>
+  </Tooltip.Trigger>
+  <Tooltip.Content>
+    Top tooltip
+  </Tooltip.Content>
+</Tooltip.Root>`;
 </script>
 
 <svelte:head>
@@ -53,10 +64,13 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
-  tooltip: () => ({
+setPreset({
+  'tooltip.trigger': () => ({
+    class: 'cursor-pointer'
+  }),
+  'tooltip.content': () => ({
     class: 'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95'
   })
 });`}
@@ -67,9 +81,10 @@ const preset = createPreset({
 	<Section title="Examples" description="Explore different tooltip variations">
 		<div class="space-y-8">
 			<DemoExample title="Basic Tooltip" description="Simple tooltip on hover" code={basicCode}>
-				<Tooltip content="This is a helpful tooltip">
-					<button class="rounded border px-4 py-2"> Hover me </button>
-				</Tooltip>
+				<Tooltip.Root>
+					<Tooltip.Trigger base={Button} class="rounded border px-4 py-2">Hover me</Tooltip.Trigger>
+					<Tooltip.Content class="">This is a helpful tooltip</Tooltip.Content>
+				</Tooltip.Root>
 			</DemoExample>
 
 			<DemoExample
@@ -78,70 +93,123 @@ const preset = createPreset({
 				code={placementCode}
 			>
 				<div class="flex gap-4">
-					<Tooltip content="Top tooltip" placement="top">
-						<button class="rounded border px-4 py-2">Top</button>
-					</Tooltip>
-					<Tooltip content="Bottom tooltip" placement="bottom">
-						<button class="rounded border px-4 py-2">Bottom</button>
-					</Tooltip>
-					<Tooltip content="Left tooltip" placement="left">
-						<button class="rounded border px-4 py-2">Left</button>
-					</Tooltip>
-					<Tooltip content="Right tooltip" placement="right">
-						<button class="rounded border px-4 py-2">Right</button>
-					</Tooltip>
+					<Tooltip.Root placement="top">
+						<Tooltip.Trigger base={Button} class="rounded border px-4 py-2">Top</Tooltip.Trigger>
+						<Tooltip.Content class="">Top tooltip</Tooltip.Content>
+					</Tooltip.Root>
+					<Tooltip.Root placement="bottom">
+						<Tooltip.Trigger base={Button} class="rounded border px-4 py-2">Bottom</Tooltip.Trigger>
+						<Tooltip.Content class="">Bottom tooltip</Tooltip.Content>
+					</Tooltip.Root>
+					<Tooltip.Root placement="left">
+						<Tooltip.Trigger base={Button} class="rounded border px-4 py-2">Left</Tooltip.Trigger>
+						<Tooltip.Content class="">Left tooltip</Tooltip.Content>
+					</Tooltip.Root>
+					<Tooltip.Root placement="right">
+						<Tooltip.Trigger base={Button} class="rounded border px-4 py-2">Right</Tooltip.Trigger>
+						<Tooltip.Content class="">Right tooltip</Tooltip.Content>
+					</Tooltip.Root>
 				</div>
 			</DemoExample>
 
 			<DemoExample
-				title="Custom Delay"
-				description="Control show delay"
-				code={`<Tooltip content="Quick" delay={0}>
-  <button>Instant<\/button>
-<\/Tooltip>`}
+				title="With Arrow"
+				description="Tooltip with arrow indicator"
+				code={`<Tooltip.Root>
+  <Tooltip.Trigger>
+    <button>Hover me</button>
+  </Tooltip.Trigger>
+  <Tooltip.Content>
+    Tooltip with arrow
+    <Tooltip.Arrow />
+  </Tooltip.Content>
+</Tooltip.Root>`}
 			>
-				<div class="flex gap-4">
-					<Tooltip content="Instant tooltip" delay={0}>
-						<button class="rounded border px-4 py-2">No delay</button>
-					</Tooltip>
-					<Tooltip content="Delayed tooltip" delay={1000}>
-						<button class="rounded border px-4 py-2">1s delay</button>
-					</Tooltip>
-				</div>
+				<Tooltip.Root>
+					<Tooltip.Trigger base={Button} class="rounded px-4 py-2">Hover for arrow</Tooltip.Trigger>
+					<Tooltip.Content class="">
+						Tooltip with arrow
+						<Tooltip.Arrow />
+					</Tooltip.Content>
+				</Tooltip.Root>
 			</DemoExample>
 		</div>
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
+		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">Container for the tooltip component.</p>
 				<Props
 					data={[
 						{
-							name: 'content',
-							type: 'string',
-							default: "''",
-							description: 'Tooltip text'
+							name: 'open',
+							type: 'boolean',
+							default: 'false',
+							description: 'Controls tooltip visibility (bindable)'
 						},
 						{
 							name: 'placement',
-							type: "'top' | 'bottom' | 'left' | 'right'",
+							type: "'top' | 'bottom' | 'left' | 'right' | ...",
 							default: "'top'",
-							description: 'Tooltip position'
+							description: 'Tooltip position relative to trigger'
 						},
 						{
-							name: 'delay',
+							name: 'offset',
 							type: 'number',
-							default: '200',
-							description: 'Show delay (ms)'
+							default: '1',
+							description: 'Distance from trigger element'
 						},
 						{
 							name: 'disabled',
 							type: 'boolean',
 							default: 'false',
 							description: 'Disable tooltip'
-						},
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Trigger</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Element that triggers the tooltip on hover.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Content</h3>
+				<p class="text-muted-foreground mb-4 text-sm">The tooltip content that appears on hover.</p>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Arrow</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Optional arrow pointing to the trigger element.
+				</p>
+				<Props
+					data={[
 						{
 							name: 'class',
 							type: 'string',

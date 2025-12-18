@@ -34,16 +34,32 @@
   </Menu.List>
 </Menu.Root>`;
 
-	const presetConfigCode = `import { createPreset } from '@svelte-atoms/core';
+	const presetConfigCode = `import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
+setPreset({
+  // Menu-specific presets
   menu: () => ({
     class: 'flex flex-col rounded-md border border-border bg-background py-1 text-popover-foreground shadow-md outline-none'
   }),
+  'menu.list': () => ({
+    class: 'flex flex-col gap-1 p-1'
+  }),
   'menu.item': () => ({
     class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
+  }),
+  
+  // Popover presets (Menu depends on Popover for positioning)
+  'popover.trigger': () => ({
+    class: 'inline-flex items-center justify-center'
+  }),
+  'popover.arrow': () => ({
+    class: 'fill-background'
+  }),
+  'popover.indicator': () => ({
+    class: 'data-[state=open]:animate-in data-[state=closed]:animate-out'
   })
-});`;
+});
+`;
 </script>
 
 <svelte:head>

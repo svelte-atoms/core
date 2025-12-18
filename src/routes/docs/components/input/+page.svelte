@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Input } from '$lib/components/input';
+	import { Alert } from '$lib/components/alert';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -12,16 +13,36 @@
 		CodeBlock
 	} from '$docs/components';
 
-	const basicCode = `<Input placeholder="Enter text..." />`;
+	const basicCode = `<Input.Root>
+  <Input.Control placeholder="Enter text..." />
+</Input.Root>`;
 
-	const typesCode = `<Input type="text" placeholder="Text input" />
-<Input type="email" placeholder="Email input" />
-<Input type="password" placeholder="Password input" />
-<Input type="number" placeholder="Number input" />`;
+	const typesCode = `<Input.Root>
+  <Input.Control type="text" placeholder="Text input" />
+</Input.Root>
 
-	const sizesCode = `<Input size="sm" placeholder="Small" />
-<Input size="md" placeholder="Medium" />
-<Input size="lg" placeholder="Large" />`;
+<Input.Root>
+  <Input.Control type="email" placeholder="Email input" />
+</Input.Root>
+
+<Input.Root>
+  <Input.Control type="password" placeholder="Password input" />
+</Input.Root>
+
+<Input.Root>
+  <Input.Control type="number" placeholder="Number input" />
+</Input.Root>`;
+
+	const withIconCode = `<Input.Root>
+  <Input.Icon>$</Input.Icon>
+  <Input.Control placeholder="0.00" />
+  <Input.Icon>.00</Input.Icon>
+</Input.Root>`;
+
+	const withPlaceholderCode = `<Input.Root>
+  <Input.Control />
+  <Input.Placeholder>Enter your email...</Input.Placeholder>
+</Input.Root>`;
 
 	let value = $state('');
 </script>
@@ -47,6 +68,20 @@
 		/>
 	</Section>
 
+	<Alert.Root variant="info" class="my-8">
+		<Alert.Title>Why a Compound Component?</Alert.Title>
+		<Alert.Content class="text-foreground/60">
+			Input is designed as a compound component (Root, Control, Icon, Placeholder) to maximize
+			reusability. This means other components can reuse <code
+				class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code
+			>
+			styling without recreating it from scratch. For example, a dropdown trigger can look exactly like
+			an input by wrapping its content with
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code>,
+			maintaining consistent styling across your application.
+		</Alert.Content>
+	</Alert.Root>
+
 	<Section title="Preset Configuration" description="Customize the input appearance using presets">
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
@@ -59,10 +94,23 @@
 
 const preset = createPreset({
   input: () => ({
-    class: 'flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+    class: 'flex items-center gap-0 rounded-md border border-border bg-background'
+  }),
+  'input.control': () => ({
+    class: 'flex-1 px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
+  }),
+  'input.icon': () => ({
+    class: 'flex items-center justify-center px-2 text-muted-foreground'
+  }),
+  'input.placeholder': () => ({
+    class: 'pointer-events-none absolute text-muted-foreground'
   })
 });`}
 			/>
+			<p class="text-muted-foreground mt-4 text-sm">
+				The Input component uses a compound structure with separate preset keys for Root, Control,
+				Icon, and Placeholder.
+			</p>
 		</div>
 	</Section>
 
@@ -96,21 +144,26 @@ const preset = createPreset({
 			</DemoExample>
 
 			<DemoExample
-				title="Input Sizes"
-				description="Different sizes for various contexts"
-				code={sizesCode}
+				title="Input with Icons"
+				description="Add icons or text decorations around the input"
+				code={withIconCode}
 			>
-				<div class="max-w-sm space-y-4">
-					<Input.Root size="sm">
-						<Input.Control placeholder="Small input" />
-					</Input.Root>
-					<Input.Root size="md">
-						<Input.Control placeholder="Medium input" />
-					</Input.Root>
-					<Input.Root size="lg">
-						<Input.Control placeholder="Large input" />
-					</Input.Root>
-				</div>
+				<Input.Root class="max-w-sm">
+					<Input.Icon class="text-foreground px-2">$</Input.Icon>
+					<Input.Control class="border-border border-x px-2 py-2" placeholder="0.00" />
+					<Input.Icon class="text-foreground px-2">.00</Input.Icon>
+				</Input.Root>
+			</DemoExample>
+
+			<DemoExample
+				title="Input with Placeholder"
+				description="Custom placeholder component that disappears when input has value"
+				code={withPlaceholderCode}
+			>
+				<Input.Root class="max-w-sm">
+					<Input.Control class="px-3 py-2" />
+					<Input.Placeholder class="text-muted-foreground">Enter your email...</Input.Placeholder>
+				</Input.Root>
 			</DemoExample>
 
 			<DemoExample
@@ -120,12 +173,14 @@ const preset = createPreset({
   let value = $state('');
 <\/script>
 
-<Input bind:value />
+<Input.Root>
+  <Input.Control bind:value />
+</Input.Root>
 <p>You typed: {value}</p>`}
 			>
 				<div class="max-w-sm space-y-4">
-					<Input.Root class="max-w-sm">
-						<Input.Control bind:value placeholder="Type something..." />
+					<Input.Root>
+						<Input.Control bind:value class="px-3 py-2" placeholder="Type something..." />
 					</Input.Root>
 					<p class="text-muted-foreground text-sm">You typed: {value || '(nothing yet)'}</p>
 				</div>
@@ -134,40 +189,144 @@ const preset = createPreset({
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
+		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Input Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container component that manages input state and context.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'value',
+							type: 'string | number',
+							default: 'undefined',
+							description: 'Controlled value (bindable)'
+						},
+						{
+							name: 'checked',
+							type: 'boolean',
+							default: 'undefined',
+							description: 'Checked state for checkbox/radio inputs (bindable)'
+						},
+						{
+							name: 'files',
+							type: 'File[]',
+							default: '[]',
+							description: 'Files for file input (bindable)'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'input'",
+							description: 'Preset configuration key'
+						},
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Control</h3>
+				<p class="text-muted-foreground mb-4 text-sm">The actual input element.</p>
 				<Props
 					data={[
 						{
 							name: 'type',
-							type: 'string',
+							type: 'HTMLInputTypeAttribute',
 							default: "'text'",
-							description: 'Input type (text, email, password, etc.)'
+							description: 'Input type (text, email, password, number, date, file, etc.)'
 						},
 						{
 							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Input value'
+							type: 'any',
+							default: 'undefined',
+							description: 'Input value (bindable)'
+						},
+						{
+							name: 'number',
+							type: 'number',
+							default: 'undefined',
+							description: 'Number value for type="number" (bindable)'
+						},
+						{
+							name: 'date',
+							type: 'Date',
+							default: 'null',
+							description: 'Date value for date inputs (bindable)'
+						},
+						{
+							name: 'files',
+							type: 'File[]',
+							default: '[]',
+							description: 'Files for type="file" (bindable)'
+						},
+						{
+							name: 'checked',
+							type: 'boolean',
+							default: 'undefined',
+							description: 'Checked state (bindable)'
 						},
 						{
 							name: 'placeholder',
 							type: 'string',
 							default: "''",
-							description: 'Placeholder text'
+							description: 'Native placeholder text'
 						},
 						{
-							name: 'size',
-							type: "'sm' | 'md' | 'lg'",
-							default: "'md'",
-							description: 'Input size'
+							name: 'preset',
+							type: 'string',
+							default: "'input.control'",
+							description: 'Preset configuration key'
 						},
 						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable input'
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Icon</h3>
+				<p class="text-muted-foreground mb-4 text-sm">Icon or text decoration component.</p>
+				<Props
+					data={[
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'input.icon'",
+							description: 'Preset configuration key'
+						},
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Placeholder</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Custom placeholder component that automatically hides when input has value.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'input.placeholder'",
+							description: 'Preset configuration key'
 						},
 						{
 							name: 'class',
@@ -180,7 +339,7 @@ const preset = createPreset({
 			</div>
 		</div>
 	</Section>
-
+<!-- 
 	<Section title="Accessibility">
 		<AccessibilityInfo
 			features={[
@@ -191,7 +350,7 @@ const preset = createPreset({
 				'Screen reader friendly'
 			]}
 		/>
-	</Section>
+	</Section> -->
 
 	<PageNavigation
 		prev={{ label: 'Form', href: '/docs/components/form' }}

@@ -14,12 +14,16 @@
 	} from '$docs/components';
 
 	const basicCode = `<Label for="email">Email Address</Label>
-<Input id="email" type="email" />`;
+<Input.Root>
+  <Input.Control id="email" type="email" />
+</Input.Root>`;
 
 	const requiredCode = `<Label for="username">
   Username <span class="text-red-500">*</span>
 </Label>
-<Input id="username" required />`;
+<Input.Root>
+  <Input.Control id="username" required />
+</Input.Root>`;
 </script>
 
 <svelte:head>
@@ -67,7 +71,9 @@ const preset = createPreset({
 			<DemoExample title="Basic Label" description="Simple label with input" code={basicCode}>
 				<div class="max-w-sm space-y-2">
 					<Label for="email">Email Address</Label>
-					<Input id="email" type="email" placeholder="you@example.com" />
+					<Input.Root>
+						<Input.Control id="email" type="email" placeholder="you@example.com" class="px-3 py-2" />
+					</Input.Root>
 				</div>
 			</DemoExample>
 
@@ -80,7 +86,9 @@ const preset = createPreset({
 					<Label for="username">
 						Username <span class="text-red-500">*</span>
 					</Label>
-					<Input id="username" required placeholder="johndoe" />
+					<Input.Root>
+						<Input.Control id="username" required placeholder="johndoe" class="px-3 py-2" />
+					</Input.Root>
 				</div>
 			</DemoExample>
 
@@ -91,12 +99,16 @@ const preset = createPreset({
 <p class="text-sm text-muted-foreground">
   Tell us about yourself
 </p>
-<Input id="bio" />`}
+<Input.Root>
+  <Input.Control id="bio" />
+</Input.Root>`}
 			>
 				<div class="max-w-sm space-y-2">
 					<Label for="bio">Bio</Label>
 					<p class="text-muted-foreground text-sm">Tell us about yourself</p>
-					<Input id="bio" placeholder="I'm a developer..." />
+					<Input.Root>
+						<Input.Control id="bio" placeholder="I'm a developer..." class="px-3 py-2" />
+					</Input.Root>
 				</div>
 			</DemoExample>
 		</div>
