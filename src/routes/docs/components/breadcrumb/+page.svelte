@@ -11,24 +11,23 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
-	import { breadcrumbProps } from './props';
+	import breadcrumbProps from './props';
 
-	const basicCode = `<Breadcrumb 
-  items={[
-    { label: 'Home', href: '/' },
-    { label: 'Components', href: '/components' },
-    { label: 'Breadcrumb' }
-  ]} 
-/>`;
+	const basicCode = `<Breadcrumb.Root>
+  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Item href="/components">Components</Breadcrumb.Item>
+  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Item>Breadcrumb</Breadcrumb.Item>
+</Breadcrumb.Root>`;
 
-	const customSeparatorCode = `<Breadcrumb 
-  items={[
-    { label: 'Home', href: '/' },
-    { label: 'Docs', href: '/docs' },
-    { label: 'Components' }
-  ]}
-  separator=">"
-/>`;
+	const customSeparatorCode = `<Breadcrumb.Root>
+  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+  <Breadcrumb.Separator>></Breadcrumb.Separator>
+  <Breadcrumb.Item href="/docs">Docs</Breadcrumb.Item>
+  <Breadcrumb.Separator>></Breadcrumb.Separator>
+  <Breadcrumb.Item>Components</Breadcrumb.Item>
+</Breadcrumb.Root>`;
 </script>
 
 <svelte:head>
@@ -65,11 +64,17 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
-  breadcrumb: () => ({
-    class: 'flex items-center space-x-1 text-sm text-muted-foreground'
+setPreset({
+  'breadcrumb': () => ({
+    class: 'flex items-center gap-1 text-sm'
+  }),
+  'breadcrumb.item': () => ({
+    class: 'hover:text-primary rounded-lg px-2 py-1 hover:bg-primary/5'
+  }),
+  'breadcrumb.separator': () => ({
+    class: 'text-muted-foreground px-0'
   })
 });`}
 			/>
@@ -83,13 +88,13 @@ const preset = createPreset({
 				description="Simple breadcrumb navigation"
 				code={basicCode}
 			>
-				<BreadcrumbComponent
-					items={[
-						{ label: 'Home', href: '/' },
-						{ label: 'Components', href: '/docs/components' },
-						{ label: 'Breadcrumb' }
-					]}
-				/>
+				<BreadcrumbComponent.Root>
+					<BreadcrumbComponent.Item href="/">Home</BreadcrumbComponent.Item>
+					<BreadcrumbComponent.Separator>/</BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Item href="/docs/components">Components</BreadcrumbComponent.Item>
+					<BreadcrumbComponent.Separator>/</BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Item>Breadcrumb</BreadcrumbComponent.Item>
+				</BreadcrumbComponent.Root>
 			</DemoExample>
 
 			<DemoExample
@@ -97,23 +102,41 @@ const preset = createPreset({
 				description="Use custom separator between items"
 				code={customSeparatorCode}
 			>
-				<BreadcrumbComponent
-					items={[
-						{ label: 'Home', href: '/' },
-						{ label: 'Docs', href: '/docs' },
-						{ label: 'Components' }
-					]}
-					separator=">"
-				/>
+				<BreadcrumbComponent.Root>
+					<BreadcrumbComponent.Item href="/">Home</BreadcrumbComponent.Item>
+					<BreadcrumbComponent.Separator>></BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Item href="/docs">Docs</BreadcrumbComponent.Item>
+					<BreadcrumbComponent.Separator>></BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Item>Components</BreadcrumbComponent.Item>
+				</BreadcrumbComponent.Root>
 			</DemoExample>
 		</div>
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
+		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb Props</h3>
-				<Props data={breadcrumbProps} />
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container for breadcrumb navigation.
+				</p>
+				<Props data={breadcrumbProps.root} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Item</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Individual breadcrumb link or text item.
+				</p>
+				<Props data={breadcrumbProps.item} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Separator</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Visual separator between breadcrumb items.
+				</p>
+				<Props data={breadcrumbProps.separator} />
 			</div>
 		</div>
 	</Section>
