@@ -15,9 +15,9 @@
 
 	const basicCode = `<Breadcrumb.Root>
   <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Separator />
   <Breadcrumb.Item href="/components">Components</Breadcrumb.Item>
-  <Breadcrumb.Separator>/</Breadcrumb.Separator>
+  <Breadcrumb.Separator />
   <Breadcrumb.Item>Breadcrumb</Breadcrumb.Item>
 </Breadcrumb.Root>`;
 
@@ -90,9 +90,9 @@ setPreset({
 			>
 				<BreadcrumbComponent.Root>
 					<BreadcrumbComponent.Item href="/">Home</BreadcrumbComponent.Item>
-					<BreadcrumbComponent.Separator>/</BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Separator/>
 					<BreadcrumbComponent.Item href="/docs/components">Components</BreadcrumbComponent.Item>
-					<BreadcrumbComponent.Separator>/</BreadcrumbComponent.Separator>
+					<BreadcrumbComponent.Separator/>
 					<BreadcrumbComponent.Item>Breadcrumb</BreadcrumbComponent.Item>
 				</BreadcrumbComponent.Root>
 			</DemoExample>
