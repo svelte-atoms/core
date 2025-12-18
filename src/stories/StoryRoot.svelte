@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { colorScheme } from '$lib';
+	import { clickoutDrawer, clickoutPopover, colorScheme } from '$lib';
 	import { setPreset, type Preset } from '$lib/context';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
+	import { createAttachmentKey } from 'svelte/attachments';
 
 	let { children = undefined } = $props();
 
@@ -76,7 +77,35 @@
 			class: 'text-sm px-2'
 		}),
 		'popover.content': () => ({
-			class: ''
+			class: '',
+			variants: {
+				autoClose: {
+					true: {
+						class: '',
+						[createAttachmentKey()]: clickoutPopover((_, atom) => {
+							atom.state.close();
+						})
+					}
+				}
+			}
+		}),
+		'menu.list': () => ({
+			class: '',
+			[createAttachmentKey()]: clickoutPopover((_, atom) => {
+				atom.state.close();
+			})
+		}),
+		'dropdown.list': () => ({
+			class: '',
+			[createAttachmentKey()]: clickoutPopover((_, atom) => {
+				atom.state.close();
+			})
+		}),
+
+		'drawer.content': () => ({
+			[createAttachmentKey()]: clickoutDrawer((_, bond) => {
+				bond?.state?.close?.();
+			})
 		}),
 
 		alert: () => ({
