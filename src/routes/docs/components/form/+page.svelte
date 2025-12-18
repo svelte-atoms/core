@@ -10,9 +10,11 @@
 		AccessibilityInfo,
 		PageNavigation,
 		DemoExample,
-		CodeBlock
+		CodeBlock,
+		Props
 	} from '$docs/components';
-	import { DataGrid } from '$lib/components/datagrid'; // Example form data
+	import formProps from './props';
+
 	let basicFormData = $state({
 		name: '',
 		email: ''
@@ -26,44 +28,62 @@
 	const basicCode = `<script lang="ts">
   import { Form, Field } from '@svelte-atoms/core/form';
   import { Input } from '@svelte-atoms/core/input';
+  import Button from '@svelte-atoms/core/button';
 <\/script>
 
-<Form onsubmit={(e) => e.preventDefault()}>
+<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
   <Field.Root>
-    <Field.Label for="name">Name</Field.Label>
-    <Field.Control component={Input.Root}>
-      <Input.Value bind:value={formData.name} />
+    <Field.Label class="">Name</Field.Label>
+    <Field.Control base={Input.Root}>
+      <Input.Control bind:value={formData.name} class="" />
     </Field.Control>
   </Field.Root>
   
-  <button type="submit">Submit</button>
+  <Field.Root>
+    <Field.Label class="">Email</Field.Label>
+    <Field.Control base={Input.Root}>
+      <Input.Control 
+        type="email" 
+        bind:value={formData.email} 
+        placeholder="Enter your email" 
+        class="" 
+      />
+    </Field.Control>
+  </Field.Root>
+  
+  <Button class="w-full">Submit</Button>
 </Form>`;
 
-	const validatedCode = `<Form onsubmit={(e) => e.preventDefault()}>
-  <div>
-    <label for="email">Email Address</label>
-    <input
-      id="email"
-      type="email"
-      bind:value={formData.email}
-      placeholder="Enter your email"
-      required
-    />
-  </div>
+	const validatedCode = `<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
+  <Field.Root>
+    <Field.Label class="">Email Address</Field.Label>
+    <Field.Control base={Input.Root}>
+      <Input.Control 
+        type="email" 
+        bind:value={formData.email} 
+        placeholder="Enter your email" 
+        required 
+        class="" 
+      />
+    </Field.Control>
+  </Field.Root>
   
-  <div>
-    <label for="password">Password</label>
-    <input
-      id="password"
-      type="password"
-      bind:value={formData.password}
-      placeholder="Enter your password"
-      required
-      minlength="8"
-    />
-  </div>
+  <Field.Root>
+    <Field.Label class="">Password</Field.Label>
+    <Field.Control base={Input.Root}>
+      <Input.Control 
+        type="password" 
+        bind:value={formData.password} 
+        placeholder="Enter your password" 
+        required 
+        minlength="8" 
+        class="" 
+      />
+    </Field.Control>
+    <p class="text-muted-foreground mt-1 text-xs">Password must be at least 8 characters</p>
+  </Field.Root>
   
-  <button type="submit">Create Account</button>
+  <Button class="w-full">Create Account</Button>
 </Form>`;
 </script>
 
@@ -99,23 +119,23 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
-  form: () => ({
+setPreset({
+  'form.root': () => ({
     class: 'space-y-4'
   }),
-  'form.field': () => ({
+  'field.root': () => ({
     class: 'space-y-2'
   }),
-  'form.field.label': () => ({
+  'field.label': () => ({
     class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
   }),
-  'form.field.description': () => ({
-    class: 'text-xs text-muted-foreground'
+  'field.control': () => ({
+    class: 'border-border bg-background focus:border-primary focus:ring-primary w-full rounded-md border px-3 py-2 text-sm'
   }),
-  'form.field.error': () => ({
-    class: 'text-xs text-destructive'
+  'field.errors': () => ({
+    class: 'text-xs text-destructive mt-1'
   })
 });`}
 			/>
@@ -127,33 +147,25 @@ const preset = createPreset({
 			<DemoExample title="Basic Form" description="Simple form with text inputs" code={basicCode}>
 				<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
 					<Field.Root>
-						<Field.Label for="basic-name" class="text-foreground mb-1 block text-sm font-medium">
-							Name
-						</Field.Label>
-						<Field.Control component={Input.Root}>
-							<Input.Value
-								bind:value={basicFormData.name}
-								class="border-border bg-background focus:border-primary focus:ring-primary w-full rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+						<Field.Label class="">Name</Field.Label>
+						<Field.Control base={Input.Root}>
+							<Input.Control bind:value={basicFormData.name} class="" />
+						</Field.Control>
+					</Field.Root>
+
+					<Field.Root>
+						<Field.Label class="">Email</Field.Label>
+						<Field.Control base={Input.Root}>
+							<Input.Control
+								type="email"
+								bind:value={basicFormData.email}
+								placeholder="Enter your email"
+								class=""
 							/>
 						</Field.Control>
 					</Field.Root>
 
-					<div>
-						<label for="basic-email" class="text-foreground mb-1 block text-sm font-medium">
-							Email
-						</label>
-						<input
-							id="basic-email"
-							type="email"
-							bind:value={basicFormData.email}
-							placeholder="Enter your email"
-							class="border-border bg-background focus:border-primary focus:ring-primary w-full rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-						/>
-					</div>
-
-					<Button class="bg-primary hover:bg-primary/90 w-full rounded-md px-4 py-2 text-white">
-						Submit
-					</Button>
+					<Button class="w-full">Submit</Button>
 				</Form>
 			</DemoExample>
 
@@ -163,331 +175,49 @@ const preset = createPreset({
 				code={validatedCode}
 			>
 				<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-					<div>
-						<label for="validated-email" class="text-foreground mb-1 block text-sm font-medium">
-							Email Address
-						</label>
-						<input
-							id="validated-email"
-							type="email"
-							bind:value={validatedFormData.email}
-							placeholder="Enter your email"
-							required
-							class="border-border bg-background focus:border-primary focus:ring-primary w-full rounded-md border px-3 py-2 text-sm invalid:border-red-500 invalid:ring-red-500 focus:ring-1 focus:outline-none"
-						/>
-					</div>
+					<Field.Root>
+						<Field.Label class="">Email Address</Field.Label>
+						<Field.Control base={Input.Root}>
+							<Input.Control
+								type="email"
+								bind:value={validatedFormData.email}
+								placeholder="Enter your email"
+								required
+								class=""
+							/>
+						</Field.Control>
+					</Field.Root>
 
-					<div>
-						<label for="validated-password" class="text-foreground mb-1 block text-sm font-medium">
-							Password
-						</label>
-						<input
-							id="validated-password"
-							type="password"
-							bind:value={validatedFormData.password}
-							placeholder="Enter your password"
-							required
-							minlength="8"
-							class="border-border bg-background focus:border-primary focus:ring-primary w-full rounded-md border px-3 py-2 text-sm invalid:border-red-500 invalid:ring-red-500 focus:ring-1 focus:outline-none"
-						/>
+					<Field.Root>
+						<Field.Label class="">Password</Field.Label>
+						<Field.Control base={Input.Root}>
+							<Input.Control
+								type="password"
+								bind:value={validatedFormData.password}
+								placeholder="Enter your password"
+								required
+								minlength="8"
+								class=""
+							/>
+						</Field.Control>
 						<p class="text-muted-foreground mt-1 text-xs">Password must be at least 8 characters</p>
-					</div>
+					</Field.Root>
 
-					<Button class="bg-primary hover:bg-primary/90 w-full rounded-md px-4 py-2 text-white">
-						Create Account
-					</Button>
+					<Button class="w-full">Create Account</Button>
 				</Form>
 			</DemoExample>
 		</div>
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
-			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Form Props</h3>
-				<div class="border-border bg-card overflow-x-auto rounded-lg border">
-					<DataGrid.Root class="min-w-full">
-						<DataGrid.Header class="bg-muted">
-							<DataGrid.Tr>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Prop</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Type</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Default</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									width="2fr">Description</DataGrid.Th
-								>
-							</DataGrid.Tr>
-						</DataGrid.Header>
-
-						<DataGrid.Body>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>class</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>''</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Additional CSS classes to apply</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>onsubmit</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>function</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Form submission handler</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>children</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>Snippet</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm">Form content</DataGrid.Td>
-							</DataGrid.Tr>
-						</DataGrid.Body>
-					</DataGrid.Root>
+		<div class="space-y-8">
+			{#each formProps as prop (prop.name)}
+				<div>
+					<h3 class="text-foreground mb-3 text-lg font-semibold">{prop.name}</h3>
+					<p class="text-muted-foreground mb-4 text-sm">{prop.description}</p>
+					<Props data={prop.props} />
 				</div>
-			</div>
-
-			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Field.Root Props</h3>
-				<div class="border-border bg-card overflow-x-auto rounded-lg border">
-					<DataGrid.Root class="min-w-full">
-						<DataGrid.Header class="bg-muted">
-							<DataGrid.Tr>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Prop</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Type</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Default</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									width="2fr">Description</DataGrid.Th
-								>
-							</DataGrid.Tr>
-						</DataGrid.Header>
-
-						<DataGrid.Body>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>name</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Field name for form data</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>value</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>any</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>''</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm">Field value</DataGrid.Td>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>class</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>''</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Additional CSS classes</DataGrid.Td
-								>
-							</DataGrid.Tr>
-						</DataGrid.Body>
-					</DataGrid.Root>
-				</div>
-			</div>
-
-			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Field.Label Props</h3>
-				<div class="border-border bg-card overflow-x-auto rounded-lg border">
-					<DataGrid.Root class="min-w-full">
-						<DataGrid.Header class="bg-muted">
-							<DataGrid.Tr>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Prop</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Type</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Default</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									width="2fr">Description</DataGrid.Th
-								>
-							</DataGrid.Tr>
-						</DataGrid.Header>
-
-						<DataGrid.Body>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>for</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>ID of the associated form control</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>class</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>''</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Additional CSS classes</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>children</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>Snippet</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm">Label content</DataGrid.Td>
-							</DataGrid.Tr>
-						</DataGrid.Body>
-					</DataGrid.Root>
-				</div>
-			</div>
-
-			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Field.Control Props</h3>
-				<div class="border-border bg-card overflow-x-auto rounded-lg border">
-					<DataGrid.Root class="min-w-full">
-						<DataGrid.Header class="bg-muted">
-							<DataGrid.Tr>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Prop</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Type</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									>Default</DataGrid.Th
-								>
-								<DataGrid.Th
-									class="border-border text-muted-foreground border-b px-6 py-3 text-left text-xs font-medium tracking-wider uppercase"
-									width="2fr">Description</DataGrid.Th
-								>
-							</DataGrid.Tr>
-						</DataGrid.Header>
-
-						<DataGrid.Body>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>component</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>Component</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Component to use for the control</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>class</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>string</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>''</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>Additional CSS classes</DataGrid.Td
-								>
-							</DataGrid.Tr>
-							<DataGrid.Tr>
-								<DataGrid.Td class="text-accent px-6 py-4 font-mono text-sm whitespace-nowrap"
-									>...props</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>any</DataGrid.Td
-								>
-								<DataGrid.Td class="text-muted-foreground px-6 py-4 text-sm whitespace-nowrap"
-									>-</DataGrid.Td
-								>
-								<DataGrid.Td class="text-foreground px-6 py-4 text-sm"
-									>All other props passed to control component</DataGrid.Td
-								>
-							</DataGrid.Tr>
-						</DataGrid.Body>
-					</DataGrid.Root>
-				</div>
-			</div>
+			{/each}
 		</div>
 	</Section>
 
@@ -505,7 +235,7 @@ const preset = createPreset({
 	</Section>
 
 	<PageNavigation
-		prev={{ label: 'Back to Components', href: '/components' }}
-		next={{ label: 'Next: Accordion', href: '/components/accordion' }}
+		prev={{ label: 'Dropdown', href: '/components/dropdown' }}
+		next={{ label: 'Input', href: '/components/input' }}
 	/>
 </div>
