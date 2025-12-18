@@ -1,6 +1,7 @@
 import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 
 export type CollapsibleStateProps = BondStateProps & {
 	open: boolean;
@@ -52,7 +53,7 @@ export class CollapsibleBond extends Bond<
 	header(props: Record<string, unknown> = {}) {
 		const isDisabled = this.state?.props?.disabled ?? false;
 		const isOpen = this.state?.props?.open ?? false;
-		const isButton = this.elements.header instanceof HTMLButtonElement;
+		const isButton = isBrowser() && this.elements.header instanceof HTMLButtonElement;
 
 		return {
 			'aria-disabled': isDisabled ? 'true' : 'false',
