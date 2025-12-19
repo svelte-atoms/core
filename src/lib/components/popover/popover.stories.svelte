@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Popover as Popover_ } from '.';
-	import { clickoutPopover } from './attachments.svelte';
 	import { Button } from '../button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -24,26 +23,15 @@
 <Story name="Popover" args={{}}>
 	{#snippet children(args)}
 		<Popover_.Root bind:open offset={0} {...args}>
-			{#snippet children({ popover })}
-				<!-- {#if dev}
-					<RenderScan duration={400} />
-				{/if} -->
+			<Popover_.Trigger base={Button} class="items-center gap-4">
+				<div>Open Popover</div>
+				<Popover_.Indicator />
+			</Popover_.Trigger>
 
-				<Popover_.Trigger base={Button} class="items-center gap-4">
-					<div>Open Popover</div>
-					<Popover_.Indicator />
-				</Popover_.Trigger>
-
-				<Popover_.Content
-					{@attach clickoutPopover((_, atom) => {
-						atom.state.close();
-					})}
-					class="bg-card"
-				>
-					<div>Hello World !</div>
-					<Popover_.Arrow />
-				</Popover_.Content>
-			{/snippet}
+			<Popover_.Content class="bg-card" autoClose>
+				<div>Hello World !</div>
+				<Popover_.Arrow />
+			</Popover_.Content>
 		</Popover_.Root>
 	{/snippet}
 </Story>

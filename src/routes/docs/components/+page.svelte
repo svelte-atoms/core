@@ -58,13 +58,13 @@
 			status: 'Beta',
 			href: '/docs/components/combobox'
 		},
-		{
-			name: 'Context Menu',
-			description: 'Right-click menu for contextual actions',
-			category: 'Overlay',
-			status: 'Beta',
-			href: '/docs/components/contextmenu'
-		},
+		// {
+		// 	name: 'Context Menu',
+		// 	description: 'Right-click menu for contextual actions',
+		// 	category: 'Overlay',
+		// 	status: 'Beta',
+		// 	href: '/docs/components/contextmenu'
+		// },
 		{
 			name: 'DataGrid',
 			description: 'Advanced data table with sorting and filtering',
@@ -205,13 +205,13 @@
 			status: 'Beta',
 			href: '/docs/components/textarea'
 		},
-		{
-			name: 'Toast',
-			description: 'Notification messages',
-			category: 'Feedback',
-			status: 'Beta',
-			href: '/docs/components/toast'
-		},
+		// {
+		// 	name: 'Toast',
+		// 	description: 'Notification messages',
+		// 	category: 'Feedback',
+		// 	status: 'Beta',
+		// 	href: '/docs/components/toast'
+		// },
 		{
 			name: 'Tooltip',
 			description: 'Contextual help text on hover',
@@ -255,13 +255,13 @@
 	function getStatusColor(status: string) {
 		switch (status) {
 			case 'Stable':
-				return 'bg-green-100 text-green-800';
+				return 'bg-palette-electron/10 text-palette-electron';
 			case 'Beta':
-				return 'bg-blue-100 text-blue-800';
+				return 'bg-palette-ion/10 text-palette-ion';
 			case 'Alpha':
-				return 'bg-yellow-100 text-yellow-800';
+				return 'bg-palette-radiation/10 text-palette-radiation';
 			default:
-				return 'bg-gray-100 text-gray-800';
+				return 'bg-muted text-muted-foreground';
 		}
 	}
 </script>
@@ -274,8 +274,8 @@
 <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 	<!-- Header -->
 	<div class="mb-12">
-		<h1 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">Components</h1>
-		<p class="max-w-3xl text-xl text-gray-600">
+		<h1 class="text-foreground mb-4 text-4xl font-bold md:text-5xl">Components</h1>
+		<p class="text-muted-foreground max-w-3xl text-xl">
 			Explore our collection of reusable, accessible, and customizable components. Each component is
 			built with Svelte 5 and designed for modern web applications.
 		</p>
@@ -286,7 +286,12 @@
 		<!-- Search -->
 		<div class="relative max-w-md">
 			<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-				<svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg
+					class="text-muted-foreground h-5 w-5"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -298,7 +303,7 @@
 			<input
 				type="text"
 				placeholder="Search components..."
-				class="border-border block w-full rounded-md border bg-white py-2 pr-3 pl-10 leading-5 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+				class="border-border bg-background placeholder-muted-foreground focus:placeholder-muted-foreground/60 focus:ring-primary block w-full rounded-md border py-2 pr-3 pl-10 leading-5 focus:border-transparent focus:ring-2 focus:outline-none"
 				bind:value={searchQuery}
 			/>
 		</div>
@@ -309,8 +314,8 @@
 				<button
 					class="rounded-lg px-4 py-2 text-sm font-medium transition-colors {selectedCategory ===
 					category
-						? 'bg-purple-600 text-white'
-						: 'bg-gray-100 text-gray-700 hover:bg-gray-200'}"
+						? 'bg-primary text-primary-foreground'
+						: 'bg-muted text-foreground hover:bg-muted/80'}"
 					onclick={() => (selectedCategory = category)}
 				>
 					{category}
@@ -321,25 +326,25 @@
 
 	<!-- Stats -->
 	<div class="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-		<div class="border-border rounded-lg border bg-white p-4 text-center">
-			<div class="text-2xl font-bold text-purple-600">{components.length}</div>
-			<div class="text-sm text-gray-600">Total Components</div>
+		<div class="border-border/50 bg-background rounded-lg border p-4 text-center">
+			<div class="text-primary text-2xl font-bold">{components.length}</div>
+			<div class="text-muted-foreground text-sm">Total Components</div>
 		</div>
-		<div class="border-border rounded-lg border bg-white p-4 text-center">
-			<div class="text-2xl font-bold text-green-600">
+		<div class="border-border/50 bg-background rounded-lg border p-4 text-center">
+			<div class="text-2xl font-bold text-palette-electron">
 				{components.filter((c) => c.status === 'Stable').length}
 			</div>
-			<div class="text-sm text-gray-600">Stable</div>
+			<div class="text-muted-foreground text-sm">Stable</div>
 		</div>
-		<div class="border-border rounded-lg border bg-white p-4 text-center">
-			<div class="text-2xl font-bold text-blue-600">
+		<div class="border-border/50 bg-background rounded-lg border p-4 text-center">
+			<div class="text-2xl font-bold text-palette-ion">
 				{components.filter((c) => c.status === 'Beta').length}
 			</div>
-			<div class="text-sm text-gray-600">Beta</div>
+			<div class="text-muted-foreground text-sm">Beta</div>
 		</div>
-		<div class="border-border rounded-lg border bg-white p-4 text-center">
-			<div class="text-2xl font-bold text-pink-600">{categories.length - 1}</div>
-			<div class="text-sm text-gray-600">Categories</div>
+		<div class="border-border/50 bg-background rounded-lg border p-4 text-center">
+			<div class="text-2xl font-bold text-palette-critical">{categories.length - 1}</div>
+			<div class="text-muted-foreground text-sm">Categories</div>
 		</div>
 	</div>
 
@@ -349,11 +354,11 @@
 			{#each filteredComponents as component}
 				<a
 					href={component.href}
-					class="group border-border block transform rounded-lg border bg-white p-6 transition-all duration-200 hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"
+					class="group border-border bg-background hover:border-border/60 block rounded-lg border p-6 transition-all duration-200"
 				>
 					<div class="mb-3 flex items-start justify-between">
 						<h3
-							class="text-lg font-semibold text-gray-900 transition-colors group-hover:text-purple-600"
+							class="text-foreground group-hover:text-primary text-lg font-semibold transition-colors"
 						>
 							{component.name}
 						</h3>
@@ -361,15 +366,15 @@
 							{component.status}
 						</Badge>
 					</div>
-					<p class="mb-4 text-sm text-gray-600">
+					<p class="text-muted-foreground mb-4 text-sm">
 						{component.description}
 					</p>
 					<div class="flex items-center justify-between">
-						<span class="rounded bg-purple-50 px-2 py-1 text-xs font-medium text-purple-600">
+						<span class="bg-muted/30 text-primary rounded px-2 py-1 text-xs font-medium">
 							{component.category}
 						</span>
 						<svg
-							class="h-4 w-4 text-gray-400 transition-colors group-hover:text-purple-600"
+							class="text-muted-foreground group-hover:text-primary h-4 w-4 transition-colors"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -387,8 +392,13 @@
 		</div>
 	{:else}
 		<div class="py-12 text-center">
-			<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-				<svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<div class="bg-muted mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+				<svg
+					class="text-muted-foreground h-8 w-8"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -397,15 +407,15 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-lg font-medium text-gray-900">No components found</h3>
-			<p class="text-gray-600">Try adjusting your search or filter criteria.</p>
+			<h3 class="text-foreground mb-2 text-lg font-medium">No components found</h3>
+			<p class="text-muted-foreground">Try adjusting your search or filter criteria.</p>
 		</div>
 	{/if}
 
 	<!-- Call to Action -->
-	<div class="mt-16 rounded-2xl bg-gradient-to-r from-purple-50 to-pink-50 p-8 text-center">
-		<h2 class="mb-4 text-2xl font-bold text-gray-900">Need a Custom Component?</h2>
-		<p class="mx-auto mb-6 max-w-2xl text-gray-600">
+	<div class="bg-muted/30 border-border/50 mt-16 rounded-2xl border p-8 text-center">
+		<h2 class="text-foreground mb-4 text-2xl font-bold">Need a Custom Component?</h2>
+		<p class="text-muted-foreground mx-auto mb-6 max-w-2xl">
 			Don't see what you're looking for? Atomic SV is designed to be extensible. You can easily
 			create custom components using our building blocks.
 		</p>
@@ -414,7 +424,7 @@
 				href="https://github.com/ryu-man/atomic-sv/issues"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex items-center rounded-lg bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
+				class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center rounded-lg px-6 py-3 font-medium transition-colors"
 			>
 				<svg class="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
 					<path
@@ -427,7 +437,7 @@
 				href="https://github.com/ryu-man/atomic-sv/blob/main/CONTRIBUTING.md"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex items-center rounded-lg border border-purple-600 px-6 py-3 font-medium text-purple-600 transition-colors hover:bg-purple-50"
+				class="border-primary text-primary hover:bg-muted/50 inline-flex items-center rounded-lg border px-6 py-3 font-medium transition-colors"
 			>
 				Contribute
 			</a>

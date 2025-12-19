@@ -14,11 +14,9 @@
 
 	const basicCode = `<script lang="ts">
   import { Tree } from '@svelte-atoms/core/tree';
-  
-  let open = $state(false);
 <\/script>
 
-<Tree.Root bind:open>
+<Tree.Root open>
   <Tree.Header>Documents</Tree.Header>
   <Tree.Body>
     <div>Resume.pdf</div>
@@ -26,14 +24,25 @@
   </Tree.Body>
 </Tree.Root>`;
 
-	const nestedCode = `<Tree.Root>
+	const nestedCode = `<script lang="ts">
+  import { Tree } from '@svelte-atoms/core/tree';
+<\/script>
+
+<Tree.Root open>
   <Tree.Header>src</Tree.Header>
   <Tree.Body>
-    <Tree.Root>
+    <Tree.Root open>
       <Tree.Header>components</Tree.Header>
       <Tree.Body>
         <div>Button.svelte</div>
         <div>Input.svelte</div>
+      </Tree.Body>
+    </Tree.Root>
+    <Tree.Root open>
+      <Tree.Header>utils</Tree.Header>
+      <Tree.Body>
+        <div>helpers.ts</div>
+        <div>validators.ts</div>
       </Tree.Body>
     </Tree.Root>
     <div>app.ts</div>
@@ -70,9 +79,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
+setPreset({
   'tree.root': () => ({
     class: 'space-y-1'
   }),
@@ -90,7 +99,7 @@ const preset = createPreset({
 	<Section title="Examples" description="Explore different tree variations">
 		<div class="space-y-8">
 			<DemoExample title="Basic Tree" description="Collapsible tree structure" code={basicCode}>
-				<Tree.Root class="max-w-md space-y-2">
+				<Tree.Root class="max-w-md space-y-2" open>
 					<Tree.Header class="hover:bg-muted rounded px-3 py-2">Documents</Tree.Header>
 					<Tree.Body class="space-y-1">
 						<div class="px-3 py-1 text-sm">Resume.pdf</div>
@@ -105,10 +114,10 @@ const preset = createPreset({
 				code={nestedCode}
 			>
 				<div class="max-w-md space-y-2">
-					<Tree.Root>
+					<Tree.Root open>
 						<Tree.Header class="hover:bg-muted rounded px-3 py-2">src</Tree.Header>
 						<Tree.Body class="space-y-2">
-							<Tree.Root>
+							<Tree.Root open>
 								<Tree.Header class="hover:bg-muted rounded px-3 py-2">components</Tree.Header>
 								<Tree.Body class="space-y-1">
 									<div class="px-3 py-1 text-sm">Button.svelte</div>
@@ -116,7 +125,7 @@ const preset = createPreset({
 									<div class="px-3 py-1 text-sm">Card.svelte</div>
 								</Tree.Body>
 							</Tree.Root>
-							<Tree.Root>
+							<Tree.Root open>
 								<Tree.Header class="hover:bg-muted rounded px-3 py-2">utils</Tree.Header>
 								<Tree.Body class="space-y-1">
 									<div class="px-3 py-1 text-sm">helpers.ts</div>

@@ -9,7 +9,6 @@
 			title: 'Getting Started',
 			children: [
 				{ title: 'Introduction', href: '/docs' },
-				{ title: 'Installation', href: '/docs/installation' },
 				{ title: 'Quick Start', href: '/docs/quick-start' },
 				{ title: 'Philosophy', href: '/docs/philosophy' }
 			]
@@ -37,7 +36,7 @@
 				{ title: 'Checkbox', href: '/docs/components/checkbox' },
 				{ title: 'Collapsible', href: '/docs/components/collapsible' },
 				{ title: 'Combobox', href: '/docs/components/combobox' },
-				{ title: 'Context Menu', href: '/docs/components/contextmenu' },
+				{ title: 'Context Menu', href: '/docs/components/contextmenu', disabled: true },
 				{ title: 'DataGrid', href: '/docs/components/datagrid' },
 				{ title: 'Dialog', href: '/docs/components/dialog' },
 				{ title: 'Divider', href: '/docs/components/divider' },
@@ -60,15 +59,15 @@
 				{ title: 'Tooltip', href: '/docs/components/tooltip' },
 				{ title: 'Tree', href: '/docs/components/tree' }
 			]
-		},
-		{
-			title: 'Guides',
-			children: [
-				{ title: 'Theming', href: '/docs/guides/theming' },
-				{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
-				{ title: 'Customization', href: '/docs/guides/customization' }
-			]
 		}
+		// {
+		// 	title: 'Guides',
+		// 	children: [
+		// 		{ title: 'Theming', href: '/docs/guides/theming' },
+		// 		{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
+		// 		{ title: 'Customization', href: '/docs/guides/customization' }
+		// 	]
+		// }
 	];
 </script>
 

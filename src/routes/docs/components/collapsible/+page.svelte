@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { Button } from '$svelte-atoms/core';
 
 	const basicCode = `<script lang="ts">
   let open = $state(false);
@@ -22,19 +23,6 @@
   </Collapsible.Trigger>
   <Collapsible.Content>
     <p>This content can be shown or hidden.</p>
-  </Collapsible.Content>
-</Collapsible.Root>`;
-
-	const controlledCode = `<script lang="ts">
-  let isOpen = $state(true);
-<\/script>
-
-<Collapsible.Root bind:open={isOpen}>
-  <Collapsible.Trigger>
-    <button>{isOpen ? 'Hide' : 'Show'} Details</button>
-  </Collapsible.Trigger>
-  <Collapsible.Content>
-    <p>Controlled collapsible content</p>
   </Collapsible.Content>
 </Collapsible.Root>`;
 
@@ -121,20 +109,18 @@ const preset = createPreset({
 							</svg>
 						</Collapsible.Indicator>
 					</Collapsible.Header>
-					<Collapsible.Body class="border-border border-t px-4 py-3">
-						<p class="text-muted-foreground">
-							This content can be shown or hidden. Collapsibles are great for organizing information
-							and reducing visual clutter.
-						</p>
+					<Collapsible.Body class="">
+						<div class="px-4 py-3">
+							<p class="text-muted-foreground">
+								This content can be shown or hidden. Collapsibles are great for organizing
+								information and reducing visual clutter.
+							</p>
+						</div>
 					</Collapsible.Body>
 				</Collapsible.Root>
 			</DemoExample>
 
-			<DemoExample
-				title="Controlled State"
-				description="Control the open state externally"
-				code={controlledCode}
-			>
+			<DemoExample title="Controlled State" description="Control the open state externally">
 				<div class="space-y-4">
 					<Collapsible.Root bind:open={controlledOpen} class="border-border rounded-lg border">
 						<Collapsible.Header
@@ -144,16 +130,17 @@ const preset = createPreset({
 							<span class="text-muted-foreground text-sm">{controlledOpen ? 'Open' : 'Closed'}</span
 							>
 						</Collapsible.Header>
-						<Collapsible.Body class="border-border border-t px-4 py-3">
-							<p class="text-muted-foreground">This collapsible is controlled by external state.</p>
+						<Collapsible.Body class="">
+							<div class="px-4 py-3">
+								<p class="text-muted-foreground">
+									This collapsible is controlled by external state.
+								</p>
+							</div>
 						</Collapsible.Body>
 					</Collapsible.Root>
-					<button
-						class="bg-primary rounded px-4 py-2 text-white"
-						onclick={() => (controlledOpen = !controlledOpen)}
-					>
+					<Button variant="primary" onclick={() => (controlledOpen = !controlledOpen)}>
 						Toggle from outside
-					</button>
+					</Button>
 				</div>
 			</DemoExample>
 		</div>

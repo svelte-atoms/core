@@ -1,0 +1,26 @@
+import { animate } from 'motion';
+import { TreeBond } from './bond.svelte';
+
+export type AnimatePopoverContentParams = {
+	duration?: number;
+	delay?: number;
+	ease?: string;
+};
+
+export function animateTreeBody(params: AnimatePopoverContentParams = {}) {
+	const bond = TreeBond.get();
+	return (node: HTMLElement) => {
+		const { delay = 0, duration = 0.1, ease } = params;
+		const isOpen = bond?.state.props.open ?? false;
+
+		animate(
+			node,
+			{
+				height: +isOpen ? 'auto' : 0,
+				opacity: +isOpen,
+				pointerEvents: isOpen ? '' : 'none'
+			},
+			{ duration, delay, ease }
+		);
+	};
+}

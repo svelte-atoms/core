@@ -12,10 +12,19 @@
 		CodeBlock
 	} from '$docs/components';
 
-	const basicCode = `<Textarea placeholder="Enter your message..." />`;
+	const basicCode = `<Textarea.Root>
+  <Textarea.Control placeholder="Enter your message..." />
+</Textarea.Root>`;
 
-	const rowsCode = `<Textarea rows={3} placeholder="3 rows" />
-<Textarea rows={6} placeholder="6 rows" />`;
+	const rowsCode = `<Textarea.Root>
+  <Textarea.Control rows={3} placeholder="Small (3 rows)" class="max-w-lg" />
+</Textarea.Root>
+<Textarea.Root>
+  <Textarea.Control rows={6} placeholder="Medium (6 rows)" class="max-w-lg" />
+</Textarea.Root>
+<Textarea.Root>
+  <Textarea.Control rows={10} placeholder="Large (10 rows)" class="max-w-lg" />
+</Textarea.Root>`;
 
 	let message = $state('');
 	const maxLength = 200;
@@ -53,10 +62,13 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = createPreset({
-  textarea: () => ({
+setPreset({
+  'textarea.root': () => ({
+    class: 'w-full'
+  }),
+  'textarea.control': () => ({
     class: 'flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
   })
 });`}
@@ -98,8 +110,16 @@ const preset = createPreset({
   const maxLength = 200;
 <\/script>
 
-<Textarea bind:value={message} maxlength={maxLength} />
-<p>{message.length} / {maxLength}</p>`}
+<Textarea.Root>
+  <Textarea.Control 
+    bind:value={message} 
+    maxlength={maxLength} 
+    placeholder="Maximum 200 characters" 
+  />
+</Textarea.Root>
+<p class="text-muted-foreground text-right text-sm">
+  {message.length} / {maxLength}
+</p>`}
 			>
 				<div class="max-w-lg space-y-2">
 					<Textarea.Root>
@@ -118,7 +138,9 @@ const preset = createPreset({
 			<DemoExample
 				title="Disabled State"
 				description="Non-editable textarea"
-				code={`<Textarea disabled placeholder="Disabled textarea" />`}
+				code={`<Textarea.Root>
+  <Textarea.Control disabled value="This textarea is disabled" />
+</Textarea.Root>`}
 			>
 				<Textarea.Root>
 					<Textarea.Control disabled value="This textarea is disabled" class="" />
@@ -128,16 +150,36 @@ const preset = createPreset({
 	</Section>
 
 	<Section title="API Reference">
-		<div class="space-y-6">
+		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Root</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					Container for the textarea component.
+				</p>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'string',
+							default: "''",
+							description: 'Additional CSS classes'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Control</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					The actual textarea element.
+				</p>
 				<Props
 					data={[
 						{
 							name: 'value',
 							type: 'string',
 							default: "''",
-							description: 'Textarea value'
+							description: 'Textarea value (bindable)'
 						},
 						{
 							name: 'placeholder',

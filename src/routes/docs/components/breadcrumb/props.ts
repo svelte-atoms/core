@@ -5,23 +5,59 @@ export interface PropDefinition {
 	description: string;
 }
 
-export const breadcrumbProps: PropDefinition[] = [
+export const breadcrumbRootProps: PropDefinition[] = [
 	{
-		name: 'items',
-		type: 'Array<{ label: string, href?: string }>',
-		default: '[]',
-		description: 'Breadcrumb items to display'
+		name: 'class',
+		type: 'string',
+		default: "''",
+		description: 'Additional CSS classes'
 	},
 	{
-		name: 'separator',
+		name: 'as',
 		type: 'string',
-		default: "'/'",
-		description: 'Separator between items'
+		default: "'div'",
+		description: 'HTML element type to render'
+	}
+];
+
+export const breadcrumbItemProps: PropDefinition[] = [
+	{
+		name: 'href',
+		type: 'string',
+		default: "''",
+		description: 'Link URL (omit for current page item)'
 	},
 	{
 		name: 'class',
 		type: 'string',
 		default: "''",
 		description: 'Additional CSS classes'
+	},
+	{
+		name: 'as',
+		type: 'string',
+		default: "'a'",
+		description: 'HTML element type to render'
 	}
 ];
+
+export const breadcrumbSeparatorProps: PropDefinition[] = [
+	{
+		name: 'class',
+		type: 'string',
+		default: "''",
+		description: 'Additional CSS classes'
+	},
+	{
+		name: 'as',
+		type: 'string',
+		default: "'span'",
+		description: 'HTML element type to render'
+	}
+];
+
+export default {
+	root: breadcrumbRootProps,
+	item: breadcrumbItemProps,
+	separator: breadcrumbSeparatorProps
+};

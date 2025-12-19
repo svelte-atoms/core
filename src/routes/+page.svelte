@@ -37,6 +37,10 @@
 		yarn: 'yarn add @svelte-atoms/core',
 		bun: 'bun add @svelte-atoms/core'
 	};
+
+	function getAlertLayoutStyle() {
+		return "grid-template-areas: 'icon title close-button' '. description description' 'content content content' 'actions actions actions'; grid-template-columns: auto 1fr auto;";
+	}
 </script>
 
 <svelte:head>
@@ -70,9 +74,6 @@
 					<path d="M2 12l10 5 10-5" />
 				</svg>
 				Built with Svelte 5
-			</Badge>
-			<Badge variant="outline" class="border-primary/20 bg-primary/5 text-primary">
-				Open Source
 			</Badge>
 		</div>
 
@@ -113,7 +114,7 @@
 				</Icon>
 				Get Started
 			</Button>
-			<Button variant="outline" size="lg" class="gap-2 px-6" onclick={()=> goto('/docs')}>
+			<Button variant="outline" size="lg" class="gap-2 px-6" onclick={() => goto('/docs')}>
 				<Icon>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +133,12 @@
 				</Icon>
 				View Docs
 			</Button>
-			<Button variant="ghost" size="lg" class="gap-2 px-6" onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}>
+			<Button
+				variant="ghost"
+				size="lg"
+				class="gap-2 px-6"
+				onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}
+			>
 				<Icon>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -704,7 +710,11 @@
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Alert</h3>
 					<div class="flex flex-1 items-center">
-						<Alert.Root variant="primary" class="w-full">
+						<Alert.Root
+							variant="primary"
+							class="grid w-full items-center"
+							style={getAlertLayoutStyle()}
+						>
 							<Alert.Icon>
 								<svg
 									viewBox="0 0 24 24"
@@ -718,6 +728,12 @@
 								</svg>
 							</Alert.Icon>
 							<Alert.Title class="text-sm font-medium">Session Expiring</Alert.Title>
+							<Alert.Content class="text-foreground text-sm">
+								Your session is about to expire. Please save your work.
+							</Alert.Content>
+							<Alert.Actions>
+								<button class="text-sm font-medium underline"> Extend Session </button>
+							</Alert.Actions>
 						</Alert.Root>
 					</div>
 					<a

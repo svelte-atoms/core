@@ -41,7 +41,7 @@
 		return call(result);
 	});
 
-	const presetProps = $derived(preset?.variants);
+	const presetVariantsProps = $derived(preset?.variants);
 
 	// Resolve local variants - either VariantDefinition or function
 	const localVariants = $derived.by(() => {
@@ -60,14 +60,14 @@
 	// Memoized to avoid recomputation when inputs haven't changed
 	const mergedVariants = $derived.by(() => {
 		// No variants at all
-		if (!presetProps && !localVariants) return undefined;
+		if (!presetVariantsProps && !localVariants) return undefined;
 
 		// Only preset variants (raw object from preset)
-		if (presetProps && !localVariants) {
+		if (presetVariantsProps && !localVariants) {
 			// Convert preset variants to VariantDefinition-like structure
 			const variantDef: VariantDefinition<any> = {
 				class: preset?.class ?? '',
-				variants: presetProps,
+				variants: presetVariantsProps,
 				compounds: preset?.compounds ?? [],
 				defaults: preset?.defaults ?? {}
 			};
@@ -75,7 +75,7 @@
 		}
 
 		// Only local variants
-		if (!presetProps && localVariants) {
+		if (!presetVariantsProps && localVariants) {
 			return localVariants;
 		}
 
@@ -83,7 +83,7 @@
 		// When both preset and local variants exist, we need to merge the resolved props
 		const presetVariantDef: VariantDefinition<any> = {
 			class: preset?.class ?? '',
-			variants: presetProps ?? {},
+			variants: presetVariantsProps ?? {},
 			compounds: preset?.compounds ?? [],
 			defaults: preset?.defaults ?? {}
 		};
@@ -140,9 +140,17 @@
 			base,
 			as,
 			variants: presetProps,
+			compounds: presetCompounds,
+			defaults: presetDefaults,
 			...restPresetProps
 		} = preset ?? {};
-		const { class: variantClass, ...variantsRestProps } = mergedVariants ?? {};
+		const {
+			class: variantClass,
+			variants: variantsVariants,
+			compounds: variantsCompounds,
+			defaults: variantsDefaults,
+			...variantsRestProps
+		} = mergedVariants ?? {};
 
 		return { ...restPresetProps, ...variantsRestProps, ...restProps };
 	});
@@ -172,7 +180,6 @@
 		props: Record<string, any>
 	): Record<string, any> {
 		const { variants: variantMap, compounds, defaults, class: baseClass } = def;
-
 		// Merge props with defaults
 		const finalProps = { ...defaults, ...props };
 
@@ -207,11 +214,9 @@
 						if ('class' in resolved) {
 							classes.push(resolved.class);
 						}
-						// Add other attributes
-						Object.entries(resolved).forEach(([k, v]) => {
-							if (k !== 'class') {
-								attributes[k] = v;
-							}
+						// Add other attributes (including Symbol-based attachment keys)
+						Object.getOwnPropertySymbols(resolved).forEach((sym) => {
+							attributes[sym] = resolved[sym];
 						});
 					}
 				}

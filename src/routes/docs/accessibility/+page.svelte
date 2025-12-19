@@ -370,7 +370,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
+		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground leading-relaxed">
 					@svelte-atoms/core follows the <strong>WAI-ARIA Authoring Practices Guide (APG)</strong>
@@ -384,7 +384,7 @@ ${'<'}/script>`;
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Core Accessibility Features</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Keyboard Navigation</h4>
 						<p class="text-muted-foreground text-sm">
@@ -393,7 +393,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">ARIA Attributes</h4>
 						<p class="text-muted-foreground text-sm">
@@ -402,7 +402,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Focus Management</h4>
 						<p class="text-muted-foreground text-sm">
@@ -411,7 +411,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Screen Readers</h4>
 						<p class="text-muted-foreground text-sm">
@@ -420,7 +420,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Semantic HTML</h4>
 						<p class="text-muted-foreground text-sm">
@@ -429,7 +429,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Color Contrast</h4>
 						<p class="text-muted-foreground text-sm">
@@ -450,7 +450,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
+		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
 				<div class="space-y-4">
 					<div>
@@ -525,21 +525,15 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Component Examples</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{keyboardExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Component Examples</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{keyboardExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- ARIA Attributes -->
@@ -551,7 +545,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
+		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
 					ARIA (Accessible Rich Internet Applications) attributes provide semantic information to
@@ -654,21 +648,15 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Automatic ARIA Management</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{ariaExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Automatic ARIA Management</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{ariaExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Focus Management -->
@@ -684,7 +672,7 @@ ${'<'}/script>`;
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Focus Features</h3>
 			<div class="space-y-3">
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
@@ -699,7 +687,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
@@ -714,7 +702,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
@@ -729,7 +717,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
@@ -748,37 +736,26 @@ ${'<'}/script>`;
 			</div>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Trap Example</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{focusTrapExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="mb-6 flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Trap Example</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{focusTrapExample}</code
+					></pre>
+			</div>
+		</div>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Restoration Example</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{focusManagementExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Restoration Example</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{focusManagementExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Semantic HTML -->
@@ -790,7 +767,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Semantic HTML uses elements that convey meaning about the content they contain. This helps
@@ -802,21 +779,15 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Semantic Structure</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{semanticExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Semantic Structure</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{semanticExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Screen Reader Support -->
@@ -828,7 +799,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-6 border-2">
+		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
 					Screen readers rely on proper semantic structure, ARIA attributes, and accessible labels
@@ -896,21 +867,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Screen Reader Patterns</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{screenReaderExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Screen Reader Patterns</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{screenReaderExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Custom Attributes -->
@@ -922,7 +888,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					While components provide sensible ARIA defaults, you can add or override attributes using
@@ -933,21 +899,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Variants with ARIA</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{customAttributesExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Variants with ARIA</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{customAttributesExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Disabled States -->
@@ -959,7 +920,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Disabled elements are excluded from keyboard navigation and properly announced to screen
@@ -973,21 +934,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Disabled State Handling</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{disabledStateExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Disabled State Handling</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{disabledStateExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Visual Indicators -->
@@ -999,7 +955,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					All interactive components include visible focus indicators using the <code
@@ -1013,21 +969,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Focus Styles</span>
-					<Badge variant="secondary" class="text-xs">CSS</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{visualIndicatorsExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Focus Styles</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{visualIndicatorsExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Reduced Motion -->
@@ -1037,7 +988,7 @@ ${'<'}/script>`;
 			<p class="text-muted-foreground">Respect user preferences for reduced motion animations.</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Components that include animations automatically respect the <code
@@ -1051,21 +1002,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Reduced Motion Pattern</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{reducedMotionExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Reduced Motion Pattern</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{reducedMotionExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Color Contrast -->
@@ -1077,7 +1023,7 @@ ${'<'}/script>`;
 			</p>
 		</div>
 
-		<Card.Root class="mb-4 border-2">
+		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					The default theme is designed to meet <strong>WCAG AA</strong> standards with a minimum contrast
@@ -1088,21 +1034,16 @@ ${'<'}/script>`;
 			</Card.Body>
 		</Card.Root>
 
-		<Card.Root class="border-2">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Accessible Color Pairs</span>
-					<Badge variant="secondary" class="text-xs">Svelte</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{colorContrastExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+		<div class="flex flex-col">
+			<div class="border-border py-2.5">
+				<h3 class="font-semibold">Accessible Color Pairs</h3>
+			</div>
+			<div class="bg-muted rounded-lg p-4">
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{colorContrastExample}</code
+					></pre>
+			</div>
+		</div>
 	</section>
 
 	<!-- Testing -->
@@ -1117,7 +1058,7 @@ ${'<'}/script>`;
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Testing Checklist</h3>
 			<div class="space-y-3">
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
@@ -1132,7 +1073,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
@@ -1147,7 +1088,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
@@ -1162,7 +1103,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
@@ -1177,7 +1118,7 @@ ${'<'}/script>`;
 					</Card.Body>
 				</Card.Root>
 
-				<Card.Root class="border-2">
+				<Card.Root class="border-border/50 border">
 					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
@@ -1193,7 +1134,7 @@ ${'<'}/script>`;
 			</div>
 		</div>
 
-		<Card.Root class="border-2">
+		<Card.Root class="border-border/50 border">
 			<Card.Body class="p-0">
 				<div
 					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
@@ -1220,7 +1161,7 @@ ${'<'}/script>`;
 		</div>
 
 		<div class="space-y-3">
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
@@ -1239,7 +1180,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
@@ -1255,7 +1196,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
@@ -1270,7 +1211,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
@@ -1285,7 +1226,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
@@ -1301,7 +1242,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">6.</div>
@@ -1316,7 +1257,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">7.</div>
@@ -1331,7 +1272,7 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 
-			<Card.Root class="border-2">
+			<Card.Root class="border-border/50 border">
 				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">8.</div>

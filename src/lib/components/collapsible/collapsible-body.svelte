@@ -1,6 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CollapsibleBond } from './bond.svelte';
+	import { animateCollapsibleBody } from './motion.svelte';
 	import type { CollapsibleBodyProps } from './types';
 
 	const bond = CollapsibleBond.get();
@@ -10,10 +11,10 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = undefined,
+		animate = animateCollapsibleBody(),
 		enter = undefined,
 		exit = undefined,
-		initial = undefined,
+		initial = animateCollapsibleBody({ duration: 0 }),
 		...restProps
 	}: CollapsibleBodyProps<E, B> = $props();
 

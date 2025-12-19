@@ -24,24 +24,7 @@
   </Dropdown.List>
 </Dropdown.Root>`;
 
-	const withIconsCode = `<Dropdown.Root>
-  <Dropdown.Trigger>
-    <button>Options<\/button>
-  </Dropdown.Trigger>
-  
-  <Dropdown.List>
-    <Dropdown.Item>
-      Profile
-    </Dropdown.Item>
-    <div class="border-t my-1" />
-    <Dropdown.Item>
-      Logout
-    </Dropdown.Item>
-  </Dropdown.List>
-</Dropdown.Root>`;
-
 	let basicOpen = $state(false);
-	let separatorOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -100,35 +83,14 @@ const preset = createPreset({
 		<div class="space-y-8">
 			<DemoExample title="Basic Dropdown" description="Simple dropdown menu" code={basicCode}>
 				<Dropdown.Root bind:open={basicOpen}>
-					<Dropdown.Trigger>
-						<button class="rounded border px-4 py-2"> Open Menu </button>
+					<Dropdown.Trigger as="button" class="rounded border px-4 py-2">
+						Open Menu
 					</Dropdown.Trigger>
 
 					<Dropdown.List class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Profile</Dropdown.Item>
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Settings</Dropdown.Item>
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Logout</Dropdown.Item>
-					</Dropdown.List>
-				</Dropdown.Root>
-			</DemoExample>
-
-			<DemoExample
-				title="With Separators"
-				description="Group menu items with separators"
-				code={withIconsCode}
-			>
-				<Dropdown.Root bind:open={separatorOpen}>
-					<Dropdown.Trigger>
-						<button class="rounded border px-4 py-2"> User Menu </button>
-					</Dropdown.Trigger>
-
-					<Dropdown.List class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Profile</Dropdown.Item>
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Settings</Dropdown.Item>
-						<div class="border-border my-1 border-t"></div>
-						<Dropdown.Item class="hover:bg-muted block px-4 py-2 text-red-600">
-							Logout
-						</Dropdown.Item>
 					</Dropdown.List>
 				</Dropdown.Root>
 			</DemoExample>
