@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Card } from '$svelte-atoms/core/components/card';
-	import { Badge } from '$svelte-atoms/core/components/badge';
 	import LinkCard from '$docs/components/link-card.svelte';
 </script>
 
@@ -46,88 +44,82 @@
 		</div>
 
 		<div class="space-y-6">
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-center gap-3">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<circle cx="12" cy="12" r="10" />
-								<circle cx="12" cy="12" r="4" />
-							</svg>
-						</div>
-						<h3 class="text-lg font-semibold">Primitive Components</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-center gap-3">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<circle cx="12" cy="12" r="10" />
+							<circle cx="12" cy="12" r="4" />
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Atoms are unstyled by default. They provide behavior, accessibility, and state
-						management without imposing design decisions. You add the styling.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="text-lg font-semibold">Primitive Components</h3>
+				</div>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Atoms are unstyled by default. They provide behavior, accessibility, and state management
+					without imposing design decisions. You add the styling.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-center gap-3">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<rect width="18" height="18" x="3" y="3" rx="2" />
-								<path d="M3 9h18" />
-							</svg>
-						</div>
-						<h3 class="text-lg font-semibold">Render Props Pattern</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-center gap-3">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<rect width="18" height="18" x="3" y="3" rx="2" />
+							<path d="M3 9h18" />
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Many atoms use render props (snippet slots in Svelte 5) to give you full control over
-						rendering. The atom handles logic, you handle markup.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="text-lg font-semibold">Render Props Pattern</h3>
+				</div>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Many atoms use render props (snippet slots in Svelte 5) to give you full control over
+					rendering. The atom handles logic, you handle markup.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-center gap-3">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-							</svg>
-						</div>
-						<h3 class="text-lg font-semibold">Composition Over Configuration</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-center gap-3">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Instead of dozens of props for every possible use case, atoms compose together. Build
-						what you need from simple pieces.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="text-lg font-semibold">Composition Over Configuration</h3>
+				</div>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Instead of dozens of props for every possible use case, atoms compose together. Build what
+					you need from simple pieces.
+				</p>
+			</div>
 		</div>
 	</section>
 
@@ -140,7 +132,7 @@
 			</p>
 		</div>
 
-		<div class="bg-muted rounded-lg p-4">
+		<div class="bg-muted/30 rounded-lg p-4">
 			<pre class="text-xs leading-relaxed"><code class="text-foreground"
 					>{`<script lang="ts">
   import { HtmlAtom as Atom, defineVariants } from '@svelte-atoms/core';
@@ -188,86 +180,84 @@
 				></pre>
 		</div>
 
-		<Card.Root class="">
-			<Card.Body class="p-6">
-				<h3 class="mb-3 text-lg font-semibold">Key Features</h3>
-				<ul class="space-y-3">
-					<li class="flex gap-3">
-						<span class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</span>
-						<div>
-							<p class="text-muted-foreground text-sm">
-								<strong class="text-foreground">Polymorphic:</strong> The
-								<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">as</code> prop lets
-								you render any HTML element
-							</p>
-						</div>
-					</li>
-					<li class="flex gap-3">
-						<span class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</span>
-						<div>
-							<p class="text-muted-foreground text-sm">
-								<strong class="text-foreground">Type-safe:</strong> Full TypeScript support with proper
-								types for the rendered element
-							</p>
-						</div>
-					</li>
-					<li class="flex gap-3">
-						<span class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</span>
-						<div>
-							<p class="text-muted-foreground text-sm">
-								<strong class="text-foreground">Flexible:</strong> Accepts all standard HTML attributes
-								for the element type
-							</p>
-						</div>
-					</li>
-				</ul>
-			</Card.Body>
-		</Card.Root>
+		<div class="border-border/50 rounded-lg border p-6">
+			<h3 class="mb-3 text-lg font-semibold">Key Features</h3>
+			<ul class="space-y-3">
+				<li class="flex gap-3">
+					<span class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
+					</span>
+					<div>
+						<p class="text-muted-foreground text-sm">
+							<strong class="text-foreground">Polymorphic:</strong> The
+							<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">as</code> prop lets
+							you render any HTML element
+						</p>
+					</div>
+				</li>
+				<li class="flex gap-3">
+					<span class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
+					</span>
+					<div>
+						<p class="text-muted-foreground text-sm">
+							<strong class="text-foreground">Type-safe:</strong> Full TypeScript support with proper
+							types for the rendered element
+						</p>
+					</div>
+				</li>
+				<li class="flex gap-3">
+					<span class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
+					</span>
+					<div>
+						<p class="text-muted-foreground text-sm">
+							<strong class="text-foreground">Flexible:</strong> Accepts all standard HTML attributes
+							for the element type
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</section>
 
 	<!-- When to Use Atoms -->
@@ -280,111 +270,105 @@
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Building Custom Components</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground mb-3 text-sm">
-						Use atoms as the foundation for your own component library. Atoms provide powerful
-						features that make building custom components easier:
-					</p>
-					<ul class="text-muted-foreground space-y-1.5 text-sm">
-						<li class="flex gap-2">
-							<span class="text-primary">•</span>
-							<span
-								><strong class="text-foreground">Preset configuration</strong> for consistent styling
-								across your app</span
-							>
-						</li>
-						<li class="flex gap-2">
-							<span class="text-primary">•</span>
-							<span
-								><strong class="text-foreground">Animation lifecycles</strong> for smooth transitions
-								and effects</span
-							>
-						</li>
-						<li class="flex gap-2">
-							<span class="text-primary">•</span>
-							<span
-								><strong class="text-foreground">Base/as props</strong> for polymorphic rendering and
-								flexible composition</span
-							>
-						</li>
-					</ul>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Building Custom Components</h3>
+				</div>
+				<p class="text-muted-foreground mb-3 text-sm">
+					Use atoms as the foundation for your own component library. Atoms provide powerful
+					features that make building custom components easier:
+				</p>
+				<ul class="text-muted-foreground space-y-1.5 text-sm">
+					<li class="flex gap-2">
+						<span class="text-primary">•</span>
+						<span
+							><strong class="text-foreground">Preset configuration</strong> for consistent styling across
+							your app</span
+						>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-primary">•</span>
+						<span
+							><strong class="text-foreground">Animation lifecycles</strong> for smooth transitions and
+							effects</span
+						>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-primary">•</span>
+						<span
+							><strong class="text-foreground">Base/as props</strong> for polymorphic rendering and flexible
+							composition</span
+						>
+					</li>
+				</ul>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Need Full Control</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						When pre-built components are too opinionated, atoms give you the power to build exactly
-						what you need.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Need Full Control</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					When pre-built components are too opinionated, atoms give you the power to build exactly
+					what you need.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Prototyping Rapidly</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						Quickly compose interfaces without fighting with pre-built component constraints.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Prototyping Rapidly</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					Quickly compose interfaces without fighting with pre-built component constraints.
+				</p>
+			</div>
 		</div>
 	</section>
 
@@ -398,77 +382,73 @@
 		</div>
 
 		<div class="grid gap-5 sm:grid-cols-2">
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold">
-						<span class="text-primary">Atoms</span>
-					</h3>
-					<ul class="space-y-2 text-sm">
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Maximum flexibility</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Preset configuration system</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Animation lifecycles built-in</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Polymorphic (base/as props)</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Minimal bundle size</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>No styling constraints</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">-</span>
-							<span>More setup required</span>
-						</li>
-					</ul>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold">
+					<span class="text-primary">Atoms</span>
+				</h3>
+				<ul class="space-y-2 text-sm">
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Maximum flexibility</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Preset configuration system</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Animation lifecycles built-in</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Polymorphic (base/as props)</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Minimal bundle size</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>No styling constraints</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">-</span>
+						<span>More setup required</span>
+					</li>
+				</ul>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold">
-						<span class="text-primary">Full Components</span>
-					</h3>
-					<ul class="space-y-2 text-sm">
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Ready to use</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Pre-styled</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">+</span>
-							<span>Common patterns built-in</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">-</span>
-							<span>Less flexible</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">-</span>
-							<span>Larger bundle</span>
-						</li>
-						<li class="text-muted-foreground flex gap-2">
-							<span class="text-primary">-</span>
-							<span>Fixed styling approach</span>
-						</li>
-					</ul>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold">
+					<span class="text-primary">Full Components</span>
+				</h3>
+				<ul class="space-y-2 text-sm">
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Ready to use</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Pre-styled</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">+</span>
+						<span>Common patterns built-in</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">-</span>
+						<span>Less flexible</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">-</span>
+						<span>Larger bundle</span>
+					</li>
+					<li class="text-muted-foreground flex gap-2">
+						<span class="text-primary">-</span>
+						<span>Fixed styling approach</span>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</section>
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Card } from '$svelte-atoms/core/components/card';
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import LinkCard from '$docs/components/link-card.svelte';
 </script>
@@ -63,7 +62,7 @@
 	</section>
 
 	<!-- Creating a Bond -->
-	<section class="mb-16 gap-4 flex flex-col">
+	<section class="mb-16 flex flex-col gap-4">
 		<div class="mb-4">
 			<h2 class="mb-2 text-3xl font-bold">Creating a Bond</h2>
 			<p class="text-muted-foreground">
@@ -243,166 +242,155 @@ export class MyComponentBond<
 		</div>
 
 		<div class="grid gap-4 md:grid-cols-2">
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-start gap-4">
-						<div class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<rect width="18" height="18" x="3" y="3" rx="2" />
-								<path d="M7 3v18M17 3v18M3 7h18M3 17h18" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="mb-2 text-lg font-semibold">Separation of Concerns</h3>
-							<p class="text-muted-foreground text-sm leading-relaxed">
-								BondState manages reactive props and methods, while Bond handles element references,
-								prop generation, and context sharing. Clean architecture by design.
-							</p>
-						</div>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-start gap-4">
+					<div class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<rect width="18" height="18" x="3" y="3" rx="2" />
+							<path d="M7 3v18M17 3v18M3 7h18M3 17h18" />
+						</svg>
 					</div>
-				</Card.Body>
-			</Card.Root>
+					<div>
+						<h3 class="mb-2 text-lg font-semibold">Separation of Concerns</h3>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							BondState manages reactive props and methods, while Bond handles element references,
+							prop generation, and context sharing. Clean architecture by design.
+						</p>
+					</div>
+				</div>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-start gap-4">
-						<div class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<circle cx="12" cy="12" r="10" />
-								<circle cx="12" cy="12" r="4" />
-								<line x1="21.17" x2="12" y1="8" y2="8" />
-								<line x1="3.95" x2="8.54" y1="6.06" y2="14" />
-								<line x1="10.88" x2="15.46" y1="21.94" y2="14" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="mb-2 text-lg font-semibold">Element Management</h3>
-							<p class="text-muted-foreground text-sm leading-relaxed">
-								Automatic element reference capture via <code
-									class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-									>createAttachmentKey()</code
-								>. Access any DOM element through
-								<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-									>bond.elements</code
-								> for focus, positioning, and more.
-							</p>
-						</div>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-start gap-4">
+					<div class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<circle cx="12" cy="12" r="10" />
+							<circle cx="12" cy="12" r="4" />
+							<line x1="21.17" x2="12" y1="8" y2="8" />
+							<line x1="3.95" x2="8.54" y1="6.06" y2="14" />
+							<line x1="10.88" x2="15.46" y1="21.94" y2="14" />
+						</svg>
 					</div>
-				</Card.Body>
-			</Card.Root>
+					<div>
+						<h3 class="mb-2 text-lg font-semibold">Element Management</h3>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							Automatic element reference capture via <code
+								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+								>createAttachmentKey()</code
+							>. Access any DOM element through
+							<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">bond.elements</code
+							> for focus, positioning, and more.
+						</p>
+					</div>
+				</div>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-start gap-4">
-						<div class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<polyline points="16 18 22 12 16 6" />
-								<polyline points="8 6 2 12 8 18" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="mb-2 text-lg font-semibold">Type Safety</h3>
-							<p class="text-muted-foreground text-sm leading-relaxed">
-								Full TypeScript support with generic typing. Define your props, state, and elements
-								once, get complete type inference everywhere.
-							</p>
-						</div>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-start gap-4">
+					<div class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<polyline points="16 18 22 12 16 6" />
+							<polyline points="8 6 2 12 8 18" />
+						</svg>
 					</div>
-				</Card.Body>
-			</Card.Root>
+					<div>
+						<h3 class="mb-2 text-lg font-semibold">Type Safety</h3>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							Full TypeScript support with generic typing. Define your props, state, and elements
+							once, get complete type inference everywhere.
+						</p>
+					</div>
+				</div>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-start gap-4">
-						<div class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="mb-2 text-lg font-semibold">Context Integration</h3>
-							<p class="text-muted-foreground text-sm leading-relaxed">
-								Built-in context support with <code
-									class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.share()</code
-								>, <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.get()</code>,
-								and
-								<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.set()</code>.
-								Share state across component trees without prop drilling.
-							</p>
-						</div>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-start gap-4">
+					<div class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+						</svg>
 					</div>
-				</Card.Body>
-			</Card.Root>
+					<div>
+						<h3 class="mb-2 text-lg font-semibold">Context Integration</h3>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							Built-in context support with <code
+								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.share()</code
+							>, <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.get()</code>,
+							and
+							<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.set()</code>.
+							Share state across component trees without prop drilling.
+						</p>
+					</div>
+				</div>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-6">
-					<div class="mb-3 flex items-start gap-4">
-						<div class="text-primary mt-1 flex-shrink-0">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-								<path d="M21 3v5h-5" />
-							</svg>
-						</div>
-						<div>
-							<h3 class="mb-2 text-lg font-semibold">Fine-Grained Reactivity</h3>
-							<p class="text-muted-foreground text-sm leading-relaxed">
-								Built on Svelte 5's Runes API. Reactive props passed as functions keep updates
-								efficient. Only what changed re-renders.
-							</p>
-						</div>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-3 flex items-start gap-4">
+					<div class="text-primary mt-1 flex-shrink-0">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+							<path d="M21 3v5h-5" />
+						</svg>
 					</div>
-				</Card.Body>
-			</Card.Root>
+					<div>
+						<h3 class="mb-2 text-lg font-semibold">Fine-Grained Reactivity</h3>
+						<p class="text-muted-foreground text-sm leading-relaxed">
+							Built on Svelte 5's Runes API. Reactive props passed as functions keep updates
+							efficient. Only what changed re-renders.
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 
@@ -628,115 +616,107 @@ function _factory(props) {
 		</div>
 
 		<div class="grid gap-4 md:grid-cols-2">
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Building Compound Components</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						When creating components with multiple parts that need to share state across separate
-						child components. This is the primary use case for bonds.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Building Compound Components</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					When creating components with multiple parts that need to share state across separate
+					child components. This is the primary use case for bonds.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Shareable State Across Components</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						When multiple child components need to access and modify the same state in a coordinated
-						way without prop drilling.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Shareable State Across Components</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					When multiple child components need to access and modify the same state in a coordinated
+					way without prop drilling.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Reusable Logic</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						When you want to extract and reuse component logic across different parts of your app.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Reusable Logic</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					When you want to extract and reuse component logic across different parts of your app.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<div class="mb-2 flex items-center gap-2">
-						<div class="text-primary">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="18"
-								height="18"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-								<polyline points="22 4 12 14.01 9 11.01"></polyline>
-							</svg>
-						</div>
-						<h3 class="font-semibold">Testing</h3>
+			<div class="border-border/50 rounded-lg border p-6">
+				<div class="mb-2 flex items-center gap-2">
+					<div class="text-primary">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+							<polyline points="22 4 12 14.01 9 11.01"></polyline>
+						</svg>
 					</div>
-					<p class="text-muted-foreground text-sm">
-						Bonds are easy to test in isolation since they're just JavaScript objects with methods.
-					</p>
-				</Card.Body>
-			</Card.Root>
+					<h3 class="font-semibold">Testing</h3>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					Bonds are easy to test in isolation since they're just JavaScript objects with methods.
+				</p>
+			</div>
 		</div>
 
 		<Alert.Root variant="warning" class="mt-6">
@@ -776,78 +756,65 @@ function _factory(props) {
 		</div>
 
 		<div class="grid gap-4 md:grid-cols-2">
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Use Props as Functions</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Always pass props to BondState as a function (<code
-							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs whitespace-nowrap"
-							>() =&gt; props</code
-						>) for fine-grained reactivity. This ensures only accessed properties trigger updates.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Use Props as Functions</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Always pass props to BondState as a function (<code
+						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs whitespace-nowrap"
+						>() =&gt; props</code
+					>) for fine-grained reactivity. This ensures only accessed properties trigger updates.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Type Your Elements</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Define a type for your bond elements to get autocomplete and type safety when accessing
-						<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-							>bond.elements.root</code
-						>, etc.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Type Your Elements</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Define a type for your bond elements to get autocomplete and type safety when accessing
+					<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+						>bond.elements.root</code
+					>, etc.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Use Attachment Keys</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Always use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-							>createAttachmentKey()</code
-						> in your element prop methods to automatically capture element references. No manual ref
-						management needed.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Use Attachment Keys</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Always use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+						>createAttachmentKey()</code
+					> in your element prop methods to automatically capture element references. No manual ref management
+					needed.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Keep Context Keys Unique</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Use descriptive, prefixed context keys like <code
-							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-							>'@atoms/context/component-name'</code
-						> to avoid collisions with other context values. When extending from other existing bonds,
-						it's recommended to keep using the same context key to maintain compatibility.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Keep Context Keys Unique</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Use descriptive, prefixed context keys like <code
+						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+						>'@atoms/context/component-name'</code
+					> to avoid collisions with other context values. When extending from other existing bonds,
+					it's recommended to keep using the same context key to maintain compatibility.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Spread Bond Props</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Always spread bond-generated props onto elements: <code
-							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-							>{`{...bond.root()}`}</code
-						>. This ensures IDs, ARIA attributes, and attachments work correctly.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Spread Bond Props</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Always spread bond-generated props onto elements: <code
+						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`{...bond.root()}`}</code
+					>. This ensures IDs, ARIA attributes, and attachments work correctly.
+				</p>
+			</div>
 
-			<Card.Root class="">
-				<Card.Body class="p-5">
-					<h3 class="mb-2 font-semibold">Export getBond()</h3>
-					<p class="text-muted-foreground text-sm leading-relaxed">
-						Export a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-							>getBond()</code
-						> method from root components to allow parent components to access the bond imperatively
-						when needed.
-					</p>
-				</Card.Body>
-			</Card.Root>
+			<div class="border-border/50 rounded-lg border p-6">
+				<h3 class="mb-2 font-semibold">Export getBond()</h3>
+				<p class="text-muted-foreground text-sm leading-relaxed">
+					Export a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
+						>getBond()</code
+					> method from root components to allow parent components to access the bond imperatively when
+					needed.
+				</p>
+			</div>
 		</div>
 	</section>
 

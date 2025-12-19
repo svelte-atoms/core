@@ -3,7 +3,6 @@
 	import { Card } from '$lib/components/card';
 	import { Badge } from '$lib/components/badge';
 	import { Button } from '$lib/components/button';
-	import { Stack } from '$lib/components/stack';
 
 	const features = [
 		{
@@ -123,7 +122,7 @@
 					<Card.Title>1. Install the package</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<div class="bg-muted rounded-lg p-4">
+					<div class="bg-muted/30 rounded-lg p-4">
 						<code class="text-sm">npm install @svelte-atoms/core</code>
 					</div>
 				</Card.Body>
@@ -138,7 +137,7 @@
 						<p class="text-muted-foreground text-sm">
 							Import the internal stylesheet in your root layout to include base styles:
 						</p>
-						<div class="bg-muted rounded-lg p-4">
+						<div class="bg-muted/30 rounded-lg p-4">
 							<pre class="text-sm"><code
 									>{`// +layout.svelte or app entry point
 import '@svelte-atoms/core/tw';`}</code
@@ -156,7 +155,7 @@ import '@svelte-atoms/core/tw';`}</code
 					<div class="space-y-4">
 						<div>
 							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v3:</p>
-							<div class="bg-muted rounded-lg p-4">
+							<div class="bg-muted/30 rounded-lg p-4">
 								<pre class="text-sm"><code
 										>{`// tailwind.config.js
 export default {
@@ -172,7 +171,7 @@ export default {
 
 						<div>
 							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v4:</p>
-							<div class="bg-muted rounded-lg p-4">
+							<div class="bg-muted/30 rounded-lg p-4">
 								<pre class="text-sm"><code
 										>{`/* app.css or main stylesheet */
 @import 'tailwindcss';
@@ -193,7 +192,7 @@ export default {
 					<Card.Title>4. Import and use components</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<div class="bg-muted rounded-lg p-4">
+					<div class="bg-muted/30 rounded-lg p-4">
 						<pre class="text-sm"><code
 								>{`<script>
   import { Button } from '@svelte-atoms/core/button';
@@ -210,7 +209,7 @@ export default {
 					<Card.Title>5. Customize with presets (optional)</Card.Title>
 				</Card.Header>
 				<Card.Body>
-					<div class="bg-muted rounded-lg p-4">
+					<div class="bg-muted/30 rounded-lg p-4">
 						<pre class="text-sm"><code
 								>{`import { setPreset } from '@svelte-atoms/core/context';
 

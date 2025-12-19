@@ -9,7 +9,6 @@
 			title: 'Getting Started',
 			children: [
 				{ title: 'Introduction', href: '/docs' },
-				{ title: 'Installation', href: '/docs/installation' },
 				{ title: 'Quick Start', href: '/docs/quick-start' },
 				{ title: 'Philosophy', href: '/docs/philosophy' }
 			]

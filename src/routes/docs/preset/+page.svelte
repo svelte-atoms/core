@@ -215,7 +215,7 @@ setPreset({
     variants: {
       variant: {
         gradient: { class: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' },
-        outline: { class: 'border-2 border-primary bg-transparent text-primary' }
+        outline: { class: 'border border-border/50 border-primary bg-transparent text-primary' }
       },
       size: {
         xl: { class: 'px-8 py-4 text-xl' } // Add new size
@@ -292,7 +292,7 @@ setPreset({
 				{@html description}
 			</p>
 		{/if}
-		<div class="bg-muted rounded-lg p-4">
+		<div class="bg-muted/30 rounded-lg p-4">
 			<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
 		</div>
 	</div>
@@ -454,9 +454,9 @@ setPreset({
 
 		<p class="text-muted-foreground text-sm leading-relaxed">
 			Preset functions receive the component's bond as a parameter, giving you access to the
-			component's reactive state. Use this to create dynamic styles that update automatically
-			when component state changes. The function returns another function that returns the
-			preset object, allowing for reactive class computation based on bond state.
+			component's reactive state. Use this to create dynamic styles that update automatically when
+			component state changes. The function returns another function that returns the preset object,
+			allowing for reactive class computation based on bond state.
 		</p>
 
 		{@render SectionCard(
@@ -486,7 +486,9 @@ setPreset({
 	<section class="mb-16 flex flex-col gap-4">
 		<div class="">
 			<h2 class="mb-2 text-3xl font-bold">Setting HTML Attributes</h2>
-			<p class="text-muted-foreground text-sm">Presets can define any HTML attributes, not just classes.</p>
+			<p class="text-muted-foreground text-sm">
+				Presets can define any HTML attributes, not just classes.
+			</p>
 		</div>
 
 		<Card.Root class="mb-4">
@@ -591,7 +593,9 @@ setPreset({
 	<section class="mb-16 flex flex-col gap-4">
 		<div class="">
 			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground text-sm">Guidelines for effective preset usage and patterns.</p>
+			<p class="text-muted-foreground text-sm">
+				Guidelines for effective preset usage and patterns.
+			</p>
 		</div>
 
 		<div class="mb-6">
@@ -787,7 +791,7 @@ setPreset({
 					<p class="text-muted-foreground mb-3 text-sm">
 						Sets or merges preset configuration in the current context.
 					</p>
-					<div class="bg-muted rounded-lg p-3">
+					<div class="bg-muted/30 rounded-lg p-3">
 						<code class="text-xs">setPreset(preset: Partial&lt;Preset&gt;): void</code>
 					</div>
 				</Card.Body>
@@ -800,7 +804,7 @@ setPreset({
 						Retrieves preset configuration. If key is provided, returns specific preset entry;
 						otherwise returns all presets.
 					</p>
-					<div class="bg-muted rounded-lg p-3">
+					<div class="bg-muted/30 rounded-lg p-3">
 						<code class="text-xs"
 							>getPreset&lt;K&gt;(key?: K): PresetEntry | Partial&lt;Preset&gt;</code
 						>
@@ -815,7 +819,7 @@ setPreset({
 						Preset entries are functions that receive the component bond and return configuration
 						objects.
 					</p>
-					<div class="bg-muted rounded-lg p-3">
+					<div class="bg-muted/30 rounded-lg p-3">
 						<code class="text-xs"
 							>type PresetEntry = (bond: Bond | null) =&gt; PresetEntryRecord</code
 						>
@@ -830,7 +834,7 @@ setPreset({
 						The object returned by preset functions. Supports any HTML attributes including class,
 						data-*, aria-*, role, etc.
 					</p>
-					<div class="bg-muted rounded-lg p-3">
+					<div class="bg-muted/30 rounded-lg p-3">
 						<pre class="overflow-x-auto text-xs"><code class="text-foreground"
 								>{`{
   class?: ClassValue;
