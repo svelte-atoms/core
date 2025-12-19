@@ -25,7 +25,7 @@
 
 			<!-- Search -->
 			<div class="flex max-w-md flex-1 items-center">
-				<button
+				<!-- <button
 					class="border-input bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring flex h-9 w-full items-center justify-between rounded-md border px-3 py-1 text-sm shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none"
 				>
 					<div class="flex items-center gap-2">
@@ -51,7 +51,7 @@
 					>
 						<span class="text-xs">Ctrl K</span>
 					</kbd>
-				</button>
+				</button> -->
 			</div>
 
 			<!-- Right Actions -->
