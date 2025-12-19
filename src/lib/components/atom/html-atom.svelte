@@ -140,9 +140,17 @@
 			base,
 			as,
 			variants: presetProps,
+			compounds: presetCompounds,
+			defaults: presetDefaults,
 			...restPresetProps
 		} = preset ?? {};
-		const { class: variantClass, ...variantsRestProps } = mergedVariants ?? {};
+		const {
+			class: variantClass,
+			variants: variantsVariants,
+			compounds: variantsCompounds,
+			defaults: variantsDefaults,
+			...variantsRestProps
+		} = mergedVariants ?? {};
 
 		return { ...restPresetProps, ...variantsRestProps, ...restProps };
 	});
