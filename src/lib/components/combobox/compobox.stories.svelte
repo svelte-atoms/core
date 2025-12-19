@@ -19,33 +19,32 @@
 
 <script lang="ts">
 	let open = $state(false);
-	let value = $state<string | undefined>('ar');
+	let value = $state<string | undefined>('usd');
+	let query = $state('');
 	let array = $state([
-		{ value: 'ar', label: 'Arabic' },
-		{ value: 'en', label: 'English' },
-		{ value: 'sp', label: 'Spanish' },
-		{ value: 'it', label: 'Italian' }
+		{ value: 'usd', label: 'US Dollar' },
+		{ value: 'eur', label: 'Euro' },
+		{ value: 'gbp', label: 'British Pound' },
+		{ value: 'jpy', label: 'Japanese Yen' },
+		{ value: 'cny', label: 'Chinese Yuan' }
 	]);
+
+	const filteredItems = $derived(
+		array.filter((item) => !query || item.label.toLowerCase().includes(query))
+	);
 </script>
 
 <Story name="Combobox" args={{}}>
-	<ACombobox.Root bind:open bind:value>
-		{#snippet children({ combobox })}
-			<ACombobox.Trigger
-				base={Input.Root}
-				class="h-10 min-w-sm items-center gap-0 rounded-sm p-1 transition-colors duration-200"
-			>
-				<Input.Icon class="text-foreground/50">$</Input.Icon>
-				<Divider class="mx-1" vertical />
-				<ACombobox.Input class="px-1" placeholder="Select a language" />
-			</ACombobox.Trigger>
-			<ACombobox.List>
-				{#each array.filter((item) => !combobox.state.query || item.label
-							.toLowerCase()
-							.includes(combobox.state.query)) as item (item.value)}
-					<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
-				{/each}
-			</ACombobox.List>
-		{/snippet}
+	<ACombobox.Root bind:open bind:value bind:query>
+		<ACombobox.Trigger base={Input.Root} class="h-10 min-w-sm">
+			<Input.Icon class="text-foreground/50">$</Input.Icon>
+			<Divider class="mx-1" vertical />
+			<ACombobox.Control class="px-1" placeholder="Select a language" />
+		</ACombobox.Trigger>
+		<ACombobox.List>
+			{#each filteredItems as item (item.value)}
+				<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
+			{/each}
+		</ACombobox.List>
 	</ACombobox.Root>
 </Story>
