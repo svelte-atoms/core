@@ -75,9 +75,6 @@
 				</svg>
 				Built with Svelte 5
 			</Badge>
-			<Badge variant="outline" class="border-primary/20 bg-primary/5 text-primary">
-				Open Source
-			</Badge>
 		</div>
 
 		<!-- Main Headline -->
