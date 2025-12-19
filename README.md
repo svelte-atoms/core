@@ -1,4 +1,4 @@
-# ⚛️ @svelte-atoms/core
+# @svelte-atoms/core
 
 > A modern, modular, and accessible Svelte 5 UI component library built with composability at its core.
 
@@ -6,7 +6,7 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/svelte-atoms/core)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## ✨ Features
+## Features
 
 - **Bond Architecture** - Self-contained state management with context-based communication
 - **Accessible** - ARIA attributes, keyboard navigation, and focus management included
@@ -15,30 +15,18 @@
 - **Composable** - Build complex UIs by combining simple, reusable components
 - **Svelte 5 Runes** - Optimized reactivity and performance
 
-## 📦 Components
+## Documentation
 
-### Layout & Navigation
-**Accordion** • **Breadcrumb** • **Sidebar** • **Tabs** • **Tree**
+- **[Documentation](https://sacore.netlify.app/)** - Complete guides, API references, and examples
+- **[Storybook](https://statuesque-boba-0fb888.netlify.app/)** - Interactive component playground
 
-### Forms & Input
-**Button** • **Checkbox** • **Combobox** • **Input** • **Radio** • **Textarea** • **Form** • **DatePicker**
-
-### Data Display
-**Avatar** • **Badge** • **Card** • **DataGrid** • **Divider** • **Icon** • **Label** • **Link** • **List** • **Calendar** • **QRCode**
-
-### Overlays & Feedback
-**Alert** • **Dialog** • **Drawer** • **Dropdown** • **Popover** • **Toast** • **Tooltip** • **ContextMenu**
-
-### Utilities
-**Collapsible** • **Layer** • **Portal** • **Scrollable** • **Stack**
-
-## 🚀 Installation
+## Installation
 
 ```bash
 npm install @svelte-atoms/core
 ```
 
-## 📖 Usage
+## Usage
 
 ### Basic Example
 
@@ -99,10 +87,13 @@ Combine components to create complex UIs:
 	onquerychange={(q) => (dd.query = q)}
 >
 	{#snippet children({ dropdown })}
-		<Dropdown.Trigger base={Input.Root} onclick={(ev) => {
-			ev.preventDefault();
-			dropdown.state.open();
-		}}>
+		<Dropdown.Trigger
+			base={Input.Root}
+			onclick={(ev) => {
+				ev.preventDefault();
+				dropdown.state.open();
+			}}
+		>
 			{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
 				<div animate:flip={{ duration: 200 }}>
 					<Dropdown.Value value={item.value}>{item.text}</Dropdown.Value>
@@ -120,6 +111,124 @@ Combine components to create complex UIs:
 		</Dropdown.List>
 	{/snippet}
 </Dropdown.Root>
+```
+
+### Extensibility with `as` and `base` Props
+
+Transform components into any element or wrap them with custom logic:
+
+```svelte
+<script lang="ts">
+	import { Button, Popover, Input } from '@svelte-atoms/core';
+</script>
+
+<!-- Use Button as Popover trigger -->
+<Popover.Root>
+	<Popover.Trigger base={Button} variant="outline">Open Popover</Popover.Trigger>
+	<Popover.Content class="p-4">
+		<h4 class="font-semibold">Settings</h4>
+		<p class="text-sm">Configure your preferences here.</p>
+	</Popover.Content>
+</Popover.Root>
+
+<!-- Use Input.Root as Popover trigger -->
+<Popover.Root>
+	<Popover.Trigger base={Input.Root}>
+		<Input.Control placeholder="Click to open popover..." readonly />
+	</Popover.Trigger>
+	<Popover.Content class="p-4">
+		<p class="text-sm">Popover triggered by an input field</p>
+	</Popover.Content>
+</Popover.Root>
+```
+
+### Working with Animations
+
+Seamlessly integrate with Svelte's animation system:
+
+```svelte
+<script lang="ts">
+	import { List, Button } from '@svelte-atoms/core';
+	import { flip } from 'svelte/animate';
+	import { slide } from 'svelte/transition';
+
+	let items = $state([
+		{ id: 1, text: 'Task 1' },
+		{ id: 2, text: 'Task 2' },
+		{ id: 3, text: 'Task 3' }
+	]);
+
+	function removeItem(id: number) {
+		items = items.filter((item) => item.id !== id);
+	}
+</script>
+
+<List.Root>
+	{#each items as item (item.id)}
+		<div animate:flip={{ duration: 300 }}>
+			<List.Item>
+				<span>{item.text}</span>
+				<Button size="sm" onclick={() => removeItem(item.id)}>Remove</Button>
+			</List.Item>
+		</div>
+	{/each}
+</List.Root>
+```
+
+Advanced animation with lifecycle hooks using Motion:
+
+```svelte
+<script lang="ts">
+	import { Dialog, Button, toTransitionConfig } from '@svelte-atoms/core';
+	import { animate } from 'motion';
+
+	let open = $state(false);
+</script>
+
+<Button onclick={() => (open = true)}>Open Dialog</Button>
+
+<Dialog.Root bind:open>
+	<Dialog.Overlay
+		initial={(node) => {
+			node.style.opacity = '0';
+		}}
+		enter={(node) => {
+			const duration = 0.2;
+			const animation = animate(node, { opacity: 1 }, { duration });
+			return { duration };
+		}}
+		exit={(node) => {
+			const duration = 0.1;
+			const animation = animate(node, { opacity: 0 }, { duration: 0.1 });
+			return { duration };
+		}}
+	/>
+	<Dialog.Content
+		initial={(node) => {
+			node.style.opacity = '0';
+			node.style.scale = '0.95';
+		}}
+		enter={(node) => {
+			const duration = 0.3;
+			const animation = animate(node, { opacity: 1, scale: 1 }, { duration, easing: 'ease-out' });
+			return { duration };
+		}}
+		exit={(node) => {
+			const animation = animate(node, { opacity: 0, scale: 0.95 }, { duration, easing: 'ease-in' });
+			return { duration };
+		}}
+	>
+		<Dialog.Header>
+			<Dialog.Title>Animated Dialog</Dialog.Title>
+		</Dialog.Header>
+		<Dialog.Body>
+			<p>This dialog animates with custom Motion transitions using lifecycle hooks.</p>
+		</Dialog.Body>
+		<Dialog.Footer>
+			<Button onclick={() => (open = false)}>Close</Button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 ```
 
 ### Styling with Variants
@@ -149,7 +258,7 @@ const buttonVariants = defineVariants({
 });
 ```
 
-## 🧪 Development
+## Development
 
 ```bash
 # Clone repository
@@ -169,7 +278,7 @@ bun test
 bun run build
 ```
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
