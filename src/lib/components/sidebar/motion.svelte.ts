@@ -21,14 +21,13 @@ export function animateSidebarContent(params: AnimateSidebarContentParams) {
 		'1': expandedSize = 'auto'
 	} = params;
 	const bond = SidebarBond.get();
-	
-	
+
 	return (node: HTMLElement) => {
 		const isOpen = bond?.state.props.open ?? false;
-	
+
 		const collapsedProp = axis === 'x' ? 'min-width' : 'min-height';
 		const prop = axis === 'x' ? 'width' : 'height';
-		
+
 		animate(
 			node,
 			{

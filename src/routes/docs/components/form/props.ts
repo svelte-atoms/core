@@ -99,9 +99,21 @@ export const fieldErrorsProps: PropDefinition[] = [
 ];
 
 export default [
-	{ name: 'Form', description: 'The root form component.',  props: formRootProps },
-	{ name: 'Field.Root', description: 'Container for a form field including label, control, and errors.', props: fieldRootProps },
+	{ name: 'Form', description: 'The root form component.', props: formRootProps },
+	{
+		name: 'Field.Root',
+		description: 'Container for a form field including label, control, and errors.',
+		props: fieldRootProps
+	},
 	{ name: 'Field.Label', description: 'Label element for the form field.', props: fieldLabelProps },
-	{ name: 'Field.Control', description: 'Wrapper for the input control element.', props: fieldControlProps },
-	{ name: 'Field.Errors', description: 'Component to display field error messages.', props: fieldErrorsProps }
+	{
+		name: 'Field.Control',
+		description: 'Wrapper for the input control element.',
+		props: fieldControlProps
+	},
+	{
+		name: 'Field.Errors',
+		description: 'Component to display field error messages.',
+		props: fieldErrorsProps
+	}
 ];

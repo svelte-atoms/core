@@ -217,9 +217,7 @@ setPreset({
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Root</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					Container for the entire tabs component.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">Container for the entire tabs component.</p>
 				<Props
 					data={[
 						{
