@@ -1,4 +1,5 @@
-import { type Preset } from '$svelte-atoms/core';
+import { clickoutDrawer, type Preset } from '$svelte-atoms/core';
+import { createAttachmentKey } from 'svelte/attachments';
 
 const buttonVariants = () => ({
 	variant: {
@@ -108,6 +109,11 @@ export const preset: Partial<Preset> = {
 	'dialog.body': () => ({
 		class: 'px-6 py-4'
 	}),
+	'drawer.content': () => ({
+		[createAttachmentKey()]: clickoutDrawer((_, bond) => {
+			bond?.state.close?.();
+		})
+	}),
 	collapsible: () => ({
 		class: 'max-w-md rounded-md border border-border p-2'
 	}),
@@ -151,7 +157,8 @@ export const preset: Partial<Preset> = {
 						'bg-yellow-500/5 text-yellow-500 border-yellow-500/50 border hover:bg-yellow-500/8 active:bg-yellow-500/10'
 				},
 				info: {
-					class: 'bg-blue-500/5 text-blue-500 border-blue-500/50 border hover:bg-blue-500/8 active:bg-blue-500/10'
+					class:
+						'bg-blue-500/5 text-blue-500 border-blue-500/50 border hover:bg-blue-500/8 active:bg-blue-500/10'
 				}
 			}
 		},
