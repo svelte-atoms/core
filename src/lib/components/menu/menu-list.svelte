@@ -1,15 +1,15 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { List } from '../list';
 	import { Content } from '$svelte-atoms/core/components/popover/atoms';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { PopoverBond } from '$svelte-atoms/core/components/popover';
+	import { MenuBond } from './bond.svelte';
+	import { Root } from '../list/atoms';
 
-	const bond = PopoverBond.get();
+	const bond = MenuBond.get();
 
 	let {
 		class: klass = '',
 		as = 'ul' as T,
-		base = List.Root as B,
+		base = Root as B,
 		preset = 'menu.list',
 		children = undefined,
 		onmount = undefined,
@@ -27,7 +27,7 @@
 	{base}
 	{bond}
 	{preset}
-	class={['bg-background border-border overflow-hidden p-0', '$preset', klass]}
+	class={['border-border overflow-hidden p-0', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
