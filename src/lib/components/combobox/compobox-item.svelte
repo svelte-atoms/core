@@ -1,13 +1,9 @@
-<script
-	lang="ts"
-	generics="D, T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
->
+<script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
 	import { Item } from '$svelte-atoms/core/components/dropdown/atoms';
-	import { DropdownItemBond } from '$svelte-atoms/core/components/dropdown/item/bond.svelte';
+	import { DropdownItemController } from '$svelte-atoms/core/components/dropdown/item/controller.svelte';
 
 	import { on } from '$svelte-atoms/core/attachments';
-	import type { Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = ComboboxBond.get() as ComboboxBond<{}>;
 
@@ -29,8 +25,8 @@
 </script>
 
 <Item
-	{@attach (node) => {
-		const item = DropdownItemBond.get();
+	{@attach (node: HTMLElement) => {
+		const item = DropdownItemController.get();
 
 		return on('click', (ev) => {
 			ev.preventDefault();
@@ -44,18 +40,16 @@
 			// Set selected item text
 			bond.state.props.text = textElement?.innerText ?? '';
 			// Clear input query
-			bond.state.props.query = undefined;
+			bond.state.props.query = '';
 
-			item?.state?.toggle();
-
-			// Create a promise that resolves when combobox.state.props.open is set to false
+			item?.toggle();
 
 			bond?.state.close();
 		})(node);
 	}}
 	{bond}
 	preset="combobox.item"
-	class={['border-border', '$preset', klass]}
+	class={['border-border', '$preset', klass].filter(Boolean).join(' ')}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
