@@ -13,7 +13,6 @@ export function animateDrawerContent(params: AnimateDrawerContentParams) {
 	const { duration = DURATION.fast / 1000, delay = 0, ease = 'easeInOut', side = 'left' } = params;
 
 	const bond = DrawerBond.get();
-	const isOpen = bond?.state.props.open ?? false;
 
 	const mainProp = side === 'left' || side === 'right' ? 'x' : 'y';
 	const crossProp = mainProp === 'x' ? 'y' : 'x';
@@ -21,6 +20,7 @@ export function animateDrawerContent(params: AnimateDrawerContentParams) {
 	const d = side === 'left' || side === 'top' ? -1 : 1;
 
 	return (node: HTMLElement) => {
+		const isOpen = bond?.state.props.open ?? false;
 		animate(
 			node,
 			{
