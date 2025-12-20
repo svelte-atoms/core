@@ -23,6 +23,7 @@ export class MenuBond<
 	content() {
 		const superProps = super.content();
 		const onkeydown = superProps.onkeydown;
+
 		return {
 			...superProps,
 			role: 'menu',
@@ -99,6 +100,10 @@ export class MenuBondState<
 
 	constructor(props: () => Props) {
 		super(props);
+	}
+
+	get items() {
+		return this.#items;
 	}
 
 	get highlightedId() {

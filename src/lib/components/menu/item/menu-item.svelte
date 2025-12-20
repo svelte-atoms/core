@@ -12,11 +12,14 @@
 	const menu = MenuBond.get();
 
 	if (!menu) {
-		throw new Error('<DropdownItem> must be used within a <Dropdown>.');
+		throw new Error('<MenuItem> must be used within a <Menu>.');
 	}
+
+	const ID = $props.id();
 
 	let {
 		class: klass = '',
+		id = ID,
 		preset: presetKey = 'menu.item',
 		children = undefined,
 		onclick = undefined,
@@ -30,8 +33,6 @@
 		factory = _factory,
 		...restProps
 	}: MenuItemProps = $props();
-
-	const ID = $props.id();
 
 	const controller = factory().share();
 
@@ -48,14 +49,18 @@
 	});
 
 	function _factory() {
-		const item = menu?.state?.item?.(ID);
+		const item = menu?.state?.item?.(id);
 
 		if (item) {
 			return item as MenuItemController;
 		}
 
-		const bondProps = defineState<MenuItemControllerProps>([defineProperty('id', () => ID)]);
-		return new MenuItemController(() => bondProps);
+		const bondProps = defineState<MenuItemControllerProps>([defineProperty('id', () => id)]);
+		const controller = new MenuItemController(() => bondProps);
+
+		controller.mount();
+
+		return controller;
 	}
 
 	function handleClick(ev: MouseEvent) {
@@ -69,6 +74,10 @@
 
 		controller?.menu?.state.close();
 	}
+
+	export function getController() {
+		return controller;
+	}
 </script>
 
 <List.Item
@@ -79,12 +88,12 @@
 		'$preset',
 		klass
 	]}
-	onmount={onmount?.bind(controller.state)}
-	ondestroy={ondestroy?.bind(controller.state)}
-	enter={enter?.bind(controller.state)}
-	exit={exit?.bind(controller.state)}
-	initial={initial?.bind(controller.state)}
-	animate={animate?.bind(controller.state)}
+	onmount={onmount?.bind(controller) as any}
+	ondestroy={ondestroy?.bind(controller) as any}
+	enter={enter?.bind(controller) as any}
+	exit={exit?.bind(controller) as any}
+	initial={initial?.bind(controller) as any}
+	animate={animate?.bind(controller) as any}
 	aria-disabled={disabled ? true : undefined}
 	tabIndex={disabled ? -1 : 0}
 	onclick={handleClick}

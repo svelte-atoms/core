@@ -27,8 +27,6 @@ export class MenuItemController {
 		if (!this.#menu) {
 			throw new Error('MenuItem must be used within a Menu context');
 		}
-
-		this.#unmount = this.#menu.state.mountItem(this.#id, this);
 	}
 
 	get id() {
@@ -51,8 +49,18 @@ export class MenuItemController {
 		return this.#menu?.state.highlightedId === this.#id;
 	}
 
-	destroy() {
+	mount() {
+		this.#unmount = this.#menu?.state?.mountItem?.(this.#id, this) ?? undefined;
+
+		return this.unmount;
+	}
+
+	unmount() {
 		this.#unmount?.();
+	}
+
+	destroy() {
+		this.unmount();
 	}
 
 	share() {
