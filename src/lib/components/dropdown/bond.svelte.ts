@@ -101,10 +101,6 @@ export class DropdownBondState<
 
 	constructor(props: () => Props) {
 		super(props);
-
-		$effect(() => {
-			console.log(this.items.size, this.props.values);
-		});
 	}
 
 	get selectedItems() {

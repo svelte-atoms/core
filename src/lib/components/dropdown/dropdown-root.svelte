@@ -56,13 +56,10 @@
 	}
 
 	$effect(() => {
-		// console.log(bond.state.selectedItems);
 		return () => {
 			bond.destroy();
 		};
 	});
-
-	$inspect(bond.state.items);
 </script>
 
 {@render children?.({ dropdown: bond })}
