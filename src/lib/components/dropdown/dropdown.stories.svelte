@@ -47,24 +47,27 @@
 			<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
 			<ADropdown.Trigger
 				base={Input.Root}
-				class="h-auto min-h-12 max-w-sm min-w-sm items-center gap-2 rounded-sm px-4 transition-colors duration-200"
+				class="flex h-auto min-h-12 max-w-sm min-w-sm flex-col items-start gap-1 rounded-sm px-4 transition-colors duration-200"
 				onclick={(ev) => {
 					ev.preventDefault();
 
 					dropdown.state.open();
 				}}
 			>
-				<!-- Display selected values with animation -->
-				{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
-					<div animate:flip={{ duration: 200 }}>
-						<ADropdown.Value value={item.value} class="text-foreground/80">
-							{item.text}
-						</ADropdown.Value>
-					</div>
-				{/each}
-
 				<!-- Inline search input within the trigger -->
 				<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
+				<!-- Display selected values with animation -->
+				{#if dropdown?.state?.selectedItems?.length}
+					<div class="flex flex-wrap gap-1">
+						{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
+							<div animate:flip={{ duration: 200 }}>
+								<ADropdown.Value value={item.value} class="text-foreground/80">
+									{item.text}
+								</ADropdown.Value>
+							</div>
+						{/each}
+					</div>
+				{/if}
 			</ADropdown.Trigger>
 
 			<!-- ADropdown list with filtered items -->
