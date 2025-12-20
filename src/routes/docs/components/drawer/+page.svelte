@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Drawer } from '$lib/components/drawer';
+	import { animateDrawerContent, clickoutDrawer, Drawer } from '$lib/components/drawer';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { Button } from '$svelte-atoms/core';
 
 	const basicCode = `<script lang="ts">
   let open = $state(false);
@@ -97,22 +98,29 @@ const preset = createPreset({
 				description="Default drawer sliding from right"
 				code={basicCode}
 			>
-				<button class="bg-primary rounded px-4 py-2 text-white" onclick={() => (rightOpen = true)}>
-					Open Right Drawer
-				</button>
+				<Button
+					variant="primary"
+					onclick={() => {
+						rightOpen = true;
+					}}>Open Right Drawer</Button
+				>
 
 				<Drawer.Root bind:open={rightOpen}>
-					<Drawer.Content class="bg-background fixed top-0 right-0 h-full w-80 shadow-lg">
+					<Drawer.Content
+						class="h-full w-80 shadow-lg"
+						initial={animateDrawerContent({ duration: 0, side: 'right' })}
+						animate={animateDrawerContent({ duration: 0.3, side: 'right' })}
+					>
 						<Drawer.Header class="border-border border-b p-4">
 							<Drawer.Title class="text-foreground text-xl font-semibold">Drawer Title</Drawer.Title
 							>
 						</Drawer.Header>
-						<div class="text-muted-foreground p-4">
+						<Drawer.Body class="text-muted-foreground p-4">
 							<p>This is a drawer sliding from the right side of the screen.</p>
 							<p class="mt-4">
 								Drawers are useful for navigation, filters, or showing additional details.
 							</p>
-						</div>
+						</Drawer.Body>
 						<Drawer.Footer class="border-border absolute bottom-0 w-full border-t p-4">
 							<button
 								class="bg-primary w-full rounded px-4 py-2 text-white"
@@ -126,12 +134,15 @@ const preset = createPreset({
 			</DemoExample>
 
 			<DemoExample title="Left Drawer" description="Drawer from left side" code={sidesCode}>
-				<button class="bg-primary rounded px-4 py-2 text-white" onclick={() => (leftOpen = true)}>
-					Open Left Drawer
-				</button>
+				<Button
+					variant="primary"
+					onclick={() => {
+						leftOpen = true;
+					}}>Open Left Drawer</Button
+				>
 
-				<Drawer.Root bind:open={leftOpen} side="left">
-					<Drawer.Content class="bg-background fixed top-0 left-0 h-full w-80 shadow-lg">
+				<Drawer.Root bind:open={leftOpen}>
+					<Drawer.Content class="h-full w-80 shadow-lg">
 						<Drawer.Header class="border-border border-b p-4">
 							<Drawer.Title class="text-foreground text-xl font-semibold">Navigation</Drawer.Title>
 						</Drawer.Header>
