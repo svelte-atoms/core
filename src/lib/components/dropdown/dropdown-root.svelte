@@ -47,13 +47,22 @@
 	const bond = factory(bondProps).share();
 
 	function _factory(props: typeof bondProps) {
-		const bondState = new DropdownBondState<T>(() => props);
+		const bondState = new DropdownBondState(() => props);
 		return new DropdownBond(bondState);
 	}
 
 	export function getBond() {
 		return bond;
 	}
+
+	$effect(() => {
+		// console.log(bond.state.selectedItems);
+		return () => {
+			bond.destroy();
+		};
+	});
+
+	$inspect(bond.state.items);
 </script>
 
 {@render children?.({ dropdown: bond })}

@@ -7,6 +7,8 @@ export {
 	type DropdownStateProps
 } from './bond.svelte';
 
+export * from './item';
+
 export { filter } from './runes.svelte';
 
 export * from './types';
