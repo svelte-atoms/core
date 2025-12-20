@@ -6,6 +6,7 @@
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal } from '../portal';
+	import { animateDrawerRoot } from './motion';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -13,16 +14,16 @@
 		open = $bindable(false),
 		children = undefined,
 		class: klass = '',
-		as = 'dialog',
+		as = 'div',
 		disabled = false,
 		portal = undefined,
 		onclose = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = undefined,
 		enter = undefined,
 		exit = undefined,
-		initial = undefined,
+		initial = animateDrawerRoot({ duration: 0 }),
+		animate = animateDrawerRoot({}),
 		factory = _factory,
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
@@ -73,7 +74,7 @@
 	portal={portal ?? 'root.l1'}
 	preset="drawer"
 	class={[
-		'border-border pointer-events-auto h-full w-full overflow-hidden bg-transparent',
+		'border-border pointer-events-none fixed inset-0 h-full w-full overflow-hidden bg-transparent',
 		!open && 'pointer-events-none',
 		'$preset',
 		klass
