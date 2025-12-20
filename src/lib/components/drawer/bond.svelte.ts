@@ -43,12 +43,7 @@ export class DrawerBond<
 		super(state);
 	}
 
-	root(
-		props: Record<string, unknown> & {
-			onclick?: (ev: MouseEvent) => void;
-			onkeydown?: (ev: KeyboardEvent) => void;
-		} = {}
-	) {
+	root() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.root);
 		const drawerTitleId = getElementId(this.id, DRAWER_ELEMENTS_KIND.title);
 		const drawerDescriptionId = getElementId(this.id, DRAWER_ELEMENTS_KIND.description);
@@ -105,9 +100,7 @@ export class DrawerBond<
 					ev.preventDefault();
 					this.state.close();
 				}
-				props.onkeydown?.(ev);
 			},
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.root = node;
 
@@ -136,90 +129,80 @@ export class DrawerBond<
 		};
 	}
 
-	content(props: Record<string, unknown> = {}) {
+	content() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.content);
 		return {
 			id: id,
 			role: 'document',
 			'data-kind': DRAWER_ELEMENTS_KIND.content,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.content = node;
 			}
 		};
 	}
 
-	body(props: Record<string, unknown> = {}) {
+	body() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.body);
 
 		return {
 			id: id,
 			role: 'region',
 			'data-kind': DRAWER_ELEMENTS_KIND.body,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.body = node;
 			}
 		};
 	}
 
-	header(props: Record<string, unknown> = {}) {
+	header() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.header);
 		return {
 			id: id,
 			role: 'banner',
 			'data-kind': DRAWER_ELEMENTS_KIND.header,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.header = node;
 			}
 		};
 	}
 
-	title(props: Record<string, unknown> = {}) {
+	title() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.title);
 		return {
 			id: id,
 			role: 'heading',
 			'aria-level': 2,
 			'data-kind': DRAWER_ELEMENTS_KIND.title,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.title = node;
 			}
 		};
 	}
 
-	description(props: Record<string, unknown> = {}) {
+	description() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.description);
 		return {
 			id: id,
 			'data-kind': DRAWER_ELEMENTS_KIND.description,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.description = node;
 			}
 		};
 	}
 
-	footer(props: Record<string, unknown> = {}) {
+	footer() {
 		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.footer);
 		return {
 			id: id,
 			role: 'contentinfo',
 			'data-kind': DRAWER_ELEMENTS_KIND.footer,
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.footer = node;
 			}
 		};
 	}
 
-	backdrop(
-		props: Record<string, unknown> & {
-			onclick?: (ev: MouseEvent) => void;
-		} = {}
-	) {
+	backdrop() {
 		const isDisabled = this.state?.props?.disabled ?? false;
 
 		return {
@@ -231,9 +214,7 @@ export class DrawerBond<
 				if (!isDisabled) {
 					this.state.close();
 				}
-				props.onclick?.(ev);
 			},
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.backdrop = node;
 			}
