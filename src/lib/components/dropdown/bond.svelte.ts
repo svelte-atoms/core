@@ -39,11 +39,14 @@ export class DropdownBond<
 
 	content() {
 		const isMultiselect = this.state.props.multiple ?? false;
+		const highlightedId = this.state.highlightedItem?.id;
 
 		return {
 			...super.content(),
 			role: 'listbox',
-			'aria-multiselectable': isMultiselect
+			'aria-multiselectable': isMultiselect,
+			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
+			'aria-orientation': 'vertical' as const
 		};
 	}
 

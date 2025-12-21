@@ -23,10 +23,13 @@ export class MenuBond<
 	content() {
 		const superProps = super.content();
 		const onkeydown = superProps.onkeydown;
+		const highlightedId = this.state.highlightedId;
 
 		return {
 			...superProps,
 			role: 'menu',
+			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
+			'aria-orientation': 'vertical' as const,
 			onkeydown: (ev: KeyboardEvent) => {
 				// Call any additional onkeydown handler
 				onkeydown?.(ev);

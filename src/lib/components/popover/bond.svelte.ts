@@ -193,7 +193,7 @@ export class PopoverBond<
 					cleanup?.();
 				};
 			}
-		} as const;
+		};
 	}
 
 	indicator() {

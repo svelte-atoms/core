@@ -21,7 +21,7 @@
 </script>
 
 <Story name="Menu" args={{}}>
-	<AMenu.Root bind:open offset={4}>
+	<AMenu.Root bind:open>
 		<AMenu.Trigger base={Button}>Select a language</AMenu.Trigger>
 		<AMenu.List>
 			<AMenu.Item onclick={() => console.log('Arabic')}>Arabic</AMenu.Item>

@@ -68,8 +68,11 @@ export class MenuItemController {
 	}
 
 	elementProps() {
+		const itemId = `item-${this.id}`;
 		return {
+			id: itemId,
 			role: 'menuitem',
+			'data-highlighted': this.isHighlighted,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.#element = node;
 

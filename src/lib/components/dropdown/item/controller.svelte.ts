@@ -85,10 +85,13 @@ export class DropdownItemController<T = unknown> extends MenuItemController {
 	}
 
 	elementProps() {
+		const itemId = `item-${this.id}`;
 		return {
+			id: itemId,
 			role: 'option',
 			'aria-selected': this.isSelected,
 			'data-selected': this.isSelected,
+			'data-highlighted': this.isHighlighted,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.#element = node;
 				return () => {
