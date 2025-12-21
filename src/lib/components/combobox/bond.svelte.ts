@@ -76,8 +76,8 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 		};
 	}
 
-	static get = DropdownBond.getContext;
-	static set = DropdownBond.setContext;
+	static get = DropdownBond.get;
+	static set = DropdownBond.set;
 }
 
 export class ComboboxBondState<T> extends DropdownBondState<ComboboxBondProps> {
