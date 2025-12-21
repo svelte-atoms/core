@@ -31,7 +31,7 @@ export interface HtmlAtomProps<
 > extends HtmlElementProps<E>,
 		HtmlAtomExtendProps {
 	bond?: Bond;
-	base?: B;
+	base?: B | undefined;
 	preset?: PresetModuleName | (string & {});
 	/**
 	 * Variant definition or function to resolve variants
