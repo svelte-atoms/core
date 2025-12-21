@@ -1,6 +1,6 @@
 import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+import { focusTrap, getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 export type DialogBondProps = BondStateProps & {
@@ -50,26 +50,8 @@ export class DialogBond<
 		const isDisabled = this.state.props.disabled ?? false;
 
 		// Focus trap handler
-		const focusTrap = (ev: KeyboardEvent) => {
-			const node = ev.currentTarget as HTMLElement;
-
-			if (ev.key === 'Tab') {
-				const focusableElements = node.querySelectorAll<HTMLElement>(
-					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-				);
-				const firstElement = focusableElements[0];
-				const lastElement = focusableElements[focusableElements.length - 1];
-
-				if (focusableElements.length === 0) return;
-
-				if (ev.shiftKey && document.activeElement === firstElement) {
-					ev.preventDefault();
-					lastElement?.focus();
-				} else if (!ev.shiftKey && document.activeElement === lastElement) {
-					ev.preventDefault();
-					firstElement?.focus();
-				}
-			}
+		const focusManager = (ev: KeyboardEvent) => {
+			focusTrap(ev);
 		};
 
 		let previousActiveElement: Element | null = null;
@@ -90,12 +72,12 @@ export class DialogBond<
 				}
 			},
 			onkeydown: (ev: KeyboardEvent) => {
-				focusTrap(ev);
 				// Close on Escape key
-				if (ev.key === 'Escape' && !isDisabled) {
+				if (ev.key === 'Escape') {
 					ev.preventDefault();
 					this.state.close();
 				}
+				focusManager(ev);
 			},
 			[createAttachmentKey()]: (node: HTMLDialogElement) => {
 				this.elements.root = node;

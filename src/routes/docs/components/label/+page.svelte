@@ -72,7 +72,12 @@ const preset = createPreset({
 				<div class="max-w-sm space-y-2">
 					<Label for="email">Email Address</Label>
 					<Input.Root>
-						<Input.Control id="email" type="email" placeholder="you@example.com" class="px-3 py-2" />
+						<Input.Control
+							id="email"
+							type="email"
+							placeholder="you@example.com"
+							class="px-3 py-2"
+						/>
 					</Input.Root>
 				</div>
 			</DemoExample>

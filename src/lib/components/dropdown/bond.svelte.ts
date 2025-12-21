@@ -1,15 +1,14 @@
-import { SvelteMap } from 'svelte/reactivity';
-import {
-	PopoverBond,
-	PopoverState,
-	type PopoverDomElements,
-	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
-import type { DropdownItemBond } from './item/bond.svelte';
 import { untrack } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
+import {
+	MenuBond,
+	MenuBondState,
+	type MenuBondElements,
+	type MenuBondProps
+} from '$svelte-atoms/core/components/menu/bond.svelte';
+import type { DropdownItemController } from './item/controller.svelte';
 
-export type DropdownStateProps = PopoverStateProps & {
+export type DropdownStateProps = MenuBondProps & {
 	values?: string[];
 	value?: string;
 	multiple?: boolean;
@@ -17,33 +16,45 @@ export type DropdownStateProps = PopoverStateProps & {
 	onquerychange?: (query: string) => void;
 };
 
-export type DropdownBondElements = PopoverDomElements & {
+export type DropdownBondElements = MenuBondElements & {
 	placeholder?: HTMLElement;
 };
 
 const DROPDOWN_ELEMENTS_KIND: Record<keyof DropdownBondElements, string> = {
 	placeholder: 'dropdown-placeholder',
 	arrow: 'popover-arrow',
-	overlay: 'popover-overlay',
-	trigger: 'popover-trigger'
+	trigger: 'popover-trigger',
+	content: 'popover-content',
+	indicator: 'popover-indicator'
 };
 
 export class DropdownBond<
 	Props extends DropdownStateProps = DropdownStateProps,
 	State extends DropdownBondState<Props> = DropdownBondState<Props>,
 	Elements extends DropdownBondElements = DropdownBondElements
-> extends PopoverBond<Props, State, Elements> {
+> extends MenuBond<Props, State, Elements> {
 	constructor(state: State) {
 		super(state);
 	}
 
-	content(props?: Record<string, unknown>) {
+	content() {
 		const isMultiselect = this.state.props.multiple ?? false;
+		const highlightedId = this.state.highlightedItem?.id;
 
-		return super.content({
+		return {
+			...super.content(),
+			role: 'listbox',
 			'aria-multiselectable': isMultiselect,
-			...props
-		});
+			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
+			'aria-orientation': 'vertical' as const
+		};
+	}
+
+	item() {
+		return {
+			...super.item(),
+			role: 'option'
+		};
 	}
 
 	placeholder() {
@@ -63,57 +74,40 @@ export class DropdownBond<
 	// static get = getDropdownContext;
 	// static set = setDropdownContext;
 
-	static getContext<
+	static get<
 		Props extends DropdownStateProps = DropdownStateProps,
 		State extends DropdownBondState<Props> = DropdownBondState<Props>,
-		Elements extends PopoverDomElements = PopoverDomElements
+		Elements extends DropdownBondElements = DropdownBondElements
 	>(): DropdownBond<Props, State, Elements> | undefined {
-		return PopoverBond.get() as DropdownBond<Props, State, Elements> | undefined;
+		return MenuBond.get() as DropdownBond<Props, State, Elements> | undefined;
 	}
 
-	static setContext<
+	static set<
 		Props extends DropdownStateProps = DropdownStateProps,
 		State extends DropdownBondState<Props> = DropdownBondState<Props>,
-		Elements extends PopoverDomElements = PopoverDomElements
+		Elements extends DropdownBondElements = DropdownBondElements
 	>(context: DropdownBond<Props, State, Elements>): DropdownBond<Props, State, Elements> {
-		return PopoverBond.set(context) as DropdownBond<Props, State, Elements>;
+		return MenuBond.set(context) as DropdownBond<Props, State, Elements>;
 	}
 }
 
 export class DropdownBondState<
 	Props extends DropdownStateProps = DropdownStateProps
-> extends PopoverState<Props> {
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	#keys = new Set<string>();
-	#items: Map<string, DropdownItemBond<unknown>> = new SvelteMap();
+> extends MenuBondState<Props> {
 	#selectedItems = $derived(
-		this.props.values?.map((value) => this.#items.get(value)).filter(Boolean) ?? []
-	) as DropdownItemBond<unknown>[];
-
-	#index = $state(-1);
-	#highlightedItem = $derived(
-		this.#items.values().toArray()[this.#index] ?? null
-	) as DropdownItemBond<unknown> | null;
+		this.props.values
+			?.map((value) => this.items.get(value) as unknown as DropdownItemController<unknown>)
+			.filter(Boolean) ?? []
+	) as DropdownItemController<unknown>[];
 
 	#query = $state('');
 
-	constructor(props: () => DropdownStateProps) {
+	constructor(props: () => Props) {
 		super(props);
-
-		$effect(() => {
-			this.#keys.clear();
-			for (const key of this.props.keys ?? []) {
-				this.#keys.add(key);
-			}
-		});
 	}
 
 	get selectedItems() {
 		return this.#selectedItems;
-	}
-
-	get highlightedItem() {
-		return this.#highlightedItem;
 	}
 
 	get query() {
@@ -124,22 +118,6 @@ export class DropdownBondState<
 		this.props.onquerychange?.(value);
 	}
 
-	mountItem<I>(id: string, item: DropdownItemBond<I>) {
-		this.#items.set(id, item);
-
-		return () => this.unmountItem(id);
-	}
-
-	unmountItem(id: string) {
-		if (this.#keys.has(id)) return; // keep the item if it's still in the data source
-
-		this.#items.delete(id);
-	}
-
-	item(id: string) {
-		return this.#items.get(id);
-	}
-
 	select(ids: string[]) {
 		if (untrack(() => this.props.multiple)) {
 			// eslint-disable-next-line svelte/prefer-svelte-reactivity
@@ -147,7 +125,8 @@ export class DropdownBondState<
 
 			this.props.values = [...sequence];
 		} else {
-			this.props.values = [ids[0]].filter(Boolean);
+			const value = ids[0];
+			this.props.values = value ? [value] : [];
 		}
 	}
 
@@ -160,19 +139,5 @@ export class DropdownBondState<
 		}
 
 		this.props.values = [...sequence];
-	}
-
-	highlightNextItem() {
-		const length = this.#items.size;
-		this.#index = Math.min((this.#index + 1) % length, length - 1);
-	}
-
-	highlightPreviousItem() {
-		if (this.#index <= 0) {
-			this.#index = this.#items.size - 1;
-			return;
-		}
-
-		this.#index = Math.max(this.#index - 1, 0);
 	}
 }

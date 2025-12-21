@@ -13,3 +13,5 @@ export type {
 	AnimatePopoverContentParams as AnimateMenuContentParams,
 	animatePopoverContent as animateMenuContent
 } from '../popover/motion';
+
+export * from './item';

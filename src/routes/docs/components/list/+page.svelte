@@ -224,13 +224,10 @@ setPreset({
 				code={withIconsCode}
 			>
 				<List.Root class="max-w-sm space-y-1">
-					<List.Item class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2">
-						<svg
-							class="mr-2 h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
+					<List.Item
+						class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2"
+					>
+						<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
@@ -240,13 +237,10 @@ setPreset({
 						</svg>
 						Dashboard
 					</List.Item>
-					<List.Item class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2">
-						<svg
-							class="mr-2 h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
+					<List.Item
+						class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2"
+					>
+						<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
@@ -256,13 +250,10 @@ setPreset({
 						</svg>
 						Profile
 					</List.Item>
-					<List.Item class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2">
-						<svg
-							class="mr-2 h-4 w-4"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
+					<List.Item
+						class="text-muted-foreground hover:bg-muted flex cursor-pointer items-center rounded px-3 py-2"
+					>
+						<svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"

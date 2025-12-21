@@ -153,9 +153,7 @@ setPreset({
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Root</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					Container for the textarea component.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">Container for the textarea component.</p>
 				<Props
 					data={[
 						{
@@ -170,9 +168,7 @@ setPreset({
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Control</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					The actual textarea element.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">The actual textarea element.</p>
 				<Props
 					data={[
 						{

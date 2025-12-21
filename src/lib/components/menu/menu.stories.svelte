@@ -21,13 +21,13 @@
 </script>
 
 <Story name="Menu" args={{}}>
-	<AMenu.Root bind:open offset={4}>
+	<AMenu.Root bind:open>
 		<AMenu.Trigger base={Button}>Select a language</AMenu.Trigger>
 		<AMenu.List>
-			<AMenu.Item>Arabic</AMenu.Item>
-			<AMenu.Item>English</AMenu.Item>
-			<AMenu.Item>Spanish</AMenu.Item>
-			<AMenu.Item>Italian</AMenu.Item>
+			<AMenu.Item onclick={() => console.log('Arabic')}>Arabic</AMenu.Item>
+			<AMenu.Item onclick={() => console.log('English')}>English</AMenu.Item>
+			<AMenu.Item onclick={() => console.log('Spanish')}>Spanish</AMenu.Item>
+			<AMenu.Item onclick={() => console.log('Italian')}>Italian</AMenu.Item>
 		</AMenu.List>
 	</AMenu.Root>
 </Story>

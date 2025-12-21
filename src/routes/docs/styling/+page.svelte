@@ -300,7 +300,8 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Common Patterns</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{tailwindExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground">{tailwindExample}</code
+					></pre>
 			</div>
 		</div>
 	</section>
@@ -460,7 +461,9 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Usage Examples</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{conditionalExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{conditionalExample}</code
+					></pre>
 			</div>
 		</div>
 	</section>
@@ -534,7 +537,9 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Basic Variant Definition</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{variantBasicExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{variantBasicExample}</code
+					></pre>
 			</div>
 		</div>
 
@@ -612,14 +617,16 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Usage Example</h3>
 			</div>
 			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-				Compound variants allow you to define styling that only applies when specific combinations of
-				variant values are active. This is useful for edge cases or special styling requirements that
-				go beyond single-dimension variants. Compounds can also set HTML attributes like
+				Compound variants allow you to define styling that only applies when specific combinations
+				of variant values are active. This is useful for edge cases or special styling requirements
+				that go beyond single-dimension variants. Compounds can also set HTML attributes like
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">role</code> and
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code> attributes.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{compoundVariantsExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{compoundVariantsExample}</code
+					></pre>
 			</div>
 		</div>
 	</section>
@@ -647,7 +654,9 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isDisabled</code>.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{reactiveVariantsExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{reactiveVariantsExample}</code
+					></pre>
 			</div>
 		</div>
 	</section>
@@ -674,7 +683,9 @@ ${'<'}/div>`;
 				placeholder is present, preset classes are automatically prepended to your class array.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{presetPlaceholderExample}</code></pre>
+				<pre class="text-xs leading-relaxed"><code class="text-foreground"
+						>{presetPlaceholderExample}</code
+					></pre>
 			</div>
 		</div>
 	</section>

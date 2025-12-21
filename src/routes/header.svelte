@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="bg-background/80 border-border sticky top-0 z-2 flex flex-col border-b backdrop-blur-sm"
+	class="bg-background/80 border-border sticky top-0 z-10 flex flex-col border-b backdrop-blur-sm"
 >
 	<!-- Top Bar -->
 	<div class="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">

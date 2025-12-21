@@ -9,7 +9,7 @@
 
 	const selectedItems = $derived(bond.state.selectedItems);
 
-	let { class: klass = '', children, ...restProps } = $props();
+	let { children } = $props();
 </script>
 
 <!-- <Render class={cn('dropdown-value inline-flex gap-2 items-center flex-wrap', klass)} {...restProps}>

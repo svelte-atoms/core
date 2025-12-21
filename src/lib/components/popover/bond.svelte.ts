@@ -10,7 +10,7 @@ import {
 	type ComputePositionReturn,
 	type Placement
 } from '@floating-ui/dom';
-import { getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
+import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
 import type { PortalBond } from '../portal';
 
@@ -106,11 +106,6 @@ export class PopoverBond<
 					ev.preventDefault();
 					this.state.toggle();
 				}
-				// Close on Escape
-				else if (ev.key === 'Escape' && isOpen) {
-					ev.preventDefault();
-					this.state.close();
-				}
 			},
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.trigger = node;
@@ -151,29 +146,13 @@ export class PopoverBond<
 		const isActive = isOpen && !isDisabled;
 
 		// Focus management
-		const focusTrap = (ev: KeyboardEvent) => {
-			const node = ev.currentTarget as HTMLElement;
+		const focusManager = (ev: KeyboardEvent) => {
 			if (ev.key === 'Escape') {
-				ev.preventDefault();
 				this.state.close();
 				this.elements.trigger?.focus();
 			}
-			// Tab trap - keep focus within popover
-			else if (ev.key === 'Tab') {
-				const focusableElements = node.querySelectorAll<HTMLElement>(
-					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-				);
-				const firstElement = focusableElements[0];
-				const lastElement = focusableElements[focusableElements.length - 1];
 
-				if (ev.shiftKey && document.activeElement === firstElement) {
-					ev.preventDefault();
-					lastElement?.focus();
-				} else if (!ev.shiftKey && document.activeElement === lastElement) {
-					ev.preventDefault();
-					firstElement?.focus();
-				}
-			}
+			focusTrap(ev);
 		};
 
 		return {
@@ -181,13 +160,12 @@ export class PopoverBond<
 			role: 'dialog',
 			'aria-modal': false,
 			'aria-labelledby': triggerId,
-			'aria-hidden': !isActive,
-			inert: !isActive ? '' : undefined,
+			inert: !isActive ? true : undefined,
 			tabindex: -1,
 			'data-atom': this.id,
 			'data-kind': 'content',
 			'data-active': isActive,
-			onkeydown: isOpen ? focusTrap : undefined,
+			onkeydown: isOpen ? focusManager : undefined,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.content = node;
 
@@ -200,12 +178,7 @@ export class PopoverBond<
 				}
 
 				// Move focus to popover when opened
-				setTimeout(() => {
-					const firstFocusable = node.querySelector<HTMLElement>(
-						'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-					);
-					(firstFocusable || node).focus();
-				}, 0);
+				setTimeout(() => focus(node), 0);
 
 				const cleanup = popover(this)(
 					{

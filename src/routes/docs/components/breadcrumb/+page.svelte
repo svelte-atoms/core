@@ -90,9 +90,9 @@ setPreset({
 			>
 				<BreadcrumbComponent.Root>
 					<BreadcrumbComponent.Item href="/">Home</BreadcrumbComponent.Item>
-					<BreadcrumbComponent.Separator/>
+					<BreadcrumbComponent.Separator />
 					<BreadcrumbComponent.Item href="/docs/components">Components</BreadcrumbComponent.Item>
-					<BreadcrumbComponent.Separator/>
+					<BreadcrumbComponent.Separator />
 					<BreadcrumbComponent.Item>Breadcrumb</BreadcrumbComponent.Item>
 				</BreadcrumbComponent.Root>
 			</DemoExample>
@@ -117,25 +117,19 @@ setPreset({
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Root</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					Container for breadcrumb navigation.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">Container for breadcrumb navigation.</p>
 				<Props data={breadcrumbProps.root} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Item</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					Individual breadcrumb link or text item.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">Individual breadcrumb link or text item.</p>
 				<Props data={breadcrumbProps.item} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Separator</h3>
-				<p class="text-muted-foreground mb-4 text-sm">
-					Visual separator between breadcrumb items.
-				</p>
+				<p class="text-muted-foreground mb-4 text-sm">Visual separator between breadcrumb items.</p>
 				<Props data={breadcrumbProps.separator} />
 			</div>
 		</div>

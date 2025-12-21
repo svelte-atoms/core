@@ -1,17 +1,13 @@
-<script
-	lang="ts"
-	generics="D, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
->
+<script lang="ts" generics="D">
 	import { nanoid } from 'nanoid';
-	import {
-		DropdownItemBond,
-		DropdownItemBondState,
-		type DropdownItemBondProps
-	} from './bond.svelte';
-	import { DropdownBond } from '../bond.svelte';
-	import { Item } from '$svelte-atoms/core/components/menu/atoms';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import {
+		DropdownItemController,
+		type DropdownItemProps as ControllerProps
+	} from './controller.svelte';
+	import type { DropdownItemProps } from './types';
+	import { DropdownBond } from '../bond.svelte';
+	import Item from '../../menu/item/menu-item.svelte';
 
 	const dropdown = DropdownBond.get();
 
@@ -34,31 +30,39 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	} = $props();
+	}: DropdownItemProps<D> = $props();
 
-	const bond = factory().share();
+	let item: typeof Item = $state(undefined);
+	const controller = $derived(item?.getController());
+	const isHighlighted = $derived(controller?.isHighlighted ?? false);
+	const isSelected = $derived(controller?.isSelected ?? false);
 
-	const unmount = bond.mount();
-	$effect(() => unmount);
+	// const item = factory().share();
 
 	const rootProps = $derived({
-		...bond?.root?.(),
+		...controller?.elementProps(),
 		...restProps
 	});
 
-	function _factory() {
-		const item = dropdown?.state.item(value);
+	const ID = $props.id();
 
-		if (item) {
-			return item as DropdownItemBond;
+	function _factory() {
+		const existing = (dropdown?.state as any)?.item?.(value);
+
+		if (existing) {
+			return existing as DropdownItemController<D>;
 		}
 
-		const bondProps = defineState<DropdownItemBondProps<D>>([
+		const itemProps = defineState<ControllerProps<D>>([
 			defineProperty('value', () => value),
-			defineProperty('data', () => data)
+			defineProperty('data', () => data),
+			defineProperty('id', () => value)
 		]);
-		const bondState = new DropdownItemBondState(() => bondProps);
-		return new DropdownItemBond(bondState);
+		const controller = new DropdownItemController<D>(() => itemProps);
+
+		controller.mount();
+
+		return controller;
 	}
 
 	function handleClick(ev: MouseEvent) {
@@ -70,33 +74,36 @@
 
 		ev.preventDefault();
 
-		bond.state.toggle();
+		controller.toggle();
 
-		if (bond.state.dropdown) {
-			bond.state.dropdown.query = '';
+		if (controller.dropdown?.state) {
+			controller.dropdown.state.query = '';
 		}
 
-		bond.state.close();
+		controller.close();
 	}
 </script>
 
 <Item
-	{bond}
+	bind:this={item}
 	{preset}
 	class={[
-		bond.state.isHighlighted && 'bg-foreground/5',
-		bond.state.isSelected && 'bg-primary/5 hover:bg-primary/10 active:bg-primary/15',
+		isHighlighted && 'bg-foreground/5',
+		isSelected && 'bg-primary/5 hover:bg-primary/10 active:bg-primary/15',
 		'$preset',
 		klass
-	]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	]
+		.filter(Boolean)
+		.join(' ')}
+	enter={enter?.bind(controller)}
+	exit={exit?.bind(controller)}
+	initial={initial?.bind(controller)}
+	animate={animate?.bind(controller)}
+	onmount={onmount?.bind(controller)}
+	ondestroy={ondestroy?.bind(controller)}
 	onclick={handleClick}
+	{factory}
 	{...rootProps}
 >
-	{@render children?.({ dropdownItem: bond })}
+	{@render children?.({ dropdownItem: controller })}
 </Item>
