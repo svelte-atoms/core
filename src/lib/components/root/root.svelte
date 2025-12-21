@@ -84,15 +84,15 @@
 				<Portal.Inner />
 			</Portal.Outer>
 
-			<Portal.Outer id="root.l1" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+			<Portal.Outer id="root.l1" class="pointer-events-none absolute inset-0 z-12 overflow-hidden">
 				<Portal.Inner />
 			</Portal.Outer>
 
-			<Portal.Outer id="root.l2" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+			<Portal.Outer id="root.l2" class="pointer-events-none absolute inset-0 z-14 overflow-hidden">
 				<Portal.Inner />
 			</Portal.Outer>
 
-			<Portal.Outer id="root.l3" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+			<Portal.Outer id="root.l3" class="pointer-events-none absolute inset-0 z-16 overflow-hidden">
 				<Portal.Inner />
 			</Portal.Outer>
 		{/if}
