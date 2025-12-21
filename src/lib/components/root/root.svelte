@@ -4,18 +4,23 @@
 
 <script lang="ts">
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
-	import { Portal, ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
+	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, MathmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
+	import L0Portal from './l0-portal.svelte';
+	import L1Portal from './l1-portal.svelte';
+	import type { RootProps } from './types';
 
 	let {
 		class: klass = '',
 		base = undefined,
 		children = undefined,
 		portals = undefined,
+		l0portal = undefined,
+		l1portal = undefined,
 		...restProps
-	} = $props();
+	}: RootProps = $props();
 
 	let html: typeof HtmlElement | undefined = $state(HtmlElement);
 	let svg: typeof SvgElement | undefined = $state(undefined);
@@ -77,25 +82,19 @@
 		)}
 		{...restProps}
 	>
-		{#if portals}
-			{@render portals?.()}
+		{#if l0portal}
+			{@render l0portal?.()}
 		{:else}
-			<Portal.Outer id="root.l0" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
-				<Portal.Inner />
-			</Portal.Outer>
-
-			<Portal.Outer id="root.l1" class="pointer-events-none absolute inset-0 z-12 overflow-hidden">
-				<Portal.Inner />
-			</Portal.Outer>
-
-			<Portal.Outer id="root.l2" class="pointer-events-none absolute inset-0 z-14 overflow-hidden">
-				<Portal.Inner />
-			</Portal.Outer>
-
-			<Portal.Outer id="root.l3" class="pointer-events-none absolute inset-0 z-16 overflow-hidden">
-				<Portal.Inner />
-			</Portal.Outer>
+			<L0Portal />
 		{/if}
+
+		{#if l1portal}
+			{@render l1portal?.()}
+		{:else}
+			<L1Portal />
+		{/if}
+
+		{@render portals?.()}
 
 		<ActivePortal portal="root.l0">
 			{@render children?.()}
