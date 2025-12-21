@@ -105,7 +105,7 @@ const preset = createPreset({
 					}}>Open Right Drawer</Button
 				>
 
-				<Drawer.Root bind:open={rightOpen}>
+				<Drawer.Root bind:open={rightOpen} class="z-50">
 					<Drawer.Content
 						class="h-full w-80 shadow-lg"
 						initial={animateDrawerContent({ duration: 0, side: 'right' })}
