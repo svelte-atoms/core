@@ -51,7 +51,7 @@ export class MenuBond<
 	item() {
 		return {
 			role: 'menuitem',
-			onkeydown: (ev: KeyboardEvent) => {
+			onkeyup: (ev: KeyboardEvent) => {
 				const currentTarget = ev.currentTarget as HTMLElement;
 				const disabled =
 					currentTarget.getAttribute('disabled') ||
