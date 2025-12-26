@@ -1,8 +1,15 @@
 import type { Snippet } from 'svelte';
 import type { MenuItemController } from './controller.svelte';
 import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { Base, HtmlAtomProps } from '../../atom';
 
-export interface MenuItemProps {
+/**
+ * Extend this interface to add custom menu list properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface MenuItemExtendProps { }
+
+export interface MenuItemProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base> extends HtmlAtomProps<E, B>, MenuItemExtendProps {
 	/**
 	 * Custom CSS class(es) to apply to the menu item
 	 */
