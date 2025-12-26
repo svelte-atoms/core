@@ -38,12 +38,42 @@ export class MenuBond<
 
 				// Handle arrow key navigation
 				if (ev.key === 'ArrowDown') {
-					const item = this.state.navigation.next();
-					item?.element?.focus();
-				} else if (ev.key === 'ArrowUp') {
-					const item = this.state.navigation.previous();
-					item?.element?.focus();
+					this.state.navigation.next();
 				}
+
+				if (ev.key === 'ArrowUp') {
+					this.state.navigation.previous();
+
+				}
+			}
+		};
+	}
+
+	trigger() {
+		const superProps = super.trigger();
+
+		return {
+			...superProps,
+			'aria-haspopup': 'menu' as const,
+			'onkeydown': (ev: KeyboardEvent) => {
+				if (ev.key === 'ArrowDown') {
+					this.state.navigation.next();
+				}
+
+				if (ev.key === 'ArrowUp') {
+					this.state.navigation.previous();
+				}
+
+				if ((ev.key === 'Enter' || ev.key === ' ') && this.state.props.open && this.state.highlightedItem) {
+					if (ev.key === ' ') {
+						ev.preventDefault();
+					}
+
+					this.state.highlightedItem?.element?.click();
+				}
+
+				// Call any additional onkeydown handler
+				superProps.onkeydown?.(ev);
 			}
 		};
 	}
