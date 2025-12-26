@@ -16,22 +16,22 @@
 
 	const basicCode = `<Menu.Root>
   <Menu.Trigger base={Button}>Open Menu</Menu.Trigger>
-  <Menu.List class="max-w-xs rounded-lg border">
+  <Menu.Content class="max-w-xs rounded-lg border">
     <Menu.Item>New File</Menu.Item>
     <Menu.Item>Open File</Menu.Item>
     <Menu.Item>Save</Menu.Item>
     <Menu.Item>Save As...</Menu.Item>
     <Menu.Item class="text-red-600">Exit</Menu.Item>
-  </Menu.List>
+  </Menu.Content>
 </Menu.Root>`;
 
 	const interactiveCode = `<Menu.Root>
   <Menu.Trigger base={Button}>Open Menu</Menu.Trigger>
-  <Menu.List class="max-w-xs rounded-lg border">
+  <Menu.Content class="max-w-xs rounded-lg border">
     <Menu.Item onclick={() => alert('Profile clicked')}>Profile</Menu.Item>
     <Menu.Item onclick={() => alert('Settings clicked')}>Settings</Menu.Item>
     <Menu.Item onclick={() => alert('Logout clicked')}>Logout</Menu.Item>
-  </Menu.List>
+  </Menu.Content>
 </Menu.Root>`;
 
 	const presetConfigCode = `import { setPreset } from '@svelte-atoms/core/context';
@@ -41,7 +41,7 @@ setPreset({
   menu: () => ({
     class: 'flex flex-col rounded-md border border-border bg-background py-1 text-popover-foreground shadow-md outline-none'
   }),
-  'menu.list': () => ({
+  'menu.content': () => ({
     class: 'flex flex-col gap-1 p-1'
   }),
   'menu.item': () => ({

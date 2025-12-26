@@ -792,11 +792,11 @@
 
 								<Dropdown.Indicator class="ml-auto" />
 							</Dropdown.Trigger>
-							<Dropdown.List class="">
+							<Dropdown.Content class="">
 								{#each fruits as fruit (fruit)}
 									<Dropdown.Item value={fruit} class="capitalize">{fruit}</Dropdown.Item>
 								{/each}
-							</Dropdown.List>
+							</Dropdown.Content>
 						{/snippet}
 					</Dropdown.Root>
 					<a

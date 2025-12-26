@@ -39,21 +39,21 @@ Button or element that triggers the combobox dropdown.
 
 {{comboboxTriggerProps}}
 
-### Combobox.Input
+### Combobox.Control
 
 Input field for filtering and selection.
 
-**Preset Key:** `combobox.input`
+**Preset Key:** `combobox.Control`
 
 **Props:**
 
 {{comboboxInputProps}}
 
-### Combobox.List
+### Combobox.Content
 
 Container for combobox items.
 
-**Preset Key:** `combobox.list`
+**Preset Key:** `combobox.Content`
 
 **Props:**
 
@@ -86,11 +86,11 @@ Individual combobox item.
 		<Combobox.Input placeholder="Select an option..." />
 	</Combobox.Trigger>
 
-	<Combobox.List>
+	<Combobox.Content>
 		<Combobox.Item value="option1">Option 1</Combobox.Item>
 		<Combobox.Item value="option2">Option 2</Combobox.Item>
 		<Combobox.Item value="option3">Option 3</Combobox.Item>
-	</Combobox.List>
+	</Combobox.Content>
 </Combobox.Root>
 ```
 

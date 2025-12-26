@@ -27,7 +27,7 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 		super(s);
 	}
 
-	input(props: Record<string, unknown> = {}) {
+	control() {
 		return {
 			'data-atom': `trigger-${this.id}`,
 			'data-kind': 'combobox-input',
@@ -39,36 +39,14 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 				? `item-${this.state.selectedItems.at(0)?.id}`
 				: undefined,
 			'aria-disabled': this.state.props.disabled ?? false,
-			'aria-label': props['aria-label'] ?? 'Choose an option',
 			tabindex: this.state.props.disabled ? -1 : 0,
-			...props,
 			oninput: (ev: Event) => {
 				const target = ev.target as HTMLInputElement;
 				this.state.props.query = target.value;
 			},
 			onkeydown: (ev: KeyboardEvent) => {
 				if (this.state.props.disabled) return;
-				if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
-					ev.preventDefault();
-					if (document.activeElement === this.elements.input) {
-						this.state.open();
 
-						if (ev.key === 'ArrowDown') {
-							this.state.highlightNextItem();
-						} else if (ev.key === 'ArrowUp') {
-							this.state.highlightPreviousItem();
-						}
-					}
-				}
-				if (ev.key === 'Escape') {
-					ev.preventDefault();
-					if (document.activeElement === this.elements.input) {
-						this.state.close();
-					}
-				}
-				if (ev.key === 'Enter') {
-					this.state.highlightedItem?.elements.root?.click();
-				}
 			},
 			[createAttachmentKey()]: (node: HTMLInputElement) => {
 				this.elements.input = node;
