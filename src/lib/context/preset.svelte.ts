@@ -68,7 +68,7 @@ export type PresetModuleName =
 	| 'list.item'
 	| 'list.item'
 	| 'dropdown.item'
-	| 'menu.body'
+	| 'menu.content'
 	| 'popover.arrow'
 	| 'popover.indicator'
 	| 'popover.content'

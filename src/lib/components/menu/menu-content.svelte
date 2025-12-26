@@ -10,7 +10,7 @@
 		class: klass = '',
 		as = 'ul' as T,
 		base = Root as B,
-		preset = 'menu.list',
+		preset = 'menu.content',
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
