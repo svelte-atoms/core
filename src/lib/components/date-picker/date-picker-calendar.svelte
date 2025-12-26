@@ -29,10 +29,6 @@
 		...restProps
 	}: DatePickerCalendarProps = $props();
 
-	const calendarProps = $derived({
-		...restProps
-	});
-
 	function handleChange(_: CustomEvent, { range, pivote }: { range: CalendarRange; pivote: Date }) {
 		if (!datePickerBond) return;
 
@@ -46,7 +42,7 @@
 	base={Root}
 	onchange={handleChange}
 	{preset}
-	{...calendarProps}
+	{...restProps}
 >
 	<HtmlAtom base={Header} class="col-span-full" />
 	<HtmlAtom base={Weekdays} class="border-0" />
