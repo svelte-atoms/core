@@ -27,26 +27,26 @@
 
 <Combobox.Root bind:value={selected} bind:query>
   <Combobox.Trigger>
-    <Combobox.Input placeholder="Select an option..." />
+    <Combobox.Control placeholder="Select an option..." />
   </Combobox.Trigger>
 
-  <Combobox.List>
+  <Combobox.Content>
     <Combobox.Item value="option1">Option 1</Combobox.Item>
     <Combobox.Item value="option2">Option 2</Combobox.Item>
     <Combobox.Item value="option3">Option 3</Combobox.Item>
-  </Combobox.List>
+  </Combobox.Content>
 </Combobox.Root>`;
 
 	const multipleCode = `<Combobox.Root bind:value={selected} bind:query multiple>
   <Combobox.Trigger>
-    <Combobox.Input placeholder="Select multiple options..." />
+    <Combobox.Control placeholder="Select multiple options..." />
   </Combobox.Trigger>
 
-  <Combobox.List>
+  <Combobox.Content>
     <Combobox.Item value="option1">Option 1</Combobox.Item>
     <Combobox.Item value="option2">Option 2</Combobox.Item>
     <Combobox.Item value="option3">Option 3</Combobox.Item>
-  </Combobox.List>
+  </Combobox.Content>
 </Combobox.Root>`;
 </script>
 
@@ -97,7 +97,7 @@ const preset = createPreset({
   'combobox.input': () => ({
     class: 'w-full bg-transparent outline-none placeholder:text-muted-foreground'
   }),
-  'combobox.list': () => ({
+  'combobox.content': () => ({
     class: 'absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-md border border-border bg-popover text-popover-foreground shadow-md'
   }),
   'combobox.item': () => ({
@@ -118,14 +118,14 @@ const preset = createPreset({
 				<div class="max-w-sm">
 					<Combobox.Root bind:value={selected} bind:query>
 						<Combobox.Trigger base={Input.Root}>
-							<Combobox.Input placeholder="Select an option..." />
+							<Combobox.Control placeholder="Select an option..." />
 						</Combobox.Trigger>
 
-						<Combobox.List>
+						<Combobox.Content>
 							{#each options as option}
 								<Combobox.Item value={option}>{option}</Combobox.Item>
 							{/each}
-						</Combobox.List>
+						</Combobox.Content>
 					</Combobox.Root>
 				</div>
 			</DemoExample>
@@ -138,14 +138,14 @@ const preset = createPreset({
 				<div class="max-w-sm">
 					<Combobox.Root bind:value={selected} bind:query multiple>
 						<Combobox.Trigger base={Input.Root}>
-							<Combobox.Input placeholder="Select multiple options..." />
+							<Combobox.Control placeholder="Select multiple options..." />
 						</Combobox.Trigger>
 
-						<Combobox.List>
+						<Combobox.Content>
 							{#each options as option}
 								<Combobox.Item value={option}>{option}</Combobox.Item>
 							{/each}
-						</Combobox.List>
+						</Combobox.Content>
 					</Combobox.Root>
 				</div>
 			</DemoExample>

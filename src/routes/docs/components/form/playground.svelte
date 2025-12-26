@@ -156,13 +156,13 @@
 
 							<Dropdown.Placeholder>Select a style</Dropdown.Placeholder>
 						</Dropdown.Trigger>
-						<Dropdown.List>
+						<Dropdown.Content>
 							{#each variants as variant}
 								<Dropdown.Item class="text-gray-900" value={variant.value}
 									>{variant.label}</Dropdown.Item
 								>
 							{/each}
-						</Dropdown.List>
+						</Dropdown.Content>
 					</Dropdown.Root>
 				</div>
 
