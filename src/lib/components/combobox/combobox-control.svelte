@@ -47,6 +47,6 @@
 	animate={animate?.bind(bond.state)}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond.input()}
+	{...bond.control()}
 	{...restProps}
 />

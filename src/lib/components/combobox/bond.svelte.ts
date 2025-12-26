@@ -27,7 +27,7 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 		super(s);
 	}
 
-	input(props: Record<string, unknown> = {}) {
+	control() {
 		return {
 			'data-atom': `trigger-${this.id}`,
 			'data-kind': 'combobox-input',
@@ -39,9 +39,7 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 				? `item-${this.state.selectedItems.at(0)?.id}`
 				: undefined,
 			'aria-disabled': this.state.props.disabled ?? false,
-			'aria-label': props['aria-label'] ?? 'Choose an option',
 			tabindex: this.state.props.disabled ? -1 : 0,
-			...props,
 			oninput: (ev: Event) => {
 				const target = ev.target as HTMLInputElement;
 				this.state.props.query = target.value;
@@ -54,20 +52,19 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 						this.state.open();
 
 						if (ev.key === 'ArrowDown') {
-							this.state.highlightNextItem();
+							this.state.navigation.next();
 						} else if (ev.key === 'ArrowUp') {
-							this.state.highlightPreviousItem();
+							this.state.navigation.previous();
 						}
 					}
 				}
 				if (ev.key === 'Escape') {
-					ev.preventDefault();
 					if (document.activeElement === this.elements.input) {
 						this.state.close();
 					}
 				}
 				if (ev.key === 'Enter') {
-					this.state.highlightedItem?.elements.root?.click();
+					this.state.highlightedItem?.element?.click();
 				}
 			},
 			[createAttachmentKey()]: (node: HTMLInputElement) => {
