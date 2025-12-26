@@ -6,5 +6,5 @@ export { default as Query } from './dropdown-query.svelte';
 export { default as Value } from './dropdown-value.svelte';
 export { default as Values } from './dropdown-values.svelte';
 
-export { Arrow, Indicator } from '$svelte-atoms/core/components/popover/atoms';
-export { List, Divider, Title, Group } from '../menu/atoms';
+export { Arrow, Indicator } from '../popover/atoms';
+export { Content, List, Divider, Title, Group } from '../menu/atoms';

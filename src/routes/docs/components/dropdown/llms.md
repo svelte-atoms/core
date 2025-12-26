@@ -45,11 +45,11 @@ Displays the currently selected value(s).
 
 {{dropdownValueProps}}
 
-#### `Dropdown.List`
+#### `Dropdown.Content`
 
 Container for dropdown items.
 
-**Preset Key:** `dropdown.list`
+**Preset Key:** `Dropdown.Content`
 
 **Props:**
 
@@ -85,11 +85,11 @@ import { Dropdown } from '@svelte-atoms/core';
 		<Dropdown.Value />
 	</Dropdown.Trigger>
 
-	<Dropdown.List>
+	<Dropdown.Content>
 		<Dropdown.Item value="item1">Item 1</Dropdown.Item>
 		<Dropdown.Item value="item2">Item 2</Dropdown.Item>
 		<Dropdown.Item value="item3">Item 3</Dropdown.Item>
-	</Dropdown.List>
+	</Dropdown.Content>
 </Dropdown.Root>
 ```
 

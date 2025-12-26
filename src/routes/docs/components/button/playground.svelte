@@ -32,12 +32,12 @@
 
 							<Dropdown.Placeholder>Select a style</Dropdown.Placeholder>
 						</Dropdown.Trigger>
-						<Dropdown.List>
+						<Dropdown.Content>
 							<Dropdown.Item class="text-gray-900" value="default">Default</Dropdown.Item>
 							<Dropdown.Item class="text-gray-900" value="primary">Primary</Dropdown.Item>
 							<Dropdown.Item class="text-gray-900" value="outline">Outline</Dropdown.Item>
 							<Dropdown.Item class="text-gray-900" value="gradient">Gradient</Dropdown.Item>
-						</Dropdown.List>
+						</Dropdown.Content>
 					</Dropdown.Root>
 				</div>
 
@@ -58,11 +58,11 @@
 
 							<Dropdown.Placeholder>Select a size</Dropdown.Placeholder>
 						</Dropdown.Trigger>
-						<Dropdown.List>
+						<Dropdown.Content>
 							<Dropdown.Item class="text-gray-900" value="sm">Small</Dropdown.Item>
 							<Dropdown.Item class="text-gray-900" value="md">Medium</Dropdown.Item>
 							<Dropdown.Item class="text-gray-900" value="lg">Large</Dropdown.Item>
-						</Dropdown.List>
+						</Dropdown.Content>
 					</Dropdown.Root>
 				</div>
 				<div>

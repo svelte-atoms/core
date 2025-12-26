@@ -17,11 +17,11 @@
     <button>Open Menu</button>
   </Dropdown.Trigger>
   
-  <Dropdown.List>
+  <Dropdown.Content>
     <Dropdown.Item>Profile</Dropdown.Item>
     <Dropdown.Item>Settings</Dropdown.Item>
     <Dropdown.Item>Logout</Dropdown.Item>
-  </Dropdown.List>
+  </Dropdown.Content>
 </Dropdown.Root>`;
 
 	let basicOpen = $state(false);
@@ -87,11 +87,11 @@ const preset = createPreset({
 						Open Menu
 					</Dropdown.Trigger>
 
-					<Dropdown.List class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
+					<Dropdown.Content class="bg-background mt-2 min-w-[200px] rounded-lg border shadow-lg">
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Profile</Dropdown.Item>
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Settings</Dropdown.Item>
 						<Dropdown.Item class="hover:bg-muted block px-4 py-2">Logout</Dropdown.Item>
-					</Dropdown.List>
+					</Dropdown.Content>
 				</Dropdown.Root>
 			</DemoExample>
 		</div>
