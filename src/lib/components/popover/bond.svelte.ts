@@ -111,6 +111,10 @@ export class PopoverBond<
 					this.elements.content?.focus();
 					return;
 				}
+
+				if (ev.key === 'Escape') {
+					this.state.close();
+				}
 			},
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.trigger = node;

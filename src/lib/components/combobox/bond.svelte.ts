@@ -46,26 +46,7 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 			},
 			onkeydown: (ev: KeyboardEvent) => {
 				if (this.state.props.disabled) return;
-				if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
-					ev.preventDefault();
-					if (document.activeElement === this.elements.input) {
-						this.state.open();
 
-						if (ev.key === 'ArrowDown') {
-							this.state.navigation.next();
-						} else if (ev.key === 'ArrowUp') {
-							this.state.navigation.previous();
-						}
-					}
-				}
-				if (ev.key === 'Escape') {
-					if (document.activeElement === this.elements.input) {
-						this.state.close();
-					}
-				}
-				if (ev.key === 'Enter') {
-					this.state.highlightedItem?.element?.click();
-				}
 			},
 			[createAttachmentKey()]: (node: HTMLInputElement) => {
 				this.elements.input = node;
