@@ -102,13 +102,13 @@ Combine components to create complex UIs:
 			<Dropdown.Query placeholder="Search..." />
 		</Dropdown.Trigger>
 
-		<Dropdown.List>
+		<Dropdown.Content>
 			{#each dd.current as item (item.id)}
 				<div animate:flip={{ duration: 200 }}>
 					<Dropdown.Item value={item.value}>{item.text}</Dropdown.Item>
 				</div>
 			{/each}
-		</Dropdown.List>
+		</Dropdown.Content>
 	{/snippet}
 </Dropdown.Root>
 ```
