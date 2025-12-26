@@ -15,7 +15,6 @@
 	import type { DatePickerCalendarProps } from './types';
 
 	const datePickerBond = DatePickerBond.get();
-	const datePickerBondProps = $derived(datePickerBond?.state.props);
 
 	let {
 		class: klass = '',
@@ -31,8 +30,6 @@
 	}: DatePickerCalendarProps = $props();
 
 	const calendarProps = $derived({
-		...datePickerBond?.content(),
-		...datePickerBondProps,
 		...restProps
 	});
 
