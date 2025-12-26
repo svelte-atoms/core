@@ -103,8 +103,13 @@ export class PopoverBond<
 
 				// Toggle on Enter or Space
 				if (ev.key === 'Enter' || ev.key === ' ') {
-					ev.preventDefault();
 					this.state.toggle();
+					return;
+				}
+
+				if (ev.key === 'Tab') {
+					this.elements.content?.focus();
+					return;
 				}
 			},
 			[createAttachmentKey()]: (node: HTMLElement) => {
@@ -150,6 +155,7 @@ export class PopoverBond<
 			if (ev.key === 'Escape') {
 				this.state.close();
 				this.elements.trigger?.focus();
+				return;
 			}
 
 			focusTrap(ev);
