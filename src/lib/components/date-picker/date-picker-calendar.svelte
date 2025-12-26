@@ -15,7 +15,6 @@
 	import type { DatePickerCalendarProps } from './types';
 
 	const datePickerBond = DatePickerBond.get();
-	const datePickerBondProps = $derived(datePickerBond?.state.props);
 
 	let {
 		class: klass = '',
@@ -30,12 +29,6 @@
 		...restProps
 	}: DatePickerCalendarProps = $props();
 
-	const calendarProps = $derived({
-		...datePickerBond?.content(),
-		...datePickerBondProps,
-		...restProps
-	});
-
 	function handleChange(_: CustomEvent, { range, pivote }: { range: CalendarRange; pivote: Date }) {
 		if (!datePickerBond) return;
 
@@ -49,7 +42,7 @@
 	base={Root}
 	onchange={handleChange}
 	{preset}
-	{...calendarProps}
+	{...restProps}
 >
 	<HtmlAtom base={Header} class="col-span-full" />
 	<HtmlAtom base={Weekdays} class="border-0" />
