@@ -63,8 +63,9 @@ export class DatePickerBond<
 	}
 
 	content() {
+		const superProps = super.content();
 		return {
-			...super.content(),
+			...superProps,
 			id: `date-picker-calendar-${this.id}`,
 			role: 'dialog',
 			'aria-label': 'Choose date'
