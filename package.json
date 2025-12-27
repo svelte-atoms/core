@@ -126,6 +126,11 @@
 			"svelte": "./dist/components/checkbox/index.js",
 			"default": "./dist/components/checkbox/index.js"
 		},
+		"./chip": {
+			"types": "./dist/components/chip/index.d.ts",
+			"svelte": "./dist/components/chip/index.js",
+			"default": "./dist/components/chip/index.js"
+		},
 		"./combobox": {
 			"types": "./dist/components/combobox/index.d.ts",
 			"svelte": "./dist/components/combobox/index.js",
