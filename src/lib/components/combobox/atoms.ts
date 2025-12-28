@@ -6,6 +6,7 @@ export { default as Item } from './combobox-item.svelte';
  */
 export { default as Input } from './combobox-control.svelte';
 export { default as Control } from './combobox-control.svelte';
+export { default as Selections } from './combobox-selections.svelte';
 export {
 	Arrow,
 	Indicator,
@@ -13,5 +14,8 @@ export {
 	List,
 	Group,
 	Divider,
-	Title
+	Title,
+	Selection,
+	Query,
+	Placeholder,
 } from '../dropdown/atoms';

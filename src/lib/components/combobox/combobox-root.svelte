@@ -7,7 +7,6 @@
 		open = $bindable(false),
 		value = $bindable(),
 		values = $bindable(),
-		query = $bindable(),
 		text = $bindable(),
 		multiple = false,
 		disabled = false,
@@ -35,11 +34,6 @@
 					values = v;
 					value = v[0];
 				}
-			),
-			defineProperty(
-				'query',
-				() => query,
-				(v) => (query = v)
 			),
 			defineProperty(
 				'text',

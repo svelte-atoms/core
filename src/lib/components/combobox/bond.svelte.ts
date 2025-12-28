@@ -7,23 +7,28 @@ import {
 	DropdownBondState
 } from '$svelte-atoms/core/components/dropdown/bond.svelte';
 import { createAttachmentKey } from 'svelte/attachments';
+import { SvelteMap } from 'svelte/reactivity';
+import { nanoid } from 'nanoid';
+import type { ComboboxSelection } from './types';
 
 export type ComboboxBondProps = PopoverStateProps & {
 	value?: string;
 	query?: string;
 	text?: string;
+	control?: string;
+	multiple?: boolean;
 };
 
 export type ComboboxBondElements = PopoverDomElements & {
 	input: HTMLInputElement;
 };
 
-export class ComboboxBond<T = unknown> extends DropdownBond<
+export class ComboboxBond extends DropdownBond<
 	ComboboxBondProps,
-	ComboboxBondState<T>,
+	ComboboxBondState,
 	ComboboxBondElements
 > {
-	constructor(s: ComboboxBondState<T>) {
+	constructor(s: ComboboxBondState) {
 		super(s);
 	}
 
@@ -35,17 +40,27 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 			'aria-autocomplete': 'list',
 			'aria-expanded': this.state.props.open ?? false,
 			'aria-controls': `overlay-${this.id}`,
-			'aria-activedescendant': this.state.selectedItems.at(0)?.id
-				? `item-${this.state.selectedItems.at(0)?.id}`
+			'aria-activedescendant': this.state.selections.at(0)?.id
+				? `item-${this.state.selections.at(0)?.id}`
 				: undefined,
 			'aria-disabled': this.state.props.disabled ?? false,
 			tabindex: this.state.props.disabled ? -1 : 0,
 			oninput: (ev: Event) => {
 				const target = ev.target as HTMLInputElement;
-				this.state.props.query = target.value;
+				this.state.props.control = target.value;
 			},
 			onkeydown: (ev: KeyboardEvent) => {
 				if (this.state.props.disabled) return;
+
+				if (ev.key === 'Enter') {
+					const currentTarget = ev.currentTarget as HTMLInputElement;
+					const value = currentTarget.value.trim();
+					if (value !== '') {
+						this.state.addSelection(value);
+						this.state.props.control = '';
+						currentTarget.value = '';
+					}
+				}
 
 			},
 			[createAttachmentKey()]: (node: HTMLInputElement) => {
@@ -54,34 +69,46 @@ export class ComboboxBond<T = unknown> extends DropdownBond<
 		};
 	}
 
-	static get = DropdownBond.get;
-	static set = DropdownBond.set;
+	static get(): ComboboxBond | undefined {
+		return super.get() as ComboboxBond | undefined;
+	}
+
+	static set(context: ComboboxBond): ComboboxBond {
+		return super.set(context) as ComboboxBond;
+	}
 }
 
-export class ComboboxBondState<T> extends DropdownBondState<ComboboxBondProps> {
-	// #items: Map<string, DropdownItemAtom<T>> = new SvelteMap();
-	// #selectedItems = $derived(
-	// 	this.props.values?.map((id) => this.#items.get(id)).filter(Boolean) ?? []
-	// ) as DropdownItemAtom<T>[];
-
-	// #value: string = $state('');
-	// #query: string = $state('');
+export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
+	#userSelections = new SvelteMap<string, ComboboxSelection>();
 
 	constructor(props: () => ComboboxBondProps) {
 		super(props);
 	}
 
-	// get value() {
-	// 	return this.#value ?? '';
-	// }
-	// set value(value: string) {
-	// 	this.#value = value;
-	// }
+	addSelection(text: string) {
+		const id = nanoid();
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const createdAt = new Date();
+		this.#userSelections.set(id, { id, text, createdAt, unselect: () => this.deleteSelection(id) });
+	}
 
-	// get query() {
-	// 	return this.#query ?? '';
-	// }
-	// set query(query: string) {
-	// 	this.#query = query;
-	// }
+	deleteSelection(id: string) {
+		this.#userSelections.delete(id);
+	}
+
+	get userSelections() {
+		return Array.from(this.#userSelections.values());
+	}
+
+	get allSelections() {
+		const itemSelections = this.selections.map((controller) => ({
+			id: controller.id,
+			text: controller.text as string,
+			createdAt: controller.createdAt, // default date for items from the list
+			controller,
+			unselect: () => this.unselect([controller.id]),
+		}));
+
+		return [...itemSelections, ...this.userSelections].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+	}
 }

@@ -3,6 +3,7 @@
 	import { Combobox as ACombobox } from '.';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Divider } from '$svelte-atoms/core/components/divider';
+	import { filter } from '../dropdown';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -20,7 +21,6 @@
 <script lang="ts">
 	let open = $state(false);
 	let value = $state<string | undefined>('usd');
-	let query = $state('');
 	let array = $state([
 		{ value: 'usd', label: 'US Dollar' },
 		{ value: 'eur', label: 'Euro' },
@@ -29,20 +29,32 @@
 		{ value: 'cny', label: 'Chinese Yuan' }
 	]);
 
-	const filteredItems = $derived(
-		array.filter((item) => !query || item.label.toLowerCase().includes(query))
+	const filteredItems = filter(
+		() => array,
+		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
 	);
 </script>
 
 <Story name="Combobox" args={{}}>
-	<ACombobox.Root bind:open bind:value bind:query>
-		<ACombobox.Trigger base={Input.Root} class="h-10 min-w-sm">
-			<Input.Icon class="text-foreground/50">$</Input.Icon>
-			<Divider class="mx-1" vertical />
-			<ACombobox.Control class="px-1" placeholder="Select a language" />
+	<ACombobox.Root bind:open bind:value multiple>
+		<ACombobox.Trigger
+			base={Input.Root}
+			class="flex h-auto min-h-10 min-w-sm flex-col items-start gap-2"
+		>
+			<div class="flex">
+				<Input.Icon class="text-foreground/50">$</Input.Icon>
+				<Divider class="mx-1" vertical />
+				<ACombobox.Control class="px-1" placeholder="Select a language" />
+			</div>
+			<ACombobox.Selections />
 		</ACombobox.Trigger>
 		<ACombobox.List>
-			{#each filteredItems as item (item.value)}
+			<ACombobox.Query
+				bind:value={filteredItems.query}
+				class="border-border border-b px-4 py-3"
+				placeholder="Type to filter..."
+			/>
+			{#each filteredItems.current as item (item.value)}
 				<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
 			{/each}
 		</ACombobox.List>

@@ -29,7 +29,7 @@
 
 	const isMultiple = $derived(bond?.state.props?.multiple ?? false);
 	const selectedText = $derived(
-		isMounted || isMultiple ? (bond.state.selectedItems.at(0)?.text ?? '') : ''
+		isMounted || isMultiple ? (bond.state.selections.at(0)?.text ?? '') : ''
 	);
 
 	const value = $derived(
