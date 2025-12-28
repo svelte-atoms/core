@@ -94,7 +94,7 @@ export class DropdownBond<
 export class DropdownBondState<
 	Props extends DropdownStateProps = DropdownStateProps
 > extends MenuBondState<Props> {
-	#selectedItems = $derived(
+	#selections = $derived(
 		this.props.values
 			?.map((value) => this.items.get(value) as unknown as DropdownItemController<unknown>)
 			.filter(Boolean) ?? []
@@ -106,8 +106,8 @@ export class DropdownBondState<
 		super(props);
 	}
 
-	get selectedItems() {
-		return this.#selectedItems;
+	get selections() {
+		return this.#selections;
 	}
 
 	get query() {

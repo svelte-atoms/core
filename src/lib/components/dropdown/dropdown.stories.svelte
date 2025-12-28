@@ -61,14 +61,13 @@
 
 					<!-- Default usage  -->
 					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" /> -->
+
 					<!-- Display selected values with animation -->
 					<ADropdown.Selections class="flex flex-wrap gap-1">
-						{#snippet children({ items })}
-							{#each items as item (item.id)}
+						{#snippet children({ selections })}
+							{#each selections as selection (selection.id)}
 								<div animate:flip={{ duration: 200 }}>
-									<ADropdown.Selection {item} class="">
-										{item.text}
-									</ADropdown.Selection>
+									<ADropdown.Selection {selection} />
 								</div>
 							{/each}
 						{/snippet}
@@ -86,7 +85,7 @@
 			{/snippet}
 		</ADropdown.Root>
 
-		<ADropdown.Root keys={data.map((item) => item.value)} onquerychange={(q) => (dd.query = q)}>
+		<ADropdown.Root keys={data.map((item) => item.value)}>
 			{#snippet children({ dropdown })}
 				<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
 				<ADropdown.Trigger
@@ -103,8 +102,8 @@
 
 					<!-- Ability to customize the display of selected item -->
 					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" >
-						{#snippet children({item})}
-							{item?.text}
+						{#snippet children({selection})}
+							{selection?.text}
 						{/snippet}
 					</ADropdown.Selections> -->
 				</ADropdown.Trigger>
@@ -113,6 +112,7 @@
 				<ADropdown.Content>
 					<!-- Inline search input within the trigger -->
 					<ADropdown.Query
+						bind:value={dd.query}
 						class="border-border flex-1 border-b px-4 py-3"
 						placeholder="Search for fruits..."
 					/>

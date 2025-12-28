@@ -51,22 +51,32 @@ export interface DropdownSelectionsProps {
 	class?: ClassValue;
 	Selection?: Component | undefined;
 	children?: Snippet<[{
-		items: DropdownItemController<unknown>[];
-		item?: DropdownItemController<unknown> | undefined;
+		selections: DropdownSelection[];
+		selection?: DropdownSelection | undefined;
 	}]>;
+	getSelections?: <T extends DropdownBond>(bond: T) => DropdownSelection[];
 }
 
 export interface DropdownSelectionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	T = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 > extends HtmlAtomProps<E, B> {
-	item: DropdownItemController<T>;
+	selection: DropdownSelection;
 	children?: Snippet;
 	onclose?: (event: Event) => void;
 }
 
 export interface DropdownQueryProps extends HtmlAtomProps<'input'> {
+	value?: string;
 	children?: Snippet;
+}
+
+export interface DropdownSelection {
+	readonly id: string;
+	readonly value?: string
+	readonly text: string;
+	readonly createdAt: Date;
+	unselect: () => void;
+	controller?: DropdownItemController<unknown>;
 }

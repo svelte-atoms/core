@@ -1,9 +1,9 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { DropdownBond } from './bond.svelte';
-	import Chip from '../chip/chip.svelte';
-	import { HtmlAtom as Atom } from '../atom';
 	import type { DropdownSelectionProps } from './types';
+	import { Chip } from '../chip';
+	import { HtmlAtom as Atom } from '../atom';
 
 	const bond = DropdownBond.get();
 
@@ -17,7 +17,7 @@
 		class: klass = '',
 		as = 'div' as T,
 		base = undefined,
-		item,
+		selection,
 		children,
 		onclose,
 		...restProps
@@ -30,7 +30,7 @@
 
 		if (ev.defaultPrevented) return;
 
-		bond?.state.unselect([item.value]);
+		selection.unselect();
 	}
 </script>
 
@@ -47,5 +47,9 @@
 	onclose={handleClose}
 	{...restProps}
 >
-	{@render children?.()}
+	{#if children}
+		{@render children?.()}
+	{:else}
+		{selection.text}
+	{/if}
 </Atom>
