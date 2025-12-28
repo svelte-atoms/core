@@ -3,6 +3,7 @@ import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { ComboboxBond } from './bond.svelte';
 import type { DropdownSelectionProps, DropdownSelectionsProps } from '../dropdown';
+import type { InputControlProps } from '../input';
 
 /**
  * Extend this interface to add custom combobox properties in your application.
@@ -38,6 +39,13 @@ export interface ComboboxSelectionsProps extends DropdownSelectionsProps {
 export interface ComboboxSelectionProps extends DropdownSelectionProps {
 	// 
 }
+
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ComboboxControlProps extends InputControlProps {
+	// 
+};
+
 
 export interface ComboboxSelection {
 	id: string;
