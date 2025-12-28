@@ -19,12 +19,9 @@ export interface DropdownExtendProps { }
 export interface DropdownTriggerExtendProps { }
 
 export interface DropdownRootProps<
-	E extends keyof HTMLElementTagNameMap = 'div',
-	B extends Base = Base,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	T = any
-> extends HtmlAtomProps<E, B>,
-	DropdownExtendProps {
+> extends DropdownExtendProps {
 	open?: boolean;
 	value?: T;
 	values?: T[];

@@ -1,6 +1,7 @@
 <script lang="ts" generics="T">
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { DropdownBond, DropdownBondState, type DropdownStateProps } from './bond.svelte';
+	import type { DropdownRootProps } from './types';
 
 	let {
 		open = $bindable(false),
@@ -16,7 +17,7 @@
 		children = undefined,
 		onquerychange = undefined,
 		...restProps
-	} = $props();
+	}: DropdownRootProps<T> = $props();
 
 	const bondProps = defineState<DropdownStateProps>(
 		[
