@@ -12,8 +12,6 @@
 	let { children, ...restProps }: ComboboxSelectionsProps = $props();
 
 	let selections = $derived(bond.state.allSelections);
-
-	$inspect(selections);
 </script>
 
 <Selections getSelections={() => selections} {...restProps} />
