@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { ComboboxBond } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
@@ -29,12 +29,11 @@
 		isMounted = true;
 	});
 
-	const isMultiple = $derived(bond?.state.props?.multiple ?? false);
-	const selectedText = $derived(
-		isMounted || isMultiple ? (bond.state.allSelections.at(0)?.text ?? '') : ''
-	);
+	$effect(() => {
+		bond.state.allSelections;
 
-	// const value = $derived(bond?.state.props?.text || selectedText || '');
+		value = untrack(() => bond.state.props.control);
+	});
 
 	const comboboxProps = $derived({
 		...bond.control(),

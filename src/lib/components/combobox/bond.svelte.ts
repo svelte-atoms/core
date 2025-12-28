@@ -10,7 +10,6 @@ import { createAttachmentKey } from 'svelte/attachments';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
-import { tick } from 'svelte';
 
 export type ComboboxBondProps = PopoverStateProps & {
 	value?: string;
@@ -58,10 +57,7 @@ export class ComboboxBond extends DropdownBond<
 					const value = currentTarget.value.trim();
 					if (value !== '') {
 						this.state.addSelection(value);
-						this.state.props.control = '';
-						tick().then(() => {
-							currentTarget.value = '';
-						})
+						this.state.props.control = ''
 					}
 				}
 
