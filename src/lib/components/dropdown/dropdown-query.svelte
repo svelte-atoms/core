@@ -10,6 +10,7 @@
 	}
 
 	let {
+		value = $bindable(),
 		class: klass = '',
 		children = undefined,
 		onpointerdown,
@@ -24,7 +25,13 @@
 </script>
 
 <Input.Control
-	bind:value={bond.state.query}
+	bind:value={
+		() => value,
+		(v) => {
+			bond.state.query = v ?? '';
+			value = v;
+		}
+	}
 	{bond}
 	preset="dropdown.query"
 	class={['inline-flex h-auto w-auto flex-1 py-1', '$preset', klass]}
