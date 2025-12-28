@@ -66,9 +66,9 @@
 						{#snippet children({ items })}
 							{#each items as item (item.id)}
 								<div animate:flip={{ duration: 200 }}>
-									<ADropdown.Value {item} class="">
+									<ADropdown.Selection {item} class="">
 										{item.text}
-									</ADropdown.Value>
+									</ADropdown.Selection>
 								</div>
 							{/each}
 						{/snippet}

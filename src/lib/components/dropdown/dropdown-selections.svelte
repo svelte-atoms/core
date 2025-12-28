@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { HtmlAtom as Atom } from '../atom';
-	import Value from './dropdown-value.svelte';
+	import DropdownSelection from './dropdown-selection.svelte';
 	import { DropdownBond } from './bond.svelte';
 	import type { DropdownSelectionsProps } from './types';
+	import type { Component } from 'svelte';
 
 	const bond = DropdownBond.get();
 
@@ -16,7 +17,7 @@
 	let {
 		class: klass = '',
 		children,
-		value: Selection = Value,
+		Selection = DropdownSelection as unknown as Component,
 		...restProps
 	}: DropdownSelectionsProps = $props();
 </script>

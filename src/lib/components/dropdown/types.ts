@@ -1,4 +1,4 @@
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 import type { Factory, Override } from '$svelte-atoms/core/types';
 import type { DropdownBond } from './bond.svelte';
@@ -23,7 +23,7 @@ export interface DropdownRootProps<
 	B extends Base = Base,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	T = any
-> extends Omit<HtmlAtomProps<E, B>, 'children'>,
+> extends HtmlAtomProps<E, B>,
 	DropdownExtendProps {
 	open?: boolean;
 	value?: T;
@@ -52,8 +52,20 @@ export interface DropdownTriggerProps<
 
 export interface DropdownSelectionsProps {
 	class?: ClassValue;
+	Selection?: Component | undefined;
 	children?: Snippet<[{
 		items: DropdownItemController<unknown>[];
-		item?: DropdownItemController<unknown>|undefined;
+		item?: DropdownItemController<unknown> | undefined;
 	}]>;
+}
+
+export interface DropdownSelectionProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	T = any
+> extends HtmlAtomProps<E, B> {
+	item: DropdownItemController<T>;
+	children?: Snippet;
+	onclose?: (event: Event) => void;
 }

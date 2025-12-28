@@ -3,6 +3,7 @@
 	import { DropdownBond } from './bond.svelte';
 	import Chip from '../chip/chip.svelte';
 	import { HtmlAtom as Atom } from '../atom';
+	import type { DropdownSelectionProps } from './types';
 
 	const bond = DropdownBond.get();
 
@@ -16,12 +17,11 @@
 		class: klass = '',
 		as = 'div' as T,
 		base = undefined,
-		value,
 		item,
 		children,
 		onclose,
 		...restProps
-	} = $props();
+	}: DropdownSelectionProps<T, B> = $props();
 
 	const _base = $derived((base ?? isMultiple) ? Chip : undefined);
 
