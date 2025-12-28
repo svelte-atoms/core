@@ -5,7 +5,7 @@
 
 	import { on } from '$svelte-atoms/core/attachments';
 
-	const bond = ComboboxBond.get() as ComboboxBond<{}>;
+	const bond = ComboboxBond.get() as ComboboxBond;
 
 	if (!bond) {
 		throw new Error('Combobox atom was not found');
