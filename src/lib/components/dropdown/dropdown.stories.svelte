@@ -4,6 +4,7 @@
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { flip } from 'svelte/animate';
 	import { filter } from './runes.svelte';
+	import { animate } from 'motion';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -37,47 +38,92 @@
 
 <Story name="Dropdown" args={{}}>
 	<!-- Multi-select dropdown with search functionality -->
-	<ADropdown.Root
-		bind:open
-		keys={data.map((item) => item.value)}
-		multiple
-		onquerychange={(q) => (dd.query = q)}
-	>
-		{#snippet children({ dropdown })}
-			<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
-			<ADropdown.Trigger
-				base={Input.Root}
-				class="flex h-auto min-h-12 max-w-sm min-w-sm flex-col items-start gap-1 rounded-sm px-4 transition-colors duration-200"
-				onclick={(ev) => {
-					ev.preventDefault();
+	<div class="flex flex-col gap-4">
+		<ADropdown.Root
+			bind:open
+			keys={data.map((item) => item.value)}
+			multiple
+			onquerychange={(q) => (dd.query = q)}
+		>
+			{#snippet children({ dropdown })}
+				<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
+				<ADropdown.Trigger
+					base={Input.Root}
+					class="flex h-auto min-h-12 max-w-sm min-w-sm flex-col items-start gap-1 rounded-sm px-4 transition-colors duration-200"
+					onclick={(ev) => {
+						ev.preventDefault();
 
-					dropdown.state.open();
-				}}
-			>
-				<!-- Inline search input within the trigger -->
-				<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
-				<!-- Display selected values with animation -->
-				{#if dropdown?.state?.selectedItems?.length}
-					<div class="flex flex-wrap gap-1">
-						{#each dropdown?.state?.selectedItems ?? [] as item (item.id)}
-							<div animate:flip={{ duration: 200 }}>
-								<ADropdown.Value value={item.value} class="text-foreground/80">
-									{item.text}
-								</ADropdown.Value>
-							</div>
-						{/each}
-					</div>
-				{/if}
-			</ADropdown.Trigger>
+						dropdown.state.open();
+					}}
+				>
+					<!-- Inline search input within the trigger -->
+					<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
 
-			<!-- ADropdown list with filtered items -->
-			<ADropdown.List>
-				{#each dd.current as item (item.id)}
-					<div animate:flip={{ duration: 200 }}>
-						<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
-					</div>
-				{/each}
-			</ADropdown.List>
-		{/snippet}
-	</ADropdown.Root>
+					<!-- Default usage  -->
+					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" /> -->
+					<!-- Display selected values with animation -->
+					<ADropdown.Selections class="flex flex-wrap gap-1">
+						{#snippet children({ items })}
+							{#each items as item (item.id)}
+								<div animate:flip={{ duration: 200 }}>
+									<ADropdown.Value {item} class="">
+										{item.text}
+									</ADropdown.Value>
+								</div>
+							{/each}
+						{/snippet}
+					</ADropdown.Selections>
+				</ADropdown.Trigger>
+
+				<!-- ADropdown list with filtered items -->
+				<ADropdown.Content>
+					{#each dd.current as item (item.id)}
+						<div animate:flip={{ duration: 200 }}>
+							<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
+						</div>
+					{/each}
+				</ADropdown.Content>
+			{/snippet}
+		</ADropdown.Root>
+
+		<ADropdown.Root keys={data.map((item) => item.value)} onquerychange={(q) => (dd.query = q)}>
+			{#snippet children({ dropdown })}
+				<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
+				<ADropdown.Trigger
+					base={Input.Root}
+					class="flex h-auto min-h-12 max-w-sm min-w-sm gap-1 rounded-sm px-4 transition-colors duration-200"
+					onclick={(ev) => {
+						ev.preventDefault();
+
+						dropdown.state.open();
+					}}
+				>
+					<!-- Display selected values with animation -->
+					<ADropdown.Selections class="flex flex-wrap gap-1" />
+
+					<!-- Ability to customize the display of selected item -->
+					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" >
+						{#snippet children({item})}
+							{item?.text}
+						{/snippet}
+					</ADropdown.Selections> -->
+				</ADropdown.Trigger>
+
+				<!-- ADropdown list with filtered items -->
+				<ADropdown.Content>
+					<!-- Inline search input within the trigger -->
+					<ADropdown.Query
+						class="border-border flex-1 border-b px-4 py-3"
+						placeholder="Search for fruits..."
+					/>
+
+					{#each dd.current as item (item.id)}
+						<div animate:flip={{ duration: 200 }}>
+							<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
+						</div>
+					{/each}
+				</ADropdown.Content>
+			{/snippet}
+		</ADropdown.Root>
+	</div>
 </Story>

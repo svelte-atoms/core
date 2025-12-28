@@ -1,8 +1,8 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
+	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { DropdownBond } from './bond.svelte';
+	import Chip from '../chip/chip.svelte';
+	import { HtmlAtom as Atom } from '../atom';
 
 	const bond = DropdownBond.get();
 
@@ -10,51 +10,42 @@
 		throw new Error('DropdownValue must be used within a Dropdown');
 	}
 
+	const isMultiple = $derived(bond.state.props.multiple);
+
 	let {
 		class: klass = '',
 		as = 'div' as T,
+		base = undefined,
 		value,
+		item,
 		children,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		onclose,
 		...restProps
 	} = $props();
 
-	function handleClick(ev: Event) {
-		ev.preventDefault();
-		ev.stopPropagation();
+	const _base = $derived((base ?? isMultiple) ? Chip : undefined);
 
-		bond?.state.unselect([value]);
+	function handleClose(ev: Event) {
+		onclose?.(ev);
+
+		if (ev.defaultPrevented) return;
+
+		bond?.state.unselect([item.value]);
 	}
 </script>
 
-<HtmlAtom
+<Atom
 	{as}
 	{bond}
+	base={_base}
 	preset="dropdown.value"
 	class={[
-		'dropdown-value border-border bg-foreground/5 inline-flex flex-nowrap items-center gap-1 rounded-xs px-1 whitespace-nowrap',
+		'dropdown-value border-border inline-flex h-6 flex-nowrap items-center gap-1 rounded-sm px-2 whitespace-nowrap',
 		'$preset',
 		klass
 	]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
+	onclose={handleClose}
 	{...restProps}
 >
 	{@render children?.()}
-
-	<button
-		class="bg-foreground/5 flex aspect-square h-4 cursor-pointer items-center justify-center rounded-xs p-0"
-		onclick={handleClick}
-	>
-		<Icon class="h-3" src={CloseIcon} />
-	</button>
-</HtmlAtom>
+</Atom>
