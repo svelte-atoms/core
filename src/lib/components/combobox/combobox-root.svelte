@@ -8,6 +8,7 @@
 		value = $bindable(),
 		values = $bindable(),
 		text = $bindable(),
+		texts = $bindable(),
 		multiple = false,
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
@@ -39,6 +40,11 @@
 				'text',
 				() => text,
 				(v) => (text = v)
+			),
+			defineProperty(
+				'texts',
+				() => texts,
+				(v) => (texts = v)
 			)
 		],
 		() => ({ disabled, multiple, placements, offset, placement: 'bottom-start', ...restProps })

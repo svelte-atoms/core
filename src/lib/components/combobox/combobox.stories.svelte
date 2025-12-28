@@ -33,10 +33,12 @@
 		() => array,
 		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
 	);
+
+	let selectedTexts = $state([]);
 </script>
 
 <Story name="Combobox" args={{}}>
-	<ACombobox.Root bind:open bind:value multiple>
+	<ACombobox.Root bind:open bind:texts={selectedTexts} multiple>
 		<ACombobox.Trigger
 			base={Input.Root}
 			class="flex h-auto min-h-10 min-w-sm flex-col items-start gap-2"

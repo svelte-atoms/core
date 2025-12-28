@@ -15,6 +15,7 @@ export type ComboboxBondProps = PopoverStateProps & {
 	value?: string;
 	query?: string;
 	text?: string;
+	texts?: string[];
 	control?: string;
 	multiple?: boolean;
 };
@@ -84,15 +85,28 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		super(props);
 	}
 
+	select(ids: string[]): void {
+		super.select(ids);
+		this.props.texts = this.allSelections.map((s) => s.text);
+	}
+
+	unselect(ids: string[]): void {
+		super.unselect(ids);
+		this.props.texts = this.allSelections.map((s) => s.text);
+	}
+
 	addSelection(text: string) {
 		const id = nanoid();
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const createdAt = new Date();
 		this.#userSelections.set(id, { id, text, createdAt, unselect: () => this.deleteSelection(id) });
+
+		this.props.texts = this.allSelections.map((s) => s.text);
 	}
 
 	deleteSelection(id: string) {
 		this.#userSelections.delete(id);
+		this.props.texts = this.allSelections.map((s) => s.text);
 	}
 
 	get userSelections() {
