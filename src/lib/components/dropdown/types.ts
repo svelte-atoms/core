@@ -66,3 +66,7 @@ export interface DropdownSelectionProps<
 	children?: Snippet;
 	onclose?: (event: Event) => void;
 }
+
+export interface DropdownQueryProps extends HtmlAtomProps<'input'> {
+	children?: Snippet;
+}
