@@ -1,4 +1,4 @@
-import { clickoutDrawer, type Preset } from '$svelte-atoms/core';
+import { clickoutDrawer, Input, type Preset } from '$svelte-atoms/core';
 import { createAttachmentKey } from 'svelte/attachments';
 
 const buttonVariants = () => ({
@@ -215,5 +215,9 @@ export const preset: Partial<Preset> = {
 	}),
 	'card.media': () => ({
 		class: 'rounded-md overflow-hidden'
+	}),
+	'dropdown.trigger': () => ({
+		base: Input.Root,
+		class: ''
 	})
 };
