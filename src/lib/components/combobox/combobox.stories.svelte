@@ -3,7 +3,7 @@
 	import { Combobox as ACombobox } from '.';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Divider } from '$svelte-atoms/core/components/divider';
-	import { filter } from '../dropdown';
+	import { filterDropdownData } from '../dropdown';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -20,7 +20,6 @@
 
 <script lang="ts">
 	let open = $state(false);
-	let value = $state<string | undefined>('usd');
 	let array = $state([
 		{ value: 'usd', label: 'US Dollar' },
 		{ value: 'eur', label: 'Euro' },
@@ -29,16 +28,16 @@
 		{ value: 'cny', label: 'Chinese Yuan' }
 	]);
 
-	const filteredItems = filter(
+	const filteredItems = filterDropdownData(
 		() => array,
 		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
 	);
 
-	let selectedTexts = $state([]);
+	let selectedLabels = $state([]);
 </script>
 
 <Story name="Combobox" args={{}}>
-	<ACombobox.Root bind:open bind:texts={selectedTexts} multiple>
+	<ACombobox.Root bind:open bind:labels={selectedLabels} multiple>
 		<ACombobox.Trigger
 			base={Input.Root}
 			class="flex h-auto min-h-10 min-w-sm flex-col items-start gap-2"

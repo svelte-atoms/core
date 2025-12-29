@@ -11,9 +11,10 @@ import type { DropdownItemController } from './item/controller.svelte';
 export type DropdownStateProps = MenuBondProps & {
 	values?: string[];
 	value?: string;
+	labels?: string[];
+	label?: string;
 	multiple?: boolean;
 	keys?: string[];
-	onquerychange?: (query: string) => void;
 };
 
 export type DropdownBondElements = MenuBondElements & {
@@ -118,6 +119,8 @@ export class DropdownBondState<
 			const value = ids[0];
 			this.props.values = value ? [value] : [];
 		}
+
+		this.updateLabels();
 	}
 
 	unselect(ids: string[]) {
@@ -129,5 +132,13 @@ export class DropdownBondState<
 		}
 
 		this.props.values = [...sequence];
+
+		this.updateLabels();
+	}
+
+	protected updateLabels() {
+		const labels = this.#selections.map((s) => s.text)
+		this.props.labels = labels;
+		this.props.label = labels[0] ?? '';
 	}
 }

@@ -4,20 +4,15 @@ import {
 } from '$svelte-atoms/core/components/popover/bond.svelte';
 import {
 	DropdownBond,
-	DropdownBondState
+	DropdownBondState,
+	type DropdownStateProps
 } from '$svelte-atoms/core/components/dropdown/bond.svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
 
-export type ComboboxBondProps = PopoverStateProps & {
-	value?: string;
-	query?: string;
-	text?: string;
-	texts?: string[];
-	control?: string;
-	multiple?: boolean;
+export type ComboboxBondProps = DropdownStateProps & {
 };
 
 export type ComboboxBondElements = PopoverDomElements & {
@@ -85,28 +80,18 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		super(props);
 	}
 
-	select(ids: string[]): void {
-		super.select(ids);
-		this.props.texts = this.allSelections.map((s) => s.text);
-	}
-
-	unselect(ids: string[]): void {
-		super.unselect(ids);
-		this.props.texts = this.allSelections.map((s) => s.text);
-	}
-
 	addSelection(text: string) {
 		const id = nanoid();
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const createdAt = new Date();
 		this.#userSelections.set(id, { id, text, createdAt, unselect: () => this.deleteSelection(id) });
 
-		this.props.texts = this.allSelections.map((s) => s.text);
+		this.updateLabels()
 	}
 
 	deleteSelection(id: string) {
 		this.#userSelections.delete(id);
-		this.props.texts = this.allSelections.map((s) => s.text);
+		this.updateLabels();
 	}
 
 	get userSelections() {
@@ -123,5 +108,11 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		}));
 
 		return [...itemSelections, ...this.userSelections].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+	}
+
+	protected updateLabels(): void {
+		const labels = this.allSelections.map((s) => s.text)
+		this.props.labels = labels;
+		this.props.label = labels[0] ?? '';
 	}
 }

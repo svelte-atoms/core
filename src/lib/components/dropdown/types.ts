@@ -25,6 +25,8 @@ export interface DropdownRootProps<
 	open?: boolean;
 	value?: T;
 	values?: T[];
+	label?: string;
+	labels?: string[];
 	multiple?: boolean;
 	disabled?: boolean;
 	placements?: string[];

@@ -7,8 +7,8 @@
 		open = $bindable(false),
 		value = $bindable(),
 		values = $bindable(),
-		text = $bindable(),
-		texts = $bindable(),
+		label = $bindable(),
+		labels = $bindable(),
 		multiple = false,
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
@@ -37,14 +37,14 @@
 				}
 			),
 			defineProperty(
-				'text',
-				() => text,
-				(v) => (text = v)
+				'label',
+				() => label,
+				(v) => (label = v)
 			),
 			defineProperty(
-				'texts',
-				() => texts,
-				(v) => (texts = v)
+				'labels',
+				() => labels,
+				(v) => (labels = v)
 			)
 		],
 		() => ({ disabled, multiple, placements, offset, placement: 'bottom-start', ...restProps })

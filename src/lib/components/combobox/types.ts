@@ -19,8 +19,8 @@ export interface ComboboxRootProps<
 	open?: boolean;
 	value?: unknown;
 	values?: unknown[];
-	text?: string;
-	texts?: string[];
+	label?: string;
+	labels?: string[];
 	multiple?: boolean;
 	disabled?: boolean;
 	placements?: string[];

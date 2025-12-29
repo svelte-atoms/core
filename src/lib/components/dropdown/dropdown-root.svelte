@@ -7,6 +7,8 @@
 		open = $bindable(false),
 		value = $bindable(),
 		values = $bindable(),
+		labels = $bindable(),
+		label = $bindable(),
 		multiple = false,
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
@@ -36,6 +38,16 @@
 					value = v[0];
 				}
 			),
+			defineProperty(
+				'label',
+				() => label,
+				(v) => (label = v)
+			),
+			defineProperty(
+				'labels',
+				() => labels,
+				(v) => (labels = v)
+			),
 			defineProperty('multiple', () => multiple),
 			defineProperty('disabled', () => disabled),
 			defineProperty('placement', () => placement),
@@ -43,7 +55,7 @@
 			defineProperty('placements', () => placements ?? []),
 			defineProperty('keys', () => keys ?? [])
 		],
-		() => ({ onquerychange })
+		() => ({})
 	);
 	const bond = factory(bondProps).share();
 

@@ -3,8 +3,7 @@
 	import { Dropdown as ADropdown } from '.';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { flip } from 'svelte/animate';
-	import { filter } from './runes.svelte';
-	import { animate } from 'motion';
+	import { filterDropdownData } from './runes.svelte';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -30,7 +29,7 @@
 		{ id: 5, value: 'elderberry', text: 'Elderberry' }
 	]);
 
-	const dd = filter(
+	const dd = filterDropdownData(
 		() => data,
 		(query, item) => item.text.toLowerCase().includes(query.toLowerCase())
 	);
@@ -39,12 +38,7 @@
 <Story name="Dropdown" args={{}}>
 	<!-- Multi-select dropdown with search functionality -->
 	<div class="flex flex-col gap-4">
-		<ADropdown.Root
-			bind:open
-			keys={data.map((item) => item.value)}
-			multiple
-			onquerychange={(q) => (dd.query = q)}
-		>
+		<ADropdown.Root bind:open keys={data.map((item) => item.value)} multiple>
 			{#snippet children({ dropdown })}
 				<!-- Compose ADropdown.Trigger with Input.Root for a custom trigger -->
 				<ADropdown.Trigger
@@ -57,7 +51,11 @@
 					}}
 				>
 					<!-- Inline search input within the trigger -->
-					<ADropdown.Query class="flex-1 px-1" placeholder="Search for fruits..." />
+					<ADropdown.Query
+						class="flex-1 px-1"
+						placeholder="Search for fruits..."
+						bind:value={dd.query}
+					/>
 
 					<!-- Default usage  -->
 					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" /> -->
