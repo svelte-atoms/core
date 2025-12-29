@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clickoutDrawer, clickoutPopover, colorScheme } from '$lib';
+	import { clickoutDrawer, clickoutPopover, colorScheme, Input } from '$lib';
 	import { setPreset, type Preset } from '$lib/context';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { createAttachmentKey } from 'svelte/attachments';
@@ -89,7 +89,7 @@
 				}
 			}
 		}),
-		'menu.list': () => ({
+		'menu.content': () => ({
 			class: '',
 			[createAttachmentKey()]: clickoutPopover((_, atom) => {
 				atom.state.close();
@@ -101,7 +101,9 @@
 				atom.state.close();
 			})
 		}),
-
+		'dropdown.trigger': () => ({
+			base: Input.Root
+		}),
 		'drawer.content': () => ({
 			[createAttachmentKey()]: clickoutDrawer((_, bond) => {
 				bond?.state?.close?.();
