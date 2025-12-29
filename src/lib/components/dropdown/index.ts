@@ -9,7 +9,11 @@ export {
 
 export * from './item';
 
-export { filter } from './runes.svelte';
+export { filterDropdownData } from './runes.svelte';
+/**
+ * @deprecated Use `filterDropdownData` instead.
+ */
+export { filterDropdownData as filter } from './runes.svelte';
 
 export * from './types';
 
