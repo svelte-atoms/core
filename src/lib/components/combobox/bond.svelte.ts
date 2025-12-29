@@ -29,6 +29,8 @@ export class ComboboxBond extends DropdownBond<
 	}
 
 	control() {
+		const isMultiselect = this.state.props.multiple ?? false;
+
 		return {
 			'data-atom': `trigger-${this.id}`,
 			'data-kind': 'combobox-input',
@@ -48,7 +50,7 @@ export class ComboboxBond extends DropdownBond<
 			onkeydown: (ev: KeyboardEvent) => {
 				if (this.state.props.disabled) return;
 
-				if (ev.key === 'Enter') {
+				if (ev.key === 'Enter' && isMultiselect) {
 					const currentTarget = ev.currentTarget as HTMLInputElement;
 					const value = currentTarget.value.trim();
 					if (value !== '') {
