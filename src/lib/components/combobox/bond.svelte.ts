@@ -43,9 +43,10 @@ export class ComboboxBond extends DropdownBond<
 				: undefined,
 			'aria-disabled': this.state.props.disabled ?? false,
 			tabindex: this.state.props.disabled ? -1 : 0,
-			oninput: (ev: Event) => {
-				const target = ev.target as HTMLInputElement;
-				this.state.props.control = target.value;
+			oninput: () => {
+				if (!isMultiselect) {
+					this.state.props.values = [];
+				}
 			},
 			onkeydown: (ev: KeyboardEvent) => {
 				if (this.state.props.disabled) return;
@@ -55,7 +56,6 @@ export class ComboboxBond extends DropdownBond<
 					const value = currentTarget.value.trim();
 					if (value !== '') {
 						this.state.addSelection(value);
-						this.state.props.control = ''
 					}
 				}
 
