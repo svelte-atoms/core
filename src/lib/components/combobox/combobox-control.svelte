@@ -29,10 +29,16 @@
 		isMounted = true;
 	});
 
+	const isMultiselect = untrack(() => bond.state.props.multiple);
+
 	$effect(() => {
 		bond.state.allSelections;
 
-		value = untrack(() => bond.state.props.control);
+		if (isMultiselect) {
+			value = '';
+		} else {
+			value = untrack(() => bond.state.props.label);
+		}
 	});
 
 	const comboboxProps = $derived({
