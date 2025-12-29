@@ -13,7 +13,6 @@
 		value = $bindable(),
 		class: klass = '',
 		children = undefined,
-		onpointerdown,
 		onmount = undefined,
 		ondestroy = undefined,
 		animate = undefined,
@@ -28,7 +27,6 @@
 	bind:value={
 		() => value,
 		(v) => {
-			bond.state.query = v ?? '';
 			value = v;
 		}
 	}

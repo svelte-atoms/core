@@ -100,22 +100,12 @@ export class DropdownBondState<
 			.filter(Boolean) ?? []
 	) as DropdownItemController<unknown>[];
 
-	#query = $state('');
-
 	constructor(props: () => Props) {
 		super(props);
 	}
 
 	get selections() {
 		return this.#selections;
-	}
-
-	get query() {
-		return this.#query;
-	}
-	set query(value: string) {
-		this.#query = value;
-		this.props.onquerychange?.(value);
 	}
 
 	select(ids: string[]) {
