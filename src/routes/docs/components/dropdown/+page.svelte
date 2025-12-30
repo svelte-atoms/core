@@ -20,11 +20,11 @@
     Open Menu
   </Dropdown.Trigger>
   
-  <Dropdown.List>
+  <Dropdown.Content>
     <Dropdown.Item value="profile">Profile</Dropdown.Item>
     <Dropdown.Item value="settings">Settings</Dropdown.Item>
     <Dropdown.Item value="logout">Logout</Dropdown.Item>
-  </Dropdown.List>
+  </Dropdown.Content>
 </Dropdown.Root>`;
 
 	const multipleCode = `<script lang="ts">
