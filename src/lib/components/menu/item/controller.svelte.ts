@@ -17,6 +17,9 @@ export class MenuItemController {
 
 	#unmount?: () => void;
 
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	#createdAt = new Date();
+
 	constructor(props: () => MenuItemControllerProps = () => ({})) {
 		this.#props = props;
 		this.#id = this.props.id ?? nanoid();
@@ -31,6 +34,10 @@ export class MenuItemController {
 
 	get id() {
 		return this.#id;
+	}
+
+	get createdAt() {
+		return this.#createdAt;
 	}
 
 	get props() {
