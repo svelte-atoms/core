@@ -65,11 +65,11 @@
     <Combobox.Control placeholder="Select an option..." />
   </Combobox.Trigger>
 
-  <Combobox.List>
+  <Combobox.Content>
     {#each options as option (option.value)}
       <Combobox.Item value={option.value}>{option.label}</Combobox.Item>
     {/each}
-  </Combobox.List>
+  </Combobox.Content>
 </Combobox.Root>`;
 
 	const multipleCode = `<script lang="ts">
@@ -92,11 +92,11 @@
     <Combobox.Selections />
   </Combobox.Trigger>
 
-  <Combobox.List>
+  <Combobox.Content>
     {#each options as option (option.value)}
       <Combobox.Item value={option.value}>{option.label}</Combobox.Item>
     {/each}
-  </Combobox.List>
+  </Combobox.Content>
 </Combobox.Root>`;
 
 	const filterCode = `<script lang="ts">
@@ -126,7 +126,7 @@
     <Combobox.Control placeholder="Select a currency..." />
   </Combobox.Trigger>
 
-  <Combobox.List>
+  <Combobox.Content>
     <Combobox.Query 
       bind:value={filteredItems.query} 
       class="border-border border-b px-4 py-3"
@@ -135,7 +135,7 @@
     {#each filteredItems.current as item (item.value)}
       <Combobox.Item value={item.value}>{item.label}</Combobox.Item>
     {/each}
-  </Combobox.List>
+  </Combobox.Content>
 </Combobox.Root>`;
 </script>
 
@@ -207,16 +207,11 @@ const preset = createPreset({
 							<Combobox.Control placeholder="Select an option..." />
 						</Combobox.Trigger>
 
-						<Combobox.List>
-							<Combobox.Query
-								bind:value={filteredOptions.query}
-								class="border-border border-b px-4 py-3"
-								placeholder="Type to filter..."
-							/>
+						<Combobox.Content>
 							{#each filteredOptions.current as option (option.value)}
 								<Combobox.Item value={option.value}>{option.label}</Combobox.Item>
 							{/each}
-						</Combobox.List>
+						</Combobox.Content>
 					</Combobox.Root>
 				</div>
 			</DemoExample>
@@ -236,11 +231,11 @@ const preset = createPreset({
 							<Combobox.Selections />
 						</Combobox.Trigger>
 
-						<Combobox.List>
+						<Combobox.Content>
 							{#each options as option (option.value)}
 								<Combobox.Item value={option.value}>{option.label}</Combobox.Item>
 							{/each}
-						</Combobox.List>
+						</Combobox.Content>
 					</Combobox.Root>
 				</div>
 			</DemoExample>
@@ -258,7 +253,7 @@ const preset = createPreset({
 							<Combobox.Control placeholder="Select a currency..." />
 						</Combobox.Trigger>
 
-						<Combobox.List>
+						<Combobox.Content>
 							<Combobox.Query
 								bind:value={filteredCurrencies.query}
 								class="border-border border-b px-4 py-3"
@@ -267,7 +262,7 @@ const preset = createPreset({
 							{#each filteredCurrencies.current as item (item.value)}
 								<Combobox.Item value={item.value}>{item.label}</Combobox.Item>
 							{/each}
-						</Combobox.List>
+						</Combobox.Content>
 					</Combobox.Root>
 				</div>
 			</DemoExample>
