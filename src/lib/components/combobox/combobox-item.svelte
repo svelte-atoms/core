@@ -38,9 +38,9 @@
 				| undefined;
 
 			// Set selected item text
-			bond.state.props.text = textElement?.innerText ?? '';
+			bond.state.props.label = textElement?.innerText ?? '';
 			// Clear input query
-			bond.state.props.query = '';
+			bond.state.props.label = '';
 
 			item?.toggle();
 

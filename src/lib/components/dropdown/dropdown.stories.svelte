@@ -22,16 +22,16 @@
 	let open = $state(false);
 
 	const data = $state([
-		{ id: 1, value: 'apple', text: 'Apple' },
-		{ id: 2, value: 'banana', text: 'Banana' },
-		{ id: 3, value: 'cherry', text: 'Cherry' },
-		{ id: 4, value: 'date', text: 'Date' },
-		{ id: 5, value: 'elderberry', text: 'Elderberry' }
+		{ id: 1, value: 'apple', label: 'Apple' },
+		{ id: 2, value: 'banana', label: 'Banana' },
+		{ id: 3, value: 'cherry', label: 'Cherry' },
+		{ id: 4, value: 'date', label: 'Date' },
+		{ id: 5, value: 'elderberry', label: 'Elderberry' }
 	]);
 
 	const dd = filterDropdownData(
 		() => data,
-		(query, item) => item.text.toLowerCase().includes(query.toLowerCase())
+		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
 	);
 </script>
 
@@ -76,7 +76,7 @@
 				<ADropdown.Content>
 					{#each dd.current as item (item.id)}
 						<div animate:flip={{ duration: 200 }}>
-							<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
+							<ADropdown.Item value={item.value}>{item.label}</ADropdown.Item>
 						</div>
 					{/each}
 				</ADropdown.Content>
@@ -117,7 +117,7 @@
 
 					{#each dd.current as item (item.id)}
 						<div animate:flip={{ duration: 200 }}>
-							<ADropdown.Item value={item.value}>{item.text}</ADropdown.Item>
+							<ADropdown.Item value={item.value}>{item.label}</ADropdown.Item>
 						</div>
 					{/each}
 				</ADropdown.Content>

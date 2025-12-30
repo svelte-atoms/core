@@ -27,8 +27,8 @@
 		return bond.state.selections.map((controller) => ({
 			id: controller.id,
 			value: controller.value,
-			get text() {
-				return controller.text;
+			get label() {
+				return controller.label;
 			},
 			unselect() {
 				controller.unselect();
@@ -49,7 +49,7 @@
 		{:else}
 			{#each selections as selection (selection.id)}
 				<Selection {selection}>
-					{selection.text}
+					{selection.label}
 				</Selection>
 			{/each}
 		{/if}
@@ -58,5 +58,5 @@
 	{@render children?.({ selections: selections, selection: selections[0] })}
 {:else if selections[0]}
 	{@const selection = selections[0]}
-	{selection.text}
+	{selection.label}
 {/if}

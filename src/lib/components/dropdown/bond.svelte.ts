@@ -137,7 +137,7 @@ export class DropdownBondState<
 	}
 
 	protected updateLabels() {
-		const labels = this.#selections.map((s) => s.text)
+		const labels = this.#selections.map((s) => s.label)
 		this.props.labels = labels;
 		this.props.label = labels[0] ?? '';
 	}

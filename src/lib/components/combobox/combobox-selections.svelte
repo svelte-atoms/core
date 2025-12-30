@@ -9,7 +9,7 @@
 		throw new Error('ComboboxSelections must be used within a Combobox');
 	}
 
-	let { children, ...restProps }: ComboboxSelectionsProps = $props();
+	let { ...restProps }: ComboboxSelectionsProps = $props();
 
 	let selections = $derived(bond.state.allSelections);
 </script>

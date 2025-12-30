@@ -77,7 +77,7 @@ export interface DropdownQueryProps extends HtmlAtomProps<'input'> {
 export interface DropdownSelection {
 	readonly id: string;
 	readonly value?: string
-	readonly text: string;
+	readonly label: string;
 	readonly createdAt: Date;
 	unselect: () => void;
 	controller?: DropdownItemController<unknown>;

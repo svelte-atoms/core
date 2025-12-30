@@ -50,6 +50,6 @@
 	{#if children}
 		{@render children?.()}
 	{:else}
-		{selection.text}
+		{selection.label}
 	{/if}
 </Atom>

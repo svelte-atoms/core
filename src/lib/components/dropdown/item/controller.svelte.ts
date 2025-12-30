@@ -44,8 +44,8 @@ export class DropdownItemController<T = unknown> extends MenuItemController {
 		return this.#dropdown;
 	}
 
-	get text() {
-		const element = (this.#element?.querySelector('[data-text]') ?? this.#element) as
+	get label() {
+		const element = (this.#element?.querySelector('[data-label]') ?? this.#element) as
 			| HTMLElement
 			| undefined
 			| null;

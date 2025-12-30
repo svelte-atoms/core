@@ -1,6 +1,5 @@
 import {
 	type PopoverDomElements,
-	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
 import {
 	DropdownBond,
@@ -82,11 +81,11 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		super(props);
 	}
 
-	addSelection(text: string) {
+	addSelection(label: string) {
 		const id = nanoid();
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const createdAt = new Date();
-		this.#userSelections.set(id, { id, text, createdAt, unselect: () => this.deleteSelection(id) });
+		this.#userSelections.set(id, { id, label, createdAt, unselect: () => this.deleteSelection(id) });
 
 		this.updateLabels()
 	}
@@ -103,7 +102,7 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 	get allSelections() {
 		const itemSelections = this.selections.map((controller) => ({
 			id: controller.id,
-			text: controller.text as string,
+			label: controller.label,
 			createdAt: controller.createdAt, // default date for items from the list
 			controller,
 			unselect: () => this.unselect([controller.id]),
@@ -113,7 +112,7 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 	}
 
 	protected updateLabels(): void {
-		const labels = this.allSelections.map((s) => s.text)
+		const labels = this.allSelections.map((s) => s.label);
 		this.props.labels = labels;
 		this.props.label = labels[0] ?? '';
 	}

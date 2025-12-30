@@ -50,7 +50,7 @@ export interface ComboboxControlProps extends InputControlProps {
 
 export interface ComboboxSelection {
 	id: string;
-	text: string;
+	label: string;
 	createdAt: Date;
 	unselect: () => void;
 }
