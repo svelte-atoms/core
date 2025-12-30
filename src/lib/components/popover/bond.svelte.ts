@@ -194,8 +194,7 @@ export class PopoverBond<
 				const activeElement = document.activeElement as HTMLElement;
 
 				const triggerContainsFocus =
-					['input', 'textarea'].includes(activeElement.tagName.toLowerCase()) ||
-					triggerElement === activeElement ||
+					['input', 'textarea'].includes(activeElement.tagName.toLowerCase()) &&
 					triggerElement.contains(activeElement);
 
 				// Move focus to popover when opened
