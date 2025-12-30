@@ -334,6 +334,32 @@ const preset = createPreset({
 							type: 'number',
 							default: '1',
 							description: 'Offset distance from the trigger element'
+						},
+						{
+							name: 'factory',
+							type: 'Factory<ComboboxBond>',
+							default: 'undefined',
+							description: 'Custom factory function to create combobox bond instance'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Trigger Props</h3>
+				<Props
+					data={[
+						{
+							name: 'as',
+							type: 'string',
+							default: "'button'",
+							description: 'HTML element to render'
+						},
+						{
+							name: 'base',
+							type: 'Component',
+							default: 'undefined',
+							description: 'Base component to compose with (e.g., Input.Root for styled inputs)'
 						}
 					]}
 				/>
@@ -346,14 +372,20 @@ const preset = createPreset({
 						{
 							name: 'value',
 							type: 'string',
-							default: '-',
-							description: 'Item value (required)'
+							default: 'nanoid()',
+							description: 'Unique value for the item (auto-generated if not provided)'
 						},
 						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable this item'
+							name: 'data',
+							type: 'T (generic)',
+							default: 'undefined',
+							description: 'Custom data object associated with the item'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'dropdown.item'",
+							description: 'Preset key for styling customization'
 						}
 					]}
 				/>
@@ -404,31 +436,38 @@ const preset = createPreset({
 					<li>
 						<code>Combobox.Control</code> - Input control for filtering and displaying selected value
 					</li>
-					<li><code>Combobox.List</code> - Dropdown list container (re-exported from Menu)</li>
-					<li><code>Combobox.Item</code> - Individual selectable list item</li>
-					<li><code>Combobox.Query</code> - Search/filter input (re-exported from Dropdown)</li>
+					<li>
+						<code>Combobox.Input</code> - Deprecated alias for Combobox.Control
+					</li>
+					<li><code>Combobox.Item</code> - Individual selectable combobox item</li>
 					<li>
 						<code>Combobox.Selections</code> - Container for displaying selected items (multi-select
 						mode)
 					</li>
 					<li>
+						<code>Combobox.Arrow</code> - Popover arrow indicator (re-exported from Dropdown)
+					</li>
+					<li>
+						<code>Combobox.Indicator</code> - Custom indicator element (re-exported from Dropdown)
+					</li>
+					<li>
+						<code>Combobox.Content</code> - List container for items (re-exported from Dropdown)
+					</li>
+					<li>
+						<code>Combobox.List</code> - Alternative list container (re-exported from Dropdown)
+					</li>
+					<li><code>Combobox.Group</code> - Group container for items (re-exported from Dropdown)</li>
+					<li>
+						<code>Combobox.Divider</code> - Visual divider between items (re-exported from Dropdown)
+					</li>
+					<li><code>Combobox.Title</code> - Title element for groups (re-exported from Dropdown)</li>
+					<li>
 						<code>Combobox.Selection</code> - Individual selection badge/chip (re-exported from Dropdown)
 					</li>
-					<li>
-						<code>Combobox.Content</code> - Alternative list container (re-exported from Menu)
-					</li>
-					<li><code>Combobox.Arrow</code> - Popover arrow indicator (re-exported from Popover)</li>
-					<li>
-						<code>Combobox.Indicator</code> - Custom indicator element (re-exported from Popover)
-					</li>
+					<li><code>Combobox.Query</code> - Search/filter input (re-exported from Dropdown)</li>
 					<li>
 						<code>Combobox.Placeholder</code> - Placeholder element (re-exported from Dropdown)
 					</li>
-					<li><code>Combobox.Group</code> - Group container for items (re-exported from Menu)</li>
-					<li>
-						<code>Combobox.Divider</code> - Visual divider between items (re-exported from Menu)
-					</li>
-					<li><code>Combobox.Title</code> - Title element for groups (re-exported from Menu)</li>
 				</ul>
 			</div>
 		</div>

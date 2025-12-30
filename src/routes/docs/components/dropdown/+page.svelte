@@ -297,13 +297,19 @@ const preset = createPreset({
 							name: 'value',
 							type: 'string',
 							default: 'auto-generated',
-							description: 'Unique value for the item (required for selection tracking)'
+							description: 'Unique value for the item (auto-generated if not provided)'
 						},
 						{
 							name: 'data',
-							type: 'unknown',
+							type: 'T (generic)',
 							default: 'undefined',
-							description: 'Associated data object for the item'
+							description: 'Custom data object associated with the item'
+						},
+						{
+							name: 'preset',
+							type: 'string',
+							default: "'dropdown.item'",
+							description: 'Preset key for styling customization'
 						}
 					]}
 				/>
@@ -324,6 +330,58 @@ const preset = createPreset({
 							type: 'string',
 							default: 'undefined',
 							description: 'Placeholder text for the search input'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Selections Props</h3>
+				<Props
+					data={[
+						{
+							name: 'class',
+							type: 'ClassValue',
+							default: 'undefined',
+							description: 'CSS class for the selections container'
+						},
+						{
+							name: 'Selection',
+							type: 'Component',
+							default: 'Dropdown.Selection',
+							description: 'Custom component to render each selection'
+						},
+						{
+							name: 'getSelections',
+							type: '(bond: DropdownBond) => DropdownSelection[]',
+							default: 'undefined',
+							description: 'Custom function to retrieve selections from the bond'
+						}
+					]}
+				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Selection Props</h3>
+				<Props
+					data={[
+						{
+							name: 'selection',
+							type: 'DropdownSelection',
+							default: '-',
+							description: 'Selection object containing id, value, label, and unselect function (required)'
+						},
+						{
+							name: 'base',
+							type: 'Component',
+							default: 'Chip (in multiple mode)',
+							description: 'Base component to compose with'
+						},
+						{
+							name: 'onclose',
+							type: '(event: Event) => void',
+							default: 'undefined',
+							description: 'Callback fired when the selection is closed/removed'
 						}
 					]}
 				/>

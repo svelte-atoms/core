@@ -4,24 +4,27 @@ The `Combobox` module provides a flexible and accessible combobox component buil
 
 ## Features
 
-- Fully accessible with ARIA attributes.
-- Keyboard navigation support (Arrow keys, Escape, Enter).
-- Customizable input and dropdown behavior.
-- Integration with `Dropdown` and `Popover` modules.
+- Fully accessible with ARIA attributes
+- Keyboard navigation support (Arrow keys, Escape, Enter)
+- Single and multiple selection modes
+- Custom filtering with `Query` component
+- Selection management with `Selections` component
+- Integration with `Dropdown` and `Popover` modules
+- Composable with `Input` component for flexible styling
 
 ## Installation
 
 Ensure you have the required dependencies installed in your project. Then, import the `Combobox` module as needed.
 
 ```typescript
-import { ComboboxBond, ComboboxState } from '@svelte-atoms/core';
+import { Combobox } from '@svelte-atoms/core';
 ```
 
 ## Components
 
 ### Combobox.Root
 
-Root container for the combobox system.
+Root container for the combobox system. Manages the state and context for all child components.
 
 **Preset Key:** `combobox`
 
@@ -31,43 +34,75 @@ Root container for the combobox system.
 
 ### Combobox.Trigger
 
-Button or element that triggers the combobox dropdown.
+Button or element that triggers the combobox dropdown. Can be composed with other components using the `base` prop.
 
-**Preset Key:** `combobox.trigger`
+**Preset Key:** `dropdown.trigger` (inherits from Dropdown)
 
 **Props:**
 
 {{comboboxTriggerProps}}
 
+Inherits all props from Dropdown.Trigger
+
 ### Combobox.Control
 
-Input field for filtering and selection.
+Input field for filtering and selection. Automatically manages ARIA attributes for accessibility.
 
-**Preset Key:** `combobox.Control`
-
-**Props:**
-
-{{comboboxInputProps}}
-
-### Combobox.Content
-
-Container for combobox items.
-
-**Preset Key:** `combobox.Content`
+**Preset Key:** `combobox.control`
 
 **Props:**
 
-{{comboboxListProps}}
+{{comboboxControlProps}}
+
+### Combobox.List
+
+Container for combobox items. Re-exported from Dropdown.List component.
+
+**Preset Key:** `dropdown.list`
+
+**Props:**
+
+Inherits all props from Dropdown.List
 
 ### Combobox.Item
 
-Individual combobox item.
+Individual combobox item. Handles selection and display of option values.
 
 **Preset Key:** `combobox.item`
 
 **Props:**
 
-{{comboboxItemProps}}
+Inherits all props from Dropdown.Item
+
+### Combobox.Selections
+
+Displays selected items in multiple selection mode. Shows tags/chips for each selected value.
+
+**Preset Key:** `dropdown.selections`
+
+**Props:**
+
+{{comboboxSelectionsProps}}
+
+### Combobox.Selection
+
+Individual selection item within Selections component.
+
+**Preset Key:** `dropdown.selection`
+
+**Props:**
+
+{{comboboxSelectionProps}}
+
+### Combobox.Query
+
+Input field for filtering items in the dropdown list.
+
+**Preset Key:** `dropdown.query`
+
+**Props:**
+
+Inherits all props from Dropdown.Query
 
 ## Usage
 
@@ -76,21 +111,87 @@ Individual combobox item.
 ```svelte
 <script lang="ts">
 	import { Combobox } from '@svelte-atoms/core';
+	import { Input } from '@svelte-atoms/core';
 
-	let selected = $state<string[]>([]);
-	let query = $state('');
+	let value = $state<string | undefined>();
+	const options = ['Option 1', 'Option 2', 'Option 3'];
 </script>
 
-<Combobox.Root bind:value={selected} bind:query>
-	<Combobox.Trigger>
-		<Combobox.Input placeholder="Select an option..." />
+<Combobox.Root bind:value>
+	<Combobox.Trigger base={Input.Root}>
+		<Combobox.Control placeholder="Select an option..." />
 	</Combobox.Trigger>
 
-	<Combobox.Content>
-		<Combobox.Item value="option1">Option 1</Combobox.Item>
-		<Combobox.Item value="option2">Option 2</Combobox.Item>
-		<Combobox.Item value="option3">Option 3</Combobox.Item>
-	</Combobox.Content>
+	<Combobox.List>
+		{#each options as option}
+			<Combobox.Item value={option}>{option}</Combobox.Item>
+		{/each}
+	</Combobox.List>
+</Combobox.Root>
+```
+
+### Multiple Selection
+
+The bond class that manages the combobox state and interactions. Extends `DropdownBond`.
+
+#### Methods
+
+- `control(): Record<string, unknown>`
+  - Returns the properties to bind to the control/input element
+  - Includes ARIA attributes and keyboard handlers
+  - Automatically manages focus and selection state
+
+#### Properties
+
+- `state: ComboboxBondState` - The state instance managing the combobox data
+
+### `ComboboxBondState`
+
+The state class that manages combobox data. Extends `DropdownBondState`.
+
+#### Key Properties
+
+- `props.open: boolean` - Whether the dropdown is open
+- `props.value: unknown` - Current selected value (single mode)
+- `props.values: unknown[]` - Current selected values (multiple mode)
+- `props.text: string` - Text representation of selected item
+- `props.control: string` - Current input control value
+- `props.multiple: boolean` - Whether multiple selection is enabled
+- `props.disabled: boolean` - Whether the combobox is disabled
+
+#### Methods
+
+- `addSelection(text: string): void` - Add a user-defined selection
+- `deleteSelection(id: string): void` - Remove a user-defined selection
+- `userSelections: ComboboxSelection[]` - Get user-created selections
+- `allSelections: ComboboxSelection[]` - Get all selections (items + user-created)ents/dropdown';
+
+```svelte
+<script lang="ts">
+	let value = $state<string | undefined>();
+	let options = [
+		{ value: 'usd', label: 'US Dollar' },
+		{ value: 'eur', label: 'Euro' },
+		{ value: 'gbp', label: 'British Pound' }
+	];
+
+	const filteredItems = filter(
+		() => options,
+		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
+	);
+</script>
+
+<Combobox.Root bind:value>
+	<Combobox.Trigger base={Input.Root}>
+		<Combobox.Control placeholder="Select a currency..." />
+	</Combobox.Trigger>
+
+	<Combobox.List>
+		<Combobox.Query bind:value={filteredItems.query} placeholder="Type to filter..." />
+		{#each filteredItems.current as item (item.value)}
+			<Combobox.Item value={item.value}>{item.label}</Combobox.Item>
+		{/each}
+	</Combobox.List>
 </Combobox.Root>
 ```
 
@@ -130,13 +231,29 @@ new ComboboxState<T>(props: () => ComboboxStateProps)
 
 ## Keyboard Support
 
-- **ArrowDown/ArrowUp**: Navigate through dropdown items.
-- **Escape**: Close the dropdown.
-- **Enter**: Select the highlighted item.
+- **ArrowDown/ArrowUp**: Navigate through dropdown items
+- **Escape**: Close the dropdown
+- **Enter**:
+  - In Control: Add custom selection (if input has text)
+  - In List: Select the highlighted item
+- **Tab**: Move focus and close dropdown
+- **Space**: Toggle item selection (when focused on an item)
 
 ## Accessibility
 
-The `Combobox` module is designed with accessibility in mind. It includes ARIA attributes such as `aria-expanded`, `aria-controls`, `aria-activedescendant`, and `aria-disabled` to ensure compatibility with assistive technologies.
+The `Combobox` module is designed with accessibility in mind:
+
+- **ARIA Attributes**:
+  - `role="combobox"` on the control element
+  - `aria-autocomplete="list"` for autocomplete behavior
+  - `aria-expanded` reflects the dropdown state
+  - `aria-controls` links to the dropdown list
+  - `aria-activedescendant` tracks the focused item
+  - `aria-disabled` reflects the disabled state
+
+- **Keyboard Navigation**: Full keyboard support for navigation and selection
+- **Focus Management**: Proper focus handling for accessibility
+- **Screen Reader Support**: Announcements for state changes and selections
 
 ## License
 
