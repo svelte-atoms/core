@@ -49,8 +49,8 @@
 			</div>
 			<ACombobox.Selections />
 		</ACombobox.Trigger>
-		<ACombobox.List>
-			<ACombobox.Query
+		<ACombobox.Content>
+			<input
 				bind:value={filteredItems.query}
 				class="border-border border-b px-4 py-3"
 				placeholder="Type to filter..."
@@ -58,6 +58,6 @@
 			{#each filteredItems.current as item (item.value)}
 				<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
 			{/each}
-		</ACombobox.List>
+		</ACombobox.Content>
 	</ACombobox.Root>
 </Story>

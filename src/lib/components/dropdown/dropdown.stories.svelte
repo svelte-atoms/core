@@ -51,8 +51,8 @@
 					}}
 				>
 					<!-- Inline search input within the trigger -->
-					<ADropdown.Query
-						class="flex-1 px-1"
+					<input
+						class="w-full flex-1 px-1 outline-none"
 						placeholder="Search for fruits..."
 						bind:value={dd.query}
 					/>
@@ -109,7 +109,7 @@
 				<!-- ADropdown list with filtered items -->
 				<ADropdown.Content>
 					<!-- Inline search input within the trigger -->
-					<ADropdown.Query
+					<input
 						bind:value={dd.query}
 						class="border-border flex-1 border-b px-4 py-3"
 						placeholder="Search for fruits..."
