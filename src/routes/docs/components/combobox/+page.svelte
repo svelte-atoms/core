@@ -14,6 +14,12 @@
 	import { Input } from '$svelte-atoms/core';
 	import { Divider } from '$lib/components/divider';
 	import { filterDropdownData } from '$lib/components/dropdown';
+	import {
+		comboboxRootProps,
+		comboboxSelectionsProps,
+		comboboxSelectionProps,
+		comboboxControlProps
+	} from './props';
 
 	let selectedValue = $state<string | undefined>();
 	let selectedValues = $state<string[]>([]);
@@ -127,7 +133,7 @@
   </Combobox.Trigger>
 
   <Combobox.Content>
-    <Combobox.Query 
+    <input 
       bind:value={filteredItems.query} 
       class="border-border border-b px-4 py-3"
       placeholder="Type to filter..." 
@@ -254,7 +260,7 @@ const preset = createPreset({
 						</Combobox.Trigger>
 
 						<Combobox.Content>
-							<Combobox.Query
+							<input
 								bind:value={filteredCurrencies.query}
 								class="border-border border-b px-4 py-3"
 								placeholder="Type to filter..."
@@ -273,156 +279,36 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Control the open state of the combobox dropdown'
-						},
-						{
-							name: 'value',
-							type: 'unknown',
-							default: 'undefined',
-							description: 'Currently selected value (single selection)'
-						},
-						{
-							name: 'values',
-							type: 'unknown[]',
-							default: 'undefined',
-							description: 'Currently selected values (multiple selection)'
-						},
-						{
-							name: 'label',
-							type: 'string',
-							default: 'undefined',
-							description: 'Display label of the selected item (single selection)'
-						},
-						{
-							name: 'labels',
-							type: 'string[]',
-							default: 'undefined',
-							description: 'Display labels of the selected items (multiple selection)'
-						},
-						{
-							name: 'multiple',
-							type: 'boolean',
-							default: 'false',
-							description: 'Enable multiple selection'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable the combobox'
-						},
-						{
-							name: 'placements',
-							type: 'string[]',
-							default: "['bottom-start', 'bottom-end', 'top-start', 'top-end']",
-							description: 'Available placement options for the dropdown'
-						},
-						{
-							name: 'placement',
-							type: 'string',
-							default: "'bottom-start'",
-							description: 'Default placement for the dropdown'
-						},
-						{
-							name: 'offset',
-							type: 'number',
-							default: '1',
-							description: 'Offset distance from the trigger element'
-						},
-						{
-							name: 'factory',
-							type: 'Factory<ComboboxBond>',
-							default: 'undefined',
-							description: 'Custom factory function to create combobox bond instance'
-						}
-					]}
-				/>
+				<Props data={[...comboboxRootProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Trigger Props</h3>
-				<Props
-					data={[
-						{
-							name: 'as',
-							type: 'string',
-							default: "'button'",
-							description: 'HTML element to render'
-						},
-						{
-							name: 'base',
-							type: 'Component',
-							default: 'undefined',
-							description: 'Base component to compose with (e.g., Input.Root for styled inputs)'
-						}
-					]}
-				/>
+				<p class="text-muted-foreground text-sm mb-3">
+					Inherits all props from the base component (typically Input.Root). Common props include <code>class</code>, <code>as</code>, and <code>base</code>.
+				</p>
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Item Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: 'nanoid()',
-							description: 'Unique value for the item (auto-generated if not provided)'
-						},
-						{
-							name: 'data',
-							type: 'T (generic)',
-							default: 'undefined',
-							description: 'Custom data object associated with the item'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'dropdown.item'",
-							description: 'Preset key for styling customization'
-						}
-					]}
-				/>
+				<p class="text-muted-foreground text-sm mb-3">
+					Re-exported from Dropdown.Item. See Dropdown component documentation for full props list. Key props include <code>value</code> (string), <code>data</code> (custom data), and <code>preset</code> ('dropdown.item').
+				</p>
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Control Props</h3>
-				<Props
-					data={[
-						{
-							name: 'placeholder',
-							type: 'string',
-							default: 'undefined',
-							description: 'Placeholder text for the input control'
-						}
-					]}
-				/>
+				<Props data={[...comboboxControlProps]} />
 			</div>
 
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Query Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Query/search value for filtering items'
-						},
-						{
-							name: 'placeholder',
-							type: 'string',
-							default: 'undefined',
-							description: 'Placeholder text for the search input'
-						}
-					]}
-				/>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Selections Props</h3>
+				<Props data={[...comboboxSelectionsProps]} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Selection Props</h3>
+				<Props data={[...comboboxSelectionProps]} />
 			</div>
 
 			<div>
@@ -435,9 +321,6 @@ const preset = createPreset({
 					</li>
 					<li>
 						<code>Combobox.Control</code> - Input control for filtering and displaying selected value
-					</li>
-					<li>
-						<code>Combobox.Input</code> - Deprecated alias for Combobox.Control
 					</li>
 					<li><code>Combobox.Item</code> - Individual selectable combobox item</li>
 					<li>
@@ -453,9 +336,6 @@ const preset = createPreset({
 					<li>
 						<code>Combobox.Content</code> - List container for items (re-exported from Dropdown)
 					</li>
-					<li>
-						<code>Combobox.List</code> - Alternative list container (re-exported from Dropdown)
-					</li>
 					<li><code>Combobox.Group</code> - Group container for items (re-exported from Dropdown)</li>
 					<li>
 						<code>Combobox.Divider</code> - Visual divider between items (re-exported from Dropdown)
@@ -464,7 +344,6 @@ const preset = createPreset({
 					<li>
 						<code>Combobox.Selection</code> - Individual selection badge/chip (re-exported from Dropdown)
 					</li>
-					<li><code>Combobox.Query</code> - Search/filter input (re-exported from Dropdown)</li>
 					<li>
 						<code>Combobox.Placeholder</code> - Placeholder element (re-exported from Dropdown)
 					</li>

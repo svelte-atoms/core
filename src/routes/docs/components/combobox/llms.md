@@ -94,16 +94,6 @@ Individual selection item within Selections component.
 
 {{comboboxSelectionProps}}
 
-### Combobox.Query
-
-Input field for filtering items in the dropdown list.
-
-**Preset Key:** `dropdown.query`
-
-**Props:**
-
-Inherits all props from Dropdown.Query
-
 ## Usage
 
 ### Basic Example
@@ -187,7 +177,11 @@ The state class that manages combobox data. Extends `DropdownBondState`.
 	</Combobox.Trigger>
 
 	<Combobox.List>
-		<Combobox.Query bind:value={filteredItems.query} placeholder="Type to filter..." />
+		<input
+			bind:value={filteredItems.query}
+			class="border-b border-border px-4 py-3"
+			placeholder="Type to filter..."
+		/>
 		{#each filteredItems.current as item (item.value)}
 			<Combobox.Item value={item.value}>{item.label}</Combobox.Item>
 		{/each}

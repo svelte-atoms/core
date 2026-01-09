@@ -8,90 +8,120 @@ export interface PropDefinition {
 export const dropdownItemProps: PropDefinition[] = [
 	{
 		name: 'preset',
-		type: 'string',
+		type: 'string | undefined',
 		default: '\'dropdown.item\'',
 		description: 'Preset key for styling'
 	},
 	{
 		name: 'value',
-		type: 'string',
+		type: 'string | undefined',
 		default: 'nanoid()',
 		description: 'The value of the dropdown item'
 	},
 	{
 		name: 'data',
-		type: 'T',
+		type: 'T | undefined',
 		default: 'undefined',
 		description: 'Custom data associated with the item'
 	},
 	{
 		name: 'factory',
-		type: '() => DropdownItemController<T>',
+		type: '(() => DropdownItemController<T>) | undefined',
 		default: 'undefined',
 		description: 'Factory function to create a custom DropdownItemController instance'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ dropdownItem: DropdownItemController<T>; }]> | undefined',
+		default: 'undefined',
+		description: 'Render prop for children'
 	},
 ];
 
 export const dropdownRootProps: PropDefinition[] = [
 	{
 		name: 'open',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Open'
 	},
 	{
 		name: 'value',
-		type: 'T',
+		type: 'T | undefined',
 		default: 'undefined',
 		description: 'Value'
 	},
 	{
 		name: 'values',
-		type: 'T[]',
+		type: 'T[] | undefined',
 		default: 'undefined',
 		description: 'Values'
 	},
 	{
+		name: 'label',
+		type: 'string | undefined',
+		default: '\'\'',
+		description: 'Label'
+	},
+	{
+		name: 'labels',
+		type: 'string[] | undefined',
+		default: '\'\'',
+		description: 'Labels'
+	},
+	{
 		name: 'multiple',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Multiple'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'placements',
-		type: 'string[]',
+		type: 'string[] | undefined',
 		default: '\'\'',
 		description: 'Placements'
 	},
 	{
 		name: 'placement',
-		type: 'string',
+		type: 'string | undefined',
 		default: '\'\'',
 		description: 'Placement'
 	},
 	{
 		name: 'offset',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Offset'
 	},
 	{
 		name: 'keys',
-		type: 'string[]',
+		type: 'string[] | undefined',
 		default: '\'\'',
 		description: 'Keys'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<DropdownBond>',
+		type: 'Factory<DropdownBond<DropdownStateProps, DropdownBondState<DropdownStateProps>, DropdownBondElements>> | undefined',
 		default: 'undefined',
 		description: 'Factory'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ dropdown: DropdownBond<any, DropdownBondState<any>, DropdownBondElements>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	},
+	{
+		name: 'onquerychange',
+		type: '((query: string) => void) | undefined',
+		default: '\'\'',
+		description: 'Onquerychange'
 	},
 ];
 
@@ -101,27 +131,27 @@ export const dropdownTriggerProps: PropDefinition[] = [
 export const dropdownSelectionsProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'ClassValue',
+		type: 'ClassValue | undefined',
 		default: 'undefined',
 		description: 'Class'
 	},
 	{
 		name: 'Selection',
-		type: 'Component | undefined',
-		default: 'undefined',
+		type: 'Component<{}, {}, string> | undefined',
+		default: '\'\'',
 		description: 'Selection'
 	},
 	{
-		name: 'selections',
-		type: 'DropdownSelection[]',
-		default: '-',
-		description: 'Selections'
+		name: 'children',
+		type: 'Snippet<[{ selections: DropdownSelection[]; selection?: DropdownSelection | undefined; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
 	},
 	{
-		name: 'selection',
-		type: 'DropdownSelection | undefined',
+		name: 'getSelections',
+		type: '(<T extends DropdownBond>(bond: T) => DropdownSelection[]) | undefined',
 		default: 'undefined',
-		description: 'Selection'
+		description: 'Get Selections'
 	},
 ];
 
@@ -134,186 +164,30 @@ export const dropdownSelectionProps: PropDefinition[] = [
 	},
 	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Children'
 	},
 	{
 		name: 'onclose',
-		type: '(event: Event) => void',
+		type: '((event: Event) => void) | undefined',
 		default: 'undefined',
 		description: 'Onclose'
-	},
-	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
 	},
 ];
 
 export const dropdownQueryProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'string',
+		type: 'string | undefined',
 		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	},
-	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
 	},
 ];
 

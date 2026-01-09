@@ -14,6 +14,14 @@
 
 	import { Input } from '$lib/components/input';
 	import { filterDropdownData } from '$lib/components/dropdown';
+	import {
+		dropdownRootProps,
+		dropdownTriggerProps,
+		dropdownItemProps,
+		dropdownQueryProps,
+		dropdownSelectionsProps,
+		dropdownSelectionProps
+	} from './props';
 
 	const basicCode = `<Dropdown.Root>
   <Dropdown.Trigger as="button">
@@ -49,7 +57,7 @@
 	<Dropdown.Content
 		class="bg-background mt-2 max-h-60 overflow-auto rounded-lg border shadow-lg"
 	>
-		<Dropdown.Query
+		<input
 			bind:value={filteredItems.query}
 			class="border-border border-b px-4 py-3"
 			placeholder="Search items..."
@@ -147,7 +155,7 @@ const preset = createPreset({
 					<Dropdown.Content
 						class="bg-background mt-2 max-h-60 overflow-auto rounded-lg border shadow-lg"
 					>
-						<Dropdown.Query
+						<input
 							bind:value={filteredItems.query}
 							class="border-border border-b px-4 py-3"
 							placeholder="Search items..."
@@ -176,7 +184,7 @@ const preset = createPreset({
 						<Dropdown.Content
 							class="bg-background mt-2 max-h-60 overflow-auto rounded-lg border shadow-lg"
 						>
-							<Dropdown.Query
+							<input
 								bind:value={filteredItems.query}
 								class="border-border border-b px-4 py-3"
 								placeholder="Search items..."
@@ -197,194 +205,32 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Control the open/closed state of the dropdown'
-						},
-						{
-							name: 'value',
-							type: 'unknown',
-							default: 'undefined',
-							description: 'Currently selected value (single selection mode)'
-						},
-						{
-							name: 'values',
-							type: 'unknown[]',
-							default: 'undefined',
-							description: 'Currently selected values (multiple selection mode)'
-						},
-						{
-							name: 'label',
-							type: 'string',
-							default: 'undefined',
-							description: 'Display label of the selected item (auto-managed)'
-						},
-						{
-							name: 'labels',
-							type: 'string[]',
-							default: 'undefined',
-							description: 'Display labels of selected items (auto-managed)'
-						},
-						{
-							name: 'multiple',
-							type: 'boolean',
-							default: 'false',
-							description: 'Enable multiple selection mode'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable the dropdown'
-						},
-						{
-							name: 'placement',
-							type: 'string',
-							default: "'bottom-start'",
-							description: 'Default placement for the dropdown list'
-						},
-						{
-							name: 'placements',
-							type: 'string[]',
-							default: "['bottom-start', 'bottom-end', 'top-start', 'top-end']",
-							description: 'Available placement options for auto-positioning'
-						},
-						{
-							name: 'offset',
-							type: 'number',
-							default: '1',
-							description: 'Offset distance from the trigger element'
-						},
-						{
-							name: 'keys',
-							type: 'string[]',
-							default: '[]',
-							description: 'Array of valid item keys for validation'
-						}
-					]}
-				/>
+				<Props data={[...dropdownRootProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Trigger Props</h3>
-				<Props
-					data={[
-						{
-							name: 'as',
-							type: 'string',
-							default: "'button'",
-							description: 'HTML element to render'
-						},
-						{
-							name: 'base',
-							type: 'Component',
-							default: 'Input.Root',
-							description: 'Base component to compose with (e.g., Input.Root for styled inputs)'
-						}
-					]}
-				/>
+				<Props data={[...dropdownTriggerProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Item Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: 'auto-generated',
-							description: 'Unique value for the item (auto-generated if not provided)'
-						},
-						{
-							name: 'data',
-							type: 'T (generic)',
-							default: 'undefined',
-							description: 'Custom data object associated with the item'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'dropdown.item'",
-							description: 'Preset key for styling customization'
-						}
-					]}
-				/>
+				<Props data={[...dropdownItemProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Query Props</h3>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Search query value for filtering items'
-						},
-						{
-							name: 'placeholder',
-							type: 'string',
-							default: 'undefined',
-							description: 'Placeholder text for the search input'
-						}
-					]}
-				/>
+				<Props data={[...dropdownQueryProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Selections Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'ClassValue',
-							default: 'undefined',
-							description: 'CSS class for the selections container'
-						},
-						{
-							name: 'Selection',
-							type: 'Component',
-							default: 'Dropdown.Selection',
-							description: 'Custom component to render each selection'
-						},
-						{
-							name: 'getSelections',
-							type: '(bond: DropdownBond) => DropdownSelection[]',
-							default: 'undefined',
-							description: 'Custom function to retrieve selections from the bond'
-						}
-					]}
-				/>
+				<Props data={[...dropdownSelectionsProps]} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Selection Props</h3>
-				<Props
-					data={[
-						{
-							name: 'selection',
-							type: 'DropdownSelection',
-							default: '-',
-							description: 'Selection object containing id, value, label, and unselect function (required)'
-						},
-						{
-							name: 'base',
-							type: 'Component',
-							default: 'Chip (in multiple mode)',
-							description: 'Base component to compose with'
-						},
-						{
-							name: 'onclose',
-							type: '(event: Event) => void',
-							default: 'undefined',
-							description: 'Callback fired when the selection is closed/removed'
-						}
-					]}
-				/>
+				<Props data={[...dropdownSelectionProps]} />
 			</div>
 
 			<div>
@@ -395,13 +241,11 @@ const preset = createPreset({
 						<code>Dropdown.Trigger</code> - Trigger element (composable with Input.Root or button)
 					</li>
 					<li><code>Dropdown.Item</code> - Individual selectable list item</li>
-					<li><code>Dropdown.Query</code> - Search/filter input component</li>
 					<li>
 						<code>Dropdown.Selections</code> - Container for displaying selected items (badges)
 					</li>
 					<li><code>Dropdown.Selection</code> - Individual selection badge/chip</li>
 					<li><code>Dropdown.Placeholder</code> - Placeholder element for empty state</li>
-					<li><code>Dropdown.List</code> - List container (re-exported from Menu)</li>
 					<li>
 						<code>Dropdown.Content</code> - Alternative list container (re-exported from Menu)
 					</li>
