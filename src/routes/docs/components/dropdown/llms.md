@@ -27,7 +27,7 @@ The main dropdown container that manages the overall state.
 
 #### `Dropdown.Trigger`
 
-Button or element that triggers the dropdown.
+Button or element that triggers the dropdown. Can be composed with other components using the `base` prop.
 
 **Preset Key:** `dropdown.trigger`
 
@@ -35,25 +35,40 @@ Button or element that triggers the dropdown.
 
 {{dropdownTriggerProps}}
 
-#### `Dropdown.Value`
+Key props include:
 
-Displays the currently selected value(s).
+- `as?: string` - HTML element to render (default: 'button')
+- `base?: Component` - Base component to compose with (e.g., Input.Root)
 
-**Preset Key:** `dropdown.value`
+#### `Dropdown.Selections`
+
+Displays selected items as badges/chips (typically in multiple selection mode).
+
+**Preset Key:** `dropdown.selections`
 
 **Props:**
 
-{{dropdownValueProps}}
+{{dropdownSelectionsProps}}
+
+#### `Dropdown.Placeholder`
+
+Placeholder element shown when no items are selected.
+
+**Preset Key:** `dropdown.placeholder`
+
+**Props:**
+
+{{dropdownPlaceholderProps}}
 
 #### `Dropdown.Content`
 
-Container for dropdown items.
+Container for dropdown items (re-exported from Menu).
 
-**Preset Key:** `Dropdown.Content`
+**Preset Key:** `menu.list`
 
 **Props:**
 
-{{dropdownListProps}}
+{{dropdownContentProps}}
 
 #### `Dropdown.Item`
 
@@ -73,16 +88,20 @@ Individual dropdown item.
 import { Dropdown } from '@svelte-atoms/core';
 ```
 
-### Example
+### Basic Example
 
 ```svelte
 <script lang="ts">
-	let selected = $state<string[]>([]);
+	import { Dropdown } from '@svelte-atoms/core';
+	import { Input } from '@svelte-atoms/core';
+
+	let selectedValues = $state<string[]>([]);
 </script>
 
-<Dropdown.Root bind:value={selected} multiple>
-	<Dropdown.Trigger>
-		<Dropdown.Value />
+<Dropdown.Root bind:values={selectedValues} multiple>
+	<Dropdown.Trigger base={Input.Root}>
+		<Dropdown.Selections class="flex flex-wrap gap-1" />
+		<Dropdown.Placeholder>No items selected</Dropdown.Placeholder>
 	</Dropdown.Trigger>
 
 	<Dropdown.Content>
@@ -93,13 +112,76 @@ import { Dropdown } from '@svelte-atoms/core';
 </Dropdown.Root>
 ```
 
+### With Filtering
+
+```svelte
+<script lang="ts">
+	import { Dropdown, filterDropdownData } from '@svelte-atoms/core';
+	import { Input } from '@svelte-atoms/core';
+
+	let selectedValues = $state<string[]>([]);
+	const items = [
+		{ value: 'apple', label: 'Apple' },
+		{ value: 'banana', label: 'Banana' },
+		{ value: 'cherry', label: 'Cherry' }
+	];
+
+	const filteredItems = filterDropdownData(
+		() => items,
+		(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
+	);
+</script>
+
+<Dropdown.Root bind:values={selectedValues} multiple>
+	<Dropdown.Trigger base={Input.Root}>
+		<Dropdown.Selections class="flex flex-wrap gap-1" />
+		<Dropdown.Placeholder>Select items...</Dropdown.Placeholder>
+	</Dropdown.Trigger>
+
+	<Dropdown.Content>
+		<input
+			bind:value={filteredItems.query}
+			class="border-b border-border px-4 py-3"
+			placeholder="Search items..."
+		/>
+		{#each filteredItems.current as item (item.value)}
+			<Dropdown.Item value={item.value}>{item.label}</Dropdown.Item>
+		{/each}
+	</Dropdown.Content>
+</Dropdown.Root>
+```
+
+## Helper Functions
+
+### `filterDropdownData`
+
+A reactive helper function for filtering dropdown data based on a query string. Returns an object with `query` (getter/setter) and `current` (filtered results).
+
+```typescript
+import { filterDropdownData } from '@svelte-atoms/core/components/dropdown';
+
+const items = [
+	{ value: 'apple', label: 'Apple' },
+	{ value: 'banana', label: 'Banana' }
+];
+
+const filtered = filterDropdownData(
+	() => items,
+	(query, item) => item.label.toLowerCase().includes(query.toLowerCase())
+);
+
+// Usage
+filtered.query = 'app'; // Set search query
+filtered.current; // Returns filtered results: [{ value: 'apple', label: 'Apple' }]
+```
+
 ## Context Utilities
 
-### `getDropdownContext`
+### `Dropdown.get`
 
 Retrieves the current dropdown context.
 
-### `setDropdownContext`
+### `Dropdown.set`
 
 Sets the dropdown context for child components.
 
@@ -111,7 +193,6 @@ Sets the dropdown context for child components.
 ## File Structure
 
 - `bond.svelte.ts`: Contains the main `DropdownBond` and `DropdownState` classes.
-- `context.ts`: Provides context management utilities.
 - `item/bond.svelte.ts`: Defines the `DropdownItemBond` type.
 
 ## License

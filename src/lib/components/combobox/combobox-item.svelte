@@ -5,7 +5,7 @@
 
 	import { on } from '$svelte-atoms/core/attachments';
 
-	const bond = ComboboxBond.get() as ComboboxBond<{}>;
+	const bond = ComboboxBond.get() as ComboboxBond;
 
 	if (!bond) {
 		throw new Error('Combobox atom was not found');
@@ -38,9 +38,9 @@
 				| undefined;
 
 			// Set selected item text
-			bond.state.props.text = textElement?.innerText ?? '';
+			bond.state.props.label = textElement?.innerText ?? '';
 			// Clear input query
-			bond.state.props.query = '';
+			bond.state.props.label = '';
 
 			item?.toggle();
 

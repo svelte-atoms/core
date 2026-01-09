@@ -44,8 +44,6 @@
 		...restProps
 	});
 
-	const ID = $props.id();
-
 	function _factory() {
 		const existing = (dropdown?.state as any)?.item?.(value);
 

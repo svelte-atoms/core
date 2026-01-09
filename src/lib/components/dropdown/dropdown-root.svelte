@@ -1,11 +1,14 @@
 <script lang="ts" generics="T">
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { DropdownBond, DropdownBondState, type DropdownStateProps } from './bond.svelte';
+	import type { DropdownRootProps } from './types';
 
 	let {
 		open = $bindable(false),
 		value = $bindable(),
 		values = $bindable(),
+		labels = $bindable(),
+		label = $bindable(),
 		multiple = false,
 		disabled = false,
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
@@ -16,7 +19,7 @@
 		children = undefined,
 		onquerychange = undefined,
 		...restProps
-	} = $props();
+	}: DropdownRootProps<T> = $props();
 
 	const bondProps = defineState<DropdownStateProps>(
 		[
@@ -35,6 +38,16 @@
 					value = v[0];
 				}
 			),
+			defineProperty(
+				'label',
+				() => label,
+				(v) => (label = v)
+			),
+			defineProperty(
+				'labels',
+				() => labels,
+				(v) => (labels = v)
+			),
 			defineProperty('multiple', () => multiple),
 			defineProperty('disabled', () => disabled),
 			defineProperty('placement', () => placement),
@@ -42,7 +55,7 @@
 			defineProperty('placements', () => placements ?? []),
 			defineProperty('keys', () => keys ?? [])
 		],
-		() => ({ onquerychange })
+		() => ({})
 	);
 	const bond = factory(bondProps).share();
 

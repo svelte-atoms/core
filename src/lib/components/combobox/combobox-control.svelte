@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { ComboboxBond } from './bond.svelte';
+	import type { ComboboxControlProps } from './types';
 
-	const bond = ComboboxBond.get() as ComboboxBond<{}>;
+	const bond = ComboboxBond.get() as ComboboxBond;
 
 	if (!bond) {
 		throw new Error('Combobox atom was not found');
 	}
 
 	let {
+		value = $bindable(),
 		class: klass = '',
 		children = undefined,
 		onmount = undefined,
@@ -19,7 +21,7 @@
 		exit = undefined,
 		initial = undefined,
 		...restProps
-	} = $props();
+	}: ComboboxControlProps = $props();
 
 	let isMounted = $state(false);
 
@@ -27,18 +29,31 @@
 		isMounted = true;
 	});
 
-	const isMultiple = $derived(bond?.state.props?.multiple ?? false);
-	const selectedText = $derived(
-		isMounted || isMultiple ? (bond.state.selectedItems.at(0)?.text ?? '') : ''
-	);
+	const isMultiselect = untrack(() => bond.state.props.multiple);
 
-	const value = $derived(
-		bond?.state.props?.query ?? (bond?.state.props?.text || selectedText || '')
-	);
+	$effect(() => {
+		bond.state.allSelections;
+
+		if (isMultiselect) {
+			value = '';
+		} else {
+			value = untrack(() => bond.state.props.label);
+		}
+	});
+
+	const comboboxProps = $derived({
+		...bond.control(),
+		...restProps
+	});
 </script>
 
 <Input.Control
-	{value}
+	bind:value={
+		() => value,
+		(v) => {
+			value = v;
+		}
+	}
 	preset="combobox.control"
 	class={['border-border flex-1 py-1', '$preset', klass]}
 	enter={enter?.bind(bond.state)}
@@ -47,6 +62,5 @@
 	animate={animate?.bind(bond.state)}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond.control()}
-	{...restProps}
+	{...comboboxProps}
 />

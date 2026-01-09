@@ -781,11 +781,11 @@
 					<h3 class="text-lg font-semibold">Dropdown</h3>
 					<Dropdown.Root bind:open={dropdownOpen} keys={fruits} offset={2}>
 						{#snippet children({ dropdown })}
-							{@const selectedItem = dropdown.state.selectedItems?.at(0)}
+							{@const selectedItem = dropdown.state.selections?.at(0)}
 
 							<Dropdown.Trigger base={Button} class="w-full">
 								{#if selectedItem}
-									<div class="capitalize">{selectedItem.text}</div>
+									<div class="capitalize">{selectedItem.label}</div>
 								{:else}
 									<div>Select fruit</div>
 								{/if}

@@ -11,9 +11,10 @@ import type { DropdownItemController } from './item/controller.svelte';
 export type DropdownStateProps = MenuBondProps & {
 	values?: string[];
 	value?: string;
+	labels?: string[];
+	label?: string;
 	multiple?: boolean;
 	keys?: string[];
-	onquerychange?: (query: string) => void;
 };
 
 export type DropdownBondElements = MenuBondElements & {
@@ -94,28 +95,18 @@ export class DropdownBond<
 export class DropdownBondState<
 	Props extends DropdownStateProps = DropdownStateProps
 > extends MenuBondState<Props> {
-	#selectedItems = $derived(
+	#selections = $derived(
 		this.props.values
 			?.map((value) => this.items.get(value) as unknown as DropdownItemController<unknown>)
 			.filter(Boolean) ?? []
 	) as DropdownItemController<unknown>[];
 
-	#query = $state('');
-
 	constructor(props: () => Props) {
 		super(props);
 	}
 
-	get selectedItems() {
-		return this.#selectedItems;
-	}
-
-	get query() {
-		return this.#query;
-	}
-	set query(value: string) {
-		this.#query = value;
-		this.props.onquerychange?.(value);
+	get selections() {
+		return this.#selections;
 	}
 
 	select(ids: string[]) {
@@ -128,6 +119,8 @@ export class DropdownBondState<
 			const value = ids[0];
 			this.props.values = value ? [value] : [];
 		}
+
+		this.updateLabels();
 	}
 
 	unselect(ids: string[]) {
@@ -139,5 +132,13 @@ export class DropdownBondState<
 		}
 
 		this.props.values = [...sequence];
+
+		this.updateLabels();
+	}
+
+	protected updateLabels() {
+		const labels = this.#selections.map((s) => s.label)
+		this.props.labels = labels;
+		this.props.label = labels[0] ?? '';
 	}
 }

@@ -80,7 +80,7 @@
 			};
 
 		return {
-			component: base ?? atom,
+			component: _base ?? atom,
 			props: { class: _klass, as: _as, ..._restProps }
 		};
 	}) as { component: Component; props: Record<string, any> };
