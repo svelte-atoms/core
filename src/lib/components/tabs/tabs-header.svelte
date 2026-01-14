@@ -1,20 +1,20 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TabsBond } from './bond.svelte';
+	import type { TabsHeaderProps } from './types';
 
 	const bond = TabsBond.get();
+
+	if(!bond) {
+		throw new Error('TabsHeader must be used within a Tabs component');
+	}
 
 	let {
 		class: klass = '',
 		children,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		preset = 'tabs.header' as const,
 		...restProps
-	} = $props();
+	}: TabsHeaderProps<E, B> = $props();
 
 	const headerProps = $derived({
 		...bond?.header(),
@@ -22,19 +22,11 @@
 	});
 </script>
 
-<HtmlAtom
+<Atom
 	{bond}
-	preset="tabs.header"
-	class={['border-border border-border relative flex min-w-full', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
+	{preset}
+	class={['relative flex min-w-full border-border', '$preset', klass]}
 	{...headerProps}
 >
-	{#if children}
-		{@render children({ tabs: bond })}
-	{/if}
-</HtmlAtom>
+	{@render children?.({ tabs: bond })}
+</Atom>

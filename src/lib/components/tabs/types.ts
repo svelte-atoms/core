@@ -28,6 +28,12 @@ export interface TabBodyExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TabDescriptionExtendProps {}
 
+/**
+ * Extend this interface to add custom tabs content properties in your application.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface TabsContentExtendProps {}
+
 export type TabsRootProps<
 	D extends string = string,
 	E extends keyof HTMLElementTagNameMap = 'div',
@@ -63,6 +69,28 @@ export type TabDescriptionProps<
 > = HtmlAtomProps<E, B> &
 	TabDescriptionExtendProps & {
 		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+	};
+
+export type TabsHeaderProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> & {
+		children?: Snippet<[{ tabs?: TabsBond }]>;
+	};
+
+export type TabsBodyProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> & {
+		children?: Snippet<[{ tabs?: TabsBond }]>;
+	};
+
+export type TabsContentProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> &
+	TabsContentExtendProps & {
+		children?: Snippet<[{ tabs?: TabsBond }]>;
 	};
 
 /**

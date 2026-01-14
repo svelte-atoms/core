@@ -3,18 +3,24 @@ import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
 import type { TabBond } from './tab/bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Bond, BondState } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import type { Snippet } from 'svelte';
 
-export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> = {
-	value?: string;
+export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> = BondStateProps & {
+	value?: string|undefined;
 	multiple?: boolean;
-	extend: T;
+	extend?: T;
 };
 
 export type TabElements = {
 	root: HTMLElement;
 	header: HTMLElement;
 	body: HTMLElement;
+};
+
+export type TabContentSnippet = {
+	props: Record<string, unknown>;
+	children: Snippet<[{ tab?: TabBond }]>;
 };
 
 const TABS_ELEMENTS_KIND = {
@@ -40,7 +46,7 @@ export class TabsBond<T = unknown> extends Bond<TabsBondProps, TabsBondState<T>,
 
 		return {
 			id,
-			'aria-orientation': 'horizontal',
+			'aria-orientation': 'horizontal' as const,
 			'data-kind': TABS_ELEMENTS_KIND.root,
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
@@ -88,6 +94,7 @@ export class TabsBond<T = unknown> extends Bond<TabsBondProps, TabsBondState<T>,
 
 export class TabsBondState<T> extends BondState<TabsBondProps> {
 	#items: Map<string, TabBond<T>> = new SvelteMap();
+	#tabContents: SvelteMap<string, TabContentSnippet> = new SvelteMap();
 	#selectedItem = $derived(
 		this.props?.value ? this.#items.get(this.props?.value) : undefined
 	) as TabBond<T>;
@@ -98,6 +105,10 @@ export class TabsBondState<T> extends BondState<TabsBondProps> {
 
 	get selectedItem() {
 		return this.#selectedItem;
+	}
+
+	get activeTabContent() {
+		return this.props?.value ? this.#tabContents.get(this.props.value) : undefined;
 	}
 
 	mountItem<I extends T>(id: string, item: TabBond<I>) {
@@ -120,5 +131,17 @@ export class TabsBondState<T> extends BondState<TabsBondProps> {
 
 	unselect() {
 		this.props.value = undefined;
+	}
+
+	registerTabContent(id: string, props: Record<string, unknown>, children: Snippet<[{ tab?: TabBond }]>) {
+		this.#tabContents.set(id, { props, children });
+	}
+
+	unregisterTabContent(id: string) {
+		this.#tabContents.delete(id);
+	}
+
+	getTab(id: string) {
+		return this.#items.get(id);
 	}
 }
