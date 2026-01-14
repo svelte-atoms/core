@@ -9,24 +9,67 @@ The stepper component is built with a modular architecture, allowing you to comp
 ```svelte
 <script>
   import { Stepper, Step } from '@svelte-atoms/core';
+  import { Button } from '@svelte-atoms/core';
+  
+  const steps = [
+    { header: 'Account Information', body: 'Enter your personal details' },
+    { header: 'Address', body: 'Provide your shipping address' },
+    { header: 'Review', body: 'Review and confirm', optional: true }
+  ];
+  
+  let activeStepIndex = $state(0);
 </script>
 
-<Stepper>
-  <Step>
-    <Step.Header>Account Information</Step.Header>
-    <Step.Body>Enter your personal details</Step.Body>
-  </Step>
-  
-  <Step>
-    <Step.Header>Address</Step.Header>
-    <Step.Body>Provide your shipping address</Step.Body>
-  </Step>
-  
-  <Step>
-    <Step.Header>Review</Step.Header>
-    <Step.Body>Review and confirm</Step.Body>
-  </Step>
-</Stepper>
+<Stepper.Root bind:activeStep={activeStepIndex} orientation="horizontal" linear={true}>
+  {#snippet children({ stepper })}
+    <!-- Step indicators -->
+    <Stepper.Header>
+      {#each steps as stepData, i}
+        <Step.Root index={i} header={stepData.header} body={stepData.body}>
+          {#snippet children({ step })}
+            <Step.Header>
+              <Step.Indicator />
+              <Step.Separator />
+              <Step.Title>{stepData.header}</Step.Title>
+              <Step.Description>{stepData.body}</Step.Description>
+            </Step.Header>
+            
+            <!-- Step content -->
+            <Step.Body>
+              <h3>Step {i + 1}: {stepData.header}</h3>
+              <p>{stepData.body}</p>
+            </Step.Body>
+          {/snippet}
+        </Step.Root>
+      {/each}
+    </Stepper.Header>
+    
+    <!-- Active step content -->
+    <Stepper.Body>
+      <Stepper.Content />
+    </Stepper.Body>
+    
+    <!-- Navigation -->
+    <Stepper.Footer>
+      <Button 
+        disabled={stepper.state.isFirstStep}
+        onclick={() => stepper.state.navigation.previous()}
+      >
+        Previous
+      </Button>
+      
+      <Button onclick={() => stepper.state.navigation.reset()}>
+        Reset
+      </Button>
+      
+      {#if stepper.state.isLastStep}
+        <Button onclick={() => alert('Complete!')}>Complete</Button>
+      {:else}
+        <Button onclick={() => stepper.state.navigation.next()}>Next</Button>
+      {/if}
+    </Stepper.Footer>
+  {/snippet}
+</Stepper.Root>
 ```
 
 ## Components
