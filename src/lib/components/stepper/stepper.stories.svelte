@@ -20,10 +20,7 @@
 	import { Textarea } from '../textarea';
 	import type { StepperBond } from './bond.svelte';
 	import { animate } from 'motion'
-	import { HtmlAtom } from '../atom';
 	import { Stack } from '../stack';
-	import { Description } from '../card/atoms';
-
 	
 	const steps = $state([
 		{
@@ -74,7 +71,7 @@
 {/snippet}
 
 <Story name="Horizontal" args={{}}>
-	<Stepper.Root bind:activeStep={activeStepIndex} orientation="horizontal" linear={true}>
+	<Stepper.Root bind:step= {activeStepIndex} linear={true}>
 		{#snippet children({ stepper })}
 			<!-- Header: Step indicators -->
 			<Stepper.Header class="flex justify-between">
@@ -169,7 +166,7 @@
 </Story>
 
 <Story name="Vertical" args={{}}>
-	<Stepper.Root class="flex gap-4" activeStep={1}>
+	<Stepper.Root class="flex gap-4" step={1}>
 			{#snippet children({ stepper })}
 				<div class="flex gap-4">
 					<Stepper.Header class="">

@@ -11,13 +11,7 @@ export interface StepperRootProps<
 	 * The active step index (0-based)
 	 * @bindable
 	 */
-	activeStep?: number;
-
-	/**
-	 * Orientation of the stepper
-	 * @default 'horizontal'
-	 */
-	orientation?: 'horizontal' | 'vertical';
+	step?: number;
 
 	/**
 	 * Whether to enforce linear progression (users can only go to next/previous steps)

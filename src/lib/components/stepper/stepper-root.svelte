@@ -6,8 +6,7 @@
 	import type { Factory } from '$svelte-atoms/core/types';
 
 	let {
-		activeStep: step = $bindable(0),
-		orientation = 'horizontal',
+		step = $bindable(0),
 		linear = false,
 		disabled = false,
 		class: klass = '',
@@ -31,7 +30,6 @@
 				step = v;
 			}
 		),
-		defineProperty('orientation', () => orientation),
 		defineProperty('linear', () => linear),
 		defineProperty('disabled', () => disabled)
 	]);
