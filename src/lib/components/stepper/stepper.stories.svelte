@@ -140,25 +140,23 @@
 			</Stepper.Body>
 
 			<!-- Footer: Navigation buttons -->
-			<Stepper.Footer>
-				<div class="flex justify-between">
-					<Button
-						variant="outline"
-						disabled={stepper.state.isFirstStep}
-						onclick={() => handlePrevious(stepper)}
-					>
-						Previous
-					</Button>
+			<Stepper.Footer class="flex justify-between">
+				<Button
+					variant="outline"
+					disabled={stepper.state.isFirstStep}
+					onclick={() => handlePrevious(stepper)}
+				>
+					Previous
+				</Button>
 
-					<div class="flex gap-2">
-						<Button variant="ghost" onclick={() => handleReset(stepper)}>Reset</Button>
+				<div class="flex gap-2">
+					<Button variant="ghost" onclick={() => handleReset(stepper)}>Reset</Button>
 
-						{#if stepper.state.isLastStep}
-							<Button onclick={() => alert('Complete!')}>Complete</Button>
-						{:else}
-							<Button onclick={() => handleNext(stepper)}>Next</Button>
-						{/if}
-					</div>
+					{#if stepper.state.isLastStep}
+						<Button onclick={() => alert('Complete!')}>Complete</Button>
+					{:else}
+						<Button onclick={() => handleNext(stepper)}>Next</Button>
+					{/if}
 				</div>
 			</Stepper.Footer>
 		{/snippet}
