@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Badge } from '$svelte-atoms/core/components/badge';
 	import DocCodeBlock from '$docs/components/doc-code-block.svelte';
 	import { layoutCode, appCssCode, presetCode, firstComponentCode } from './codes';
 
