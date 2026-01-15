@@ -8,25 +8,25 @@ import type { TabBond } from './tab/bond.svelte';
  * Extend this interface to add custom tabs root properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabsRootExtendProps {}
+export interface TabsRootExtendProps { }
 
 /**
  * Extend this interface to add custom tab header properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabHeaderExtendProps {}
+export interface TabHeaderExtendProps { }
 
 /**
  * Extend this interface to add custom tab body properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabBodyExtendProps {}
+export interface TabBodyExtendProps { }
 
 /**
  * Extend this interface to add custom tab description properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabDescriptionExtendProps {}
+export interface TabDescriptionExtendProps { }
 
 export type TabsRootProps<
 	D extends string = string,
@@ -63,6 +63,28 @@ export type TabDescriptionProps<
 > = HtmlAtomProps<E, B> &
 	TabDescriptionExtendProps & {
 		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+	};
+
+export type TabsHeaderProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> & {
+	children?: Snippet<[{ tabs?: TabsBond }]>;
+};
+
+export type TabsBodyProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> & {
+	children?: Snippet<[{ tabs?: TabsBond }]>;
+};
+
+export type TabsContentProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> = HtmlAtomProps<E, B> &
+	{
+		children?: Snippet<[{ tabs?: TabsBond }]>;
 	};
 
 /**

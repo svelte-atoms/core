@@ -24,7 +24,9 @@ export interface ToastDescriptionExtendProps {}
 export interface ToastRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast?: ToastBond }]> }>,
+>
+	extends
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast?: ToastBond }]> }>,
 		ToastRootExtendProps {
 	dismissible?: boolean;
 	duration?: number;
@@ -34,11 +36,15 @@ export interface ToastRootProps<
 export interface ToastTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast: ToastBond }]> }>,
+>
+	extends
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast: ToastBond }]> }>,
 		ToastTitleExtendProps {}
 
 export interface ToastDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast?: ToastBond }]> }>,
+>
+	extends
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ toast?: ToastBond }]> }>,
 		ToastDescriptionExtendProps {}

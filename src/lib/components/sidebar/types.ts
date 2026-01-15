@@ -17,8 +17,8 @@ export interface SidebarContentExtendProps {}
 export interface SidebarRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		SidebarRootExtendProps {
+>
+	extends HtmlAtomProps<E, B>, SidebarRootExtendProps {
 	open?: boolean;
 	disabled?: boolean;
 	width?: string | number;
@@ -26,5 +26,4 @@ export interface SidebarRootProps<
 }
 
 export interface SidebarContentProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends HtmlAtomProps<E, B>,
-		SidebarContentExtendProps {}
+	extends HtmlAtomProps<E, B>, SidebarContentExtendProps {}

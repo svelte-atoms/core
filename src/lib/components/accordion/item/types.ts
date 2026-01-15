@@ -29,8 +29,8 @@ export interface AccordionItemIndicatorExtendProps {}
 export interface AccordionItemRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AccordionItemRootExtendProps {
+>
+	extends HtmlAtomProps<E, B>, AccordionItemRootExtendProps {
 	value?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	data?: any;
@@ -41,17 +41,17 @@ export interface AccordionItemRootProps<
 export interface AccordionItemHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AccordionItemHeaderExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AccordionItemHeaderExtendProps {}
 
 export interface AccordionItemBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AccordionItemBodyExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AccordionItemBodyExtendProps {}
 
 export interface AccordionItemIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AccordionItemIndicatorExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AccordionItemIndicatorExtendProps {}

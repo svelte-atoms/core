@@ -43,7 +43,6 @@ export class MenuBond<
 
 				if (ev.key === 'ArrowUp') {
 					this.state.navigation.previous();
-
 				}
 			}
 		};
@@ -55,7 +54,7 @@ export class MenuBond<
 		return {
 			...superProps,
 			'aria-haspopup': 'menu' as const,
-			'onkeydown': (ev: KeyboardEvent) => {
+			onkeydown: (ev: KeyboardEvent) => {
 				if (ev.key === 'ArrowDown') {
 					this.state.navigation.next();
 				}
@@ -64,7 +63,11 @@ export class MenuBond<
 					this.state.navigation.previous();
 				}
 
-				if ((ev.key === 'Enter' || ev.key === ' ') && this.state.props.open && this.state.highlightedItem) {
+				if (
+					(ev.key === 'Enter' || ev.key === ' ') &&
+					this.state.props.open &&
+					this.state.highlightedItem
+				) {
 					if (ev.key === ' ') {
 						ev.preventDefault();
 					}

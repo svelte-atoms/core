@@ -10,8 +10,8 @@ export interface TooltipExtendProps {}
 export interface TooltipTriggerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>,
-		TooltipExtendProps {
+>
+	extends Omit<HtmlAtomProps<E, B>, 'children'>, TooltipExtendProps {
 	content?: string | Snippet<[]>;
 	placement?: 'top' | 'bottom' | 'left' | 'right';
 	delay?: number;

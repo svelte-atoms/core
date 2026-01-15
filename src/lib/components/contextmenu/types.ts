@@ -9,5 +9,5 @@ export interface ContextMenuExtendProps {}
 export interface ContextMenuTriggerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		ContextMenuExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, ContextMenuExtendProps {}

@@ -48,8 +48,8 @@ export interface AlertCloseButtonExtendProps {}
 export interface AlertRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertRootExtendProps {
+>
+	extends HtmlAtomProps<E, B>, AlertRootExtendProps {
 	dismissible?: boolean;
 	dismissed?: boolean;
 	disabled?: boolean;
@@ -61,35 +61,35 @@ export interface AlertRootProps<
 export interface AlertContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertContentExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertContentExtendProps {}
 
 export interface AlertTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertTitleExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertTitleExtendProps {}
 
 export interface AlertDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertDescriptionExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertDescriptionExtendProps {}
 
 export interface AlertIconProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertIconExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertIconExtendProps {}
 
 export interface AlertActionsProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertActionsExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertActionsExtendProps {}
 
 export interface AlertCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		AlertCloseButtonExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, AlertCloseButtonExtendProps {}

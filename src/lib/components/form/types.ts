@@ -40,14 +40,13 @@ interface RenderlessProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface RenderfullProps<B extends Base = Base>
-	extends Override<
-		HtmlAtomProps<'form', B>,
-		{
-			renderless?: false;
-			children?: Snippet<[{ form: FormBond }]>;
-		}
-	> {}
+interface RenderfullProps<B extends Base = Base> extends Override<
+	HtmlAtomProps<'form', B>,
+	{
+		renderless?: false;
+		children?: Snippet<[{ form: FormBond }]>;
+	}
+> {}
 
 export type FormRootProps<B extends Base = Base> = CommonProps &
 	(RenderlessProps | RenderfullProps<B>);

@@ -9,13 +9,13 @@ import type { InputControlProps } from '../input';
  * Extend this interface to add custom combobox properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ComboboxExtendProps { }
+export interface ComboboxExtendProps {}
 
 export interface ComboboxRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-	ComboboxExtendProps {
+>
+	extends HtmlAtomProps<E, B>, ComboboxExtendProps {
 	open?: boolean;
 	value?: unknown;
 	values?: unknown[];
@@ -30,23 +30,20 @@ export interface ComboboxRootProps<
 	children?: Snippet<[{ combobox: ComboboxBond }]>;
 }
 
-
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ComboboxSelectionsProps extends DropdownSelectionsProps {
-	// 
+	//
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ComboboxSelectionProps extends DropdownSelectionProps {
-	// 
+	//
 }
-
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ComboboxControlProps extends InputControlProps {
-	// 
-};
-
+	//
+}
 
 export interface ComboboxSelection {
 	id: string;

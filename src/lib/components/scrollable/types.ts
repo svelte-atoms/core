@@ -36,7 +36,9 @@ export interface ScrollableThumbExtendProps {}
 export interface ScrollableRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ scrollable: ScrollableBond }]> }>,
+>
+	extends
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ scrollable: ScrollableBond }]> }>,
 		ScrollableExtendProps {
 	factory?: Factory<ScrollableBond>;
 	scrollX?: number;
@@ -52,27 +54,27 @@ export interface ScrollableRootProps<
 export interface ScrollableContainerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>,
-		ScrollableContainerExtendProps {}
+>
+	extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>, ScrollableContainerExtendProps {}
 
 export interface ScrollableContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>,
-		ScrollableContentExtendProps {}
+>
+	extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>, ScrollableContentExtendProps {}
 
 export interface ScrollableTrackProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>,
-		ScrollableTrackExtendProps {
+>
+	extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>, ScrollableTrackExtendProps {
 	orientation: 'horizontal' | 'vertical';
 }
 
 export interface ScrollableThumbProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>,
-		ScrollableThumbExtendProps {
+>
+	extends Override<HtmlAtomProps<E, B>, { children?: Snippet }>, ScrollableThumbExtendProps {
 	orientation: 'horizontal' | 'vertical';
 }

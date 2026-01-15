@@ -105,8 +105,11 @@ export interface DatagridHeaderProps<T> extends DatagridHeaderExtendProps {
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
 }
 
-export interface DatagridBodyProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base>
-	extends DatagridBodyExtendProps {
+export interface DatagridBodyProps<
+	T,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> extends DatagridBodyExtendProps {
 	class?: string;
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
@@ -122,7 +125,9 @@ export interface DatagridThProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> extends Override<
+>
+	extends
+		Override<
 			HtmlAtomProps<E, B>,
 			{
 				children?: Snippet<[{ th: DatagridContext<T> }]>;
@@ -147,14 +152,14 @@ export interface DatagridTdProps<T> extends DatagridTdExtendProps {
 }
 
 export interface DatagridCheckboxProps
-	extends Omit<CheckboxProps, 'children'>,
-		DatagridCheckboxExtendProps {
+	extends Omit<CheckboxProps, 'children'>, DatagridCheckboxExtendProps {
 	readonly element?: HTMLElement;
 	children?: Snippet<[{ context: DatagridContext }]>;
 }
 
 export interface DatagridTrProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base>
-	extends Override<
+	extends
+		Override<
 			HtmlAtomProps<E, B>,
 			{
 				children?: Snippet<[{ tr: DatagridContext<T> }]>;

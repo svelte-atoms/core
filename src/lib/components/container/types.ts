@@ -8,8 +8,7 @@ import type { HtmlAtomProps } from '../atom';
 export interface ContainerExtendProps {}
 
 export interface ContainerProps
-	extends Omit<HtmlAtomProps<'button'>, 'children'>,
-		ContainerExtendProps {
+	extends Omit<HtmlAtomProps<'button'>, 'children'>, ContainerExtendProps {
 	type?: 'inline-size' | 'size';
 	name?: string;
 	clientWidth?: number;
