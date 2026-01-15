@@ -5,11 +5,8 @@ import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/
 
 export type StepBondProps = BondStateProps & {
 	index: number;
-	header: string;
-	body?: string;
 	disabled: boolean;
 	completed: boolean;
-	optional: boolean;
 	error: boolean;
 };
 
@@ -169,13 +166,13 @@ export class StepBondState extends BondState<StepBondProps> {
 	}
 
 	get isCompleted() {
-		return this.props.completed || this.#stepper!.props.step > this.props.index;
+		const stepperStep = this.#stepper?.props.step;
+		return this.props.completed || (typeof stepperStep === 'number' && stepperStep > this.props.index);
 	}
 
 	get isDisabled() {
 		return (
 			this.props.disabled ||
-			this.#stepper?.props?.disabled ||
 			(this.#stepper?.props.linear && this.props.index > this.#stepper.props.step + 1)
 		);
 	}
