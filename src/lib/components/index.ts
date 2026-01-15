@@ -32,6 +32,7 @@ export * from './textarea';
 export * from './tree';
 export * from './dropdown';
 export * from './stack';
+export * from './stepper';
 export * from './element';
 export * from './atom';
 export * from './container';
