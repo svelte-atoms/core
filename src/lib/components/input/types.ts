@@ -18,8 +18,8 @@ export interface InputControlExtendProps {}
 export interface InputRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		InputRootExtendProps {
+>
+	extends HtmlAtomProps<E, B>, InputRootExtendProps {
 	value?: string | number | string[] | null;
 	checked?: boolean;
 	files?: File[] | null;
@@ -39,5 +39,4 @@ interface InputControlBaseProps {
 }
 
 export interface InputControlProps<B extends Base = Base>
-	extends Override<HtmlAtomProps<'input', B>, InputControlBaseProps>,
-		InputControlExtendProps {}
+	extends Override<HtmlAtomProps<'input', B>, InputControlBaseProps>, InputControlExtendProps {}

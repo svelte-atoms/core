@@ -52,8 +52,7 @@ export interface CardDescriptionExtendProps {}
 export interface CardMediaExtendProps {}
 
 export interface CardRootProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends Omit<HtmlAtomProps<E, B>, 'children'>,
-		CardExtendProps {
+	extends Omit<HtmlAtomProps<E, B>, 'children'>, CardExtendProps {
 	disabled?: boolean;
 	factory?: Factory<CardBond>;
 	children?: Snippet<[{ card: CardBond }]>;
@@ -64,40 +63,38 @@ export interface CardRootProps<E extends keyof HTMLElementTagNameMap = 'div', B 
 export interface CardHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		CardHeaderExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, CardHeaderExtendProps {}
 
 export interface CardBodyProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B>,
-		CardBodyExtendProps {}
+	extends HtmlAtomProps<E, B>, CardBodyExtendProps {}
 
 export interface CardFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		CardFooterExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, CardFooterExtendProps {}
 
 export interface CardTitleProps<E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base>
-	extends HtmlAtomProps<E, B>,
-		CardTitleExtendProps {}
+	extends HtmlAtomProps<E, B>, CardTitleExtendProps {}
 
 export interface CardSubtitleProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		CardSubtitleExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, CardSubtitleExtendProps {}
 
 export interface CardDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		CardDescriptionExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, CardDescriptionExtendProps {}
 
 export interface CardMediaProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		CardMediaExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, CardMediaExtendProps {}
 
 // Alias for CardBodyProps (used in card-body.svelte)
 export type CardContentProps<

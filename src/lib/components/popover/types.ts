@@ -58,23 +58,21 @@ export interface AnimateParams {
 }
 
 export interface PopoverContentProps<T extends HtmlElementTagName, B extends Base = Base>
-	extends HtmlAtomProps<T, B>,
-		PopoverContentExtendProps {}
+	extends HtmlAtomProps<T, B>, PopoverContentExtendProps {}
 
 export interface PopoverIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		PopoverIndicatorExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, PopoverIndicatorExtendProps {}
 
 export interface PopoverArrowProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		PopoverArrowExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, PopoverArrowExtendProps {}
 
 export interface PopoverTriggerProps<T extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends HtmlAtomProps<T, B>,
-		PopoverTriggerExtendProps {
+	extends HtmlAtomProps<T, B>, PopoverTriggerExtendProps {
 	children?: Snippet<[{ popover?: PopoverBond }]>;
 }

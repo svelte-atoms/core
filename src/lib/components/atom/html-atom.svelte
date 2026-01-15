@@ -19,6 +19,8 @@
 
 	type Element = HTMLElementTagNameMap[E];
 
+	type Props =  Omit<HTMLAttributes<Element>, 'children'> & HtmlAtomProps<E, B>;
+
 	const rootBond = RootBond.get();
 
 	let {
@@ -30,7 +32,7 @@
 		variants = undefined,
 		children: childrenProp = undefined,
 		...restProps
-	}: HtmlAtomProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
+	}: Props = $props();
 
 	// Memoize preset resolution - only recompute when presetKey or bond changes
 	const preset = $derived.by(() => {

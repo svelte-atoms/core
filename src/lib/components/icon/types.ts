@@ -11,8 +11,8 @@ export interface IconProps<
 	Src extends Component = Component,
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		IconExtendProps {
+>
+	extends HtmlAtomProps<E, B>, IconExtendProps {
 	src?: Src;
 	children?: Snippet;
 }

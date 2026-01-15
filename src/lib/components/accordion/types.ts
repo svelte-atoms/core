@@ -12,8 +12,8 @@ export interface AccordionExtendProps {}
 export interface AccordionRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>,
-		AccordionExtendProps {
+>
+	extends Omit<HtmlAtomProps<E, B>, 'children'>, AccordionExtendProps {
 	value?: string;
 	values?: string[];
 	data?: unknown;

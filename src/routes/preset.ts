@@ -190,7 +190,7 @@ export const preset: Partial<Preset> = {
 	}),
 	'tab.header': () => ({
 		class:
-			"text-muted-foreground data-[active='true']:text-primary hover:text-foreground data-[active='true']:border-b-primary border-b border-transparent px-4 py-2"
+			"text-muted-foreground data-[active='true']:text-primary data-[active='true']:border-b-primary border-b border-transparent px-4 py-2"
 	}),
 	card: () => ({
 		class: 'bg-card rounded-lg border border-border p-4 shadow-sm'

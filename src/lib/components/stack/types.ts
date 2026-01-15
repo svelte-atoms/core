@@ -7,8 +7,7 @@ import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 export interface StackExtendProps {}
 
 export interface StackProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B>,
-		StackExtendProps {
+	extends HtmlAtomProps<E, B>, StackExtendProps {
 	direction?: 'row' | 'column';
 	gap?: number | string;
 	align?: 'start' | 'center' | 'end' | 'stretch';

@@ -16,8 +16,7 @@ export interface ValidationAdapter<Schema, Value> {
 
 export class ZodAdapter<
 	T extends { parse: (value: unknown) => any; parseAsync?: (value: unknown) => Promise<any> }
-> implements ValidationAdapter<T, any>
-{
+> implements ValidationAdapter<T, any> {
 	validate(schema: T, value: unknown): ValidationResult<any> {
 		try {
 			const data = schema.parse(value);

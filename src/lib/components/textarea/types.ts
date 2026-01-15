@@ -15,8 +15,8 @@ export interface TextareaInputExtendProps {}
 export interface TextareaRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		TextareaRootExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, TextareaRootExtendProps {}
 
 export interface TextareaInputProps extends TextareaInputExtendProps {
 	value?: string;

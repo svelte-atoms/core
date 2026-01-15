@@ -16,5 +16,5 @@ export {
 	Divider,
 	Title,
 	Selection,
-	Placeholder,
+	Placeholder
 } from '../dropdown/atoms';

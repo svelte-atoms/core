@@ -11,7 +11,7 @@ export interface LayerExtendProps {}
 export interface LayerRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		LayerExtendProps {
+>
+	extends HtmlAtomProps<E, B>, LayerExtendProps {
 	factory?: Factory<LayerBond>;
 }
