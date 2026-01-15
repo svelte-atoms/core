@@ -1,52 +1,43 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { type Base } from '$svelte-atoms/core/components/atom';
 	import type { TabBodyProps } from '../types';
 	import { TabBond } from './bond.svelte';
+	import { TabsBond } from '../bond.svelte';
+	import { Stack } from '../../stack';
 
-	const bond = TabBond.get();
+	const tabBond = TabBond.get();
+	const tabsBond = TabsBond.get();
 
-	if (!bond) {
+	if (!tabBond) {
 		throw new Error('TabBody must be used within a Tab');
 	}
 
 	let {
 		class: klass = '',
+		base= Stack.Item,
 		children,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		preset = 'tab.body' as const,
 		...restProps
 	}: TabBodyProps<E, B> = $props();
 
-	let mounted = $state(false);
-
-	const bodyProps = $derived({
-		...bond?.body(),
+	const contentProps = $derived({
+		class: klass,
+		preset,
+		base,
 		...restProps
 	});
 
+	// Register content snippet with props and children with tabs on mount
 	$effect(() => {
-		mounted = true;
+		if (tabBond && tabsBond && children) {
+			const id = tabBond.state.props.value;
+			tabsBond.state.registerTabContent(id, contentProps, children);
+
+			return () => {
+				tabsBond.state.unregisterTabContent(id);
+			};
+		}
 	});
 </script>
 
-<HtmlAtom
-	preset="tab.body"
-	class={[
-		'tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col',
-		'$preset',
-		klass
-	]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	{...bodyProps}
->
-	{@render children?.({ tab: bond })}
-</HtmlAtom>
+<!-- Content is teleported to Tabs.Content, so we don't render anything here -->

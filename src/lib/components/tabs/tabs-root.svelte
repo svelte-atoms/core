@@ -4,22 +4,17 @@
 >
 	import { TabsBond, TabsBondState, type TabsBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import type { TabsRootProps } from './types';
 
 	let {
 		class: klass = '',
 		value = $bindable(undefined),
-		factory = _factory,
 		children,
 		onchange,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		preset = 'tabs' as const,
 		...restProps
-	} = $props();
+	}: TabsRootProps<D, E, B> = $props();
 
 	const bondProps = defineState<TabsBondProps>([
 		defineProperty(
@@ -28,7 +23,13 @@
 			(v) => (value = v)
 		)
 	]);
-	const bond = factory(bondProps).share() as TabsBond<D>;
+
+	function _factory(props: typeof bondProps = bondProps) {
+		const tabsState = new TabsBondState(() => props);
+		return new TabsBond(tabsState);
+	}
+	
+	const bond = _factory(bondProps).share();
 
 	const rootProps = $derived({
 		...bond?.root(),
@@ -36,31 +37,19 @@
 	});
 
 	$effect(() => {
-		onchange?.({ tabs: bond, value });
+		onchange?.(value as D);
 	});
-
-	function _factory(props: typeof bondProps) {
-		const tabsState = new TabsBondState(() => props);
-
-		return new TabsBond(tabsState);
-	}
 
 	export function getBond() {
 		return bond;
 	}
 </script>
 
-<HtmlAtom
+<Atom
 	{bond}
 	preset="tabs"
-	class={['border-border flex w-full flex-1 flex-col gap-2', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
+	class={['border-border flex w-full flex-1 flex-col', '$preset', klass]}
 	{...rootProps}
 >
 	{@render children?.({ tabs: bond })}
-</HtmlAtom>
+</Atom>

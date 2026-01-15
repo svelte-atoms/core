@@ -21,8 +21,7 @@ export type TabBondElement = {
 	description: HTMLElement;
 };
 
-const TAB_ELEMENTS_KIND = {
-	root: 'tab-root',
+const TAB_ELEMENTS_KIND: Record<keyof TabBondElement, string> = {
 	header: 'tab-header',
 	body: 'tab-body',
 	description: 'tab-description'
@@ -35,7 +34,7 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 
 	constructor(state: TabBondState<T>) {
 		super(state);
-		this.#tabs = TabsBond.get();
+		this.#tabs = TabsBond.get() as TabsBond<T>;
 	}
 
 	get text() {
@@ -53,14 +52,7 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 		return TabBond.set<T>(this) as this;
 	}
 
-	root(props?: Record<string, unknown>) {
-		return {
-			'data-active': this.state.isActive,
-			'data-kind': 'tab-root'
-		};
-	}
-
-	header(props?: Record<string, unknown>) {
+	header() {
 		const id = getElementId(this.id, TAB_ELEMENTS_KIND.header);
 		const tabBodyId = getElementId(this.id, TAB_ELEMENTS_KIND.body);
 
@@ -72,7 +64,6 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 			'data-controler-id': this.#tabs?.id,
 			'data-active': this.state.isActive,
 			'data-kind': 'tab-header',
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.header = node;
 
@@ -89,7 +80,7 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 		};
 	}
 
-	body(props?: Record<string, unknown>) {
+	body() {
 		const id = getElementId(this.id, TAB_ELEMENTS_KIND.body);
 		const tabHeaderId = getElementId(this.id, TAB_ELEMENTS_KIND.header);
 		const descriptionId = getElementId(this.id, TAB_ELEMENTS_KIND.description);
@@ -104,20 +95,18 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 			'aria-controledby': tabHeaderId,
 			'data-active': isActive,
 			'data-kind': 'tab-body',
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.body = node;
 			}
 		};
 	}
 
-	description(props?: Record<string, unknown>) {
+	description() {
 		const id = getElementId(this.id, TAB_ELEMENTS_KIND.description);
 
 		return {
 			id,
 			'data-kind': 'tab-description',
-			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.description = node;
 			}
@@ -134,16 +123,21 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 }
 
 export class TabBondState<T> extends BondState<TabBondProps<T>> {
-	#tabsState?: TabsBondState<T>;
+	#tabsBond?: TabsBond<T>;
+	#tabsState?: TabsBondState<T> = $derived(this.#tabsBond?.state);
 
 	constructor(props: () => TabBondProps<T>) {
 		super(props);
 
-		this.#tabsState = TabsBond.get()?.state as TabsBondState<T>;
+		this.#tabsBond = TabsBond.get() as TabsBond<T>;
 	}
 
 	get isActive() {
 		return this.#tabsState?.props.value === this.props.value;
+	}
+
+	get isDisabled() {
+		return this.props.disabled ?? (this.#tabsBond?.elements?.header?.getAttribute?.('aria-disabled') === "true");
 	}
 
 	select() {

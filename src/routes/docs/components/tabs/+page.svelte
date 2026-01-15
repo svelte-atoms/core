@@ -17,8 +17,7 @@
 <\/script>
 
 <Tabs.Root bind:value={activeTab}>
-  <Tabs.Header />
-  <Tabs.Body>
+  <Tabs.Header>
     <Tab.Root value="tab1">
       <Tab.Header>Tab 1<\/Tab.Header>
       <Tab.Body>Content 1<\/Tab.Body>
@@ -27,6 +26,9 @@
       <Tab.Header>Tab 2<\/Tab.Header>
       <Tab.Body>Content 2<\/Tab.Body>
     <\/Tab.Root>
+  <\/Tabs.Header>
+  <Tabs.Body>
+    <Tabs.Content />
   <\/Tabs.Body>
 <\/Tabs.Root>`;
 
@@ -93,8 +95,7 @@ setPreset({
 		<div class="space-y-8">
 			<DemoExample title="Basic Tabs" description="Simple tab navigation" code={basicCode}>
 				<Tabs.Root bind:value={activeTab}>
-					<Tabs.Header />
-					<Tabs.Body>
+					<Tabs.Header>
 						<Tab.Root value="tab1">
 							<Tab.Header
 								class="border-b-2 px-4 py-2 {activeTab === 'tab1'
@@ -136,6 +137,9 @@ setPreset({
 								<p class="text-muted-foreground">This is the content for tab 3.</p>
 							</Tab.Body>
 						</Tab.Root>
+					</Tabs.Header>
+					<Tabs.Body>
+						<Tabs.Content />
 					</Tabs.Body>
 				</Tabs.Root>
 			</DemoExample>
@@ -144,8 +148,7 @@ setPreset({
 				title="Content Example"
 				description="Tabs with rich content"
 				code={`<Tabs.Root bind:value={exampleTab}>
-  <Tabs.Header />
-  <Tabs.Body>
+  <Tabs.Header>
     <Tab.Root value="overview">
       <Tab.Header>Overview<\/Tab.Header>
       <Tab.Body>Content<\/Tab.Body>
@@ -154,12 +157,14 @@ setPreset({
       <Tab.Header>Features<\/Tab.Header>
       <Tab.Body>More content<\/Tab.Body>
     <\/Tab.Root>
+  <\/Tabs.Header>
+  <Tabs.Body>
+    <Tabs.Content />
   <\/Tabs.Body>
 <\/Tabs.Root>`}
 			>
 				<Tabs.Root bind:value={exampleTab}>
-					<Tabs.Header />
-					<Tabs.Body>
+					<Tabs.Header>
 						<Tab.Root value="overview">
 							<Tab.Header
 								class="border-b-2 px-4 py-2 {exampleTab === 'overview'
@@ -207,6 +212,9 @@ setPreset({
 								<p class="text-muted-foreground text-sm">Choose the plan that's right for you.</p>
 							</Tab.Body>
 						</Tab.Root>
+					</Tabs.Header>
+					<Tabs.Body>
+						<Tabs.Content />
 					</Tabs.Body>
 				</Tabs.Root>
 			</DemoExample>

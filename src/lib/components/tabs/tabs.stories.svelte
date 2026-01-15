@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Tabs as Tabs_, Tab } from '.';
-	import { Root as TabsRoot } from './atoms';
+	import { animate } from 'motion';
+	import { Tabs as ATabs, Tab } from '.';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -18,39 +18,53 @@
 
 <script lang="ts">
 	let value = $state('ar');
+
+	const array = $state([
+		{
+			value: 'en',
+			label: "English",
+			description: "This content is teleported from Tab.Body to Tabs.Content component."
+		}, 
+		{
+			value: "ar",
+			label: "Arabic",
+			description:"هذا المحتوى يتم نقله من Tab.Body إلى مكون Tabs.Content."
+		},{
+			value: "fr",
+			label: "French",
+			description:"Ce contenu est téléporté de Tab.Body vers le composant Tabs.Content."
+		}
+	])
 </script>
 
 <Story name="Tabs" args={{}}>
-	<Tabs_.Root bind:value>
-		<Tabs_.Header class="border-b" />
-		<Tabs_.Body>
-			<Tab.Root value="en">
-				<Tab.Header>English</Tab.Header>
-				<Tab.Body class="">
-					<div>
-						Ligula ex tincidunt efficitur netus consequat aenean finibus. Dictum ex pretium torquent
-						vel scelerisque quisque class nisl penatibus blandit risus. Pretium praesent egestas
-						ante placerat lacus pede risus pulvinar facilisi.
-					</div>
-				</Tab.Body>
-			</Tab.Root>
-
-			<Tab.Root value="ar">
-				<Tab.Header>Arabic</Tab.Header>
-				<Tab.Body class="h-[1440px]">
-					<div>
-						Interdum turpis taciti mauris orci condimentum vitae malesuada ornare ridiculus ultrices
-						quisque feugiat pretium facilisis justo ligula pede volutpat nisi viverra adipiscing
-						donec torquent ac sapien aliquet parturient posuere leo litora vivamus luctus vestibulum
-						aptent faucibus platea libero dolor purus integer fusce nam senectus nibh nostra diam
-						tortor dictumst praesent tellus montes ad iaculis sociosqu mollis sodales consectetuer
-						hac accumsan dictum blandit conubia velit elit efficitur duis nascetur erat mattis
-						semper et aliquam magna lorem bibendum ante id cursus nulla eget ut pellentesque
-						himenaeos consectetur potenti si maximus ullamcorper etiam nec magnis ipsum mus porta
-						lobortis natoque rhoncus fringilla
-					</div>
-				</Tab.Body>
-			</Tab.Root>
-		</Tabs_.Body>
-	</Tabs_.Root>
+	<ATabs.Root bind:value>
+		<ATabs.Header class="border-b">
+			{#each array as item (item.value)}
+				<Tab.Root value={item.value}>
+					<Tab.Header>{item.label}</Tab.Header>
+					<Tab.Body class="p-4">
+						<h3 class="font-bold mb-2">{item.label} Content</h3>
+						<p>{item.description}</p>
+					</Tab.Body>
+				</Tab.Root>
+			{/each}
+		</ATabs.Header>
+				
+		<ATabs.Body>
+			<!-- Tab bodies are defined separately and teleported to Tabs.Content -->
+			<ATabs.Content 
+				enter={node=> {
+					const duration = 0.3;
+					animate(node, { opacity: [0, 1] }, { duration });
+					return { duration };
+				}}
+				exit={node=> {
+					const duration = 0.1;
+					animate(node, { opacity: [1, 0] }, { duration });
+					return { duration };
+				}}
+			/>
+		</ATabs.Body>
+	</ATabs.Root>
 </Story>

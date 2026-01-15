@@ -245,9 +245,9 @@
 	</div>
 
 	<!-- Main Grid -->
-	<div class="mb-16 grid gap-6 md:grid-cols-2">
+	<div class="mb-16 grid gap-0 md:grid-cols-2">
 		<!-- Svelte 5 Native -->
-		<Card.Root class="">
+		<Card.Root class="rounded-none">
 			<Card.Body class="p-6">
 				<div class="text-primary mb-4">
 					<svg
@@ -295,7 +295,7 @@
 		</Card.Root>
 
 		<!-- Bond Architecture -->
-		<Card.Root class="">
+		<Card.Root class="rounded-none">
 			<Card.Body class="p-6">
 				<div class="text-primary mb-4">
 					<svg
@@ -342,7 +342,7 @@
 		</Card.Root>
 
 		<!-- Accessibility First -->
-		<Card.Root class="">
+		<Card.Root class="rounded-none">
 			<Card.Body class="p-6">
 				<div class="text-primary mb-4">
 					<svg
@@ -388,7 +388,7 @@
 		</Card.Root>
 
 		<!-- Headless & Stylable -->
-		<Card.Root class="">
+		<Card.Root class="rounded-none">
 			<Card.Body class="p-6">
 				<div class="text-primary mb-4">
 					<svg
@@ -443,9 +443,9 @@
 			atoms.
 		</p>
 
-		<div class="grid gap-6 md:grid-cols-2">
+		<div class="grid gap-0 md:grid-cols-2">
 			<!-- Install -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="p-6">
 					<div class="text-primary mb-4">
 						<svg
@@ -508,7 +508,7 @@
 			</Card.Root>
 
 			<!-- Components -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col p-6">
 					<div class="text-primary mb-4">
 						<svg
@@ -554,7 +554,7 @@
 			</Card.Root>
 
 			<!-- Configuration -->
-			<Card.Root class="md:col-span-2">
+			<Card.Root class="md:col-span-2 rounded-none">
 				<Card.Body class="flex flex-col p-6">
 					<div class="text-primary mb-4">
 						<svg
@@ -624,9 +624,9 @@
 			Explore our most used components. Each one is fully customizable and accessible.
 		</p>
 
-		<div class="grid gap-6 md:grid-cols-3">
+		<div class="grid md:grid-cols-3">
 			<!-- Button Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Button</h3>
 					<div class="flex flex-wrap gap-2">
@@ -644,7 +644,7 @@
 			</Card.Root>
 
 			<!-- Input Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Input</h3>
 					<div class="space-y-3">
@@ -665,10 +665,10 @@
 			</Card.Root>
 
 			<!-- Card Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Card</h3>
-					<Card.Root class="border-border border">
+					<Card.Root class="border-border border rounded-none">
 						<Card.Header>
 							<Card.Title class="text-base">Card Title</Card.Title>
 						</Card.Header>
@@ -686,7 +686,7 @@
 			</Card.Root>
 
 			<!-- Badge Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Badge</h3>
 					<div class="flex flex-1 items-center">
@@ -706,7 +706,7 @@
 			</Card.Root>
 
 			<!-- Alert Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Alert</h3>
 					<div class="flex flex-1 items-center">
@@ -746,12 +746,11 @@
 			</Card.Root>
 
 			<!-- Tabs Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Tabs</h3>
 					<Tabs.Root bind:value={tabValue} onchange={() => {}} class="mb-4">
-						<Tabs.Header class="border-border border-b text-sm font-medium" />
-						<Tabs.Body>
+						<Tabs.Header class="border-border border-b text-sm font-medium">
 							<Tab.Root value="account">
 								<Tab.Header class="">Account</Tab.Header>
 								<Tab.Body class="mt-4">
@@ -764,6 +763,9 @@
 									<p class="text-muted-foreground text-sm">Configure your preferences</p>
 								</Tab.Body>
 							</Tab.Root>
+						</Tabs.Header>
+						<Tabs.Body>
+							<Tabs.Content />
 						</Tabs.Body>
 					</Tabs.Root>
 					<a
@@ -776,7 +778,7 @@
 			</Card.Root>
 
 			<!-- Dropdown Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Dropdown</h3>
 					<Dropdown.Root bind:open={dropdownOpen} keys={fruits} offset={2}>
@@ -809,7 +811,7 @@
 			</Card.Root>
 
 			<!-- Tooltip Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Tooltip</h3>
 					<Tooltip.Root bind:open={tooltipOpen} offset={1}>
@@ -831,7 +833,7 @@
 			</Card.Root>
 
 			<!-- Popover Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Popover</h3>
 					<Popover.Root bind:open={popoverOpen} offset={0}>
@@ -860,7 +862,7 @@
 			</Card.Root>
 
 			<!-- Dialog Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Dialog</h3>
 					<Dialog.Root bind:open={isDialogOpen}>
@@ -901,7 +903,7 @@
 			</Card.Root>
 
 			<!-- Drawer Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Drawer</h3>
 					<Drawer.Root bind:open={isDrawerOpen}>
@@ -961,7 +963,7 @@
 			</Card.Root>
 
 			<!-- Sidebar Example -->
-			<Card.Root class="">
+			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-col gap-4 p-6">
 					<h3 class=" text-lg font-semibold">Sidebar</h3>
 					<div class="bg-muted border-border h-32 overflow-hidden rounded-md border">
