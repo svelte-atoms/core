@@ -13,16 +13,6 @@ export interface StepRootProps<
 	index: number;
 
 	/**
-	 * Header content for the step
-	 */
-	header: string;
-
-	/**
-	 * Optional body content for the step
-	 */
-	body?: string;
-
-	/**
 	 * Whether this step is disabled
 	 * @default false
 	 */
@@ -39,12 +29,6 @@ export interface StepRootProps<
 	 * @default false
 	 */
 	optional?: boolean;
-
-	/**
-	 * Whether this step has an error
-	 * @default false
-	 */
-	error?: boolean;
 
 	/**
 	 * Custom factory for creating step bond
