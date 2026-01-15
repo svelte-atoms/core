@@ -59,7 +59,7 @@ export class StepperState extends BondState<StepperStateProps> {
 		super(props);
 	}
 
-	get activeSteps() {
+	get activeStep() {
 		return this.props.step;
 	}
 
