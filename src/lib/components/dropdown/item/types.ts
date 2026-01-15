@@ -2,8 +2,10 @@ import type { Snippet } from 'svelte';
 import type { MenuItemProps } from '$svelte-atoms/core/components/menu/item/types';
 import type { DropdownItemController } from './controller.svelte';
 
-export interface DropdownItemProps<T = unknown>
-	extends Omit<MenuItemProps, 'factory' | 'children' | 'preset'> {
+export interface DropdownItemProps<T = unknown> extends Omit<
+	MenuItemProps,
+	'factory' | 'children' | 'preset'
+> {
 	/**
 	 * Preset key for styling
 	 * @default 'dropdown.item'

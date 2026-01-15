@@ -1,0 +1,63 @@
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { StepBond } from './bond.svelte';
+	import type { StepIndicatorProps } from './types';
+	
+	const bond = StepBond.get();
+
+	if(!bond) {
+		throw new Error('StepIndicator must be used within a Step component');
+	}	
+
+	let {
+		class: klass = '',
+		preset = 'stepper.step.indicator',
+		children = undefined,
+		...restProps
+	}: StepIndicatorProps<E, B> = $props();
+
+
+	const indicatorProps = $derived({
+		...bond?.indicator(),
+		...restProps
+	});
+
+	const index = $derived(bond?.state?.props?.index ?? 0);
+</script>
+
+<Atom
+	{bond}
+	{preset}
+	class={[
+		'flex h-8 w-8 items-center justify-center border-border rounded-full border-2 transition-colors',
+		'transition-all',
+		bond?.state?.isActive
+		? 'bg-primary border-primary text-primary-foreground font-bold'
+			: bond?.state?.isCompleted
+				? 'bg-primary border-primary text-primary-foreground'
+				: 'border-border bg-background',
+		'$preset',
+		klass
+	]}
+	{...indicatorProps}
+>
+	{#if children}
+		{@render children?.({ step: bond })}	   
+	{:else if bond?.state?.isCompleted}
+		<svg
+			class="w-4 h-4"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M5 13l4 4L19 7"
+			/>
+		</svg>
+	{:else}
+		{index + 1}
+	{/if}	
+</Atom>

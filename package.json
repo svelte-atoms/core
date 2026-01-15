@@ -311,6 +311,26 @@
 			"svelte": "./dist/components/stack/atoms.js",
 			"default": "./dist/components/stack/atoms.js"
 		},
+		"./stepper": {
+			"types": "./dist/components/stepper/index.d.ts",
+			"svelte": "./dist/components/stepper/index.js",
+			"default": "./dist/components/stepper/index.js"
+		},
+		"./stepper/atoms": {
+			"types": "./dist/components/stepper/atoms.d.ts",
+			"svelte": "./dist/components/stepper/atoms.js",
+			"default": "./dist/components/stepper/atoms.js"
+		},
+		"./stepper/step": {
+			"types": "./dist/components/stepper/step/index.d.ts",
+			"svelte": "./dist/components/stepper/step/index.js",
+			"default": "./dist/components/stepper/step/index.js"
+		},
+		"./stepper/step/atoms": {
+			"types": "./dist/components/stepper/step/atoms.d.ts",
+			"svelte": "./dist/components/stepper/step/atoms.js",
+			"default": "./dist/components/stepper/step/atoms.js"
+		},
 		"./tabs": {
 			"types": "./dist/components/tabs/index.d.ts",
 			"svelte": "./dist/components/tabs/index.js",

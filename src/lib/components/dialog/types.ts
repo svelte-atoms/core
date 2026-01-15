@@ -52,8 +52,7 @@ export interface DialogDescriptionExtendProps {}
 export interface DialogCloseButtonExtendProps {}
 
 export interface DialogProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends Omit<HtmlAtomProps<E, B>, 'children'>,
-		DialogExtendProps {
+	extends Omit<HtmlAtomProps<E, B>, 'children'>, DialogExtendProps {
 	open?: boolean;
 	disabled?: boolean;
 	portal?: string | PortalBond;
@@ -64,41 +63,41 @@ export interface DialogProps<E extends keyof HTMLElementTagNameMap = 'div', B ex
 export interface DialogContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogContentExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogContentExtendProps {}
 
 export interface DialogHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogHeaderExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogHeaderExtendProps {}
 
 export interface DialogBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogBodyExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogBodyExtendProps {}
 
 export interface DialogFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogFooterExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogFooterExtendProps {}
 
 export interface DialogTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'h2',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogTitleExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogTitleExtendProps {}
 
 export interface DialogDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogDescriptionExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogDescriptionExtendProps {}
 
 export interface DialogCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>,
-		DialogCloseButtonExtendProps {}
+>
+	extends HtmlAtomProps<E, B>, DialogCloseButtonExtendProps {}

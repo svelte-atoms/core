@@ -28,8 +28,8 @@ export interface HtmlAtomProps<
 	E extends HtmlElementTagName = HtmlElementTagName,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	B extends Base<any> = Base
-> extends HtmlElementProps<E>,
-		HtmlAtomExtendProps {
+>
+	extends HtmlElementProps<E>, HtmlAtomExtendProps {
 	bond?: Bond;
 	base?: B | undefined;
 	preset?: PresetModuleName | (string & {});

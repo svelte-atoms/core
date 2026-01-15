@@ -7,8 +7,7 @@ import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 export interface DividerExtendProps {}
 
 export interface DividerProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B>,
-		DividerExtendProps {
+	extends HtmlAtomProps<E, B>, DividerExtendProps {
 	vertical?: boolean;
 	transparent?: boolean;
 }

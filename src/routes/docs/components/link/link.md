@@ -71,8 +71,8 @@ Style different link states:
 <Link
 	href="/page"
 	class="
-    text-blue-600 
-    visited:text-purple-600 
+    text-blue-600
+    visited:text-purple-600
     hover:text-blue-800
     focus:outline-blue-500
     active:text-blue-900

@@ -8,90 +8,85 @@ import type { TabBond } from './tab/bond.svelte';
  * Extend this interface to add custom tabs root properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabsRootExtendProps {}
+export interface TabsRootExtendProps { }
 
 /**
  * Extend this interface to add custom tab header properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabHeaderExtendProps {}
+export interface TabHeaderExtendProps { }
 
 /**
  * Extend this interface to add custom tab body properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabBodyExtendProps {}
+export interface TabBodyExtendProps { }
 
 /**
  * Extend this interface to add custom tab description properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabDescriptionExtendProps {}
+export interface TabDescriptionExtendProps { }
 
 /**
  * Extend this interface to add custom tabs content properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TabsContentExtendProps {}
+export interface TabsContentExtendProps { }
 
-export type TabsRootProps<
+export interface TabsRootProps<
 	D extends string = string,
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Omit<HtmlAtomProps<E, B>, 'children'> &
-	TabsRootExtendProps & {
-		value?: D;
-		factory?: Factory<TabsBond>;
-		children?: Snippet<[{ tabs: TabsBond }]>;
-		onchange?: (value: D) => void;
-	};
+> extends Omit<HtmlAtomProps<E, B>, 'children'>, TabsRootExtendProps {
+	value?: D;
+	factory?: Factory<TabsBond>;
+	children?: Snippet<[{ tabs: TabsBond }]>;
+	onchange?: (value: D) => void;
+}
 
-export type TabHeaderProps<
+export interface TabHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TabHeaderExtendProps & {
-		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
-		onpointerdown?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
-	};
+> extends HtmlAtomProps<E, B>, TabHeaderExtendProps {
+	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+	onpointerdown?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
+}
 
-export type TabBodyProps<
+export interface TabBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TabBodyExtendProps & {
-		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
-	};
+> extends HtmlAtomProps<E, B>, TabBodyExtendProps {
+	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+}
 
-export type TabDescriptionProps<
+export interface TabDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TabDescriptionExtendProps & {
-		children?: Snippet<[{ tab?: TabBond<unknown> }]>;
-	};
+> extends HtmlAtomProps<E, B>, TabDescriptionExtendProps {
+	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+}
 
-export type TabsHeaderProps<
+export interface TabsHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ tabs?: TabsBond }]>;
-	};
+> extends HtmlAtomProps<E, B> {
+	children?: Snippet<[{ tabs?: TabsBond }]>;
+}
 
-export type TabsBodyProps<
+export interface TabsBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> & {
-		children?: Snippet<[{ tabs?: TabsBond }]>;
-	};
+> extends HtmlAtomProps<E, B> {
+	children?: Snippet<[{ tabs?: TabsBond }]>;
+}
 
-export type TabsContentProps<
+export interface TabsContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TabsContentExtendProps & {
-		children?: Snippet<[{ tabs?: TabsBond }]>;
-	};
+> extends HtmlAtomProps<E, B> {
+	children?: Snippet<[{ tabs?: TabsBond }]>;
+}
 
 /**
  * @deprecated Use TabsRootExtendProps instead

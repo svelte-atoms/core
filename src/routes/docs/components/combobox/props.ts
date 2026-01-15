@@ -27,13 +27,13 @@ export const comboboxRootProps: PropDefinition[] = [
 	{
 		name: 'label',
 		type: 'string | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Label'
 	},
 	{
 		name: 'labels',
 		type: 'string[] | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Labels'
 	},
 	{
@@ -51,13 +51,13 @@ export const comboboxRootProps: PropDefinition[] = [
 	{
 		name: 'placements',
 		type: 'string[] | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Placements'
 	},
 	{
 		name: 'placement',
 		type: 'string | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Placement'
 	},
 	{
@@ -77,7 +77,7 @@ export const comboboxRootProps: PropDefinition[] = [
 		type: 'Snippet<[{ combobox: ComboboxBond; }]> | undefined',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const comboboxSelectionsProps: PropDefinition[] = [
@@ -90,7 +90,7 @@ export const comboboxSelectionsProps: PropDefinition[] = [
 	{
 		name: 'Selection',
 		type: 'Component<{}, {}, string> | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Custom component to render each selection'
 	},
 	{
@@ -104,7 +104,7 @@ export const comboboxSelectionsProps: PropDefinition[] = [
 		type: '(<T extends DropdownBond>(bond: T) => DropdownSelection[]) | undefined',
 		default: 'undefined',
 		description: 'Custom function to retrieve selections from the bond'
-	},
+	}
 ];
 
 export const comboboxSelectionProps: PropDefinition[] = [
@@ -125,7 +125,7 @@ export const comboboxSelectionProps: PropDefinition[] = [
 		type: '((event: Event) => void) | undefined',
 		default: 'undefined',
 		description: 'Callback fired when the selection is closed/removed'
-	},
+	}
 ];
 
 export const comboboxControlProps: PropDefinition[] = [
@@ -162,7 +162,7 @@ export const comboboxControlProps: PropDefinition[] = [
 	{
 		name: 'type',
 		type: 'HTMLInputTypeAttribute | null',
-		default: '\'text\'',
+		default: "'text'",
 		description: 'HTML input type attribute'
 	},
 	{
@@ -198,7 +198,7 @@ export const comboboxControlProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'PresetModuleName | string',
-		default: '\'input.control\'',
+		default: "'input.control'",
 		description: 'Preset module name for styling'
 	},
 	{
@@ -254,6 +254,5 @@ export const comboboxControlProps: PropDefinition[] = [
 		type: 'NodeFunction',
 		default: 'undefined',
 		description: 'Function called when element is destroyed'
-	},
+	}
 ];
-

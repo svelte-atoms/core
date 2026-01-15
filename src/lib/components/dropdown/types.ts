@@ -10,13 +10,13 @@ import type { DropdownItemController } from './item';
  * Extend this interface to add custom dropdown properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DropdownExtendProps { }
+export interface DropdownExtendProps {}
 
 /**
  * Extend this interface to add custom dropdown trigger properties in your application.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DropdownTriggerExtendProps { }
+export interface DropdownTriggerExtendProps {}
 
 export interface DropdownRootProps<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,27 +42,29 @@ export interface DropdownRootProps<
 export interface DropdownTriggerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<
-	PopoverTriggerProps<E, B>,
-	{ children?: Snippet<[{ dropdown?: DropdownBond }]> }
->,
-	DropdownTriggerExtendProps { }
-
+>
+	extends
+		Override<PopoverTriggerProps<E, B>, { children?: Snippet<[{ dropdown?: DropdownBond }]> }>,
+		DropdownTriggerExtendProps {}
 
 export interface DropdownSelectionsProps {
 	class?: ClassValue;
 	Selection?: Component | undefined;
-	children?: Snippet<[{
-		selections: DropdownSelection[];
-		selection?: DropdownSelection | undefined;
-	}]>;
+	children?: Snippet<
+		[
+			{
+				selections: DropdownSelection[];
+				selection?: DropdownSelection | undefined;
+			}
+		]
+	>;
 	getSelections?: <T extends DropdownBond>(bond: T) => DropdownSelection[];
 }
 
 export interface DropdownSelectionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
-	B extends Base = Base,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	B extends Base = Base
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 > extends HtmlAtomProps<E, B> {
 	selection: DropdownSelection;
 	children?: Snippet;
@@ -76,7 +78,7 @@ export interface DropdownQueryProps extends HtmlAtomProps<'input'> {
 
 export interface DropdownSelection {
 	readonly id: string;
-	readonly value?: string
+	readonly value?: string;
 	readonly label: string;
 	readonly createdAt: Date;
 	unselect: () => void;

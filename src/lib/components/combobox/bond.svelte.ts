@@ -1,6 +1,4 @@
-import {
-	type PopoverDomElements,
-} from '$svelte-atoms/core/components/popover/bond.svelte';
+import { type PopoverDomElements } from '$svelte-atoms/core/components/popover/bond.svelte';
 import {
 	DropdownBond,
 	DropdownBondState,
@@ -11,8 +9,7 @@ import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
 
-export type ComboboxBondProps = DropdownStateProps & {
-};
+export type ComboboxBondProps = DropdownStateProps & {};
 
 export type ComboboxBondElements = PopoverDomElements & {
 	input: HTMLInputElement;
@@ -57,7 +54,6 @@ export class ComboboxBond extends DropdownBond<
 						this.state.addSelection(value);
 					}
 				}
-
 			},
 			[createAttachmentKey()]: (node: HTMLInputElement) => {
 				this.elements.input = node;
@@ -85,9 +81,14 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		const id = nanoid();
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const createdAt = new Date();
-		this.#userSelections.set(id, { id, label, createdAt, unselect: () => this.deleteSelection(id) });
+		this.#userSelections.set(id, {
+			id,
+			label,
+			createdAt,
+			unselect: () => this.deleteSelection(id)
+		});
 
-		this.updateLabels()
+		this.updateLabels();
 	}
 
 	deleteSelection(id: string) {
@@ -105,10 +106,12 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 			label: controller.label,
 			createdAt: controller.createdAt, // default date for items from the list
 			controller,
-			unselect: () => this.unselect([controller.id]),
+			unselect: () => this.unselect([controller.id])
 		}));
 
-		return [...itemSelections, ...this.userSelections].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+		return [...itemSelections, ...this.userSelections].sort(
+			(a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+		);
 	}
 
 	protected updateLabels(): void {
