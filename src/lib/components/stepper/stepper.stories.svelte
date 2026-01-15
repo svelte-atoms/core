@@ -60,16 +60,6 @@
 	}
 </script>
 
-{#snippet header()}
-	<div>
-		<h1 class="text-3xl font-bold mb-2">Stepper Component</h1>
-		<p class="text-muted-foreground">
-			A stepper component built following @svelte-atoms/core approach with bond pattern and preset
-			support.
-		</p>
-	</div>
-{/snippet}
-
 <Story name="Horizontal" args={{}}>
 	<Stepper.Root bind:step= {activeStepIndex} linear={true}>
 		{#snippet children({ stepper })}
@@ -128,7 +118,7 @@
 						enter={(node)=> {
 							const duration = 0.4;
 							animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
-							return{duration: duration * 1000};
+							return { duration: duration * 1000 };
 						}}
 						exit={(node)=> {
 							const duration = 0.3;
@@ -185,14 +175,14 @@
 											</div>
 											<div class="flex flex-col">
 												<Step.Title>
-													{step?.state?.props?.header}
-													{#if step?.state?.props?.optional}
+													{stepData.header}
+													{#if stepData.optional}
 														<span class="text-xs">(Optional)</span>
 													{/if}
 												</Step.Title>
 	
 												<Step.Description>
-													{step?.state?.props?.body}
+													{stepData}
 												</Step.Description>
 											</div>
 										</div>
@@ -203,9 +193,8 @@
 									<Step.Body  
 										enter={(node)=> {
 											const duration = 0.4;
-											console.log('entering | step ', i);
 											animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
-											return{duration: duration * 1000};
+											return { duration: duration * 1000 };
 										}}
 										exit={(node)=> {
 											const duration = 0.2;
