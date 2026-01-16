@@ -3,12 +3,14 @@
 	import { StepBond } from './bond.svelte';
 	import { StepperBond } from '../bond.svelte';
 	import type { StepContentProps } from './types';
+	import { Stack } from '../../stack';
 
 	const stepBond = StepBond.get();
 	const stepperBond = StepperBond.get();
 
 	let {
 		class: klass = '',
+		base=Stack.Item,
 		children = undefined,
 		preset = 'stepper.step.content' as const,
 		...restProps
@@ -17,6 +19,7 @@
 	const contentProps = $derived({
 		class: klass,
 		preset,
+		base,
 		...restProps
 	});
 
