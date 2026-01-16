@@ -1,6 +1,6 @@
 {
 	"name": "@svelte-atoms/core",
-	"version": "1.0.0-alpha.33",
+	"version": "1.0.0-alpha.34",
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
@@ -401,7 +401,7 @@
 		}
 	},
 	"peerDependencies": {
-		"svelte": "^5.40.0"
+		"svelte": "^5.46.4"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^4.1.1",
@@ -415,7 +415,7 @@
 		"@storybook/sveltekit": "^9.1.3",
 		"@sveltejs/adapter-auto": "^6.0.0",
 		"@sveltejs/adapter-netlify": "^5.2.4",
-		"@sveltejs/kit": "^2.22.0",
+		"@sveltejs/kit": "^2.49.5",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^6.0.0",
 		"@tailwindcss/vite": "^4.0.0",
@@ -430,15 +430,16 @@
 		"mdsvex": "^0.12.3",
 		"playwright": "^1.53.0",
 		"prettier": "^3.4.2",
-		"prettier-plugin-svelte": "^3.3.3",
+		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"publint": "^0.3.2",
 		"shiki": "^3.9.2",
 		"storybook": "^9.1.3",
-		"svelte": "^5.40.0",
+		"svelte": "^5.46.4",
 		"svelte-check": "^4.0.0",
 		"svelte-render-scan": "^1.1.0",
 		"tailwindcss": "^4.0.0",
+		"ts-morph": "^24.0.0",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
 		"vite": "^7.0.4",
@@ -476,11 +477,12 @@
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.7.0",
-		"@modelcontextprotocol/sdk": "^1.24.3",
+		"@modelcontextprotocol/sdk": "^1.25.2",
 		"@qrcode-js/browser": "^1.2.0",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
+		"mcp-handler": "^1.0.6",
 		"motion": "^12.23.22",
 		"nanoid": "^5.1.5",
 		"tailwind-merge": "^3.2.0"
