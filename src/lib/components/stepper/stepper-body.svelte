@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { Stack } from '../stack';
 	import { StepperBond } from './bond.svelte';
 	import type { StepperBodyProps } from './types';
 
@@ -7,6 +8,7 @@
 
 	let {
 		class: klass = '',
+		base=Stack.Root,
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
@@ -26,6 +28,7 @@
 <HtmlAtom
 	{preset}
 	{bond}
+	{base}
 	class={['stepper-body w-full', '$preset', klass]}
 	onmount={onmount?.bind(bond?.state)}
 	ondestroy={ondestroy?.bind(bond?.state)}
