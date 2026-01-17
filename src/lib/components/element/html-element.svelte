@@ -22,8 +22,7 @@
 	}: HtmlElementProps<T> & Omit<HTMLAttributes<Element>, keyof HtmlElementProps<T>> = $props();
 
 	let node = $state<Element>();
-
-	let skipFirstAnimate = $state(!!enter);
+	let skipFirstAnimate = $state(!!untrack(() => enter));
 
 	$effect(() => {
 		if (!node) return;
