@@ -11,6 +11,7 @@
 
 	let {
 		class: klass = '',
+		as="g",
 		global = true,
 		initial = undefined,
 		enter = undefined,
