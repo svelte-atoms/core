@@ -3,6 +3,7 @@
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
 	import { HtmlAtom } from '../atom';
+	import './calendar-day.css';
 
 	const calendarBond = CalendarBond.get();
 
@@ -90,12 +91,3 @@
 		<span class="value">{day.dayOfMonth}</span>
 	{/if}
 </HtmlAtom>
-
-<style>
-	:global(.calendar-day):nth-child(7n + 1) {
-		border-left: none;
-	}
-	:global(.calendar-day):nth-last-child(-n + 7) {
-		border-bottom: none;
-	}
-</style>

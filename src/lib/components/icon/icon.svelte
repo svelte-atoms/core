@@ -7,6 +7,7 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import type { IconProps } from './types';
+	import './icon.css';
 
 	type Element = HtmlElementType<'div'>;
 
@@ -35,10 +36,3 @@
 		{@render children?.()}
 	{/if}
 </HtmlAtom>
-
-<style>
-	:global(.icon > *) {
-		width: 100%;
-		height: 100%;
-	}
-</style>
