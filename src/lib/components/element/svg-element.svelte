@@ -11,7 +11,6 @@
 
 	let {
 		class: klass = '',
-		as = 'div' as T,
 		global = true,
 		initial = undefined,
 		enter = undefined,
@@ -19,12 +18,14 @@
 		animate = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
+		onintroend = undefined,
 		children = undefined,
 		...restProps
 	}: SvgElementProps<T> & Omit<SVGAttributes<Element>, keyof SvgElementProps<T>> = $props();
 
 	let node = $state<Element>();
-	let skipFirstAnimate = $state(!!untrack(() => enter));
+	// If enter animation is defined, we want to wait for it first beafore running animate
+	let hasEntered = $state(!(untrack(() => enter) ?? false));
 
 	$effect(() => {
 		if (!node) return;
@@ -38,17 +39,10 @@
 	});
 
 	$effect(() => {
-		const fn = animate;
-
+		if(!hasEntered) return;
 		if (!node) return;
-		const shouldSkip = untrack(() => skipFirstAnimate);
 
-		if (shouldSkip) {
-			skipFirstAnimate = false;
-			return;
-		}
-
-		fn?.(node);
+		animate?.(node);
 	});
 
 	const elementProps = $derived({
@@ -56,6 +50,12 @@
 			node = n;
 		},
 		class: cn(toClassValue(klass)),
+		onintroend: (ev: TransitionEvent) => {
+			onintroend?.(ev);
+			if (ev.defaultPrevented) return;
+
+			hasEntered = true;
+		},
 		...restProps
 	});
 

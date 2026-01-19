@@ -32,5 +32,5 @@ export function focus(element: Element | null) {
 		'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 	);
 
-	((firstFocusable || element) as HTMLElement)?.focus();
+	((firstFocusable || element) as HTMLElement)?.focus({ preventScroll: true });
 }

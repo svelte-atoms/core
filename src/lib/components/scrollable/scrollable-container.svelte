@@ -7,6 +7,8 @@
 	import { ScrollableBond } from './bond.svelte';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import './scrollable-container.css';
+
 	let {
 		class: klass = '',
 		children = undefined,
@@ -57,26 +59,3 @@
 		{@render children()}
 	{/if}
 </HtmlAtom>
-
-<style>
-	:global(.scrollable-container) {
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* Internet Explorer 10+ */
-	}
-
-	:global(.scrollable-container::-webkit-scrollbar) {
-		display: none; /* WebKit */
-	}
-
-	:global(.scrollable-container[data-hide-scrollbar='true']) {
-		--scrollbar-width: 0px;
-	}
-
-	:global(.scrollable-container[data-hide-scrollbar='false']) {
-		--scrollbar-width: 16px;
-		/* margin-right: calc(-1 * var(--scrollbar-width, 16px));
-		margin-bottom: calc(-1 * var(--scrollbar-width, 16px));
-		padding-right: var(--scrollbar-width, 16px);
-		padding-bottom: var(--scrollbar-width, 16px); */
-	}
-</style>
