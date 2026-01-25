@@ -11,6 +11,7 @@ export type AccordionStateProps = BondStateProps & {
 	multiple?: boolean;
 	collapsible?: boolean;
 	disabled: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type AccordionElements = {

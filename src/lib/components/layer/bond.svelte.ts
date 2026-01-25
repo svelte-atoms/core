@@ -7,7 +7,9 @@ import {
 	type BondStateProps
 } from '$svelte-atoms/core/shared/bond.svelte.js';
 
-export type LayerBondProps = BondStateProps & {};
+export type LayerBondProps = BondStateProps & {
+	readonly rest?: Record<string, unknown>;
+};
 
 export type LayerBondElements = BondElements & {
 	root?: HTMLElement;

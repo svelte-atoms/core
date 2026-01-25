@@ -30,7 +30,8 @@
 				(v) => {
 					disabled = v;
 				}
-			)
+			),
+			defineProperty('rest', () => restProps)
 		],
 		() => ({})
 	);

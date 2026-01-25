@@ -7,6 +7,7 @@ import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 export type TreeBondProps = BondStateProps & {
 	open: boolean;
 	disabled: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type TreeBondElements = {

@@ -8,7 +8,7 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 
 	type Element = ElementType<E>;
 
@@ -31,7 +31,7 @@
 		throw new Error('Root atom is not found');
 	}
 
-	const bondProps = defineState([], () => ({}));
+	const bondProps = defineState([defineProperty('rest', () => restProps)], () => ({}));
 
 	const bond = factory().share();
 

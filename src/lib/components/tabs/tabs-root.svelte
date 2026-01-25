@@ -21,7 +21,8 @@
 			'value',
 			() => value,
 			(v) => (value = v)
-		)
+		),
+		defineProperty('rest', () => restProps)
 	]);
 
 	function _factory(props: typeof bondProps = bondProps) {

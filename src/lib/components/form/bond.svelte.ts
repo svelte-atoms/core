@@ -7,6 +7,7 @@ export type FormProps<Extension extends Record<string, unknown> = Record<string,
 	BondStateProps & {
 		renderless?: boolean;
 		extend: Extension;
+		readonly rest?: Record<string, unknown>;
 	};
 
 export type FormElements = {

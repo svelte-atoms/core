@@ -22,7 +22,7 @@
 	}: AlertRootProps<E, B> = $props();
 
 	const bondProps = defineState<AlertBondProps>(
-		[defineProperty('disabled', () => disabled)],
+		[defineProperty('disabled', () => disabled), defineProperty('rest', () => restProps)],
 		() => ({ disabled, extend })
 	);
 	const bond = factory(bondProps).share();

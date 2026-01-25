@@ -30,7 +30,8 @@
 		),
 		defineProperty('data', () => data),
 		defineProperty('disabled', () => disabled),
-		defineProperty('value', () => value)
+		defineProperty('value', () => value),
+		defineProperty('rest', () => restProps)
 	]);
 
 	const bond = _factory(bondProps).share();

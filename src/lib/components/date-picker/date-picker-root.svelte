@@ -77,7 +77,8 @@
 				() => max,
 				(v: Date | undefined) => (max = v)
 			),
-			defineProperty('type', () => type ?? 'single')
+			defineProperty('type', () => type ?? 'single'),
+			defineProperty('rest', () => restProps)
 		],
 		() => seed
 	);

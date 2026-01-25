@@ -38,7 +38,9 @@
 			(v) => {
 				files = [...v];
 			}
-		)
+		),
+
+		defineProperty('rest', () => restProps)
 	]);
 	const bond = _factory(bondProps).share();
 

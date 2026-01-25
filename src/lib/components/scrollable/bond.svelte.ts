@@ -25,6 +25,8 @@ export type ScrollableStateProps = BondStateProps & {
 	open: boolean;
 	/** Indicates if the user is currently scrolling */
 	isScrolling?: boolean;
+	/** Rest props passed to the component */
+	readonly rest?: Record<string, unknown>;
 };
 
 /**

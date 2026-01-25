@@ -32,7 +32,7 @@
 			),
 			defineProperty(
 				'values',
-				() => (multiple ? values : [value].filter(Boolean)),
+				() => (multiple ? values : [value].filter(Boolean) as T[]),
 				(v) => {
 					values = v;
 					value = v[0];
@@ -53,7 +53,8 @@
 			defineProperty('placement', () => placement),
 			defineProperty('offset', () => offset),
 			defineProperty('placements', () => placements ?? []),
-			defineProperty('keys', () => keys ?? [])
+			defineProperty('keys', () => keys ?? []),
+			defineProperty('rest', () => restProps)
 		],
 		() => ({})
 	);
