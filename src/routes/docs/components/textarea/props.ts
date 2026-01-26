@@ -95,79 +95,79 @@ export const textareaRootProps: PropDefinition[] = [
 export const textareaInputProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'string',
+		type: 'string | undefined',
 		default: "''",
 		description: 'Value'
 	},
 	{
 		name: 'placeholder',
-		type: 'string',
+		type: 'string | undefined',
 		default: "''",
 		description: 'Placeholder'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'readonly',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Readonly'
 	},
 	{
 		name: 'rows',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Rows'
 	},
 	{
 		name: 'cols',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Cols'
 	},
 	{
 		name: 'maxlength',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Maxlength'
 	},
 	{
 		name: 'minlength',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Minlength'
 	},
 	{
 		name: 'required',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Required'
 	},
 	{
 		name: 'autofocus',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Autofocus'
 	},
 	{
 		name: 'autocomplete',
-		type: 'string',
+		type: 'string | undefined',
 		default: "''",
 		description: 'Autocomplete'
 	},
 	{
 		name: 'spellcheck',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Spellcheck'
 	},
 	{
 		name: 'wrap',
-		type: "'soft' | 'hard' | 'off'",
+		type: '"soft" | "hard" | "off" | undefined',
 		default: 'undefined',
 		description: 'Wrap'
 	}

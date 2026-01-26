@@ -125,7 +125,26 @@ export const dropdownRootProps: PropDefinition[] = [
 	}
 ];
 
-export const dropdownTriggerProps: PropDefinition[] = [];
+export const dropdownTriggerProps: PropDefinition[] = [
+	{
+		name: 'class',
+		type: 'ClassValue | undefined',
+		default: 'undefined',
+		description: 'Class'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ selections: DropdownSelection[]; selection?: DropdownSelection | undefined; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	},
+	{
+		name: 'getSelections',
+		type: '(<T extends DropdownBond>(bond: T) => DropdownSelection[]) | undefined',
+		default: 'undefined',
+		description: 'Get Selections'
+	}
+];
 
 export const dropdownSelectionsProps: PropDefinition[] = [
 	{

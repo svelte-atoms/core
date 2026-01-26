@@ -91,7 +91,7 @@ export const comboboxSelectionsProps: PropDefinition[] = [
 		name: 'Selection',
 		type: 'Component<{}, {}, string> | undefined',
 		default: "''",
-		description: 'Custom component to render each selection'
+		description: 'Selection'
 	},
 	{
 		name: 'children',

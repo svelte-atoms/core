@@ -8,50 +8,86 @@ export interface PropDefinition {
 export const tabsRootProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'string',
-		default: "''",
+		type: 'D | undefined',
+		default: 'undefined',
 		description: 'Active tab value'
 	},
 	{
-		name: 'class',
-		type: 'string',
-		default: "''",
-		description: 'Additional CSS classes'
+		name: 'factory',
+		type: 'Factory<TabsBond<unknown>> | undefined',
+		default: 'undefined',
+		description: 'Factory'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ tabs: TabsBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	},
+	{
+		name: 'onchange',
+		type: '((value: D) => void) | undefined',
+		default: 'undefined',
+		description: 'Onchange'
 	}
 ];
 
-export const tabProps: PropDefinition[] = [
+export const tabHeaderProps: PropDefinition[] = [
 	{
-		name: 'value',
-		type: 'string',
-		default: "''",
-		description: 'Tab identifier'
+		name: 'children',
+		type: 'Snippet<[{ tab?: TabBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
 	},
 	{
-		name: 'disabled',
-		type: 'boolean',
-		default: 'false',
-		description: 'Disable tab'
-	},
+		name: 'onpointerdown',
+		type: '((ev: PointerEvent, context: { tab?: TabBond<unknown>; }) => void) | undefined',
+		default: 'undefined',
+		description: 'Onpointerdown'
+	}
+];
+
+export const tabBodyProps: PropDefinition[] = [
 	{
-		name: 'class',
-		type: 'string',
-		default: "''",
-		description: 'Additional CSS classes'
+		name: 'children',
+		type: 'Snippet<[{ tab?: TabBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	}
+];
+
+export const tabDescriptionProps: PropDefinition[] = [
+	{
+		name: 'children',
+		type: 'Snippet<[{ tab?: TabBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	}
+];
+
+export const tabsHeaderProps: PropDefinition[] = [
+	{
+		name: 'children',
+		type: 'Snippet<[{ tabs?: TabsBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
 	}
 ];
 
 export const tabsBodyProps: PropDefinition[] = [
 	{
-		name: 'value',
-		type: 'string',
-		default: "''",
-		description: 'Content identifier matching Tab value'
-	},
+		name: 'children',
+		type: 'Snippet<[{ tabs?: TabsBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	}
+];
+
+export const tabsContentProps: PropDefinition[] = [
 	{
-		name: 'class',
-		type: 'string',
-		default: "''",
-		description: 'Additional CSS classes'
+		name: 'children',
+		type: 'Snippet<[{ tabs?: TabsBond<unknown>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
 	}
 ];

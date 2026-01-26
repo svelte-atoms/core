@@ -8,27 +8,33 @@ export interface PropDefinition {
 export const dialogProps: PropDefinition[] = [
 	{
 		name: 'open',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Open'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'portal',
-		type: 'string | PortalBond',
+		type: 'string | PortalBond | undefined',
 		default: "''",
 		description: 'Portal'
 	},
 	{
 		name: 'factory',
-		type: '(props: DialogBondProps) => DialogBond',
+		type: '((props: DialogBondProps) => DialogBond<DialogBondState<DialogBondProps>>) | undefined',
 		default: 'undefined',
 		description: 'Factory'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ dialog: DialogBond<DialogBondState<DialogBondProps>>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
 	}
 ];
 

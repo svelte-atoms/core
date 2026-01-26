@@ -14,99 +14,69 @@ export const menuItemProps: PropDefinition[] = [
 	},
 	{
 		name: 'preset',
-		type: 'string',
+		type: 'string | undefined',
 		default: "'menu.item'",
 		description: 'Preset key for styling'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether the menu item is disabled'
 	},
 	{
 		name: 'onclick',
-		type: '(event: MouseEvent) => void',
+		type: '((event: MouseEvent) => void) | undefined',
 		default: 'undefined',
 		description: 'Click event handler'
 	},
 	{
 		name: 'onmount',
-		type: '(this: MenuItemController) => void',
+		type: '((this: MenuItemController) => void) | undefined',
 		default: 'undefined',
 		description: 'Function called when element is mounted'
 	},
 	{
 		name: 'ondestroy',
-		type: '(this: MenuItemController) => void',
+		type: '((this: MenuItemController) => void) | undefined',
 		default: 'undefined',
 		description: 'Function called when element is destroyed'
 	},
 	{
 		name: 'animate',
-		type: '(this: MenuItemController) => any',
+		type: '((this: MenuItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Animation configuration'
 	},
 	{
 		name: 'enter',
-		type: '(this: MenuItemController) => any',
+		type: '((this: MenuItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Transition function for entering'
 	},
 	{
 		name: 'exit',
-		type: '(this: MenuItemController) => any',
+		type: '((this: MenuItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Transition function for exiting'
 	},
 	{
 		name: 'initial',
-		type: '(this: MenuItemController) => any',
+		type: '((this: MenuItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Initial state configuration'
 	},
 	{
 		name: 'factory',
-		type: '() => MenuItemController',
+		type: '(() => MenuItemController) | undefined',
 		default: 'undefined',
 		description: 'Factory function to create a custom MenuItemController instance'
 	},
 	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet<[{ menuItem: MenuItemController; }]> | undefined',
 		default: 'undefined',
-		description: 'Children content snippet'
+		description: 'Render prop for children'
 	}
 ];
 

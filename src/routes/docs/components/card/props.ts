@@ -8,15 +8,33 @@ export interface PropDefinition {
 export const cardRootProps: PropDefinition[] = [
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<CardBond>',
+		type: 'Factory<CardBond<CardBondState<CardBondProps>>> | undefined',
 		default: 'undefined',
 		description: 'Factory'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ card: CardBond<CardBondState<CardBondProps>>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	},
+	{
+		name: 'onclick',
+		type: '((event: MouseEvent) => void) | undefined',
+		default: 'undefined',
+		description: 'Onclick'
+	},
+	{
+		name: 'onkeydown',
+		type: '((event: KeyboardEvent) => void) | undefined',
+		default: 'undefined',
+		description: 'Onkeydown'
 	}
 ];
 
