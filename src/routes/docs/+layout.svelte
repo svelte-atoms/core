@@ -53,6 +53,7 @@
 				{ title: 'Scrollable', href: '/docs/components/scrollable' },
 				{ title: 'Sidebar', href: '/docs/components/sidebar' },
 				{ title: 'Stack', href: '/docs/components/stack' },
+				{ title: 'Stepper', href: '/docs/components/stepper' },
 				{ title: 'Tabs', href: '/docs/components/tabs' },
 				{ title: 'Textarea', href: '/docs/components/textarea' },
 				{ title: 'Toast', href: '/docs/components/toast' },
