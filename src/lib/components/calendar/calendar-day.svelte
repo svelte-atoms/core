@@ -60,14 +60,21 @@
 	{as}
 	{preset}
 	class={[
-		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground box-border aspect-square cursor-pointer border-b border-l p-1 transition-colors',
-		'data-[offmonth=true]:data-[disabled=false]:data-[selected=false]:text-muted-foreground/50 data-[offmonth=true]:data-[disabled=false]:data-[selected=false]:bg-muted/50',
-		'data-[weekend=true]:data-[selected=false]:bg-accent',
-		'data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground data-[selected=true]:hover:bg-primary data-[selected=true]:hover:text-primary-foreground',
-		'data-[selected=true]:data-[offmonth=true]:bg-primary/80 data-[selected=true]:data-[offmonth=true]:text-primary-foreground',
-		'data-[selected=true]:data-[weekend=true]:bg-primary data-[selected=true]:data-[weekend=true]:text-primary-foreground',
-		'data-[today=true]:data-[disabled=false]:data-[selected=false]:outline-primary data-[today=true]:data-[disabled=false]:data-[selected=false]:bg-primary/5 data-[today=true]:data-[disabled=false]:data-[selected=false]:outline-2 data-[today=true]:data-[disabled=false]:data-[selected=false]:font-semibold data-[today=true]:data-[disabled=false]:data-[selected=false]:z-1',
-		'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-25',
+		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l p-1 transition-colors',
+		'hover:bg-accent hover:text-accent-foreground',
+		// State modifiers
+		day.offmonth && 'text-muted-foreground/50 bg-muted/50',
+		day.weekend && 'text-primary',
+		day.today && 'outline-primary outline-2 font-semibold z-1',
+		// Selected state (overrides above)
+		isSelected && [
+			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+			day.offmonth && 'bg-primary/80',
+			day.weekend && 'bg-primary/90',
+			day.today && 'outline-0',
+		],
+		// Disabled state (applies opacity on top)
+		day.disabled && 'pointer-events-none opacity-25',
 		klass
 	]}
 	data-disabled={day.disabled}
