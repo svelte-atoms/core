@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { dividerProps } from './props';
 
 	const basicCode = `<Divider />`;
 
@@ -122,22 +123,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Divider Props</h3>
-				<Props
-					data={[
-						{
-							name: 'orientation',
-							type: "'horizontal' | 'vertical'",
-							default: "'horizontal'",
-							description: 'Divider orientation'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={dividerProps} />
 			</div>
 		</div>
 	</Section>

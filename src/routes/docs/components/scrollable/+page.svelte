@@ -11,6 +11,13 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import {
+		scrollableRootProps,
+		scrollableContainerProps,
+		scrollableContentProps,
+		scrollableTrackProps,
+		scrollableThumbProps
+	} from './props';
 
 	const basicCode = `<Scrollable height={200}>
   <div>Long content...</div>
@@ -135,34 +142,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Scrollable Props</h3>
-				<Props
-					data={[
-						{
-							name: 'direction',
-							type: "'vertical' | 'horizontal' | 'both'",
-							default: "'vertical'",
-							description: 'Scroll direction'
-						},
-						{
-							name: 'height',
-							type: 'number | string',
-							default: 'auto',
-							description: 'Container height'
-						},
-						{
-							name: 'width',
-							type: 'number | string',
-							default: 'auto',
-							description: 'Container width'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={scrollableRootProps} />
 			</div>
 		</div>
 	</Section>

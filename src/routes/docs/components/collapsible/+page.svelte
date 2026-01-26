@@ -12,6 +12,7 @@
 		CodeBlock
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
+	import { collapsibleRootProps } from './props';
 
 	const basicCode = `<script lang="ts">
   let open = $state(false);
@@ -150,28 +151,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Collapsible.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Control the open state'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable interaction'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={collapsibleRootProps} />
 			</div>
 		</div>
 	</Section>

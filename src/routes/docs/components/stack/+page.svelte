@@ -12,6 +12,7 @@
 		CodeBlock
 	} from '$docs/components';
 	import { Alert, Button, Card } from '$svelte-atoms/core';
+	import { stackProps } from './props';
 
 	const basicCode = `<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
   <Stack.Item>
@@ -202,22 +203,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Container that creates a grid area for layering child items.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'stack.root'",
-							description: 'Preset configuration key'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={stackProps} />
 			</div>
 
 			<div>

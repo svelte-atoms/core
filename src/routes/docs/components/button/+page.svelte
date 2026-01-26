@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { buttonProps } from './props';
 
 	const buttonCode = `<script lang="ts">
   import { Button } from '@svelte-atoms/core/button';
@@ -173,50 +174,7 @@ const preset = createPreset({
 			</p>
 		</div>
 		<Props
-			data={[
-				{
-					name: 'class',
-					type: 'string',
-					default: "''",
-					description: 'Additional CSS classes to apply'
-				},
-				{
-					name: 'children',
-					type: 'Snippet',
-					default: '-',
-					description: 'Content to render inside the button'
-				},
-				{
-					name: 'disabled',
-					type: 'boolean',
-					default: 'false',
-					description: 'Whether the button is disabled'
-				},
-				{
-					name: 'type',
-					type: "'button' | 'submit' | 'reset'",
-					default: "'button'",
-					description: 'Button type attribute'
-				},
-				{
-					name: 'onclick',
-					type: 'function',
-					default: '-',
-					description: 'Click event handler'
-				},
-				{
-					name: '...presetProps',
-					type: 'string',
-					default: '-',
-					description: 'Any other preset props (variant, size, etc.)'
-				},
-				{
-					name: '...props',
-					type: 'HTMLButtonAttributes',
-					default: '-',
-					description: 'Any other HTML button attributes (aria-*, data-*, etc.)'
-				}
-			]}
+			data={buttonProps}
 		/>
 	</Section>
 

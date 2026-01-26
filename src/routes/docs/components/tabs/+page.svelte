@@ -11,6 +11,15 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import {
+		tabsRootProps,
+		tabHeaderProps,
+		tabBodyProps,
+		tabDescriptionProps,
+		tabsHeaderProps,
+		tabsBodyProps,
+		tabsContentProps
+	} from './props';
 
 	const basicCode = `<script lang="ts">
   let activeTab = $state('tab1');
@@ -226,22 +235,7 @@ setPreset({
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Root</h3>
 				<p class="text-muted-foreground mb-4 text-sm">Container for the entire tabs component.</p>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Active tab value (bindable)'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tabsRootProps} />
 			</div>
 
 			<div>
@@ -249,16 +243,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Container for tab headers. All Tab.Header components are rendered here.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tabsHeaderProps} />
 			</div>
 
 			<div>
@@ -266,16 +251,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Container for Tab.Root components. Only the active tab's body is displayed.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tabsBodyProps} />
 			</div>
 
 			<div>
@@ -312,16 +288,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Clickable header for the tab, rendered in Tabs.Header.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tabHeaderProps} />
 			</div>
 
 			<div>
@@ -329,16 +296,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Content area for the tab, displayed when active.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tabBodyProps} />
 			</div>
 		</div>
 	</Section>

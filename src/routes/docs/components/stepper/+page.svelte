@@ -12,6 +12,20 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import {
+		stepperRootProps,
+		stepperHeaderProps,
+		stepperBodyProps,
+		stepperContentProps,
+		stepperFooterProps,
+		stepRootProps,
+		stepHeaderProps,
+		stepIndicatorProps,
+		stepTitleProps,
+		stepDescriptionProps,
+		stepSeparatorProps,
+		stepBodyProps
+	} from './props';
 
 	const basicCode = `<script lang="ts">
   import { Stepper, Step } from '@svelte-atoms/core/stepper';

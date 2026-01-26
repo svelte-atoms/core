@@ -12,6 +12,7 @@
 		CodeBlock
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
+	import { tooltipTriggerProps } from './props';
 
 	const basicCode = `<Tooltip.Root>
   <Tooltip.Trigger>
@@ -176,16 +177,7 @@ setPreset({
 				<p class="text-muted-foreground mb-4 text-sm">
 					Element that triggers the tooltip on hover.
 				</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={tooltipTriggerProps} />
 			</div>
 
 			<div>

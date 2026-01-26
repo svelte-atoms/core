@@ -12,6 +12,16 @@
 		CodeBlock
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
+	import {
+		slideoverRootProps,
+		slideoverContentProps,
+		slideoverHeaderProps,
+		drawerBodyProps,
+		slideoverFooterProps,
+		slideoverTitleProps,
+		slideoverDescriptionProps,
+		slideoverBackdropProps
+	} from './props';
 
 	const basicCode = `<script lang="ts">
   let open = $state(false);
@@ -163,34 +173,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Drawer.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Control open state'
-						},
-						{
-							name: 'side',
-							type: "'left' | 'right' | 'top' | 'bottom'",
-							default: "'right'",
-							description: 'Drawer position'
-						},
-						{
-							name: 'modal',
-							type: 'boolean',
-							default: 'true',
-							description: 'Show backdrop overlay'
-						},
-						{
-							name: 'closeOnEscape',
-							type: 'boolean',
-							default: 'true',
-							description: 'Close on Escape key'
-						}
-					]}
-				/>
+				<Props data={slideoverRootProps} />
 			</div>
 		</div>
 	</Section>

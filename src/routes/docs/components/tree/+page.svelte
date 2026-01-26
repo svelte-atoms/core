@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { treeRootProps, treeHeaderProps, treeBodyProps } from './props';
 
 	const basicCode = `<script lang="ts">
   import { Tree } from '@svelte-atoms/core/tree';
@@ -144,78 +145,15 @@ setPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Controls whether the tree is expanded (bindable)'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Whether the tree is disabled'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Tree content (Header and Body components)'
-						}
-					]}
-				/>
+				<Props data={treeRootProps} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Header Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Header content (clickable label)'
-						},
-						{
-							name: 'onpointerdown',
-							type: 'function',
-							default: '-',
-							description: 'Pointer down event handler'
-						}
-					]}
-				/>
+				<Props data={treeHeaderProps} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Body Props</h3>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						},
-						{
-							name: 'children',
-							type: 'Snippet',
-							default: '-',
-							description: 'Body content (nested trees or items)'
-						}
-					]}
-				/>
+				<Props data={treeBodyProps} />
 			</div>
 		</div>
 	</Section>
