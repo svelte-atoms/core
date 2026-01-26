@@ -23,8 +23,7 @@
 <HtmlAtom
 	{preset}
 	class={cn(
-		'calendar-week-day h-fit px-1 py-1 text-center text-sm font-medium border-border border-l first:border-l-0',
-		isWeekend ? 'text-primary' : '',
+		'calendar-week-day h-fit px-1 py-1 text-center text-sm font-medium border-border border-l first:border-l-0 data-[weekend=true]:text-primary',
 		klass
 	)}
 	data-weekend={isWeekend}
