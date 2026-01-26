@@ -177,8 +177,10 @@
 			defineProperty('type', () => type ?? 'single'),
 			defineProperty('nextMonth', () => monthNext),
 			defineProperty('currentMonth', () => monthCurrent),
-		defineProperty('previousMonth', () => monthPrevious),
-		defineProperty('rest', () => restProps)
+			defineProperty('previousMonth', () => monthPrevious),
+			defineProperty('rest', () => restProps)
+		]
+	);
 
 	const bond = factory(bondProps).share();
 
