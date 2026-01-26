@@ -28,6 +28,7 @@
 			children: [
 				{ title: 'Accordion', href: '/docs/components/accordion' },
 				{ title: 'Alert', href: '/docs/components/alert' },
+				{ title: 'Atom', href: '/docs/components/atom' },
 				{ title: 'Avatar', href: '/docs/components/avatar' },
 				{ title: 'Badge', href: '/docs/components/badge' },
 				{ title: 'Breadcrumb', href: '/docs/components/breadcrumb' },
