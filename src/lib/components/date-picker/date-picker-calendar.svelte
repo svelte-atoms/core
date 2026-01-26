@@ -38,7 +38,7 @@
 </script>
 
 <Content
-	class={['relative overflow-hidden p-0', klass]}
+	class={['relative overflow-hidden p-0 max-w-[96svw] md:max-w-xs', klass]}
 	base={Root}
 	onchange={handleChange}
 	{preset}
@@ -49,7 +49,7 @@
 
 	<HtmlAtom base={Body}>
 		{#snippet children({ day }: { day: CalendarDayType })}
-			<HtmlAtom base={Day} {day} class="flex items-center justify-center border-0">
+			<HtmlAtom base={Day} {day} class="flex items-center justify-center">
 				<span class="value">{day.dayOfMonth}</span>
 			</HtmlAtom>
 		{/snippet}
