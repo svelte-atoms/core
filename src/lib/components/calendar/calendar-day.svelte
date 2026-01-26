@@ -60,7 +60,7 @@
 	{as}
 	{preset}
 	class={[
-		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground h-12 cursor-pointer border-b border-l p-1 transition-colors',
+		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground box-border aspect-square cursor-pointer border-b border-l p-1 transition-colors',
 		day.offmonth && !day.disabled && 'text-muted-foreground/50 bg-muted/50',
 		day.weekend && 'bg-accent',
 		isSelected &&
@@ -69,7 +69,7 @@
 		day.today &&
 			!day.disabled &&
 			!isSelected &&
-			'border-primary bg-primary/5 border-2 font-semibold',
+			'outline-primary bg-primary/5 outline-2 font-semibold z-1',
 		day.disabled && 'pointer-events-none opacity-25',
 		klass
 	]}
