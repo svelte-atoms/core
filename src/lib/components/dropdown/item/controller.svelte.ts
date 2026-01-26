@@ -72,7 +72,7 @@ export class DropdownItemController<T = unknown> implements MenuItemControllerIn
 			| HTMLElement
 			| undefined
 			| null;
-		return element?.innerText ?? '';
+		return element?.innerText ?? this.props?.label ?? '';
 	}
 
 	get isHighlighted() {
