@@ -60,15 +60,15 @@
 	{as}
 	{preset}
 	class={[
-		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l p-1 transition-colors',
+		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l p-1',
 		'hover:bg-accent hover:text-accent-foreground',
 		// State modifiers
-		day.offmonth && 'text-muted-foreground/50 bg-muted/50',
 		day.weekend && 'text-primary',
 		day.today && 'outline-primary outline-2 font-semibold z-1',
+		day.offmonth && 'text-muted-foreground/50 bg-muted/50 hover:text-muted-foreground/70',
 		// Selected state (overrides above)
 		isSelected && [
-			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-colors duration-100',
 			day.offmonth && 'bg-primary/80',
 			day.weekend && 'bg-primary/90',
 			day.today && 'outline-0',
