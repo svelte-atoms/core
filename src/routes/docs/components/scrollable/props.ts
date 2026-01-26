@@ -59,25 +59,25 @@ export const scrollableRootProps: PropDefinition[] = [
 		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Open'
-	}
+	},
 ];
 
 export const scrollableContainerProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '\'horizontal\' | \'vertical\'',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableContentProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '\'horizontal\' | \'vertical\'',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableTrackProps: PropDefinition[] = [
@@ -86,7 +86,7 @@ export const scrollableTrackProps: PropDefinition[] = [
 		type: '"horizontal" | "vertical"',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableThumbProps: PropDefinition[] = [
@@ -95,5 +95,6 @@ export const scrollableThumbProps: PropDefinition[] = [
 		type: '"horizontal" | "vertical"',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
+

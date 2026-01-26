@@ -21,13 +21,13 @@ export const radioProps: PropDefinition[] = [
 	{
 		name: 'id',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'The id attribute of the radio input'
 	},
 	{
 		name: 'name',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'The name attribute of the radio input'
 	},
 	{
@@ -51,7 +51,7 @@ export const radioProps: PropDefinition[] = [
 	{
 		name: 'checkedContent',
 		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Custom content to display when the radio is checked'
 	},
 	{
@@ -71,7 +71,13 @@ export const radioProps: PropDefinition[] = [
 		type: '((ev: Event, options?: { checked: boolean; value: boolean; type: "boolean"; } | undefined) => void) | undefined',
 		default: 'false',
 		description: 'Input event handler'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
 export const radioGroupProps: PropDefinition[] = [
@@ -102,7 +108,7 @@ export const radioGroupProps: PropDefinition[] = [
 	{
 		name: 'name',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'The name attribute shared by all radio buttons in the group'
 	},
 	{
@@ -116,5 +122,12 @@ export const radioGroupProps: PropDefinition[] = [
 		type: '((ev: CustomEvent<any>, options?: { value: T; } | undefined) => void) | undefined',
 		default: 'undefined',
 		description: 'Input event handler triggered when the selected value changes'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
+

@@ -9,19 +9,19 @@ export const avatarProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
 		name: 'src',
 		type: 'string | Component<{}, {}, string> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Src'
 	},
 	{
 		name: 'alt',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Alt'
 	},
 	{
@@ -29,5 +29,6 @@ export const avatarProps: PropDefinition[] = [
 		type: 'HTMLElement | undefined',
 		default: 'undefined',
 		description: 'Element'
-	}
+	},
 ];
+

@@ -89,5 +89,6 @@ export const listRootProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

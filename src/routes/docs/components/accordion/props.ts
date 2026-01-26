@@ -9,7 +9,7 @@ export const accordionItemRootProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
@@ -29,7 +29,13 @@ export const accordionItemRootProps: PropDefinition[] = [
 		type: 'Factory<AccordionItemBond> | undefined',
 		default: 'undefined',
 		description: 'Factory'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
 export const accordionItemHeaderProps: PropDefinition[] = [
@@ -116,7 +122,7 @@ export const accordionItemHeaderProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const accordionItemBodyProps: PropDefinition[] = [
@@ -203,7 +209,7 @@ export const accordionItemBodyProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const accordionItemIndicatorProps: PropDefinition[] = [
@@ -290,20 +296,20 @@ export const accordionItemIndicatorProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const accordionRootProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'values',
 		type: 'string[] | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Values'
 	},
 	{
@@ -341,5 +347,6 @@ export const accordionRootProps: PropDefinition[] = [
 		type: 'Snippet<[{ accordion: AccordionBond; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
+

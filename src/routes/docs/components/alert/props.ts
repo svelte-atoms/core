@@ -27,7 +27,7 @@ export const alertRootProps: PropDefinition[] = [
 	{
 		name: 'extend',
 		type: 'Record<string, unknown> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Extend'
 	},
 	{
@@ -41,7 +41,13 @@ export const alertRootProps: PropDefinition[] = [
 		type: 'Snippet<[{ alert: AlertBond<AlertBondState<AlertBondProps>>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
 export const alertContentProps: PropDefinition[] = [
@@ -128,7 +134,7 @@ export const alertContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const alertTitleProps: PropDefinition[] = [
@@ -215,7 +221,7 @@ export const alertTitleProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const alertDescriptionProps: PropDefinition[] = [
@@ -302,7 +308,7 @@ export const alertDescriptionProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const alertIconProps: PropDefinition[] = [
@@ -389,7 +395,7 @@ export const alertIconProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const alertActionsProps: PropDefinition[] = [
@@ -476,7 +482,7 @@ export const alertActionsProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const alertCloseButtonProps: PropDefinition[] = [
@@ -563,5 +569,6 @@ export const alertCloseButtonProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

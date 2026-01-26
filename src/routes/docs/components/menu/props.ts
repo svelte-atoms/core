@@ -15,7 +15,7 @@ export const menuItemProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'string | undefined',
-		default: "'menu.item'",
+		default: '\'menu.item\'',
 		description: 'Preset key for styling'
 	},
 	{
@@ -77,7 +77,13 @@ export const menuItemProps: PropDefinition[] = [
 		type: 'Snippet<[{ menuItem: MenuItemController; }]> | undefined',
 		default: 'undefined',
 		description: 'Render prop for children'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
 export const menuListProps: PropDefinition[] = [
@@ -164,5 +170,6 @@ export const menuListProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

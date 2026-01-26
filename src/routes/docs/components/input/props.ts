@@ -9,7 +9,7 @@ export const inputRootProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | number | string[] | null | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
@@ -29,7 +29,15 @@ export const inputRootProps: PropDefinition[] = [
 		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
-export const inputControlProps: PropDefinition[] = [];
+export const inputControlProps: PropDefinition[] = [
+];
+

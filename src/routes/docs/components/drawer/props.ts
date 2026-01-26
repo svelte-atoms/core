@@ -21,21 +21,21 @@ export const slideoverRootProps: PropDefinition[] = [
 	{
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Portal'
 	},
 	{
 		name: 'onclose',
 		type: '((event: Event, bond: DrawerBond<DrawerBondProps<Record<string, unknown>>, DrawerBondState<DrawerBondProps<Record<string, unknown>>>>) => void) | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Onclose'
 	},
 	{
 		name: 'factory',
 		type: 'Factory<DrawerBond<DrawerBondProps<Record<string, unknown>>, DrawerBondState<DrawerBondProps<Record<string, unknown>>>>> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Factory'
-	}
+	},
 ];
 
 export const slideoverContentProps: PropDefinition[] = [
@@ -122,7 +122,7 @@ export const slideoverContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const slideoverHeaderProps: PropDefinition[] = [
@@ -209,16 +209,10 @@ export const slideoverHeaderProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
-export const drawerBodyProps: PropDefinition[] = [];
-
-export const slideoverFooterProps: PropDefinition[] = [];
-
-export const slideoverTitleProps: PropDefinition[] = [];
-
-export const slideoverDescriptionProps: PropDefinition[] = [
+export const drawerBodyProps: PropDefinition[] = [
 	{
 		name: 'bond',
 		type: 'Bond',
@@ -302,7 +296,16 @@ export const slideoverDescriptionProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
+];
+
+export const slideoverFooterProps: PropDefinition[] = [
+];
+
+export const slideoverTitleProps: PropDefinition[] = [
+];
+
+export const slideoverDescriptionProps: PropDefinition[] = [
 ];
 
 export const slideoverBackdropProps: PropDefinition[] = [
@@ -389,5 +392,6 @@ export const slideoverBackdropProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

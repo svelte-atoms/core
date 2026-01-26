@@ -23,9 +23,12 @@ export const toastRootProps: PropDefinition[] = [
 		type: '(() => void) | undefined',
 		default: 'undefined',
 		description: 'Onclose'
-	}
+	},
 ];
 
-export const toastTitleProps: PropDefinition[] = [];
+export const toastTitleProps: PropDefinition[] = [
+];
 
-export const toastDescriptionProps: PropDefinition[] = [];
+export const toastDescriptionProps: PropDefinition[] = [
+];
+

@@ -9,25 +9,25 @@ export const datagridRootProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
 		name: 'template',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Template'
 	},
 	{
 		name: 'fallbackTemplate',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Fallback Template'
 	},
 	{
 		name: 'values',
 		type: 'string[] | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Values'
 	},
 	{
@@ -41,14 +41,14 @@ export const datagridRootProps: PropDefinition[] = [
 		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const datagridHeaderProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
@@ -62,14 +62,14 @@ export const datagridHeaderProps: PropDefinition[] = [
 		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const datagridBodyProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
@@ -83,14 +83,14 @@ export const datagridBodyProps: PropDefinition[] = [
 		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const datagridFooterProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
@@ -104,26 +104,26 @@ export const datagridFooterProps: PropDefinition[] = [
 		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const datagridThProps: PropDefinition[] = [
 	{
 		name: 'id',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Id'
 	},
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
 		name: 'width',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Width'
 	},
 	{
@@ -135,7 +135,7 @@ export const datagridThProps: PropDefinition[] = [
 	{
 		name: 'screen',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Screen'
 	},
 	{
@@ -155,14 +155,14 @@ export const datagridThProps: PropDefinition[] = [
 		type: '(() => DataGridThBond<T>) | undefined',
 		default: 'undefined',
 		description: 'Factory'
-	}
+	},
 ];
 
 export const datagridTdProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
@@ -182,7 +182,7 @@ export const datagridTdProps: PropDefinition[] = [
 		type: '((ev: Event, options: { context?: DatagridContext<T>; }) => void) | undefined',
 		default: 'undefined',
 		description: 'Onclick'
-	}
+	},
 ];
 
 export const datagridCheckboxProps: PropDefinition[] = [
@@ -197,26 +197,26 @@ export const datagridCheckboxProps: PropDefinition[] = [
 		type: 'Snippet<[{ context: DatagridContext<unknown>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const datagridTrProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'rows',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Rows'
 	},
 	{
@@ -236,5 +236,6 @@ export const datagridTrProps: PropDefinition[] = [
 		type: '((ev: Event, options: { tr?: DatagridContext<T>; }) => void) | undefined',
 		default: 'undefined',
 		description: 'Onclick'
-	}
+	},
 ];
+

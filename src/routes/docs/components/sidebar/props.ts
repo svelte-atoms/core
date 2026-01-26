@@ -21,15 +21,21 @@ export const sidebarRootProps: PropDefinition[] = [
 	{
 		name: 'width',
 		type: 'string | number | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Width'
 	},
 	{
 		name: 'factory',
 		type: 'Factory<SidebarBond<SidebarBondProps<Record<string, unknown>>, SidebarBondState<SidebarBondProps<Record<string, unknown>>>>> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Factory'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
 
 export const sidebarContentProps: PropDefinition[] = [
@@ -116,5 +122,6 @@ export const sidebarContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

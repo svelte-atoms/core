@@ -9,13 +9,13 @@ export const checkboxProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'group',
 		type: 'string[] | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Group'
 	},
 	{
@@ -33,13 +33,13 @@ export const checkboxProps: PropDefinition[] = [
 	{
 		name: 'checkedContent',
 		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Checked Content'
 	},
 	{
 		name: 'indeterminateContent',
 		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Indeterminate Content'
 	},
 	{
@@ -59,5 +59,12 @@ export const checkboxProps: PropDefinition[] = [
 		type: '((ev?: Event | undefined, options?: { checked: boolean; } | undefined) => void) | undefined',
 		default: 'false',
 		description: 'Onchange'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
+

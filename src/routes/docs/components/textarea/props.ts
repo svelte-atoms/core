@@ -89,20 +89,20 @@ export const textareaRootProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const textareaInputProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'placeholder',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Placeholder'
 	},
 	{
@@ -156,7 +156,7 @@ export const textareaInputProps: PropDefinition[] = [
 	{
 		name: 'autocomplete',
 		type: 'string | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Autocomplete'
 	},
 	{
@@ -170,5 +170,6 @@ export const textareaInputProps: PropDefinition[] = [
 		type: '"soft" | "hard" | "off" | undefined',
 		default: 'undefined',
 		description: 'Wrap'
-	}
+	},
 ];
+

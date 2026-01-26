@@ -9,7 +9,7 @@ export const tooltipTriggerProps: PropDefinition[] = [
 	{
 		name: 'content',
 		type: 'string | Snippet<[]> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Content'
 	},
 	{
@@ -29,5 +29,6 @@ export const tooltipTriggerProps: PropDefinition[] = [
 		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
+

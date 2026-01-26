@@ -39,13 +39,13 @@ export const popoverRootProps: PropDefinition[] = [
 	{
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Portal'
 	},
 	{
 		name: 'extend',
 		type: 'Record<string, unknown> | undefined',
-		default: "''",
+		default: '\'\'',
 		description: 'Extend'
 	},
 	{
@@ -59,7 +59,7 @@ export const popoverRootProps: PropDefinition[] = [
 		type: 'Snippet<[{ popover: PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children'
-	}
+	},
 ];
 
 export const popoverContentProps: PropDefinition[] = [
@@ -146,7 +146,7 @@ export const popoverContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const popoverIndicatorProps: PropDefinition[] = [
@@ -233,7 +233,7 @@ export const popoverIndicatorProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const popoverArrowProps: PropDefinition[] = [
@@ -320,7 +320,7 @@ export const popoverArrowProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const popoverTriggerProps: PropDefinition[] = [
@@ -329,5 +329,12 @@ export const popoverTriggerProps: PropDefinition[] = [
 		type: 'Snippet<[{ popover?: PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>; }]> | undefined',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
 ];
+
