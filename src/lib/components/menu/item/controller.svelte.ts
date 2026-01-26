@@ -4,10 +4,24 @@ import { nanoid } from 'nanoid';
 import { MenuBond, MenuBondState, type MenuBondProps } from '../bond.svelte';
 
 export type MenuItemControllerProps = {
-	id?: string;
+	readonly id: string;
 };
 
-export class MenuItemController {
+export interface MenuItemControllerInterface<Props extends Record<string, unknown>> {
+	get id(): string;
+	get createdAt(): Date;
+	get props(): Props;
+	get element(): HTMLElement | null;
+	get isHighlighted(): boolean;
+
+	mount(): () => void;
+	unmount(): void;
+	destroy(): void;
+	share(): MenuItemControllerInterface<Props>;
+	elementProps(): Record<string, unknown>;
+}
+
+export class MenuItemController implements MenuItemControllerInterface<MenuItemControllerProps> {
 	static CONTEXT_KEY = '@atoms/context/menu/item';
 
 	#id: string;
@@ -15,12 +29,12 @@ export class MenuItemController {
 	#element: HTMLElement | null = null;
 	#menu: MenuBond<MenuBondProps, MenuBondState<MenuBondProps>> | undefined;
 
-	#unmount?: () => void;
+	#unmount?: (() => void) | undefined;
 
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	#createdAt = new Date();
 
-	constructor(props: () => MenuItemControllerProps = () => ({})) {
+	constructor(props: () => MenuItemControllerProps) {
 		this.#props = props;
 		this.#id = this.props.id ?? nanoid();
 		this.#menu = MenuBond.get() as
@@ -75,7 +89,7 @@ export class MenuItemController {
 	}
 
 	elementProps() {
-		const itemId = `item-${this.id}`;
+		const itemId = `menu-item-${this.id}`;
 		return {
 			id: itemId,
 			role: 'menuitem',
