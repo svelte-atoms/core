@@ -3,7 +3,7 @@
 	import DropdownSelection from './dropdown-selection.svelte';
 	import { DropdownBond } from './bond.svelte';
 	import type { DropdownSelectionsProps } from './types';
-	import type { Component } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 
 	const bond = DropdownBond.get();
 
@@ -19,7 +19,15 @@
 		...restProps
 	}: DropdownSelectionsProps = $props();
 
+	let isMounted = $state(false);
+
+	onMount(()=> {
+		isMounted = true;
+	})
+
 	const selections = $derived.by(() => {
+		isMounted; // ensure re-computation after mount
+
 		if (getSelections) {
 			return getSelections(bond);
 		}
