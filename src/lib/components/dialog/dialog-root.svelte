@@ -31,7 +31,8 @@
 				(v) => {
 					open = v;
 				}
-			)
+			),
+			defineProperty('rest', () => restProps)
 		],
 		() => ({ disabled })
 	);

@@ -9,6 +9,7 @@ import {
 
 export type PortalStateProps = BondStateProps & {
 	id: string;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type PortalElements = BondElements & {

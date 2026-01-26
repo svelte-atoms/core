@@ -31,7 +31,8 @@
 			}
 		),
 		defineProperty('linear', () => linear),
-		defineProperty('disabled', () => disabled)
+		defineProperty('disabled', () => disabled),
+		defineProperty('rest', () => restProps)
 	]);
 	const bond = factory(bondProps).share();
 

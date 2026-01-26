@@ -10,6 +10,7 @@ export type TabsBondProps<T extends Record<string, unknown> = Record<string, unk
 	value?: string|undefined;
 	multiple?: boolean;
 	extend?: T;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type TabElements = {

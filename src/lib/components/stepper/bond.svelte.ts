@@ -8,6 +8,7 @@ import type { Snippet } from 'svelte';
 export type StepperStateProps = BondStateProps & {
 	step: number;
 	linear?: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type StepperElements = {

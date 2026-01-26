@@ -6,7 +6,7 @@
 	const bond = PopoverBond.get();
 
 	if (!bond) {
-		throw new Error('');
+		throw new Error('<PopoverTrigger /> must be used within a <Popover />');
 	}
 
 	let {

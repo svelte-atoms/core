@@ -6,6 +6,7 @@ import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/
 export type DialogBondProps = BondStateProps & {
 	open: boolean;
 	disabled: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type DialogBondElements = {

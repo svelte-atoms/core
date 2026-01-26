@@ -37,7 +37,8 @@
 					open = v;
 				}
 			),
-			defineProperty('disabled', () => disabled)
+			defineProperty('disabled', () => disabled),
+			defineProperty('rest', () => restProps)
 		],
 		() => ({})
 	);

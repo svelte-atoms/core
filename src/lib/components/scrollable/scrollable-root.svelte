@@ -67,7 +67,8 @@
 			'isScrolling',
 			() => isScrolling,
 			(v) => (isScrolling = v)
-		)
+		),
+		defineProperty('rest', () => restProps)
 	]);
 
 	const bond = factory(bondProps).share();

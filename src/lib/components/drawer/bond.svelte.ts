@@ -8,6 +8,7 @@ export type DrawerBondProps<T extends Record<string, unknown> = Record<string, u
 		open: boolean;
 		disabled: boolean;
 		extend: T;
+		readonly rest?: Record<string, unknown>;
 	};
 
 export type DrawerBondElements = {

@@ -39,7 +39,8 @@
 
 	const bondProps = defineState<FormProps>([
 		defineProperty('renderless', () => renderless),
-		defineProperty('validator', () => validator)
+		defineProperty('validator', () => validator),
+		defineProperty('rest', () => restProps)
 	]);
 	const bond = factory(bondProps).share();
 

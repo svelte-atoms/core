@@ -8,6 +8,7 @@ export type SidebarBondProps<T extends Record<string, unknown> = Record<string, 
 		disabled: boolean;
 		reversed: boolean;
 		extend: T;
+		readonly rest?: Record<string, unknown>;
 	};
 
 export type SidebarElements = {

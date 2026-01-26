@@ -29,7 +29,7 @@
 	const rootBond = RootBond.get();
 	const portalsBond = PortalsBond.get();
 
-	const bondProps = defineState<PortalStateProps>([defineProperty('id', () => id)]);
+	const bondProps = defineState<PortalStateProps>([defineProperty('id', () => id), defineProperty('rest', () => restProps)]);
 	const bond = factory(bondProps).share() as PortalBond;
 
 	portalsBond?.state.set(id, bond);

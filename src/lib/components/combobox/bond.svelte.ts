@@ -9,7 +9,9 @@ import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
 
-export type ComboboxBondProps = DropdownStateProps & {};
+export type ComboboxBondProps = DropdownStateProps & {
+	readonly rest?: Record<string, unknown>;
+};
 
 export type ComboboxBondElements = PopoverDomElements & {
 	input: HTMLInputElement;

@@ -15,6 +15,7 @@ export type DropdownStateProps = MenuBondProps & {
 	label?: string;
 	multiple?: boolean;
 	keys?: string[];
+	readonly rest?: Record<string, unknown>;
 };
 
 export type DropdownBondElements = MenuBondElements & {

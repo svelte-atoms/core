@@ -23,16 +23,15 @@ export type PopoverParams = {
 	onchange?: (node: HTMLElement, params: ComputePositionReturn) => void;
 };
 
-export type PopoverStateProps<T extends Record<string, unknown> = Record<string, unknown>> =
-	BondStateProps & {
-		open: boolean;
-		disabled: boolean;
-		placements: Placement[];
-		placement: Placement | undefined;
-		offset: number;
-		portal?: string | PortalBond;
-		extend: T;
-	};
+export type PopoverStateProps = BondStateProps & {
+	open: boolean;
+	disabled: boolean;
+	placements: Placement[];
+	placement: Placement | undefined;
+	offset: number;
+	portal?: string | PortalBond;
+	readonly rest?: Record<string, unknown>;
+};
 
 export type TriggerParams = {
 	onclick?: (ev: MouseEvent) => void;

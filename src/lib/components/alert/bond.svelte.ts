@@ -5,6 +5,7 @@ import { createAttachmentKey } from 'svelte/attachments';
 export type AlertBondProps = BondStateProps & {
 	disabled?: boolean;
 	extend?: Record<string, unknown>;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type AlertBondElements = {

@@ -8,7 +8,8 @@
 		open = $bindable(false),
 		disabled = false,
 		factory = _factory,
-		children = undefined
+		children = undefined,
+		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
 	const bondProps = defineState<SidebarBondProps>([
@@ -19,7 +20,8 @@
 				open = v;
 			}
 		),
-		defineProperty('disabled', () => disabled)
+		defineProperty('disabled', () => disabled),
+		defineProperty('rest', () => restProps)
 	]);
 
 	const bond = factory(bondProps).share();

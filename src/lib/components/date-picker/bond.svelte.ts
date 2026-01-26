@@ -12,6 +12,7 @@ export type DatePickerBondProps = PopoverStateProps &
 	CalendarBondProps & {
 		format?: string;
 		placeholder?: string;
+		readonly rest?: Record<string, unknown>;
 	};
 
 export type DatePickerBondElements = PopoverDomElements & {

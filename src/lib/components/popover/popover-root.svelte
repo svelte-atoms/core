@@ -12,7 +12,8 @@
 		portal = undefined,
 		extend = {},
 		factory = _factory,
-		children = undefined
+		children = undefined,
+		...restProps
 	}: PopoverRootProps = $props();
 
 	const bondProps = defineState<PopoverStateProps>([
@@ -28,7 +29,7 @@
 		defineProperty('offset', () => offset),
 		defineProperty('placements', () => placements ?? []),
 		defineProperty('portal', () => portal),
-		defineProperty('extend', () => extend)
+		defineProperty('rest', () => restProps)
 	]);
 
 	const bond = factory(bondProps).share();

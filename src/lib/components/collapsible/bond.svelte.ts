@@ -6,6 +6,7 @@ import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 export type CollapsibleStateProps = BondStateProps & {
 	open: boolean;
 	disabled: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type CollapsibleDomElements = {

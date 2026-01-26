@@ -5,6 +5,7 @@ import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/
 
 export type CardBondProps = BondStateProps & {
 	disabled?: boolean;
+	readonly rest?: Record<string, unknown>;
 };
 
 export type CardBondElements = {
