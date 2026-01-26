@@ -31,7 +31,7 @@
 			return isWithinInterval(day.date, { end: selectedDateEnd, start: selectedDateStart });
 		}
 
-		return selectedDateStart && isSameDay(day.date, selectedDateStart);
+		return !!(selectedDateStart && isSameDay(day.date, selectedDateStart));
 	});
 
 	function handleClick() {
@@ -70,13 +70,13 @@
 		'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-25',
 		klass
 	]}
-	data-disabled={day.disabled}
-	data-prec={day.fromPreviousMonth}
-	data-next={day.fromNextMonth}
-	data-offmonth={day.offmonth}
-	data-weekend={day.weekend}
-	data-today={day.today}
-	data-selected={isSelected}
+	data-disabled={String(day.disabled)}
+	data-prec={String(day.fromPreviousMonth)}
+	data-next={String(day.fromNextMonth)}
+	data-offmonth={String(day.offmonth)}
+	data-weekend={String(day.weekend)}
+	data-today={String(day.today)}
+	data-selected={String(isSelected)}
 	{onclick}
 	{...dayProps}
 >
