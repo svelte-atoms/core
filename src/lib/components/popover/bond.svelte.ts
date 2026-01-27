@@ -198,7 +198,7 @@ export class PopoverBond<
 
 				// Move focus to popover when opened
 				if (!triggerContainsFocus) {
-					setTimeout(() => focus(node), 0);
+					setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
 				}
 
 				const cleanup = popover(this)(
