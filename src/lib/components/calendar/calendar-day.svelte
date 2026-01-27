@@ -31,7 +31,7 @@
 			return isWithinInterval(day.date, { end: selectedDateEnd, start: selectedDateStart });
 		}
 
-		return selectedDateStart && isSameDay(day.date, selectedDateStart);
+		return !!(selectedDateStart && isSameDay(day.date, selectedDateStart));
 	});
 
 	function handleClick() {
@@ -60,16 +60,20 @@
 	{as}
 	{preset}
 	class={[
-		'calendar-day text-foreground border-border hover:bg-accent hover:text-accent-foreground h-12 cursor-pointer border-b border-l p-1 transition-colors',
-		day.offmonth && !day.disabled && 'text-muted-foreground/50 bg-muted/50',
-		day.weekend && 'bg-accent',
-		isSelected &&
-			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
-		isSelected && day.offmonth && 'bg-primary/70',
-		day.today &&
-			!day.disabled &&
-			!isSelected &&
-			'border-primary bg-primary/5 border-2 font-semibold',
+		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l p-1',
+		'hover:bg-accent hover:text-accent-foreground',
+		// State modifiers
+		day.weekend && 'text-primary',
+		day.today && 'outline-primary outline-2 font-semibold z-1',
+		day.offmonth && 'text-muted-foreground/50 bg-muted/50 hover:text-muted-foreground/70',
+		// Selected state (overrides above)
+		isSelected && [
+			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-colors duration-100',
+			day.offmonth && 'bg-primary/80',
+			day.weekend && 'bg-primary/90',
+			day.today && 'outline-0',
+		],
+		// Disabled state (applies opacity on top)
 		day.disabled && 'pointer-events-none opacity-25',
 		klass
 	]}
