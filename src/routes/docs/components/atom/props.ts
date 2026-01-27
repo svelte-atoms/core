@@ -21,16 +21,14 @@ export const htmlAtomProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'PresetModuleName | (string & {}) | undefined',
-		default: '\'\'',
+		default: "''",
 		description: 'Preset'
 	},
 	{
 		name: 'variants',
 		type: 'Variants | undefined',
 		default: 'undefined',
-		description: 'Variant definition or function to resolve variants
-- VariantDefinition: Static variant config with base, variants, compoundVariants, defaultVariants
-- Function: Dynamic function that receives bond and props, returns props (legacy)'
-	},
+		description:
+			'Variant definition or function to resolve variants\n- VariantDefinition: Static variant config with base, variants, compoundVariants, defaultVariants\n- Function: Dynamic function that receives bond and props, returns props (legacy)'
+	}
 ];
-
