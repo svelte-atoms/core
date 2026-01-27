@@ -3,6 +3,7 @@
 	import { setPreset, type Preset } from '$lib/context';
 	import Root from '$svelte-atoms/core/components/root/root.svelte';
 	import { createAttachmentKey } from 'svelte/attachments';
+	import type { PopoverBond } from '../../dist';
 
 	let { children = undefined } = $props();
 
@@ -76,19 +77,23 @@
 		'collapsible.body': () => ({
 			class: 'text-sm px-2'
 		}),
-		'popover.content': () => ({
-			class: '',
-			variants: {
-				autoClose: {
-					true: {
-						class: '',
-						[createAttachmentKey()]: clickoutPopover((_, atom) => {
-							atom.state.close();
-						})
+		'popover.content': (bond) => {
+			const isAutoClosable = (bond as unknown as PopoverBond)?.state?.props?.rest?.autoClose ?? false;
+
+			return {
+				class: '',
+				[createAttachmentKey()]: (node)=> {
+					if (!isAutoClosable) {
+						return;
 					}
+					return clickoutPopover((_, atom) => {
+						atom.state.close();
+					})(node)
+				},
+				variants: {
 				}
 			}
-		}),
+		},
 		'menu.content': () => ({
 			class: '',
 			[createAttachmentKey()]: clickoutPopover((_, atom) => {
