@@ -12,6 +12,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { toastRootProps, toastTitleProps, toastDescriptionProps } from './props';
 
 	const basicCode = `<script lang="ts">
   import { toast } from '@svelte-atoms/core/toast';
@@ -150,40 +151,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Toast Props</h3>
-				<Props
-					data={[
-						{
-							name: 'variant',
-							type: "'default' | 'success' | 'error' | 'warning'",
-							default: "'default'",
-							description: 'Toast variant'
-						},
-						{
-							name: 'duration',
-							type: 'number',
-							default: '5000',
-							description: 'Auto-dismiss time (ms)'
-						},
-						{
-							name: 'closable',
-							type: 'boolean',
-							default: 'true',
-							description: 'Show close button'
-						},
-						{
-							name: 'onclose',
-							type: '() => void',
-							default: '-',
-							description: 'Close callback'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={toastRootProps} />
 			</div>
 		</div>
 	</Section>

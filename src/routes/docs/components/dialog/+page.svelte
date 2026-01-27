@@ -12,6 +12,16 @@
 		CodeBlock
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
+	import {
+		dialogProps,
+		dialogContentProps,
+		dialogHeaderProps,
+		dialogBodyProps,
+		dialogFooterProps,
+		dialogTitleProps,
+		dialogDescriptionProps,
+		dialogCloseButtonProps
+	} from './props';
 
 	const basicCode = `<script lang="ts">
   let open = $state(false);
@@ -170,34 +180,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dialog.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'open',
-							type: 'boolean',
-							default: 'false',
-							description: 'Control open state'
-						},
-						{
-							name: 'modal',
-							type: 'boolean',
-							default: 'true',
-							description: 'Modal behavior with backdrop'
-						},
-						{
-							name: 'closeOnEscape',
-							type: 'boolean',
-							default: 'true',
-							description: 'Close on Escape key'
-						},
-						{
-							name: 'closeOnOutsideClick',
-							type: 'boolean',
-							default: 'true',
-							description: 'Close on backdrop click'
-						}
-					]}
-				/>
+				<Props data={dialogProps} />
 			</div>
 		</div>
 	</Section>

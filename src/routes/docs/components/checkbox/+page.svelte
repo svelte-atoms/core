@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { checkboxProps } from './props';
 
 	const basicCode = `<script lang="ts">
   import { Checkbox } from '@svelte-atoms/core/checkbox';
@@ -135,40 +136,7 @@ const preset = createPreset({
 	</Section>
 
 	<Section title="API Reference">
-		<Props
-			data={[
-				{
-					name: 'id',
-					type: 'string',
-					default: '-',
-					description: 'Unique identifier for the checkbox'
-				},
-				{
-					name: 'checked',
-					type: 'boolean',
-					default: 'false',
-					description: 'Whether the checkbox is checked'
-				},
-				{
-					name: 'disabled',
-					type: 'boolean',
-					default: 'false',
-					description: 'Whether the checkbox is disabled'
-				},
-				{
-					name: 'class',
-					type: 'string',
-					default: "''",
-					description: 'Additional CSS classes to apply'
-				},
-				{
-					name: 'onchange',
-					type: 'function',
-					default: '-',
-					description: 'Change event handler'
-				}
-			]}
-		/>
+		<Props data={checkboxProps} />
 	</Section>
 
 	<Section title="Accessibility">

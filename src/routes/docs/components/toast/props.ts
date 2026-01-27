@@ -8,24 +8,27 @@ export interface PropDefinition {
 export const toastRootProps: PropDefinition[] = [
 	{
 		name: 'dismissible',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Dismissible'
 	},
 	{
 		name: 'duration',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Duration'
 	},
 	{
 		name: 'onclose',
-		type: '() => void',
+		type: '(() => void) | undefined',
 		default: 'undefined',
 		description: 'Onclose'
-	}
+	},
 ];
 
-export const toastTitleProps: PropDefinition[] = [];
+export const toastTitleProps: PropDefinition[] = [
+];
 
-export const toastDescriptionProps: PropDefinition[] = [];
+export const toastDescriptionProps: PropDefinition[] = [
+];
+

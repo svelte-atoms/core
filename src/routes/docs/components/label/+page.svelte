@@ -12,6 +12,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { labelProps } from './props';
 
 	const basicCode = `<Label for="email">Email Address</Label>
 <Input.Root>
@@ -123,22 +124,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Label Props</h3>
-				<Props
-					data={[
-						{
-							name: 'for',
-							type: 'string',
-							default: '-',
-							description: 'ID of associated form control'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={labelProps} />
 			</div>
 		</div>
 	</Section>

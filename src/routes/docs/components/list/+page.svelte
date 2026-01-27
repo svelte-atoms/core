@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { listRootProps } from './props';
 
 	const basicCode = `<List.Root>
   <List.Item>Item 1<\/List.Item>
@@ -279,28 +280,7 @@ setPreset({
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">List.Root</h3>
 				<p class="text-muted-foreground mb-4 text-sm">Container for list items.</p>
-				<Props
-					data={[
-						{
-							name: 'ordered',
-							type: 'boolean',
-							default: 'false',
-							description: 'Use ordered list (ol) instead of unordered (ul)'
-						},
-						{
-							name: 'preset',
-							type: 'string',
-							default: "'list'",
-							description: 'Preset configuration key'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={listRootProps} />
 			</div>
 
 			<div>

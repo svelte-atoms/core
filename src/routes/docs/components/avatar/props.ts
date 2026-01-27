@@ -8,20 +8,27 @@ export interface PropDefinition {
 export const avatarProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'Class'
 	},
 	{
 		name: 'src',
-		type: 'string | Component',
-		default: "''",
+		type: 'string | Component<{}, {}, string> | undefined',
+		default: '\'\'',
 		description: 'Src'
 	},
 	{
 		name: 'alt',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'Alt'
-	}
+	},
+	{
+		name: 'element',
+		type: 'HTMLElement | undefined',
+		default: 'undefined',
+		description: 'Element'
+	},
 ];
+

@@ -12,6 +12,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { inputRootProps, inputControlProps } from './props';
 
 	const basicCode = `<Input.Root>
   <Input.Control placeholder="Enter text..." />
@@ -336,6 +337,16 @@ const preset = createPreset({
 						}
 					]}
 				/>
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Root Props</h3>
+				<Props data={inputRootProps} />
+			</div>
+
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Control Props</h3>
+				<Props data={inputControlProps} />
 			</div>
 		</div>
 	</Section>

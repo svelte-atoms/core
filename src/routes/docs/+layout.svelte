@@ -28,6 +28,7 @@
 			children: [
 				{ title: 'Accordion', href: '/docs/components/accordion' },
 				{ title: 'Alert', href: '/docs/components/alert' },
+				{ title: 'Atom', href: '/docs/components/atom' },
 				{ title: 'Avatar', href: '/docs/components/avatar' },
 				{ title: 'Badge', href: '/docs/components/badge' },
 				{ title: 'Breadcrumb', href: '/docs/components/breadcrumb' },
@@ -53,6 +54,7 @@
 				{ title: 'Scrollable', href: '/docs/components/scrollable' },
 				{ title: 'Sidebar', href: '/docs/components/sidebar' },
 				{ title: 'Stack', href: '/docs/components/stack' },
+				{ title: 'Stepper', href: '/docs/components/stepper' },
 				{ title: 'Tabs', href: '/docs/components/tabs' },
 				{ title: 'Textarea', href: '/docs/components/textarea' },
 				{ title: 'Toast', href: '/docs/components/toast' },

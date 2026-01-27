@@ -8,92 +8,93 @@ export interface PropDefinition {
 export const scrollableRootProps: PropDefinition[] = [
 	{
 		name: 'factory',
-		type: 'Factory<ScrollableBond>',
+		type: 'Factory<ScrollableBond> | undefined',
 		default: 'undefined',
 		description: 'Factory'
 	},
 	{
 		name: 'scrollX',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Scroll X'
 	},
 	{
 		name: 'scrollY',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Scroll Y'
 	},
 	{
 		name: 'scrollWidth',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Scroll Width'
 	},
 	{
 		name: 'scrollHeight',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Scroll Height'
 	},
 	{
 		name: 'clientWidth',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Client Width'
 	},
 	{
 		name: 'clientHeight',
-		type: 'number',
+		type: 'number | undefined',
 		default: '0',
 		description: 'Client Height'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'open',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Open'
-	}
+	},
 ];
 
 export const scrollableContainerProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '\'horizontal\' | \'vertical\'',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableContentProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '\'horizontal\' | \'vertical\'',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableTrackProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '"horizontal" | "vertical"',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
 
 export const scrollableThumbProps: PropDefinition[] = [
 	{
 		name: 'orientation',
-		type: "'horizontal' | 'vertical'",
+		type: '"horizontal" | "vertical"',
 		default: '-',
 		description: 'Orientation'
-	}
+	},
 ];
+

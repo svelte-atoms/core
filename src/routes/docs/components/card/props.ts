@@ -8,16 +8,34 @@ export interface PropDefinition {
 export const cardRootProps: PropDefinition[] = [
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<CardBond>',
+		type: 'Factory<CardBond<CardBondState<CardBondProps>>> | undefined',
 		default: 'undefined',
 		description: 'Factory'
-	}
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ card: CardBond<CardBondState<CardBondProps>>; }]> | undefined',
+		default: 'undefined',
+		description: 'Children'
+	},
+	{
+		name: 'onclick',
+		type: '((event: MouseEvent) => void) | undefined',
+		default: 'undefined',
+		description: 'Onclick'
+	},
+	{
+		name: 'onkeydown',
+		type: '((event: KeyboardEvent) => void) | undefined',
+		default: 'undefined',
+		description: 'Onkeydown'
+	},
 ];
 
 export const cardHeaderProps: PropDefinition[] = [
@@ -104,7 +122,7 @@ export const cardHeaderProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardBodyProps: PropDefinition[] = [
@@ -191,7 +209,7 @@ export const cardBodyProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardFooterProps: PropDefinition[] = [
@@ -278,7 +296,7 @@ export const cardFooterProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardTitleProps: PropDefinition[] = [
@@ -365,7 +383,7 @@ export const cardTitleProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardSubtitleProps: PropDefinition[] = [
@@ -452,7 +470,7 @@ export const cardSubtitleProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardDescriptionProps: PropDefinition[] = [
@@ -539,7 +557,7 @@ export const cardDescriptionProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
 
 export const cardMediaProps: PropDefinition[] = [
@@ -626,5 +644,6 @@ export const cardMediaProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	}
+	},
 ];
+

@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { linkProps } from './props';
 
 	const basicCode = `<Link href="/about">About Us</Link>`;
 
@@ -113,46 +114,7 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Link Props</h3>
-				<Props
-					data={[
-						{
-							name: 'href',
-							type: 'string',
-							default: "'#'",
-							description: 'Link destination'
-						},
-						{
-							name: 'variant',
-							type: "'default' | 'muted' | 'underline'",
-							default: "'default'",
-							description: 'Link style'
-						},
-						{
-							name: 'size',
-							type: "'sm' | 'md' | 'lg'",
-							default: "'md'",
-							description: 'Link size'
-						},
-						{
-							name: 'target',
-							type: 'string',
-							default: '-',
-							description: 'Link target (_blank, etc.)'
-						},
-						{
-							name: 'rel',
-							type: 'string',
-							default: '-',
-							description: 'Link relationship'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={linkProps} />
 			</div>
 		</div>
 	</Section>

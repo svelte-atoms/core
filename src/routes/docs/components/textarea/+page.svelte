@@ -11,6 +11,7 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import { textareaRootProps, textareaInputProps } from './props';
 
 	const basicCode = `<Textarea.Root>
   <Textarea.Control placeholder="Enter your message..." />
@@ -154,67 +155,13 @@ setPreset({
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Root</h3>
 				<p class="text-muted-foreground mb-4 text-sm">Container for the textarea component.</p>
-				<Props
-					data={[
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={textareaRootProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Textarea.Control</h3>
 				<p class="text-muted-foreground mb-4 text-sm">The actual textarea element.</p>
-				<Props
-					data={[
-						{
-							name: 'value',
-							type: 'string',
-							default: "''",
-							description: 'Textarea value (bindable)'
-						},
-						{
-							name: 'placeholder',
-							type: 'string',
-							default: "''",
-							description: 'Placeholder text'
-						},
-						{
-							name: 'rows',
-							type: 'number',
-							default: '4',
-							description: 'Number of rows'
-						},
-						{
-							name: 'maxlength',
-							type: 'number',
-							default: '-',
-							description: 'Character limit'
-						},
-						{
-							name: 'disabled',
-							type: 'boolean',
-							default: 'false',
-							description: 'Disable textarea'
-						},
-						{
-							name: 'readonly',
-							type: 'boolean',
-							default: 'false',
-							description: 'Make read-only'
-						},
-						{
-							name: 'class',
-							type: 'string',
-							default: "''",
-							description: 'Additional CSS classes'
-						}
-					]}
-				/>
+				<Props data={textareaInputProps} />
 			</div>
 		</div>
 	</Section>

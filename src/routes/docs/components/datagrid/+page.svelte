@@ -11,6 +11,16 @@
 		Props,
 		CodeBlock
 	} from '$docs/components';
+	import {
+		datagridRootProps,
+		datagridHeaderProps,
+		datagridBodyProps,
+		datagridFooterProps,
+		datagridThProps,
+		datagridTdProps,
+		datagridCheckboxProps,
+		datagridTrProps
+	} from './props';
 
 	interface User {
 		id: string;
@@ -171,54 +181,12 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">DataGrid.Root Props</h3>
-				<Props
-					data={[
-						{
-							name: 'multiple',
-							type: 'boolean',
-							default: 'false',
-							description: 'Enable multiple row selection'
-						},
-						{
-							name: 'template',
-							type: 'string',
-							default: '-',
-							description: 'Column width template (CSS grid template)'
-						},
-						{
-							name: 'values',
-							type: 'string[]',
-							default: '[]',
-							description: 'Array of selected row IDs'
-						},
-						{
-							name: 'selection',
-							type: 'T[]',
-							default: '[]',
-							description: 'Array of selected row data'
-						}
-					]}
-				/>
+				<Props data={datagridRootProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">DataGrid.Th Props</h3>
-				<Props
-					data={[
-						{
-							name: 'sortable',
-							type: 'boolean',
-							default: 'false',
-							description: 'Enable column sorting'
-						},
-						{
-							name: 'width',
-							type: 'string',
-							default: 'auto',
-							description: 'Column width'
-						}
-					]}
-				/>
+				<Props data={datagridThProps} />
 			</div>
 		</div>
 	</Section>

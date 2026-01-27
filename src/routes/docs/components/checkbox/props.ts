@@ -8,128 +8,63 @@ export interface PropDefinition {
 export const checkboxProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'Value'
 	},
 	{
 		name: 'group',
-		type: 'string[]',
-		default: "''",
+		type: 'string[] | undefined',
+		default: '\'\'',
 		description: 'Group'
 	},
 	{
 		name: 'checked',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Checked'
 	},
 	{
 		name: 'indeterminate',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Indeterminate'
 	},
 	{
 		name: 'checkedContent',
-		type: 'Component | Snippet',
-		default: 'undefined',
+		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
+		default: '\'\'',
 		description: 'Checked Content'
 	},
 	{
 		name: 'indeterminateContent',
-		type: 'Component | Snippet',
-		default: 'undefined',
+		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
+		default: '\'\'',
 		description: 'Indeterminate Content'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[]>',
+		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Children'
 	},
 	{
 		name: 'onclick',
-		type: '(ev?: Event) => void',
+		type: '((ev?: Event | undefined) => void) | undefined',
 		default: 'undefined',
 		description: 'Onclick'
 	},
 	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
+		name: 'onchange',
+		type: '((ev?: Event | undefined, options?: { checked: boolean; } | undefined) => void) | undefined',
 		default: 'false',
-		description: 'Whether to use global styles'
+		description: 'Onchange'
 	},
 	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	}
 ];
+

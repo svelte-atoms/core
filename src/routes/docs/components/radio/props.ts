@@ -8,257 +8,126 @@ export interface PropDefinition {
 export const radioProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'T',
+		type: 'T | undefined',
 		default: 'undefined',
 		description: 'The value of the radio button'
 	},
 	{
 		name: 'group',
-		type: 'T',
+		type: 'T | undefined',
 		default: 'undefined',
 		description: 'The currently selected value (for standalone radios)'
 	},
 	{
 		name: 'id',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'The id attribute of the radio input'
 	},
 	{
 		name: 'name',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'The name attribute of the radio input'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether the radio button is disabled'
 	},
 	{
 		name: 'required',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether the radio button is required'
 	},
 	{
 		name: 'readonly',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether the radio button is readonly'
 	},
 	{
 		name: 'checkedContent',
-		type: 'Component | Snippet',
-		default: 'undefined',
+		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
+		default: '\'\'',
 		description: 'Custom content to display when the radio is checked'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[]>',
+		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Child content (label text)'
 	},
 	{
 		name: 'onchange',
-		type: '(ev: Event, options?: { checked: boolean',
+		type: '((ev: Event, options?: { checked: boolean; value: boolean; type: "boolean"; } | undefined) => void) | undefined',
 		default: 'false',
 		description: 'Change event handler'
 	},
 	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
+		name: 'oninput',
+		type: '((ev: Event, options?: { checked: boolean; value: boolean; type: "boolean"; } | undefined) => void) | undefined',
 		default: 'false',
-		description: 'Whether to use global styles'
+		description: 'Input event handler'
 	},
 	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	}
 ];
 
 export const radioGroupProps: PropDefinition[] = [
 	{
 		name: 'value',
-		type: 'T',
+		type: 'T | undefined',
 		default: 'undefined',
 		description: 'The currently selected value'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether all radio buttons in the group are disabled'
 	},
 	{
 		name: 'required',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether all radio buttons in the group are required'
 	},
 	{
 		name: 'readonly',
-		type: 'boolean',
+		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Whether all radio buttons in the group are readonly'
 	},
 	{
 		name: 'name',
-		type: 'string',
-		default: "''",
+		type: 'string | undefined',
+		default: '\'\'',
 		description: 'The name attribute shared by all radio buttons in the group'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[]>',
+		type: 'Snippet<[]> | undefined',
 		default: 'undefined',
 		description: 'Child content (radio buttons)'
 	},
 	{
-		name: 'bond',
-		type: 'Bond',
+		name: 'oninput',
+		type: '((ev: CustomEvent<any>, options?: { value: T; } | undefined) => void) | undefined',
 		default: 'undefined',
-		description: 'Bond object for component communication'
+		description: 'Input event handler triggered when the selected value changes'
 	},
 	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	}
 ];
+
