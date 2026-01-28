@@ -49,9 +49,7 @@
 
 	<HtmlAtom base={Body}>
 		{#snippet children({ day }: { day: CalendarDayType })}
-			<HtmlAtom base={Day} {day} class="flex items-center justify-center">
-				<span class="value">{day.dayOfMonth}</span>
-			</HtmlAtom>
+			<Day {day} />
 		{/snippet}
 	</HtmlAtom>
 
