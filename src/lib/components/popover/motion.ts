@@ -16,7 +16,7 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		const isOpen = bond?.state.props.open ?? false;
 
-		const position = bond.position;
+		const position = bond.state.position;
 
 		if(!position) {
 			return;

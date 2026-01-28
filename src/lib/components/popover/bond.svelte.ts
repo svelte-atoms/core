@@ -1,4 +1,4 @@
-import { getContext, setContext, untrack } from 'svelte';
+import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import {
 	autoUpdate,
@@ -70,8 +70,6 @@ export class PopoverBond<
 	Elements extends PopoverDomElements = PopoverDomElements
 > extends Bond<Props, State, Elements> {
 	static CONTEXT_KEY = '@atomic-sv/bonds/popover';
-
-	position = $state<ComputePositionReturn>();
 
 	constructor(state: State) {
 		super(state);
@@ -258,6 +256,8 @@ export class PopoverBond<
 export class PopoverState<
 	Props extends PopoverStateProps = PopoverStateProps
 > extends BondState<Props> {
+	position = $state<ComputePositionReturn>();
+
 	constructor(props: () => Props) {
 		super(props);
 	}
@@ -332,7 +332,7 @@ function popover(bond: PopoverBond) {
 				middleware
 			});
 
-			bond.position = position;
+			bond.state.position = position;
 			onchangeCallback?.(content, position);
 
 			// Set minimum width to match trigger

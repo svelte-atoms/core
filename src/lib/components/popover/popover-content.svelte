@@ -49,7 +49,7 @@
 	 * Calculate the final position and opacity for the popover content
 	 */
 	function calculatePosition() {
-		const position = bond.position;
+		const position = bond.state.position;
 		
 		if (!position) {
 			return null;
