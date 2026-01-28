@@ -13,12 +13,7 @@
 		as = 'dialog' as E,
 		portal = undefined,
 		factory = _factory,
-		onmount = undefined,
-		ondestroy = undefined,
 		animate = animateDialogRoot(),
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		children = undefined,
 		...restProps
 	}: DialogProps<E, B> = $props();
@@ -73,12 +68,7 @@
 		'$preset',
 		klass
 	]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();

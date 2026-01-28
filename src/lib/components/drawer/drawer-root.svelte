@@ -18,10 +18,6 @@
 		disabled = false,
 		portal = undefined,
 		onclose = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		enter = undefined,
-		exit = undefined,
 		initial = animateDrawerRoot({ duration: 0 }),
 		animate = animateDrawerRoot({}),
 		factory = _factory,
@@ -81,10 +77,6 @@
 		klass
 	]}
 	closeby="none"
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
 	{...rootProps}
