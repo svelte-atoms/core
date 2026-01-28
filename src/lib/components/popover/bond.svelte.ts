@@ -195,25 +195,14 @@ export class PopoverBond<
 				}
 
 				if (params?.engine && typeof params.engine === 'function') {
-					const cleanup = popover(this)({
-						onchange: (_node: HTMLElement, position: ComputePositionReturn) => {
-							this.position = position;
-						}
-					});
+					const cleanup = popover(this)({});
 
 					return () => {
 						cleanup?.();
 					};
 				}
 
-				const cleanup = popover(this)(
-					{
-						onchange: (_node: HTMLElement, position: ComputePositionReturn) => {
-							this.position = position;
-						}
-					},
-					autoUpdate
-				);
+				const cleanup = popover(this)({}, autoUpdate);
 
 				return () => {
 					cleanup?.();
@@ -343,6 +332,7 @@ function popover(bond: PopoverBond) {
 				middleware
 			});
 
+			bond.position = position;
 			onchangeCallback?.(content, position);
 
 			// Set minimum width to match trigger
