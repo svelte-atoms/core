@@ -25,9 +25,8 @@
 		...restProps
 	}: PopoverArrowProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const position = $derived(bond.position);
+	const position = $derived(bond.state.position);
 	const middlewareArrowData = $derived(position?.middlewareData?.arrow);
-	const isReady = $derived(!!middlewareArrowData);
 	const side = $derived(position?.placement?.split('-')[0] ?? 'top');
 
 	const arrowProps = $derived({

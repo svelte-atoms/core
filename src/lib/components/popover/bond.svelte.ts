@@ -1,10 +1,11 @@
-import { getContext, setContext, untrack } from 'svelte';
+import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import {
 	autoUpdate,
 	computePosition,
 	arrow,
 	flip,
+	shift,
 	offset,
 	type ComputePositionConfig,
 	type ComputePositionReturn,
@@ -21,6 +22,18 @@ export type PopoverParams = {
 	) => void;
 
 	onchange?: (node: HTMLElement, params: ComputePositionReturn) => void;
+};
+
+export type PopoverEngineCleanup = () => void;
+export type PopoverEngineParams = Record<string, unknown> & {
+	onchange?: (node: HTMLElement, position: ComputePositionReturn) => void;
+};
+export type PopoverEngine = (
+	bond: PopoverBond
+) => (props: PopoverEngineParams, ...args: unknown[]) => PopoverEngineCleanup;
+
+export type PopoverContentPropsParams = {
+	engine?: 'internal' | PopoverEngine | undefined;
 };
 
 export type PopoverStateProps = BondStateProps & {
@@ -57,8 +70,6 @@ export class PopoverBond<
 	Elements extends PopoverDomElements = PopoverDomElements
 > extends Bond<Props, State, Elements> {
 	static CONTEXT_KEY = '@atomic-sv/bonds/popover';
-
-	position = $state<ComputePositionReturn>();
 
 	constructor(state: State) {
 		super(state);
@@ -117,35 +128,11 @@ export class PopoverBond<
 			},
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.trigger = node;
-
-				const position = untrack(() => this.position);
-
-				if (!position) {
-					const init = async () => {
-						popover(this)({
-							onchange: (_node: HTMLElement, position: ComputePositionReturn) => {
-								this.position = position;
-							}
-						});
-						const pointerLeaveHandler = () => {
-							node.removeEventListener('pointerenter', init);
-							node.removeEventListener('pointerleave', pointerLeaveHandler);
-						};
-
-						node.addEventListener('pointerleave', pointerLeaveHandler);
-					};
-
-					node.addEventListener('pointerenter', init, { passive: true });
-
-					return () => {
-						node.removeEventListener('pointerenter', init);
-					};
-				}
 			}
 		};
 	}
 
-	content() {
+	content(params: PopoverContentPropsParams = { engine: 'internal' }) {
 		const kind = POPOVER_ELEMENTS_KIND.content;
 		const id = getElementId(this.id, kind);
 		const triggerId = getElementId(this.id, POPOVER_ELEMENTS_KIND.trigger);
@@ -172,7 +159,7 @@ export class PopoverBond<
 			inert: !isActive ? true : undefined,
 			tabindex: -1,
 			'data-atom': this.id,
-			'data-kind': 'content',
+			'data-kind': POPOVER_ELEMENTS_KIND.content,
 			'data-active': isActive,
 			onkeydown: isOpen ? focusManager : undefined,
 			[createAttachmentKey()]: (node: HTMLElement) => {
@@ -201,14 +188,19 @@ export class PopoverBond<
 					setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
 				}
 
-				const cleanup = popover(this)(
-					{
-						onchange: (node: HTMLElement, position: ComputePositionReturn) => {
-							this.position = position;
-						}
-					},
-					autoUpdate
-				);
+				if (params?.engine === undefined) {
+					return;
+				}
+
+				if (params?.engine && typeof params.engine === 'function') {
+					const cleanup = params.engine(this)({});
+
+					return () => {
+						cleanup?.();
+					};
+				}
+
+				const cleanup = popover(this)({}, autoUpdate);
 
 				return () => {
 					cleanup?.();
@@ -264,6 +256,8 @@ export class PopoverBond<
 export class PopoverState<
 	Props extends PopoverStateProps = PopoverStateProps
 > extends BondState<Props> {
+	position = $state<ComputePositionReturn>();
+
 	constructor(props: () => Props) {
 		super(props);
 	}
@@ -301,7 +295,21 @@ function popover(bond: PopoverBond) {
 			offset(ofs),
 			flip({
 				fallbackPlacements: placements,
-				padding: 4
+				padding: 8,
+				crossAxis: true,
+				fallbackStrategy: 'bestFit'
+			}),
+			shift({
+				padding: 8,
+				limiter: {
+					fn: (state) => {
+						const { x, y } = state;
+						return {
+							x,
+							y
+						};
+					}
+				}
 			})
 		];
 
@@ -324,6 +332,7 @@ function popover(bond: PopoverBond) {
 				middleware
 			});
 
+			bond.state.position = position;
 			onchangeCallback?.(content, position);
 
 			// Set minimum width to match trigger

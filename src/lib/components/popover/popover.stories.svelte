@@ -22,7 +22,7 @@
 
 <Story name="Popover" args={{}}>
 	{#snippet children(args)}
-		<Popover_.Root bind:open offset={0} autoClose {...args}>
+		<Popover_.Root bind:open offset={0} {...args}>
 			<Popover_.Trigger base={Button} class="items-center gap-4">
 				<div>Open Popover</div>
 				<Popover_.Indicator />

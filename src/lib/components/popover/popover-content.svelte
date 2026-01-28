@@ -3,12 +3,13 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
-	import type { AnimateParams, PopoverContentProps } from './types';
 	import { animatePopoverContent } from './motion';
+	import type { AnimateParams, PopoverContentProps } from './types';
 
 	type Element = HtmlElementType<E>;
 
 	const bond = PopoverBond.get();
+	
 	const activePortalBond = (() => {
 		const key = bond.state.props.portal;
 		if (key instanceof PortalBond) {
@@ -32,78 +33,68 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
 		animate = animatePopoverContent(),
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
 
 	const isOpen = $derived(bond.state.isOpen && !!bond.elements.trigger);
 	const portalId = $derived(activePortalBond?.id);
 
-	let isInitialized = false;
+	/**
+	 * Calculate the final position and opacity for the popover content
+	 */
+	function calculatePosition() {
+		const position = bond.state.position;
+		
+		if (!position) {
+			return null;
+		}
 
-	function _containerInitial(this: typeof bond.state, node: Element) {
-		const position = bond.position;
-		const placement = position?.placement;
-
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
-
-		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
-		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
-
+		const { placement, x = 0, y = 0, middlewareData } = position;
 		const offset = bond.state.props.offset;
+		const openState = +isOpen;
 
-		const xOffset = dx * offset;
-		const yOffset = dy * offset;
+		// Calculate direction multipliers based on placement
+		const directionY = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
+		const directionX = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
 
-		const openAsNumber = +isOpen;
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
+		// Calculate arrow dimensions and delta
+		const arrowWidth = bond?.elements.arrow?.clientWidth ?? 0;
+		const arrowHeight = bond?.elements.arrow?.clientHeight ?? 0;
+		const arrowDelta = middlewareData?.arrow ? 1 : 0;
 
-		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
-		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
+		// Calculate final position with offset and arrow adjustment
+		const finalX = x + (directionX * offset * openState) + (arrowDelta * directionX * arrowWidth);
+		const finalY = y + (directionY * offset * openState) + (arrowDelta * directionY * arrowHeight);
 
-		const _x = x + xOffset * openAsNumber + deltaArrow * dx * arrowClientWidth;
-		const _y = y + yOffset * openAsNumber + deltaArrow * dy * arrowClientHeight;
-
-		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
-
-		isInitialized = true;
+		return {
+			transform: `translate3d(${finalX}px, ${finalY}px, 1px)`,
+			opacity: openState.toString()
+		};
 	}
 
-	function _containerAnimate(this: typeof bond.state, node: Element, _?: AnimateParams) {
-		if (!isInitialized) {
+	function containerInitial(this: typeof bond.state, node: Element) {
+		const styles = calculatePosition();
+		
+		// Hide content until position is calculated to avoid ghosting
+		if (!styles) {
+			node.style.opacity = '0';
 			return;
 		}
 
-		const position = bond.position;
-		const placement = position?.placement;
+		node.style.transform = styles.transform;
+		node.style.opacity = styles.opacity;
+	}
 
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
+	function containerAnimate(this: typeof bond.state, node: Element, _?: AnimateParams) {
+		const styles = calculatePosition();
+		
+		if (!styles) {
+			return;
+		}
 
-		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
-		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
-
-		const offset = bond.state.props.offset;
-
-		const xOffset = dx * offset;
-		const yOffset = dy * offset;
-
-		const openAsNumber = +isOpen;
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
-
-		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
-		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
-
-		const _x = x + xOffset * openAsNumber + deltaArrow * dx * arrowClientWidth;
-		const _y = y + yOffset * openAsNumber + deltaArrow * dy * arrowClientHeight;
-
-		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
+		node.style.transform = styles.transform;
+		node.style.opacity = '1';
 	}
 </script>
 
@@ -111,9 +102,9 @@
 	portal={portalId ?? 'root.l0'}
 	as="div"
 	class="absolute top-0 left-0 h-min w-fit outline-none"
-	initial={_containerInitial?.bind(bond.state)}
-	animate={_containerAnimate?.bind(bond.state)}
-	{...bond.content({ onchange: _containerInitial })}
+	initial={containerInitial?.bind(bond.state)}
+	animate={containerAnimate?.bind(bond.state)}
+	{...bond.content({ engine: 'internal' })}
 >
 	<HtmlAtom
 		{bond}
@@ -124,12 +115,7 @@
 			'$preset',
 			klass
 		]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
 		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
 		{...restProps}
 	>
 		{@render children?.({ popover: bond })}

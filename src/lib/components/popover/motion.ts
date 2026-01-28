@@ -16,11 +16,13 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		const isOpen = bond?.state.props.open ?? false;
 
-		const position = bond.position;
-		const placement = position?.placement;
+		const position = bond.state.position;
 
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
+		if (!position) {
+			return;
+		}
+
+		const placement = position.placement;
 
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
@@ -31,7 +33,6 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 		const yOffset = dy * offset;
 
 		const openAsNumber = +isOpen;
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
 
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
@@ -61,7 +62,10 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		const transformOrigin = getTransformOrigin();
 
-		const from = isOpen ? 1 : 0.95;
+		const s0 = 0.9;
+		const s1 = 1;
+
+		const from = isOpen ? s1 : s0;
 
 		animate(
 			node,
@@ -69,13 +73,11 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 				opacity: openAsNumber,
 				y: dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
 				x: dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
-				scaleY: dy ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
-				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
+				scaleY: dy ? (isOpen ? [from, s1] : [s1, from]) : undefined,
+				scaleX: dx ? (isOpen ? [from, s1] : [s1, from]) : undefined,
 				transformOrigin
 			},
 			{ duration, delay, ease }
 		);
-
-		animate(node, { opacity: +isOpen }, { duration, ease, delay });
 	};
 }
