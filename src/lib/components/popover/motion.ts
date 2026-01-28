@@ -24,9 +24,6 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 		
 		const placement = position.placement;
 
-		const x = position.x ?? 0;
-		const y = position.y ?? 0;
-
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
 
@@ -36,7 +33,6 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 		const yOffset = dy * offset;
 
 		const openAsNumber = +isOpen;
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
 
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
@@ -80,7 +76,5 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			},
 			{ duration, delay, ease }
 		);
-
-		// animate(node, { opacity: +isOpen }, { duration, ease, delay });
 	};
 }
