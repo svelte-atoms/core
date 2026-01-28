@@ -159,6 +159,9 @@
 		'alert.close-button': () => ({
 			class:
 				'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-1'
+		}),
+		'dialog.content': ()=> ({
+			class: 'max-w-lg'
 		})
 	};
 
