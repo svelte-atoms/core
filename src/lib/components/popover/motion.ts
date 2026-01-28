@@ -18,10 +18,10 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		const position = bond.state.position;
 
-		if(!position) {
+		if (!position) {
 			return;
 		}
-		
+
 		const placement = position.placement;
 
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
@@ -62,7 +62,10 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		const transformOrigin = getTransformOrigin();
 
-		const from = isOpen ? 1 : 0.95;
+		const s0 = 0.9;
+		const s1 = 1;
+
+		const from = isOpen ? s1 : s0;
 
 		animate(
 			node,
@@ -70,8 +73,8 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 				opacity: openAsNumber,
 				y: dy * (!isOpen ? -1 : 0) * (arrowClientHeight + yOffset),
 				x: dx * (!isOpen ? -1 : 0) * (arrowClientWidth + xOffset),
-				scaleY: dy ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
-				scaleX: dx ? (isOpen ? [from, 1] : [1, 0.8]) : undefined,
+				scaleY: dy ? (isOpen ? [from, s1] : [s1, from]) : undefined,
+				scaleX: dx ? (isOpen ? [from, s1] : [s1, from]) : undefined,
 				transformOrigin
 			},
 			{ duration, delay, ease }
