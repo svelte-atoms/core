@@ -195,7 +195,7 @@ export class PopoverBond<
 				}
 
 				if (params?.engine && typeof params.engine === 'function') {
-					const cleanup = popover(this)({});
+					const cleanup = params.engine(this)({});
 
 					return () => {
 						cleanup?.();
