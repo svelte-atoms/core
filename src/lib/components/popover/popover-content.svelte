@@ -3,12 +3,13 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
-	import type { AnimateParams, PopoverContentProps } from './types';
 	import { animatePopoverContent } from './motion';
+	import type { AnimateParams, PopoverContentProps } from './types';
 
 	type Element = HtmlElementType<E>;
 
 	const bond = PopoverBond.get();
+	
 	const activePortalBond = (() => {
 		const key = bond.state.props.portal;
 		if (key instanceof PortalBond) {
@@ -44,14 +45,19 @@
 	const isOpen = $derived(bond.state.isOpen && !!bond.elements.trigger);
 	const portalId = $derived(activePortalBond?.id);
 
-	let isInitialized = false;
-
 	function _containerInitial(this: typeof bond.state, node: Element) {
 		const position = bond.position;
+		
+		// Hide content until position is calculated to avoid ghosting
+		if (!position) {
+			node.style.opacity = '0';
+			return;
+		}
+				
 		const placement = position?.placement;
 
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
+		const x = position.x ?? 0;
+		const y = position.y ?? 0;
 
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
@@ -71,20 +77,20 @@
 		const _y = y + yOffset * openAsNumber + deltaArrow * dy * arrowClientHeight;
 
 		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
-
-		isInitialized = true;
+		node.style.opacity = openAsNumber+'';
 	}
 
 	function _containerAnimate(this: typeof bond.state, node: Element, _?: AnimateParams) {
-		if (!isInitialized) {
+		const position = bond.position;
+
+		if (!position) {
 			return;
 		}
+	
+		const placement = position.placement;
 
-		const position = bond.position;
-		const placement = position?.placement;
-
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
+		const x = position.x;
+		const y = position.y;
 
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
@@ -95,7 +101,7 @@
 		const yOffset = dy * offset;
 
 		const openAsNumber = +isOpen;
-		const deltaArrow = position?.middlewareData?.arrow ? 1 : 0;
+		const deltaArrow = position.middlewareData?.arrow ? 1 : 0;
 
 		const arrowClientWidth = bond?.elements.arrow?.clientWidth ?? 0;
 		const arrowClientHeight = bond?.elements.arrow?.clientHeight ?? 0;
@@ -104,6 +110,7 @@
 		const _y = y + yOffset * openAsNumber + deltaArrow * dy * arrowClientHeight;
 
 		node.style.transform = `translate3d(${_x}px, ${_y}px, 1px)`;
+		node.style.opacity = openAsNumber+'';
 	}
 </script>
 
@@ -113,7 +120,7 @@
 	class="absolute top-0 left-0 h-min w-fit outline-none"
 	initial={_containerInitial?.bind(bond.state)}
 	animate={_containerAnimate?.bind(bond.state)}
-	{...bond.content({ onchange: _containerInitial })}
+	{...bond.content({ engine: 'internal' })}
 >
 	<HtmlAtom
 		{bond}

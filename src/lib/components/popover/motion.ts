@@ -17,10 +17,15 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 		const isOpen = bond?.state.props.open ?? false;
 
 		const position = bond.position;
-		const placement = position?.placement;
 
-		const x = position?.x ?? 0;
-		const y = position?.y ?? 0;
+		if(!position) {
+			return;
+		}
+		
+		const placement = position.placement;
+
+		const x = position.x ?? 0;
+		const y = position.y ?? 0;
 
 		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
@@ -76,6 +81,6 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			{ duration, delay, ease }
 		);
 
-		animate(node, { opacity: +isOpen }, { duration, ease, delay });
+		// animate(node, { opacity: +isOpen }, { duration, ease, delay });
 	};
 }
