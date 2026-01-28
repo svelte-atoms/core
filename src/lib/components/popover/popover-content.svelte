@@ -33,12 +33,7 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
 		animate = animatePopoverContent(),
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
 
@@ -99,7 +94,7 @@
 		}
 
 		node.style.transform = styles.transform;
-		node.style.opacity = styles.opacity;
+		node.style.opacity = '1';
 	}
 </script>
 
@@ -120,12 +115,7 @@
 			'$preset',
 			klass
 		]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
 		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
 		{...restProps}
 	>
 		{@render children?.({ popover: bond })}
