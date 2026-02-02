@@ -94,8 +94,10 @@ export interface DatagridRootProps<T> extends DatagridRootExtendProps {
 	class?: string;
 	template?: string;
 	fallbackTemplate?: string;
+	/** Array of selected row IDs (bindable) */
 	values?: string[];
-	readonly element?: HTMLElement;
+	/** Array or Set of all valid row IDs in the current dataset. Used for automatic cleanup of stale bonds when data changes. */
+	keys?: string[];
 	children?: Snippet<[{ context: DatagridContext<T> }]>;
 }
 

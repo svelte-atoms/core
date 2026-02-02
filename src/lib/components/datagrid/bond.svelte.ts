@@ -10,6 +10,7 @@ export type DataGridStateProps<T> = BondStateProps & {
 	template?: string;
 	values?: string[];
 	selection?: T[];
+	keys?: string[];
 };
 
 export type DataGridElements = {
@@ -53,7 +54,7 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	#rows: Map<string, DataGridTrBond<T>> = new SvelteMap();
 	#columns: Map<string, DataGridThBond<T>> = new SvelteMap();
 
-	#sortableColumns = $derived(this.#columns.values().filter((d) => d.state.props.sortable));
+	#sortableColumns = $derived([...this.#columns.values()].filter((d) => d.state.props.sortable));
 
 	#selectedRows = $derived(
 		(this.props.values ?? [])
@@ -70,11 +71,11 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	}
 
 	get rows() {
-		return new Map(this.#rows);
+		return this.#rows;
 	}
 
 	get columns() {
-		return new Map(this.#columns);
+		return this.#columns;
 	}
 
 	get selectedRows() {
@@ -88,11 +89,7 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	get template() {
 		return (
 			this.props.template ||
-			this.#columns
-				.values()
-				.map((col) => col.state.props.width)
-				.toArray()
-				.join(' ')
+			[...this.#columns.values()].map((col) => col.state.props.width).join(' ')
 		);
 	}
 
@@ -107,8 +104,8 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	}
 
 	mountRow(id: string, item: DataGridTrBond<T>) {
-		if (this.#rows.size && !this.props.value) {
-			this.props.value = item.state.props.value;
+		if (this.#rows.size && !this.props.values) {
+			this.props.values = [item.state.props.value as string];
 		}
 
 		this.#rows.set(id, item);
@@ -117,7 +114,43 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	}
 
 	unmountRow(id: string) {
+		// Don't delete bond from memory - keep it for reuse when row scrolls back into view
+		// This preserves selection state and other bond data during virtualization
+		// The factory pattern in datagrid-tr.svelte will reuse existing bonds
+		// Use clearStaleRows() when data source changes to cleanup orphaned bonds
+
 		this.#rows.delete(id);
+	}
+
+	/**
+	 * Removes bonds that are no longer in the valid dataset.
+	 * Call this when the data source changes (filter, search, refresh, etc.)
+	 * @param validIds - Array or Set of IDs that currently exist in the dataset
+	 */
+	clearStaleRows(validIds: string[]) {
+		const validIdSet = new Set(validIds);
+		const toDelete: string[] = [];
+
+		for (const id of this.#rows.keys()) {
+			if (!validIdSet.has(id)) {
+				toDelete.push(id);
+			}
+		}
+
+		for (const id of toDelete) {
+			this.#rows.delete(id);
+
+			// Also remove from selection if present
+			if (this.props.values?.includes(id)) {
+				this.props.values = this.props.values.filter((v) => v !== id);
+			}
+		}
+
+		if (this.props.values) {
+			this.props.values = this.props.values.filter((v) => !toDelete.includes(v));
+		}
+
+		return toDelete.length;
 	}
 
 	select(ids: string[]) {
@@ -127,7 +160,7 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 			sequence.add(id);
 		}
 
-		this.props.values = sequence.values().toArray();
+		this.props.values = [...sequence.values()];
 	}
 
 	unselect(ids: string[]) {
@@ -137,6 +170,6 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 			sequence.delete(id);
 		}
 
-		this.props.values = sequence.values().toArray();
+		this.props.values = [...sequence.values()];
 	}
 }

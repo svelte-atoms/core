@@ -49,6 +49,11 @@ export class DataGridTrBond<
 	}
 
 	unmount() {
+		// do not unmount if keys are used and this row is selected
+		if (this.datagrid.state.props.keys && this.state.isSelected) {
+			return;
+		}
+
 		return this.datagrid.state.unmountRow(this.state.id);
 	}
 

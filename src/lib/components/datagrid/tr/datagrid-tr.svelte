@@ -7,8 +7,11 @@
 	import { DataGridTrBond, DataGridTrBondState, type DataGridTrBondProps } from './bond.svelte';
 	import type { DatagridTrProps } from '../types';
 	import { type DatagridContext } from '../context';
+	import { DataGridBond } from '../bond.svelte';
 
 	import './datagrid-tr.css';
+
+	const datagridBond = DataGridBond.get();
 
 	let {
 		class: klass = '',
@@ -33,7 +36,7 @@
 		defineProperty('value', () => value),
 		defineProperty('header', () => header)
 	]);
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps).share());
 
 	const isHeader = $derived(bond?.state.isHeader ?? false);
 	const isSelected = $derived(bond.state.isSelected);
@@ -44,14 +47,24 @@
 	});
 
 	const unmount = untrack(() => {
-		if (!isHeader) {
-			return bond.mount();
+		// Header rows don't participate in the row registry
+		if (isHeader) {
+			return;
 		}
+
+		// Register this row in the datagrid's row map
+		// Note: unmounting doesn't delete the bond anymore, it just removes the DOM element
+		// This preserves selection state and other bond data during virtualization
+		return bond.mount();
 	});
 
 	$effect(() => unmount);
 
 	function _factory(props: typeof bondProps) {
+		if(datagridBond?.state.rows.has(value)){
+			return datagridBond.state.rows.get(value)!;
+		}
+
 		const datagridTrState = new DataGridTrBondState(() => props);
 		return new DataGridTrBond(datagridTrState);
 	}
@@ -71,7 +84,6 @@
 	class={[
 		'datagrid-tr border-border items-center border-b bg-transparent',
 		!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 transition-colors duration-100',
-		isHeader && 'header-tr',
 		isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6',
 		'$preset',
 		klass

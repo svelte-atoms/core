@@ -5,12 +5,14 @@
 	import type { DatagridRootProps } from './types';
 
 	import './datagrid.css';
+	import { untrack } from 'svelte';
 
 	let {
 		class: klass = '',
 		values = $bindable([]),
 		template = undefined,
 		fallbackTemplate = 'auto',
+		keys = undefined,
 		factory = _factory,
 		children = undefined,
 		onmount = undefined,
@@ -28,9 +30,24 @@
 			'values',
 			() => values,
 			(v) => (values = v)
-		)
+		),
+		defineProperty('keys', () => keys)
 	]);
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps).share());
+
+	// Automatic cleanup of stale bonds when keys change (e.g., data refresh, filter, search)
+	// Runs asynchronously to avoid blocking the main thread
+	$effect(() => {
+		if (keys && bond.state.rows.size > 0) {
+			// Defer to idle time to avoid blocking rendering/interactions
+			requestIdleCallback(() => {
+				const cleaned = bond.state.clearStaleRows(keys);
+				if (cleaned > 0) {
+					console.debug(`[DataGrid] Cleaned ${cleaned} stale row bonds`);
+				}
+			});
+		}
+	});
 
 	function _factory(props: typeof bondProps) {
 		const dataGridState = new DataGridBondState(() => props);
@@ -39,6 +56,14 @@
 
 	export function getBond() {
 		return bond;
+	}
+
+	/**
+	 * Cleanup stale row bonds when data changes.
+	 * Pass the current dataset IDs to remove bonds that no longer exist.
+	 */
+	export function clearStaleRows(validIds: string[] | Set<string>) {
+		return bond.state.clearStaleRows(validIds);
 	}
 </script>
 
