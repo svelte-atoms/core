@@ -13,13 +13,8 @@
 	let {
 		class: klass = '',
 		as = 'button' as T,
+		preset = 'dropdown.trigger',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: DropdownTriggerProps<T, B> = $props();
 </script>
@@ -27,14 +22,8 @@
 <Trigger
 	{as}
 	{bond}
-	preset="dropdown.trigger"
+	preset={preset}
 	class={['border-border relative flex h-auto min-h-10 flex-wrap items-center', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
 	{...restProps}
 >
 	{@render children?.({ dropdown: bond })}

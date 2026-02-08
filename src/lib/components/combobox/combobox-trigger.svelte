@@ -12,13 +12,8 @@
 	let {
 		class: klass = '',
 		as = 'button',
+		preset = 'combobox.trigger',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	} = $props();
 </script>
@@ -26,14 +21,8 @@
 <Trigger
 	{as}
 	{bond}
-	preset="dropdown.trigger"
+	preset={preset}
 	class={['border-border h-8 w-40', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	onclick={(ev: Event) => {
 		ev.preventDefault();
 
