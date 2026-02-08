@@ -18,7 +18,14 @@
 		children = undefined,
 		...restProps
 	}: IconProps<Src, E, B> & HTMLAttributes<Element> = $props();
+
+	const content = $derived(src ? sourceSnippet : children );
 </script>
+
+{#snippet sourceSnippet()}
+	{@const Src = src}
+	<Src />
+{/snippet}
 
 <HtmlAtom
 	{preset}
@@ -29,10 +36,5 @@
 	]}
 	{...restProps}
 >
-	{#if src}
-		{@const Src = src}
-		<Src />
-	{:else}
-		{@render children?.()}
-	{/if}
+	{@render content?.()}
 </HtmlAtom>
