@@ -20,16 +20,17 @@ export interface ElementProps<T extends ElementTagName> extends Record<string, u
 
 export type HtmlElementTagName = keyof HTMLElementTagNameMap;
 export type SvgElementTagName = keyof SVGElementTagNameMap;
-export type MathMLElementTagName = keyof MathMLElementTagNameMap;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {}
+export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {
+	children?: Snippet<[]>;
+}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface MathMLElementProps<T extends MathMLElementTagName> extends ElementProps<T> {}
+export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {
+	children?: Snippet<[]>;
+}
 
-export type ElementTagName = HtmlElementTagName | SvgElementTagName | MathMLElementTagName;
+export type ElementTagName = HtmlElementTagName | SvgElementTagName;
 
 export type HtmlElementType<T extends HtmlElementTagName> = HTMLElementTagNameMap[T];
 
@@ -39,9 +40,7 @@ export type ElementType<T> = T extends HtmlElementTagName
 	? HTMLElementTagNameMap[T]
 	: T extends SvgElementTagName
 		? SVGElementTagNameMap[T]
-		: T extends MathMLElementTagName
-			? MathMLElementTagNameMap[T]
-			: never;
+		: never;
 
 export type ElementAttributes<T extends ElementTagName> = T extends HtmlElementTagName
 	? HTMLAttributes<ElementType<T>>
@@ -50,7 +49,7 @@ export type ElementAttributes<T extends ElementTagName> = T extends HtmlElementT
 		: never;
 
 export interface TransitionFunction<T extends ElementTagName> {
-	(node: ElementType<T>): Partial<TransitionConfig>;
+	(node: ElementType<T>): Partial<TransitionConfig> | (() => Partial<TransitionConfig>);
 }
 
 export interface NodeFunction<T extends ElementTagName> {
