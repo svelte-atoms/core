@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
+	import { untrack, type Component } from 'svelte';
 	import type { LazyProps } from './types';
 
 	let { promise, children, loading, error, ...restProps }: LazyProps = $props();
@@ -8,13 +8,14 @@
 
 	let err = $state();
 
-	promise
+	untrack(() => promise
 		.then((c) => {
 			Lazy = c;
 		})
 		.catch((r) => {
 			err = r;
-		});
+		}
+	));
 </script>
 
 <Lazy {...restProps}>
@@ -22,7 +23,7 @@
 </Lazy>
 
 {#if err && error}
-	{@render error?.()}
+	{@render error?.(err)}
 {:else if !Lazy}
 	{@render loading?.()}
 {/if}
