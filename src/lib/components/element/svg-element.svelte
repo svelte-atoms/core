@@ -58,30 +58,31 @@
 			hasEntered = true;
 		},
 		...restProps
-	});
+	}) as Record<string, any>;
 
-	function _enter(node: Element) {
+	const transitionSnippet = $derived(global ? globalTransition : localTransition);
+
+	function enterTransition(node: Element) {
 		initial?.(node);
-		return () => {
-			const { duration = 0, delay = 0, easing = undefined } = enter?.(node) ?? {};
-			return { duration, delay, easing };
-		};
+		
+		return enter?.(node) ?? {};
 	}
 
-	function _exit(node: Element) {
-		return () => {
-			const { duration = 0, delay = 0, easing = undefined } = exit?.(node) ?? {};
-			return { duration, delay, easing };
-		};
+	function exitTransition(node: Element) {
+		return exit?.(node) ?? {};
 	}
 </script>
 
-{#if global}
-	<svelte:element this={as} in:_enter|global out:_exit|global {...elementProps}>
+{#snippet globalTransition()}
+	<svelte:element this={as} class={cn(toClassValue(klass))} in:enterTransition|global out:exitTransition|global {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
-{:else}
-	<svelte:element this={as} in:_enter out:_exit {...elementProps}>
+{/snippet}
+
+{#snippet localTransition()}
+	<svelte:element this={as} class={cn(toClassValue(klass))} in:enterTransition out:exitTransition {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
-{/if}
+{/snippet}
+
+{@render transitionSnippet()}
