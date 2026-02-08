@@ -14,12 +14,6 @@
 		as = 'button' as E,
 		preset = 'popover.trigger',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: PopoverTriggerProps<E, B> = $props();
 
@@ -34,12 +28,6 @@
 	{bond}
 	{preset}
 	class={['border-border flex w-fit cursor-pointer rounded-md p-2', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	type={as === 'button' ? 'button' : undefined}
 	{...triggerProps}
 >
