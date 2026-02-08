@@ -6,7 +6,7 @@
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
 	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
-	import { HtmlElement, MathmlElement, SvgElement } from '$svelte-atoms/core/components/element';
+	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
 	import L0Portal from './l0-portal.svelte';
 	import L1Portal from './l1-portal.svelte';
@@ -24,12 +24,10 @@
 
 	let html: typeof HtmlElement | undefined = $state(HtmlElement);
 	let svg: typeof SvgElement | undefined = $state(undefined);
-	let mathml: typeof MathmlElement | undefined = $state(undefined);
 
 	type Renderers = {
 		html?: typeof HtmlElement;
 		svg?: typeof SvgElement;
-		mathml?: typeof MathmlElement;
 	};
 
 	const renderers = defineState<Renderers>([
@@ -50,15 +48,6 @@
 			}
 
 			return svg;
-		}),
-		defineProperty('mathml', () => {
-			if (!mathml) {
-				import('$svelte-atoms/core/components/element/mathml-element.svelte').then((mod) => {
-					mathml = mod.default;
-				});
-			}
-
-			return mathml;
 		})
 	]);
 
