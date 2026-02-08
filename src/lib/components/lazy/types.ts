@@ -7,6 +7,6 @@ export interface LazyExtendProps {}
 export interface LazyProps extends HtmlAtomProps<'button'>, LazyExtendProps {
 	promise: Promise<Component>;
 	children?: Snippet;
-	error?: Snippet;
+	error?: Snippet<[error: unknown]>;
 	loading?: Snippet;
 }
