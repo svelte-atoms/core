@@ -41,14 +41,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Label &#125; from '@svelte-atoms/core/label';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the label appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the label appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Label components by defining presets in your
@@ -56,18 +63,22 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   label: () => ({
     class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
   })
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different label variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different label variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Label" description="Simple label with input" code={basicCode}>
 				<div class="max-w-sm space-y-2">
@@ -118,18 +129,24 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Label Props</h3>
 				<Props data={labelProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Always use for attribute to associate with input',
@@ -139,7 +156,7 @@ const preset = createPreset({
 				'Ensure sufficient color contrast'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Input', href: '/docs/components/input' }}

@@ -96,11 +96,9 @@
 		<!-- CTA Buttons -->
 		<div class="mb-12 flex flex-wrap items-center gap-4">
 			<Button size="lg" class="gap-2 px-6" onclick={() => goto('/docs/quick-start')}>
-				<Icon>
+				<Icon class="size-5">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="18"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -115,11 +113,9 @@
 				Get Started
 			</Button>
 			<Button variant="outline" size="lg" class="gap-2 px-6" onclick={() => goto('/docs')}>
-				<Icon>
+				<Icon class="size-5">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="18"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -139,11 +135,9 @@
 				class="gap-2 px-6"
 				onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}
 			>
-				<Icon>
+				<Icon class="size-5">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="18"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Section } from '$docs/components';
 
 	const keyboardExample = `${'<'}!-- Button component -->
 ${'<'}Button.Root>
@@ -361,14 +362,14 @@ ${'<'}/script>`;
 	</div>
 
 	<!-- Overview -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Overview</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+			<Section.Subtitle>
 				All components are designed with accessibility as a first-class concern, not an
 				afterthought.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -439,16 +440,16 @@ ${'<'}/script>`;
 				</Card.Root>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Keyboard Navigation -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Keyboard Navigation</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Keyboard Navigation</Section.Title>
+			<Section.Subtitle>
 				All interactive components support standard keyboard interactions out of the box.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -534,16 +535,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- ARIA Attributes -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">ARIA Attributes</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>ARIA Attributes</Section.Title>
+			<Section.Subtitle>
 				Components automatically manage ARIA attributes for roles, states, and relationships.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -657,17 +658,17 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Focus Management -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Focus Management</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Focus Management</Section.Title>
+			<Section.Subtitle>
 				Automatic focus trapping, restoration, and visible focus indicators for better keyboard
 				navigation.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Focus Features</h3>
@@ -756,16 +757,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Semantic HTML -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Semantic HTML</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Semantic HTML</Section.Title>
+			<Section.Subtitle>
 				Components use proper semantic HTML elements and can be customized with the `as` prop.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -788,16 +789,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Screen Reader Support -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Screen Reader Support</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Screen Reader Support</Section.Title>
+			<Section.Subtitle>
 				Proper labeling, announcements, and semantic structure for assistive technologies.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -877,16 +878,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Custom Attributes -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Custom ARIA Attributes</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Custom ARIA Attributes</Section.Title>
+			<Section.Subtitle>
 				Extend components with custom ARIA attributes using variants or props.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -909,16 +910,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Disabled States -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Disabled States</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Disabled States</Section.Title>
+			<Section.Subtitle>
 				Proper handling of disabled states with visual cues and ARIA attributes.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -944,16 +945,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Visual Indicators -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Focus Indicators</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Focus Indicators</Section.Title>
+			<Section.Subtitle>
 				Clear visual focus indicators for keyboard navigation users.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -979,14 +980,14 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Reduced Motion -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Reduced Motion Support</h2>
-			<p class="text-muted-foreground">Respect user preferences for reduced motion animations.</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Reduced Motion Support</Section.Title>
+			<Section.Subtitle>Respect user preferences for reduced motion animations.</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -1012,16 +1013,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Color Contrast -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Color Contrast</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Color Contrast</Section.Title>
+			<Section.Subtitle>
 				All theme colors meet WCAG AA standards for color contrast ratios.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -1044,16 +1045,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Testing -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Accessibility Testing</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility Testing</Section.Title>
+			<Section.Subtitle>
 				Test accessibility with automated tools and manual keyboard/screen reader testing.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Testing Checklist</h3>
@@ -1149,16 +1150,16 @@ ${'<'}/script>`;
 				</div>
 			</Card.Body>
 		</Card.Root>
-	</section>
+	</Section.Root>
 
 	<!-- Best Practices -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Best Practices</Section.Title>
+			<Section.Subtitle>
 				Guidelines for building accessible applications with @svelte-atoms/core.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-3">
 			<Card.Root class="border-border/50 border">
@@ -1287,5 +1288,4 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
-</div>
+	</Section.Root>

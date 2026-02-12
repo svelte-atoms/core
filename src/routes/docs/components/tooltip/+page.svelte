@@ -47,7 +47,10 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Tooltip &#125; from '@svelte-atoms/core/tooltip';"
@@ -77,9 +80,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different tooltip variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different tooltip variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Tooltip" description="Simple tooltip on hover" code={basicCode}>
 				<Tooltip.Root>
@@ -135,9 +142,12 @@ setPreset({
 				</Tooltip.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Root</h3>
@@ -212,9 +222,12 @@ setPreset({
 				/>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Uses aria-describedby for association',

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import LinkCard from '$docs/components/link-card.svelte';
+	import { Section } from '$docs/components';
 </script>
 
 {#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
@@ -29,14 +30,14 @@
 	</div>
 
 	<!-- What Are Bonds -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">What Are Bonds?</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>What Are Bonds?</Section.Title>
+			<Section.Subtitle>
 				Bonds are class-based state containers designed for building compound components that need
 				to share state across multiple parts.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-4">
 			<p class="text-muted-foreground leading-relaxed">
@@ -59,17 +60,17 @@
 				advanced features like focus management, positioning, and animations.
 			</p>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Creating a Bond -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="mb-4">
-			<h2 class="mb-2 text-3xl font-bold">Creating a Bond</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Creating a Bond</Section.Title>
+			<Section.Subtitle>
 				Creating a bond requires four key pieces: a Bond class, a BondState class, bond state props
 				definition, and bond HTML element types.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		{@render SectionCard(
 			'1. Define Bond State Props',
@@ -230,16 +231,16 @@ export class MyComponentBond<
   </div>
 </div>`
 		)}
-	</section>
+	</Section.Root>
 
 	<!-- Key Features -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Key Features</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Key Features</Section.Title>
+			<Section.Subtitle>
 				Bonds provide several advantages over traditional state management approaches.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-4 md:grid-cols-2">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -392,16 +393,16 @@ export class MyComponentBond<
 				</div>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Bond Architecture -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Bond Architecture</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Bond Architecture</Section.Title>
+			<Section.Subtitle>
 				Understanding the two-part Bond architecture and how the pieces work together.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-6">
 			{@render SectionCard(
@@ -507,16 +508,16 @@ const state = new DialogBondState(() => bondProps);`,
 				'Props are passed as a function to BondState, enabling fine-grained reactivity. Use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">defineState</code> helper for bindable props.'
 			)}
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Using Bonds in Components -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Using Bonds in Components</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Using Bonds in Components</Section.Title>
+			<Section.Subtitle>
 				Bonds are typically created in root components and shared via context to child components.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-6">
 			{@render SectionCard(
@@ -604,16 +605,16 @@ function _factory(props) {
 				'Parent components can access child bonds via exported <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">getBond()</code> methods.'
 			)}
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- When to Use Bonds -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">When to Use Bonds</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>When to Use Bonds</Section.Title>
+			<Section.Subtitle>
 				Bonds are powerful but not always necessary. Here's when to use them.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-4 md:grid-cols-2">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -746,14 +747,14 @@ function _factory(props) {
 				> variable is often clearer. Don't over-engineer.
 			</Alert.Content>
 		</Alert.Root>
-	</section>
+	</Section.Root>
 
 	<!-- Best Practices -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground">Guidelines for working effectively with Bonds.</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Best Practices</Section.Title>
+			<Section.Subtitle>Guidelines for working effectively with Bonds.</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-4 md:grid-cols-2">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -816,16 +817,16 @@ function _factory(props) {
 				</p>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Learn More -->
-	<section>
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Learn More</h2>
-			<p class="text-muted-foreground">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Learn More</Section.Title>
+			<Section.Subtitle>
 				Ready to dive deeper into Bonds and the architecture behind them?
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-5 sm:grid-cols-2">
 			<LinkCard
@@ -878,5 +879,5 @@ function _factory(props) {
 				{/snippet}
 			</LinkCard>
 		</div>
-	</section>
+	</Section.Root>
 </div>

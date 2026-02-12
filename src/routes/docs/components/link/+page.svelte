@@ -38,14 +38,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Link &#125; from '@svelte-atoms/core/link';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the link appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the link appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Link components by defining presets in your
@@ -53,9 +60,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   link: () => ({
     class: 'text-primary underline-offset-4 hover:underline transition-colors',
     variants: {
@@ -72,9 +79,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different link variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different link variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Link" description="Simple internal link" code={basicCode}>
 				<Link href="/docs">Documentation</Link>
@@ -108,18 +119,24 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Link Props</h3>
 				<Props data={linkProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Use meaningful link text',

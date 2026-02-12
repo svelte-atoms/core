@@ -80,14 +80,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; List &#125; from '@svelte-atoms/core/list';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the list appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the list appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for List components by defining presets in your
@@ -137,9 +144,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different list variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different list variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic List" description="Simple unordered list" code={basicCode}>
 				<List.Root class="space-y-2">
@@ -273,9 +284,12 @@ setPreset({
 				</List.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">List.Root</h3>
@@ -385,9 +399,12 @@ setPreset({
 				/>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Use semantic ul or ol elements',

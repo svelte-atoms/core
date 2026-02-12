@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Section } from '$docs/components';
 
 	const globalPresetCode = `// +layout.svelte (App Root)
 import { setPreset } from '@svelte-atoms/core/context';
@@ -309,13 +310,13 @@ setPreset({
 	</div>
 
 	<!-- Overview -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Overview</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+			<Section.Subtitle>
 				Define default styles, variants, and behaviors at any level of your application hierarchy.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-muted-foreground leading-relaxed">
 			The Preset System is a sophisticated theming mechanism that uses Svelte's context system
@@ -382,52 +383,52 @@ setPreset({
 				</Card.Root>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Global Preset -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Global Preset Configuration</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Global Preset Configuration</Section.Title>
+			<Section.Subtitle>
 				Define base theme at application root for consistent styling.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		{@render SectionCard('App Root Configuration', globalPresetCode)}
-	</section>
+	</Section.Root>
 
 	<!-- Route-Level Override -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Route-Level Overrides</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Route-Level Overrides</Section.Title>
+			<Section.Subtitle>
 				Extend or override presets for specific routes and sections.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		{@render SectionCard('Route Layout Override', routePresetCode)}
-	</section>
+	</Section.Root>
 
 	<!-- Component-Level -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Component-Level Customization</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Component-Level Customization</Section.Title>
+			<Section.Subtitle>
 				Scope presets to specific component trees without affecting global theme.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		{@render SectionCard('Component Scoped Preset', componentPresetCode)}
-	</section>
+	</Section.Root>
 
 	<!-- Compound Components -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Compound Component Presets</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Compound Component Presets</Section.Title>
+			<Section.Subtitle>
 				Configure nested components using dot notation for precise control.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-muted-foreground text-sm leading-relaxed">
 			Use dot notation to style compound components and their children. This is especially powerful
@@ -441,16 +442,16 @@ setPreset({
 			compoundPresetCode,
 			"Use dot notation to style compound components and their children. This is especially powerful for components like Alert, Card, Dialog, and Accordion. The pattern is <code class='bg-muted text-foreground rounded px-1.5 py-0.5 text-xs'>'parent.child'</code> for precise styling control."
 		)}
-	</section>
+	</Section.Root>
 
 	<!-- Reactive State -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Reactive State-Based Styling</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Reactive State-Based Styling</Section.Title>
+			<Section.Subtitle>
 				Access component state for dynamic, reactive preset styling.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-muted-foreground text-sm leading-relaxed">
 			Preset functions receive the component's bond as a parameter, giving you access to the
@@ -468,28 +469,28 @@ setPreset({
 }`,
 			"Preset functions receive the component's bond as a parameter, giving you access to the component's reactive state. Use this to create dynamic styles that update automatically when component state changes. The function returns another function that returns the preset object, allowing for reactive class computation based on bond state."
 		)}
-	</section>
+	</Section.Root>
 
 	<!-- The $preset Placeholder -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">The $preset Placeholder</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>The $preset Placeholder</Section.Title>
+			<Section.Subtitle>
 				Control exactly where preset classes are inserted in your class arrays.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		{@render SectionCard('Placeholder Usage', placeholderCode)}
-	</section>
+	</Section.Root>
 
 	<!-- Additional Attributes -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Setting HTML Attributes</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Setting HTML Attributes</Section.Title>
+			<Section.Subtitle>
 				Presets can define any HTML attributes, not just classes.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="mb-4">
 			<Card.Body class="p-6">
@@ -565,16 +566,16 @@ setPreset({
 		</Card.Root>
 
 		{@render SectionCard('Attribute Configuration', attributesCode)}
-	</section>
+	</Section.Root>
 
 	<!-- Extending Presets -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Extending & Composing Presets</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Extending & Composing Presets</Section.Title>
+			<Section.Subtitle>
 				Build upon existing preset definitions with deep merging.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-muted-foreground leading-relaxed">
 			The preset system uses deep merging to combine configurations across context layers. This
@@ -587,16 +588,16 @@ setPreset({
 			extendingCode,
 			'The preset system uses deep merging to combine configurations across context layers. This allows you to extend base presets with new variants, sizes, or completely new preset keys without losing existing definitions.'
 		)}
-	</section>
+	</Section.Root>
 
 	<!-- Best Practices -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Best Practices</Section.Title>
+			<Section.Subtitle>
 				Guidelines for effective preset usage and patterns.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="mb-6">
 			{@render SectionCard("Best Practices - Do's and Don'ts", bestPracticesCode)}
@@ -709,14 +710,14 @@ setPreset({
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Use Cases -->
-	<section class="mb-16 flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">Common Use Cases</h2>
-			<p class="text-muted-foreground text-sm">Real-world scenarios where presets excel.</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Common Use Cases</Section.Title>
+			<Section.Subtitle>Real-world scenarios where presets excel.</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-4 sm:grid-cols-2">
 			<Card.Root class="">
@@ -775,14 +776,14 @@ setPreset({
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- API Reference -->
-	<section class="flex flex-col gap-4">
-		<div class="">
-			<h2 class="mb-2 text-3xl font-bold">API Reference</h2>
-			<p class="text-muted-foreground text-sm">Core functions and types for the preset system.</p>
-		</div>
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+			<Section.Subtitle>Core functions and types for the preset system.</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-4">
 			<Card.Root class="">
@@ -859,5 +860,5 @@ setPreset({
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
+	</Section.Root>
 </div>

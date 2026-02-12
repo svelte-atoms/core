@@ -65,14 +65,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Tree &#125; from '@svelte-atoms/core/tree';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the tree appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the tree appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Tree components by defining presets in your
@@ -95,9 +102,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different tree variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different tree variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Tree" description="Collapsible tree structure" code={basicCode}>
 				<Tree.Root class="max-w-md space-y-2" open>
@@ -139,9 +150,12 @@ setPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Root Props</h3>
@@ -156,9 +170,12 @@ setPreset({
 				<Props data={treeBodyProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'ARIA tree role',

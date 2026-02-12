@@ -66,7 +66,10 @@
 		status="stable"
 	/>
 
-	<Section title="Overview">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+		</Section.Header>
 		<Alert.Root variant="info">
 			<Alert.Title>Why Stack?</Alert.Title>
 			<Alert.Content class="text-foreground/70">
@@ -100,16 +103,23 @@
 				</div>
 			</Alert.Content>
 		</Alert.Root>
-	</Section>
+	</Section.Root>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Stack &#125; from '@svelte-atoms/core/stack';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the stack appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the stack appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Stack components by defining presets in your
@@ -134,9 +144,13 @@ setPreset({
 // Use z-index or DOM order to control stacking order.`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different stack layering patterns">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different stack layering patterns</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Image with Overlay"
@@ -194,9 +208,12 @@ setPreset({
 				</Stack.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Root</h3>
@@ -237,22 +254,21 @@ setPreset({
 				/>
 			</div>
 		</div>
-	</Section>
+</Section.Root>
 
-	<Section title="Accessibility">
-		<AccessibilityInfo
-			features={[
-				'Semantic HTML structure',
-				'Uses CSS Grid for proper layering',
-				'Maintains DOM order for screen readers',
-				'Works with absolute positioning and z-index',
-				'Keyboard navigation preserves natural tab order'
-			]}
-		/>
-	</Section>
-
-	<PageNavigation
-		prev={{ label: 'Sidebar', href: '/docs/components/sidebar' }}
-		next={{ label: 'Tabs', href: '/docs/components/tabs' }}
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Accessibility</Section.Title>
+	</Section.Header>
+	<AccessibilityInfo
+		features={[
+			'Semantic HTML structure',
+			'Uses CSS Grid for proper layering',
+			'Maintains DOM order for screen readers',
+			'Works with absolute positioning and z-index',
+			'Keyboard navigation preserves natural tab order'
+		]}
+	/>
+</Section.Root>
 	/>
 </div>

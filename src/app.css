@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import './lib/components/root/root.css';
+@source '../src/**/*.{html,js,svelte,ts,md,mdx}';
+@source '../stories/**/*.{html,js,svelte,ts,mdx}';
 
 :root {
 	--palette-black: oklch(0.15 0 0);
@@ -152,3 +155,4 @@
 	--color-palette-beta: var(--palette-beta);
 	--color-palette-isotope: var(--palette-isotope);
 }
+

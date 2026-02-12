@@ -1,6 +1,6 @@
 export { default as PageHeader } from './page-header.svelte';
 export { default as Breadcrumb } from './breadcrumb.svelte';
-export { default as Section } from './section.svelte';
+export * from './section';
 export { default as Installation } from './import-code.svelte';
 export { default as FeatureGrid } from './feature-grid.svelte';
 export { default as AccessibilityInfo } from './accessibility-info.svelte';

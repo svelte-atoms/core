@@ -104,14 +104,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Form, Field &#125; from '@svelte-atoms/core/form';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the form appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the form appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Form and Field components by defining presets in
@@ -140,9 +147,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different form variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different form variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Form" description="Simple form with text inputs" code={basicCode}>
 				<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
@@ -207,9 +218,12 @@ setPreset({
 				</Form>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			{#each formProps as prop (prop.name)}
 				<div>
@@ -219,9 +233,12 @@ setPreset({
 				</div>
 			{/each}
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper semantic form and input elements',
@@ -232,7 +249,7 @@ setPreset({
 				'Support for required and optional fields'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Dropdown', href: '/components/dropdown' }}

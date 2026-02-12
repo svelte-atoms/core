@@ -97,14 +97,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Stepper, Step &#125; from '@svelte-atoms/core/stepper';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the stepper appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the stepper appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Stepper components by defining presets in your
@@ -142,9 +149,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different stepper variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different stepper variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Stepper" description="Simple horizontal stepper" code={basicCode}>
 				<Stepper.Root bind:step={activeStep} linear={true}>
@@ -271,9 +282,12 @@ setPreset({
 				</Stepper.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Component Structure">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Component Structure</Section.Title>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				The Stepper component consists of two main parts:
@@ -305,13 +319,19 @@ setPreset({
 				</div>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Properties">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Properties</Section.Title>
+		</Section.Header>
 		<Props component="stepper" />
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Keyboard navigation support',
@@ -320,5 +340,5 @@ setPreset({
 				'Screen reader announcements for step changes'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 </div>

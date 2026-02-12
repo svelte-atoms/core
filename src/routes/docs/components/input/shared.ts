@@ -1,0 +1,131 @@
+const basicCode = `
+<Input.Root>
+  <Input.Control placeholder="Enter text..." />
+</Input.Root>`.trim();
+
+const typesCode = `
+<Input.Root>
+  <Input.Control type="text" placeholder="Text input" />
+</Input.Root>
+
+<Input.Root>
+  <Input.Control type="email" placeholder="Email input" />
+</Input.Root>
+
+<Input.Root>
+  <Input.Control type="password" placeholder="Password input" />
+</Input.Root>
+
+<Input.Root>
+  <Input.Control type="number" placeholder="Number input" />
+</Input.Root>`.trim();
+
+const withIconCode = `
+<Input.Root>
+  <Input.Icon>$</Input.Icon>
+  <Input.Control placeholder="0.00" />
+  <Input.Icon>.00</Input.Icon>
+</Input.Root>`.trim();
+
+const withPlaceholderCode = `
+<Input.Root>
+  <Input.Control />
+  <Input.Placeholder>Enter your email...</Input.Placeholder>
+</Input.Root>`.trim();
+
+const presetCode = `
+import { setPreset } from '@svelte-atoms/core';
+
+const preset = setPreset({
+  input: () => ({
+    class: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+  })
+});
+`.trim();
+
+const accessibilityFeatures = [
+	'Proper label association with for/id',
+	'Error message linking with aria-describedby',
+	'Keyboard accessible',
+	'Focus visible indicators',
+	'Screen reader friendly'
+];
+
+const useCases = [
+	{
+		title: 'Form Data Entry',
+		description:
+			'Collect user information in registration forms, profile updates, and data entry workflows.'
+	},
+	{
+		title: 'Search Functionality',
+		description:
+			'Enable search queries in navigation bars, data tables, and content discovery interfaces.'
+	},
+	{
+		title: 'Authentication',
+		description:
+			'Capture credentials like email, username, and password in login and signup flows.'
+	},
+	{
+		title: 'Settings and Configuration',
+		description:
+			'Allow users to customize application settings, preferences, and account details.'
+	},
+	{
+		title: 'Numeric Input',
+		description:
+			'Gather numeric data like quantities, prices, ages, or measurements with validation.'
+	},
+	{
+		title: 'File Uploads',
+		description:
+			'Enable file selection and upload functionality with the file input type variant.'
+	}
+];
+
+const componentsSummary = [
+	{
+		name: 'Input.Root',
+		description:
+			'Container component that provides the input structure and manages child components.'
+	},
+	{
+		name: 'Input.Control',
+		description:
+			'The actual input element that accepts user text entry with various type options.'
+	},
+	{
+		name: 'Input.Icon',
+		description:
+			'Optional icon or prefix/suffix element displayed alongside the input control.'
+	},
+	{
+		name: 'Input.Placeholder',
+		description:
+			'Animated placeholder label that floats above the input when focused or filled.'
+	}
+];
+
+export const metadata = {
+	title: 'Input - Svelte Atoms',
+	description: 'Text input component for forms and user data entry.',
+	componentTitle: 'Input',
+	componentDescription:
+		'A flexible input component supporting various types, icons, and validation states for text entry.',
+	componentType: 'compound' as const,
+	status: 'stable' as const,
+	packageName: '@svelte-atoms/core',
+	importCode: "import { Input } from '@svelte-atoms/core';",
+	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Input' }],
+	useCases,
+	componentsSummary,
+	examples: {
+		basic: basicCode,
+		types: typesCode,
+		withIcon: withIconCode,
+		withPlaceholder: withPlaceholderCode,
+		preset: presetCode
+	},
+	accessibility: accessibilityFeatures
+};

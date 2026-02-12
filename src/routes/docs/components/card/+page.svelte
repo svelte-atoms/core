@@ -83,14 +83,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Card &#125; from '@svelte-atoms/core/card';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the card appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the card appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Card components by defining presets in your
@@ -98,9 +105,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   card: () => ({
     class: 'rounded-lg border border-border bg-background text-foreground shadow-sm',
     variants: {
@@ -132,9 +139,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different card variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different card variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Card"
@@ -212,18 +223,24 @@ const preset = createPreset({
 				</Card.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Card.Root Props</h3>
 				<Props data={cardRootProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper semantic HTML structure',
@@ -233,7 +250,7 @@ const preset = createPreset({
 				'Screen reader support for card content'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Button', href: '/docs/components/button' }}

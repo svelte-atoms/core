@@ -147,14 +147,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Alert &#125; from '@svelte-atoms/core/alert';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the alert appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the alert appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Alert components by defining presets in your
@@ -162,9 +169,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   alert: () => ({
     class: 'relative gap-1 rounded-md border p-4 transition-all duration-200',
     variants: {
@@ -242,9 +249,13 @@ const preset = createPreset({
 				</ul>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different alert variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different alert variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Alert"
@@ -431,9 +442,12 @@ const preset = createPreset({
 				</Alert.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Root Props</h3>
@@ -465,9 +479,12 @@ const preset = createPreset({
 				<Props data={alertIconProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Uses appropriate ARIA role attributes',
@@ -478,7 +495,7 @@ const preset = createPreset({
 				'Support for assistive technologies'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Accordion', href: '/docs/components/accordion' }}

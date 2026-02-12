@@ -18,87 +18,38 @@
 		accordionItemBodyProps,
 		accordionItemIndicatorProps
 	} from './props';
-
-	const basicAccordionCode = `<Accordion>
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      What is Atomic SV?
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Atomic SV is a modular, accessible, and extensible 
-      Svelte UI component library built with Svelte 5.
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      How do I install it?
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Simply run npm install atomic-sv
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`;
-
-	const collapsibleAccordionCode = `<Accordion>
-  <AccordionItem.Root collapsible>
-    <AccordionItem.Header>
-      What is Atomic SV?
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Atomic SV is a modular, accessible, and extensible 
-      Svelte UI component library built with Svelte 5.
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      How do I install it?
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Simply run npm install atomic-sv
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`;
-
-	const multipleCode = `<Accordion multiple={true}>
-  <AccordionItem.Root>
-    <AccordionItem.Header>Section 1</AccordionItem.Header>
-    <AccordionItem.Body>Content 1</AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>Section 2</AccordionItem.Header>
-    <AccordionItem.Body>Content 2</AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`;
+	import { metadata } from './shared';
 </script>
 
 <svelte:head>
-	<title>Accordion - Atomic SV</title>
-	<meta name="description" content="Collapsible content sections for organizing information." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/components' }, { label: 'Accordion' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Accordion"
-		description="Collapsible content sections for organizing information. Perfect for FAQs, settings panels, and content organization."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Accordion, AccordionItem &#125; from '@svelte-atoms/core/accordion';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the accordion appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the accordion appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Accordion components by defining presets in your
@@ -106,32 +57,21 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
-
-const preset = createPreset({
-  accordion: () => ({
-    class: 'divide-y divide-border rounded-lg border border-border'
-  }),
-  'accordion.item': () => ({
-    class: ''
-  }),
-  'accordion.item.header': () => ({
-    class: 'flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium hover:bg-accent/50 transition-colors'
-  }),
-  'accordion.item.body': () => ({
-    class: 'px-4 py-3 text-sm text-muted-foreground'
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different accordion variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different accordion variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Accordion"
 				description="Simple accordion with collapsible sections"
-				code={basicAccordionCode}
+				code={metadata.examples.basic}
 			>
 				<div class="flex h-96 w-full items-center justify-center">
 					<Accordion class="border-border overflow-hidden rounded-lg border">
@@ -175,7 +115,7 @@ const preset = createPreset({
 			<DemoExample
 				title="Collapsible Accordion"
 				description="Simple accordion with collapsible sections"
-				code={collapsibleAccordionCode}
+				code={metadata.examples.collapsible}
 			>
 				<div class="flex h-96 w-full items-center justify-center">
 					<Accordion class="border-border overflow-hidden rounded-lg border" collapsible>
@@ -219,7 +159,7 @@ const preset = createPreset({
 			<DemoExample
 				title="Multiple Mode"
 				description="Allow multiple sections to be open at once"
-				code={multipleCode}
+				code={metadata.examples.multiple}
 			>
 				<div class="flex h-96 w-full items-center justify-center">
 					<Accordion multiple={true} class="border-border overflow-hidden rounded-lg border">
@@ -244,9 +184,12 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="bg-muted/50 border-border mb-6 rounded-lg border p-4">
 			<div class="flex items-start gap-3">
 				<svg
@@ -304,9 +247,12 @@ const preset = createPreset({
 				<Props data={accordionItemIndicatorProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper ARIA attributes (aria-expanded, aria-controls, etc.)',
@@ -317,7 +263,7 @@ const preset = createPreset({
 				'Respects prefers-reduced-motion setting'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Back to Components', href: '/components' }}

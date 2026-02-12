@@ -62,12 +62,15 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Input &#125; from '@svelte-atoms/core/input';"
 		/>
-	</Section>
+	</Section.Root>
 
 	<Alert.Root variant="info" class="my-8">
 		<Alert.Title>Why a Compound Component?</Alert.Title>
@@ -83,7 +86,11 @@
 		</Alert.Content>
 	</Alert.Root>
 
-	<Section title="Preset Configuration" description="Customize the input appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the input appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Input components by defining presets in your
@@ -91,9 +98,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   input: () => ({
     class: 'flex items-center gap-0 rounded-md border border-border bg-background'
   }),
@@ -113,9 +120,13 @@ const preset = createPreset({
 				Icon, and Placeholder.
 			</p>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different input variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different input variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Input" description="Simple text input" code={basicCode}>
 				<Input.Root class="max-w-sm">
@@ -187,9 +198,12 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Input.Root</h3>
@@ -349,9 +363,12 @@ const preset = createPreset({
 				<Props data={inputControlProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 	<!-- 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper label association with for/id',
@@ -361,7 +378,7 @@ const preset = createPreset({
 				'Screen reader friendly'
 			]}
 		/>
-	</Section> -->
+	</Section.Root> -->
 
 	<PageNavigation
 		prev={{ label: 'Form', href: '/docs/components/form' }}

@@ -2,6 +2,7 @@
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
 	import { Alert } from '$svelte-atoms/core/components/alert';
+	import { Section } from '$docs/components';
 
 	const tailwindExample = `<!-- Layout & spacing -->
 <Card.Root class="max-w-sm p-4">
@@ -227,14 +228,14 @@ ${'<'}/div>`;
 	</div>
 
 	<!-- Overview -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Overview</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+			<Section.Subtitle>
 				The styling system combines utility-first CSS with powerful variant definitions and global
 				theming.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-muted-foreground leading-relaxed">
 			All components accept a <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
@@ -284,16 +285,16 @@ ${'<'}/div>`;
 				</Card.Root>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- TailwindCSS -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">TailwindCSS Utilities</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>TailwindCSS Utilities</Section.Title>
+			<Section.Subtitle>
 				Use Tailwind utility classes for 90% of your styling needs with full responsive support.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -304,16 +305,16 @@ ${'<'}/div>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- cn() Utility -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">The cn() Utility</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>The cn() Utility</Section.Title>
+			<Section.Subtitle>
 				Intelligent class merging with automatic conflict resolution using clsx and tailwind-merge.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -331,13 +332,13 @@ ${'<'}/div>`;
 				<pre class="text-xs leading-relaxed"><code class="text-foreground">{cnExample}</code></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Color Tokens -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">CSS Custom Properties</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>CSS Custom Properties</Section.Title>
+			<Section.Subtitle>
 				Use theme color tokens for consistent, theme-aware styling across your application. The
 				library uses a token system following <a
 					href="https://ui.shadcn.com/docs/theming"
@@ -345,8 +346,8 @@ ${'<'}/div>`;
 					rel="noopener noreferrer"
 					class="text-primary hover:underline">shadcn/ui</a
 				> conventions for maximum compatibility and familiarity.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="mb-6 ">
 			<Card.Body class="">
@@ -444,17 +445,17 @@ ${'<'}/div>`;
 		</Card.Root>
 
 		{@render SectionCard('Color Token Usage', colorTokensExample)}
-	</section>
+	</Section.Root>
 
 	<!-- Conditional Classes -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Conditional Styling</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Conditional Styling</Section.Title>
+			<Section.Subtitle>
 				Apply classes conditionally based on component state or props using arrays and ternary
 				operators.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -466,16 +467,16 @@ ${'<'}/div>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Variant System -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Variant System</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Variant System</Section.Title>
+			<Section.Subtitle>
 				Define reusable component variants with full TypeScript support and bond state access.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Alert.Root variant="info">
 			<Alert.Title>Local vs Global Variants</Alert.Title>
@@ -601,16 +602,16 @@ ${'<'}/div>`;
 				</Card.Root>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Compound Variants -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Compound Variants</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Compound Variants</Section.Title>
+			<Section.Subtitle>
 				Apply additional styling when multiple variant conditions match simultaneously.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -629,16 +630,16 @@ ${'<'}/div>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Reactive Variants -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Reactive Variants</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Reactive Variants</Section.Title>
+			<Section.Subtitle>
 				Access component bond state for dynamic, reactive variant styling.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -659,16 +660,16 @@ ${'<'}/div>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Preset Placeholder -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">The $preset Placeholder</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>The $preset Placeholder</Section.Title>
+			<Section.Subtitle>
 				Control exactly where preset classes are inserted in your class arrays.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
@@ -688,17 +689,17 @@ ${'<'}/div>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Inline Styles -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Inline Styles</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Inline Styles</Section.Title>
+			<Section.Subtitle>
 				Use inline styles sparingly, only for truly dynamic values that cannot be expressed with
 				classes.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<p class="text-sm leading-relaxed">
 			Inline styles should be reserved for values that change frequently or cannot be predetermined,
@@ -750,16 +751,16 @@ ${'<'}/div>`;
 				</div>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Best Practices -->
-	<section class="grid gap-6">
-		<div class="grid gap-1">
-			<h2 class="text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground text-sm">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Best Practices</Section.Title>
+			<Section.Subtitle>
 				Guidelines for effective styling that leads to maintainable, performant applications.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-3 md:grid-cols-2">
 			<Card.Root class="">
@@ -891,5 +892,5 @@ ${'<'}/div>`;
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
+	</Section.Root>
 </div>
