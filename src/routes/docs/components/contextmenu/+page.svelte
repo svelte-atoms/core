@@ -186,11 +186,10 @@ const preset = createPreset({
 							Right-click me
 						</div>
 					</ContextMenu.Trigger>
-				<ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+				<ContextMenu.List class="min-w-48 p-1">
 						<ContextMenu.Item>Copy</ContextMenu.Item>
 						<ContextMenu.Item>Paste</ContextMenu.Item>
-						<ContextMenu.Divider />
-						<ContextMenu.Item class="text-destructive">Delete</ContextMenu.Item>
+						<ContextMenu.Item class="text-destructive border-transparent">Delete</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 			</DemoExample>
@@ -215,7 +214,7 @@ const preset = createPreset({
 							</ContextMenu.Title>
 							<ContextMenu.Item>Cut</ContextMenu.Item>
 							<ContextMenu.Item>Copy</ContextMenu.Item>
-							<ContextMenu.Item>Paste</ContextMenu.Item>
+							<ContextMenu.Item class="border-transparent">Paste</ContextMenu.Item>
 						</ContextMenu.Group>
 						<ContextMenu.Divider />
 						<ContextMenu.Group>
@@ -223,7 +222,7 @@ const preset = createPreset({
 								Actions
 							</ContextMenu.Title>
 							<ContextMenu.Item>Rename</ContextMenu.Item>
-							<ContextMenu.Item class="text-destructive">Delete</ContextMenu.Item>
+							<ContextMenu.Item class="text-destructive border-transparent">Delete</ContextMenu.Item>
 						</ContextMenu.Group>
 					</ContextMenu.List>
 				</ContextMenu.Root>
@@ -249,8 +248,7 @@ const preset = createPreset({
 						<ContextMenu.Item onclick={() => alert('Action 2 clicked')}>
 							Action 2
 						</ContextMenu.Item>
-						<ContextMenu.Divider />
-						<ContextMenu.Item onclick={() => (open = false)}>Close Menu</ContextMenu.Item>
+						<ContextMenu.Item class="border-transparent" onclick={() => (open = false)}>Close Menu</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 
@@ -286,9 +284,8 @@ const preset = createPreset({
 				<ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
 						<ContextMenu.Item>View Profile</ContextMenu.Item>
 						<ContextMenu.Item>Send Message</ContextMenu.Item>
-						<ContextMenu.Divider />
 						<ContextMenu.Item>Edit</ContextMenu.Item>
-						<ContextMenu.Item class="text-destructive">Remove</ContextMenu.Item>
+						<ContextMenu.Item class="text-destructive border-transparent">Remove</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 			</DemoExample>
