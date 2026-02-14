@@ -52,6 +52,7 @@ export type TriggerParams = {
 
 export type PopoverDomElements = {
 	trigger: HTMLElement;
+	virtualTrigger: HTMLElement;
 	content: HTMLElement;
 	indicator: HTMLElement;
 	arrow: HTMLElement;
@@ -61,7 +62,8 @@ const POPOVER_ELEMENTS_KIND: Record<keyof PopoverDomElements, string> = {
 	trigger: 'popover-trigger',
 	content: 'popover-content',
 	indicator: 'popover-indicator',
-	arrow: 'popover-arrow'
+	arrow: 'popover-arrow',
+	virtualTrigger: 'popover-trigger'
 };
 
 export class PopoverBond<
@@ -165,7 +167,7 @@ export class PopoverBond<
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.content = node;
 
-				const triggerElement = this.elements.trigger;
+				const triggerElement = this.elements.virtualTrigger ?? this.elements.trigger;
 
 				if (!triggerElement) {
 					return;
@@ -283,12 +285,14 @@ function popover(bond: PopoverBond) {
 	return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
 		const { offset: ofs, placements, placement } = bond.state.props;
 
+		const content = bond.elements.content;
+		const trigger = bond.elements.virtualTrigger ?? bond.elements.trigger;
+		const arrowElement = bond.elements.arrow;
+
 		// Guard: ensure required elements exist
-		if (!bond.elements.content || !bond.elements.trigger) {
+		if (!content || !trigger) {
 			return;
 		}
-
-		const { content, trigger, arrow: arrowElement } = bond.elements;
 
 		// Build middleware stack
 		const middleware: ComputePositionConfig['middleware'] = [
