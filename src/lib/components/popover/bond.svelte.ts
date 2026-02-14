@@ -46,11 +46,11 @@ export type TriggerParams = {
 
 export type PopoverDomElements = {
 	trigger: HTMLElement;
+	virtualTrigger: HTMLElement;
 	content: HTMLElement;
 	indicator: HTMLElement;
 	arrow: HTMLElement;
 };
-
 export class PopoverBond<
 	Props extends PopoverStateProps = PopoverStateProps,
 	State extends PopoverState<Props> = PopoverState<Props>,
