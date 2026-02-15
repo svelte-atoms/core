@@ -12,15 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { dividerProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Divider />`;
-
-	const orientationCode = `<Divider orientation="horizontal" />
-<Divider orientation="vertical" />`;
-
-	const labelCode = `<Divider>
-  <span>OR</span>
-</Divider>`;
+	const { basic: basicCode, orientation: orientationCode, label: labelCode } = metadata.examples;
 </script>
 
 <svelte:head>

@@ -21,6 +21,9 @@
 		datagridCheckboxProps,
 		datagridTrProps
 	} from './props';
+	import { metadata } from './shared';
+
+	const { basic: basicCode } = metadata.examples;
 
 	interface User {
 		id: string;
@@ -35,63 +38,6 @@
 		{ id: '3', name: 'Carol White', email: 'carol@example.com', role: 'Editor' }
 	];
 
-	const basicCode = `<script lang="ts">
-  import { DataGrid } from '@svelte-atoms/core';
-
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  }
-
-  const users: User[] = [
-    { id: '1', name: 'Alice', email: 'alice@example.com', role: 'Admin' },
-    { id: '2', name: 'Bob', email: 'bob@example.com', role: 'User' }
-  ];
-<\/script>
-
-<DataGrid.Root>
-  <DataGrid.Header>
-    <DataGrid.Tr>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
-  </DataGrid.Header>
-  <DataGrid.Body>
-    {#each users as user}
-      <DataGrid.Tr>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-        <DataGrid.Td>{user.role}</DataGrid.Td>
-      </DataGrid.Tr>
-    {/each}
-  </DataGrid.Body>
-</DataGrid.Root>`;
-
-	const selectableCode = `<DataGrid.Root multiple bind:selection>
-  <DataGrid.Header>
-    <DataGrid.Tr>
-      <DataGrid.Th>
-        <input type="checkbox" />
-      </DataGrid.Th>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-    </DataGrid.Tr>
-  </DataGrid.Header>
-  <DataGrid.Body>
-    {#each users as user}
-      <DataGrid.Tr>
-        <DataGrid.Td>
-          <input type="checkbox" />
-        </DataGrid.Td>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-      </DataGrid.Tr>
-    {/each}
-  </DataGrid.Body>
-</DataGrid.Root>`;
 </script>
 
 <svelte:head>

@@ -12,23 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { avatarProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Avatar src="/avatar.jpg" alt="User name" />`;
-
-	const sizesCode = `<Avatar size="sm" src="/avatar.jpg" alt="Small" />
-<Avatar size="md" src="/avatar.jpg" alt="Medium" />
-<Avatar size="lg" src="/avatar.jpg" alt="Large" />
-<Avatar size="xl" src="/avatar.jpg" alt="Extra Large" />`;
-
-	const fallbackCode = `<Avatar alt="John Doe" />
-<Avatar alt="Jane Smith" />`;
-
-	const groupCode = `<div class="flex -space-x-2">
-  <Avatar src="/avatar1.jpg" alt="User 1" />
-  <Avatar src="/avatar2.jpg" alt="User 2" />
-  <Avatar src="/avatar3.jpg" alt="User 3" />
-  <Avatar>+5</Avatar>
-</div>`;
+	const { basic: basicCode, sizes: sizesCode, fallback: fallbackCode, group: groupCode } = metadata.examples;
 </script>
 
 <svelte:head>

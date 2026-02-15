@@ -12,58 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { cardRootProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script>
-  import { Card } from '@svelte-atoms/core';
-<\/script>
-
-<Card.Root>
-  <Card.Header>
-    <Card.Title>Card Title</Card.Title>
-    <Card.Description>This is a card description.</Card.Description>
-  </Card.Header>
-  <Card.Content>
-    <p>Main content goes here.</p>
-  </Card.Content>
-</Card.Root>`;
-
-	const variantsCode = `<Card.Root variant="default">
-  <Card.Header>
-    <Card.Title>Default Card</Card.Title>
-  </Card.Header>
-</Card.Root>
-
-<Card.Root variant="outlined">
-  <Card.Header>
-    <Card.Title>Outlined Card</Card.Title>
-  </Card.Header>
-</Card.Root>
-
-<Card.Root variant="elevated">
-  <Card.Header>
-    <Card.Title>Elevated Card</Card.Title>
-  </Card.Header>
-</Card.Root>`;
-
-	const clickableCode = `<Card.Root clickable onclick={() => console.log('Clicked!')}>
-  <Card.Header>
-    <Card.Title>Clickable Card</Card.Title>
-    <Card.Description>Click anywhere on this card.</Card.Description>
-  </Card.Header>
-</Card.Root>`;
-
-	const actionsCode = `<Card.Root>
-  <Card.Header>
-    <Card.Title>Action Card</Card.Title>
-  </Card.Header>
-  <Card.Content>
-    <p>Content with actions.</p>
-  </Card.Content>
-  <Card.Actions>
-    <button>Primary Action</button>
-    <button>Secondary</button>
-  </Card.Actions>
-</Card.Root>`;
+	const { basic: basicCode, variants: variantsCode, clickable: clickableCode, actions: actionsCode } = metadata.examples;
 </script>
 
 <svelte:head>

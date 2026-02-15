@@ -18,16 +18,9 @@
 		scrollableTrackProps,
 		scrollableThumbProps
 	} from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Scrollable height={200}>
-  <div>Long content...</div>
-</Scrollable>`;
-
-	const horizontalCode = `<Scrollable direction="horizontal">
-  <div class="flex gap-4">
-    <div>Item 1</div>
-    <div>Item 2</div>
-  </div>
+	const { basic: basicCode, horizontal: horizontalCode } = metadata.examples;
 </Scrollable>`;
 </script>
 

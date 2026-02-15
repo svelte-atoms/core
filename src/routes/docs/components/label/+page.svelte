@@ -13,18 +13,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { labelProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Label for="email">Email Address</Label>
-<Input.Root>
-  <Input.Control id="email" type="email" />
-</Input.Root>`;
-
-	const requiredCode = `<Label for="username">
-  Username <span class="text-red-500">*</span>
-</Label>
-<Input.Root>
-  <Input.Control id="username" required />
-</Input.Root>`;
+	const { basic: basicCode, required: requiredCode } = metadata.examples;
 </script>
 
 <svelte:head>

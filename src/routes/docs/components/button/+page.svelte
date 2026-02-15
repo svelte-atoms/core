@@ -12,30 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { buttonProps } from './props';
+	import { metadata } from './shared';
 
-	const buttonCode = `<script lang="ts">
-  import { Button } from '@svelte-atoms/core/button';
-<\/script>
-
-<Button>Click me</Button>`;
-
-	const variantsCode = `<Button class="bg-primary text-white hover:bg-primary/90">
-  Primary Button
-</Button>
-
-<Button class="bg-secondary text-white hover:bg-secondary/90">
-  Secondary Button
-</Button>
-
-<Button class="border border-border hover:bg-muted">
-  Outline Button
-</Button>`;
-
-	const sizesCode = `<Button class="px-3 py-1.5 text-sm">Small</Button>
-<Button class="px-4 py-2">Medium</Button>
-<Button class="px-6 py-3 text-lg">Large</Button>`;
-
-	const statesCode = `<Button disabled>Disabled Button</Button>`;
+	const { button: buttonCode, variants: variantsCode, sizes: sizesCode, states: statesCode } = metadata.examples;
 </script>
 
 <svelte:head>

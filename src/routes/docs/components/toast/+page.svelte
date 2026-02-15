@@ -13,14 +13,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { toastRootProps, toastTitleProps, toastDescriptionProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { toast } from '@svelte-atoms/core/toast';
-<\/script>
-
-<button onclick={() => toast.show('Hello!')}>
-  Show Toast
-<\/button>`;
+	const { basic: basicCode } = metadata.examples;
 
 	let showToast = $state(false);
 	let toastVariant = $state<'default' | 'success' | 'error' | 'warning'>('default');

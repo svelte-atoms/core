@@ -12,31 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { checkboxProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { Checkbox } from '@svelte-atoms/core/checkbox';
-<\/script>
-
-<Checkbox id="basic" />
-<label for="basic">Accept terms and conditions</label>`;
-
-	const groupCode = `<div class="space-y-3">
-  <div class="flex items-center space-x-2">
-    <Checkbox id="option1" />
-    <label for="option1">Newsletter updates</label>
-  </div>
-  <div class="flex items-center space-x-2">
-    <Checkbox id="option2" />
-    <label for="option2">Marketing emails</label>
-  </div>
-  <div class="flex items-center space-x-2">
-    <Checkbox id="option3" />
-    <label for="option3">Product announcements</label>
-  </div>
-</div>`;
-
-	const disabledCode = `<Checkbox id="disabled" disabled />
-<label for="disabled">Disabled checkbox</label>`;
+	const { basic: basicCode, group: groupCode, disabled: disabledCode } = metadata.examples;
 </script>
 
 <svelte:head>

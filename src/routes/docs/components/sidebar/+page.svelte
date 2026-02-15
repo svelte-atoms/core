@@ -13,78 +13,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { sidebarRootProps, sidebarContentProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
-  import { Button } from '@svelte-atoms/core/button';
-  
-  let leftOpen = $state(false);
-<\/script>
-
-<Sidebar.Root bind:open={leftOpen}>
-  <div class="flex min-h-96 w-full">
-    <Sidebar.Content
-      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
-      class="overflow-hidden border-r p-4"
-    >
-      <h3 class="mb-4 font-semibold">Details</h3>
-      <div class="space-y-3">
-        <p class="text-muted-foreground w-40 text-sm">
-          Additional information and details can be displayed here.
-        </p>
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onclick={() => (leftOpen = false)}
-        >
-          Close
-        </Button>
-      </div>
-    </Sidebar.Content>
-
-    <main class="flex-1 p-4">
-      <Button onclick={() => (leftOpen = true)}>
-        Open Left Sidebar
-      </Button>
-    </main>
-  </div>
-</Sidebar.Root>`;
-
-	const rightCode = `<script lang="ts">
-  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
-  import { Button } from '@svelte-atoms/core/button';
-  
-  let rightOpen = $state(false);
-<\/script>
-
-<Sidebar.Root bind:open={rightOpen}>
-  <div class="flex min-h-96 w-full">
-    <main class="flex-1">
-      <Button onclick={() => (rightOpen = true)}>
-        Open Right Sidebar
-      </Button>
-    </main>
-
-    <Sidebar.Content
-      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
-      class="border-l p-4"
-    >
-      <h3 class="mb-4 font-semibold">Details</h3>
-      <div class="space-y-3">
-        <p class="text-muted-foreground w-40 text-sm">
-          Additional information and details can be displayed here.
-        </p>
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onclick={() => (rightOpen = false)}
-        >
-          Close
-        </Button>
-      </div>
-    </Sidebar.Content>
-  </div>
-</Sidebar.Root>`;
+	const { basic: basicCode, right: rightCode } = metadata.examples;
 
 	let leftOpen = $state(false);
 	let rightOpen = $state(false);

@@ -13,40 +13,9 @@
 	} from '$docs/components';
 	import { Alert, Button, Card } from '$svelte-atoms/core';
 	import { stackProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
-  <Stack.Item>
-    <div class="h-64 w-64 bg-gradient-to-br from-blue-500 to-purple-600"></div>
-  </Stack.Item>
-  <Stack.Item class="flex items-end">
-    <div class="w-full bg-black/50 p-4">
-      <h3 class="text-lg font-bold text-white">Overlay Text</h3>
-      <p class="text-sm text-white/80">Stays in document flow</p>
-    </div>
-  </Stack.Item>
-</Stack.Root>`;
-
-	const badgeCode = `<Stack.Root class="inline-block w-fit flex-0">
-  <Stack.Item base={Button} variant="primary">Messages</Stack.Item>
-  <Stack.Item class="flex justify-end" style="margin-top: -8px; margin-right: -8px;">
-    <span class="bg-destructive text-destructive-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
-      5
-    </span>
-  </Stack.Item>
-</Stack.Root>`;
-
-	const loadingCode = `<Stack.Root class="w-64">
-  <Stack.Item base={Card.Root} class="rounded-lg border p-8">
-    <h3 class="mb-2 text-lg font-bold">Content Card</h3>
-    <p class="text-muted-foreground text-sm">Your content here that determines the size</p>
-    <p class="text-muted-foreground mt-2 text-sm">Container sizes based on this content</p>
-  </Stack.Item>
-  <Stack.Item class="flex items-center justify-center">
-    <div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg backdrop-blur-sm">
-      <div class="text-muted-foreground text-sm">Loading...</div>
-    </div>
-  </Stack.Item>
-</Stack.Root>`;
+	const { basic: basicCode, badge: badgeCode, loading: loadingCode } = metadata.examples;
 </script>
 
 <svelte:head>

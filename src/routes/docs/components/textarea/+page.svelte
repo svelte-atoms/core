@@ -12,20 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { textareaRootProps, textareaInputProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Textarea.Root>
-  <Textarea.Control placeholder="Enter your message..." />
-</Textarea.Root>`;
-
-	const rowsCode = `<Textarea.Root>
-  <Textarea.Control rows={3} placeholder="Small (3 rows)" class="max-w-lg" />
-</Textarea.Root>
-<Textarea.Root>
-  <Textarea.Control rows={6} placeholder="Medium (6 rows)" class="max-w-lg" />
-</Textarea.Root>
-<Textarea.Root>
-  <Textarea.Control rows={10} placeholder="Large (10 rows)" class="max-w-lg" />
-</Textarea.Root>`;
+	const { basic: basicCode, rows: rowsCode } = metadata.examples;
 
 	let message = $state('');
 	const maxLength = 200;

@@ -12,22 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import breadcrumbProps from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item href="/components">Components</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item>Breadcrumb</Breadcrumb.Item>
-</Breadcrumb.Root>`;
-
-	const customSeparatorCode = `<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item href="/docs">Docs</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item>Components</Breadcrumb.Item>
-</Breadcrumb.Root>`;
+	const { basic: basicCode, customSeparator: customSeparatorCode } = metadata.examples;
 </script>
 
 <svelte:head>

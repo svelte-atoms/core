@@ -14,6 +14,9 @@
 		Props
 	} from '$docs/components';
 	import formProps from './props';
+	import { metadata } from './shared';
+
+	const { basic: basicCode } = metadata.examples;
 
 	let basicFormData = $state({
 		name: '',
@@ -24,20 +27,6 @@
 		email: '',
 		password: ''
 	});
-
-	const basicCode = `<script lang="ts">
-  import { Form, Field } from '@svelte-atoms/core/form';
-  import { Input } from '@svelte-atoms/core/input';
-  import Button from '@svelte-atoms/core/button';
-<\/script>
-
-<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Name</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control bind:value={formData.name} class="" />
-    </Field.Control>
-  </Field.Root>
   
   <Field.Root>
     <Field.Label class="">Email</Field.Label>

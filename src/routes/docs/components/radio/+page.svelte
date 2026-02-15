@@ -13,16 +13,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { radioProps, radioGroupProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  let selected = $state('option1');
-<\/script>
-
-<RadioGroup bind:value={selected}>
-  <Radio value="option1">Option 1<\/Radio>
-  <Radio value="option2">Option 2<\/Radio>
-  <Radio value="option3">Option 3<\/Radio>
-<\/RadioGroup>`;
+	const { basic: basicCode } = metadata.examples;
 
 	let selected = $state('option1');
 	let size = $state('medium');
