@@ -49,7 +49,7 @@ export const metadata = {
 			{
 				title: 'Encapsulation',
 				description:
-					'Bonds keep component state isolated. No global stores, no prop drilling. State lives where it's needed.'
+					"Bonds keep component state isolated. No global stores, no prop drilling. State lives where it's needed."
 			},
 			{
 				title: 'Flexibility',
@@ -67,7 +67,7 @@ export const metadata = {
 		{
 			feature: 'Runes API',
 			description:
-				'Fine-grained reactivity with $state, $derived, and $effect enables patterns that weren't possible before.',
+				"Fine-grained reactivity with $state, $derived, and $effect enables patterns that weren't possible before.",
 			impact: 'Precise control over reactivity and optimal performance'
 		},
 		{

@@ -17,8 +17,7 @@ export const metadata = {
 		},
 		{
 			approach: 'Variant System',
-			description:
-				'Define reusable style variants at the component level using defineVariants()',
+			description: 'Define reusable style variants at the component level using defineVariants()',
 			pros: [
 				'Type-safe variants',
 				'Automatic class merging',
@@ -40,7 +39,7 @@ export const metadata = {
 		},
 		{
 			approach: 'Inline Styles',
-			description: 'Use the style attribute for dynamic values that can't be achieved with classes',
+			description: "Use the style attribute for dynamic values that can't be achieved with classes",
 			pros: ['Dynamic values', 'Precise control', 'No class conflicts'],
 			cons: ['Not purged', 'No pseudo-classes', 'Limited by CSS properties']
 		}

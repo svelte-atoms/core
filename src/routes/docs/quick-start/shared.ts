@@ -49,7 +49,7 @@ export const metadata = {
 	nextSteps: [
 		{
 			title: 'Browse Components',
-			description: 'Explore the component library and see what's available',
+			description: 'Explore the component library and see what\'s available',
 			link: '/docs/components'
 		},
 		{
