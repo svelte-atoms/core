@@ -1,3 +1,4 @@
+import { md } from '$docs/md/template';
 import { dev } from '$app/environment';
 import type { RequestHandler } from './$types';
 
@@ -7,7 +8,8 @@ export const GET: RequestHandler = async () => {
 	const pkg = await import('../../../package.json');
 	const version = pkg.version || '1.0.0';
 
-	const content = `# @svelte-atoms/core - LLM Documentation Index
+	const content = md`
+# @svelte-atoms/core - LLM Documentation Index
 
 This file provides a comprehensive index of all LLM-friendly documentation available for @svelte-atoms/core.
 

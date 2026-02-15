@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	cardRootProps,
 	cardHeaderProps,
@@ -20,7 +21,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: card
 title: Card Component

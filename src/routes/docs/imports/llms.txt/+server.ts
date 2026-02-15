@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: imports
 title: Import Guide
 category: fundamentals
@@ -25,6 +26,7 @@ related:
 All components and utilities are exported from the main package:
 
 \`\`\`typescript
+import { md } from '$docs/md/template';
 import { ComponentName, utilityName } from '@svelte-atoms/core';
 \`\`\`
 

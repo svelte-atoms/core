@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import { inputRootProps, inputControlProps } from '../props';
 import { metadata } from '../shared';
 
@@ -11,7 +12,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: input
 title: Input Component

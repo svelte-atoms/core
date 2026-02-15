@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: variants
 title: Variants System
 category: styling
@@ -137,6 +138,7 @@ The system merges variants in this order (later overrides earlier):
 
 \`\`\`typescript
 // +layout.svelte - Global theme
+import { md } from '$docs/md/template';
 import { setPreset } from '@svelte-atoms/core/context';
 
 setPreset({

@@ -1,4 +1,5 @@
 import { codeBlock, content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: philosophy
 title: Design Philosophy
 category: getting-started
@@ -300,5 +302,5 @@ ${list([
 If these principles resonate with you, Svelte Atoms will feel natural and powerful. If you prefer batteries-included solutions with opinionated defaults, you might prefer a traditional component library.
 
 We're building for developers who want control, understand trade-offs, and enjoy building from primitives.
-`);
+`;
 }

@@ -1,3 +1,5 @@
+import { md } from '$docs/md/template';
+
 export function GET() {
 	return new Response(build(), {
 		headers: {
@@ -8,7 +10,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: naming-convention
 title: Naming Conventions
 category: fundamentals

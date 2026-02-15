@@ -1,6 +1,4 @@
-import { propsTable } from '$docs/md/page';
-// TODO: Import all props from props.ts
-// import { breadcrumbProps } from '../props';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -12,7 +10,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: breadcrumb
 title: Breadcrumb Component

@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	popoverRootProps,
 	popoverTriggerProps,
@@ -17,7 +18,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: popover
 title: Popover Component

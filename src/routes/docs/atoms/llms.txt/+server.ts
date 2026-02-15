@@ -1,4 +1,5 @@
 import { codeBlock, content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: atoms
 title: Atoms Concept
 category: fundamentals
@@ -143,5 +145,5 @@ ${codeBlock(metadata.examples.customCard, 'svelte')}
 ### Using with Presets
 
 ${codeBlock(metadata.examples.presetUsage, 'svelte')}
-`);
+`;
 }

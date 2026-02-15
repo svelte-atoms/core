@@ -1,4 +1,5 @@
 import { content } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: quick-start
 title: Quick Start Guide
 category: getting-started
@@ -407,5 +409,5 @@ If you run into issues:
 4. Read the troubleshooting guide
 
 Happy building with Svelte Atoms! 🚀
-`);
+`;
 }

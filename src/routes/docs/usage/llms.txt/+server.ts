@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: usage
 title: Component Usage Patterns
 category: fundamentals
@@ -41,6 +42,7 @@ Components follow a hierarchical naming pattern using dot notation:
 ## Import Pattern
 
 \`\`\`javascript
+import { md } from '$docs/md/template';
 import { Form } from '$lib/components/form';
 
 // Usage

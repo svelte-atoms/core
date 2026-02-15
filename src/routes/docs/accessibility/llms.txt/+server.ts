@@ -1,4 +1,5 @@
 import { content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: accessibility
 title: Accessibility Features
 category: fundamentals
@@ -166,5 +168,5 @@ ${list([
 	'[WebAIM](https://webaim.org/)',
 	'[a11y Project](https://www.a11yproject.com/)'
 ])}
-`);
+`;
 }

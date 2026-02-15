@@ -1,4 +1,5 @@
 import { content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: preset
 title: Preset System
 category: styling
@@ -516,5 +518,5 @@ setPreset(myPreset);
 - Explore [Variants](/docs/styling#variants) for component-level styling
 - Check out [Atoms](/docs/atoms) to understand the underlying components
 - Review [Component Examples](/docs/components) to see presets in action
-`);
+`;
 }

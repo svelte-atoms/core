@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	dropdownRootProps,
 	dropdownTriggerProps,
@@ -18,7 +19,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: dropdown
 title: Dropdown Component

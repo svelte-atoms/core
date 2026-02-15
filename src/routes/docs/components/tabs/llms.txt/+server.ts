@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	tabsRootProps,
 	tabHeaderProps,
@@ -19,7 +20,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: tabs
 title: Tabs Component

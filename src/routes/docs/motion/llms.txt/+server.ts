@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: motion
 title: Motion System
 category: animation
@@ -833,6 +834,7 @@ Use generics for element-specific types:
 ### Svelte Transitions
 
 \`\`\`typescript
+import { md } from '$docs/md/template';
 import { fade, slide, scale, fly, blur } from 'svelte/transition';
 \`\`\`
 

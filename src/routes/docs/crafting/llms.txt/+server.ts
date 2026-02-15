@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: crafting
 title: Crafting Components from Scratch
 category: architecture
@@ -191,6 +192,7 @@ export {
 ### 1. Base Classes
 
 \`\`\`typescript
+import { md } from '$docs/md/template';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 // BondStateProps: Base props type with optional id

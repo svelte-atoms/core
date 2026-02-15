@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 // TODO: Import all props from props.ts
 // import { listProps } from '../props';
 import { metadata } from '../shared';
@@ -12,7 +13,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: list
 title: List Component

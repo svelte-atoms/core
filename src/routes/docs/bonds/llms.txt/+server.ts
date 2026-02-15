@@ -1,4 +1,5 @@
 import { codeBlock, content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: bonds
 title: Bonds Concept
 category: fundamentals
@@ -468,5 +470,5 @@ class MyBond extends Bond<Props, State, Elements> {
 - Explore [Component Examples](/docs/components) to see bonds in action
 - Read the [Philosophy](/docs/philosophy) to understand the design decisions
 - Check out [Advanced Patterns](/docs/advanced) for complex use cases
-`);
+`;
 }

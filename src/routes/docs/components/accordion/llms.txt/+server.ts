@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	accordionRootProps,
 	accordionItemRootProps,
@@ -17,7 +18,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: accordion
 title: Accordion Component

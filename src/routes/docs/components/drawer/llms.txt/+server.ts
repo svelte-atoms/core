@@ -1,4 +1,5 @@
 import { propsTable } from '$docs/md/page';
+import { md } from '$docs/md/template';
 import {
 	slideoverRootProps,
 	slideoverContentProps,
@@ -20,7 +21,7 @@ export function GET() {
 }
 
 function build(): string {
-	return `
+	return md`
 ---
 id: drawer
 title: Drawer Component

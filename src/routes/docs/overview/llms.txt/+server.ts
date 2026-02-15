@@ -8,7 +8,8 @@ export function GET() {
 }
 
 function build(): string {
-	return `---
+	return md`
+---
 id: overview
 title: Library Overview
 category: introduction
@@ -295,6 +296,7 @@ Components can be imported in multiple ways:
 
 \`\`\`typescript
 // Named import (recommended)
+import { md } from '$docs/md/template';
 import { Button } from '@svelte-atoms/core/components/button';
 
 // Direct import

@@ -1,4 +1,5 @@
 import { content, list } from '$docs/md/utils';
+import { md } from '$docs/md/template';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -10,7 +11,8 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`---
+	return md`
+---
 id: styling
 title: Styling Guide
 category: styling
@@ -537,5 +539,5 @@ function getButtonClasses(variant: string, size: string) {
 - Learn about [Variants](/docs/variants) for reusable patterns
 - Explore [Component Examples](/docs/components) to see styling techniques
 - Read about [Accessibility](/docs/accessibility) for inclusive design
-`);
+`;
 }
