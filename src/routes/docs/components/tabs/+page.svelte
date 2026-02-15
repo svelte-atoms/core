@@ -15,10 +15,8 @@
 		tabsRootProps,
 		tabHeaderProps,
 		tabBodyProps,
-		tabDescriptionProps,
 		tabsHeaderProps,
-		tabsBodyProps,
-		tabsContentProps
+		tabsBodyProps
 	} from './props';
 	import { metadata } from './shared';
 
@@ -266,15 +264,9 @@
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'ARIA tabs pattern (role="tablist", "tab", "tabpanel")',
-				'Keyboard navigation (Arrow keys)',
-				'aria-selected state',
-				'Focus management',
-				'Screen reader friendly'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Stack', href: '/docs/components/stack' }}

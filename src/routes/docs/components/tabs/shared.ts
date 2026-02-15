@@ -59,11 +59,12 @@ const preset = setPreset({
 });`.trim();
 
 const accessibilityFeatures = [
-	'ARIA attributes (role="tablist", role="tab", role="tabpanel")',
+	'ARIA tabs pattern (role="tablist", "tab", "tabpanel")',
 	'Keyboard navigation (Arrow keys, Home, End)',
+	'aria-selected state',
 	'Automatic tab panel association',
 	'Focus management',
-	'Screen reader support'
+	'Screen reader friendly'
 ];
 
 const useCases = [
@@ -112,33 +113,27 @@ const componentsSummary = [
 	},
 	{
 		name: 'Tabs.Body',
-		description:
-			'Container for tab content panels.'
+		description: 'Container for tab content panels.'
 	},
 	{
 		name: 'Tabs.Content',
-		description:
-			'Renders the active tab\'s content. Automatically switches based on selected tab.'
+		description: "Renders the active tab's content. Automatically switches based on selected tab."
 	},
 	{
 		name: 'Tab.Root',
-		description:
-			'Individual tab item that contains both the header (trigger) and body (content).'
+		description: 'Individual tab item that contains both the header (trigger) and body (content).'
 	},
 	{
 		name: 'Tab.Header',
-		description:
-			'Clickable tab trigger element that switches to this tab when activated.'
+		description: 'Clickable tab trigger element that switches to this tab when activated.'
 	},
 	{
 		name: 'Tab.Body',
-		description:
-			'Content panel for this specific tab, shown when tab is active.'
+		description: 'Content panel for this specific tab, shown when tab is active.'
 	},
 	{
 		name: 'Tab.Description',
-		description:
-			'Optional description or subtitle for the tab content.'
+		description: 'Optional description or subtitle for the tab content.'
 	}
 ];
 
@@ -146,8 +141,7 @@ export const metadata = {
 	title: 'Tabs - Svelte Atoms',
 	description: 'Organize content into multiple panels.',
 	componentTitle: 'Tabs',
-	componentDescription:
-		'Organize content into separate views that users can switch between.',
+	componentDescription: 'Organize content into separate views that users can switch between.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
