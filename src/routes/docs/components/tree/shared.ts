@@ -38,11 +38,17 @@ const nestedCode = `
 </Tree.Root>`.trim();
 
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@svelte-atoms/core/context';
 
-const preset = setPreset({
-  tree: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+setPreset({
+  'tree.root': () => ({
+    class: 'space-y-1'
+  }),
+  'tree.header': () => ({
+    class: 'cursor-pointer border-border flex items-center gap-2'
+  }),
+  'tree.body': () => ({
+    class: 'pl-4 border-l border-border'
   })
 });
 `.trim();
@@ -80,8 +86,7 @@ export const metadata = {
 	title: 'Tree - Svelte Atoms',
 	description: 'TODO: Brief SEO description',
 	componentTitle: 'Tree',
-	componentDescription:
-		'TODO: Detailed component description',
+	componentDescription: 'TODO: Detailed component description',
 	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
@@ -91,7 +96,8 @@ export const metadata = {
 	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
-		nested: nestedCode
+		nested: nestedCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

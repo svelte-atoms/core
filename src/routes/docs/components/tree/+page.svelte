@@ -12,43 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { treeRootProps, treeHeaderProps, treeBodyProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { Tree } from '@svelte-atoms/core/tree';
-<\/script>
-
-<Tree.Root open>
-  <Tree.Header>Documents</Tree.Header>
-  <Tree.Body>
-    <div>Resume.pdf</div>
-    <div>CoverLetter.docx</div>
-  </Tree.Body>
-</Tree.Root>`;
-
-	const nestedCode = `<script lang="ts">
-  import { Tree } from '@svelte-atoms/core/tree';
-<\/script>
-
-<Tree.Root open>
-  <Tree.Header>src</Tree.Header>
-  <Tree.Body>
-    <Tree.Root open>
-      <Tree.Header>components</Tree.Header>
-      <Tree.Body>
-        <div>Button.svelte</div>
-        <div>Input.svelte</div>
-      </Tree.Body>
-    </Tree.Root>
-    <Tree.Root open>
-      <Tree.Header>utils</Tree.Header>
-      <Tree.Body>
-        <div>helpers.ts</div>
-        <div>validators.ts</div>
-      </Tree.Body>
-    </Tree.Root>
-    <div>app.ts</div>
-  </Tree.Body>
-</Tree.Root>`;
+	const { basic: basicCode, nested: nestedCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -87,19 +53,7 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  'tree.root': () => ({
-    class: 'space-y-1'
-  }),
-  'tree.header': () => ({
-    class: 'cursor-pointer border-border flex items-center gap-2'
-  }),
-  'tree.body': () => ({
-    class: 'pl-4 border-l border-border'
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
 	</Section.Root>
@@ -177,15 +131,9 @@ setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'ARIA tree role',
-				'Keyboard navigation (Arrow keys)',
-				'aria-expanded state',
-				'Focus management',
-				'Screen reader friendly'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Tooltip', href: '/docs/components/tooltip' }}
