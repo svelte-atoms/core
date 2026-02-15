@@ -3,7 +3,7 @@ import { dev } from '$app/environment';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async () => {
-	const baseUrl = dev ? 'http://localhost:5173' : 'https://svelte-atoms.dev'; // Update with your actual domain
+	const baseUrl = dev ? 'http://localhost:5173' : 'https://svelte-atoms.dev';
 
 	const pkg = await import('../../../../package.json');
 	const version = pkg.version || '1.0.0';
@@ -49,7 +49,7 @@ ensures compatibility with AI tools and workflows.
 - ${baseUrl}/docs/composition/llms.txt - Component composition patterns
 - ${baseUrl}/docs/crafting/llms.txt - Crafting components from scratch
 - ${baseUrl}/docs/motion/llms.txt - Motion and animation system
-- ${baseUrl}/docs/transitions/llms.txt - Transitions
+- ${baseUrl}/docs/transitions/llms.txt - Transitions and animations
 - ${baseUrl}/docs/accessibility/llms.txt - Accessibility features
 
 ### Component Documentation
