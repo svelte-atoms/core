@@ -18,12 +18,26 @@ const placementCode = `
   </Tooltip.Content>
 </Tooltip.Root>`.trim();
 
-const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+const arrowCode = `
+<Tooltip.Root>
+  <Tooltip.Trigger>
+    <button>Hover me</button>
+  </Tooltip.Trigger>
+  <Tooltip.Content>
+    Tooltip with arrow
+    <Tooltip.Arrow />
+  </Tooltip.Content>
+</Tooltip.Root>`.trim();
 
-const preset = setPreset({
-  tooltip: () => ({
-    class: 'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md'
+const presetCode = `
+import { setPreset } from '@svelte-atoms/core/context';
+
+setPreset({
+  'tooltip.trigger': () => ({
+    class: 'cursor-pointer'
+  }),
+  'tooltip.content': () => ({
+    class: 'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95'
   })
 });
 `.trim();
@@ -77,8 +91,7 @@ const componentsSummary = [
 	},
 	{
 		name: 'Tooltip.Trigger',
-		description:
-			'Element that triggers the tooltip display on hover or focus events.'
+		description: 'Element that triggers the tooltip display on hover or focus events.'
 	},
 	{
 		name: 'Tooltip.Content',
@@ -103,6 +116,7 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		placement: placementCode,
+		arrow: arrowCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
