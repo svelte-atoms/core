@@ -1,9 +1,8 @@
 import { md } from '$docs/md/template';
-import { dev } from '$app/environment';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async () => {
-	const baseUrl = dev ? 'http://localhost:5173' : 'https://svelte-atoms.dev';
+export const GET: RequestHandler = async ({ request }) => {
+	const baseUrl = new URL(request.url).origin;
 
 	const pkg = await import('../../../../package.json');
 	const version = pkg.version || '1.0.0';
