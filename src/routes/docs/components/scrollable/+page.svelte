@@ -12,16 +12,12 @@
 		CodeBlock
 	} from '$docs/components';
 	import {
-		scrollableRootProps,
-		scrollableContainerProps,
-		scrollableContentProps,
-		scrollableTrackProps,
-		scrollableThumbProps
+		scrollableRootProps
 	} from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, horizontal: horizontalCode } = metadata.examples;
-</Scrollable>`;
+	const { basic: basicCode, horizontal: horizontalCode, both: bothCode } = metadata.examples;
+
 </script>
 
 <svelte:head>
@@ -94,13 +90,17 @@ const preset = setPreset({
 				description="Fixed height container with vertical scrolling"
 				code={basicCode}
 			>
-				<Scrollable height={200} class="rounded border">
-					<div class="space-y-4 p-4">
-						{#each Array(20) as _, i}
-							<p class="text-muted-foreground">Line {i + 1} of scrollable content</p>
-						{/each}
-					</div>
-				</Scrollable>
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border" style="max-height: 200px;">
+						<Scrollable.Content>
+							<div class="space-y-4 p-4">
+								{#each Array(20) as _, i}
+									<p class="text-muted-foreground">Line {i + 1} of scrollable content</p>
+								{/each}
+							</div>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 
 			<DemoExample
@@ -108,33 +108,41 @@ const preset = setPreset({
 				description="Horizontal scrolling container"
 				code={horizontalCode}
 			>
-				<Scrollable direction="horizontal" class="rounded border p-4">
-					<div class="flex gap-4">
-						{#each Array(10) as _, i}
-							<div class="bg-muted rounded p-4 whitespace-nowrap">
-								Item {i + 1}
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border p-4">
+						<Scrollable.Content>
+							<div class="flex gap-4">
+								{#each Array(10) as _, i}
+									<div class="bg-muted rounded p-4 whitespace-nowrap">
+										Item {i + 1}
+									</div>
+								{/each}
 							</div>
-						{/each}
-					</div>
-				</Scrollable>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 
 			<DemoExample
 				title="Both Directions"
 				description="Scroll in both directions"
-				code={`<Scrollable direction="both" height={300}>`}
+				code={bothCode}
 			>
-				<Scrollable direction="both" height={300} class="rounded border">
-					<div class="p-4">
-						<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
-							{#each Array(50) as _, i}
-								<div class="bg-muted rounded p-4 text-center">
-									{i + 1}
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border" style="max-height: 300px;">
+						<Scrollable.Content>
+							<div class="p-4">
+								<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
+									{#each Array(50) as _, i}
+										<div class="bg-muted rounded p-4 text-center">
+											{i + 1}
+										</div>
+									{/each}
 								</div>
-							{/each}
-						</div>
-					</div>
-				</Scrollable>
+							</div>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 		</div>
 	</Section.Root>

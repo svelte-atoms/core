@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { animateDrawerContent, clickoutDrawer, Drawer } from '$lib/components/drawer';
+	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -13,14 +13,7 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import {
-		slideoverRootProps,
-		slideoverContentProps,
-		slideoverHeaderProps,
-		drawerBodyProps,
-		slideoverFooterProps,
-		slideoverTitleProps,
-		slideoverDescriptionProps,
-		slideoverBackdropProps
+		slideoverRootProps
 	} from './props';
 	import { metadata } from './shared';
 
@@ -115,7 +108,7 @@
 				</Drawer.Root>
 			</DemoExample>
 
-			<DemoExample title="Left Drawer" description="Drawer from left side" code={sidesCode}>
+			<DemoExample title="Left Drawer" description="Drawer from left side" code={metadata.examples.sides}>
 				<Button
 					variant="primary"
 					onclick={() => {

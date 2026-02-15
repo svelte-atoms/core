@@ -13,14 +13,7 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import {
-		dialogProps,
-		dialogContentProps,
-		dialogHeaderProps,
-		dialogBodyProps,
-		dialogFooterProps,
-		dialogTitleProps,
-		dialogDescriptionProps,
-		dialogCloseButtonProps
+		dialogProps
 	} from './props';
 	import { metadata } from './shared';
 
@@ -75,7 +68,7 @@
 			<Section.Subtitle>Explore different dialog variations</Section.Subtitle>
 		</Section.Header>
 		<div class="space-y-8">
-			<DemoExample title="Basic Dialog" description="Simple modal dialog" code={basicCode}>
+			<DemoExample title="Basic Dialog" description="Simple modal dialog" code={metadata.examples.basic}>
 				<Button class="" onclick={() => (basicOpen = true)}>Open Dialog</Button>
 
 				<Dialog.Root bind:open={basicOpen}>

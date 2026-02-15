@@ -16,7 +16,7 @@
 	import formProps from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode } = metadata.examples;
+	const { basic: basicCode, validated: validatedCode } = metadata.examples;
 
 	let basicFormData = $state({
 		name: '',
@@ -27,53 +27,6 @@
 		email: '',
 		password: ''
 	});
-  
-  <Field.Root>
-    <Field.Label class="">Email</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        class="" 
-      />
-    </Field.Control>
-  </Field.Root>
-  
-  <Button class="w-full">Submit</Button>
-</Form>`;
-
-	const validatedCode = `<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Email Address</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        required 
-        class="" 
-      />
-    </Field.Control>
-  </Field.Root>
-  
-  <Field.Root>
-    <Field.Label class="">Password</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="password" 
-        bind:value={formData.password} 
-        placeholder="Enter your password" 
-        required 
-        minlength="8" 
-        class="" 
-      />
-    </Field.Control>
-    <p class="text-muted-foreground mt-1 text-xs">Password must be at least 8 characters</p>
-  </Field.Root>
-  
-  <Button class="w-full">Create Account</Button>
-</Form>`;
 </script>
 
 <svelte:head>

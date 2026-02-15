@@ -13,6 +13,7 @@
 	} from '$docs/components';
 	import { htmlAtomProps } from './props';
 	import { metadata } from './shared';
+	import { Root } from '$svelte-atoms/core';
 
 	const { basic: basicCode, composition: compositionCode, animation: animationCode, variants: variantsCode, customComponent: customComponentCode } = metadata.examples;
 
@@ -50,7 +51,7 @@
 
 	<Installation packageName="@svelte-atoms/core" id="installation" />
 
-	<Section id="basic-usage" title="Basic Usage">
+	<Section.Root id="basic-usage" title="Basic Usage">
 		<p class="text-muted-foreground mb-4">
 			HtmlAtom can render any HTML element using the <code>as</code> prop. By default, it renders a
 			<code>div</code>.
@@ -74,27 +75,27 @@
 				</HtmlAtom>
 			</div>
 		</DemoExample>
-	</Section>
+	</Section.Root>
 
-	<Section id="composition" title="Component Composition">
+	<Section.Root id="composition" title="Component Composition">
 		<p class="text-muted-foreground mb-4">
 			The <code>base</code> prop enables powerful component composition. You can use any component
 			as a base and add additional styling or behavior.
 		</p>
 
 		<CodeBlock code={compositionCode} language="svelte" />
-	</Section>
+	</Section.Root>
 
-	<Section id="animation" title="Animation & Transitions">
+	<Section.Root id="animation" title="Animation & Transitions">
 		<p class="text-muted-foreground mb-4">
 			HtmlAtom provides lifecycle hooks for animations and transitions: <code>enter</code>,
 			<code>exit</code>, <code>animate</code>, and <code>initial</code>.
 		</p>
 
 		<CodeBlock code={animationCode} language="svelte" />
-	</Section>
+	</Section.Root>
 
-	<Section id="variants" title="Variants System">
+	<Section.Root id="variants" title="Variants System">
 		<p class="text-muted-foreground mb-4">
 			Use the variants system to define reusable style combinations with type-safe props.
 		</p>
@@ -115,16 +116,16 @@
 				</HtmlAtom>
 			</div>
 		</DemoExample>
-	</Section>
+	</Section.Root>
 
-	<Section id="custom-component" title="Building Custom Components">
+	<Section.Root id="custom-component" title="Building Custom Components">
 		<p class="text-muted-foreground mb-4">
 			HtmlAtom is perfect for building custom components with full TypeScript support and element-specific
 			props.
 		</p>
 
 		<CodeBlock code={customComponentCode} language="svelte" />
-	</Section>
+	</Section.Root>
 
 	<Props data={htmlAtomProps} id="props" />
 
