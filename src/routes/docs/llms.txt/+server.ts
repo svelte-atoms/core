@@ -5,7 +5,7 @@ import type { RequestHandler } from './$types';
 export const GET: RequestHandler = async () => {
 	const baseUrl = dev ? 'http://localhost:5173' : 'https://svelte-atoms.dev'; // Update with your actual domain
 
-	const pkg = await import('../../../package.json');
+	const pkg = await import('../../../../package.json');
 	const version = pkg.version || '1.0.0';
 
 	const content = md`
