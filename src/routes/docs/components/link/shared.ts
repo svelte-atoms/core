@@ -11,12 +11,27 @@ const variantsCode = `
 <Link variant="muted">Muted Link<\/Link>
 <Link variant="underline">Underlined Link<\/Link>`.trim();
 
+const sizesCode = `
+<Link size="sm">Small Link</Link>
+<Link size="md">Medium Link</Link>
+<Link size="lg">Large Link</Link>`.trim();
+
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
 const preset = setPreset({
   link: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'text-primary underline-offset-4 hover:underline transition-colors',
+    variants: {
+      variant: {
+        default: { class: 'text-primary' },
+        muted: { class: 'text-muted-foreground' },
+        destructive: { class: 'text-destructive' }
+      }
+    },
+    defaults: {
+      variant: 'default'
+    }
   })
 });
 `.trim();
@@ -66,7 +81,9 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		external: externalCode,
-		variants: variantsCode
+		variants: variantsCode,
+		sizes: sizesCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

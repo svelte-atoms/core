@@ -12,16 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { linkProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Link href="/about">About Us</Link>`;
-
-	const externalCode = `<Link href="https://example.com" target="_blank" rel="noopener noreferrer">
-  Visit Example
-</Link>`;
-
-	const variantsCode = `<Link variant="default">Default Link<\/Link>
-<Link variant="muted">Muted Link<\/Link>
-<Link variant="underline">Underlined Link<\/Link>`;
+	const { basic: basicCode, external: externalCode, variants: variantsCode, sizes: sizesCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -60,23 +53,7 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core';
-
-const preset = setPreset({
-  link: () => ({
-    class: 'text-primary underline-offset-4 hover:underline transition-colors',
-    variants: {
-      variant: {
-        default: { class: 'text-primary' },
-        muted: { class: 'text-muted-foreground' },
-        destructive: { class: 'text-destructive' }
-      }
-    },
-    defaults: {
-      variant: 'default'
-    }
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
 	</Section.Root>
@@ -108,9 +85,7 @@ const preset = setPreset({
 			<DemoExample
 				title="Link Sizes"
 				description="Different link sizes"
-				code={`<Link size="sm">Small Link</Link>
-<Link size="md">Medium Link</Link>
-<Link size="lg">Large Link</Link>`}
+				code={sizesCode}
 			>
 				<div class="flex items-center space-x-4">
 					<Link size="sm" href="/docs">Small</Link>
@@ -138,15 +113,9 @@ const preset = setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Use meaningful link text',
-				'Add rel="noopener noreferrer" for external links',
-				'Ensure sufficient color contrast',
-				'Make focused links clearly visible',
-				'Screen reader friendly navigation'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Label', href: '/docs/components/label' }}
