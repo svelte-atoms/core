@@ -54,12 +54,55 @@ const withIconsCode = `
   <\/List.Item>
 <\/List.Root>`.trim();
 
-const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+const interactiveCode = `
+<List.Root>
+  <List.Item clickable onclick={() => alert('Item 1 clicked')}>
+    Clickable Item 1
+  <\/List.Item>
+  <List.Item clickable onclick={() => alert('Item 2 clicked')}>
+    Clickable Item 2
+  <\/List.Item>
+<\/List.Root>`.trim();
 
-const preset = setPreset({
+const presetCode = `
+import { setPreset } from '@svelte-atoms/core/context';
+
+// Basic preset configuration
+setPreset({
   list: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'space-y-2'
+  }),
+  'list.item': () => ({
+    class: 'text-muted-foreground'
+  }),
+  'list.group': () => ({
+    class: 'flex flex-col rounded-inherit border-border'
+  }),
+  'list.title': () => ({
+    class: 'px-6 py-1 text-sm font-medium border-border'
+  }),
+  'list.divider': () => ({
+    class: 'my-1'
+  })
+});
+
+// For interactive/clickable items, you can extend the preset:
+setPreset({
+  'list.item': () => ({
+    class: 'text-muted-foreground hover:bg-muted cursor-pointer rounded px-3 py-2 transition-colors'
+  })
+});
+
+// For grouped lists with borders:
+setPreset({
+  list: () => ({
+    class: 'rounded-lg border border-border max-w-sm'
+  }),
+  'list.title': () => ({
+    class: 'px-4 py-2 text-sm font-medium'
+  }),
+  'list.item': () => ({
+    class: 'px-4 py-2 text-muted-foreground hover:bg-muted cursor-pointer transition-colors'
   })
 });
 `.trim();
@@ -108,8 +151,10 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		ordered: orderedCode,
+		interactive: interactiveCode,
 		grouped: groupedCode,
-		withIcons: withIconsCode
+		withIcons: withIconsCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };
