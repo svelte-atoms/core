@@ -12,6 +12,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: input
+title: Input Component
+category: components
+subcategory: form
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

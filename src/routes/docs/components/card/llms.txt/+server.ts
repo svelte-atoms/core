@@ -21,6 +21,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: card
+title: Card Component
+category: components
+subcategory: display
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

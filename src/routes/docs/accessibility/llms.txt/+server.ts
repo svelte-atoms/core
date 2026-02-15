@@ -10,7 +10,20 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: accessibility
+title: Accessibility Features
+category: fundamentals
+depth: intermediate
+prerequisites:
+  - philosophy
+  - atoms
+related:
+  - crafting
+  - components
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

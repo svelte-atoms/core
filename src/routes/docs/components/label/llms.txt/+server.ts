@@ -13,6 +13,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: label
+title: Label Component
+category: components
+subcategory: form
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

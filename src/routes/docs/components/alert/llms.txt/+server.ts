@@ -20,6 +20,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: alert
+title: Alert Component
+category: components
+subcategory: interactive
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

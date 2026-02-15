@@ -10,7 +10,18 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: quick-start
+title: Quick Start Guide
+category: getting-started
+depth: beginner
+related:
+  - philosophy
+  - atoms
+  - imports
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

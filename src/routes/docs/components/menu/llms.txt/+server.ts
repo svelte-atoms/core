@@ -12,6 +12,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: menu
+title: Menu Component
+category: components
+subcategory: navigation
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

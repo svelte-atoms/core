@@ -10,7 +10,18 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: philosophy
+title: Design Philosophy
+category: getting-started
+depth: beginner
+related:
+  - atoms
+  - bonds
+  - crafting
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

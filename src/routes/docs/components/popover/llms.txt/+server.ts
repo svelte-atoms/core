@@ -18,6 +18,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: popover
+title: Popover Component
+category: components
+subcategory: overlay
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

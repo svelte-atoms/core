@@ -10,7 +10,19 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: atoms
+title: Atoms Concept
+category: fundamentals
+depth: beginner
+prerequisites:
+  - philosophy
+related:
+  - bonds
+  - crafting
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

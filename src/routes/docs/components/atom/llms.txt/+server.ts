@@ -13,6 +13,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: atom
+title: Atom Component
+category: components
+subcategory: core
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

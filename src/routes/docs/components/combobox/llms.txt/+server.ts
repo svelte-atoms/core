@@ -13,6 +13,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: combobox
+title: Combobox Component
+category: components
+subcategory: form
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

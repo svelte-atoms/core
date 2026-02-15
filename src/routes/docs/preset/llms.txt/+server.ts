@@ -10,7 +10,19 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: preset
+title: Preset System
+category: styling
+depth: intermediate
+prerequisites:
+  - styling
+related:
+  - variants
+  - preset-variant-integration
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

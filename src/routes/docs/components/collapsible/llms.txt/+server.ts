@@ -12,6 +12,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: collapsible
+title: Collapsible Component
+category: components
+subcategory: interactive
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

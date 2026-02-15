@@ -13,6 +13,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: breadcrumb
+title: Breadcrumb Component
+category: components
+subcategory: navigation
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}

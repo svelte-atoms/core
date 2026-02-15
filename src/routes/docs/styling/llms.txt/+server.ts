@@ -10,7 +10,20 @@ export function GET() {
 }
 
 function build(): string {
-	return content(`
+	return content(`---
+id: styling
+title: Styling Guide
+category: styling
+depth: intermediate
+prerequisites:
+  - atoms
+related:
+  - variants
+  - preset
+  - motion
+---
+
+
 # ${metadata.pageTitle}
 
 ${metadata.pageDescription}

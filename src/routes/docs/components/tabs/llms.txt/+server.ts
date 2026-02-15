@@ -20,6 +20,20 @@ export function GET() {
 
 function build(): string {
 	return `
+---
+id: tabs
+title: Tabs Component
+category: components
+subcategory: navigation
+depth: beginner
+prerequisites:
+  - atoms
+  - styling
+related:
+  - variants
+  - preset
+---
+
 # ${metadata.componentTitle} Module
 
 ${metadata.componentDescription}
