@@ -22,12 +22,32 @@ ensures compatibility with AI tools and workflows.
 - ${baseUrl}/docs/llms.txt - Complete consolidated documentation
 
 ### Core Documentation
+
+#### Getting Started
+- ${baseUrl}/docs/overview/llms.txt - Library overview and introduction
 - ${baseUrl}/docs/philosophy/llms.txt - Design principles and concepts
 - ${baseUrl}/docs/quick-start/llms.txt - Quick start guide
-- ${baseUrl}/docs/styling/llms.txt - Styling and customization
+- ${baseUrl}/docs/quick-reference/llms.txt - Quick reference guide
+
+#### Fundamentals
+- ${baseUrl}/docs/imports/llms.txt - Import patterns and conventions
+- ${baseUrl}/docs/naming-convention/llms.txt - File and component naming
+- ${baseUrl}/docs/usage/llms.txt - Component usage patterns
+- ${baseUrl}/docs/atoms/llms.txt - Atoms concept
+- ${baseUrl}/docs/bonds/llms.txt - Bonds concept
+
+#### Styling & Theming
+- ${baseUrl}/docs/styling/llms.txt - Styling guide
+- ${baseUrl}/docs/variants/llms.txt - Variant system
+- ${baseUrl}/docs/preset/llms.txt - Preset system
+- ${baseUrl}/docs/preset-variant-integration/llms.txt - Preset-variant integration
+
+#### Advanced Topics
+- ${baseUrl}/docs/composition/llms.txt - Component composition patterns
+- ${baseUrl}/docs/crafting/llms.txt - Crafting components from scratch
+- ${baseUrl}/docs/motion/llms.txt - Motion and animation system
+- ${baseUrl}/docs/transitions/llms.txt - Transitions
 - ${baseUrl}/docs/accessibility/llms.txt - Accessibility features
-- ${baseUrl}/docs/preset/llms.txt - Preset system documentation
-- ${baseUrl}/docs/transitions/llms.txt - Transitions and animations
 
 ### Component Documentation
 
@@ -77,10 +97,6 @@ ensures compatibility with AI tools and workflows.
 
 #### Core Components
 - ${baseUrl}/docs/components/atom/llms.txt - Atom component
-
-### Advanced Topics
-- ${baseUrl}/docs/atoms/llms.txt - Atoms concept
-- ${baseUrl}/docs/bonds/llms.txt - Bonds concept
 
 ## How to Use
 
