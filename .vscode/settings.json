@@ -1,3 +1,17 @@
 {
-	"es6-string-html": ["md", "mdRaw"]
+	"es6-string-html": ["md", "mdRaw"],
+	"github.copilot.chat.commitMessageGeneration.instructions": [
+		{
+			"text": "Generate a concise commit message that follows the Conventional Commits specification."
+		},
+		{
+			"text": "Use a type (e.g., feat, fix, docs, style, refactor, test, chore) followed by a scope (optional) and description."
+		},
+		{
+			"text": "The subject line should not exceed 50 characters."
+		},
+		{
+			"text": "Do not use fuzzy language or emojis in the commit message."
+		}
+	]
 }
