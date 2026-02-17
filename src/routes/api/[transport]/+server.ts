@@ -8,6 +8,8 @@ import { dev } from '$app/environment';
 // MCP Server Implementation for @svelte-atoms/core
 // Using @modelcontextprotocol/sdk with HTTP transport
 
+let origin: string | null = null;
+
 // Logging utility - only log in development
 const log = {
 	error: (message: string, error?: unknown) => {
@@ -70,9 +72,9 @@ function listComponentDocs(): string[] {
 // });
 
 const handler = createMcpHandler(
-	(server, requestContext) => {
+	(server) => {
 		// Get base URL from request context
-		const baseUrl = getBaseUrl(requestContext?.url);
+		const baseUrl = origin || 'http://localhost:5173'; // Fallback for development
 
 		// Register Tools
 		server.registerTool(
@@ -510,6 +512,10 @@ export const POST: RequestHandler = async ({ request }) => {
 // };
 
 export const GET: RequestHandler = async ({ request }) => {
+	if (!origin) {
+		origin = getBaseUrl(request.url);
+		log.info(`Origin set to: ${origin}`);
+	}
 	return handler(request);
 };
 
