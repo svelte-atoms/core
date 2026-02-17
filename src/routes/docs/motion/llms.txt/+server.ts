@@ -18,6 +18,7 @@ prerequisites: []
 related:
   - styling
   - crafting
+  - transitions
 ---
 
 # Motion & Animation System
@@ -74,7 +75,7 @@ interface TransitionConfig {
 
 1. **\`initial(node)\`** - Runs immediately when node is created (before enter)
 2. **\`enter(node)\`** - Returns transition config, runs as element enters
-3. **\`animate(node)\`** - Runs after enter completes (skipped on first mount if enter exists)
+3. **\`animate(node)\`** - Waits for enter to complete on first mount, then runs on reactive state changes
 4. **\`exit(node)\`** - Returns transition config, runs as element leaves
 
 ### Setting Initial State
@@ -111,7 +112,7 @@ Choose based on your needs:
 
 ### Important Behaviors
 
-- \`animate\` is **skipped on first render** if \`enter\` is defined (prevents double animation)
+- \`animate\` **waits for \`enter\` to complete** on first render if \`enter\` is defined, then runs
 - \`animate\` runs on **subsequent reactive updates** to animate state changes
 - \`onmount\` returns cleanup function, runs before \`ondestroy\`
 - \`initial\` sets up state before any transitions occur
@@ -906,9 +907,9 @@ Implement custom transition configs:
 </HtmlAtom>
 \`\`\`
 
-### Check Skip Behavior
+### Check Sequencing Behavior
 
-Remember: \`animate\` is skipped on first render when \`enter\` exists:
+Remember: \`animate\` waits for \`enter\` to complete on first render when \`enter\` exists:
 
 \`\`\`svelte
 <script>
@@ -918,8 +919,8 @@ Remember: \`animate\` is skipped on first render when \`enter\` exists:
 <HtmlAtom
 	enter={(node) => fade(node, { duration: 300 })}
 	animate={(node) => {
-		// This will NOT run on first mount (because enter exists)
-		// This WILL run when count changes
+		// This will run AFTER enter completes on first mount
+		// This will also run when count changes
 		console.log('Animating count:', count);
 	}}
 >

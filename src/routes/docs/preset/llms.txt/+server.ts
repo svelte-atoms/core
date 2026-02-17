@@ -135,7 +135,12 @@ Override presets for specific component subtrees:
 
 ## Preset Keys
 
-${Object.entries(metadata.presetKeys).map(([type, info]) => `### ${type.charAt(0).toUpperCase() + type.slice(1)} Components\n\n${info.description}\n\n**Examples:** \`${info.example}\``).join('\n\n')}
+${Object.entries(metadata.presetKeys)
+	.map(
+		([type, info]) =>
+			`### ${type.charAt(0).toUpperCase() + type.slice(1)} Components\n\n${info.description}\n\n**Examples:** \`${info.example}\``
+	)
+	.join('\n\n')}
 
 ## Compound Component Presets
 
@@ -499,6 +504,8 @@ const Dialog.Root preset="dialog" class="debug">
 
 ## TypeScript Support
 
+### Basic Preset Typing
+
 \`\`\`typescript
 import type { Preset } from '@svelte-atoms/core/types';
 
@@ -511,6 +518,114 @@ const myPreset: Preset = {
 
 setPreset(myPreset);
 \`\`\`
+
+### Extending Component Props for Custom Variants
+
+When creating custom variants using presets, extend the component prop types in your \`app.d.ts\` file to get full TypeScript support:
+
+\`\`\`typescript
+// app.d.ts
+
+// Extend @svelte-atoms/core types globally
+declare module '@svelte-atoms/core' {
+  // Add custom variants to Button
+  export interface ButtonProps {
+    variant?: 'ghost' | 'primary' | 'secondary' | 'destructive' | 'outline';
+  }
+  
+  // Add custom variants to Card
+  export interface CardProps {
+    variant?: 'elevated' | 'outlined' | 'filled';
+  }
+  
+  // Add custom variants to Alert
+  export interface AlertProps {
+    variant?: 'info' | 'warning' | 'error' | 'success';
+  }
+}
+
+export {};
+\`\`\`
+
+**Important Notes:**
+
+- The interface name must match the component name + "Props" (e.g., \`ButtonProps\`, \`CardProps\`)
+- TypeScript will merge your custom properties with the original component props
+- This provides autocomplete and type checking for your custom variants
+- Place this in \`src/app.d.ts\` or any \`.d.ts\` file included in your TypeScript config
+
+### Usage with Full Type Safety
+
+\`\`\`svelte
+<script lang="ts">
+  import { Button } from '@svelte-atoms/core/components/button';
+  
+  // TypeScript now knows about your custom variants
+  let variant: ButtonProps['variant'] = 'primary';
+</script>
+
+<!-- Autocomplete works for variant prop -->
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="destructive">Delete</Button>
+
+<!-- TypeScript error: "invalid" is not a valid variant -->
+<Button variant="invalid">Error</Button>
+\`\`\`
+
+### Advanced: Extending Multiple Properties
+
+\`\`\`typescript
+// app.d.ts
+declare module '@svelte-atoms/core' {
+  export interface ButtonProps {
+    variant?: 'ghost' | 'primary' | 'secondary' | 'destructive' | 'outline';
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+    rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  }
+  
+  export interface CardProps {
+    variant?: 'elevated' | 'outlined' | 'filled';
+    padding?: 'none' | 'sm' | 'md' | 'lg';
+  }
+}
+
+export {};
+\`\`\`
+
+### Type-Safe Reactive Presets
+
+\`\`\`typescript
+import type { Preset } from '@svelte-atoms/core/types';
+import type { Bond } from '@svelte-atoms/core/types/bond';
+
+const accordionPresets: Preset = {
+  'accordion.item.header': (bond?: Bond) => {
+    const isOpen = bond?.state?.isOpen ?? false;
+    
+    return {
+      class: isOpen 
+        ? 'bg-accent text-accent-foreground' 
+        : 'hover:bg-accent/50'
+    };
+  }
+};
+\`\`\`
+
+### Best Practices
+
+**✅ DO:**
+- Define custom variants in \`app.d.ts\` for global type extensions
+- Use type inference for preset definitions
+- Keep variant names descriptive and consistent
+- Document your custom variants in code comments
+- Use union types for variant options
+
+**❌ DON'T:**
+- Override original component props (extend only)
+- Use overly generic variant names like "type1", "type2"
+- Mix different naming conventions
+- Forget to export the empty object in \`app.d.ts\`
 
 ## Next Steps
 
