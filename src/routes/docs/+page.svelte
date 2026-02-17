@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Section } from '$docs';
+	import { Section } from '$docs/components';
 	import { Card } from '$lib/components/card';
 	import { Badge } from '$lib/components/badge';
 	import { Button } from '$lib/components/button';
@@ -80,7 +80,10 @@
 	</div>
 
 	<!-- Quick Links -->
-	<Section title="Quick Links">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Quick Links</Section.Title>
+		</Section.Header>
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			{#each quickLinks as link}
 				<a href={link.href} class="group block">
@@ -95,10 +98,14 @@
 				</a>
 			{/each}
 		</div>
-	</Section>
+	</Section.Root>
 
 	<!-- Features -->
-	<Section title="Core Features" description="Everything you need to build modern web applications">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Core Features</Section.Title>
+			<Section.Subtitle>Everything you need to build modern web applications</Section.Subtitle>
+		</Section.Header>
 		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 			{#each features as feature}
 				<a href={feature.href} class="group block">
@@ -112,10 +119,14 @@
 				</a>
 			{/each}
 		</div>
-	</Section>
+	</Section.Root>
 
 	<!-- Getting Started -->
-	<Section title="Getting Started" description="Jump right in and start building">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Getting Started</Section.Title>
+			<Section.Subtitle>Jump right in and start building</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-6">
 			<Card.Root>
 				<Card.Header>
@@ -228,10 +239,13 @@ setPreset({
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</Section>
+	</Section.Root>
 
 	<!-- Why Svelte Atoms -->
-	<Section title="Why Svelte Atoms?">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Why Svelte Atoms?</Section.Title>
+		</Section.Header>
 		<div class="prose prose-slate dark:prose-invert max-w-none">
 			<div class="grid gap-6 md:grid-cols-2">
 				<div>
@@ -283,10 +297,13 @@ setPreset({
 				</div>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
 	<!-- Next Steps -->
-	<Section title="Next Steps">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Next Steps</Section.Title>
+		</Section.Header>
 		<Card.Root class="border-primary/50 bg-primary/5">
 			<Card.Header>
 				<Card.Title>Ready to dive deeper?</Card.Title>
@@ -301,5 +318,5 @@ setPreset({
 				<Button href="/docs/preset" as="a" variant="outline">Explore Presets</Button>
 			</Card.Body>
 		</Card.Root>
-	</Section>
+	</Section.Root>
 </div>

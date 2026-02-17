@@ -12,30 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { buttonProps } from './props';
+	import { metadata } from './shared';
 
-	const buttonCode = `<script lang="ts">
-  import { Button } from '@svelte-atoms/core/button';
-<\/script>
-
-<Button>Click me</Button>`;
-
-	const variantsCode = `<Button class="bg-primary text-white hover:bg-primary/90">
-  Primary Button
-</Button>
-
-<Button class="bg-secondary text-white hover:bg-secondary/90">
-  Secondary Button
-</Button>
-
-<Button class="border border-border hover:bg-muted">
-  Outline Button
-</Button>`;
-
-	const sizesCode = `<Button class="px-3 py-1.5 text-sm">Small</Button>
-<Button class="px-4 py-2">Medium</Button>
-<Button class="px-6 py-3 text-lg">Large</Button>`;
-
-	const statesCode = `<Button disabled>Disabled Button</Button>`;
+	const { button: buttonCode, variants: variantsCode, sizes: sizesCode, states: statesCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -52,14 +31,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Button &#125; from '@svelte-atoms/core/button';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the button appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the button appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Button components by defining presets in your
@@ -67,9 +53,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   button: () => ({
     class: 'px-3 py-2 h-12 disabled:opacity-50 disabled:pointer-events-none items-center transition-colors duration-100',
     variants: {
@@ -98,9 +84,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different button variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different button variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Button"
@@ -164,9 +154,12 @@ const preset = createPreset({
 				</Button>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="mb-4">
 			<p class="text-muted-foreground text-sm">
 				The Button component accepts all standard HTML button attributes, custom props, and preset
@@ -176,9 +169,12 @@ const preset = createPreset({
 		<Props
 			data={buttonProps}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper semantic button element with role',
@@ -189,7 +185,7 @@ const preset = createPreset({
 				'Clear visual feedback for all interactive states'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Back to Components', href: '/components' }}

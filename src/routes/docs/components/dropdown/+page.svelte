@@ -22,53 +22,7 @@
 		dropdownSelectionsProps,
 		dropdownSelectionProps
 	} from './props';
-
-	const basicCode = `<Dropdown.Root>
-  <Dropdown.Trigger as="button">
-    Open Menu
-  </Dropdown.Trigger>
-  
-  <Dropdown.Content>
-    <Dropdown.Item value="profile">Profile</Dropdown.Item>
-    <Dropdown.Item value="settings">Settings</Dropdown.Item>
-    <Dropdown.Item value="logout">Logout</Dropdown.Item>
-  </Dropdown.Content>
-</Dropdown.Root>`;
-
-	const multipleCode = `<script lang="ts">
-  import { Dropdown, Input } from '@svelte-atoms/core';
-  
-  let selectedValues = $state<string[]>([]);
-  let selectedLabels = $state<string[]>([]);
-  
-  const items = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'cherry', label: 'Cherry' }
-  ];
-<\/script>
-
-<Dropdown.Root bind:values={selectedValues} bind:labels={selectedLabels} multiple>
-	<Dropdown.Trigger base={Input.Root} class="min-h-10 min-w-sm">
-		<Dropdown.Selections class="flex flex-wrap gap-1" />
-		<Dropdown.Placeholder class="">No fruits selected</Dropdown.Placeholder>
-	</Dropdown.Trigger>
-	
-	<Dropdown.Content
-		class="bg-background mt-2 max-h-60 overflow-auto rounded-lg border shadow-lg"
-	>
-		<input
-			bind:value={filteredItems.query}
-			class="border-border border-b px-4 py-3"
-			placeholder="Search items..."
-		/>
-		{#each filteredItems.current as item (item.value)}
-			<Dropdown.Item value={item.value} class="hover:bg-muted block px-4 py-2">
-				{item.label}
-			</Dropdown.Item>
-		{/each}
-	</Dropdown.Content>
-</Dropdown.Root>`;
+	import { metadata } from './shared';
 
 	let selectedValues = $state<string[]>([]);
 	let selectedLabels = $state<string[]>([]);
@@ -88,30 +42,34 @@
 </script>
 
 <svelte:head>
-	<title>Dropdown - Svelte Atoms</title>
-	<meta name="description" content="Dropdown menu for actions and options." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Dropdown' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Dropdown"
-		description="Flexible dropdown component with single/multiple selection support, search functionality, and advanced composition. Built on top of Menu and Popover modules."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Dropdown &#125; from '@svelte-atoms/core';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the dropdown appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the dropdown appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Dropdown components by defining presets in your
@@ -119,32 +77,21 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
-
-const preset = createPreset({
-  dropdown: () => ({
-    class: 'relative inline-block text-left'
-  }),
-  'dropdown.trigger': () => ({
-    class: 'relative flex h-auto min-h-10 flex-wrap items-center border border-border rounded-md bg-background px-3 py-2 text-sm hover:bg-accent transition-colors'
-  }),
-  'dropdown.item': () => ({
-    class: 'block w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors cursor-pointer'
-  }),
-  'dropdown.query': () => ({
-    class: 'inline-flex h-auto w-auto flex-1 py-1'
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different dropdown variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different dropdown variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Dropdown"
 				description="Simple dropdown menu with items"
-				code={basicCode}
+				code={metadata.examples.basic}
 			>
 				<Dropdown.Root>
 					<Dropdown.Trigger base={Input.Root} class="h-10 min-w-sm">
@@ -172,7 +119,7 @@ const preset = createPreset({
 			<DemoExample
 				title="Multiple Selection"
 				description="Dropdown with multiple selection support. Selected items are displayed as badges."
-				code={multipleCode}
+				code={metadata.examples.multiple}
 			>
 				<div class="max-w-sm">
 					<Dropdown.Root bind:values={selectedValues} bind:labels={selectedLabels} multiple>
@@ -199,9 +146,12 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dropdown.Root Props</h3>
@@ -261,9 +211,12 @@ const preset = createPreset({
 				</ul>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Helper Functions">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Helper Functions</Section.Title>
+		</Section.Header>
 		<div class="space-y-4">
 			<h3 class="text-foreground text-lg font-semibold">filterDropdownData</h3>
 			<p class="text-muted-foreground text-sm">
@@ -289,9 +242,12 @@ filtered.query = 'app'; // Set search query
 filtered.current; // Returns filtered results: [{ value: 'apple', label: 'Apple' }]`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Keyboard navigation (Arrow keys)',
@@ -302,7 +258,7 @@ filtered.current; // Returns filtered results: [{ value: 'apple', label: 'Apple'
 				'Automatic positioning'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Drawer', href: '/docs/components/drawer' }}

@@ -13,77 +13,43 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import {
-		dialogProps,
-		dialogContentProps,
-		dialogHeaderProps,
-		dialogBodyProps,
-		dialogFooterProps,
-		dialogTitleProps,
-		dialogDescriptionProps,
-		dialogCloseButtonProps
+		dialogProps
 	} from './props';
-
-	const basicCode = `<script lang="ts">
-  let open = $state(false);
-<\/script>
-
-<button onclick={() => open = true}>Open Dialog</button>
-
-<Dialog.Root bind:open>
-  <Dialog.Content>
-    <Dialog.Header>
-      <h2>Dialog Title</h2>
-    </Dialog.Header>
-    <Dialog.Body>
-      <p>Dialog content goes here.</p>
-    </Dialog.Body>
-    <Dialog.Footer>
-      <button onclick={() => open = false}>Close</button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog.Root>`;
-
-	const alertCode = `<Dialog.Root bind:open variant="alert">
-  <Dialog.Content>
-    <Dialog.Header>
-      <h2>Are you sure?</h2>
-    </Dialog.Header>
-    <Dialog.Body>
-      <p>This action cannot be undone.</p>
-    </Dialog.Body>
-    <Dialog.Footer>
-      <button>Cancel</button>
-      <button>Confirm</button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog.Root>`;
+	import { metadata } from './shared';
 
 	let basicOpen = $state(false);
 	let alertOpen = $state(false);
 </script>
 
 <svelte:head>
-	<title>Dialog - Svelte Atoms</title>
-	<meta name="description" content="Modal dialog for important user interactions." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Dialog' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Dialog"
-		description="Modal dialog for important user interactions. Captures focus and requires user action."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Dialog &#125; from '@svelte-atoms/core/dialog';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the dialog appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the dialog appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Dialog components by defining presets in your
@@ -91,35 +57,18 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
-
-const preset = createPreset({
-  dialog: () => ({
-    class: 'fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm'
-  }),
-  'dialog.content': () => ({
-    class: 'relative z-50 w-full max-w-lg rounded-lg border border-border bg-background p-6 shadow-lg'
-  }),
-  'dialog.header': () => ({
-    class: 'flex flex-col space-y-1.5 text-center sm:text-left'
-  }),
-  'dialog.title': () => ({
-    class: 'text-lg font-semibold leading-none tracking-tight'
-  }),
-  'dialog.body': () => ({
-    class: 'py-4 text-sm text-muted-foreground'
-  }),
-  'dialog.footer': () => ({
-    class: 'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2'
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different dialog variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different dialog variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
-			<DemoExample title="Basic Dialog" description="Simple modal dialog" code={basicCode}>
+			<DemoExample title="Basic Dialog" description="Simple modal dialog" code={metadata.examples.basic}>
 				<Button class="" onclick={() => (basicOpen = true)}>Open Dialog</Button>
 
 				<Dialog.Root bind:open={basicOpen}>
@@ -140,7 +89,7 @@ const preset = createPreset({
 							<button
 								class="bg-primary rounded px-4 py-2 text-white"
 								onclick={() => (basicOpen = false)}
-							>
+							>metadata.examples.basic
 								Confirm
 							</button>
 						</Dialog.Footer>
@@ -148,7 +97,7 @@ const preset = createPreset({
 				</Dialog.Root>
 			</DemoExample>
 
-			<DemoExample title="Alert Dialog" description="Dialog for critical actions" code={alertCode}>
+			<DemoExample title="Alert Dialog" description="Dialog for critical actions" code={metadata.examples.alert}>
 				<Button class="" onclick={() => (alertOpen = true)}>Delete Item</Button>
 
 				<Dialog.Root bind:open={alertOpen}>
@@ -174,29 +123,28 @@ const preset = createPreset({
 				</Dialog.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Dialog.Root Props</h3>
 				<Props data={dialogProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Focus trapped within dialog',
-				'Escape key to close',
-				'Proper ARIA attributes (role="dialog", aria-modal)',
-				'Returns focus to trigger on close',
-				'Screen reader announcements',
-				'Keyboard navigation support'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'DataGrid', href: '/docs/components/datagrid' }}

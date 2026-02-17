@@ -1,65 +1,60 @@
-export interface PropDefinition {
-	name: string;
-	type: string;
-	default: string;
-	description: string;
-}
+import type { PropDefinition } from '$docs/types';
 
 export const popoverRootProps: PropDefinition[] = [
 	{
 		name: 'open',
-		type: 'boolean | undefined',
+		type: 'boolean \\| undefined',
 		default: 'false',
 		description: 'Open'
 	},
 	{
 		name: 'disabled',
-		type: 'boolean | undefined',
+		type: 'boolean \\| undefined',
 		default: 'false',
 		description: 'Disabled'
 	},
 	{
 		name: 'placements',
-		type: 'Placement[] | undefined',
+		type: 'Placement[] \\| undefined',
 		default: 'undefined',
 		description: 'Placements'
 	},
 	{
 		name: 'placement',
-		type: 'Placement | undefined',
+		type: 'Placement \\| undefined',
 		default: 'undefined',
 		description: 'Placement'
 	},
 	{
 		name: 'offset',
-		type: 'number | undefined',
+		type: 'number \\| undefined',
 		default: '0',
 		description: 'Offset'
 	},
 	{
 		name: 'portal',
-		type: 'string | PortalBond | undefined',
-		default: '\'\'',
+		type: 'string \\| PortalBond \\| undefined',
+		default: "''",
 		description: 'Portal'
 	},
 	{
 		name: 'extend',
-		type: 'Record<string, unknown> | undefined',
-		default: '\'\'',
+		type: 'Record<string, unknown> \\| undefined',
+		default: "''",
 		description: 'Extend'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>> | undefined',
+		type: 'Factory<PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>> \\| undefined',
 		default: 'undefined',
 		description: 'Factory'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ popover: PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>; }]> | undefined',
+		type: 'Snippet<[{ popover: PopoverBond<PopoverStateProps, PopoverState<PopoverStateProps>, PopoverDomElements>; }]> \\| undefined',
 		default: 'undefined',
 		description: 'Children'
-	},
+	}
 ];
 
 export const popoverContentProps: PropDefinition[] = [
@@ -71,25 +66,25 @@ export const popoverContentProps: PropDefinition[] = [
 	},
 	{
 		name: 'base',
-		type: 'Component | Snippet',
+		type: 'Component \\| Snippet',
 		default: 'undefined',
 		description: 'Base component or snippet to render'
 	},
 	{
 		name: 'preset',
-		type: 'PresetModuleName | string',
+		type: 'PresetModuleName \\| string',
 		default: 'undefined',
 		description: 'Preset module name for styling'
 	},
 	{
 		name: 'variants',
-		type: 'VariantDefinition | Function',
+		type: 'VariantDefinition \\| Function',
 		default: 'undefined',
 		description: 'Variant definition or function to resolve variants'
 	},
 	{
 		name: 'class',
-		type: 'ClassValue | ClassValue[]',
+		type: 'ClassValue \\| ClassValue[]',
 		default: 'undefined',
 		description: 'CSS class(es) to apply to the element'
 	},
@@ -146,7 +141,7 @@ export const popoverContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const popoverIndicatorProps: PropDefinition[] = [
@@ -158,25 +153,25 @@ export const popoverIndicatorProps: PropDefinition[] = [
 	},
 	{
 		name: 'base',
-		type: 'Component | Snippet',
+		type: 'Component \\| Snippet',
 		default: 'undefined',
 		description: 'Base component or snippet to render'
 	},
 	{
 		name: 'preset',
-		type: 'PresetModuleName | string',
+		type: 'PresetModuleName \\| string',
 		default: 'undefined',
 		description: 'Preset module name for styling'
 	},
 	{
 		name: 'variants',
-		type: 'VariantDefinition | Function',
+		type: 'VariantDefinition \\| Function',
 		default: 'undefined',
 		description: 'Variant definition or function to resolve variants'
 	},
 	{
 		name: 'class',
-		type: 'ClassValue | ClassValue[]',
+		type: 'ClassValue \\| ClassValue[]',
 		default: 'undefined',
 		description: 'CSS class(es) to apply to the element'
 	},
@@ -233,7 +228,7 @@ export const popoverIndicatorProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const popoverArrowProps: PropDefinition[] = [
@@ -245,25 +240,25 @@ export const popoverArrowProps: PropDefinition[] = [
 	},
 	{
 		name: 'base',
-		type: 'Component | Snippet',
+		type: 'Component \\| Snippet',
 		default: 'undefined',
 		description: 'Base component or snippet to render'
 	},
 	{
 		name: 'preset',
-		type: 'PresetModuleName | string',
+		type: 'PresetModuleName \\| string',
 		default: 'undefined',
 		description: 'Preset module name for styling'
 	},
 	{
 		name: 'variants',
-		type: 'VariantDefinition | Function',
+		type: 'VariantDefinition \\| Function',
 		default: 'undefined',
 		description: 'Variant definition or function to resolve variants'
 	},
 	{
 		name: 'class',
-		type: 'ClassValue | ClassValue[]',
+		type: 'ClassValue \\| ClassValue[]',
 		default: 'undefined',
 		description: 'CSS class(es) to apply to the element'
 	},
@@ -320,7 +315,7 @@ export const popoverArrowProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const popoverTriggerProps: PropDefinition[] = [
@@ -334,7 +329,7 @@ export const popoverTriggerProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
-

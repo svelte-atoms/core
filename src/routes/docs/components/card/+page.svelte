@@ -12,58 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { cardRootProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script>
-  import { Card } from '@svelte-atoms/core';
-<\/script>
-
-<Card.Root>
-  <Card.Header>
-    <Card.Title>Card Title</Card.Title>
-    <Card.Description>This is a card description.</Card.Description>
-  </Card.Header>
-  <Card.Content>
-    <p>Main content goes here.</p>
-  </Card.Content>
-</Card.Root>`;
-
-	const variantsCode = `<Card.Root variant="default">
-  <Card.Header>
-    <Card.Title>Default Card</Card.Title>
-  </Card.Header>
-</Card.Root>
-
-<Card.Root variant="outlined">
-  <Card.Header>
-    <Card.Title>Outlined Card</Card.Title>
-  </Card.Header>
-</Card.Root>
-
-<Card.Root variant="elevated">
-  <Card.Header>
-    <Card.Title>Elevated Card</Card.Title>
-  </Card.Header>
-</Card.Root>`;
-
-	const clickableCode = `<Card.Root clickable onclick={() => console.log('Clicked!')}>
-  <Card.Header>
-    <Card.Title>Clickable Card</Card.Title>
-    <Card.Description>Click anywhere on this card.</Card.Description>
-  </Card.Header>
-</Card.Root>`;
-
-	const actionsCode = `<Card.Root>
-  <Card.Header>
-    <Card.Title>Action Card</Card.Title>
-  </Card.Header>
-  <Card.Content>
-    <p>Content with actions.</p>
-  </Card.Content>
-  <Card.Actions>
-    <button>Primary Action</button>
-    <button>Secondary</button>
-  </Card.Actions>
-</Card.Root>`;
+	const { basic: basicCode, variants: variantsCode, clickable: clickableCode, actions: actionsCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -83,14 +34,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Card &#125; from '@svelte-atoms/core/card';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the card appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the card appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Card components by defining presets in your
@@ -98,9 +56,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   card: () => ({
     class: 'rounded-lg border border-border bg-background text-foreground shadow-sm',
     variants: {
@@ -132,9 +90,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different card variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different card variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Card"
@@ -212,18 +174,24 @@ const preset = createPreset({
 				</Card.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Card.Root Props</h3>
 				<Props data={cardRootProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper semantic HTML structure',
@@ -233,7 +201,7 @@ const preset = createPreset({
 				'Screen reader support for card content'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Button', href: '/docs/components/button' }}

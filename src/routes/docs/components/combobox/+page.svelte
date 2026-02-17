@@ -162,17 +162,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Combobox &#125; from '@svelte-atoms/core';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the combobox appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the combobox appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Combobox components by defining presets in your
@@ -180,9 +184,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   combobox: () => ({
     class: 'relative w-full'
   }),
@@ -198,9 +202,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different combobox variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different combobox variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Combobox"
@@ -273,9 +281,12 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Combobox.Root Props</h3>
@@ -350,9 +361,12 @@ const preset = createPreset({
 				</ul>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Helper Functions">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Helper Functions</Section.Title>
+		</Section.Header>
 		<div class="space-y-4">
 			<h3 class="text-foreground text-lg font-semibold">filterDropdownData</h3>
 			<p class="text-muted-foreground text-sm">
@@ -377,9 +391,12 @@ filtered.query = 'app'; // Set search query
 filtered.current; // Returns filtered results`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Full ARIA attributes support with proper roles (combobox, listbox, option)',
@@ -391,7 +408,7 @@ filtered.current; // Returns filtered results`}
 				'Proper labeling and descriptions'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Collapsible', href: '/docs/components/collapsible' }}

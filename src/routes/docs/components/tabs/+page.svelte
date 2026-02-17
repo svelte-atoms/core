@@ -15,58 +15,44 @@
 		tabsRootProps,
 		tabHeaderProps,
 		tabBodyProps,
-		tabDescriptionProps,
 		tabsHeaderProps,
-		tabsBodyProps,
-		tabsContentProps
+		tabsBodyProps
 	} from './props';
-
-	const basicCode = `<script lang="ts">
-  let activeTab = $state('tab1');
-<\/script>
-
-<Tabs.Root bind:value={activeTab}>
-  <Tabs.Header>
-    <Tab.Root value="tab1">
-      <Tab.Header>Tab 1<\/Tab.Header>
-      <Tab.Body>Content 1<\/Tab.Body>
-    <\/Tab.Root>
-    <Tab.Root value="tab2">
-      <Tab.Header>Tab 2<\/Tab.Header>
-      <Tab.Body>Content 2<\/Tab.Body>
-    <\/Tab.Root>
-  <\/Tabs.Header>
-  <Tabs.Body>
-    <Tabs.Content />
-  <\/Tabs.Body>
-<\/Tabs.Root>`;
+	import { metadata } from './shared';
 
 	let activeTab = $state('tab1');
 	let exampleTab = $state('overview');
 </script>
 
 <svelte:head>
-	<title>Tabs - Svelte Atoms</title>
-	<meta name="description" content="Organize content into multiple panels." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Tabs' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Tabs"
-		description="Organize content into separate views that users can switch between."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Tabs &#125; from '@svelte-atoms/core/tabs';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the tabs appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the tabs appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Tabs components by defining presets in your
@@ -74,35 +60,18 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  'tabs.root': () => ({
-    class: 'w-full'
-  }),
-  'tabs.header': () => ({
-    class: 'border-b border-border'
-  }),
-  'tabs.body': () => ({
-    class: 'relative'
-  }),
-  'tab': () => ({
-    class: 'px-4 py-2 transition-colors'
-  }),
-  'tab.header': () => ({
-    class: 'cursor-pointer'
-  }),
-  'tab.body': () => ({
-    class: 'p-4'
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different tab variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different tab variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
-			<DemoExample title="Basic Tabs" description="Simple tab navigation" code={basicCode}>
+			<DemoExample title="Basic Tabs" description="Simple tab navigation" code={metadata.examples.basic}>
 				<Tabs.Root bind:value={activeTab}>
 					<Tabs.Header>
 						<Tab.Root value="tab1">
@@ -156,21 +125,7 @@ setPreset({
 			<DemoExample
 				title="Content Example"
 				description="Tabs with rich content"
-				code={`<Tabs.Root bind:value={exampleTab}>
-  <Tabs.Header>
-    <Tab.Root value="overview">
-      <Tab.Header>Overview<\/Tab.Header>
-      <Tab.Body>Content<\/Tab.Body>
-    <\/Tab.Root>
-    <Tab.Root value="features">
-      <Tab.Header>Features<\/Tab.Header>
-      <Tab.Body>More content<\/Tab.Body>
-    <\/Tab.Root>
-  <\/Tabs.Header>
-  <Tabs.Body>
-    <Tabs.Content />
-  <\/Tabs.Body>
-<\/Tabs.Root>`}
+			code={metadata.examples.content}
 			>
 				<Tabs.Root bind:value={exampleTab}>
 					<Tabs.Header>
@@ -228,9 +183,12 @@ setPreset({
 				</Tabs.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tabs.Root</h3>
@@ -299,19 +257,16 @@ setPreset({
 				<Props data={tabBodyProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'ARIA tabs pattern (role="tablist", "tab", "tabpanel")',
-				'Keyboard navigation (Arrow keys)',
-				'aria-selected state',
-				'Focus management',
-				'Screen reader friendly'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Stack', href: '/docs/components/stack' }}

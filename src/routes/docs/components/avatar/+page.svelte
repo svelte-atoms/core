@@ -12,23 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { avatarProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Avatar src="/avatar.jpg" alt="User name" />`;
-
-	const sizesCode = `<Avatar size="sm" src="/avatar.jpg" alt="Small" />
-<Avatar size="md" src="/avatar.jpg" alt="Medium" />
-<Avatar size="lg" src="/avatar.jpg" alt="Large" />
-<Avatar size="xl" src="/avatar.jpg" alt="Extra Large" />`;
-
-	const fallbackCode = `<Avatar alt="John Doe" />
-<Avatar alt="Jane Smith" />`;
-
-	const groupCode = `<div class="flex -space-x-2">
-  <Avatar src="/avatar1.jpg" alt="User 1" />
-  <Avatar src="/avatar2.jpg" alt="User 2" />
-  <Avatar src="/avatar3.jpg" alt="User 3" />
-  <Avatar>+5</Avatar>
-</div>`;
+	const { basic: basicCode, sizes: sizesCode, fallback: fallbackCode, group: groupCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -45,14 +31,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Avatar &#125; from '@svelte-atoms/core/avatar';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the avatar appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the avatar appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Avatar components by defining presets in your
@@ -60,9 +53,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   avatar: () => ({
     class: 'inline-flex items-center justify-center rounded-full bg-muted text-muted-foreground overflow-hidden',
     variants: {
@@ -80,9 +73,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different avatar variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different avatar variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Avatar" description="Simple avatar with image" code={basicCode}>
 				<Avatar src="https://i.pravatar.cc/150?img=1" alt="User name" />
@@ -125,18 +122,24 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Avatar Props</h3>
 				<Props data={avatarProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper alt text for images',
@@ -146,7 +149,7 @@ const preset = createPreset({
 				'ARIA labels when needed'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Alert', href: '/docs/components/alert' }}

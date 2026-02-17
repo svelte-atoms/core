@@ -13,40 +13,9 @@
 	} from '$docs/components';
 	import { Alert, Button, Card } from '$svelte-atoms/core';
 	import { stackProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
-  <Stack.Item>
-    <div class="h-64 w-64 bg-gradient-to-br from-blue-500 to-purple-600"></div>
-  </Stack.Item>
-  <Stack.Item class="flex items-end">
-    <div class="w-full bg-black/50 p-4">
-      <h3 class="text-lg font-bold text-white">Overlay Text</h3>
-      <p class="text-sm text-white/80">Stays in document flow</p>
-    </div>
-  </Stack.Item>
-</Stack.Root>`;
-
-	const badgeCode = `<Stack.Root class="inline-block w-fit flex-0">
-  <Stack.Item base={Button} variant="primary">Messages</Stack.Item>
-  <Stack.Item class="flex justify-end" style="margin-top: -8px; margin-right: -8px;">
-    <span class="bg-destructive text-destructive-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
-      5
-    </span>
-  </Stack.Item>
-</Stack.Root>`;
-
-	const loadingCode = `<Stack.Root class="w-64">
-  <Stack.Item base={Card.Root} class="rounded-lg border p-8">
-    <h3 class="mb-2 text-lg font-bold">Content Card</h3>
-    <p class="text-muted-foreground text-sm">Your content here that determines the size</p>
-    <p class="text-muted-foreground mt-2 text-sm">Container sizes based on this content</p>
-  </Stack.Item>
-  <Stack.Item class="flex items-center justify-center">
-    <div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg backdrop-blur-sm">
-      <div class="text-muted-foreground text-sm">Loading...</div>
-    </div>
-  </Stack.Item>
-</Stack.Root>`;
+	const { basic: basicCode, badge: badgeCode, loading: loadingCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -66,7 +35,10 @@
 		status="stable"
 	/>
 
-	<Section title="Overview">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+		</Section.Header>
 		<Alert.Root variant="info">
 			<Alert.Title>Why Stack?</Alert.Title>
 			<Alert.Content class="text-foreground/70">
@@ -100,16 +72,23 @@
 				</div>
 			</Alert.Content>
 		</Alert.Root>
-	</Section>
+	</Section.Root>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Stack &#125; from '@svelte-atoms/core/stack';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the stack appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the stack appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Stack components by defining presets in your
@@ -134,9 +113,13 @@ setPreset({
 // Use z-index or DOM order to control stacking order.`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different stack layering patterns">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different stack layering patterns</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Image with Overlay"
@@ -194,9 +177,12 @@ setPreset({
 				</Stack.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Root</h3>
@@ -237,22 +223,21 @@ setPreset({
 				/>
 			</div>
 		</div>
-	</Section>
+</Section.Root>
 
-	<Section title="Accessibility">
-		<AccessibilityInfo
-			features={[
-				'Semantic HTML structure',
-				'Uses CSS Grid for proper layering',
-				'Maintains DOM order for screen readers',
-				'Works with absolute positioning and z-index',
-				'Keyboard navigation preserves natural tab order'
-			]}
-		/>
-	</Section>
-
-	<PageNavigation
-		prev={{ label: 'Sidebar', href: '/docs/components/sidebar' }}
-		next={{ label: 'Tabs', href: '/docs/components/tabs' }}
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Accessibility</Section.Title>
+	</Section.Header>
+	<AccessibilityInfo
+		features={[
+			'Semantic HTML structure',
+			'Uses CSS Grid for proper layering',
+			'Maintains DOM order for screen readers',
+			'Works with absolute positioning and z-index',
+			'Keyboard navigation preserves natural tab order'
+		]}
+	/>
+</Section.Root>
 	/>
 </div>

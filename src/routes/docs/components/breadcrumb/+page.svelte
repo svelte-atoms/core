@@ -12,22 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import breadcrumbProps from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item href="/components">Components</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item>Breadcrumb</Breadcrumb.Item>
-</Breadcrumb.Root>`;
-
-	const customSeparatorCode = `<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item href="/docs">Docs</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item>Components</Breadcrumb.Item>
-</Breadcrumb.Root>`;
+	const { basic: basicCode, customSeparator: customSeparatorCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -46,17 +33,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Breadcrumb &#125; from '@svelte-atoms/core/breadcrumb';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the breadcrumb appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the breadcrumb appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Breadcrumb components by defining presets in your
@@ -79,9 +70,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different breadcrumb variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different breadcrumb variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Breadcrumb"
@@ -111,9 +106,12 @@ setPreset({
 				</BreadcrumbComponent.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Breadcrumb.Root</h3>
@@ -133,9 +131,12 @@ setPreset({
 				<Props data={breadcrumbProps.separator} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Uses nav element with aria-label',
@@ -145,7 +146,7 @@ setPreset({
 				'Screen reader friendly structure'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Badge', href: '/docs/components/badge' }}

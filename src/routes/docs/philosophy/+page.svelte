@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Section } from '$docs/components';
 </script>
 
 <div class="mx-auto max-w-4xl px-4 py-12">
@@ -11,13 +12,13 @@
 	</div>
 
 	<!-- Core Principles -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Core Principles</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Core Principles</Section.Title>
+			<Section.Subtitle>
 				Svelte Atoms is built on three fundamental principles that guide every design decision.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-6">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -106,16 +107,16 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Bond Architecture -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Bond Architecture</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Bond Architecture</Section.Title>
+			<Section.Subtitle>
 				The Bond pattern is our approach to state management and component communication.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="border-border/50 mb-6 rounded-lg border p-6">
 			<h3 class="mb-4 text-xl font-semibold">What is a Bond?</h3>
@@ -165,16 +166,16 @@ const accordion = createAccordionBond({
 				</p>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Why Svelte 5 -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Why Svelte 5?</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Why Svelte 5?</Section.Title>
+			<Section.Subtitle>
 				Svelte 5's Runes API enables patterns that weren't possible before.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="border-border/50 rounded-lg border p-6">
 			<div class="space-y-6">
@@ -212,16 +213,16 @@ const accordion = createAccordionBond({
 				</div>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Customization Philosophy -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Customization Philosophy</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Customization Philosophy</Section.Title>
+			<Section.Subtitle>
 				We believe in giving you full control without sacrificing convenience.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-5 sm:grid-cols-2">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -256,14 +257,14 @@ const accordion = createAccordionBond({
 				</p>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Design Goals -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Design Goals</h2>
-			<p class="text-muted-foreground">What we optimize for when building Svelte Atoms.</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Design Goals</Section.Title>
+			<Section.Subtitle>What we optimize for when building Svelte Atoms.</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-4">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -377,16 +378,16 @@ const accordion = createAccordionBond({
 				</div>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- What We're Not -->
-	<section>
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">What We're Not</h2>
-			<p class="text-muted-foreground">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>What We're Not</Section.Title>
+			<Section.Subtitle>
 				Being clear about what Svelte Atoms is not helps set the right expectations.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-4">
 			<div class="border-border/50 rounded-lg border p-6">
@@ -413,5 +414,5 @@ const accordion = createAccordionBond({
 				</p>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 </div>

@@ -13,78 +13,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { sidebarRootProps, sidebarContentProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
-  import { Button } from '@svelte-atoms/core/button';
-  
-  let leftOpen = $state(false);
-<\/script>
-
-<Sidebar.Root bind:open={leftOpen}>
-  <div class="flex min-h-96 w-full">
-    <Sidebar.Content
-      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
-      class="overflow-hidden border-r p-4"
-    >
-      <h3 class="mb-4 font-semibold">Details</h3>
-      <div class="space-y-3">
-        <p class="text-muted-foreground w-40 text-sm">
-          Additional information and details can be displayed here.
-        </p>
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onclick={() => (leftOpen = false)}
-        >
-          Close
-        </Button>
-      </div>
-    </Sidebar.Content>
-
-    <main class="flex-1 p-4">
-      <Button onclick={() => (leftOpen = true)}>
-        Open Left Sidebar
-      </Button>
-    </main>
-  </div>
-</Sidebar.Root>`;
-
-	const rightCode = `<script lang="ts">
-  import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
-  import { Button } from '@svelte-atoms/core/button';
-  
-  let rightOpen = $state(false);
-<\/script>
-
-<Sidebar.Root bind:open={rightOpen}>
-  <div class="flex min-h-96 w-full">
-    <main class="flex-1">
-      <Button onclick={() => (rightOpen = true)}>
-        Open Right Sidebar
-      </Button>
-    </main>
-
-    <Sidebar.Content
-      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
-      class="border-l p-4"
-    >
-      <h3 class="mb-4 font-semibold">Details</h3>
-      <div class="space-y-3">
-        <p class="text-muted-foreground w-40 text-sm">
-          Additional information and details can be displayed here.
-        </p>
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onclick={() => (rightOpen = false)}
-        >
-          Close
-        </Button>
-      </div>
-    </Sidebar.Content>
-  </div>
-</Sidebar.Root>`;
+	const { basic: basicCode, right: rightCode } = metadata.examples;
 
 	let leftOpen = $state(false);
 	let rightOpen = $state(false);
@@ -104,17 +35,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Sidebar &#125; from '@svelte-atoms/core/sidebar';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the sidebar appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the sidebar appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Sidebar components by defining presets in your
@@ -122,9 +57,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   sidebar: () => ({
     class: 'fixed inset-y-0 z-50 w-64 bg-background shadow-lg transition-transform duration-300',
     variants: {
@@ -140,13 +75,17 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different sidebar variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different sidebar variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Left Sidebar" description="Sidebar from the left side" code={basicCode}>
 				<Sidebar.Root bind:open={leftOpen}>
-					<div class="flex min-h-96 w-full">
+					<div class="flex min-h-96 w-full border border-border rounded-lg overflow-clip">
 						<Sidebar.Content
 							animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
 							class="overflow-hidden border-r p-4"
@@ -170,8 +109,8 @@ const preset = createPreset({
 
 			<DemoExample title="Right Sidebar" description="Sidebar from the right side" code={rightCode}>
 				<Sidebar.Root bind:open={rightOpen}>
-					<div class="flex min-h-96 w-full">
-						<main class="flex-1">
+					<div class="flex min-h-96 w-full border border-border rounded-lg overflow-clip">
+						<main class="flex-1 p-4">
 							<Button onclick={() => (rightOpen = true)}>Open Right Sidebar</Button>
 						</main>
 
@@ -193,9 +132,12 @@ const preset = createPreset({
 				</Sidebar.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Sidebar.Root Props</h3>
@@ -206,9 +148,12 @@ const preset = createPreset({
 				<Props data={[...sidebarContentProps]} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Keyboard navigation (Escape to close)',
@@ -218,7 +163,7 @@ const preset = createPreset({
 				'Backdrop click to dismiss'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Scrollable', href: '/docs/components/scrollable' }}

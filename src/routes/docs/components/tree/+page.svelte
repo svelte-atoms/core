@@ -12,43 +12,9 @@
 		CodeBlock
 	} from '$docs/components';
 	import { treeRootProps, treeHeaderProps, treeBodyProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<script lang="ts">
-  import { Tree } from '@svelte-atoms/core/tree';
-<\/script>
-
-<Tree.Root open>
-  <Tree.Header>Documents</Tree.Header>
-  <Tree.Body>
-    <div>Resume.pdf</div>
-    <div>CoverLetter.docx</div>
-  </Tree.Body>
-</Tree.Root>`;
-
-	const nestedCode = `<script lang="ts">
-  import { Tree } from '@svelte-atoms/core/tree';
-<\/script>
-
-<Tree.Root open>
-  <Tree.Header>src</Tree.Header>
-  <Tree.Body>
-    <Tree.Root open>
-      <Tree.Header>components</Tree.Header>
-      <Tree.Body>
-        <div>Button.svelte</div>
-        <div>Input.svelte</div>
-      </Tree.Body>
-    </Tree.Root>
-    <Tree.Root open>
-      <Tree.Header>utils</Tree.Header>
-      <Tree.Body>
-        <div>helpers.ts</div>
-        <div>validators.ts</div>
-      </Tree.Body>
-    </Tree.Root>
-    <div>app.ts</div>
-  </Tree.Body>
-</Tree.Root>`;
+	const { basic: basicCode, nested: nestedCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -65,14 +31,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Tree &#125; from '@svelte-atoms/core/tree';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the tree appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the tree appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Tree components by defining presets in your
@@ -80,24 +53,16 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  'tree.root': () => ({
-    class: 'space-y-1'
-  }),
-  'tree.header': () => ({
-    class: 'cursor-pointer border-border flex items-center gap-2'
-  }),
-  'tree.body': () => ({
-    class: 'pl-4 border-l border-border'
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different tree variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different tree variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Tree" description="Collapsible tree structure" code={basicCode}>
 				<Tree.Root class="max-w-md space-y-2" open>
@@ -139,9 +104,12 @@ setPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tree.Root Props</h3>
@@ -156,19 +124,16 @@ setPreset({
 				<Props data={treeBodyProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'ARIA tree role',
-				'Keyboard navigation (Arrow keys)',
-				'aria-expanded state',
-				'Focus management',
-				'Screen reader friendly'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Tooltip', href: '/docs/components/tooltip' }}

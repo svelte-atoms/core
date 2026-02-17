@@ -13,51 +13,41 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import { collapsibleRootProps } from './props';
-
-	const basicCode = `<script lang="ts">
-  let open = $state(false);
-<\/script>
-
-<Collapsible.Root bind:open>
-  <Collapsible.Trigger>
-    <button>Toggle Content</button>
-  </Collapsible.Trigger>
-  <Collapsible.Content>
-    <p>This content can be shown or hidden.</p>
-  </Collapsible.Content>
-</Collapsible.Root>`;
+	import { metadata } from './shared';
 
 	let demoOpen = $state(false);
 	let controlledOpen = $state(true);
 </script>
 
 <svelte:head>
-	<title>Collapsible - Svelte Atoms</title>
-	<meta name="description" content="Expandable container for showing and hiding content." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb
-		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Collapsible' }]}
-	/>
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Collapsible"
-		description="Expandable container for showing and hiding content. Perfect for FAQs, settings, and progressive disclosure."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Collapsible &#125; from '@svelte-atoms/core/collapsible';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the collapsible appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the collapsible appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Collapsible components by defining presets in your
@@ -65,29 +55,21 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
-
-const preset = createPreset({
-  collapsible: () => ({
-    class: 'w-full space-y-2'
-  }),
-  'collapsible.trigger': () => ({
-    class: 'flex w-full items-center justify-between rounded-md border border-border bg-background px-4 py-3 text-sm font-medium hover:bg-accent transition-colors'
-  }),
-  'collapsible.content': () => ({
-    class: 'overflow-hidden text-sm text-muted-foreground px-4 py-3 border border-t-0 rounded-b-md border-border'
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different collapsible variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different collapsible variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Basic Collapsible"
 				description="Simple collapsible with toggle button"
-				code={basicCode}
+				code={metadata.examples.basic}
 			>
 				<Collapsible.Root bind:open={demoOpen} class="border-border rounded-lg border">
 					<Collapsible.Header
@@ -145,18 +127,24 @@ const preset = createPreset({
 				</div>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Collapsible.Root Props</h3>
 				<Props data={collapsibleRootProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper ARIA attributes (aria-expanded, aria-controls)',
@@ -166,7 +154,7 @@ const preset = createPreset({
 				'Respects prefers-reduced-motion setting'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Card', href: '/docs/components/card' }}

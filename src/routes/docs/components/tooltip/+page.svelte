@@ -13,24 +13,9 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import { tooltipTriggerProps } from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Tooltip.Root>
-  <Tooltip.Trigger>
-    <button>Hover me</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    This is a tooltip
-  </Tooltip.Content>
-</Tooltip.Root>`;
-
-	const placementCode = `<Tooltip.Root placement="top">
-  <Tooltip.Trigger>
-    <button>Top</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    Top tooltip
-  </Tooltip.Content>
-</Tooltip.Root>`;
+	const { basic: basicCode, placement: placementCode, arrow: arrowCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
@@ -47,17 +32,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Tooltip &#125; from '@svelte-atoms/core/tooltip';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the tooltip appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the tooltip appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Tooltip components by defining presets in your
@@ -65,21 +54,16 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  'tooltip.trigger': () => ({
-    class: 'cursor-pointer'
-  }),
-  'tooltip.content': () => ({
-    class: 'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-xs text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95'
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different tooltip variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different tooltip variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Tooltip" description="Simple tooltip on hover" code={basicCode}>
 				<Tooltip.Root>
@@ -116,15 +100,7 @@ setPreset({
 			<DemoExample
 				title="With Arrow"
 				description="Tooltip with arrow indicator"
-				code={`<Tooltip.Root>
-  <Tooltip.Trigger>
-    <button>Hover me</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    Tooltip with arrow
-    <Tooltip.Arrow />
-  </Tooltip.Content>
-</Tooltip.Root>`}
+				code={arrowCode}
 			>
 				<Tooltip.Root>
 					<Tooltip.Trigger base={Button} class="rounded px-4 py-2">Hover for arrow</Tooltip.Trigger>
@@ -135,9 +111,12 @@ setPreset({
 				</Tooltip.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Tooltip.Root</h3>
@@ -212,19 +191,16 @@ setPreset({
 				/>
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Uses aria-describedby for association',
-				'Not shown on keyboard focus by default',
-				'Non-essential information only',
-				'Clear on mouse leave',
-				'Screen reader compatible'
-			]}
+			features={metadata.accessibility}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Toast', href: '/docs/components/toast' }}

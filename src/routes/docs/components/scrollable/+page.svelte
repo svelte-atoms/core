@@ -12,23 +12,12 @@
 		CodeBlock
 	} from '$docs/components';
 	import {
-		scrollableRootProps,
-		scrollableContainerProps,
-		scrollableContentProps,
-		scrollableTrackProps,
-		scrollableThumbProps
+		scrollableRootProps
 	} from './props';
+	import { metadata } from './shared';
 
-	const basicCode = `<Scrollable height={200}>
-  <div>Long content...</div>
-</Scrollable>`;
+	const { basic: basicCode, horizontal: horizontalCode, both: bothCode } = metadata.examples;
 
-	const horizontalCode = `<Scrollable direction="horizontal">
-  <div class="flex gap-4">
-    <div>Item 1</div>
-    <div>Item 2</div>
-  </div>
-</Scrollable>`;
 </script>
 
 <svelte:head>
@@ -47,17 +36,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Scrollable &#125; from '@svelte-atoms/core/scrollable';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the scrollable appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the scrollable appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Scrollable components by defining presets in your
@@ -65,9 +58,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   scrollable: () => ({
     class: 'overflow-auto',
     variants: {
@@ -84,22 +77,30 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different scrollable variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different scrollable variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Vertical Scroll"
 				description="Fixed height container with vertical scrolling"
 				code={basicCode}
 			>
-				<Scrollable height={200} class="rounded border">
-					<div class="space-y-4 p-4">
-						{#each Array(20) as _, i}
-							<p class="text-muted-foreground">Line {i + 1} of scrollable content</p>
-						{/each}
-					</div>
-				</Scrollable>
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border" style="max-height: 200px;">
+						<Scrollable.Content>
+							<div class="space-y-4 p-4">
+								{#each Array(20) as _, i}
+									<p class="text-muted-foreground">Line {i + 1} of scrollable content</p>
+								{/each}
+							</div>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 
 			<DemoExample
@@ -107,47 +108,61 @@ const preset = createPreset({
 				description="Horizontal scrolling container"
 				code={horizontalCode}
 			>
-				<Scrollable direction="horizontal" class="rounded border p-4">
-					<div class="flex gap-4">
-						{#each Array(10) as _, i}
-							<div class="bg-muted rounded p-4 whitespace-nowrap">
-								Item {i + 1}
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border p-4">
+						<Scrollable.Content>
+							<div class="flex gap-4">
+								{#each Array(10) as _, i}
+									<div class="bg-muted rounded p-4 whitespace-nowrap">
+										Item {i + 1}
+									</div>
+								{/each}
 							</div>
-						{/each}
-					</div>
-				</Scrollable>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 
 			<DemoExample
 				title="Both Directions"
 				description="Scroll in both directions"
-				code={`<Scrollable direction="both" height={300}>`}
+				code={bothCode}
 			>
-				<Scrollable direction="both" height={300} class="rounded border">
-					<div class="p-4">
-						<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
-							{#each Array(50) as _, i}
-								<div class="bg-muted rounded p-4 text-center">
-									{i + 1}
+				<Scrollable.Root>
+					<Scrollable.Container class="rounded border" style="max-height: 300px;">
+						<Scrollable.Content>
+							<div class="p-4">
+								<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
+									{#each Array(50) as _, i}
+										<div class="bg-muted rounded p-4 text-center">
+											{i + 1}
+										</div>
+									{/each}
 								</div>
-							{/each}
-						</div>
-					</div>
-				</Scrollable>
+							</div>
+						</Scrollable.Content>
+					</Scrollable.Container>
+				</Scrollable.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Scrollable Props</h3>
 				<Props data={scrollableRootProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Keyboard scrolling (Arrow keys)',
@@ -157,7 +172,7 @@ const preset = createPreset({
 				'Touch-friendly scrolling'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Radio', href: '/docs/components/radio' }}

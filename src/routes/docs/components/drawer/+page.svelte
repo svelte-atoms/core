@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { animateDrawerContent, clickoutDrawer, Drawer } from '$lib/components/drawer';
+	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -13,65 +13,43 @@
 	} from '$docs/components';
 	import { Button } from '$svelte-atoms/core';
 	import {
-		slideoverRootProps,
-		slideoverContentProps,
-		slideoverHeaderProps,
-		drawerBodyProps,
-		slideoverFooterProps,
-		slideoverTitleProps,
-		slideoverDescriptionProps,
-		slideoverBackdropProps
+		slideoverRootProps
 	} from './props';
-
-	const basicCode = `<script lang="ts">
-  let open = $state(false);
-<\/script>
-
-<button onclick={() => open = true}>Open Drawer</button>
-
-<Drawer.Root bind:open>
-  <Drawer.Content>
-    <Drawer.Header>
-      <Drawer.Title>Drawer Title</Drawer.Title>
-    </Drawer.Header>
-    <p>Drawer content goes here.</p>
-    <Drawer.Footer>
-      <button onclick={() => open = false}>Close</button>
-    </Drawer.Footer>
-  </Drawer.Content>
-</Drawer.Root>`;
-
-	const sidesCode = `<Drawer.Root bind:open side="left">...</Drawer.Root>
-<Drawer.Root bind:open side="right">...</Drawer.Root>
-<Drawer.Root bind:open side="top">...</Drawer.Root>
-<Drawer.Root bind:open side="bottom">...</Drawer.Root>`;
+	import { metadata } from './shared';
 
 	let rightOpen = $state(false);
 	let leftOpen = $state(false);
 </script>
 
 <svelte:head>
-	<title>Drawer - Svelte Atoms</title>
-	<meta name="description" content="Side panel that slides in from screen edge." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Drawer' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Drawer"
-		description="Side panel that slides in from the edge of the screen. Perfect for navigation menus and additional content."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Drawer &#125; from '@svelte-atoms/core/drawer';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the drawer appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the drawer appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Drawer components by defining presets in your
@@ -79,34 +57,21 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
-
-const preset = createPreset({
-  drawer: () => ({
-    class: 'fixed inset-y-0 z-50 w-80 bg-background shadow-xl transition-transform duration-300',
-    variants: {
-      side: {
-        left: { class: 'left-0' },
-        right: { class: 'right-0' },
-        top: { class: 'top-0 w-full h-80' },
-        bottom: { class: 'bottom-0 w-full h-80' }
-      }
-    },
-    defaults: {
-      side: 'right'
-    }
-  })
-});`}
+				code={metadata.examples.preset}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different drawer variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different drawer variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample
 				title="Right Drawer"
 				description="Default drawer sliding from right"
-				code={basicCode}
+				code={metadata.examples.basic}
 			>
 				<Button
 					variant="primary"
@@ -143,7 +108,7 @@ const preset = createPreset({
 				</Drawer.Root>
 			</DemoExample>
 
-			<DemoExample title="Left Drawer" description="Drawer from left side" code={sidesCode}>
+			<DemoExample title="Left Drawer" description="Drawer from left side" code={metadata.examples.sides}>
 				<Button
 					variant="primary"
 					onclick={() => {
@@ -167,18 +132,24 @@ const preset = createPreset({
 				</Drawer.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Drawer.Root Props</h3>
 				<Props data={slideoverRootProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Focus trapped within drawer',
@@ -189,7 +160,7 @@ const preset = createPreset({
 				'Screen reader announcements'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Divider', href: '/docs/components/divider' }}

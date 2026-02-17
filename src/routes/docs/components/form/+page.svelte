@@ -14,6 +14,9 @@
 		Props
 	} from '$docs/components';
 	import formProps from './props';
+	import { metadata } from './shared';
+
+	const { basic: basicCode, validated: validatedCode } = metadata.examples;
 
 	let basicFormData = $state({
 		name: '',
@@ -24,67 +27,6 @@
 		email: '',
 		password: ''
 	});
-
-	const basicCode = `<script lang="ts">
-  import { Form, Field } from '@svelte-atoms/core/form';
-  import { Input } from '@svelte-atoms/core/input';
-  import Button from '@svelte-atoms/core/button';
-<\/script>
-
-<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Name</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control bind:value={formData.name} class="" />
-    </Field.Control>
-  </Field.Root>
-  
-  <Field.Root>
-    <Field.Label class="">Email</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        class="" 
-      />
-    </Field.Control>
-  </Field.Root>
-  
-  <Button class="w-full">Submit</Button>
-</Form>`;
-
-	const validatedCode = `<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Email Address</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        required 
-        class="" 
-      />
-    </Field.Control>
-  </Field.Root>
-  
-  <Field.Root>
-    <Field.Label class="">Password</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="password" 
-        bind:value={formData.password} 
-        placeholder="Enter your password" 
-        required 
-        minlength="8" 
-        class="" 
-      />
-    </Field.Control>
-    <p class="text-muted-foreground mt-1 text-xs">Password must be at least 8 characters</p>
-  </Field.Root>
-  
-  <Button class="w-full">Create Account</Button>
-</Form>`;
 </script>
 
 <svelte:head>
@@ -104,14 +46,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Form, Field &#125; from '@svelte-atoms/core/form';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the form appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the form appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Form and Field components by defining presets in
@@ -140,9 +89,13 @@ setPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different form variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different form variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Form" description="Simple form with text inputs" code={basicCode}>
 				<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
@@ -207,9 +160,12 @@ setPreset({
 				</Form>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-8">
 			{#each formProps as prop (prop.name)}
 				<div>
@@ -219,9 +175,12 @@ setPreset({
 				</div>
 			{/each}
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper semantic form and input elements',
@@ -232,7 +191,7 @@ setPreset({
 				'Support for required and optional fields'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Dropdown', href: '/components/dropdown' }}

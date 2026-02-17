@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 import { createMcpHandler } from 'mcp-handler';
 import { z } from 'zod';
@@ -7,6 +7,8 @@ import { dev } from '$app/environment';
 
 // MCP Server Implementation for @svelte-atoms/core
 // Using @modelcontextprotocol/sdk with HTTP transport
+
+let origin: string | null = null;
 
 // Logging utility - only log in development
 const log = {
@@ -23,14 +25,8 @@ const log = {
 };
 
 // Get base URL based on environment
-function getBaseUrl(requestUrl?: string): string {
-	// If we have a request URL, derive from that
-	if (requestUrl) {
-		const url = new URL(requestUrl);
-		return `${url.protocol}//${url.host}`;
-	}
-	// Otherwise use environment-based defaults
-	return dev ? 'http://localhost:5173' : 'https://sacore.netlify.app';
+function getBaseUrl(url: string): string {
+	return new URL(url).origin;
 }
 
 // Helper to read documentation from llms.txt endpoints
@@ -46,22 +42,6 @@ async function readDocFromEndpoint(path: string, baseUrl: string): Promise<strin
 		return '';
 	} catch (error) {
 		log.error(`Error fetching ${path}`, error);
-		return '';
-	}
-}
-
-// Helper to read documentation files (fallback for non-component docs)
-function readDocFile(relativePath: string): string {
-	try {
-		const fullPath = join(process.cwd(), 'src', 'routes', 'api', '[transport]', relativePath);
-		log.info(`Reading doc file: ${fullPath}`);
-		if (existsSync(fullPath)) {
-			return readFileSync(fullPath, 'utf-8');
-		}
-		log.error(`Doc file not found: ${fullPath}`);
-		return '';
-	} catch (error) {
-		log.error(`Error reading ${relativePath}`, error);
 		return '';
 	}
 }
@@ -92,9 +72,9 @@ function listComponentDocs(): string[] {
 // });
 
 const handler = createMcpHandler(
-	(server, requestContext) => {
+	(server) => {
 		// Get base URL from request context
-		const baseUrl = getBaseUrl(requestContext?.url);
+		const baseUrl = origin || 'http://localhost:5173'; // Fallback for development
 
 		// Register Tools
 		server.registerTool(
@@ -110,10 +90,15 @@ const handler = createMcpHandler(
 				// Validate and sanitize input
 				const lowercaseName = name?.toLowerCase().trim();
 				if (!lowercaseName || !/^[a-z0-9-]+$/.test(lowercaseName)) {
-					throw new Error('Invalid component name. Use lowercase letters, numbers, and hyphens only.');
+					throw new Error(
+						'Invalid component name. Use lowercase letters, numbers, and hyphens only.'
+					);
 				}
 
-				const content = await readDocFromEndpoint(`/docs/components/${lowercaseName}/llms.txt`, baseUrl);
+				const content = await readDocFromEndpoint(
+					`/docs/components/${lowercaseName}/llms.txt`,
+					baseUrl
+				);
 
 				if (!content) {
 					return {
@@ -164,9 +149,9 @@ const handler = createMcpHandler(
 				description: 'Get quick start guide for using the library',
 				inputSchema: {}
 			},
-			() => {
-				const overview = readDocFile('overview.md');
-				const quickRef = readDocFile('quick-reference.md');
+			async () => {
+				const overview = await readDocFromEndpoint('/docs/overview/llms.txt', baseUrl);
+				const quickRef = await readDocFromEndpoint('/docs/quick-reference/llms.txt', baseUrl);
 
 				return {
 					content: [
@@ -185,9 +170,8 @@ const handler = createMcpHandler(
 				description: 'Configurate components global presets',
 				inputSchema: {}
 			},
-			() => {
-				const presetDoc = readDocFile('preset.md');
-				// const quickRef = readDocFile('quick-reference.md');
+			async () => {
+				const presetDoc = await readDocFromEndpoint('/docs/preset/llms.txt', baseUrl);
 
 				return {
 					content: [
@@ -206,8 +190,8 @@ const handler = createMcpHandler(
 				description: 'Create components with custom variants',
 				inputSchema: {}
 			},
-			() => {
-				const variantsDoc = readDocFile('variants.md');
+			async () => {
+				const variantsDoc = await readDocFromEndpoint('/docs/variants/llms.txt', baseUrl);
 
 				return {
 					content: [
@@ -227,12 +211,15 @@ const handler = createMcpHandler(
 				description:
 					'Get guidance for creating, improving, or fixing components using atoms architecture',
 				inputSchema: {
-					action: z.enum(['create', 'improve', 'fix']).optional().describe('The action to perform (create, improve, or fix)')
+					action: z
+						.enum(['create', 'improve', 'fix'])
+						.optional()
+						.describe('The action to perform (create, improve, or fix)')
 				}
 			},
-			({ action }) => {
-				const craftingDoc = readDocFile('crafting.md');
-				
+			async ({ action }) => {
+				const craftingDoc = await readDocFromEndpoint('/docs/crafting/llms.txt', baseUrl);
+
 				if (!craftingDoc) {
 					throw new Error('Crafting documentation not found');
 				}
@@ -255,11 +242,6 @@ const handler = createMcpHandler(
 				name: 'overview',
 				title: 'Library Overview',
 				description: 'Introduction, features, and quick start guide'
-			},
-			{
-				name: 'agent',
-				title: 'Agent Guidelines',
-				description: 'Code generation rules and best practices for LLMs'
 			},
 			{
 				name: 'imports',
@@ -292,14 +274,59 @@ const handler = createMcpHandler(
 				description: 'Component lookup table and common patterns'
 			},
 			{
-				name: 'common-patterns',
-				title: 'Common Patterns',
-				description: 'Real-world code examples and recipes'
-			},
-			{
 				name: 'naming-convention',
 				title: 'Naming Conventions',
 				description: 'File, variable, and component naming standards'
+			},
+			{
+				name: 'atoms',
+				title: 'Atoms Concept',
+				description: 'Understanding atoms - the fundamental building blocks'
+			},
+			{
+				name: 'bonds',
+				title: 'Bonds Concept',
+				description: 'Understanding bonds - component communication mechanisms'
+			},
+			{
+				name: 'styling',
+				title: 'Styling Guide',
+				description: 'How to style components and create custom themes'
+			},
+			{
+				name: 'composition',
+				title: 'Component Composition',
+				description: 'Patterns for composing complex components'
+			},
+			{
+				name: 'crafting',
+				title: 'Crafting Components',
+				description: 'Guide to creating custom components from scratch'
+			},
+			{
+				name: 'usage',
+				title: 'Usage Guide',
+				description: 'How to use components in your application'
+			},
+			{
+				name: 'transitions',
+				title: 'Transitions & Animations',
+				description: 'Adding transitions and animations to components'
+			},
+			{
+				name: 'accessibility',
+				title: 'Accessibility',
+				description: 'Accessibility features and best practices'
+			},
+			{
+				name: 'preset-variant-integration',
+				title: 'Preset-Variant Integration',
+				description: 'How presets and variants work together'
+			},
+			{
+				name: 'quick-start',
+				title: 'Quick Start',
+				description: 'Getting started quickly with the library'
 			}
 		];
 
@@ -310,12 +337,12 @@ const handler = createMcpHandler(
 				{
 					title,
 					description,
-					mimeType: 'text/markdown'
+					mimeType: 'text/plain'
 				},
-				() => {
-					const content = readDocFile(`./${name}.md`);
+				async () => {
+					const content = await readDocFromEndpoint(`/docs/${name}/llms.txt`, baseUrl);
 					log.info(`Loading resource doc: ${name}`);
-					
+
 					if (!content) {
 						throw new Error(`Resource not found: ${name}`);
 					}
@@ -324,7 +351,7 @@ const handler = createMcpHandler(
 						contents: [
 							{
 								uri: `docs://${name}`,
-								mimeType: 'text/markdown',
+								mimeType: 'text/plain',
 								text: content
 							}
 						]
@@ -347,7 +374,10 @@ const handler = createMcpHandler(
 				},
 				async () => {
 					log.info(`Loading component resource: ${component}`);
-					const content = await readDocFromEndpoint(`/docs/components/${component}/llms.txt`, baseUrl);
+					const content = await readDocFromEndpoint(
+						`/docs/components/${component}/llms.txt`,
+						baseUrl
+					);
 
 					if (!content) {
 						throw new Error(`Component resource not found: ${component}`);
@@ -482,6 +512,10 @@ export const POST: RequestHandler = async ({ request }) => {
 // };
 
 export const GET: RequestHandler = async ({ request }) => {
+	if (!origin) {
+		origin = getBaseUrl(request.url);
+		log.info(`Origin set to: ${origin}`);
+	}
 	return handler(request);
 };
 

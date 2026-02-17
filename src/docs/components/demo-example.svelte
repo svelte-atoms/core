@@ -30,7 +30,7 @@
 
 	<!-- Preview -->
 	<div class="bg-background p-6">
-		<div class="mx-auto max-w-2xl">
+		<div class="">
 			{@render children()}
 		</div>
 	</div>

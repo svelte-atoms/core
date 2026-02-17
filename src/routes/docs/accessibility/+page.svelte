@@ -1,353 +1,23 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
+	import { Section } from '$docs/components';
+	import { metadata } from './shared';
 
-	const keyboardExample = `${'<'}!-- Button component -->
-${'<'}Button.Root>
-  Click me
-${'<'}/Button.Root>
-${'<'}!-- Supports: Enter, Space -->
-
-${'<'}!-- Menu component -->
-${'<'}Menu.Root>
-  ${'<'}Menu.Trigger base={Button}>Open Menu${'<'}/Menu.Trigger>
-  ${'<'}Menu.List>
-    ${'<'}Menu.Item>Option 1${'<'}/Menu.Item>
-    ${'<'}Menu.Item>Option 2${'<'}/Menu.Item>
-  ${'<'}/Menu.List>
-${'<'}/Menu.Root>
-${'<'}!-- Supports: Arrow keys, Enter, Escape -->
-
-${'<'}!-- Tabs component -->
-${'<'}Tabs.Root>
-  ${'<'}Tabs.Header>
-    ${'<'}Tabs.Tab value="1">Tab 1${'<'}/Tabs.Tab>
-    ${'<'}Tabs.Tab value="2">Tab 2${'<'}/Tabs.Tab>
-  ${'<'}/Tabs.Header>
-${'<'}/Tabs.Root>
-${'<'}!-- Supports: Arrow keys, Home, End -->`;
-
-	const ariaExample = `${'<'}!-- Dialog with ARIA attributes -->
-${'<'}Dialog.Root bind:open>
-  ${'<'}Dialog.Content>
-    ${'<'}Dialog.Header>
-      ${'<'}Dialog.Title>
-        ${'<'}!-- Automatically sets aria-labelledby -->
-        Confirm Action
-      ${'<'}/Dialog.Title>
-      ${'<'}Dialog.Description>
-        ${'<'}!-- Automatically sets aria-describedby -->
-        Are you sure you want to continue?
-      ${'<'}/Dialog.Description>
-    ${'<'}/Dialog.Header>
-  ${'<'}/Dialog.Content>
-${'<'}/Dialog.Root>
-
-${'<'}!-- Accordion with state attributes -->
-${'<'}Accordion.Root>
-  ${'<'}Accordion.Item>
-    ${'<'}Accordion.Item.Header>
-      ${'<'}!-- aria-expanded automatically managed -->
-      Section Title
-    ${'<'}/Accordion.Item.Header>
-    ${'<'}Accordion.Item.Body>
-      ${'<'}!-- aria-controls automatically set -->
-      Content
-    ${'<'}/Accordion.Item.Body>
-  ${'<'}/Accordion.Item>
-${'<'}/Accordion.Root>
-
-${'<'}!-- Checkbox with mixed state -->
-${'<'}Checkbox 
-  bind:checked 
-  bind:indeterminate
->
-  ${'<'}!-- aria-checked="mixed" when indeterminate -->
-  Accept terms
-${'<'}/Checkbox>`;
-
-	const focusTrapExample = `${'<'}script>
-  let dialogOpen = $state(false);
-${'<'}/script>
-
-${'<'}Dialog.Root bind:open={dialogOpen}>
-  ${'<'}Dialog.Content>
-    ${'<'}!-- Focus automatically trapped within dialog -->
-    ${'<'}!-- Tab cycles through focusable elements -->
-    ${'<'}!-- Shift+Tab reverses direction -->
-    
-    ${'<'}Dialog.Header>
-      ${'<'}Dialog.Title>Modal Dialog${'<'}/Dialog.Title>
-    ${'<'}/Dialog.Header>
-    
-    ${'<'}Dialog.Body>
-      ${'<'}input type="text" placeholder="First field" />
-      ${'<'}input type="text" placeholder="Second field" />
-    ${'<'}/Dialog.Body>
-    
-    ${'<'}Dialog.Footer>
-      ${'<'}Button onclick={() => dialogOpen = false}>Cancel${'<'}/Button>
-      ${'<'}Button>Confirm${'<'}/Button>
-    ${'<'}/Dialog.Footer>
-  ${'<'}/Dialog.Content>
-${'<'}/Dialog.Root>`;
-
-	const focusManagementExample = `${'<'}script>
-  import { Popover } from '@svelte-atoms/core/components/popover';
-  
-  let open = $state(false);
-${'<'}/script>
-
-${'<'}Popover.Root bind:open>
-  ${'<'}Popover.Trigger>
-    ${'<'}!-- Focus returns here when popover closes -->
-    Open Popover
-  ${'<'}/Popover.Trigger>
-  
-  ${'<'}Popover.Content>
-    ${'<'}!-- Focus moves to first focusable element when opened -->
-    ${'<'}Button>Action 1${'<'}/Button>
-    ${'<'}Button>Action 2${'<'}/Button>
-  ${'<'}/Popover.Content>
-${'<'}/Popover.Root>`;
-
-	const semanticExample = `${'<'}!-- Card with proper semantic structure -->
-${'<'}Card.Root>
-  ${'<'}Card.Header>
-    ${'<'}!-- Uses semantic header element -->
-    ${'<'}Card.Title>Card Title${'<'}/Card.Title>
-  ${'<'}/Card.Header>
-  
-  ${'<'}Card.Body>
-    ${'<'}!-- Main content area -->
-    Content goes here
-  ${'<'}/Card.Body>
-  
-  ${'<'}Card.Footer>
-    ${'<'}!-- Uses semantic footer element -->
-    Footer content
-  ${'<'}/Card.Footer>
-${'<'}/Card.Root>
-
-${'<'}!-- List with proper semantics -->
-${'<'}List.Root as="ul">
-  ${'<'}!-- Renders as <ul> element -->
-  ${'<'}List.Item>Item 1${'<'}/List.Item>
-  ${'<'}List.Item>Item 2${'<'}/List.Item>
-${'<'}/List.Root>
-
-${'<'}!-- Accordion with semantic structure -->
-${'<'}Accordion.Root as="ul">
-  ${'<'}!-- Can render as ul/ol for semantic lists -->
-  ${'<'}Accordion.Item as="li">
-    ${'<'}Accordion.Item.Header>Section${'<'}/Accordion.Item.Header>
-    ${'<'}Accordion.Item.Body>Content${'<'}/Accordion.Item.Body>
-  ${'<'}/Accordion.Item>
-${'<'}/Accordion.Root>`;
-
-	const screenReaderExample = `${'<'}!-- Alert with proper role -->
-${'<'}Alert variant="destructive" role="alert">
-  ${'<'}!-- Announced immediately by screen readers -->
-  ${'<'}Alert.Title>Error${'<'}/Alert.Title>
-  ${'<'}Alert.Description>
-    Something went wrong
-  ${'<'}/Alert.Description>
-${'<'}/Alert>
-
-${'<'}!-- Button with accessible label -->
-${'<'}Button aria-label="Close dialog">
-  ${'<'}!-- Icon only, needs aria-label -->
-  ${'<'}XIcon />
-${'<'}/Button>
-
-${'<'}!-- Form field with proper association -->
-${'<'}Form.Field>
-  ${'<'}Label for="email">Email Address${'<'}/Label>
-  ${'<'}Input id="email" type="email" />
-  ${'<'}Form.Description>
-    ${'<'}!-- Associated with input via aria-describedby -->
-    We'll never share your email
-  ${'<'}/Form.Description>
-${'<'}/Form.Field>`;
-
-	const customAttributesExample = `${'<'}script>
-  import { defineVariants } from '@svelte-atoms/core/utils';
-  
-  const alertVariants = defineVariants({
-    class: 'rounded-lg p-4 border',
-    variants: {
-      variant: {
-        error: {
-          class: 'bg-destructive/10 text-destructive',
-          role: 'alert',
-          'aria-live': 'assertive'
-        },
-        warning: {
-          class: 'bg-yellow-50 text-yellow-900',
-          role: 'status',
-          'aria-live': 'polite'
-        }
-      }
-    }
-  });
-${'<'}/script>
-
-${'<'}!-- Variants automatically apply ARIA attributes -->
-${'<'}HtmlAtom variants={alertVariants} variant="error">
-  ${'<'}!-- role="alert" and aria-live="assertive" applied -->
-  Critical error message
-${'<'}/HtmlAtom>`;
-
-	const disabledStateExample = `${'<'}!-- Button with disabled state -->
-${'<'}Button disabled>
-  ${'<'}!-- aria-disabled automatically set -->
-  ${'<'}!-- Pointer events disabled -->
-  ${'<'}!-- Visual opacity applied -->
-  Disabled Button
-${'<'}/Button>
-
-${'<'}!-- Menu item with disabled state -->
-${'<'}Menu.Root>
-  ${'<'}Menu.Trigger base={Button}>Menu${'<'}/Menu.Trigger>
-  ${'<'}Menu.List>
-    ${'<'}Menu.Item disabled>
-      ${'<'}!-- aria-disabled="true" -->
-      ${'<'}!-- tabindex="-1" to skip in navigation -->
-      Disabled Option
-    ${'<'}/Menu.Item>
-  ${'<'}/Menu.List>
-${'<'}/Menu.Root>
-
-${'<'}!-- Form input with disabled state -->
-${'<'}Input disabled />
-${'<'}!-- Native disabled attribute -->
-${'<'}!-- Excluded from form submission -->`;
-
-	const visualIndicatorsExample = `${'<'}!-- All interactive components have focus styles -->
-${'<'}style>
-  /* Applied automatically by components */
-  :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-  }
-${'<'}/style>
-
-${'<'}!-- Buttons -->
-${'<'}Button>
-  ${'<'}!-- Focus ring automatically applied -->
-  Click me
-${'<'}/Button>
-
-${'<'}!-- Links -->
-${'<'}Link href="/page">
-  ${'<'}!-- Focus ring with offset -->
-  Navigate
-${'<'}/Link>
-
-${'<'}!-- Custom focus styles -->
-${'<'}Button class="focus:ring-4 focus:ring-primary">
-  ${'<'}!-- Override with custom styles -->
-  Custom Focus
-${'<'}/Button>`;
-
-	const reducedMotionExample = `${'<'}script>
-  import { Accordion } from '@svelte-atoms/core/components/accordion';
-  
-  // Components respect prefers-reduced-motion
-${'<'}/script>
-
-${'<'}Accordion.Root>
-  ${'<'}Accordion.Item>
-    ${'<'}!-- Animation duration automatically reduced -->
-    ${'<'}!-- when user prefers reduced motion -->
-    ${'<'}Accordion.Item.Header>Section${'<'}/Accordion.Item.Header>
-    ${'<'}Accordion.Item.Body>
-      Content with reduced motion support
-    ${'<'}/Accordion.Item.Body>
-  ${'<'}/Accordion.Item>
-${'<'}/Accordion.Root>
-
-${'<'}!-- Custom animations should check preference -->
-${'<'}script>
-  import { animate } from 'motion';
-  
-  function handleEnter(element) {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-    
-    return animate(
-      element,
-      { opacity: [0, 1] },
-      { duration: prefersReducedMotion ? 0 : 0.3 }
-    );
-  }
-${'<'}/script>`;
-
-	const colorContrastExample = `${'<'}!-- All theme colors meet WCAG AA standards -->
-
-${'<'}!-- Primary actions (4.5:1 minimum) -->
-${'<'}Button variant="primary">
-  ${'<'}!-- bg-primary / text-primary-foreground -->
-  Primary Action
-${'<'}/Button>
-
-${'<'}!-- Secondary actions -->
-${'<'}Button variant="secondary">
-  ${'<'}!-- bg-secondary / text-secondary-foreground -->
-  Secondary Action
-${'<'}/Button>
-
-${'<'}!-- Destructive actions -->
-${'<'}Button variant="destructive">
-  ${'<'}!-- bg-destructive / text-destructive-foreground -->
-  Delete
-${'<'}/Button>
-
-${'<'}!-- Muted text (minimum 4.5:1) -->
-${'<'}p class="text-muted-foreground">
-  Secondary information with proper contrast
-${'<'}/p>`;
-
-	const testingExample = `${'<'}!-- Add data-testid for testing -->
-${'<'}Button data-testid="submit-button">
-  Submit
-${'<'}/Button>
-
-${'<'}!-- Use presets to apply test IDs globally -->
-${'<'}script>
-  import { setPreset } from '@svelte-atoms/core/context';
-  
-  setPreset({
-    button: () => ({
-      'data-component': 'button',
-      'data-testid': 'button-element'
-    }),
-    dialog: () => ({
-      'data-component': 'dialog',
-      'data-testid': 'dialog-element'
-    })
-  });
-${'<'}/script>
-
-${'<'}!-- Testing with Playwright -->
-${'<'}script lang="ts">
-  // In your test file
-  import { test, expect } from '@playwright/test';
-  
-  test('button is keyboard accessible', async ({ page }) => {
-    await page.goto('/');
-    
-    // Tab to button
-    await page.keyboard.press('Tab');
-    
-    // Verify focus
-    await expect(page.getByTestId('submit-button')).toBeFocused();
-    
-    // Activate with Enter
-    await page.keyboard.press('Enter');
-  });
-${'<'}/script>`;
+	const {
+		keyboard: keyboardExample,
+		aria: ariaExample,
+		focusTrap: focusTrapExample,
+		focusManagement: focusManagementExample,
+		semantic: semanticExample,
+		screenReader: screenReaderExample,
+		customAttributes: customAttributesExample,
+		disabledState: disabledStateExample,
+		visualIndicators: visualIndicatorsExample,
+		reducedMotion: reducedMotionExample,
+		colorContrast: colorContrastExample,
+		testing: testingExample
+	} = metadata.examples;
 </script>
 
 <div class="mx-auto max-w-4xl px-4 py-12">
@@ -361,14 +31,14 @@ ${'<'}/script>`;
 	</div>
 
 	<!-- Overview -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Overview</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Overview</Section.Title>
+			<Section.Subtitle>
 				All components are designed with accessibility as a first-class concern, not an
 				afterthought.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -439,16 +109,16 @@ ${'<'}/script>`;
 				</Card.Root>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Keyboard Navigation -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Keyboard Navigation</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Keyboard Navigation</Section.Title>
+			<Section.Subtitle>
 				All interactive components support standard keyboard interactions out of the box.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -534,16 +204,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- ARIA Attributes -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">ARIA Attributes</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>ARIA Attributes</Section.Title>
+			<Section.Subtitle>
 				Components automatically manage ARIA attributes for roles, states, and relationships.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -657,17 +327,17 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Focus Management -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Focus Management</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Focus Management</Section.Title>
+			<Section.Subtitle>
 				Automatic focus trapping, restoration, and visible focus indicators for better keyboard
 				navigation.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Focus Features</h3>
@@ -756,16 +426,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Semantic HTML -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Semantic HTML</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Semantic HTML</Section.Title>
+			<Section.Subtitle>
 				Components use proper semantic HTML elements and can be customized with the `as` prop.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -788,16 +458,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Screen Reader Support -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Screen Reader Support</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Screen Reader Support</Section.Title>
+			<Section.Subtitle>
 				Proper labeling, announcements, and semantic structure for assistive technologies.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-6 border">
 			<Card.Body class="p-6">
@@ -877,16 +547,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Custom Attributes -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Custom ARIA Attributes</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Custom ARIA Attributes</Section.Title>
+			<Section.Subtitle>
 				Extend components with custom ARIA attributes using variants or props.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -909,16 +579,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Disabled States -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Disabled States</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Disabled States</Section.Title>
+			<Section.Subtitle>
 				Proper handling of disabled states with visual cues and ARIA attributes.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -944,16 +614,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Visual Indicators -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Focus Indicators</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Focus Indicators</Section.Title>
+			<Section.Subtitle>
 				Clear visual focus indicators for keyboard navigation users.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -979,14 +649,14 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Reduced Motion -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Reduced Motion Support</h2>
-			<p class="text-muted-foreground">Respect user preferences for reduced motion animations.</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Reduced Motion Support</Section.Title>
+			<Section.Subtitle>Respect user preferences for reduced motion animations.</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -1012,16 +682,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Color Contrast -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Color Contrast</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Color Contrast</Section.Title>
+			<Section.Subtitle>
 				All theme colors meet WCAG AA standards for color contrast ratios.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<Card.Root class="border-border/50 mb-4 border">
 			<Card.Body class="p-6">
@@ -1044,16 +714,16 @@ ${'<'}/script>`;
 					></pre>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Testing -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Accessibility Testing</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility Testing</Section.Title>
+			<Section.Subtitle>
 				Test accessibility with automated tools and manual keyboard/screen reader testing.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Testing Checklist</h3>
@@ -1149,16 +819,16 @@ ${'<'}/script>`;
 				</div>
 			</Card.Body>
 		</Card.Root>
-	</section>
+	</Section.Root>
 
 	<!-- Best Practices -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Best Practices</h2>
-			<p class="text-muted-foreground">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Best Practices</Section.Title>
+			<Section.Subtitle>
 				Guidelines for building accessible applications with @svelte-atoms/core.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="space-y-3">
 			<Card.Root class="border-border/50 border">
@@ -1287,5 +957,5 @@ ${'<'}/script>`;
 				</Card.Body>
 			</Card.Root>
 		</div>
-	</section>
+	</Section.Root>
 </div>

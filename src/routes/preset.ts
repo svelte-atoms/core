@@ -159,6 +159,14 @@ export const preset: Partial<Preset> = {
 				info: {
 					class:
 						'bg-blue-500/5 text-blue-500 border-blue-500/50 border hover:bg-blue-500/8 active:bg-blue-500/10'
+				},
+				success: {
+					class:
+						'bg-green-500/5 text-green-500 border-green-500/50 border hover:bg-green-500/8 active:bg-green-500/10'
+				},
+				error: {
+					class:
+						'bg-red-500/5 text-red-500 border-red-500/50 border hover:bg-red-500/8 active:bg-red-500/10'
 				}
 			}
 		},

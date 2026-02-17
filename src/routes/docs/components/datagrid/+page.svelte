@@ -21,6 +21,9 @@
 		datagridCheckboxProps,
 		datagridTrProps
 	} from './props';
+	import { metadata } from './shared';
+
+	const { basic: basicCode } = metadata.examples;
 
 	interface User {
 		id: string;
@@ -35,63 +38,6 @@
 		{ id: '3', name: 'Carol White', email: 'carol@example.com', role: 'Editor' }
 	];
 
-	const basicCode = `<script lang="ts">
-  import { DataGrid } from '@svelte-atoms/core';
-
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  }
-
-  const users: User[] = [
-    { id: '1', name: 'Alice', email: 'alice@example.com', role: 'Admin' },
-    { id: '2', name: 'Bob', email: 'bob@example.com', role: 'User' }
-  ];
-<\/script>
-
-<DataGrid.Root>
-  <DataGrid.Header>
-    <DataGrid.Tr>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
-  </DataGrid.Header>
-  <DataGrid.Body>
-    {#each users as user}
-      <DataGrid.Tr>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-        <DataGrid.Td>{user.role}</DataGrid.Td>
-      </DataGrid.Tr>
-    {/each}
-  </DataGrid.Body>
-</DataGrid.Root>`;
-
-	const selectableCode = `<DataGrid.Root multiple bind:selection>
-  <DataGrid.Header>
-    <DataGrid.Tr>
-      <DataGrid.Th>
-        <input type="checkbox" />
-      </DataGrid.Th>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-    </DataGrid.Tr>
-  </DataGrid.Header>
-  <DataGrid.Body>
-    {#each users as user}
-      <DataGrid.Tr>
-        <DataGrid.Td>
-          <input type="checkbox" />
-        </DataGrid.Td>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-      </DataGrid.Tr>
-    {/each}
-  </DataGrid.Body>
-</DataGrid.Root>`;
 </script>
 
 <svelte:head>
@@ -111,17 +57,21 @@
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; DataGrid &#125; from '@svelte-atoms/core/datagrid';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section
-		title="Preset Configuration"
-		description="Customize the datagrid appearance using presets"
-	>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the datagrid appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for DataGrid components by defining presets in your
@@ -129,9 +79,9 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { createPreset } from '@svelte-atoms/core';
+				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = createPreset({
+const preset = setPreset({
   datagrid: () => ({
     class: 'w-full border-collapse text-sm'
   }),
@@ -150,9 +100,13 @@ const preset = createPreset({
 });`}
 			/>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different datagrid variations and use cases">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different datagrid variations and use cases</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic DataGrid" description="Simple data table display" code={basicCode}>
 				<DataGrid.Root>
@@ -175,9 +129,12 @@ const preset = createPreset({
 				</DataGrid.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">DataGrid.Root Props</h3>
@@ -189,9 +146,12 @@ const preset = createPreset({
 				<Props data={datagridThProps} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Proper table semantics with ARIA attributes',
@@ -201,7 +161,7 @@ const preset = createPreset({
 				'Row selection with keyboard'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'Context Menu', href: '/docs/components/contextmenu' }}

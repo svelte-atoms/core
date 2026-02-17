@@ -1,14 +1,16 @@
 <script lang="ts">
 	import DocCodeBlock from '$docs/components/doc-code-block.svelte';
+	import { Alert, Button, Icon } from '$svelte-atoms/core';
 	import { layoutCode, appCssCode, presetCode, firstComponentCode } from './codes';
+	import { Section } from '$docs/components';
 
 	let packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun' = 'npm';
 
 	const installCommands = {
-		npm: 'npm install @svelte-atoms/core',
-		pnpm: 'pnpm add @svelte-atoms/core',
-		yarn: 'yarn add @svelte-atoms/core',
-		bun: 'bun add @svelte-atoms/core'
+		npm: 'install @svelte-atoms/core',
+		pnpm: 'add @svelte-atoms/core',
+		yarn: 'add @svelte-atoms/core',
+		bun: 'add @svelte-atoms/core'
 	};
 </script>
 
@@ -23,20 +25,18 @@
 	</div>
 
 	<!-- Requirements Section -->
-	<section class="mb-16">
-		<div class="mb-6">
-			<h2 class="mb-2 text-3xl font-bold">Requirements</h2>
-			<p class="text-muted-foreground">Make sure your project meets the following requirements:</p>
-		</div>
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Requirements</Section.Title>
+			<Section.Subtitle>Make sure your project meets the following requirements:</Section.Subtitle>
+		</Section.Header>
 
 		<div class="border-border/50 rounded-lg border p-6">
 			<ul class="space-y-3">
 				<li class="flex items-start gap-3">
-					<span class="text-primary mt-1 flex-shrink-0">
+					<Icon class="text-primary mt-1 size-5">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -47,7 +47,7 @@
 							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 							<polyline points="22 4 12 14.01 9 11.01"></polyline>
 						</svg>
-					</span>
+					</Icon>
 					<div>
 						<p class="font-semibold">Svelte 5</p>
 						<p class="text-muted-foreground text-sm">
@@ -56,11 +56,9 @@
 					</div>
 				</li>
 				<li class="flex items-start gap-3">
-					<span class="text-primary mt-1 flex-shrink-0">
+					<Icon class="text-primary mt-1 size-5">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -71,7 +69,7 @@
 							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 							<polyline points="22 4 12 14.01 9 11.01"></polyline>
 						</svg>
-					</span>
+					</Icon>
 					<div>
 						<p class="font-semibold">Tailwind CSS (Version 4)</p>
 						<p class="text-muted-foreground text-sm">
@@ -80,11 +78,9 @@
 					</div>
 				</li>
 				<li class="flex items-start gap-3">
-					<span class="text-primary mt-1 flex-shrink-0">
+					<Icon class="text-primary mt-1 size-5">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -95,7 +91,7 @@
 							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
 							<polyline points="22 4 12 14.01 9 11.01"></polyline>
 						</svg>
-					</span>
+					</Icon>
 					<div>
 						<p class="font-semibold">Node.js 18+</p>
 						<p class="text-muted-foreground text-sm">
@@ -105,18 +101,18 @@
 				</li>
 			</ul>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Installation Section -->
-	<section class="mb-16">
-		<div class="mb-6">
-			<h2 class="mb-2 text-3xl font-bold">Installation</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+			<Section.Subtitle>
 				Install <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-semibold"
 					>@svelte-atoms/core</code
 				> using your preferred package manager:
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="border-border/50 overflow-hidden rounded-lg border">
 			<!-- Package Manager Tabs -->
@@ -137,17 +133,18 @@
 			<!-- Command Display -->
 			<div class="bg-muted/30 flex items-center justify-between gap-4 p-6">
 				<code class="text-foreground flex-1 font-mono text-sm">
-					{installCommands[packageManager]}
+					<span class="bg-foreground/5 rounded-md px-1.5 py-0.5">{packageManager}</span>
+					<span>
+						{installCommands[packageManager]}
+					</span>
 				</code>
-				<button
+				<Button base={Icon} variant="ghost"
 					onclick={() => navigator.clipboard.writeText(installCommands[packageManager])}
-					class="text-muted-foreground hover:text-foreground hover:bg-muted flex-shrink-0 rounded-md p-2 transition-colors"
+					class="size-5 p-0.5 text-muted-foreground hover:text-foreground"
 					title="Copy to clipboard"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="18"
-						height="18"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -158,20 +155,20 @@
 						<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
 						<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
 					</svg>
-				</button>
+				</Button>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Configuration Section -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Configuration</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Configuration</Section.Title>
+			<Section.Subtitle>
 				After installing the package, you need to configure your project to use the Svelte Atoms
 				components and styling system.
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<!-- Step 1: Import Internal Styles -->
 		<div class="mb-10">
@@ -192,12 +189,10 @@
 
 			<DocCodeBlock filepath="src/routes/+layout.svelte" language="Svelte" code={layoutCode} />
 
-			<div class="bg-primary/10 border-primary/30 mt-4 flex gap-3 rounded-lg border p-4">
-				<div class="text-primary mt-0.5 flex-shrink-0">
+			<Alert.Root variant="info" class="mt-4">
+				<Alert.Icon class="size-5">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						width="22"
-						height="22"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
@@ -208,15 +203,15 @@
 						<circle cx="12" cy="12" r="10"></circle>
 						<path d="M12 16v-4M12 8h.01"></path>
 					</svg>
-				</div>
-				<div class="text-sm">
-					<p class="font-semibold">Important</p>
-					<p class="text-muted-foreground mt-1.5">
+				</Alert.Icon>
+				<Alert.Content>
+					<Alert.Title>Important</Alert.Title>
+					<Alert.Description>
 						Make sure to import the internal styles before your app.css to ensure proper style
 						precedence.
-					</p>
-				</div>
-			</div>
+					</Alert.Description>
+				</Alert.Content>
+			</Alert.Root>
 		</div>
 
 		<!-- Step 2: Setup App CSS -->
@@ -242,35 +237,19 @@
 				can customize these values to match your brand colors.
 			</p>
 
-			<div class="mt-4 flex gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
-				<div class="mt-0.5 flex-shrink-0 text-amber-600 dark:text-amber-400">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="22"
-						height="22"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path d="M21.73 18l-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
-						></path>
-						<path d="M12 9v4"></path>
-						<path d="M12 17h.01"></path>
-					</svg>
-				</div>
-				<div class="text-sm">
-					<p class="font-semibold">Note</p>
-					<p class="text-muted-foreground mt-1.5">
+			<Alert.Root variant="warning" class="mt-4">
+				<Alert.Icon class="size-5" />
+				<Alert.Content>
+					<Alert.Title>Note</Alert.Title>
+					<Alert.Description>
 						Make sure to include <code
-							class="bg-muted text-foreground rounded px-1 py-0.5 text-xs font-semibold"
+							class="leading-0 bg-amber-500/10 text-amber-800 rounded px-1 py-0.5 text-xs font-semibold"
 							>node_modules/@svelte-atoms/core/**/*</code
-						> in your content array so Tailwind can detect classes used in the library components.
-					</p>
-				</div>
-			</div>
+						>
+						in your content array so Tailwind can detect classes used in the library components.
+					</Alert.Description>
+				</Alert.Content>
+			</Alert.Root>
 		</div>
 
 		<!-- Step 3: Configure Component Preset -->
@@ -290,54 +269,39 @@
 
 			<DocCodeBlock filepath="src/preset.ts" language="TypeScript" code={presetCode} />
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- First Component Section -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Your First Component</h2>
-			<p class="text-muted-foreground">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Your First Component</Section.Title>
+			<Section.Subtitle>
 				Now that everything is configured, let's create a simple example using a Button component:
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<DocCodeBlock filepath="src/routes/+page.svelte" language="Svelte" code={firstComponentCode} />
 
-		<div class="mt-4 flex gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4">
-			<div class="mt-0.5 flex-shrink-0 text-green-600 dark:text-green-400">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="22"
-					height="22"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-					<polyline points="22 4 12 14.01 9 11.01"></polyline>
-				</svg>
-			</div>
-			<div class="text-sm">
-				<p class="font-semibold">Success!</p>
-				<p class="text-muted-foreground mt-1.5">
+		<Alert.Root variant="success" class="mt-4">
+			<Alert.Icon />
+			<Alert.Content>
+				<Alert.Title>Success!</Alert.Title>
+				<Alert.Description>
 					You now have a working setup with Svelte Atoms. The components are fully styled and ready
 					to use.
-				</p>
-			</div>
-		</div>
-	</section>
+				</Alert.Description>
+			</Alert.Content>
+		</Alert.Root>
+	</Section.Root>
 
 	<!-- Next Steps Section -->
-	<section class="mb-16">
-		<div class="mb-8">
-			<h2 class="mb-2 text-3xl font-bold">Next Steps</h2>
-			<p class="text-muted-foreground">
+	<Section.Root class="mb-0">
+		<Section.Header>
+			<Section.Title>Next Steps</Section.Title>
+			<Section.Subtitle>
 				Now that you have Svelte Atoms set up, here are some recommended next steps:
-			</p>
-		</div>
+			</Section.Subtitle>
+		</Section.Header>
 
 		<div class="grid gap-5 sm:grid-cols-2">
 			<div
@@ -518,7 +482,7 @@
 				</a>
 			</div>
 		</div>
-	</section>
+	</Section.Root>
 
 	<!-- Troubleshooting Section -->
 	<div class="border-border/50 bg-muted/30 mt-8 rounded-lg border p-6">

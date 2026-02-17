@@ -13,58 +13,12 @@
 	} from '$docs/components';
 	import { menuItemProps, menuListProps } from './props';
 	import { Button } from '$svelte-atoms/core';
-
-	const basicCode = `<Menu.Root>
-  <Menu.Trigger base={Button}>Open Menu</Menu.Trigger>
-  <Menu.Content class="max-w-xs rounded-lg border">
-    <Menu.Item>New File</Menu.Item>
-    <Menu.Item>Open File</Menu.Item>
-    <Menu.Item>Save</Menu.Item>
-    <Menu.Item>Save As...</Menu.Item>
-    <Menu.Item class="text-red-600">Exit</Menu.Item>
-  </Menu.Content>
-</Menu.Root>`;
-
-	const interactiveCode = `<Menu.Root>
-  <Menu.Trigger base={Button}>Open Menu</Menu.Trigger>
-  <Menu.Content class="max-w-xs rounded-lg border">
-    <Menu.Item onclick={() => alert('Profile clicked')}>Profile</Menu.Item>
-    <Menu.Item onclick={() => alert('Settings clicked')}>Settings</Menu.Item>
-    <Menu.Item onclick={() => alert('Logout clicked')}>Logout</Menu.Item>
-  </Menu.Content>
-</Menu.Root>`;
-
-	const presetConfigCode = `import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  // Menu-specific presets
-  menu: () => ({
-    class: 'flex flex-col rounded-md border border-border bg-background py-1 text-popover-foreground shadow-md outline-none'
-  }),
-  'menu.content': () => ({
-    class: 'flex flex-col gap-1 p-1'
-  }),
-  'menu.item': () => ({
-    class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
-  }),
-  
-  // Popover presets (Menu depends on Popover for positioning)
-  'popover.trigger': () => ({
-    class: 'inline-flex items-center justify-center'
-  }),
-  'popover.arrow': () => ({
-    class: 'fill-background'
-  }),
-  'popover.indicator': () => ({
-    class: 'data-[state=open]:animate-in data-[state=closed]:animate-out'
-  })
-});
-`;
+	import { metadata } from './shared';
 </script>
 
 <svelte:head>
-	<title>Menu - Svelte Atoms</title>
-	<meta name="description" content="Navigation menu component." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -76,26 +30,37 @@ setPreset({
 		status="stable"
 	/>
 
-	<Section title="Installation">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Installation</Section.Title>
+		</Section.Header>
 		<Installation
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Menu, Button &#125; from '@svelte-atoms/core/menu';"
 		/>
-	</Section>
+	</Section.Root>
 
-	<Section title="Preset Configuration" description="Customize the menu appearance using presets">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the menu appearance using presets</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
 				You can customize the default styles for Menu components by defining presets in your
 				configuration:
 			</p>
-			<CodeBlock lang="typescript" code={presetConfigCode} />
+			<CodeBlock lang="typescript" code={metadata.examples.preset} />
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Examples" description="Explore different menu variations">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Examples</Section.Title>
+			<Section.Subtitle>Explore different menu variations</Section.Subtitle>
+		</Section.Header>
 		<div class="space-y-8">
-			<DemoExample title="Basic Menu" description="Simple menu with items" code={basicCode}>
+			<DemoExample title="Basic Menu" description="Simple menu with items" code={metadata.examples.basic}>
 				<Menu.Root>
 					<Menu.Trigger base={Button} class="">Open Menu</Menu.Trigger>
 
@@ -112,7 +77,7 @@ setPreset({
 			<DemoExample
 				title="Interactive Menu"
 				description="Menu with click handlers"
-				code={interactiveCode}
+				code={metadata.examples.interactive}
 			>
 				<Menu.Root>
 					<Menu.Trigger base={Button} class="">Open Menu</Menu.Trigger>
@@ -125,9 +90,12 @@ setPreset({
 				</Menu.Root>
 			</DemoExample>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="API Reference">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>API Reference</Section.Title>
+		</Section.Header>
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Menu.Root Props</h3>
@@ -151,9 +119,12 @@ setPreset({
 				<Props data={[...menuItemProps]} />
 			</div>
 		</div>
-	</Section>
+	</Section.Root>
 
-	<Section title="Accessibility">
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Accessibility</Section.Title>
+		</Section.Header>
 		<AccessibilityInfo
 			features={[
 				'Keyboard navigation (Arrow keys)',
@@ -163,7 +134,7 @@ setPreset({
 				'Disabled state support'
 			]}
 		/>
-	</Section>
+	</Section.Root>
 
 	<PageNavigation
 		prev={{ label: 'List', href: '/docs/components/list' }}
