@@ -115,7 +115,10 @@ export function resolveVariants(
 			const compoundPropKeys = new Set(Object.keys(compound).filter((k) => k !== 'class'));
 			let matches = true;
 			for (const key of compoundPropKeys) {
-				if (finalProps[key] !== compound[key]) { matches = false; break; }
+				if (finalProps[key] !== compound[key]) {
+					matches = false;
+					break;
+				}
 			}
 			if (matches) {
 				if (compoundClass) classes.push(compoundClass);
@@ -267,9 +270,13 @@ export function extractRestProps(
 ): Record<string, unknown> {
 	const result: Record<string | symbol, unknown> = {};
 
-	if (preset)
+	if (preset) {
 		for (const k in preset)
 			if (Object.hasOwn(preset, k) && !PRESET_SKIP.has(k)) result[k] = preset[k];
+		// Preserve Symbol-keyed attachment props (e.g. from createAttachmentKey())
+		const symPreset = preset as Record<string | symbol, unknown>;
+		for (const s of Object.getOwnPropertySymbols(preset)) result[s] = symPreset[s];
+	}
 
 	if (mergedVariants) {
 		for (const k in mergedVariants)
