@@ -98,7 +98,7 @@ export const preset: Partial<Preset> = {
 	},
 	'dialog.content': () => ({
 		class:
-			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-[96svw] md:max-w-3xl lg:max-w-4xl xl:max-w-[50svw] p-0'
+			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-[calc(100svw-8px)] md:max-w-3xl lg:max-w-4xl xl:max-w-[50svw] p-0'
 	}),
 	'dialog.header': () => ({
 		class: 'border-b px-6 py-4 flex items-center gap-4'
