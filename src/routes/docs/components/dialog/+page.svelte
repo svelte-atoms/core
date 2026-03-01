@@ -75,11 +75,11 @@
 						<Button {...dialog.trigger()}>Open Dialog</Button>
 					{/snippet}
 
-					<Dialog.Content class="">
+					<Dialog.Content>
 						<Dialog.Header class="mb-4">
 							<h2 class="text-foreground text-xl font-semibold">Dialog Title</h2>
 						</Dialog.Header>
-						<Dialog.Body class="">
+						<Dialog.Body>
 							<p>
 								This is a modal dialog. It captures focus and requires user interaction before
 								returning to the main content.
