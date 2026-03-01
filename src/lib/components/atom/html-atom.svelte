@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Base, HtmlAtomProps, SnippetBase } from './types';
+	import type { Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
 	import { getPreset } from '$svelte-atoms/core/context';
@@ -16,6 +16,7 @@
 		extractRestProps,
 		isSnippetBase
 	} from './utils';
+
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -41,8 +42,6 @@
 		return resolvePreset(result);
 	});
 
-	const presetVariantsProps = $derived(preset?.variants);
-
 	// Resolve local variants - either VariantDefinition or function
 	const localVariants = $derived(resolveLocalVariants(variants, bond, restProps));
 
@@ -50,7 +49,7 @@
 	// Memoized to avoid recomputation when inputs haven't changed
 	const mergedVariants = $derived.by(() => {
 		return mergeVariants(
-			presetVariantsProps,
+			preset?.variants,
 			preset?.class,
 			preset?.compounds,
 			preset?.defaults,
@@ -68,17 +67,13 @@
 	const _as = $derived(as ?? preset?.as);
 	const _restProps = $derived(extractRestProps(preset, mergedVariants, restProps));
 
-	const isSnippet = $derived(isSnippetBase(_base));
-
-	const snippet = $derived(_base as SnippetBase);
-
-	const atom = rootBond?.state?.props?.renderers?.html ?? HtmlElement;
+	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
 
 	const renderer = $derived.by(() => {
-		if (isSnippet)
+		if (isSnippetBase(_base))
 			return {
 				component: SnippetRenderer,
-				props: { snippet: snippet, class: _klass, as: _as, children: childrenProp, ..._restProps }
+				props: { snippet: _base, class: _klass, as: _as, children: childrenProp, ..._restProps }
 			};
 
 		return {
