@@ -21,15 +21,15 @@ const basicCode = `
       </p>
     </Dialog.Body>
     <Dialog.Footer class="flex justify-end gap-2">
-      <button class="rounded border px-4 py-2" onclick={() => (open = false)}>
+      <Button variant="secondary" onclick={() => (open = false)}>
         Cancel
-      </button>
-      <button
-        class="bg-primary rounded px-4 py-2 text-white"
+      </Button>
+      <Button
+        variant="primary"
         onclick={() => (open = false)}
       >
         Confirm
-      </button>
+      </Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>`.trim();
