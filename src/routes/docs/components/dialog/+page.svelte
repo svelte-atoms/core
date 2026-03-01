@@ -86,15 +86,15 @@
 							</p>
 						</Dialog.Body>
 						<Dialog.Footer class="flex justify-end gap-2">
-							<button class="rounded border px-4 py-2" onclick={() => (basicOpen = false)}>
+							<Button variant="secondary" onclick={() => (basicOpen = false)}>
 								Cancel
-							</button>
-							<button
-								class="bg-primary rounded px-4 py-2 text-white"
+							</Button>
+							<Button
+								variant="primary"
 								onclick={() => (basicOpen = false)}
 							>
 								Confirm
-							</button>
+							</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
