@@ -8,15 +8,32 @@ type ResolvedProps = Record<string, unknown>;
 type AnyVariantDefinition = VariantDefinition<any>;
 
 /**
- * Cache for resolved variants to avoid recomputation
- * Key: JSON stringified combination of variant props
+ * Two-level cache for resolved variants.
+ * Outer key: bond instance identity (WeakMap for automatic GC when bond is destroyed).
+ * Inner key: JSON stringified variant-relevant props.
+ * Bond-less calls share a single flat Map.
  */
-const variantCache = new Map<string, ResolvedProps>();
-
-/**
- * Maximum cache size to prevent memory leaks
- */
+const variantCacheByBond = new WeakMap<object, Map<string, ResolvedProps>>();
+const variantCacheNoBond = new Map<string, ResolvedProps>();
 const MAX_CACHE_SIZE = 100;
+
+function getCacheMap(bond: Bond | null | undefined): Map<string, ResolvedProps> {
+	if (!bond) return variantCacheNoBond;
+	let map = variantCacheByBond.get(bond);
+	if (!map) {
+		map = new Map();
+		variantCacheByBond.set(bond, map);
+	}
+	return map;
+}
+
+function hasOwnKeys(obj: object): boolean {
+	for (const k in obj) if (Object.hasOwn(obj, k)) return true;
+	return false;
+}
+
+const PRESET_SKIP = new Set(['class', 'base', 'as', 'variants', 'compounds', 'defaults']);
+const VARIANTS_SKIP = new Set(['class', 'variants', 'compounds', 'defaults']);
 
 /**
  * Resolves preset to its final value, handling both direct values and factory functions
@@ -41,18 +58,23 @@ export function resolveVariants(
 	const { variants: variantMap, compounds, defaults, class: baseClass } = def;
 
 	// Merge props with defaults
-	const finalProps = { ...defaults, ...props };
+	const finalProps = defaults && hasOwnKeys(defaults) ? { ...defaults, ...props } : props;
 
-	// Create cache key from final props (only variant-related props)
 	const variantKeys = variantMap ? Object.keys(variantMap) : [];
-	const relevantProps = Object.fromEntries(
-		Object.entries(finalProps).filter(([key]) => variantKeys.includes(key))
-	);
+
+	// Fast path: no variants or compounds — skip cache entirely
+	if (variantKeys.length === 0 && !compounds?.length) {
+		return { class: baseClass ? [baseClass] : [] } as ResolvedProps;
+	}
+
+	// Build cache key only when variants are present
+	const relevantProps: Record<string, unknown> = {};
+	for (const key of variantKeys) if (key in finalProps) relevantProps[key] = finalProps[key];
 	const cacheKey = JSON.stringify({ relevantProps, baseClass, compounds });
 
-	// Check cache
-	if (variantCache.has(cacheKey)) {
-		return variantCache.get(cacheKey)!;
+	const cacheMap = getCacheMap(bond);
+	if (cacheMap.has(cacheKey)) {
+		return cacheMap.get(cacheKey)!;
 	}
 
 	const classes: ClassValue[] = [];
@@ -63,7 +85,9 @@ export function resolveVariants(
 
 	// Add variant classes
 	if (variantMap) {
-		for (const [key, value] of Object.entries(finalProps)) {
+		for (const key of variantKeys) {
+			const value = finalProps[key];
+			if (value === undefined) continue;
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const variantValue = (variantMap as any)[key]?.[value as string];
 			if (variantValue !== undefined) {
@@ -85,20 +109,23 @@ export function resolveVariants(
 	}
 
 	// Add compound variants
-	if (compounds) {
+	if (compounds?.length) {
 		for (const compound of compounds) {
-			const { class: compoundClass, ...compoundProps } = compound;
-			const matches = Object.entries(compoundProps).every(
-				([key, value]) => finalProps[key] === value
-			);
+			const compoundClass = compound.class;
+			const compoundPropKeys = new Set(Object.keys(compound).filter((k) => k !== 'class'));
+			let matches = true;
+			for (const key of compoundPropKeys) {
+				if (finalProps[key] !== compound[key]) {
+					matches = false;
+					break;
+				}
+			}
 			if (matches) {
 				if (compoundClass) classes.push(compoundClass);
-				// Add compound attributes
-				Object.entries(compound).forEach(([k, v]) => {
-					if (k !== 'class' && !Object.keys(compoundProps).includes(k)) {
-						attributes[k] = v;
-					}
-				});
+				// Add compound attributes (string keys that are not condition keys or 'class')
+				for (const [k, v] of Object.entries(compound)) {
+					if (k !== 'class' && !compoundPropKeys.has(k)) attributes[k] = v;
+				}
 			}
 		}
 	}
@@ -108,13 +135,12 @@ export function resolveVariants(
 		...attributes
 	};
 
-	// Store in cache (limit cache size to prevent memory leaks)
-	if (variantCache.size >= MAX_CACHE_SIZE) {
-		// Clear oldest entry (first in Map)
-		const firstKey = variantCache.keys().next().value;
-		if (firstKey) variantCache.delete(firstKey);
+	// Store in cache (limit per-bond cache size to prevent memory leaks)
+	if (cacheMap.size >= MAX_CACHE_SIZE) {
+		const firstKey = cacheMap.keys().next().value;
+		if (firstKey) cacheMap.delete(firstKey);
 	}
-	variantCache.set(cacheKey, result);
+	cacheMap.set(cacheKey, result);
 
 	return result;
 }
@@ -242,21 +268,30 @@ export function extractRestProps(
 	mergedVariants: ResolvedProps | undefined,
 	restProps: Record<string, unknown>
 ): Record<string, unknown> {
-	const presetProps = { ...preset };
-	const presetKeysToRemove = ['class', 'base', 'as', 'variants', 'compounds', 'defaults'];
+	const result: Record<string | symbol, unknown> = {};
 
-	for (const key of presetKeysToRemove) {
-		delete presetProps[key];
+	if (preset) {
+		for (const k in preset)
+			if (Object.hasOwn(preset, k) && !PRESET_SKIP.has(k)) result[k] = preset[k];
+		// Preserve Symbol-keyed attachment props (e.g. from createAttachmentKey())
+		const symPreset = preset as Record<string | symbol, unknown>;
+		for (const s of Object.getOwnPropertySymbols(preset)) result[s] = symPreset[s];
 	}
 
-	const variantsRestProps = { ...mergedVariants };
-	const variantKeysToRemove = ['class', 'variants', 'compounds', 'defaults'];
-
-	for (const key of variantKeysToRemove) {
-		delete variantsRestProps[key];
+	if (mergedVariants) {
+		for (const k in mergedVariants)
+			if (Object.hasOwn(mergedVariants, k) && !VARIANTS_SKIP.has(k)) result[k] = mergedVariants[k];
+		// Preserve Symbol-keyed attachment props (e.g. from variant definitions)
+		const symProps = mergedVariants as Record<string | symbol, unknown>;
+		for (const s of Object.getOwnPropertySymbols(mergedVariants)) result[s] = symProps[s];
 	}
 
-	return { ...presetProps, ...variantsRestProps, ...restProps };
+	for (const k in restProps) if (Object.hasOwn(restProps, k)) result[k] = restProps[k];
+	// Preserve Symbol-keyed attachment props from restProps (e.g. {@attach} directives)
+	const symRestProps = restProps as Record<string | symbol, unknown>;
+	for (const s of Object.getOwnPropertySymbols(restProps)) result[s] = symRestProps[s];
+
+	return result as Record<string, unknown>;
 }
 
 /**

@@ -1,7 +1,6 @@
 <script lang="ts" generics="T extends HtmlElementTagName">
 	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { createAttachmentKey } from 'svelte/attachments';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { ElementType, HtmlElementProps, HtmlElementTagName } from './types';
 
@@ -44,20 +43,24 @@
 		animate?.(node);
 	});
 
-	const elementProps = $derived({
-		[createAttachmentKey()]: (n: Element) => {
-			node = n;
-		},
-		onintroend: (ev: TransitionEvent) => {
-			onintroend?.(ev);
-			if (ev.defaultPrevented) return;
+	const attachFunction = (n: Element) => {
+		node = n;
+	};
 
-			hasEntered = true;
-		},
+	const elementProps = $derived({
+		onintroend: handleIntroEnd,
 		...restProps
 	}) as Record<string, any>;
 
+	const finalKlass = $derived(cn(toClassValue(klass)));
 	const transitionSnippet = $derived(global ? globalTransition : localTransition);
+
+	function handleIntroEnd(ev: TransitionEvent) {
+		onintroend?.(ev);
+		if (ev.defaultPrevented) return;
+
+		hasEntered = true;
+	}
 
 	function enterTransition(node: Element) {
 		initial?.(node);
@@ -71,13 +74,13 @@
 </script>
 
 {#snippet globalTransition()}
-	<svelte:element this={as} class={cn(toClassValue(klass))} in:enterTransition|global out:exitTransition|global {...elementProps}>
+	<svelte:element this={as} {@attach attachFunction} class={finalKlass} in:enterTransition|global out:exitTransition|global {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
 {/snippet}
 
 {#snippet localTransition()}
-	<svelte:element this={as} class={cn(toClassValue(klass))} in:enterTransition out:exitTransition {...elementProps}>
+	<svelte:element this={as} {@attach attachFunction} class={finalKlass} in:enterTransition out:exitTransition {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
 {/snippet}
