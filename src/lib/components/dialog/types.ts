@@ -58,6 +58,7 @@ export interface DialogProps<E extends keyof HTMLElementTagNameMap = 'div', B ex
 	portal?: string | PortalBond;
 	factory?: (props: DialogBondProps) => DialogBond;
 	children?: Snippet<[{ dialog: DialogBond }]>;
+	trigger?: Snippet<[{ dialog: DialogBond }]>;
 }
 
 export interface DialogContentProps<

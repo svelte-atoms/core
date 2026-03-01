@@ -15,6 +15,8 @@
 		factory = _factory,
 		animate = animateDialogRoot(),
 		children = undefined,
+		trigger = undefined,
+		onclick = undefined,
 		...restProps
 	}: DialogProps<E, B> = $props();
 
@@ -48,6 +50,12 @@
 			return;
 		}
 
+		onclick?.(ev, bond);
+
+		if(ev.defaultPrevented){
+			return;
+		}
+
 		// Clicked the backdrop
 		bond.state.close();
 	}
@@ -56,6 +64,8 @@
 		return bond;
 	}
 </script>
+
+{@render trigger?.({ dialog: bond })}
 
 <Teleport
 	{as}

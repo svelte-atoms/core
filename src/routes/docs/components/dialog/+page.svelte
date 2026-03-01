@@ -69,9 +69,12 @@
 		</Section.Header>
 		<div class="space-y-8">
 			<DemoExample title="Basic Dialog" description="Simple modal dialog" code={metadata.examples.basic}>
-				<Button class="" onclick={() => (basicOpen = true)}>Open Dialog</Button>
 
 				<Dialog.Root bind:open={basicOpen}>
+					{#snippet trigger({dialog})}
+						<Button {...dialog.trigger()}>Open Dialog</Button>
+					{/snippet}
+
 					<Dialog.Content class="">
 						<Dialog.Header class="mb-4">
 							<h2 class="text-foreground text-xl font-semibold">Dialog Title</h2>
@@ -89,7 +92,7 @@
 							<button
 								class="bg-primary rounded px-4 py-2 text-white"
 								onclick={() => (basicOpen = false)}
-							>metadata.examples.basic
+							>
 								Confirm
 							</button>
 						</Dialog.Footer>
@@ -98,9 +101,10 @@
 			</DemoExample>
 
 			<DemoExample title="Alert Dialog" description="Dialog for critical actions" code={metadata.examples.alert}>
-				<Button class="" onclick={() => (alertOpen = true)}>Delete Item</Button>
-
 				<Dialog.Root bind:open={alertOpen}>
+					{#snippet trigger({dialog})}
+						<Button variant="destructive" {...dialog.trigger()}>Delete Item</Button>
+					{/snippet}
 					<Dialog.Content class="bg-background max-w-md rounded-lg p-6 shadow-lg">
 						<Dialog.Header class="mb-4">
 							<h2 class="text-foreground text-xl font-semibold">Are you sure?</h2>
@@ -109,15 +113,15 @@
 							<p>This action cannot be undone. This will permanently delete the item.</p>
 						</Dialog.Body>
 						<Dialog.Footer class="flex justify-end gap-2">
-							<button class="rounded border px-4 py-2" onclick={() => (alertOpen = false)}>
+							<Button variant="secondary" onclick={() => (alertOpen = false)}>
 								Cancel
-							</button>
-							<button
-								class="rounded bg-red-600 px-4 py-2 text-white"
+							</Button>
+							<Button
+								variant="destructive"
 								onclick={() => (alertOpen = false)}
 							>
-								Delete
-							</button>
+								Confirm Delete
+							</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>

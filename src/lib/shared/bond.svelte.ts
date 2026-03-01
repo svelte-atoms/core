@@ -11,6 +11,10 @@ export abstract class Bond<
 	static CONTEXT_KEY = '@atoms/context/bond';
 
 	#elements: Elements = $state({} as Elements);
+	#animationPromises: Record<
+		string,
+		Promise<{ duration?: number; delay?: number; controller?: any }>
+	> = {};
 	#state: State;
 
 	constructor(state: State) {
@@ -19,6 +23,10 @@ export abstract class Bond<
 
 	get elements() {
 		return this.#elements;
+	}
+
+	get animationPromises() {
+		return this.#animationPromises;
 	}
 
 	get id() {
