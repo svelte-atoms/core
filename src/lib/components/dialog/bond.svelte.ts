@@ -17,6 +17,7 @@ export type DialogBondElements = {
 	description: HTMLElement;
 	body: HTMLElement;
 	footer: HTMLElement;
+	trigger?: HTMLElement;
 };
 
 const DIALOG_ELEMENTS_KIND = {
@@ -26,13 +27,16 @@ const DIALOG_ELEMENTS_KIND = {
 	title: 'dialog-title',
 	description: 'dialog-description',
 	body: 'dialog-body',
-	footer: 'dialog-footer'
+	footer: 'dialog-footer',
+	trigger: 'dialog-trigger'
 };
 
 export class DialogBond<
 	State extends DialogBondState<DialogBondProps> = DialogBondState<DialogBondProps>
 > extends Bond<DialogBondProps, State, DialogBondElements> {
 	static CONTEXT_KEY = '@atoms/context/dialog';
+
+	#activeElement: Element | null = null;
 
 	constructor(s: State) {
 		super(s);
@@ -55,8 +59,6 @@ export class DialogBond<
 			focusTrap(ev);
 		};
 
-		let previousActiveElement: Element | null = null;
-
 		return {
 			id,
 			role: 'dialog',
@@ -78,6 +80,7 @@ export class DialogBond<
 					ev.preventDefault();
 					this.state.close();
 				}
+
 				focusManager(ev);
 			},
 			[createAttachmentKey()]: (node: HTMLDialogElement) => {
@@ -85,13 +88,14 @@ export class DialogBond<
 
 				if (this.state.props.open) {
 					// Store current focus
-					previousActiveElement = document.activeElement;
+					this.#activeElement = document.activeElement;
 
 					// Focus first focusable element or dialog itself
 					setTimeout(() => {
-						const firstFocusable = node.querySelector<HTMLElement>(
+						const firstFocusable = this.elements.content.querySelector<HTMLElement>(
 							'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 						);
+
 						if (firstFocusable) {
 							firstFocusable.focus();
 						} else {
@@ -99,10 +103,9 @@ export class DialogBond<
 						}
 					}, 0);
 				} else {
-					console.log('restoring focus to', previousActiveElement);
 					// Restore focus to previous element
-					if (previousActiveElement instanceof HTMLElement) {
-						previousActiveElement.focus();
+					if (this.#activeElement instanceof HTMLElement) {
+						this.#activeElement.focus();
 					}
 				}
 			}
@@ -184,6 +187,16 @@ export class DialogBond<
 			...props,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.footer = node;
+			}
+		};
+	}
+	
+	trigger() {
+		return {
+			'data-kind': DIALOG_ELEMENTS_KIND.trigger,
+			onclick: () => this.state.toggle(),
+			[createAttachmentKey()]: (node: HTMLElement) => {
+				this.elements.trigger = node;
 			}
 		};
 	}

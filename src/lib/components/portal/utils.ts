@@ -4,7 +4,7 @@ export function port(node: HTMLElement, target: HTMLElement = document.body) {
 	}
 
 	if (node.parentElement !== target) {
-		// node.hidden = true;
+		node.hidden = true;
 
 		// Check if element is already mounted on target
 		if (node.parentElement !== target) {

@@ -1,36 +1,68 @@
 const basicCode = `
 <script lang="ts">
+  import { Dialog, Button } from '@svelte-atoms/core';
+
   let open = $state(false);
 </script>
 
-<button onclick={() => open = true}>Open Dialog</button>
+<Dialog.Root bind:open={open}>
+  {#snippet trigger({dialog})}
+    <Button {...dialog.trigger()}>Open Dialog</Button>
+  {/snippet}
 
-<Dialog.Root bind:open>
   <Dialog.Content>
-    <Dialog.Header>
-      <h2>Dialog Title</h2>
+    <Dialog.Header class="mb-4">
+      <h2 class="text-foreground text-xl font-semibold">Dialog Title</h2>
     </Dialog.Header>
     <Dialog.Body>
-      <p>Dialog content goes here.</p>
+      <p>
+        This is a modal dialog. It captures focus and requires user interaction before
+        returning to the main content.
+      </p>
     </Dialog.Body>
-    <Dialog.Footer>
-      <button onclick={() => open = false}>Close</button>
+    <Dialog.Footer class="flex justify-end gap-2">
+      <Button variant="secondary" onclick={() => (open = false)}>
+        Cancel
+      </Button>
+      <Button
+        variant="primary"
+        onclick={() => (open = false)}
+      >
+        Confirm
+      </Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>`.trim();
 
 const alertCode = `
-<Dialog.Root bind:open variant="alert">
-  <Dialog.Content>
-    <Dialog.Header>
-      <h2>Are you sure?</h2>
+<script lang="ts">
+  import { Dialog, Button } from '@svelte-atoms/core';
+
+  let open = $state(false);
+</script>
+
+<Dialog.Root bind:open={open}>
+  {#snippet trigger({dialog})}
+    <Button variant="destructive" {...dialog.trigger()}>Delete Item</Button>
+  {/snippet}
+
+  <Dialog.Content class="bg-background max-w-md rounded-lg p-6 shadow-lg">
+    <Dialog.Header class="mb-4">
+      <h2 class="text-foreground text-xl font-semibold">Are you sure?</h2>
     </Dialog.Header>
-    <Dialog.Body>
-      <p>This action cannot be undone.</p>
+    <Dialog.Body class="text-muted-foreground mb-6">
+      <p>This action cannot be undone. This will permanently delete the item.</p>
     </Dialog.Body>
-    <Dialog.Footer>
-      <button>Cancel</button>
-      <button>Confirm</button>
+    <Dialog.Footer class="flex justify-end gap-2">
+      <Button variant="secondary" onclick={() => (open = false)}>
+        Cancel
+      </Button>
+      <Button
+        variant="destructive"
+        onclick={() => (open = false)}
+      >
+        Confirm Delete
+      </Button>
     </Dialog.Footer>
   </Dialog.Content>
 </Dialog.Root>`.trim();
@@ -185,13 +217,11 @@ const componentsSummary = [
 	},
 	{
 		name: 'Dialog.Title',
-		description:
-			'Semantic title element with proper ARIA labeling for accessibility.'
+		description: 'Semantic title element with proper ARIA labeling for accessibility.'
 	},
 	{
 		name: 'Dialog.Description',
-		description:
-			'Semantic description element for providing additional context to screen readers.'
+		description: 'Semantic description element for providing additional context to screen readers.'
 	},
 	{
 		name: 'Dialog.CloseButton',

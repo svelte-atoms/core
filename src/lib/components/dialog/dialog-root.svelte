@@ -4,7 +4,6 @@
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 	import type { DialogProps } from './types';
-	import { animateDialogRoot } from './motion.svelte';
 
 	let {
 		class: klass = '',
@@ -13,8 +12,9 @@
 		as = 'dialog' as E,
 		portal = undefined,
 		factory = _factory,
-		animate = animateDialogRoot(),
 		children = undefined,
+		trigger = undefined,
+		onclick = undefined,
 		...restProps
 	}: DialogProps<E, B> = $props();
 
@@ -48,6 +48,12 @@
 			return;
 		}
 
+		onclick?.(ev, bond);
+
+		if(ev.defaultPrevented){
+			return;
+		}
+
 		// Clicked the backdrop
 		bond.state.close();
 	}
@@ -57,18 +63,19 @@
 	}
 </script>
 
+{@render trigger?.({ dialog: bond })}
+
 <Teleport
 	{as}
 	{bond}
 	preset="dialog"
 	portal={portal ?? 'root.l1'}
 	class={[
-		'border-border pointer-events-auto fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/10 opacity-0',
-		!open && 'pointer-events-none',
+		'border-border pointer-events-none fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/0 transition-colors duration-200',
+		open && 'pointer-events-auto bg-neutral-900/10',
 		'$preset',
 		klass
 	]}
-	animate={animate?.bind(bond.state)}
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();

@@ -63,6 +63,6 @@
 				{/if}
 			</Button>
 		</div>
-		<pre class="text-foreground font-mono text-sm">{importCode}</pre>
+		<pre class="text-foreground font-mono text-sm overflow-x-auto">{importCode}</pre>
 	</div>
 </div>
