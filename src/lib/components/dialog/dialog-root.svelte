@@ -13,7 +13,6 @@
 		as = 'dialog' as E,
 		portal = undefined,
 		factory = _factory,
-		animate = animateDialogRoot(),
 		children = undefined,
 		...restProps
 	}: DialogProps<E, B> = $props();
@@ -68,7 +67,9 @@
 		'$preset',
 		klass
 	]}
-	animate={animate?.bind(bond.state)}
+	defaults={{
+		animate: animateDialogRoot()
+	}}
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();

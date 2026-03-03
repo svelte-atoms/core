@@ -31,6 +31,7 @@
 		preset: presetKey = undefined,
 		bond = undefined,
 		variants = undefined,
+		defaults = undefined,
 		children: childrenProp = undefined,
 		...restProps
 	}: Props = $props();
@@ -65,7 +66,8 @@
 
 	const _base = $derived(base ?? preset?.base);
 	const _as = $derived(as ?? preset?.as);
-	const _restProps = $derived(extractRestProps(preset, mergedVariants, restProps));
+	// Priority (lowest → highest): defaults → preset → mergedVariants → restProps
+	const _restProps = $derived({ ...defaults, ...extractRestProps(preset, mergedVariants, restProps) });
 
 	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
 

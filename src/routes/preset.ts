@@ -1,4 +1,5 @@
 import { clickoutDrawer, Input, type Preset } from '$svelte-atoms/core';
+import { animateDialogContent } from '$svelte-atoms/core/components/dialog/motion.svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 
 const buttonVariants = () => ({
@@ -96,9 +97,13 @@ export const preset: Partial<Preset> = {
 			class: 'px-0 py-2'
 		};
 	},
+	'dialog': () => ({
+
+	}),
 	'dialog.content': () => ({
 		class:
-			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-sm sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-[50svw] p-0'
+			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-sm sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-[50svw] p-0',
+		animate: animateDialogContent({ duration: 0.4 })
 	}),
 	'dialog.header': () => ({
 		class: 'border-b px-6 py-4 flex items-center gap-4'
@@ -112,7 +117,7 @@ export const preset: Partial<Preset> = {
 	'drawer.content': () => ({
 		[createAttachmentKey()]: clickoutDrawer((_, bond) => {
 			bond?.state.close?.();
-		})
+		}),
 	}),
 	collapsible: () => ({
 		class: 'max-w-md rounded-md border border-border p-2'

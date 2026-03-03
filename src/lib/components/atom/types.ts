@@ -39,6 +39,13 @@ export interface HtmlAtomProps<
 	 * - Function: Dynamic function that receives bond and props, returns props (legacy)
 	 */
 	variants?: Variants;
+
+	defaults?: {
+		animate?: HtmlElementProps<E>['animate'];
+		enter?: HtmlElementProps<E>['enter'];
+		exit?: HtmlElementProps<E>['exit'];
+		initial?: HtmlElementProps<E>['initial'];
+	};
 }
 
 export type { ElementType };

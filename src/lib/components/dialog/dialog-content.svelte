@@ -9,12 +9,6 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = animateDialogContent(),
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: DialogContentProps<E, B> = $props();
 
@@ -32,12 +26,9 @@
 		klass
 	]}
 	{bond}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	defaults={{
+		animate: animateDialogContent()
+	}}
 	{...dialogProps}
 >
 	{@render children?.({ dialog: bond })}
