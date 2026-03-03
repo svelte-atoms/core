@@ -63,6 +63,7 @@ export function animateDialogContent(params: AnimateDialogContentParams = {}) {
 	const { duration = DURATION.normal / 1000, delay = 0, ease = 'anticipate' } = params;
 
 	const bond = DialogBond.get();
+	let mounted = false;
 
 	return (node: HTMLElement) => {
 		const { resolve, promise } = promiseWithResolvers<{
@@ -77,9 +78,10 @@ export function animateDialogContent(params: AnimateDialogContentParams = {}) {
 
 		const isOpen = bond?.state.props.open ?? false;
 
-		if (!bond?.elements.root) {
-			if (bond?.elements.root instanceof HTMLDialogElement) {
-				bond?.elements.root.show();
+		if (isOpen) {
+			const rootElement = bond?.elements.root;
+			if (rootElement instanceof HTMLDialogElement) {
+				rootElement.show();
 			}
 		}
 
@@ -111,11 +113,13 @@ export function animateDialogContent(params: AnimateDialogContentParams = {}) {
 					opacity: +isOpen
 				},
 				{
-					duration,
+					duration: duration * +mounted,
 					easing: ease,
 					delay
 				}
 			);
+
+			mounted = true;
 
 			resolve({ duration, delay, controller: c });
 		} else {
