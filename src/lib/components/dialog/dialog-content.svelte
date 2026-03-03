@@ -27,7 +27,7 @@
 <HtmlAtom
 	preset="dialog.content"
 	class={[
-		'bg-card text-foreground border-border flex h-fit w-full max-w-[90svw] flex-col rounded-md border py-4 shadow-sm',
+		'bg-card text-foreground border-border flex h-fit w-full max-w-[90svw] flex-col rounded-md border py-4 shadow-sm opacity-0',
 		'$preset',
 		klass
 	]}
