@@ -801,7 +801,7 @@
 			<!-- DropdownMenu Example -->
 			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
-					<h3 class="text-lg font-semibold">DropdownMenu</h3>
+					<h3 class="text-lg font-semibold">Dropdown Menu</h3>
 					<DropdownMenu.Root bind:open={dropdownMenuOpen}>
 						<DropdownMenu.Trigger base={Button} class="w-full">
 							Actions
