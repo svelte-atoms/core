@@ -5,7 +5,8 @@
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import { Tabs, Tab } from '$svelte-atoms/core/components/tabs';
-	import { Dropdown } from '$svelte-atoms/core/components/dropdown';
+	import { Select } from '$svelte-atoms/core/components/select';
+	import { DropdownMenu } from '$svelte-atoms/core/components/dropdown-menu';
 	import { Tooltip } from '$svelte-atoms/core/components/tooltip';
 	import { Popover } from '$svelte-atoms/core/components/popover';
 	import { Dialog } from '$svelte-atoms/core/components/dialog';
@@ -20,7 +21,8 @@
 	import { goto } from '$app/navigation';
 
 	let tabValue = $state('account');
-	let dropdownOpen = $state(false);
+	let selectOpen = $state(false);
+	let dropdownMenuOpen = $state(false);
 	let tooltipOpen = $state(false);
 	let popoverOpen = $state(false);
 	let isDialogOpen = $state(false);
@@ -771,32 +773,48 @@
 				</Card.Body>
 			</Card.Root>
 
-			<!-- Dropdown Example -->
+			<!-- Select Example -->
 			<Card.Root class="rounded-none">
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
-					<h3 class="text-lg font-semibold">Dropdown</h3>
-					<Dropdown.Root bind:open={dropdownOpen} keys={fruits} offset={2}>
-						{#snippet children({ dropdown })}
-							{@const selectedItem = dropdown.state.selections?.at(0)}
-
-							<Dropdown.Trigger base={Button} class="w-full">
-								{#if selectedItem}
-									<div class="capitalize">{selectedItem.label}</div>
-								{:else}
-									<div>Select fruit</div>
-								{/if}
-
-								<Dropdown.Indicator class="ml-auto" />
-							</Dropdown.Trigger>
-							<Dropdown.Content class="">
+					<h3 class="text-lg font-semibold">Select</h3>
+					<Select.Root bind:open={selectOpen} keys={fruits} offset={2}>
+							<Select.Trigger base={Input.Root} class="w-full">
+								<Select.Placeholder>Select fruit</Select.Placeholder>
+								<Select.Selections />
+								<Select.Indicator class="ml-auto" />
+							</Select.Trigger>
+							<Select.Content class="">
 								{#each fruits as fruit (fruit)}
-									<Dropdown.Item value={fruit} class="capitalize">{fruit}</Dropdown.Item>
+									<Select.Item value={fruit} class="capitalize">{fruit}</Select.Item>
 								{/each}
-							</Dropdown.Content>
-						{/snippet}
-					</Dropdown.Root>
+							</Select.Content>
+					</Select.Root>
 					<a
-						href="/docs/components/dropdown"
+						href="/docs/components/select"
+						class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
+					>
+						View docs →
+					</a>
+				</Card.Body>
+			</Card.Root>
+
+			<!-- DropdownMenu Example -->
+			<Card.Root class="rounded-none">
+				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
+					<h3 class="text-lg font-semibold">DropdownMenu</h3>
+					<DropdownMenu.Root bind:open={dropdownMenuOpen}>
+						<DropdownMenu.Trigger base={Button} class="w-full">
+							Actions
+							<DropdownMenu.Indicator class="ml-auto" />
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="">
+							<DropdownMenu.Item>Edit</DropdownMenu.Item>
+							<DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+							<DropdownMenu.Item>Delete</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+					<a
+						href="/docs/components/dropdown-menu"
 						class="text-muted-foreground hover:text-foreground mt-auto block text-sm hover:underline"
 					>
 						View docs →
@@ -831,7 +849,6 @@
 				<Card.Body class="flex flex-1 flex-col gap-4 p-6">
 					<h3 class="text-lg font-semibold">Popover</h3>
 					<Popover.Root bind:open={popoverOpen} offset={0}>
-						{#snippet children()}
 							<Popover.Trigger base={Button} class="w-full">
 								<div>Open popover</div>
 
@@ -844,7 +861,6 @@
 								</div>
 								<Popover.Arrow />
 							</Popover.Content>
-						{/snippet}
 					</Popover.Root>
 					<a
 						href="/docs/components/popover"
