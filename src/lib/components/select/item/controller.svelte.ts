@@ -63,9 +63,9 @@ export class SelectItemController<T = unknown>
 		return this.props?.data;
 	}
 
-	get select() {
-		return this.#select;
-	}
+	// get select() {
+	// 	return this.#select;
+	// }
 
 	get label() {
 		const element = (this.#element?.querySelector('[data-label]') ?? this.#element) as
@@ -97,33 +97,19 @@ export class SelectItemController<T = unknown>
 		this.unmount();
 	}
 
-	selectValue() {
+	select() {
 		this.#select?.state.select([this.value]);
 	}
 
-	unselectValue() {
-		this.#select?.state.unselect([this.value]);
-	}
-
-	/**
-	 * @deprecated Use `unselectValue()` instead.
-	 */
 	unselect() {
-		this.unselectValue();
-	}
-
-	/**
-	 * @deprecated Use `selectValue()` instead.
-	 */
-	select() {
-		this.selectValue();
+		this.#select?.state.unselect([this.value]);
 	}
 
 	toggle() {
 		if (this.isSelected) {
-			this.unselectValue();
+			this.unselect();
 		} else {
-			this.selectValue();
+			this.select();
 		}
 	}
 
