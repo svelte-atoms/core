@@ -1,7 +1,7 @@
 <script>
 	import { Playground } from '$docs/playground';
 	import { Button } from '$lib/components/button';
-	import { Dropdown } from '$lib/components/dropdown';
+	import { Select } from '$lib/components/select';
 	import { Input } from '$lib/components/input';
 
 	let buttonContent = $state('Click me');
@@ -17,53 +17,39 @@
 					<label for="style-select" class="mb-1 block text-sm font-medium text-gray-700"
 						>Style</label
 					>
-					<Dropdown.Root
+					<Select.Root
 						id="style-select"
 						class="border-border block w-full rounded-md border px-3 py-2 text-sm"
 					>
-						<Dropdown.Trigger class="w-full" component={Input.Root}>
-							<Dropdown.Values>
-								{#snippet children({ items })}
-									{#each items as item (item.id)}
-										<div>{item.text}</div>
-									{/each}
-								{/snippet}
-							</Dropdown.Values>
-
-							<Dropdown.Placeholder>Select a style</Dropdown.Placeholder>
-						</Dropdown.Trigger>
-						<Dropdown.Content>
-							<Dropdown.Item class="text-gray-900" value="default">Default</Dropdown.Item>
-							<Dropdown.Item class="text-gray-900" value="primary">Primary</Dropdown.Item>
-							<Dropdown.Item class="text-gray-900" value="outline">Outline</Dropdown.Item>
-							<Dropdown.Item class="text-gray-900" value="gradient">Gradient</Dropdown.Item>
-						</Dropdown.Content>
-					</Dropdown.Root>
+						<Select.Trigger class="w-full" base={Input.Root}>
+							<Select.Selections />
+							<Select.Placeholder>Select a style</Select.Placeholder>
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Item class="text-gray-900" value="default">Default</Select.Item>
+							<Select.Item class="text-gray-900" value="primary">Primary</Select.Item>
+							<Select.Item class="text-gray-900" value="outline">Outline</Select.Item>
+							<Select.Item class="text-gray-900" value="gradient">Gradient</Select.Item>
+						</Select.Content>
+					</Select.Root>
 				</div>
 
 				<div>
 					<label for="size-select" class="mb-1 block text-sm font-medium text-gray-700">Size</label>
-					<Dropdown.Root
+					<Select.Root
 						id="style-select"
 						class="border-border block w-full rounded-md border px-3 py-2 text-sm"
 					>
-						<Dropdown.Trigger class="w-full" component={Input.Root}>
-							<Dropdown.Values>
-								{#snippet children({ items })}
-									{#each items as item (item.id)}
-										<div>{item.text}</div>
-									{/each}
-								{/snippet}
-							</Dropdown.Values>
-
-							<Dropdown.Placeholder>Select a size</Dropdown.Placeholder>
-						</Dropdown.Trigger>
-						<Dropdown.Content>
-							<Dropdown.Item class="text-gray-900" value="sm">Small</Dropdown.Item>
-							<Dropdown.Item class="text-gray-900" value="md">Medium</Dropdown.Item>
-							<Dropdown.Item class="text-gray-900" value="lg">Large</Dropdown.Item>
-						</Dropdown.Content>
-					</Dropdown.Root>
+						<Select.Trigger class="w-full" base={Input.Root}>
+							<Select.Selections />
+							<Select.Placeholder>Select a size</Select.Placeholder>
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Item class="text-gray-900" value="sm">Small</Select.Item>
+							<Select.Item class="text-gray-900" value="md">Medium</Select.Item>
+							<Select.Item class="text-gray-900" value="lg">Large</Select.Item>
+						</Select.Content>
+					</Select.Root>
 				</div>
 				<div>
 					<label for="text-input" class="mb-1 block text-sm font-medium text-gray-700">Text</label>
