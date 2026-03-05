@@ -38,7 +38,7 @@
 	// Memoize preset resolution - only recompute when presetKey or bond changes
 	const preset = $derived.by(() => {
 		if (!presetKey) return undefined;
-		const result = getPreset(presetKey as PresetModuleName)?.apply?.(bond, [bond]);
+		const result = getPreset(presetKey as PresetModuleName)?.(bond);
 		return resolvePreset(result);
 	});
 
@@ -59,26 +59,26 @@
 		);
 	});
 
-	const _klass = $derived(
+	const finalKlass = $derived(
 		mergeClassesWithPreset(klass, preset?.class, mergedVariants?.class as ClassValue)
 	);
 
-	const _base = $derived(base ?? preset?.base);
-	const _as = $derived(as ?? preset?.as);
-	const _restProps = $derived(extractRestProps(preset, mergedVariants, restProps));
+	const finalBase = $derived(base ?? preset?.base);
+	const finalAs = $derived(as ?? preset?.as);
+	const finalRestProps = $derived(extractRestProps(preset, mergedVariants, restProps));
 
 	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
 
 	const renderer = $derived.by(() => {
-		if (isSnippetBase(_base))
+		if (isSnippetBase(finalBase))
 			return {
 				component: SnippetRenderer,
-				props: { snippet: _base, class: _klass, as: _as, children: childrenProp, ..._restProps }
+				props: { snippet: finalBase, class: finalKlass, as: finalAs, children: childrenProp, ...finalRestProps }
 			};
 
 		return {
-			component: _base ?? atom,
-			props: { class: _klass, as: _as, ..._restProps }
+			component: finalBase ?? atom,
+			props: { class: finalKlass, as: finalAs, ...finalRestProps }
 		};
 	}) as { component: Component; props: Record<string, any> };
 </script>

@@ -202,9 +202,9 @@ export function mergeVariants(
 		: [localVariants?.class];
 
 	return {
-		class: [...presetClasses, ...localClasses].filter(Boolean),
 		...presetResolved,
-		...localVariants
+		...localVariants,
+		class: [...presetClasses, ...localClasses].filter(Boolean)
 	};
 }
 
@@ -258,6 +258,11 @@ export function resolveLocalVariants(
 	// Otherwise it's a VariantDefinition, resolve it
 	return resolveVariants(variants, bond, props);
 }
+
+/**
+ * Internal keys that are never valid DOM attributes — stripped before spreading onto element
+ */
+const INTERNAL_PROPS = new Set(['class', 'base', 'as', 'variants', 'compounds', 'defaults']);
 
 /**
  * Pure function to extract rest props by filtering out preset and variant-specific props
