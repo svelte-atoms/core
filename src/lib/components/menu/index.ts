@@ -38,16 +38,6 @@ export {
 	dropdownMenu as menu
 } from '../dropdown-menu/attachments.svelte';
 
-// Popover re-exports (unchanged)
-export {
-	PopoverBond,
-	type PopoverDomElements,
-	type PopoverParams,
-	PopoverState,
-	type PopoverStateProps,
-	type TriggerParams
-} from '../popover';
-
 // Animate aliases
 export type {
 	/**
