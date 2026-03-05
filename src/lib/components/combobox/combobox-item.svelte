@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
-	import { Item } from '$svelte-atoms/core/components/dropdown/atoms';
-	import { DropdownItemController } from '$svelte-atoms/core/components/dropdown/item/controller.svelte';
+	import { Item } from '$svelte-atoms/core/components/select/atoms';
+	import { SelectItemController as DropdownItemController } from '$svelte-atoms/core/components/select/item/controller.svelte';
 
 	import { on } from '$svelte-atoms/core/attachments';
 

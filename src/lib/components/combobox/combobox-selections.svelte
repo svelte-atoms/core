@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
-	import { Selections } from '../dropdown/atoms';
+	import { Selections } from '../select/atoms';
 	import type { ComboboxSelectionsProps } from './types';
 
 	const bond = ComboboxBond.get();
