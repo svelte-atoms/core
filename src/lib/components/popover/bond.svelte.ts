@@ -332,7 +332,17 @@ function popover(bond: PopoverBond) {
 				middleware
 			});
 
-			bond.state.position = position;
+			// Round to 0.001 precision to avoid excessive updates from sub-pixel changes
+			const x = Math.round((position.x ?? 0) * 100) / 100;
+			const y = Math.round((position.y ?? 0) * 100) / 100;
+
+			bond.state.position = {
+				middlewareData: position.middlewareData,
+				placement: position.placement,
+				strategy: position.strategy,
+				x,
+				y
+			};
 			onchangeCallback?.(content, position);
 
 			// Set minimum width to match trigger
@@ -343,7 +353,9 @@ function popover(bond: PopoverBond) {
 
 		// Use auto-update if provided, otherwise compute once
 		if (updater) {
-			return updater(trigger, content, compute, {});
+			return updater(trigger, content, compute, {
+				ancestorScroll: false
+			});
 		}
 
 		compute();
