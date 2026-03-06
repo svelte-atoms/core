@@ -30,13 +30,8 @@
 	const targetElement = $derived(portalBond?.targetElement);
 
 	function _port(node: HTMLElement) {
-		const hidden = node.hidden;
-
-		node.hidden = true;
 
 		const unport = port(node, targetElement);
-
-		node.hidden = hidden;
 
 		return unport;
 	}
