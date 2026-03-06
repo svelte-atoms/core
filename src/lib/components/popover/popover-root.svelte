@@ -6,8 +6,8 @@
 	let {
 		open = $bindable(false),
 		disabled = false,
-		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
-		placement = 'bottom-start',
+		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'bottom', 'top'],
+		placement = 'bottom',
 		offset = 1,
 		portal = undefined,
 		extend = {},
