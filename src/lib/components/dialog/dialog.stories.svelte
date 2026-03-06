@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Dialog as ADialog } from '.';
-	import { Dropdown } from '$svelte-atoms/core/components/dropdown';
+	import { Select } from '$svelte-atoms/core/components/select';
 	import { Button } from '../button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -19,7 +19,7 @@
 
 <script lang="ts">
 	let isDialogOpen = $state(false);
-	let isDropdownOpen = $state(false);
+	let isSelectOpen = $state(false);
 </script>
 
 <Story name="Dialog" args={{}}>	
@@ -41,15 +41,15 @@
 						dolor diam nascetur.
 					</p>
 	
-					<Dropdown.Root open={isDialogOpen && isDropdownOpen} class="w-full">
-						<Dropdown.Trigger>Hello World</Dropdown.Trigger>
-						<Dropdown.List>
-							<Dropdown.Item id="ar">Arabic</Dropdown.Item>
-							<Dropdown.Item id="en">English</Dropdown.Item>
-							<Dropdown.Item id="sp">Spanish</Dropdown.Item>
-							<Dropdown.Item id="it">Italian</Dropdown.Item>
-						</Dropdown.List>
-					</Dropdown.Root>
+					<Select.Root open={isDialogOpen && isSelectOpen} class="w-full">
+						<Select.Trigger>Hello World</Select.Trigger>
+						<Select.List>
+							<Select.Item value="ar">Arabic</Select.Item>
+							<Select.Item value="en">English</Select.Item>
+							<Select.Item value="sp">Spanish</Select.Item>
+							<Select.Item value="it">Italian</Select.Item>
+						</Select.List>
+					</Select.Root>
 				</ADialog.Body>
 	
 				<ADialog.Footer class="gap-4">

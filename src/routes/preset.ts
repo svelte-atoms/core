@@ -193,6 +193,9 @@ export const preset: Partial<Preset> = {
 		class:
 			'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-1'
 	}),
+	'dropdown-menu.list': () => ({
+		class: 'bg-card'
+	}),
 	'menu.list': () => ({
 		class: 'bg-card'
 	}),
@@ -223,6 +226,10 @@ export const preset: Partial<Preset> = {
 	}),
 	'card.media': () => ({
 		class: 'rounded-md overflow-hidden'
+	}),
+	'select.trigger': () => ({
+		base: Input.Root,
+		class: ''
 	}),
 	'dropdown.trigger': () => ({
 		base: Input.Root,

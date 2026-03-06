@@ -1,10 +1,7 @@
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
-
 /**
- * Extend this interface to add custom menu list properties in your application.
+ * @deprecated Import from `dropdown-menu` instead. This module will be removed in a future version.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface MenuListExtendProps {}
-
-export interface MenuListProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B>, MenuListExtendProps {}
+export type {
+	DropdownMenuListExtendProps as MenuListExtendProps,
+	DropdownMenuListProps as MenuListProps
+} from '../dropdown-menu/types';

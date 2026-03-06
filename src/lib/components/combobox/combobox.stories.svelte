@@ -3,7 +3,7 @@
 	import { Combobox as ACombobox } from '.';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Divider } from '$svelte-atoms/core/components/divider';
-	import { filterDropdownData } from '../dropdown';
+	import { filterSelectData as filterDropdownData } from '../select';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({

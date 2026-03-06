@@ -3,7 +3,7 @@
 	import Button from '$lib/components/button/button.svelte';
 	import { Playground } from '$docs/playground';
 	import { Input } from '$lib/components/input';
-	import { Dropdown } from '$lib/components/dropdown';
+	import { Select } from '$lib/components/select';
 
 	let formData = $state({
 		name: '',
@@ -141,29 +141,22 @@
 			<div class="space-y-4">
 				<div>
 					<label class="mb-2 block text-sm font-medium text-gray-700">Variant</label>
-					<Dropdown.Root
+					<Select.Root
 						id="style-select"
 						class="border-border block w-full rounded-md border px-3 py-2 text-sm"
 					>
-						<Dropdown.Trigger class="w-full" component={Input.Root}>
-							<Dropdown.Values>
-								{#snippet children({ items })}
-									{#each items as item (item.id)}
-										<div>{item.text}</div>
-									{/each}
-								{/snippet}
-							</Dropdown.Values>
-
-							<Dropdown.Placeholder>Select a style</Dropdown.Placeholder>
-						</Dropdown.Trigger>
-						<Dropdown.Content>
+						<Select.Trigger class="w-full" base={Input.Root}>
+							<Select.Selections />
+							<Select.Placeholder>Select a style</Select.Placeholder>
+						</Select.Trigger>
+						<Select.Content>
 							{#each variants as variant}
-								<Dropdown.Item class="text-gray-900" value={variant.value}
-									>{variant.label}</Dropdown.Item
+								<Select.Item class="text-gray-900" value={variant.value}
+									>{variant.label}</Select.Item
 								>
 							{/each}
-						</Dropdown.Content>
-					</Dropdown.Root>
+						</Select.Content>
+					</Select.Root>
 				</div>
 
 				<div>

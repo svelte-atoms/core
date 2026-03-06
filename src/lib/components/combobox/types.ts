@@ -2,7 +2,7 @@ import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { ComboboxBond } from './bond.svelte';
-import type { DropdownSelectionProps, DropdownSelectionsProps } from '../dropdown';
+import type { SelectSelectionProps as DropdownSelectionProps, SelectSelectionsProps as DropdownSelectionsProps } from '../select';
 import type { InputControlProps } from '../input';
 
 /**

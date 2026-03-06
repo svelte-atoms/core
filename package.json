@@ -131,6 +131,21 @@
 			"svelte": "./dist/components/chip/index.js",
 			"default": "./dist/components/chip/index.js"
 		},
+		"./collapsible": {
+			"types": "./dist/components/collapsible/index.d.ts",
+			"svelte": "./dist/components/collapsible/index.js",
+			"default": "./dist/components/collapsible/index.js"
+		},
+		"./collapsible/atoms": {
+			"types": "./dist/components/collapsible/atoms.d.ts",
+			"svelte": "./dist/components/collapsible/atoms.js",
+			"default": "./dist/components/collapsible/atoms.js"
+		},
+		"./container": {
+			"types": "./dist/components/container/index.d.ts",
+			"svelte": "./dist/components/container/index.js",
+			"default": "./dist/components/container/index.js"
+		},
 		"./combobox": {
 			"types": "./dist/components/combobox/index.d.ts",
 			"svelte": "./dist/components/combobox/index.js",
@@ -171,6 +186,11 @@
 			"svelte": "./dist/components/dialog/atoms.js",
 			"default": "./dist/components/dialog/atoms.js"
 		},
+		"./divider": {
+			"types": "./dist/components/divider/index.d.ts",
+			"svelte": "./dist/components/divider/index.js",
+			"default": "./dist/components/divider/index.js"
+		},
 		"./drawer": {
 			"types": "./dist/components/drawer/index.d.ts",
 			"svelte": "./dist/components/drawer/index.js",
@@ -190,6 +210,21 @@
 			"types": "./dist/components/dropdown/atoms.d.ts",
 			"svelte": "./dist/components/dropdown/atoms.js",
 			"default": "./dist/components/dropdown/atoms.js"
+		},
+		"./dropdown-menu": {
+			"types": "./dist/components/dropdown-menu/index.d.ts",
+			"svelte": "./dist/components/dropdown-menu/index.js",
+			"default": "./dist/components/dropdown-menu/index.js"
+		},
+		"./dropdown-menu/atoms": {
+			"types": "./dist/components/dropdown-menu/atoms.d.ts",
+			"svelte": "./dist/components/dropdown-menu/atoms.js",
+			"default": "./dist/components/dropdown-menu/atoms.js"
+		},
+		"./dropdown-menu/item": {
+			"types": "./dist/components/dropdown-menu/item/index.d.ts",
+			"svelte": "./dist/components/dropdown-menu/item/index.js",
+			"default": "./dist/components/dropdown-menu/item/index.js"
 		},
 		"./element": {
 			"types": "./dist/components/element/index.d.ts",
@@ -216,6 +251,16 @@
 			"svelte": "./dist/components/form/field/atoms.js",
 			"default": "./dist/components/form/field/atoms.js"
 		},
+		"./icon": {
+			"types": "./dist/components/icon/index.d.ts",
+			"svelte": "./dist/components/icon/index.js",
+			"default": "./dist/components/icon/index.js"
+		},
+		"./image": {
+			"types": "./dist/components/image/index.d.ts",
+			"svelte": "./dist/components/image/index.js",
+			"default": "./dist/components/image/index.js"
+		},
 		"./input": {
 			"types": "./dist/components/input/index.d.ts",
 			"svelte": "./dist/components/input/index.js",
@@ -230,6 +275,26 @@
 			"types": "./dist/components/label/index.d.ts",
 			"svelte": "./dist/components/label/index.js",
 			"default": "./dist/components/label/index.js"
+		},
+		"./layer": {
+			"types": "./dist/components/layer/index.d.ts",
+			"svelte": "./dist/components/layer/index.js",
+			"default": "./dist/components/layer/index.js"
+		},
+		"./layer/atoms": {
+			"types": "./dist/components/layer/atoms.d.ts",
+			"svelte": "./dist/components/layer/atoms.js",
+			"default": "./dist/components/layer/atoms.js"
+		},
+		"./lazy": {
+			"types": "./dist/components/lazy/index.d.ts",
+			"svelte": "./dist/components/lazy/index.js",
+			"default": "./dist/components/lazy/index.js"
+		},
+		"./link": {
+			"types": "./dist/components/link/index.d.ts",
+			"svelte": "./dist/components/link/index.js",
+			"default": "./dist/components/link/index.js"
 		},
 		"./list": {
 			"types": "./dist/components/list/index.d.ts",
@@ -290,6 +355,21 @@
 			"types": "./dist/components/scrollable/atoms.d.ts",
 			"svelte": "./dist/components/scrollable/atoms.js",
 			"default": "./dist/components/scrollable/atoms.js"
+		},
+		"./select": {
+			"types": "./dist/components/select/index.d.ts",
+			"svelte": "./dist/components/select/index.js",
+			"default": "./dist/components/select/index.js"
+		},
+		"./select/atoms": {
+			"types": "./dist/components/select/atoms.d.ts",
+			"svelte": "./dist/components/select/atoms.js",
+			"default": "./dist/components/select/atoms.js"
+		},
+		"./select/item": {
+			"types": "./dist/components/select/item/index.d.ts",
+			"svelte": "./dist/components/select/item/index.js",
+			"default": "./dist/components/select/item/index.js"
 		},
 		"./sidebar": {
 			"types": "./dist/components/sidebar/index.d.ts",
@@ -380,6 +460,16 @@
 			"types": "./dist/components/tooltip/atoms.d.ts",
 			"svelte": "./dist/components/tooltip/atoms.js",
 			"default": "./dist/components/tooltip/atoms.js"
+		},
+		"./tree": {
+			"types": "./dist/components/tree/index.d.ts",
+			"svelte": "./dist/components/tree/index.js",
+			"default": "./dist/components/tree/index.js"
+		},
+		"./tree/atoms": {
+			"types": "./dist/components/tree/atoms.d.ts",
+			"svelte": "./dist/components/tree/atoms.js",
+			"default": "./dist/components/tree/atoms.js"
 		},
 		"./utils": {
 			"types": "./dist/utils/index.d.ts",

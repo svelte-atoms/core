@@ -1,23 +1,74 @@
-export * as Dropdown from './atoms';
+/**
+ * @deprecated Import from `select` instead. This module will be removed in a future version.
+ */
 
+// Namespace — Select is the canonical export; Dropdown remains for backward compat
 export {
-	DropdownBond,
-	type DropdownBondElements,
-	DropdownBondState,
-	type DropdownStateProps
-} from './bond.svelte';
+	/**
+	 * @deprecated Use `Select` instead.
+	 */
+	Select as Dropdown
+} from '../select';
 
+// Bond classes
+export {
+	/**
+	 * @deprecated Use `SelectBond` instead.
+	 */
+	SelectBond as DropdownBond,
+	/**
+	 * @deprecated Use `SelectBondState` instead.
+	 */
+	SelectBondState as DropdownBondState,
+	/**
+	 * @deprecated Use `SelectBondElements` instead.
+	 */
+	type SelectBondElements as DropdownBondElements,
+	/**
+	 * @deprecated Use `SelectStateProps` instead.
+	 */
+	type SelectStateProps as DropdownStateProps
+} from '../select/bond.svelte';
+
+// Item exports (already shimmed in item/index.ts)
 export * from './item';
 
-export { filterDropdownData } from './runes.svelte';
+// Runes
+export {
+	/**
+	 * @deprecated Use `filterSelectData` instead.
+	 */
+	filterSelectData as filterDropdownData
+} from '../select/runes.svelte';
 /**
- * @deprecated Use `filterDropdownData` instead.
+ * @deprecated Use `filterSelectData` instead.
  */
-export { filterDropdownData as filter } from './runes.svelte';
+export { filterSelectData as filter } from '../select/runes.svelte';
 
-export * from './types';
-
+// Types
 export type {
-	AnimatePopoverContentParams as AnimateDropdownContentParams,
-	animatePopoverContent as animateDropdownContent
-} from '../popover/motion';
+	DropdownExtendProps,
+	DropdownTriggerExtendProps,
+	DropdownRootProps,
+	DropdownTriggerProps,
+	DropdownSelectionsProps,
+	DropdownSelectionProps,
+	DropdownQueryProps,
+	DropdownSelection
+} from './types';
+
+// Animate aliases
+export type {
+	/**
+	 * @deprecated Use `AnimateSelectContentParams` instead.
+	 */
+	AnimateSelectContentParams as AnimateDropdownContentParams
+} from '../select';
+
+// Attachment functions
+export {
+	/**
+	 * @deprecated Use `select` instead.
+	 */
+	select as dropdown
+} from '../select/attachments.svelte';
