@@ -1,8 +1,7 @@
-import { animate, circOut } from 'motion';
+import { animate, backInOut, circOut } from 'motion';
 import { untrack } from 'svelte';
 import { PopoverBond } from '.';
 import { DURATION } from '$svelte-atoms/core/shared';
-import { is } from 'date-fns/locale';
 
 export type AnimatePopoverContentParams = {
 	duration?: number;
@@ -15,16 +14,13 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 	let prevY: number | undefined;
 	let prevOpen: boolean | undefined;
 
-	let isDirty = false;
-
 	return (node: HTMLElement) => {
 		const bond = PopoverBond.get();
 
-		const { duration = DURATION.fast / 1000, delay = 0, ease = circOut } = params;
+		const { duration = DURATION.fast / 1000, delay = 0, ease = backInOut } = params;
 
 		const isOpen = bond?.state.props.open ?? false;
 
-		// Track only x and y reactively; read the rest without registering dependencies
 		const posX = bond.state.position?.x ?? 0;
 		const posY = bond.state.position?.y ?? 0;
 		const position = untrack(() => bond.state.position);
@@ -42,62 +38,100 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 		prevY = posY;
 		prevOpen = isOpen;
 
-		node.style.transform = '';
-
 		const triggerElement = bond.elements.trigger;
 
 		if (!triggerElement) {
 			return;
 		}
 
-		const triggerRect = triggerElement.getBoundingClientRect();
-		const nodeRect = node.getBoundingClientRect();
+		requestAnimationFrame(() => {
+			const triggerRect = triggerElement.getBoundingClientRect();
+			const nodeRect = node.parentElement?.getBoundingClientRect();
 
-		const scaleX = triggerRect.width / nodeRect.width;
-		const scaleY = triggerRect.height / nodeRect.height;
+			if (!nodeRect) {
+				return;
+			}
 
-		const x = triggerRect.x - nodeRect.x;
-		const y = triggerRect.y - nodeRect.y;
+			const scaleX = triggerRect.width / nodeRect.width;
+			const scaleY = triggerRect.height / nodeRect.height;
 
-		const placement = position.placement;
+			const placement = untrack(() => position.placement);
+			const [side, alignment] = placement?.split('-') ?? [];
 
-		const dy = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
-		const dx = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
+			const dy =
+				(side === 'left' || side === 'right') && !alignment
+					? 0
+					: side === 'top'
+						? -1
+						: side === 'bottom'
+							? 1
+							: undefined;
+			const dx =
+				(side === 'top' || side === 'bottom') && !alignment
+					? 0
+					: side === 'left'
+						? -1
+						: side === 'right'
+							? 1
+							: undefined;
 
-		const openAsNumber = +isOpen;
+			const tx = Math.sign(dx ?? 0);
+			const ty = Math.sign(dy ?? 0);
 
-		// const transformOriginX = dx >= 0 ? 'left' : 'right';
+			const getTransformOrigin = (side: string, alignment: string) => {
+				const calcXOrigin = (alignment: string, side: string) => {
+					if (!alignment) return 'center';
 
-		const transformOriginY = dy >= 0 ? 'top' : 'bottom';
-		const transformOriginX = dx === 0 || scaleX === 1 ? 'center' : dx > 0 ? 'left' : 'right';
+					if (side === 'top' || side === 'bottom') {
+						if (alignment === 'start') return 'left';
+						return 'right';
+					}
 
-		node.style.transformOrigin = `${transformOriginX} ${transformOriginY}`;
-		node.style.pointerEvents = 'none';
+					if (side === 'left' || side === 'right') {
+						if (alignment === 'start') return 'top';
+						return 'bottom';
+					}
 
-		let c;
-		if (!isDirty) {
-			c = animate(
+					return 'center';
+				};
+				const x = calcXOrigin(alignment, side);
+
+				const calcYOrigin = (side: string) => {
+					switch (side) {
+						case 'top':
+							return 'bottom';
+						case 'bottom':
+							return 'top';
+						case 'left':
+							return 'right';
+						case 'right':
+							return 'left';
+						default:
+							return 'center';
+					}
+				};
+
+				const y = calcYOrigin(side);
+
+				return `${x} ${y}`;
+			};
+
+			const transformOrigin = getTransformOrigin(side, alignment);
+
+			node.style.transformOrigin = transformOrigin;
+			node.style.pointerEvents = 'none';
+
+			const translateX = triggerRect.width * -tx;
+			const translateY = triggerRect.height * -ty;
+
+			const c = animate(
 				node,
 				{
-					scaleX: [0, +isOpen],
-					scaleY: [0, +isOpen],
-					translateX: ['0px', `${x}px`],
-					translateY: ['0px', `${y}px`],
-					opacity: openAsNumber
-				},
-				{
-					duration: 0
-				}
-			);
-		} else {
-			c = animate(
-				node,
-				{
-					scaleX: +isOpen,
-					scaleY: isOpen ? 1 : scaleY,
-					translateX: isOpen ? '0px' : `${x}px`,
-					translateY: isOpen ? '0px' : `${y}px`,
-					opacity: openAsNumber
+					scaleX: isOpen ? [0, 1] : [1, 0],
+					scaleY: isOpen ? [scaleY, 1] : [1, scaleY],
+					translateX: isOpen ? [`${translateX}px`, '0px'] : ['0px', `${translateX}px`],
+					translateY: isOpen ? [`${translateY}px`, '0px'] : ['0px', `${translateY}px`],
+					opacity: isOpen ? [0, 1] : [1, 0]
 				},
 				{
 					duration,
@@ -105,13 +139,10 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 					delay
 				}
 			);
-		}
 
-		c.then(() => {
-			node.style.pointerEvents = '';
+			c.then(() => {
+				node.style.pointerEvents = '';
+			});
 		});
-
-		isDirty = true;
-		// resolve({ duration, delay, controller: c });
 	};
 }
