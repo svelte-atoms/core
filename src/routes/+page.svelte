@@ -534,7 +534,7 @@
 
 				<!-- Command -->
 				<div class="bg-muted relative rounded-lg px-4 py-3 font-mono text-sm">
-					<span class="text-muted-foreground select-none">$ </span>{installCommands[packageManager]}
+					<span class="text-muted-foreground select-none">$</span> <span>{installCommands[packageManager]}</span>
 					<button
 						onclick={copyInstall}
 						class="text-muted-foreground hover:text-foreground absolute top-2.5 right-3 rounded p-1 transition-colors"
