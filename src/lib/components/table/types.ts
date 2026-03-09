@@ -4,17 +4,17 @@ import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TableRootExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableHeadExtendProps {}
+export interface TableHeaderExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TableBodyExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableFootExtendProps {}
+export interface TableFooterExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableRowExtendProps {}
+export interface TableTrExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableHeaderExtendProps {}
+export interface TableThExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TableCellExtendProps {}
+export interface TableTdExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TableCaptionExtendProps {}
 
@@ -22,29 +22,35 @@ export interface TableRootProps extends HtmlAtomProps<'table'>, TableRootExtendP
 	children?: Snippet<[]>;
 }
 
-export interface TableHeadProps extends HtmlAtomProps<'thead'>, TableHeadExtendProps {
+/** Wraps <thead> */
+export interface TableHeaderProps extends HtmlAtomProps<'thead'>, TableHeaderExtendProps {
 	children?: Snippet<[]>;
 }
 
+/** Wraps <tbody> */
 export interface TableBodyProps extends HtmlAtomProps<'tbody'>, TableBodyExtendProps {
 	children?: Snippet<[]>;
 }
 
-export interface TableFootProps extends HtmlAtomProps<'tfoot'>, TableFootExtendProps {
+/** Wraps <tfoot> */
+export interface TableFooterProps extends HtmlAtomProps<'tfoot'>, TableFooterExtendProps {
 	children?: Snippet<[]>;
 }
 
-export interface TableRowProps extends HtmlAtomProps<'tr'>, TableRowExtendProps {
+/** Wraps <tr> */
+export interface TableTrProps extends HtmlAtomProps<'tr'>, TableTrExtendProps {
 	children?: Snippet<[]>;
 }
 
-export interface TableHeaderProps extends HtmlAtomProps<'th'>, TableHeaderExtendProps {
+/** Wraps <th> — column header cell */
+export interface TableThProps extends HtmlAtomProps<'th'>, TableThExtendProps {
 	/** Column sort state — renders sort indicator icon */
 	sort?: 'asc' | 'desc' | 'none' | false;
 	children?: Snippet<[]>;
 }
 
-export interface TableCellProps extends HtmlAtomProps<'td'>, TableCellExtendProps {
+/** Wraps <td> — data cell */
+export interface TableTdProps extends HtmlAtomProps<'td'>, TableTdExtendProps {
 	children?: Snippet<[]>;
 }
 
