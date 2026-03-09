@@ -1,6 +1,5 @@
 import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom/types';
 import type { Snippet } from 'svelte';
-import type { ChipVariantProps } from './variants';
 
 /**
  * Extend this interface to add custom chip properties in your application.
@@ -14,7 +13,7 @@ export interface ChipExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ChipCloseButtonExtendProps {}
 
-export interface ChipProps extends HtmlAtomProps<'div'>, ChipVariantProps, ChipExtendProps {
+export interface ChipProps extends HtmlAtomProps<'div'>, ChipExtendProps {
 	children?: Snippet<[]>;
 	/** Custom icon rendered inside the default close button */
 	icon?: Snippet<[]> | undefined;
