@@ -38,6 +38,44 @@
 	}
 </script>
 
+{#snippet defaultTrack()}
+	<HtmlAtom
+		preset="slider.track"
+		as="div"
+		class={[
+			'slider-track bg-input border-border relative overflow-hidden rounded-full border',
+			isVertical ? 'h-full w-2' : 'h-2 w-full',
+			'$preset'
+		]}
+	>
+		<HtmlAtom
+			preset="slider.fill"
+			as="div"
+			class={[
+				'slider-fill bg-foreground absolute rounded-full',
+				isVertical ? 'bottom-0 left-0 w-full' : 'left-0 top-0 h-full',
+				'$preset'
+			]}
+			style={isVertical ? `height: ${percent}%` : `width: ${percent}%`}
+		/>
+	</HtmlAtom>
+{/snippet}
+
+{#snippet defaultThumb()}
+	<HtmlAtom
+		preset="slider.thumb"
+		as="div"
+		class={[
+			'slider-thumb bg-background border-border pointer-events-none absolute h-5 w-5 rounded-full border-2 shadow-sm',
+			isVertical
+				? 'left-1/2 -translate-x-1/2 -translate-y-1/2'
+				: 'top-1/2 -translate-x-1/2 -translate-y-1/2',
+			'$preset'
+		]}
+		style={isVertical ? `bottom: calc(${percent}% - 10px)` : `left: ${percent}%`}
+	/>
+{/snippet}
+
 <HtmlAtom
 	{preset}
 	as="div"
@@ -51,43 +89,9 @@
 	aria-orientation={orientation}
 	{...restProps}
 >
-	<!-- Track -->
-	{#if trackContent}
-		<HtmlAtom
-			preset="slider.track"
-			as="div"
-			class={[
-				'slider-track relative overflow-hidden rounded-full',
-				isVertical ? 'h-full w-2' : 'h-2 w-full',
-				'$preset'
-			]}
-			base={trackContent}
-		/>
-	{:else}
-		<HtmlAtom
-			preset="slider.track"
-			as="div"
-			class={[
-				'slider-track bg-input border-border relative overflow-hidden rounded-full border',
-				isVertical ? 'h-full w-2' : 'h-2 w-full',
-				'$preset'
-			]}
-		>
-			<!-- Fill -->
-			<HtmlAtom
-				preset="slider.fill"
-				as="div"
-				class={[
-					'slider-fill bg-foreground absolute rounded-full',
-					isVertical ? 'bottom-0 left-0 w-full' : 'left-0 top-0 h-full',
-					'$preset'
-				]}
-				style={isVertical ? `height: ${percent}%` : `width: ${percent}%`}
-			/>
-		</HtmlAtom>
-	{/if}
+	{@render (trackContent ?? defaultTrack)({ value, percent, min, max })}
 
-	<!-- Native range input (invisible, positioned over track for a11y) -->
+	<!-- Native range input — invisible, full coverage, handles all a11y + keyboard -->
 	<input
 		{id}
 		{name}
@@ -109,35 +113,7 @@
 		aria-disabled={disabled || undefined}
 	/>
 
-	<!-- Thumb -->
-	{#if thumbContent}
-		<HtmlAtom
-			preset="slider.thumb"
-			as="div"
-			class={[
-				'slider-thumb pointer-events-none absolute',
-				isVertical
-					? 'left-1/2 -translate-x-1/2 -translate-y-1/2'
-					: 'top-1/2 -translate-x-1/2 -translate-y-1/2',
-				'$preset'
-			]}
-			style={isVertical ? `bottom: calc(${percent}% - 10px)` : `left: ${percent}%`}
-			base={thumbContent}
-		/>
-	{:else}
-		<HtmlAtom
-			preset="slider.thumb"
-			as="div"
-			class={[
-				'slider-thumb bg-background border-border pointer-events-none absolute h-5 w-5 rounded-full border-2 shadow-sm',
-				isVertical
-					? 'left-1/2 -translate-x-1/2 -translate-y-1/2'
-					: 'top-1/2 -translate-x-1/2 -translate-y-1/2',
-				'$preset'
-			]}
-			style={isVertical ? `bottom: calc(${percent}% - 10px)` : `left: ${percent}%`}
-		/>
-	{/if}
+	{@render (thumbContent ?? defaultThumb)({ value, percent })}
 </HtmlAtom>
 
 {#if children}
