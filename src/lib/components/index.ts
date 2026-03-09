@@ -44,3 +44,7 @@ export * from './qr-code';
 export * from './lazy';
 export * from './chip';
 export * from './toast';
+export * from './contextmenu';
+export * from './divider';
+export * from './image';
+export * from './virtual';
