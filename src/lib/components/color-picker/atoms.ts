@@ -1,6 +1,9 @@
 export { default as Root } from './color-picker-root.svelte';
 export { default as Preview } from './color-picker-preview.svelte';
 export { default as HexInput } from './color-picker-hex-input.svelte';
-export { default as Sliders } from './color-picker-sliders.svelte';
+export { default as HslSliders } from './color-picker-hsl-sliders.svelte';
+export { default as HsvSliders } from './color-picker-hsv-sliders.svelte';
+export { default as RgbSliders } from './color-picker-rgb-sliders.svelte';
+export { default as HwbSliders } from './color-picker-hwb-sliders.svelte';
 export { default as Swatches } from './color-picker-swatches.svelte';
 export { Trigger, Content, Arrow, Indicator } from '../popover/atoms';

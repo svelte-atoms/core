@@ -17,7 +17,7 @@
 	];
 </script>
 
-<Story name="HSL (default)">
+<Story name="HSL Sliders">
 	{#snippet children()}
 		<div class="flex items-center gap-3">
 			<ColorPicker.Root bind:value {swatches}>
@@ -29,7 +29,7 @@
 						{#snippet children()}
 							<div class="flex w-56 flex-col gap-4 p-3">
 								<ColorPicker.HexInput />
-								<ColorPicker.Sliders domain="hsl" />
+								<ColorPicker.HslSliders />
 								<ColorPicker.Swatches />
 							</div>
 						{/snippet}
@@ -41,7 +41,7 @@
 	{/snippet}
 </Story>
 
-<Story name="HSV">
+<Story name="HSV Sliders">
 	{#snippet children()}
 		<ColorPicker.Root bind:value {swatches}>
 			{#snippet children()}
@@ -52,7 +52,7 @@
 					{#snippet children()}
 						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
-							<ColorPicker.Sliders domain="hsv" />
+							<ColorPicker.HsvSliders />
 							<ColorPicker.Swatches />
 						</div>
 					{/snippet}
@@ -62,7 +62,7 @@
 	{/snippet}
 </Story>
 
-<Story name="RGB">
+<Story name="RGB Sliders">
 	{#snippet children()}
 		<ColorPicker.Root bind:value>
 			{#snippet children()}
@@ -73,7 +73,7 @@
 					{#snippet children()}
 						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
-							<ColorPicker.Sliders domain="rgb" />
+							<ColorPicker.RgbSliders />
 						</div>
 					{/snippet}
 				</ColorPicker.Content>
@@ -82,7 +82,7 @@
 	{/snippet}
 </Story>
 
-<Story name="HWB">
+<Story name="HWB Sliders">
 	{#snippet children()}
 		<ColorPicker.Root bind:value>
 			{#snippet children()}
@@ -93,7 +93,7 @@
 					{#snippet children()}
 						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
-							<ColorPicker.Sliders domain="hwb" />
+							<ColorPicker.HwbSliders />
 						</div>
 					{/snippet}
 				</ColorPicker.Content>
@@ -115,7 +115,6 @@
 						<div class="flex w-64 flex-col gap-3 p-3">
 							<ColorPicker.HexInput />
 
-							<!-- Domain tabs -->
 							<div class="border-border flex rounded-md border text-xs">
 								{#each ['hsl', 'hsv', 'rgb', 'hwb'] as d}
 									<button
@@ -129,7 +128,12 @@
 								{/each}
 							</div>
 
-							<ColorPicker.Sliders domain={tab} />
+							{#if tab === 'hsl'}   <ColorPicker.HslSliders />
+							{:else if tab === 'hsv'} <ColorPicker.HsvSliders />
+							{:else if tab === 'rgb'} <ColorPicker.RgbSliders />
+							{:else}                  <ColorPicker.HwbSliders />
+							{/if}
+
 							<ColorPicker.Swatches />
 						</div>
 					{/snippet}
