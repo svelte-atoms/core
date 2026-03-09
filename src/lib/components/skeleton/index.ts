@@ -1,2 +1,2 @@
-export { default as Skeleton } from './skeleton.svelte';
+export * as Skeleton from './atoms';
 export * from './types';
