@@ -60,12 +60,22 @@
 	});
 
 	const finalKlass = $derived(cn(toClassValue(klass)));
-	const transitionSnippet = $derived(global ? globalTransition : localTransition);
+	const hasTransitions = $derived(!!(enter ?? exit));
+	const transitionSnippet = $derived(
+		!hasTransitions ? bareElement : global ? globalTransition : localTransition
+	);
+
+	// Only include onintroend in elementProps when transitions are active;
+	// avoids attaching a handler that can never fire on bare elements.
+	const elementProps = $derived.by(() => {
+		const base = { ...restProps };
+		if (hasTransitions) base.onintroend = handleIntroEnd;
+		return base as Record<string, any>;
+	});
 
 	function handleIntroEnd(ev: TransitionEvent) {
 		onintroend?.(ev);
 		if (ev.defaultPrevented) return;
-
 		hasEntered = true;
 	}
 
@@ -77,17 +87,19 @@
 		return exit?.(node) ?? {};
 	}
 
-	// Apply initial() exactly once when the node first mounts, before the enter transition.
-	// Keeping this in $effect (not inside enterTransition) ensures it fires only once,
-	// even if Svelte calls the transition function multiple times to measure duration.
-	function applyInitial(node: Element){
+	function applyInitial(node: Element) {
 		if (!node) return;
 		if (hasInitialized) return;
 		hasInitialized = true;
-
 		untrack(() => initial?.(node!));
 	}
 </script>
+
+{#snippet bareElement()}
+	<svelte:element this={as} {@attach applyInitial} {@attach attachFunction} class={finalKlass} {...elementProps}>
+		{@render children?.()}
+	</svelte:element>
+{/snippet}
 
 {#snippet globalTransition()}
 	<svelte:element this={as} {@attach applyInitial} {@attach attachFunction} class={finalKlass} in:enterTransition|global out:exitTransition|global {...elementProps}>
