@@ -9,6 +9,7 @@
 
 <script>
 	let value = $state('#3b82f6');
+	let tab = $state('hsl');
 
 	const swatches = [
 		'#ef4444', '#f97316', '#eab308', '#22c55e',
@@ -17,31 +18,7 @@
 	];
 </script>
 
-<Story name="HSL Sliders">
-	{#snippet children()}
-		<div class="flex items-center gap-3">
-			<ColorPicker.Root bind:value {swatches}>
-				{#snippet children()}
-					<ColorPicker.Trigger>
-						<ColorPicker.Preview />
-					</ColorPicker.Trigger>
-					<ColorPicker.Content>
-						{#snippet children()}
-							<div class="flex w-56 flex-col gap-4 p-3">
-								<ColorPicker.HexInput />
-								<ColorPicker.HslSliders />
-								<ColorPicker.Swatches />
-							</div>
-						{/snippet}
-					</ColorPicker.Content>
-				{/snippet}
-			</ColorPicker.Root>
-			<span class="font-mono text-sm">{value}</span>
-		</div>
-	{/snippet}
-</Story>
-
-<Story name="HSV Sliders">
+<Story name="Color Area (Figma-style)">
 	{#snippet children()}
 		<ColorPicker.Root bind:value {swatches}>
 			{#snippet children()}
@@ -50,9 +27,12 @@
 				</ColorPicker.Trigger>
 				<ColorPicker.Content>
 					{#snippet children()}
-						<div class="flex w-56 flex-col gap-4 p-3">
+						<div class="flex w-56 flex-col gap-3 p-3">
+							<!-- 2D area: drag to pick S+V -->
+							<ColorPicker.ColorArea />
+							<!-- Hue strip only -->
+							<ColorPicker.HsvSliders class="[&>*:not(:first-child)]:hidden" />
 							<ColorPicker.HexInput />
-							<ColorPicker.HsvSliders />
 							<ColorPicker.Swatches />
 						</div>
 					{/snippet}
@@ -62,61 +42,87 @@
 	{/snippet}
 </Story>
 
-<Story name="RGB Sliders">
-	{#snippet children()}
-		<ColorPicker.Root bind:value>
-			{#snippet children()}
+<Story name="HSL Sliders">
+	{#snippet template()}
+		<div class="flex items-center gap-3">
+			<ColorPicker.Root bind:value {swatches}>
+					<ColorPicker.Trigger>
+						<ColorPicker.Preview />
+					</ColorPicker.Trigger>
+					<ColorPicker.Content>
+							<div class="flex w-56 flex-col gap-4 p-3">
+								<ColorPicker.HexInput />
+								<ColorPicker.HslSliders />
+								<ColorPicker.Swatches />
+							</div>
+					</ColorPicker.Content>
+			</ColorPicker.Root>
+			<span class="font-mono text-sm">{value}</span>
+		</div>
+	{/snippet}
+</Story>
+
+<Story name="HSV Sliders">
+	{#snippet template()}
+		<ColorPicker.Root bind:value {swatches}>
 				<ColorPicker.Trigger>
 					<ColorPicker.Preview />
 				</ColorPicker.Trigger>
 				<ColorPicker.Content>
-					{#snippet children()}
+						<div class="flex w-56 flex-col gap-4 p-3">
+							<ColorPicker.HexInput />
+							<ColorPicker.HsvSliders />
+							<ColorPicker.Swatches />
+						</div>
+				</ColorPicker.Content>
+		</ColorPicker.Root>
+	{/snippet}
+</Story>
+
+<Story name="RGB Sliders">
+	{#snippet template()}
+		<ColorPicker.Root bind:value>
+				<ColorPicker.Trigger>
+					<ColorPicker.Preview />
+				</ColorPicker.Trigger>
+				<ColorPicker.Content>
 						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
 							<ColorPicker.RgbSliders />
 						</div>
-					{/snippet}
 				</ColorPicker.Content>
-			{/snippet}
 		</ColorPicker.Root>
 	{/snippet}
 </Story>
 
 <Story name="HWB Sliders">
-	{#snippet children()}
+	{#snippet template()}
 		<ColorPicker.Root bind:value>
-			{#snippet children()}
 				<ColorPicker.Trigger>
 					<ColorPicker.Preview />
 				</ColorPicker.Trigger>
 				<ColorPicker.Content>
-					{#snippet children()}
 						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
 							<ColorPicker.HwbSliders />
 						</div>
-					{/snippet}
 				</ColorPicker.Content>
-			{/snippet}
 		</ColorPicker.Root>
 	{/snippet}
 </Story>
 
 <Story name="Multi-domain panel">
-	{#snippet children()}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
-			{#snippet children()}
 				<ColorPicker.Trigger>
 					<ColorPicker.Preview />
 				</ColorPicker.Trigger>
 				<ColorPicker.Content>
-					{#snippet children()}
-						{@const tab = $state('hsl')}
 						<div class="flex w-64 flex-col gap-3 p-3">
 							<ColorPicker.HexInput />
 
 							<div class="border-border flex rounded-md border text-xs">
-								{#each ['hsl', 'hsv', 'rgb', 'hwb'] as d}
+								{#each ['hsl', 'hsv', 'rgb', 'hwb'] as d (d)}
 									<button
 										type="button"
 										onclick={() => tab = d}
@@ -136,9 +142,7 @@
 
 							<ColorPicker.Swatches />
 						</div>
-					{/snippet}
 				</ColorPicker.Content>
-			{/snippet}
 		</ColorPicker.Root>
 	{/snippet}
 </Story>
