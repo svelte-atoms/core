@@ -203,7 +203,7 @@
 			</p>
 		</div>
 
-		<div class="grid grid-cols-1 gap-px border md:grid-cols-2 lg:grid-cols-3" style="border-color: var(--color-border);">
+		<div class="grid grid-cols-1 gap-px border md:grid-cols-2 lg:grid-cols-3 bg-border" style="border-color: var(--color-border);">
 
 			<!-- Button -->
 			<div class="bg-card flex flex-col gap-4 p-6">
