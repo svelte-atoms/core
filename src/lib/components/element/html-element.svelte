@@ -17,6 +17,7 @@
 		onmount = undefined,
 		ondestroy = undefined,
 		onintroend = undefined,
+		onexitend = undefined,
 		children = undefined,
 		...restProps
 	}: HtmlElementProps<T> & Omit<HTMLAttributes<Element>, keyof HtmlElementProps<T>> = $props();
@@ -55,11 +56,14 @@
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition
 	);
 
-	// Only include onintroend when transitions are active —
-	// avoids attaching a handler that can never fire on bare elements.
+	// Only include onintroend/onexitend when transitions are active —
+	// avoids attaching handlers that can never fire on bare elements.
 	const elementProps = $derived.by(() => {
 		const base = { ...restProps };
-		if (hasTransitions) base.onintroend = handleIntroEnd;
+		if (hasTransitions) {
+			base.onintroend = handleIntroEnd;
+			base.onoutroend = handleExitEnd;
+		}
 		return base as Record<string, any>;
 	});
 
@@ -67,6 +71,10 @@
 		onintroend?.(ev);
 		if (ev.defaultPrevented) return;
 		hasEntered = true;
+	}
+
+	function handleExitEnd(ev: TransitionEvent) {
+		onexitend?.(ev);
 	}
 
 	function enterTransition(node: Element) {
