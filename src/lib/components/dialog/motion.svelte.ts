@@ -62,10 +62,12 @@ type AnimateDialogContentParams = {
 export function animateDialogContent(params: AnimateDialogContentParams = {}) {
 	const { duration = DURATION.normal / 1000, delay = 0, ease = 'anticipate' } = params;
 
-	const bond = DialogBond.get();
 	let mounted = false;
 
 	return (node: HTMLElement) => {
+		// Read bond inside the callback — safe at any call site, not just during component init
+		const bond = DialogBond.get();
+
 		const { resolve, promise } = promiseWithResolvers<{
 			duration: number;
 			delay: number;
