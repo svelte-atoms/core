@@ -10,7 +10,7 @@
 		class: klass = '',
 		open = $bindable(false),
 		disabled = false,
-		closeOnBackdropClick = true,
+		type = 'modal' as 'modal' | 'non-modal',
 		as = 'dialog' as E,
 		"z-index": zindex = 20,
 		portal = undefined,
@@ -61,7 +61,7 @@
 		if (ev.defaultPrevented) return;
 
 		// Close on backdrop click unless opted out
-		if (closeOnBackdropClick && !disabled) {
+		if (type === 'modal' && !disabled) {
 			bond.state.close();
 		}
 	}
