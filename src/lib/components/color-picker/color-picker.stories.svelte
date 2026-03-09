@@ -20,7 +20,7 @@
 
 <!-- HSV Area — classic Figma-style 2D picker + hue strip -->
 <Story name="HSV Area">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -39,7 +39,7 @@
 
 <!-- HSL Area -->
 <Story name="HSL Area">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -58,7 +58,7 @@
 
 <!-- HWB Area -->
 <Story name="HWB Area">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -77,7 +77,7 @@
 
 <!-- HSL Sliders only -->
 <Story name="HSL Sliders">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -95,7 +95,7 @@
 
 <!-- RGB Sliders only -->
 <Story name="RGB Sliders">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -112,7 +112,7 @@
 
 <!-- HWB Sliders only -->
 <Story name="HWB Sliders">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
@@ -129,7 +129,7 @@
 
 <!-- Swatches only -->
 <Story name="Swatches Only">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<ColorPicker.Root bind:value {swatches}>
 			<ColorPicker.Trigger>
 				<ColorPicker.Preview />
