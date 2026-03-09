@@ -1,4 +1,4 @@
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
 /**
@@ -45,11 +45,21 @@ export interface SliderProps extends HtmlAtomProps<'div'>, SliderExtendProps {
 	 */
 	orientation?: 'horizontal' | 'vertical';
 	/**
-	 * Child content
+	 * Custom thumb content — replaces the default thumb indicator.
+	 * Receives `{ value, percent }` as snippet args.
+	 */
+	thumbContent?: Component | Snippet<[{ value: number; percent: number }]>;
+	/**
+	 * Custom track content — replaces the default track+fill.
+	 * Receives `{ value, percent, min, max }` as snippet args.
+	 */
+	trackContent?: Component | Snippet<[{ value: number; percent: number; min: number; max: number }]>;
+	/**
+	 * Child content (e.g. label)
 	 */
 	children?: Snippet<[]>;
 	/**
-	 * Change handler
+	 * Change handler (fires on mouse/touch release)
 	 */
 	onchange?: (ev?: Event, options?: { value: number }) => void;
 	/**
