@@ -128,6 +128,8 @@ export type PresetModuleName =
 	| 'breadcrumb.item'
 	| 'breadcrumb.separator'
 	| 'badge'
+	| 'chip'
+	| 'chip.close-button'
 	| 'button'
 	| 'checkbox'
 	| 'checkbox.checkmark'
