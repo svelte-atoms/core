@@ -9,7 +9,7 @@
   Scenario: a "Publish" action that's disabled because there are
   unsaved changes — tooltip explains why the button is disabled.
 -->
-<Tooltip.Root bind:open offset={8}>
+<Tooltip.Root bind:open offset={0}>
 	<Tooltip.Trigger
 		base={Button}
 		variant="primary"
