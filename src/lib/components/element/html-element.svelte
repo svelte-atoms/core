@@ -49,23 +49,13 @@
 		node = n;
 	};
 
-	// handleIntroEnd is stable (defined once) — keep it separate from the derived
-	// so restProps changes don't force a new object including this stable reference.
-	// Using $derived.by to be explicit about what we're tracking.
-	const elementProps = $derived.by(() => {
-		// Access restProps to track it; spread into a fresh object only when it changes
-		const base = { ...restProps };
-		base.onintroend = handleIntroEnd;
-		return base as Record<string, any>;
-	});
-
 	const finalKlass = $derived(cn(toClassValue(klass)));
 	const hasTransitions = $derived(!!(enter ?? exit));
 	const transitionSnippet = $derived(
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition
 	);
 
-	// Only include onintroend in elementProps when transitions are active;
+	// Only include onintroend when transitions are active —
 	// avoids attaching a handler that can never fire on bare elements.
 	const elementProps = $derived.by(() => {
 		const base = { ...restProps };
