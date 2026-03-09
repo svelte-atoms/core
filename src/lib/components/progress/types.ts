@@ -1,4 +1,4 @@
-import type { Component, Snippet } from 'svelte';
+import type { Snippet } from 'svelte';
 import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
 /**
@@ -24,22 +24,22 @@ export interface ProgressProps extends HtmlAtomProps<'div'>, ProgressExtendProps
 	 */
 	variant?: 'linear' | 'circular';
 	/**
-	 * Whether to show the percentage label
+	 * Show the default percentage label
 	 * @default false
 	 */
 	showLabel?: boolean;
 	/**
-	 * Custom label snippet — receives `{ value, percent }`.
-	 * Renders inside/alongside the progress indicator.
-	 */
-	labelContent?: Component | Snippet<[{ value: number | null; percent: number | null }]>;
-	/**
-	 * Custom fill/indicator snippet — replaces the default fill bar (linear) or arc (circular).
+	 * Custom label — replaces the default percentage text.
 	 * Receives `{ value, percent }`.
 	 */
-	fillContent?: Component | Snippet<[{ value: number | null; percent: number | null }]>;
+	labelContent?: Snippet<[{ value: number | null; percent: number | null }]>;
 	/**
-	 * Child content
+	 * Custom fill — replaces the default fill bar (linear) or arc (circular).
+	 * Receives `{ value, percent }`.
+	 */
+	fillContent?: Snippet<[{ value: number | null; percent: number | null }]>;
+	/**
+	 * Child content (rendered after the progress root)
 	 */
 	children?: Snippet<[]>;
 }
