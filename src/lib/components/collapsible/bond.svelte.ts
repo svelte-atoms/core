@@ -132,14 +132,14 @@ export class CollapsibleState extends BondState<CollapsibleStateProps> {
 	}
 
 	open() {
-		this.set('open', true);
+		this.props.open = true;
 	}
 
 	close() {
-		this.set('open', false);
+		this.props.open = false;
 	}
 
 	toggle() {
-		this.set('open', !this.props.open);
+		this.props.open = !this.props.open;
 	}
 }
