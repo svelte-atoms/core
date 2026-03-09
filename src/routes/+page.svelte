@@ -7,22 +7,16 @@
 	import { Tabs, Tab } from '$svelte-atoms/core/components/tabs';
 	import { Select } from '$svelte-atoms/core/components/select';
 	import { DropdownMenu } from '$svelte-atoms/core/components/dropdown-menu';
-	import { Tooltip } from '$svelte-atoms/core/components/tooltip';
-	import { Popover } from '$svelte-atoms/core/components/popover';
-	import { Dialog } from '$svelte-atoms/core/components/dialog';
-	import { animateDrawerContent, clickoutDrawer, Drawer } from '$svelte-atoms/core/components/drawer';
 	import { animateSidebarContent, Sidebar } from '$svelte-atoms/core/components/sidebar';
-	import Icon from '$svelte-atoms/core/components/icon/icon.svelte';
-	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
 	import { goto } from '$app/navigation';
+	import TooltipDemo from './demos/tooltip-demo.svelte';
+	import PopoverDemo from './demos/popover-demo.svelte';
+	import DialogDemo from './demos/dialog-demo.svelte';
+	import DrawerDemo from './demos/drawer-demo.svelte';
 
 	let tabValue = $state('account');
 	let selectOpen = $state(false);
 	let dropdownMenuOpen = $state(false);
-	let tooltipOpen = $state(false);
-	let popoverOpen = $state(false);
-	let isDialogOpen = $state(false);
-	let isDrawerOpen = $state(false);
 	let sidebarOpen = $state(false);
 	let copied = $state(false);
 
@@ -347,15 +341,10 @@
 					<h3 class="text-sm font-semibold">Tooltip</h3>
 					<a href="/docs/components/tooltip" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
-				<Tooltip.Root bind:open={tooltipOpen} offset={6}>
-					<Tooltip.Trigger base={Button} variant="outline" class="w-full">
-						Hover me
-					</Tooltip.Trigger>
-					<Tooltip.Content class="bg-popover border-border rounded-md border px-3 py-1.5 text-xs shadow-md">
-						This is a helpful tooltip
-						<Tooltip.Arrow />
-					</Tooltip.Content>
-				</Tooltip.Root>
+				<div class="flex flex-1 items-center">
+					<TooltipDemo />
+				</div>
+				<p class="text-muted-foreground text-xs">Disabled state with contextual explanation</p>
 			</div>
 
 			<!-- Popover -->
@@ -364,17 +353,10 @@
 					<h3 class="text-sm font-semibold">Popover</h3>
 					<a href="/docs/components/popover" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
-				<Popover.Root bind:open={popoverOpen} offset={6}>
-					<Popover.Trigger base={Button} variant="outline" class="w-full justify-between">
-						Open popover
-						<Popover.Indicator class="ml-auto" />
-					</Popover.Trigger>
-					<Popover.Content class="bg-popover border-border w-56 rounded-md border p-4 shadow-md">
-						<h4 class="mb-1 text-sm font-semibold">Settings</h4>
-						<p class="text-muted-foreground text-xs">Contextual panels with any content.</p>
-						<Popover.Arrow />
-					</Popover.Content>
-				</Popover.Root>
+				<div class="flex flex-1 items-center justify-center">
+					<PopoverDemo />
+				</div>
+				<p class="text-muted-foreground text-xs">Issue label filter — toggle multiple, clear all</p>
 			</div>
 
 			<!-- Dialog -->
@@ -383,29 +365,10 @@
 					<h3 class="text-sm font-semibold">Dialog</h3>
 					<a href="/docs/components/dialog" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
-				<Dialog.Root bind:open={isDialogOpen}>
-					{#snippet trigger({dialog})}
-						<Button variant="outline" class="w-full" {...dialog.trigger()}>
-							Open Dialog
-						</Button>
-					{/snippet}
-					
-					<Dialog.Content>
-						<Dialog.Header>
-							<h4 class="text-base font-semibold">Confirm action</h4>
-							<Dialog.CloseButton class="ml-auto" />
-						</Dialog.Header>
-						<Dialog.Body>
-							<p class="text-muted-foreground text-sm">
-								Are you sure? This action cannot be undone.
-							</p>
-						</Dialog.Body>
-						<Dialog.Footer>
-							<Button variant="outline" onclick={() => (isDialogOpen = false)}>Cancel</Button>
-							<Button variant="destructive" onclick={() => (isDialogOpen = false)}>Delete</Button>
-						</Dialog.Footer>
-					</Dialog.Content>
-				</Dialog.Root>
+				<div class="flex flex-1 items-center">
+					<DialogDemo />
+				</div>
+				<p class="text-muted-foreground text-xs">Destructive confirm with typed phrase unlock</p>
 			</div>
 
 			<!-- Drawer -->
@@ -414,30 +377,10 @@
 					<h3 class="text-sm font-semibold">Drawer</h3>
 					<a href="/docs/components/drawer" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
-				<Drawer.Root bind:open={isDrawerOpen}>
-					<Drawer.Content
-						class="bg-background border-border fixed top-0 left-0 h-full w-72 border-r p-6 shadow-xl"
-						animate={animateDrawerContent({ ease: 'easeOut', side: 'left' })}
-						{@attach clickoutDrawer()}
-					>
-						<Drawer.Header class="mb-6">
-							<Drawer.Title class="flex items-center justify-between text-base font-semibold">
-								Navigation
-								<button onclick={() => (isDrawerOpen = false)} class="cursor-pointer">
-									<Icon class="h-4 w-4"><CloseIcon /></Icon>
-								</button>
-							</Drawer.Title>
-						</Drawer.Header>
-						<Drawer.Body class="space-y-1 text-sm">
-							{#each ['Dashboard', 'Components', 'Docs', 'Examples', 'Settings'] as item}
-								<div class="hover:bg-muted rounded-md px-3 py-2 transition-colors">{item}</div>
-							{/each}
-						</Drawer.Body>
-					</Drawer.Content>
-				</Drawer.Root>
-				<Button variant="outline" class="w-full" onclick={() => (isDrawerOpen = true)}>
-					Open Drawer
-				</Button>
+				<div class="flex flex-1 items-center">
+					<DrawerDemo />
+				</div>
+				<p class="text-muted-foreground text-xs">Notification tray — mark read, dismiss per item</p>
 			</div>
 
 			<!-- Sidebar -->
