@@ -59,17 +59,17 @@
 			</div>
 		{/if}
 
-		<!-- Dot + connector column -->
-		<div class="timeline-spine flex flex-col items-center gap-0">
+		<!-- Dot + connector column — self-stretch so line fills item height -->
+		<div class="timeline-spine flex shrink-0 self-stretch flex-col items-center">
 			<div class="timeline-dot-wrap z-10 flex items-center justify-center pt-0.5">
 				{@render (dotContent ?? defaultDot)({ completed, active })}
 			</div>
-			<!-- Connector line -->
-			<div class="timeline-connector bg-border mt-1 w-0.5 flex-1 last:hidden"></div>
+			<!-- Connector line: grows to fill, hidden on last li via CSS -->
+			<div class="timeline-connector bg-border mt-1 w-0.5 grow [li:last-child_&]:hidden"></div>
 		</div>
 
 		<!-- Main content -->
-		<div class="timeline-content min-w-0 flex-1 pb-6 pt-0.5">
+		<div class="timeline-content min-w-0 flex-1 pb-8 pt-0.5">
 			{@render children?.()}
 		</div>
 
