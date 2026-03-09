@@ -55,6 +55,8 @@ export interface DialogProps<E extends keyof HTMLElementTagNameMap = 'div', B ex
 	extends Omit<HtmlAtomProps<E, B>, 'children'>, DialogExtendProps {
 	open?: boolean;
 	disabled?: boolean;
+	/** Close the dialog when clicking the backdrop. Default: true */
+	closeOnBackdropClick?: boolean | undefined;
 	portal?: string | PortalBond;
 	factory?: (props: DialogBondProps) => DialogBond;
 	children?: Snippet<[{ dialog: DialogBond }]>;

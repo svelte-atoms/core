@@ -10,6 +10,7 @@
 		class: klass = '',
 		open = $bindable(false),
 		disabled = false,
+		closeOnBackdropClick = true,
 		as = 'dialog' as E,
 		"z-index": zindex = 20,
 		portal = undefined,
@@ -49,18 +50,20 @@
 	}
 
 	function onclickDialogElement(ev: MouseEvent) {
-		if (bond?.elements?.content?.contains(ev.target)) {
+		// Ignore clicks that originated inside the dialog content
+		if (bond?.elements?.content?.contains(ev.target as Node)) {
 			return;
 		}
 
+		// Let the user's onclick handler run first; they can call ev.preventDefault() to cancel close
 		onclick?.(ev, bond);
 
-		if(ev.defaultPrevented){
-			return;
-		}
+		if (ev.defaultPrevented) return;
 
-		// Clicked the backdrop
-		bond.state.close();
+		// Close on backdrop click unless opted out
+		if (closeOnBackdropClick && !disabled) {
+			bond.state.close();
+		}
 	}
 
 	export function getBond() {

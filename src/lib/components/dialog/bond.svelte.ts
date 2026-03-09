@@ -73,12 +73,6 @@ export class DialogBond<
 			inert: !isOpen ? '' : undefined,
 			'data-kind': DIALOG_ELEMENTS_KIND.root,
 			'data-open': isOpen,
-			onclick: (ev: MouseEvent) => {
-				// Close on backdrop click (clicking outside content)
-				if (ev.target === ev.currentTarget && !isDisabled) {
-					this.state.close();
-				}
-			},
 			onkeydown: (ev: KeyboardEvent) => {
 				// Close on Escape key
 				if (ev.key === 'Escape') {
