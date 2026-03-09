@@ -58,6 +58,15 @@ export interface ColorPickerHexInputProps extends HtmlAtomProps<'div'> {
 }
 
 export interface ColorPickerSlidersProps extends HtmlAtomProps<'div'> {
+	/**
+	 * Color domain for the sliders
+	 * - 'hsl' — Hue / Saturation / Lightness (default)
+	 * - 'hsv' — Hue / Saturation / Value
+	 * - 'rgb' — Red / Green / Blue
+	 * - 'hwb' — Hue / Whiteness / Blackness
+	 * @default 'hsl'
+	 */
+	domain?: 'hsl' | 'hsv' | 'rgb' | 'hwb';
 	children?: Snippet<[]>;
 }
 

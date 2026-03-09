@@ -17,21 +17,19 @@
 	];
 </script>
 
-<!-- Full-featured: trigger opens popover with all parts -->
-<Story name="Default">
+<Story name="HSL (default)">
 	{#snippet children()}
 		<div class="flex items-center gap-3">
-			<ColorPicker.Root bind:value {swatches} onchange={(v) => console.log(v)}>
+			<ColorPicker.Root bind:value {swatches}>
 				{#snippet children()}
 					<ColorPicker.Trigger>
 						<ColorPicker.Preview />
 					</ColorPicker.Trigger>
-
 					<ColorPicker.Content>
 						{#snippet children()}
 							<div class="flex w-56 flex-col gap-4 p-3">
 								<ColorPicker.HexInput />
-								<ColorPicker.Sliders />
+								<ColorPicker.Sliders domain="hsl" />
 								<ColorPicker.Swatches />
 							</div>
 						{/snippet}
@@ -43,19 +41,18 @@
 	{/snippet}
 </Story>
 
-<!-- Minimal: hex input + swatches only -->
-<Story name="Swatches Only">
+<Story name="HSV">
 	{#snippet children()}
 		<ColorPicker.Root bind:value {swatches}>
 			{#snippet children()}
 				<ColorPicker.Trigger>
 					<ColorPicker.Preview />
 				</ColorPicker.Trigger>
-
 				<ColorPicker.Content>
 					{#snippet children()}
-						<div class="flex w-52 flex-col gap-3 p-3">
+						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
+							<ColorPicker.Sliders domain="hsv" />
 							<ColorPicker.Swatches />
 						</div>
 					{/snippet}
@@ -65,20 +62,75 @@
 	{/snippet}
 </Story>
 
-<!-- Sliders only, no swatches -->
-<Story name="Sliders Only">
+<Story name="RGB">
 	{#snippet children()}
 		<ColorPicker.Root bind:value>
 			{#snippet children()}
 				<ColorPicker.Trigger>
 					<ColorPicker.Preview />
 				</ColorPicker.Trigger>
-
 				<ColorPicker.Content>
 					{#snippet children()}
-						<div class="flex w-52 flex-col gap-3 p-3">
+						<div class="flex w-56 flex-col gap-4 p-3">
 							<ColorPicker.HexInput />
-							<ColorPicker.Sliders />
+							<ColorPicker.Sliders domain="rgb" />
+						</div>
+					{/snippet}
+				</ColorPicker.Content>
+			{/snippet}
+		</ColorPicker.Root>
+	{/snippet}
+</Story>
+
+<Story name="HWB">
+	{#snippet children()}
+		<ColorPicker.Root bind:value>
+			{#snippet children()}
+				<ColorPicker.Trigger>
+					<ColorPicker.Preview />
+				</ColorPicker.Trigger>
+				<ColorPicker.Content>
+					{#snippet children()}
+						<div class="flex w-56 flex-col gap-4 p-3">
+							<ColorPicker.HexInput />
+							<ColorPicker.Sliders domain="hwb" />
+						</div>
+					{/snippet}
+				</ColorPicker.Content>
+			{/snippet}
+		</ColorPicker.Root>
+	{/snippet}
+</Story>
+
+<Story name="Multi-domain panel">
+	{#snippet children()}
+		<ColorPicker.Root bind:value {swatches}>
+			{#snippet children()}
+				<ColorPicker.Trigger>
+					<ColorPicker.Preview />
+				</ColorPicker.Trigger>
+				<ColorPicker.Content>
+					{#snippet children()}
+						{@const tab = $state('hsl')}
+						<div class="flex w-64 flex-col gap-3 p-3">
+							<ColorPicker.HexInput />
+
+							<!-- Domain tabs -->
+							<div class="border-border flex rounded-md border text-xs">
+								{#each ['hsl', 'hsv', 'rgb', 'hwb'] as d}
+									<button
+										type="button"
+										onclick={() => tab = d}
+										class={[
+											'flex-1 py-1 transition-colors first:rounded-l-md last:rounded-r-md',
+											tab === d ? 'bg-foreground text-background' : 'hover:bg-muted'
+										].join(' ')}
+									>{d.toUpperCase()}</button>
+								{/each}
+							</div>
+
+							<ColorPicker.Sliders domain={tab} />
+							<ColorPicker.Swatches />
 						</div>
 					{/snippet}
 				</ColorPicker.Content>
