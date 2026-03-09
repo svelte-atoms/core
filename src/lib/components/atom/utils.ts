@@ -1,5 +1,5 @@
 import type { Bond } from '$svelte-atoms/core/shared';
-import { cn, type ClassValue, type VariantDefinition } from '$svelte-atoms/core/utils';
+import { cn, type ClassValue, type VariantDefinition, VARIANT_DEF_TAG } from '$svelte-atoms/core/utils';
 import { call } from '$svelte-atoms/core/utils/function';
 
 type ResolvedProps = Record<string, unknown>;
@@ -239,8 +239,13 @@ export function mergeClassesWithPreset(
 }
 
 /**
- * Pure function to resolve local variants
- * Handles both function-based and VariantDefinition-based variants
+ * Pure function to resolve local variants.
+ * Handles both function-based and VariantDefinition-based variants.
+ *
+ * If the function was created by `defineVariants`, it carries a VARIANT_DEF_TAG
+ * symbol with the original config. We detect this and route through the cached
+ * resolveVariants engine so defineVariants-based variants benefit from the same
+ * two-level WeakMap cache as raw VariantDefinition objects.
  */
 export function resolveLocalVariants(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -250,12 +255,20 @@ export function resolveLocalVariants(
 ): ResolvedProps | undefined {
 	if (!variants) return undefined;
 
-	// If it's a function, call it directly
+	// Detect functions tagged by defineVariants — route through the cache
+	if (typeof variants === 'function' && VARIANT_DEF_TAG in variants) {
+		const config = variants[VARIANT_DEF_TAG];
+		// If config is a function (dynamic/bond-based), resolve it to a VariantDefinition first
+		const resolvedConfig = typeof config === 'function' ? config(bond) : config;
+		return resolveVariants(resolvedConfig, bond, props);
+	}
+
+	// Plain function (legacy / manual variants fn) — call directly, no cache
 	if (typeof variants === 'function') {
 		return variants(bond, props);
 	}
 
-	// Otherwise it's a VariantDefinition, resolve it
+	// Raw VariantDefinition object — resolve through cache
 	return resolveVariants(variants, bond, props);
 }
 

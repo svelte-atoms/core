@@ -1,6 +1,8 @@
 export { type StateDefiner, defineProperty, defineState } from './state';
 export {
 	defineVariants,
+	VARIANT_DEF_TAG,
+	type TaggedVariantFn,
 	type VariantDefinition,
 	type VariantProps,
 	type VariantValue,

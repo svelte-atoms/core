@@ -4,21 +4,18 @@
 
 <script lang="ts">
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
-	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
+	import { ActivePortal, Portal, Portals } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
 	import L0Portal from './l0-portal.svelte';
-	import L1Portal from './l1-portal.svelte';
 	import type { RootProps } from './types';
 
 	let {
 		class: klass = '',
 		base = undefined,
 		children = undefined,
-		portals = undefined,
-		l0portal = undefined,
-		l1portal = undefined,
+		portal = undefined,
 		...restProps
 	}: RootProps = $props();
 
@@ -71,19 +68,13 @@
 		)}
 		{...restProps}
 	>
-		{#if l0portal}
-			{@render l0portal?.()}
+		{#if portal}
+			{@render portal?.()}
 		{:else}
-			<L0Portal />
+			<Portal.Outer id="root.l0" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+				<Portal.Inner />
+			</Portal.Outer>
 		{/if}
-
-		{#if l1portal}
-			{@render l1portal?.()}
-		{:else}
-			<L1Portal />
-		{/if}
-
-		{@render portals?.()}
 
 		<ActivePortal portal="root.l0">
 			{@render children?.()}

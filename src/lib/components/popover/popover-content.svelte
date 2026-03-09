@@ -5,10 +5,20 @@
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion';
 	import type { AnimateParams, PopoverContentProps } from './types';
+	import { ZIndex } from '../portal/zindex';
 
 	type Element = HtmlElementType<E>;
 
 	const bond = PopoverBond.get();
+	const positionStrategy = $derived(bond?.state.props.positionStrategy ?? 'absolute');
+
+	const zIndex = (()=> {
+		try {
+			return ZIndex.get();
+		} catch (err){
+			return undefined;
+		}
+	})();
 	
 	const activePortalBond = (() => {
 		const key = bond.state.props.portal;
@@ -101,7 +111,8 @@
 <Teleport
 	portal={portalId ?? 'root.l0'}
 	as="div"
-	class="absolute top-0 left-0 h-min w-fit outline-none"
+	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
+	style={`z-index: ${zIndex?.get?.() ?? 1}; position: ${positionStrategy};`}
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
 	{...bond.content({ engine: 'internal' })}
@@ -111,7 +122,7 @@
 		preset="popover.content"
 		class={[
 			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg outline-none',
-			isOpen && 'pointer-events-auto',
+			// isOpen && 'pointer-events-auto',
 			'$preset',
 			klass
 		]}

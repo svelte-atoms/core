@@ -1,4 +1,4 @@
-import { animate, backInOut, circOut } from 'motion';
+import { animate, backInOut, circOut, easeInOut } from 'motion';
 import { untrack } from 'svelte';
 import { PopoverBond } from '.';
 import { DURATION } from '$svelte-atoms/core/shared';
@@ -17,13 +17,14 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 	return (node: HTMLElement) => {
 		const bond = PopoverBond.get();
 
-		const { duration = DURATION.fast / 1000, delay = 0, ease = backInOut } = params;
+		const { duration = DURATION.quick / 1000, delay = 0, ease = easeInOut } = params;
 
 		const isOpen = bond?.state.props.open ?? false;
 
 		const posX = bond.state.position?.x ?? 0;
 		const posY = bond.state.position?.y ?? 0;
 		const position = untrack(() => bond.state.position);
+		const offset = untrack(() => bond.state.props.offset);
 
 		if (!position) {
 			return;
@@ -121,13 +122,13 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			node.style.transformOrigin = transformOrigin;
 			node.style.pointerEvents = 'none';
 
-			const translateX = triggerRect.width * -tx;
-			const translateY = triggerRect.height * -ty;
+			const translateX = offset * -tx;
+			const translateY = offset * -ty;
 
 			const c = animate(
 				node,
 				{
-					scaleX: isOpen ? [0, 1] : [1, 0],
+					scaleX: isOpen ? [0.8, 1] : [1, 0.8],
 					scaleY: isOpen ? [scaleY, 1] : [1, scaleY],
 					translateX: isOpen ? [`${translateX}px`, '0px'] : ['0px', `${translateX}px`],
 					translateY: isOpen ? [`${translateY}px`, '0px'] : ['0px', `${translateY}px`],
@@ -141,7 +142,7 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			);
 
 			c.then(() => {
-				node.style.pointerEvents = '';
+				node.style.pointerEvents = 'auto';
 			});
 		});
 	};

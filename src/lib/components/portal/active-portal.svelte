@@ -13,10 +13,13 @@
 		return portal as PortalBond;
 	});
 
+	
 	if (!portalsBond) {
 		throw new Error('Portals bond is not found');
 	}
-
+	
+	const content = $derived(activePortal ? proxy : undefined);
+	
 	function proxy(...args: any[]) {
 		activePortal?.share();
 
@@ -24,6 +27,4 @@
 	}
 </script>
 
-{#if activePortal}
-	{@render proxy?.()}
-{/if}
+{@render content?.()}

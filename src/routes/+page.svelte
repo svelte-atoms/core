@@ -881,11 +881,24 @@
 								<h4 class="text-lg font-semibold">Dialog Title</h4>
 								<Dialog.CloseButton class="ml-auto" />
 							</Dialog.Header>
-							<Dialog.Body class="">
+							<Dialog.Body class="gap-2 flex flex-col">
 								<p class="text-muted-foreground mb-4 text-sm">
 									A modal dialog for important interactions. Perfect for confirmations, forms, or
 									displaying critical information that requires user attention.
 								</p>
+
+								<DropdownMenu.Root bind:open={dropdownMenuOpen}>
+									<DropdownMenu.Trigger base={Button} variant="outline">
+										Open Dropdown
+										<DropdownMenu.Indicator class="ml-auto" />
+									</DropdownMenu.Trigger>
+									<DropdownMenu.Content class="">
+										<DropdownMenu.Item>Option 1</DropdownMenu.Item>
+										<DropdownMenu.Item>Option 2</DropdownMenu.Item>
+										<DropdownMenu.Item>Option 3</DropdownMenu.Item>
+									</DropdownMenu.Content>
+								</DropdownMenu.Root>
+
 								<div class="bg-muted rounded-md p-3">
 									<p class="text-muted-foreground text-xs">
 										Supports keyboard navigation with Escape to close.

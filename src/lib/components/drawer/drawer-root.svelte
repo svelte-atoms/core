@@ -7,6 +7,7 @@
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal } from '../portal';
 	import { animateDrawerRoot } from './motion';
+	import { ZIndex } from '../portal/zindex';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -18,11 +19,14 @@
 		disabled = false,
 		portal = undefined,
 		onclose = undefined,
+		"z-index": zindex = 1,
 		initial = animateDrawerRoot({ duration: 0 }),
 		animate = animateDrawerRoot({}),
 		factory = _factory,
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
+
+	new ZIndex(() => zindex).share();
 
 	const bondProps = defineState<DrawerBondProps>(
 		[
@@ -68,7 +72,7 @@
 <Teleport
 	{as}
 	{bond}
-	portal={portal ?? 'root.l1'}
+	portal={portal ?? 'root.l0'}
 	preset="drawer"
 	class={[
 		'border-border pointer-events-none fixed inset-0 h-full w-full overflow-hidden bg-transparent',
@@ -81,7 +85,7 @@
 	animate={animate?.bind(bond.state)}
 	{...rootProps}
 >
-	<ActivePortal portal={portal ?? 'root.l1'}>
+	<ActivePortal portal={portal ?? 'root.l0'}>
 		{@render children?.({ drawer: bond })}
 	</ActivePortal>
 </Teleport>
