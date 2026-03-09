@@ -384,6 +384,12 @@
 					<a href="/docs/components/dialog" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
 				<Dialog.Root bind:open={isDialogOpen}>
+					{#snippet trigger({dialog})}
+						<Button variant="outline" class="w-full" {...dialog.trigger()}>
+							Open Dialog
+						</Button>
+					{/snippet}
+					
 					<Dialog.Content>
 						<Dialog.Header>
 							<h4 class="text-base font-semibold">Confirm action</h4>
@@ -400,9 +406,6 @@
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
-				<Button variant="outline" class="w-full" onclick={() => (isDialogOpen = true)}>
-					Open Dialog
-				</Button>
 			</div>
 
 			<!-- Drawer -->
