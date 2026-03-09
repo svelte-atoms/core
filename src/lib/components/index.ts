@@ -43,3 +43,5 @@ export * from './date-picker';
 export * from './qr-code';
 export * from './lazy';
 export * from './chip';
+
+export * from './slider';
