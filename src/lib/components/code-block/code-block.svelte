@@ -1,8 +1,27 @@
 <script lang="ts">
-	import { codeToHtml } from 'shiki';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { CodeBlockProps } from './types';
+
+	// Lazy-load Shiki — code-split into its own async chunk.
+	// The dynamic import is cached by Vite/Rollup after first call.
+	async function highlight(code: string, lang: string, theme: string, withLineNums: boolean): Promise<string> {
+		const { codeToHtml } = await import('shiki');
+		return codeToHtml(code, {
+			lang,
+			theme,
+			transformers: withLineNums
+				? [
+						{
+							name: 'line-numbers',
+							line(node: { properties: Record<string, unknown> }, line: number) {
+								node.properties['data-line'] = line;
+							}
+						}
+					]
+				: []
+		});
+	}
 
 	let {
 		class: klass = '',
@@ -24,26 +43,12 @@
 		loading = true;
 		highlighted = '';
 
-		codeToHtml(code, {
-			lang,
-			theme,
-			transformers: lineNumbers
-				? [
-						{
-							name: 'line-numbers',
-							line(node: { properties: Record<string, unknown> }, line: number) {
-								node.properties['data-line'] = line;
-							}
-						}
-					]
-				: []
-		})
+		highlight(code, lang, theme, lineNumbers)
 			.then((html) => {
 				highlighted = html;
 				loading = false;
 			})
 			.catch(() => {
-				// Graceful fallback — escape and render as plain pre
 				const escaped = code
 					.replace(/&/g, '&amp;')
 					.replace(/</g, '&lt;')
