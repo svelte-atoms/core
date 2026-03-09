@@ -1,5 +1,5 @@
 import { DURATION } from '$svelte-atoms/core/shared';
-import { animate } from 'motion';
+import { animate, easeInOut } from 'motion';
 import { DialogBond } from './bond.svelte';
 import { promiseWithResolvers } from '$svelte-atoms/core/utils/promise.svelte';
 
@@ -60,7 +60,7 @@ type AnimateDialogContentParams = {
 };
 
 export function animateDialogContent(params: AnimateDialogContentParams = {}) {
-	const { duration = DURATION.normal / 1000, delay = 0, ease = 'anticipate' } = params;
+	const { duration = DURATION.fast / 1000, delay = 0, ease = easeInOut } = params;
 
 	let mounted = false;
 
