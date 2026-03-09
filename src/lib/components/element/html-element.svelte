@@ -22,8 +22,10 @@
 	}: HtmlElementProps<T> & Omit<HTMLAttributes<Element>, keyof HtmlElementProps<T>> = $props();
 
 	let node = $state<Element>();
-	// If enter animation is defined, we want to wait for it first beafore running animate
+	// If enter animation is defined, we want to wait for it first before running animate
 	let hasEntered = $state(!(untrack(() => enter) ?? false));
+	// Track whether initial() has been applied — must only fire once at mount
+	let hasInitialized = false;
 
 	$effect(() => {
 		if (!node) return;
@@ -36,8 +38,18 @@
 		};
 	});
 
+	// Apply initial() exactly once when the node first mounts, before the enter transition.
+	// Keeping this in $effect (not inside enterTransition) ensures it fires only once,
+	// even if Svelte calls the transition function multiple times to measure duration.
 	$effect(() => {
-		if(!hasEntered) return;
+		if (!node) return;
+		if (hasInitialized) return;
+		hasInitialized = true;
+		untrack(() => initial?.(node!));
+	});
+
+	$effect.pre(() => {
+		if (!hasEntered) return;
 		if (!node) return;
 
 		animate?.(node);
@@ -68,8 +80,6 @@
 	}
 
 	function enterTransition(node: Element) {
-		initial?.(node);
-		
 		return enter?.(node) ?? {};
 	}
 
