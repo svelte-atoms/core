@@ -75,10 +75,10 @@ export class ToastBondState<Props extends ToastBondProps> extends BondState<Prop
 	}
 
 	open() {
-		this.props.open = true;
+		this.set('open', true);
 	}
 
 	close() {
-		this.props.open = false;
+		this.set('open', false);
 	}
 }

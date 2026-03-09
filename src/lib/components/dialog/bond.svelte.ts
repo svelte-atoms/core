@@ -220,14 +220,14 @@ export class DialogBondState<Props extends DialogBondProps> extends BondState<Pr
 	}
 
 	open() {
-		this.props.open = true;
+		this.set('open', true);
 	}
 
 	close() {
-		this.props.open = false;
+		this.set('open', false);
 	}
 
 	toggle() {
-		this.props.open = !this.props.open;
+		this.set('open', !this.props.open);
 	}
 }
