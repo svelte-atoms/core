@@ -33,7 +33,7 @@
 {#if !!isSortable}
 	<HtmlAtom
 		{bond}
-		preset="datagrid.sort-icon"
+		preset="datagrid.col-sort-icon"
 		class={['border-border', '$preset', klass]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}

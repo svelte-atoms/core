@@ -119,6 +119,13 @@ export type PresetModuleName =
 	| 'datagrid.footer'
 	| 'datagrid.checkbox'
 	| 'datagrid.sort-icon'
+	// Semantic aliases (preferred)
+	| 'datagrid.head'
+	| 'datagrid.foot'
+	| 'datagrid.row'
+	| 'datagrid.col'
+	| 'datagrid.cell'
+	| 'datagrid.col-sort-icon'
 	| 'scrollable'
 	| 'scrollable.container'
 	| 'scrollable.content'

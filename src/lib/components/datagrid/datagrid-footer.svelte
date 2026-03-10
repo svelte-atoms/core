@@ -20,7 +20,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="datagrid.footer"
+	preset="datagrid.foot"
 	class={['border-border', '$preset', klass, 'contents']}
 	enter={enter?.bind(bond.state)}
 	exit={exit?.bind(bond.state)}

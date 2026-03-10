@@ -50,7 +50,7 @@
 			element = node;
 		}}
 		{bond}
-		preset="datagrid.td"
+		preset="datagrid.cell"
 		class={['border-border flex h-full items-center py-2 text-left', '$preset', klass]}
 		enter={enter?.bind(bond.state)}
 		exit={exit?.bind(bond.state)}
