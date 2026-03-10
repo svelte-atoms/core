@@ -52,34 +52,34 @@
 	{#snippet template()}
 		<Table.Root class="max-w-2xl">
 			<Table.Caption>Recent invoices</Table.Caption>
-			<Table.Header>
-				<Table.Tr>
-					<Table.Th>Invoice</Table.Th>
-					<Table.Th>Status</Table.Th>
-					<Table.Th>Method</Table.Th>
-					<Table.Th class="text-right">Amount</Table.Th>
-				</Table.Tr>
-			</Table.Header>
+			<Table.Head>
+				<Table.Row>
+					<Table.Col>Invoice</Table.Col>
+					<Table.Col>Status</Table.Col>
+					<Table.Col>Method</Table.Col>
+					<Table.Col class="text-right">Amount</Table.Col>
+				</Table.Row>
+			</Table.Head>
 			<Table.Body>
 				{#each invoices as inv}
-					<Table.Tr>
-						<Table.Td class="font-medium">{inv.id}</Table.Td>
-						<Table.Td>
+					<Table.Row>
+						<Table.Cell class="font-medium">{inv.id}</Table.Cell>
+						<Table.Cell>
 							<span class={['rounded-full px-2 py-0.5 text-xs font-medium capitalize', statusColors[inv.status]].join(' ')}>
 								{inv.status}
 							</span>
-						</Table.Td>
-						<Table.Td>{inv.method}</Table.Td>
-						<Table.Td class="text-right">${inv.amount.toFixed(2)}</Table.Td>
-					</Table.Tr>
+						</Table.Cell>
+						<Table.Cell>{inv.method}</Table.Cell>
+						<Table.Cell class="text-right">${inv.amount.toFixed(2)}</Table.Cell>
+					</Table.Row>
 				{/each}
 			</Table.Body>
-			<Table.Footer>
-				<Table.Tr>
-					<Table.Td colspan={3} class="font-medium">Total</Table.Td>
-					<Table.Td class="text-right font-medium">${total.toFixed(2)}</Table.Td>
-				</Table.Tr>
-			</Table.Footer>
+			<Table.Foot>
+				<Table.Row>
+					<Table.Cell colspan={3} class="font-medium">Total</Table.Cell>
+					<Table.Cell class="text-right font-medium">${total.toFixed(2)}</Table.Cell>
+				</Table.Row>
+			</Table.Foot>
 		</Table.Root>
 	{/snippet}
 </Story>
@@ -87,26 +87,26 @@
 <Story name="Sortable">
 	{#snippet template()}
 		<Table.Root class="max-w-2xl">
-			<Table.Header>
-				<Table.Tr>
-					<Table.Th sort={sortState('id')} onclick={() => toggleSort('id')}>Invoice</Table.Th>
-					<Table.Th>Status</Table.Th>
-					<Table.Th sort={sortState('method')} onclick={() => toggleSort('method')}>Method</Table.Th>
-					<Table.Th sort={sortState('amount')} onclick={() => toggleSort('amount')} class="text-right">Amount</Table.Th>
-				</Table.Tr>
-			</Table.Header>
+			<Table.Head>
+				<Table.Row>
+					<Table.Col sort={sortState('id')} onclick={() => toggleSort('id')}>Invoice</Table.Col>
+					<Table.Col>Status</Table.Col>
+					<Table.Col sort={sortState('method')} onclick={() => toggleSort('method')}>Method</Table.Col>
+					<Table.Col sort={sortState('amount')} onclick={() => toggleSort('amount')} class="text-right">Amount</Table.Col>
+				</Table.Row>
+			</Table.Head>
 			<Table.Body>
 				{#each sorted as inv}
-					<Table.Tr>
-						<Table.Td class="font-medium">{inv.id}</Table.Td>
-						<Table.Td>
+					<Table.Row>
+						<Table.Cell class="font-medium">{inv.id}</Table.Cell>
+						<Table.Cell>
 							<span class={['rounded-full px-2 py-0.5 text-xs font-medium capitalize', statusColors[inv.status]].join(' ')}>
 								{inv.status}
 							</span>
-						</Table.Td>
-						<Table.Td>{inv.method}</Table.Td>
-						<Table.Td class="text-right">${inv.amount.toFixed(2)}</Table.Td>
-					</Table.Tr>
+						</Table.Cell>
+						<Table.Cell>{inv.method}</Table.Cell>
+						<Table.Cell class="text-right">${inv.amount.toFixed(2)}</Table.Cell>
+					</Table.Row>
 				{/each}
 			</Table.Body>
 		</Table.Root>
