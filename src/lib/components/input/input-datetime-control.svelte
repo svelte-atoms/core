@@ -19,10 +19,16 @@
 		...restProps
 	}: InputDateTimeControlProps = $props();
 
+	function parseDate(val: string): Date | null {
+		if (!val) return null;
+		const d = new Date(val);
+		return isNaN(d.getTime()) ? null : d;
+	}
+
 	function handleChange(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		value = input.value;
-		date = input.valueAsDate;
+		date = parseDate(value);
 		if (bond) bond.state.props.value = value;
 		onchange?.(ev, { value, date });
 	}
@@ -30,7 +36,7 @@
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		value = input.value;
-		date = input.valueAsDate;
+		date = parseDate(value);
 		if (bond) bond.state.props.value = value;
 		oninput?.(ev, { value, date });
 	}
