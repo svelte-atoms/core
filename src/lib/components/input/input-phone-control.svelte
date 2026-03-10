@@ -12,7 +12,7 @@
 		class: klass = '',
 		value = $bindable(''),
 		format = undefined,
-		placeholder = '+1 (555) 000-0000',
+		placeholder = '+_ (___) ___-____',
 		disabled = false,
 		readonly = false,
 		preset: presetKey = 'input.phone',
@@ -26,32 +26,129 @@
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
 
-	// ── Segment parsing ───────────────────────────────────────────────────
+	// ── Mask engine (only active when format is provided) ─────────────────
+	type Token = { type: 'lit'; char: string } | { type: 'digit'; index: number };
+
+	const tokens = $derived<Token[]>(() => {
+		if (!format) return [];
+		let di = 0;
+		return [...format].map(ch => ch === '#' ? { type: 'digit', index: di++ } : { type: 'lit', char: ch });
+	})();
+
+	const digitCount = $derived(tokens.filter(t => t.type === 'digit').length);
+
+	// digits[i] = the digit entered at slot i, or undefined
+	let digits = $state<(string | undefined)[]>([]);
+
+	// Sync digits from external value changes
+	$effect(() => {
+		if (!format || !value) { digits = []; return; }
+		const raw = value.replace(/\D/g, '');
+		digits = [...raw.slice(0, digitCount)];
+	});
+
+	function buildMasked(filled: (string | undefined)[], empty = '_'): string {
+		return tokens.map(t =>
+			t.type === 'lit' ? t.char : (filled[t.index] ?? empty)
+		).join('');
+	}
+
+	// Position in the formatted string of digit slot i
+	function slotPos(slotIdx: number): number {
+		for (let i = 0; i < tokens.length; i++) {
+			const t = tokens[i];
+			if (t.type === 'digit' && t.index === slotIdx) return i;
+		}
+		return tokens.length;
+	}
+
+	// First empty digit slot index
+	function firstEmpty(d: (string | undefined)[]): number {
+		for (let i = 0; i < digitCount; i++) {
+			if (d[i] === undefined) return i;
+		}
+		return digitCount; // all filled
+	}
+
+	function setCursor(pos: number) {
+		// After Svelte render + browser paint
+		requestAnimationFrame(() => inputEl?.setSelectionRange(pos, pos));
+	}
+
+	function handleMaskedKeydown(ev: KeyboardEvent) {
+		if (disabled || readonly) return;
+
+		if (ev.key >= '0' && ev.key <= '9') {
+			ev.preventDefault();
+			const slot = firstEmpty(digits);
+			if (slot >= digitCount) return; // all filled
+			const next = [...digits];
+			next[slot] = ev.key;
+			digits = next;
+			emitMasked();
+			// Move cursor to next slot (skip following literals)
+			const nextSlot = firstEmpty(next);
+			setCursor(nextSlot < digitCount ? slotPos(nextSlot) : slotPos(digitCount - 1) + 1);
+		} else if (ev.key === 'Backspace') {
+			ev.preventDefault();
+			// Find the last filled slot
+			let last = -1;
+			for (let i = digitCount - 1; i >= 0; i--) {
+				if (digits[i] !== undefined) { last = i; break; }
+			}
+			if (last === -1) return;
+			const next = [...digits];
+			next[last] = undefined;
+			digits = next;
+			emitMasked();
+			setCursor(slotPos(last));
+		} else if (ev.key === 'Delete') {
+			ev.preventDefault();
+			// Clear slot at current cursor
+			const pos = inputEl?.selectionStart ?? 0;
+			// Find digit slot at or after cursor
+			for (let i = 0; i < digitCount; i++) {
+				if (slotPos(i) >= pos && digits[i] !== undefined) {
+					const next = [...digits];
+					next[i] = undefined;
+					digits = next;
+					emitMasked();
+					setCursor(slotPos(i));
+					break;
+				}
+			}
+		} else if (!ev.ctrlKey && !ev.metaKey && !ev.altKey && ev.key.length === 1) {
+			// Block non-digit printable keys
+			ev.preventDefault();
+		}
+		// Allow: Tab, arrows, Ctrl+A/C/V/X, etc.
+	}
+
+	function emitMasked() {
+		const masked = buildMasked(digits, '_');
+		// External value = digits only (clean), display uses masked
+		const raw = digits.filter(Boolean).join('');
+		value = raw;
+		if (bond) bond.state.props.value = value;
+		// Update input display imperatively to avoid re-render focus loss
+		if (inputEl) inputEl.value = masked;
+		oninput?.(undefined as unknown as Event, { value });
+	}
+
+	// ── No-format mode: free typing with segment parsing ─────────────────
 	type PhoneSegment = { text: string; kind: 'country' | 'area' | 'prefix' | 'line' | 'ext' | 'sep' };
 
-	/**
-	 * Parse a raw phone string into display segments.
-	 *
-	 * Handles common formats:
-	 *   +1 (555) 123-4567        → country + area + prefix + line
-	 *   +44 20 7946 0958         → country + groups
-	 *   555-123-4567             → area + prefix + line (no country)
-	 *   (555) 123-4567           → area + prefix + line
-	 *   +1 555 123 4567 ext 99   → ... + ext
-	 */
 	function parseSegments(raw: string): PhoneSegment[] {
 		if (!raw) return [];
 		const segs: PhoneSegment[] = [];
 		let rest = raw.trimStart();
 
-		// Country code: starts with + followed by 1-3 digits
 		const countryMatch = rest.match(/^(\+\d{1,3})([\s\-.(]|$)/);
 		if (countryMatch) {
 			segs.push({ text: countryMatch[1], kind: 'country' });
 			rest = rest.slice(countryMatch[1].length);
 		}
 
-		// Extension at the end (ext/x/extension followed by digits)
 		const extMatch = rest.match(/\s*(ext\.?|x|extension)\s*(\d+)\s*$/i);
 		let extSuffix = '';
 		if (extMatch) {
@@ -59,157 +156,109 @@
 			rest = rest.slice(0, rest.length - extMatch[0].length);
 		}
 
-		// Strip and re-examine what's left
-		const digits = rest.replace(/\D/g, '');
-
-		if (digits.length === 0 && rest.trim().length === 0) {
-			if (extSuffix) segs.push({ text: extSuffix, kind: 'ext' });
-			return segs;
-		}
-
-		// Apply user-provided format template if given
-		// Format uses # for digit placeholders, e.g. "(###) ###-####"
-		if (format && digits.length > 0) {
-			const formatted = applyFormat(format, digits, rest);
-			// Push formatted with separators highlighted
-			pushFormatted(segs, formatted, !!countryMatch);
-		} else {
-			// Auto-detect format from the raw string structure
-			pushAutoSegments(segs, rest.trimStart(), digits, !!countryMatch);
-		}
-
-		if (extSuffix) {
-			segs.push({ text: extSuffix.trimStart(), kind: 'ext' });
-		}
-
-		return segs;
-	}
-
-	function applyFormat(fmt: string, digits: string, raw: string): string {
-		let di = 0;
-		let out = '';
-		// If the user is still typing and raw doesn't match format length, just return raw
-		for (let i = 0; i < fmt.length && di < digits.length; i++) {
-			if (fmt[i] === '#') {
-				out += digits[di++];
-			} else {
-				out += fmt[i];
-			}
-		}
-		// Append remaining digits not covered by format
-		if (di < digits.length) out += digits.slice(di);
-		return out;
-	}
-
-	function pushFormatted(segs: PhoneSegment[], formatted: string, hasCountry: boolean) {
-		// Split on separator chars, classify each chunk
-		const parts = formatted.split(/([^\d]+)/g).filter(Boolean);
-		let isFirst = !hasCountry;
-		for (const part of parts) {
-			if (/^\d+$/.test(part)) {
-				if (isFirst) { segs.push({ text: part, kind: 'area' }); isFirst = false; }
-				else if (!segs.some(s => s.kind === 'prefix')) segs.push({ text: part, kind: 'prefix' });
-				else segs.push({ text: part, kind: 'line' });
-			} else {
-				segs.push({ text: part, kind: 'sep' });
-			}
-		}
-	}
-
-	function pushAutoSegments(segs: PhoneSegment[], raw: string, digits: string, hasCountry: boolean) {
-		// Detect structure: (NXX) NXX-XXXX or NXX-NXX-XXXX or NXX NXX XXXX etc.
-		// We operate on the raw string to preserve the user's own separators.
-
-		// Try: (area) prefix-line
-		const parenFmt = raw.match(/^(\s*\((\d{3})\)\s*)(\d{3})([\s\-]?)(\d{4})(.*)/);
+		const parenFmt = rest.match(/^(\s*\((\d{3})\)\s*)(\d{3})([\s\-]?)(\d{4})(.*)/);
 		if (parenFmt) {
 			segs.push({ text: parenFmt[1].trimStart(), kind: 'area' });
 			segs.push({ text: parenFmt[3], kind: 'prefix' });
 			if (parenFmt[4]) segs.push({ text: parenFmt[4], kind: 'sep' });
 			segs.push({ text: parenFmt[5], kind: 'line' });
-			if (parenFmt[6]) segs.push({ text: parenFmt[6].trim(), kind: 'ext' });
-			return;
-		}
-
-		// Try: NXX-NXX-XXXX or NXX NXX XXXX (3-3-4 split)
-		const dashFmt = raw.match(/^(\s*(\d{3}))([\s\-./])(\d{3})([\s\-./])(\d{4})(.*)/);
-		if (dashFmt) {
-			if (!hasCountry) {
+		} else {
+			const dashFmt = rest.match(/^(\s*(\d{3}))([\s\-./])(\d{3})([\s\-./])(\d{4})(.*)/);
+			if (dashFmt) {
 				segs.push({ text: dashFmt[2], kind: 'area' });
 				segs.push({ text: dashFmt[3], kind: 'sep' });
+				segs.push({ text: dashFmt[4], kind: 'prefix' });
+				segs.push({ text: dashFmt[5], kind: 'sep' });
+				segs.push({ text: dashFmt[6], kind: 'line' });
 			} else {
-				segs.push({ text: dashFmt[1].trimStart(), kind: 'area' });
-				segs.push({ text: dashFmt[3], kind: 'sep' });
-			}
-			segs.push({ text: dashFmt[4], kind: 'prefix' });
-			segs.push({ text: dashFmt[5], kind: 'sep' });
-			segs.push({ text: dashFmt[6], kind: 'line' });
-			if (dashFmt[7]) segs.push({ text: dashFmt[7].trim(), kind: 'ext' });
-			return;
-		}
-
-		// Try: 2-4-4 (e.g. UK mobile: 07xxx xxxxxx → 2 groups after country)
-		const ukFmt = raw.match(/^(\s*(\d{4,5}))([\s\-])(\d{4,6})(.*)/);
-		if (ukFmt) {
-			segs.push({ text: ukFmt[2], kind: 'area' });
-			segs.push({ text: ukFmt[3], kind: 'sep' });
-			segs.push({ text: ukFmt[4], kind: 'line' });
-			if (ukFmt[5]) segs.push({ text: ukFmt[5].trim(), kind: 'ext' });
-			return;
-		}
-
-		// Fallback: treat leading space + text as single block but color digits vs seps
-		let pos = 0;
-		const trimmed = raw.trimStart();
-		if (raw !== trimmed) segs.push({ text: raw.slice(0, raw.length - trimmed.length), kind: 'sep' });
-		// Just push remaining as area + rest
-		const digitGroups = trimmed.split(/([^\d]+)/g).filter(Boolean);
-		let isFirst = !hasCountry;
-		for (const g of digitGroups) {
-			if (/^\d+$/.test(g)) {
-				if (isFirst) { segs.push({ text: g, kind: 'area' }); isFirst = false; }
-				else if (!segs.some(s => s.kind === 'prefix')) segs.push({ text: g, kind: 'prefix' });
-				else segs.push({ text: g, kind: 'line' });
-			} else {
-				segs.push({ text: g, kind: 'sep' });
+				const parts = rest.trimStart().split(/([^\d]+)/g).filter(Boolean);
+				let isFirst = !countryMatch;
+				for (const g of parts) {
+					if (/^\d+$/.test(g)) {
+						if (isFirst) { segs.push({ text: g, kind: 'area' }); isFirst = false; }
+						else if (!segs.some(s => s.kind === 'prefix')) segs.push({ text: g, kind: 'prefix' });
+						else segs.push({ text: g, kind: 'line' });
+					} else {
+						segs.push({ text: g, kind: 'sep' });
+					}
+				}
 			}
 		}
+
+		if (extSuffix) segs.push({ text: extSuffix.trimStart(), kind: 'ext' });
+		return segs;
 	}
 
-	const segments = $derived(parseSegments(value));
+	// ── Overlay segments ──────────────────────────────────────────────────
+	type OverlaySegment = { text: string; cls: string };
 
-	const kindClass: Record<PhoneSegment['kind'], string> = {
-		country: 'text-blue-500 dark:text-blue-400',
-		area:    'text-foreground font-medium',
-		prefix:  'text-foreground/80',
-		line:    'text-foreground',
-		sep:     'text-muted-foreground',
-		ext:     'text-purple-500 dark:text-purple-400',
-	};
+	const overlaySegments = $derived<OverlaySegment[]>(() => {
+		if (format) {
+			// Mask mode: color literals vs digits
+			const masked = buildMasked(digits, '_');
+			const segs: OverlaySegment[] = [];
+			for (let i = 0; i < tokens.length; i++) {
+				const t = tokens[i];
+				const ch = masked[i] ?? '';
+				if (t.type === 'lit') {
+					segs.push({ text: ch, cls: 'text-muted-foreground' });
+				} else {
+					const filled = digits[t.index] !== undefined;
+					segs.push({ text: ch, cls: filled ? 'text-foreground' : 'text-muted-foreground/40' });
+				}
+			}
+			// Merge consecutive same-class spans
+			return segs.reduce<OverlaySegment[]>((acc, s) => {
+				const last = acc[acc.length - 1];
+				if (last && last.cls === s.cls) { last.text += s.text; return acc; }
+				return [...acc, { ...s }];
+			}, []);
+		} else {
+			const phoneSegs = parseSegments(value);
+			const kindClass: Record<string, string> = {
+				country: 'text-blue-500 dark:text-blue-400',
+				area:    'text-foreground font-medium',
+				prefix:  'text-foreground/80',
+				line:    'text-foreground',
+				sep:     'text-muted-foreground',
+				ext:     'text-purple-500 dark:text-purple-400',
+			};
+			return phoneSegs.map(s => ({ text: s.text, cls: kindClass[s.kind] }));
+		}
+	})();
 
-	// ── Scroll sync ───────────────────────────────────────────────────────
-	function syncScroll() {
-		scrollLeft = inputEl?.scrollLeft ?? 0;
-	}
-
-	// ── Events ────────────────────────────────────────────────────────────
+	// ── Free-type event handlers (no format) ──────────────────────────────
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
-		// Allow digits, spaces, parens, dashes, dots, slashes, +, extensions
 		value = input.value;
 		if (bond) bond.state.props.value = value;
-		syncScroll();
+		scrollLeft = input.scrollLeft;
 		oninput?.(ev, { value });
 	}
 
 	function handleChange(ev: Event) {
 		onchange?.(ev, { value });
 	}
+
+	function syncScroll() {
+		scrollLeft = inputEl?.scrollLeft ?? 0;
+	}
+
+	// ── Init masked input display ─────────────────────────────────────────
+	$effect(() => {
+		if (format && inputEl) {
+			inputEl.value = buildMasked(digits, '_');
+			// Place cursor at first empty slot
+			const slot = firstEmpty(digits);
+			const pos = slot < digitCount ? slotPos(slot) : tokens.length;
+			inputEl.setSelectionRange(pos, pos);
+		}
+	});
 </script>
 
 <span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
-	<!-- Coloured segment overlay -->
+	<!-- Coloured overlay -->
 	<span
 		aria-hidden="true"
 		class={cn(
@@ -219,9 +268,9 @@
 		)}
 	>
 		<span style="transform: translateX(-{scrollLeft}px)">
-			{#if segments.length}
-				{#each segments as seg}
-					<span class={kindClass[seg.kind]}>{seg.text}</span>
+			{#if overlaySegments.length}
+				{#each overlaySegments as seg}
+					<span class={seg.cls}>{seg.text}</span>
 				{/each}
 			{:else}
 				<span class="text-muted-foreground">{placeholder}</span>
@@ -229,11 +278,11 @@
 		</span>
 	</span>
 
-	<!-- Real input — transparent text, visible caret -->
+	<!-- Real input -->
 	<input
 		bind:this={inputEl}
 		type="tel"
-		bind:value
+		value={format ? buildMasked(digits, '_') : value}
 		{placeholder}
 		{disabled}
 		{readonly}
@@ -244,7 +293,8 @@
 			preset?.class,
 			toClassValue(klass, bond)
 		)}
-		oninput={handleInput}
+		onkeydown={format ? handleMaskedKeydown : undefined}
+		oninput={format ? undefined : handleInput}
 		onchange={handleChange}
 		onscroll={syncScroll}
 		{...restProps}
