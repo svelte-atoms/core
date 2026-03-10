@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
 	import { DataGridBond } from './bond.svelte';
-	import { DataGridTrBond } from './tr/bond.svelte';
-	import type { DatagridCheckboxProps } from './types';
+	import { DataGridTrBond } from './row/bond.svelte';
+	export type { DatagridCheckboxProps } from './types';
 
 	const datagridBond = DataGridBond.get();
 	const datagridTrBond = DataGridTrBond.get();
@@ -27,7 +27,7 @@
 
 	const isRowSelected = $derived(datagridTrBond?.state.isSelected ?? false);
 
-	const classNames = $derived(['datagrid-td-checkbox', '$preset', klass]);
+	const classNames = $derived(['datagrid-cell-checkbox', '$preset', klass]);
 
 	const activeCheckbox = $derived(isHeader ? headerCheckbox : rowCheckbox);
 
