@@ -17,7 +17,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="datagrid.header"
+	preset="datagrid.head"
 	class={['border-border col-span-full grid grid-cols-subgrid', '$preset', klass]}
 	{...restProps}
 >

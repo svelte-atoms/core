@@ -26,7 +26,7 @@
 {#snippet icon()}
 	<HtmlAtom
 		{bond}
-		preset="datagrid.sort-icon"
+		preset="datagrid.col-sort-icon"
 		class={['border-border', '$preset', klass]}
 		{animate}
 		{...restProps}

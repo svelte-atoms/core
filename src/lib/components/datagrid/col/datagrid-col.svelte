@@ -56,7 +56,7 @@
 {#if !hidden}
 	<HtmlAtom
 		{bond}
-		preset="datagrid.th"
+		preset="datagrid.col"
 		class={[
 			'border-border flex cursor-pointer py-1 font-medium select-none',
 			!!sortable && 'sortable',

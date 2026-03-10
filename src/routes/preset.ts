@@ -96,6 +96,29 @@ export const preset: Partial<Preset> = {
 			class: 'px-0 py-2'
 		};
 	},
+	// Semantic aliases — same styles as old keys
+	'datagrid.head': () => ({
+		class: 'bg-background/25 py-0'
+	}),
+	'datagrid.foot': () => ({}),
+	'datagrid.row': (bond) => {
+		const isSelected = bond?.state?.isSelected ?? false;
+		const isHeader = bond?.state?.isHeader ?? false;
+		return {
+			class: [
+				'pr-8 pl-8 duration-100 transition-colors rounded-none',
+				!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 last:border-b-0',
+				isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6'
+			]
+		};
+	},
+	'datagrid.col': () => ({
+		class: 'px-0 py-2 text-left font-semibold text-sm'
+	}),
+	'datagrid.cell': () => ({
+		class: 'px-0 py-2'
+	}),
+	'datagrid.col-sort-icon': () => ({}),
 	'dialog.content': () => ({
 		class:
 			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-[calc(100svw-8px)] md:max-w-3xl lg:max-w-4xl xl:max-w-[50svw] p-0'

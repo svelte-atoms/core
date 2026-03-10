@@ -47,7 +47,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="datagrid.tr"
+	preset="datagrid.row"
 	class={[
 		'datagrid-row border-border items-center border-b bg-transparent',
 		!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 transition-colors duration-100',
