@@ -144,7 +144,7 @@
 		other:   'text-foreground',
 	};
 
-	const digitSlotKind = $derived<string[]>(() => {
+	const digitSlotKind = $derived.by<string[]>(() => {
 		const kinds: string[] = [];
 		if (segmentMap) {
 			for (const [kind, count] of Object.entries(segmentMap)) {
@@ -153,12 +153,12 @@
 		}
 		while (kinds.length < maxDigits) kinds.push('other');
 		return kinds;
-	})();
+	});
 
 	// ── Overlay spans ─────────────────────────────────────────────────────
 	type Span = { text: string; cls: string };
 
-	const overlaySpans = $derived<Span[]>(() => {
+	const overlaySpans = $derived.by<Span[]>(() => {
 		if (!format) return [];
 		const spans: Span[] = [];
 
@@ -189,12 +189,12 @@
 			if (last && last.cls === s.cls) { last.text += s.text; return acc; }
 			return [...acc, { ...s }];
 		}, []);
-	})();
+	});
 
 	// ── Sync external value → display ─────────────────────────────────────
 	$effect(() => {
 		if (!format || !inputEl) return;
-		const masked = buildMasked(value);
+		const masked = value ? buildMasked(value) : '';
 		if (inputEl.value !== masked) inputEl.value = masked;
 	});
 
@@ -259,11 +259,11 @@
 			</span>
 		</span>
 
-		<!-- Real input — transparent text, visible caret -->
+		<!-- Real input — transparent text, visible caret, empty when no value -->
 		<input
 			bind:this={inputEl}
 			type="tel"
-			value={buildMasked(value)}
+			value={value ? buildMasked(value) : ''}
 			{disabled}
 			{readonly}
 			class={cn(
