@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
@@ -158,7 +157,7 @@
 
 	// ── Overlay spans ─────────────────────────────────────────────────────
 	type SpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
-	type Span = { text: string; cls: string; type: SpanType };
+	type Span = { text: string; class: string; type: SpanType };
 
 	const overlaySpans = $derived.by<Span[]>(() => {
 		if (!format) return [];
@@ -174,7 +173,7 @@
 				const cls = filled
 					? (segmentMap ? (segmentColors[kind] ?? segmentColors['other']!) : 'text-foreground')
 					: 'text-muted-foreground/40';
-				spans.push({ text: ch, cls, type: spanType });
+				spans.push({ text: ch, class: cls, type: spanType });
 			} else {
 				if (t.optional) {
 					const anyOptFilled = tokens.some(
@@ -182,7 +181,7 @@
 					);
 					if (!anyOptFilled) continue;
 				}
-				spans.push({ text: t.char, cls: 'text-muted-foreground', type: 'lit' });
+				spans.push({ text: t.char, class: 'text-muted-foreground', type: 'lit' });
 			}
 		}
 
@@ -305,8 +304,8 @@
 	}
 </script>
 
-{#snippet defaultSpan(span: Span)}
-	<span class={span.cls}>{span.text}</span>
+{#snippet defaultSpan(span: Span, index: number)}
+	<span class={span.class}>{span.text}</span>
 {/snippet}
 
 {#if format}
@@ -322,8 +321,8 @@
 			)}
 		>
 			<span style="transform: translateX(-{scrollLeft}px)">
-				{#each overlaySpans as span (span)}
-					{@render (spanSnippet ?? defaultSpan)(span)}
+				{#each overlaySpans as span, i (span)}
+					{@render (spanSnippet ?? defaultSpan)(span, i)}
 				{/each}
 			</span>
 		</span>
