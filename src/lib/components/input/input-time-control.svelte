@@ -72,14 +72,6 @@
 		return (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
 	}
 
-	function valueInRange(v: string): boolean {
-		if (!v) return true;
-		const secs = timeToSeconds(v);
-		if (min && secs < timeToSeconds(min)) return false;
-		if (max && secs > timeToSeconds(max)) return false;
-		return true;
-	}
-
 	function buildValue(): string {
 		if (hours === null || minutes === null) return '';
 		const h = String(hours).padStart(2, '0');
@@ -89,10 +81,27 @@
 		return `${h}:${m}`;
 	}
 
+	function clampToRange(v: string): string {
+		if (!v) return v;
+		const secs = timeToSeconds(v);
+		if (min && secs < timeToSeconds(min)) return min;
+		if (max && secs > timeToSeconds(max)) return max;
+		return v;
+	}
+
 	function emit(ev?: Event) {
-		const v = buildValue();
+		const raw = buildValue();
+		if (!raw) return;
+		const v = clampToRange(raw);
+		// If clamped, update segments to reflect the boundary value
+		if (v !== raw) {
+			const parts = v.split(':');
+			hours   = parseInt(parts[0], 10);
+			minutes = parseInt(parts[1], 10);
+			if (withSeconds && parts[2]) seconds = parseInt(parts[2], 10);
+			if (hourFormat === 12) period = (hours ?? 0) >= 12 ? 'PM' : 'AM';
+		}
 		if (v === value) return;
-		if (!valueInRange(v)) return; // silently reject out-of-range values
 		value = v;
 		if (bond) bond.state.props.value = value;
 		if (ev) onchange?.(ev, { value });
