@@ -18,7 +18,7 @@
 </script>
 
 <Story name="DataGrid">
-	{#snippet children({ args })}
+	{#snippet template()}
 		<DataGridCmp.Root class="" {@attach datagridContainer.attach}>
 			<DataGridCmp.Header>
 				<DataGridCmp.Tr header>
