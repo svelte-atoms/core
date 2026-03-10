@@ -154,10 +154,8 @@ export interface InputFileControlProps extends InputFileControlExtendProps {
 export interface InputUrlControlExtendProps {}
 
 export interface InputUrlControlProps extends InputUrlControlExtendProps {
-	/** Full URL including scheme */
+	/** Full URL string */
 	value?: string;
-	/** Prefix displayed before the input (default: 'https://') */
-	scheme?: string;
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;
