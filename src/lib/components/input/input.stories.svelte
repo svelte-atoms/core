@@ -97,7 +97,7 @@
 	</div>
 </Story>
 
-<Story name="TimeControl/WithRange">
+<Story name="TimeControl (WithRange)">
 	<div class="flex flex-col gap-4 p-4">
 		<p class="text-muted-foreground text-sm">08:00 – 18:00 only</p>
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
@@ -131,7 +131,7 @@
 	</div>
 </Story>
 
-<Story name="FileControl/Multiple">
+<Story name="FileControl (Multiple)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.FileControl bind:files multiple accept="image/*" placeholder="Choose images…" />
@@ -139,7 +139,7 @@
 	</div>
 </Story>
 
-<Story name="FileControl/CustomTrigger">
+<Story name="FileControl (CustomTrigger)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.FileControl bind:files>
@@ -167,7 +167,7 @@
 	</div>
 </Story>
 
-<Story name="UrlControl/HttpScheme">
+<Story name="UrlControl (HttpScheme)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.UrlControl bind:value={urlValue} scheme="http://" placeholder="example.com" />
@@ -185,7 +185,7 @@
 	</div>
 </Story>
 
-<Story name="PhoneControl/UK">
+<Story name="PhoneControl (UK)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
 			<MyInput.PhoneControl bind:value={phoneValue} format="+44 #### ######" placeholder="7700 900000" />
