@@ -48,28 +48,11 @@
 </script>
 
 <Story name="DataGrid">
-	<DataGridCmp.Root bind:values {@attach datagridContainer.attach}>
-		<DataGridCmp.Header>
-			<DataGridCmp.Tr header>
-				<DataGridCmp.Th width="40px">
-					<DataGridCmp.Checkbox />
-				</DataGridCmp.Th>
-				<DataGridCmp.Th width="1fr">Member</DataGridCmp.Th>
-				<DataGridCmp.Th
-					width="auto"
-					hidden={datagridContainer.current?.width
-						? datagridContainer.current.width < 768
-						: false}
-				>Role</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto">Status</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto"></DataGridCmp.Th>
-			</DataGridCmp.Tr>
-		</DataGridCmp.Header>
-
-		<DataGridCmp.Body>
-			{#each teamMembers as member (member.id)}
-				<DataGridCmp.Tr value={member.id}>
-					<DataGridCmp.Td>
+	{#snippet template()}
+		<DataGridCmp.Root class="" {@attach datagridContainer.attach}>
+			<DataGridCmp.Header>
+				<DataGridCmp.Tr header>
+					<DataGridCmp.Th width="auto">
 						<DataGridCmp.Checkbox />
 					</DataGridCmp.Td>
 
