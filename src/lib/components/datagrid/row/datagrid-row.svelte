@@ -8,7 +8,7 @@
 	import type { DatagridTrProps } from '../types';
 	import { type DatagridContext } from '../context';
 
-	import './datagrid-tr.css';
+	import './datagrid-row.css';
 
 	let {
 		class: klass = '',
@@ -69,7 +69,7 @@
 	{bond}
 	preset="datagrid.tr"
 	class={[
-		'datagrid-tr border-border items-center border-b bg-transparent',
+		'datagrid-row border-border items-center border-b bg-transparent',
 		!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 transition-colors duration-100',
 		isHeader && 'header-tr',
 		isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6',

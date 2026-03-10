@@ -15,7 +15,7 @@ export type DataGridTrBondElements = {
 };
 
 const DATAGRID_TR_ELEMENTS_KIND = {
-	root: 'datagrid-tr'
+	root: 'datagrid-row'
 };
 
 export class DataGridTrBond<

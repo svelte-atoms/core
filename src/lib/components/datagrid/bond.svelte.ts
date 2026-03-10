@@ -2,8 +2,8 @@ import { SvelteMap } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { nanoid } from 'nanoid';
-import type { DataGridTrBond } from './tr/bond.svelte';
-import type { DataGridThBond } from './th/bond.svelte';
+import type { DataGridTrBond } from './row/bond.svelte';
+import type { DataGridThBond } from './col/bond.svelte';
 
 export type DataGridStateProps<T> = BondStateProps & {
 	multiple?: boolean;

@@ -2,7 +2,7 @@
 	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
 	import type { DatagridCheckboxProps } from './types';
 	import { DataGridBond } from './bond.svelte';
-	import { DataGridTrBond } from './tr/bond.svelte';
+	import { DataGridTrBond } from './row/bond.svelte';
 	export type { DatagridCheckboxProps } from './types';
 
 	const datagridBond = DataGridBond.get();
@@ -32,7 +32,7 @@
 
 	const isHeaderRow = $derived(datagridTrBond?.state.isHeader);
 
-	const classNames = $derived(['datagrid-td-checkbox', '$preset', klass]);
+	const classNames = $derived(['datagrid-cell-checkbox', '$preset', klass]);
 
 	function handleInputTd(ev: Event, { checked = false }) {
 		onchange?.(ev, { checked });
