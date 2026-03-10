@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
@@ -19,6 +20,7 @@
 		preset: presetKey = 'input.phone',
 		onchange = undefined,
 		oninput = undefined,
+		span: spanSnippet = undefined,
 		...restProps
 	}: InputPhoneControlProps = $props();
 
@@ -155,7 +157,8 @@
 	});
 
 	// ── Overlay spans ─────────────────────────────────────────────────────
-	type Span = { text: string; cls: string };
+	type SpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
+	type Span = { text: string; cls: string; type: SpanType };
 
 	const overlaySpans = $derived.by<Span[]>(() => {
 		if (!format) return [];
@@ -164,13 +167,14 @@
 		for (const t of tokens) {
 			if (t.type === 'digit') {
 				const filled = value[t.slotIndex] !== undefined;
-				if (!filled && t.optional) continue; // optional empty = skip
+				if (!filled && t.optional) continue;
 				const ch = filled ? value[t.slotIndex]! : '_';
-				const kind = digitSlotKind[t.slotIndex] ?? 'other';
+				const kind = (digitSlotKind[t.slotIndex] ?? 'other') as SpanType;
+				const spanType: SpanType = filled ? kind : 'empty';
 				const cls = filled
 					? (segmentMap ? (segmentColors[kind] ?? segmentColors['other']!) : 'text-foreground')
 					: 'text-muted-foreground/40';
-				spans.push({ text: ch, cls });
+				spans.push({ text: ch, cls, type: spanType });
 			} else {
 				if (t.optional) {
 					const anyOptFilled = tokens.some(
@@ -178,14 +182,14 @@
 					);
 					if (!anyOptFilled) continue;
 				}
-				spans.push({ text: t.char, cls: 'text-muted-foreground' });
+				spans.push({ text: t.char, cls: 'text-muted-foreground', type: 'lit' });
 			}
 		}
 
-		// Merge consecutive same-class spans
+		// Merge consecutive spans with same type (preserves type for snippet)
 		return spans.reduce<Span[]>((acc, s) => {
 			const last = acc[acc.length - 1];
-			if (last && last.cls === s.cls) { last.text += s.text; return acc; }
+			if (last && last.type === s.type) { last.text += s.text; return acc; }
 			return [...acc, { ...s }];
 		}, []);
 	});
@@ -301,6 +305,10 @@
 	}
 </script>
 
+{#snippet defaultSpan(span: Span)}
+	<span class={span.cls}>{span.text}</span>
+{/snippet}
+
 {#if format}
 	<span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
@@ -315,7 +323,7 @@
 		>
 			<span style="transform: translateX(-{scrollLeft}px)">
 				{#each overlaySpans as span (span)}
-					<span class={span.cls}>{span.text}</span>
+					{@render (spanSnippet ?? defaultSpan)(span)}
 				{/each}
 			</span>
 		</span>

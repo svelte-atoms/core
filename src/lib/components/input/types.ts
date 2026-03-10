@@ -169,6 +169,9 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface InputPhoneControlExtendProps {}
 
+export type PhoneSpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
+export type PhoneSpan = { text: string; cls: string; type: PhoneSpanType };
+
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	/** Clean digits only (no format chars). In free mode: full string. */
 	value?: string;
@@ -199,4 +202,17 @@ export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	preset?: string;
 	onchange?: (ev: Event, options: { value: string }) => void;
 	oninput?: (ev: Event, options: { value: string }) => void;
+	/**
+	 * Optional snippet to render each overlay span.
+	 * - `text`: the characters in this span
+	 * - `cls`: default Tailwind class (can be ignored)
+	 * - `type`: segment type — `'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty'`
+	 * @example
+	 * ```svelte
+	 * {#snippet span({ text, cls, type })}
+	 *   <span class={type === 'country' ? 'text-green-500' : cls}>{text}</span>
+	 * {/snippet}
+	 * ```
+	 */
+	span?: Snippet<[PhoneSpan]>;
 }
