@@ -223,7 +223,55 @@
 		oninput?.(ev, { value });
 	}
 
-	function handleChange(ev: Event) {
+	function handleKeydown(ev: KeyboardEvent) {
+		if (!format) return;
+		if (ev.key === 'Backspace') {
+			ev.preventDefault();
+			if (!value) return;
+			const next = value.slice(0, -1);
+			const masked = next ? buildMasked(next) : '';
+			if (inputEl) {
+				inputEl.value = masked;
+				const pos = nextCursorPos(next);
+				inputEl.setSelectionRange(pos, pos);
+			}
+			value = next;
+			if (bond) bond.state.props.value = value;
+			oninput?.(undefined as unknown as Event, { value });
+		} else if (ev.key === 'Delete') {
+			ev.preventDefault();
+			// Clear from cursor position forward — find which digit slot the cursor is at
+			if (!value || !inputEl) return;
+			const pos = inputEl.selectionStart ?? 0;
+			// Find digit slot index at or after cursor in the rendered string
+			let charPos = 0;
+			for (const t of tokens) {
+				if (t.type === 'digit') {
+					const filled = value[t.slotIndex] !== undefined;
+					if (!filled && t.optional) continue;
+					if (charPos >= pos) {
+						// Clear this slot and everything after
+						const next = value.slice(0, t.slotIndex);
+						const masked = next ? buildMasked(next) : '';
+						if (inputEl) {
+							inputEl.value = masked;
+							inputEl.setSelectionRange(charPos, charPos);
+						}
+						value = next;
+						if (bond) bond.state.props.value = value;
+						oninput?.(undefined as unknown as Event, { value });
+						return;
+					}
+					charPos++;
+				} else {
+					const willRender = !t.optional || tokens.some(
+						tok => tok.type === 'digit' && tok.optional && value[tok.slotIndex] !== undefined
+					);
+					if (willRender) charPos++;
+				}
+			}
+		}
+	}
 		onchange?.(ev, { value });
 	}
 
@@ -273,6 +321,7 @@
 				toClassValue(klass, bond)
 			)}
 			oninput={handleInput}
+			onkeydown={handleKeydown}
 			onchange={handleChange}
 			onscroll={syncScroll}
 			onclick={() => requestAnimationFrame(snapCaret)}
