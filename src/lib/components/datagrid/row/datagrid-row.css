@@ -1,4 +1,4 @@
-.datagrid-tr {
+.datagrid-row {
 	display: grid;
 
 	grid-template-columns: subgrid;
