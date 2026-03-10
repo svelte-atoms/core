@@ -214,8 +214,8 @@
 			aria-valuemax={1}
 			aria-valuetext={period}
 			class={[
-				'inline-flex min-w-[3ch] cursor-pointer items-center justify-center rounded px-0.5 text-center font-sans text-sm font-medium',
-				'focus:bg-primary focus:text-primary-foreground focus:outline-none',
+				'inline-flex min-w-[3ch] cursor-pointer items-center justify-center px-0.5 text-center font-sans text-sm font-medium',
+				'focus:bg-foreground/10 focus:outline-none',
 				'text-foreground',
 				disabled && 'cursor-not-allowed opacity-50'
 			].filter(Boolean).join(' ')}

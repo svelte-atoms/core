@@ -193,8 +193,8 @@
 	aria-disabled={disabled}
 	data-empty={isEmpty}
 	class={[
-		'inline-flex min-w-[2ch] items-center justify-center rounded px-0.5 text-center font-mono tabular-nums',
-		'focus:bg-primary focus:text-primary-foreground focus:outline-none',
+		'inline-flex min-w-[2ch] items-center justify-center px-0.5 text-center font-mono tabular-nums',
+		'focus:bg-foreground/10 focus:outline-none',
 		isEmpty && 'text-muted-foreground',
 		!isEmpty && 'text-foreground',
 		disabled && 'cursor-not-allowed opacity-50',
