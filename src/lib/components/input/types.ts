@@ -170,21 +170,22 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 export interface InputPhoneControlExtendProps {}
 
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
-	/** Phone number value. In mask mode: digits only. In free mode: full string. */
+	/** Clean digits only (no format chars). In free mode: full string. */
 	value?: string;
 	/**
-	 * Input mask using `#` as digit placeholder, all other characters are literals
-	 * that auto-display and block non-digit input.
-	 *
-	 * Examples:
-	 *   "(###) ###-####"           → US/CA
-	 *   "+# (###) ###-####"        → +1 US
-	 *   "+## ## #### ####"         → UK
-	 *   "(+###) ### ### #####"     → custom international
-	 *
-	 * Without this prop: free-type mode with auto-detected segment coloring.
+	 * Input mask — `#` = digit slot, all other chars are literals.
+	 * Examples: "(###) ###-####"  |  "+# (###) ###-####"  |  "(+###) ### ### #####"
+	 * Without this prop: free-type mode.
 	 */
 	format?: string;
+	/**
+	 * Optional segment color map — defines how digit slots are grouped and colored.
+	 * Keys are segment names, values are digit counts.
+	 * Must sum to the total number of `#` in format.
+	 * Example: { country: 1, area: 3, prefix: 3, line: 4 }
+	 * Available segment names: country (blue), area (bold), prefix, line, other
+	 */
+	segments?: Record<string, number>;
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;

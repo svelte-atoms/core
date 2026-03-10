@@ -25,7 +25,7 @@
 	let phoneValue = $state('');
 </script>
 
-<Story name="AInput" args={{}}>
+<Story name="Input" args={{}}>
 	<div class="flex flex-col">
 		<Label for="price-input">Price</Label>
 		<MyInput.Root>
@@ -179,7 +179,7 @@
 <Story name="PhoneControl">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.PhoneControl bind:value={phoneValue} />
+			<MyInput.PhoneControl bind:value={phoneValue} format="+# (###) ###-####" />
 		</MyInput.Root>
 		<p class="text-muted-foreground text-sm">Value: {phoneValue || '(none)'}</p>
 	</div>
@@ -188,7 +188,7 @@
 <Story name="PhoneControl/UK">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.PhoneControl bind:value={phoneValue} countryCode="+44" placeholder="7700 900000" />
+			<MyInput.PhoneControl bind:value={phoneValue} format="+44 #### ######" placeholder="7700 900000" />
 		</MyInput.Root>
 	</div>
 </Story>

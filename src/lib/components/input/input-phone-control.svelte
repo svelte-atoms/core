@@ -12,6 +12,7 @@
 		class: klass = '',
 		value = $bindable(''),
 		format = undefined,
+		segments: segmentMap = undefined,
 		placeholder = '+_ (___) ___-____',
 		disabled = false,
 		readonly = false,
@@ -24,76 +25,114 @@
 	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
 
 	let inputEl = $state<HTMLInputElement>();
+	let scrollLeft = $state(0);
 
 	// ── Mask helpers ───────────────────────────────────────────────────────
-	/** Apply up to N digits into the format template. Returns masked string. */
-	function applyMask(digits: string, fmt: string): string {
+	function applyMask(digits: string, fmt: string, empty = '_'): string {
 		let di = 0;
 		let out = '';
 		for (const ch of fmt) {
-			if (di >= digits.length) break;
-			if (ch === '#') { out += digits[di++]; }
+			if (ch === '#') { out += di < digits.length ? digits[di++] : empty; }
 			else { out += ch; }
 		}
 		return out;
 	}
 
-	/** Position of the (n+1)th `#` in the format string (0-indexed). */
-	function nextSlotPos(fmt: string, filledDigits: number): number {
+	function nextSlotPos(fmt: string, filledCount: number): number {
 		let count = 0;
 		for (let i = 0; i < fmt.length; i++) {
 			if (fmt[i] === '#') {
-				if (count === filledDigits) return i;
+				if (count === filledCount) return i;
 				count++;
 			}
 		}
-		return fmt.length; // all filled, put caret at end
+		return fmt.length;
 	}
 
-	/** Build the display placeholder: replace # with _ */
-	function maskPlaceholder(fmt: string): string {
-		return fmt.replace(/#/g, '_');
-	}
+	const maxDigits = $derived(format ? (format.match(/#/g) ?? []).length : 0);
+
+	// ── Segment color map ─────────────────────────────────────────────────
+	// segmentMap: e.g. { country: 2, area: 3, prefix: 3, line: 4 }
+	// Maps digit slot index → color class
+	const segmentColors: Record<string, string> = {
+		country: 'text-blue-500 dark:text-blue-400',
+		area:    'text-foreground font-medium',
+		prefix:  'text-foreground/80',
+		line:    'text-foreground',
+		other:   'text-foreground',
+	};
+
+	const digitSlotKind = $derived<string[]>(() => {
+		if (!format) return [];
+		const kinds: string[] = [];
+		if (segmentMap) {
+			for (const [kind, count] of Object.entries(segmentMap)) {
+				for (let i = 0; i < (count as number); i++) kinds.push(kind);
+			}
+		}
+		// Pad remaining slots as 'other'
+		while (kinds.length < maxDigits) kinds.push('other');
+		return kinds;
+	})();
+
+	// ── Overlay segments ──────────────────────────────────────────────────
+	type Span = { text: string; cls: string };
+
+	const overlaySpans = $derived<Span[]>(() => {
+		if (!format) return [];
+		const masked = applyMask(value, format, '_');
+		const spans: Span[] = [];
+		let di = 0;
+
+		for (let i = 0; i < format.length; i++) {
+			const ch = format[i];
+			if (ch === '#') {
+				const filled = di < value.length;
+				const kind = digitSlotKind[di] ?? 'other';
+				const cls = filled ? (segmentMap ? segmentColors[kind] ?? segmentColors.other : 'text-foreground') : 'text-muted-foreground/40';
+				spans.push({ text: masked[i], cls });
+				di++;
+			} else {
+				spans.push({ text: ch, cls: 'text-muted-foreground' });
+			}
+		}
+
+		// Merge consecutive same-class spans
+		return spans.reduce<Span[]>((acc, s) => {
+			const last = acc[acc.length - 1];
+			if (last && last.cls === s.cls) { last.text += s.text; return acc; }
+			return [...acc, { ...s }];
+		}, []);
+	})();
 
 	// ── Sync: external value → display ────────────────────────────────────
-	// value stores digits only; on mount/external change, update the input display
 	$effect(() => {
 		if (!format || !inputEl) return;
 		const masked = applyMask(value, format);
 		if (inputEl.value !== masked) inputEl.value = masked;
 	});
 
-	// ── Event handler ──────────────────────────────────────────────────────
+	// ── Input handler ──────────────────────────────────────────────────────
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 
 		if (!format) {
-			// Free mode — no masking
 			value = input.value;
 			if (bond) bond.state.props.value = value;
 			oninput?.(ev, { value });
 			return;
 		}
 
-		// Extract all digits from whatever the user typed/pasted
-		const digits = input.value.replace(/\D/g, '');
+		const digits = input.value.replace(/\D/g, '').slice(0, maxDigits);
+		const masked = applyMask(digits, format);
 
-		// Cap to max digit slots in format
-		const maxDigits = (format.match(/#/g) ?? []).length;
-		const capped = digits.slice(0, maxDigits);
-
-		// Rebuild masked display
-		const masked = applyMask(capped, format);
-
-		// Write back to input (bypasses Svelte re-render, keeps caret stable)
 		input.value = masked;
+		scrollLeft = input.scrollLeft;
 
-		// Move caret to next empty slot
-		const cursorPos = nextSlotPos(format, capped.length);
+		const cursorPos = nextSlotPos(format, digits.length);
 		input.setSelectionRange(cursorPos, cursorPos);
 
-		// value = clean digits
-		value = capped;
+		value = digits;
 		if (bond) bond.state.props.value = value;
 		oninput?.(ev, { value });
 	}
@@ -102,45 +141,84 @@
 		onchange?.(ev, { value });
 	}
 
-	// Snap caret to nearest # slot on click/focus (avoid landing on literals)
 	function snapCaret() {
 		if (!format || !inputEl) return;
 		const pos = inputEl.selectionStart ?? 0;
-		// Find the first # slot at or after the cursor
-		let slot = 0;
 		for (let i = 0; i < format.length; i++) {
-			if (format[i] === '#') {
-				if (i >= pos) {
-					inputEl.setSelectionRange(i, i);
-					return;
-				}
-				slot = i;
+			if (format[i] === '#' && i >= pos) {
+				inputEl.setSelectionRange(i, i);
+				return;
 			}
 		}
-		// Cursor is past all slots — put it after last filled digit
-		const filledDigits = value.length;
-		const snapped = nextSlotPos(format, filledDigits);
+		const snapped = nextSlotPos(format, value.length);
 		inputEl.setSelectionRange(snapped, snapped);
+	}
+
+	function syncScroll() {
+		scrollLeft = inputEl?.scrollLeft ?? 0;
 	}
 </script>
 
-<input
-	bind:this={inputEl}
-	type="tel"
-	value={format ? applyMask(value, format) : value}
-	placeholder={format ? maskPlaceholder(format) : placeholder}
-	{disabled}
-	{readonly}
-	class={cn(
-		'h-full w-full flex-1 bg-transparent px-2 font-mono text-sm outline-none',
-		'text-foreground placeholder:text-muted-foreground',
-		disabled && 'cursor-not-allowed opacity-50',
-		preset?.class,
-		toClassValue(klass, bond)
-	)}
-	oninput={handleInput}
-	onchange={handleChange}
-	onclick={format ? () => requestAnimationFrame(snapCaret) : undefined}
-	onfocus={format ? () => requestAnimationFrame(snapCaret) : undefined}
-	{...restProps}
-/>
+{#if format}
+	<!-- Masked mode: overlay + transparent input -->
+	<span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
+
+		<!-- Coloured overlay -->
+		<span
+			aria-hidden="true"
+			class={cn(
+				'pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre px-2 font-mono text-sm',
+				preset?.class,
+				toClassValue(klass, bond)
+			)}
+		>
+			<span style="transform: translateX(-{scrollLeft}px)">
+				{#each overlaySpans as span}
+					<span class={span.cls}>{span.text}</span>
+				{/each}
+			</span>
+		</span>
+
+		<!-- Real input — transparent text, visible caret -->
+		<input
+			bind:this={inputEl}
+			type="tel"
+			value={applyMask(value, format)}
+			{disabled}
+			{readonly}
+			class={cn(
+				'relative h-full w-full flex-1 bg-transparent px-2 font-mono text-sm text-transparent caret-foreground outline-none',
+				'placeholder:text-transparent',
+				disabled && 'cursor-not-allowed opacity-50',
+				preset?.class,
+				toClassValue(klass, bond)
+			)}
+			oninput={handleInput}
+			onchange={handleChange}
+			onscroll={syncScroll}
+			onclick={() => requestAnimationFrame(snapCaret)}
+			onfocus={() => requestAnimationFrame(snapCaret)}
+			{...restProps}
+		/>
+	</span>
+{:else}
+	<!-- Free mode: plain input -->
+	<input
+		bind:this={inputEl}
+		type="tel"
+		bind:value
+		{placeholder}
+		{disabled}
+		{readonly}
+		class={cn(
+			'h-full w-full flex-1 bg-transparent px-2 font-mono text-sm outline-none',
+			'text-foreground placeholder:text-muted-foreground',
+			disabled && 'cursor-not-allowed opacity-50',
+			preset?.class,
+			toClassValue(klass, bond)
+		)}
+		oninput={handleInput}
+		onchange={handleChange}
+		{...restProps}
+	/>
+{/if}
