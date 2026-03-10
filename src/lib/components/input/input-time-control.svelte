@@ -14,6 +14,8 @@
 		value = $bindable(''),
 		hourFormat = 24,
 		withSeconds = false,
+		min = undefined,
+		max = undefined,
 		disabled = false,
 		readonly = false,
 		preset: presetKey = 'input.time',
@@ -64,6 +66,20 @@
 	});
 
 	// ── Compose value string (always 24h output) ───────────────────────────
+	// ── min/max helpers ───────────────────────────────────────────────────
+	function timeToSeconds(t: string): number {
+		const [h, m, s] = t.split(':').map(Number);
+		return (h || 0) * 3600 + (m || 0) * 60 + (s || 0);
+	}
+
+	function valueInRange(v: string): boolean {
+		if (!v) return true;
+		const secs = timeToSeconds(v);
+		if (min && secs < timeToSeconds(min)) return false;
+		if (max && secs > timeToSeconds(max)) return false;
+		return true;
+	}
+
 	function buildValue(): string {
 		if (hours === null || minutes === null) return '';
 		const h = String(hours).padStart(2, '0');
@@ -76,6 +92,7 @@
 	function emit(ev?: Event) {
 		const v = buildValue();
 		if (v === value) return;
+		if (!valueInRange(v)) return; // silently reject out-of-range values
 		value = v;
 		if (bond) bond.state.props.value = value;
 		if (ev) onchange?.(ev, { value });

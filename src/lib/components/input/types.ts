@@ -82,6 +82,10 @@ export interface InputTimeControlProps extends InputTimeControlExtendProps {
 	 * @default false
 	 */
 	withSeconds?: boolean;
+	/** Minimum allowed time as HH:MM string (e.g. "08:00") */
+	min?: string;
+	/** Maximum allowed time as HH:MM string (e.g. "18:00") */
+	max?: string;
 	disabled?: boolean;
 	readonly?: boolean;
 	class?: string;
