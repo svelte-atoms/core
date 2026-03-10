@@ -4,7 +4,7 @@
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { untrack } from 'svelte';
 	import { InputBond } from './bond.svelte';
-	import type { InputTimeControlProps } from './types';
+	import type { InputTimeControlProps, InputNumber24HourControlProps, InputNumber12HourControlProps } from './types';
 	import Segment from './input-time-segment.svelte';
 
 	const bond = InputBond.get();
@@ -22,7 +22,7 @@
 		onchange = undefined,
 		oninput = undefined,
 		...restProps
-	}: InputTimeControlProps = $props();
+	}: InputTimeControlProps & (InputNumber24HourControlProps | InputNumber12HourControlProps) = $props();
 
 	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
 
@@ -50,16 +50,22 @@
 	);
 
 	// ── Parse incoming value string → segments ─────────────────────────────
+	// Parse incoming value → segments only when value changes externally
+	// (not when we ourselves emitted it, to avoid the re-render roundtrip)
+	let lastEmitted = '';
 	$effect(() => {
+		if (value === lastEmitted) return; // we emitted this, skip
 		if (!value) { hours = null; minutes = null; seconds = null; return; }
 		const parts = value.split(':');
 		const h = parts[0] ? parseInt(parts[0], 10) : null;
-		hours   = h;
-		minutes = parts[1] ? parseInt(parts[1], 10) : null;
-		seconds = parts[2] ? parseInt(parts[2], 10) : null;
-		if (hourFormat === 12 && h !== null) {
-			period = h >= 12 ? 'PM' : 'AM';
-		}
+		untrack(() => {
+			hours   = h;
+			minutes = parts[1] ? parseInt(parts[1], 10) : null;
+			seconds = parts[2] ? parseInt(parts[2], 10) : null;
+			if (hourFormat === 12 && h !== null) {
+				period = h >= 12 ? 'PM' : 'AM';
+			}
+		});
 	});
 
 	// ── Compose value string (always 24h output) ───────────────────────────
@@ -99,6 +105,7 @@
 			if (hourFormat === 12) period = (hours ?? 0) >= 12 ? 'PM' : 'AM';
 		}
 		if (v === value) return;
+		lastEmitted = v;
 		value = v;
 		if (bond) bond.state.props.value = value;
 		if (ev) onchange?.(ev, { value });

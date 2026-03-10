@@ -3,6 +3,13 @@ import type { Base, HtmlAtomProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
 
+export type HourAmPmDigits = `0${number}` | `1${0 | 1 | 2}`;
+export type HourDigits = `${0 | 1}${number}` | `2${0 | 1 | 2 | 3}`;
+export type MinuteDigits = `${0 | 1 | 2 | 3 | 4 | 5}${number}`;
+export type SecondDigits = MinuteDigits;
+
+export type Time = `${HourAmPmDigits}:${MinuteDigits}`;
+export type TimeFull = `${HourDigits}:${MinuteDigits}`;
 /**
  * Extend this interface to add custom input root properties in your application.
  */
@@ -45,13 +52,21 @@ export interface InputControlProps<B extends Base = Base>
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface InputNumberControlExtendProps {}
 
-export interface InputNumberControlProps extends HtmlAtomProps<'div'>, InputNumberControlExtendProps {
+export interface InputNumber12HourControlProps {
+	hourFormat: 12;
+	min?: Time;
+	max?: Time;
+}
+
+export interface InputNumber24HourControlProps {
+	hourFormat: 24;
+	min?: TimeFull;
+	max?: TimeFull;
+}
+
+export interface InputNumberControlProps extends InputNumberControlExtendProps {
 	/** Current numeric value */
 	number?: number;
-	/** Minimum allowed value */
-	min?: number;
-	/** Maximum allowed value */
-	max?: number;
 	/**
 	 * Step increment/decrement amount
 	 * @default 1

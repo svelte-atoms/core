@@ -47,7 +47,9 @@
 	);
 
 	// ── Parse incoming value string → segments ────────────────────────────
+	let lastEmitted = '';
 	$effect(() => {
+		if (value === lastEmitted) return; // we emitted this, skip
 		if (!value) {
 			month = day = year = hours = minutes = seconds = null;
 			return;
@@ -55,12 +57,14 @@
 		// Format: YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS
 		const m = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/);
 		if (!m) return;
-		year    = parseInt(m[1], 10);
-		month   = parseInt(m[2], 10);
-		day     = parseInt(m[3], 10);
-		hours   = parseInt(m[4], 10);
-		minutes = parseInt(m[5], 10);
-		seconds = m[6] ? parseInt(m[6], 10) : null;
+		untrack(() => {
+			year    = parseInt(m[1], 10);
+			month   = parseInt(m[2], 10);
+			day     = parseInt(m[3], 10);
+			hours   = parseInt(m[4], 10);
+			minutes = parseInt(m[5], 10);
+			seconds = m[6] ? parseInt(m[6], 10) : null;
+		});
 	});
 
 	// ── Derive max days for current month/year ────────────────────────────
@@ -93,6 +97,7 @@
 	function emit(ev?: Event) {
 		const v = buildValue();
 		if (v === value) return;
+		lastEmitted = v;
 		value = v;
 		date  = parseDate(v);
 		if (bond) bond.state.props.value = value;
