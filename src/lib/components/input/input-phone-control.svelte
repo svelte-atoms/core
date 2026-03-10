@@ -54,7 +54,7 @@
 				tokens.push({ type: 'digit', optional: false, slotIndex: slotIndex++ });
 				i++;
 			} else {
-				tokens.push({ type: 'lit', char: fmt[i], optional: false });
+				tokens.push({ type: 'lit', char: fmt[i]!, optional: false });
 				i++;
 			}
 		}
@@ -63,17 +63,17 @@
 		// Rule: a literal is optional if the nearest digit token on both sides is optional.
 		// We scan left and right from each literal to find its bounding digit tokens.
 		for (let j = 0; j < tokens.length; j++) {
-			const t = tokens[j];
+			const t = tokens[j]!;
 			if (t.type !== 'lit') continue;
-			// Find nearest digit to the left
 			let leftOpt = false;
 			for (let k = j - 1; k >= 0; k--) {
-				if (tokens[k].type === 'digit') { leftOpt = tokens[k].optional; break; }
+				const tk = tokens[k]!;
+				if (tk.type === 'digit') { leftOpt = tk.optional; break; }
 			}
-			// Find nearest digit to the right
 			let rightOpt = false;
 			for (let k = j + 1; k < tokens.length; k++) {
-				if (tokens[k].type === 'digit') { rightOpt = tokens[k].optional; break; }
+				const tk = tokens[k]!;
+				if (tk.type === 'digit') { rightOpt = tk.optional; break; }
 			}
 			t.optional = leftOpt && rightOpt;
 		}
@@ -83,7 +83,6 @@
 
 	const tokens = $derived(format ? parseFormat(format) : []);
 	const maxDigits = $derived(tokens.filter(t => t.type === 'digit').length);
-	const requiredDigits = $derived(tokens.filter(t => t.type === 'digit' && !t.optional).length);
 
 	// ── Build masked string from digits + tokens ───────────────────────────
 	// empty: what to show for an unfilled required slot ('_' for display, '' for measuring)
@@ -166,10 +165,10 @@
 			if (t.type === 'digit') {
 				const filled = value[t.slotIndex] !== undefined;
 				if (!filled && t.optional) continue; // optional empty = skip
-				const ch = filled ? value[t.slotIndex] : '_';
+				const ch = filled ? value[t.slotIndex]! : '_';
 				const kind = digitSlotKind[t.slotIndex] ?? 'other';
 				const cls = filled
-					? (segmentMap ? segmentColors[kind] ?? segmentColors.other : 'text-foreground')
+					? (segmentMap ? (segmentColors[kind] ?? segmentColors['other']!) : 'text-foreground')
 					: 'text-muted-foreground/40';
 				spans.push({ text: ch, cls });
 			} else {
@@ -272,6 +271,8 @@
 			}
 		}
 	}
+
+	function handleChange(ev: Event) {
 		onchange?.(ev, { value });
 	}
 
@@ -279,8 +280,20 @@
 		if (!format || !inputEl) return;
 		const pos = inputEl.selectionStart ?? 0;
 		const cursorPos = nextCursorPos(value);
-		// Snap to the first slot at or after cursor, or the current fill point
 		inputEl.setSelectionRange(Math.min(pos, cursorPos), Math.min(pos, cursorPos));
+	}
+
+	function handleFocus() {
+		if (!format || !inputEl) return;
+		// Show the placeholder mask so caret can sit at the first digit slot
+		if (!value) inputEl.value = buildMasked('');
+		requestAnimationFrame(snapCaret);
+	}
+
+	function handleBlur() {
+		if (!format || !inputEl) return;
+		// If no digits were entered, restore empty state
+		if (!value) inputEl.value = '';
 	}
 
 	function syncScroll() {
@@ -301,7 +314,7 @@
 			)}
 		>
 			<span style="transform: translateX(-{scrollLeft}px)">
-				{#each overlaySpans as span}
+				{#each overlaySpans as span (span)}
 					<span class={span.cls}>{span.text}</span>
 				{/each}
 			</span>
@@ -325,7 +338,8 @@
 			onchange={handleChange}
 			onscroll={syncScroll}
 			onclick={() => requestAnimationFrame(snapCaret)}
-			onfocus={() => requestAnimationFrame(snapCaret)}
+			onfocus={handleFocus}
+			onblur={handleBlur}
 			{...restProps}
 		/>
 	</span>
