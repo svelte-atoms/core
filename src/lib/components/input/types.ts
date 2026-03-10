@@ -170,12 +170,19 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 export interface InputPhoneControlExtendProps {}
 
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
-	/** Full phone number string, including country code (e.g. "+1 (555) 123-4567") */
+	/** Phone number value. In mask mode: digits only. In free mode: full string. */
 	value?: string;
 	/**
-	 * Optional display format template — use `#` as digit placeholder.
-	 * e.g. "(###) ###-####" or "+## ## #### ####"
-	 * When omitted, segments are auto-detected from the input structure.
+	 * Input mask using `#` as digit placeholder, all other characters are literals
+	 * that auto-display and block non-digit input.
+	 *
+	 * Examples:
+	 *   "(###) ###-####"           → US/CA
+	 *   "+# (###) ###-####"        → +1 US
+	 *   "+## ## #### ####"         → UK
+	 *   "(+###) ### ### #####"     → custom international
+	 *
+	 * Without this prop: free-type mode with auto-detected segment coloring.
 	 */
 	format?: string;
 	placeholder?: string;
