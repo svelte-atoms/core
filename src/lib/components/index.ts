@@ -38,6 +38,7 @@ export * from './stepper';
 export * from './element';
 export * from './atom';
 export * from './container';
+export * from './duration';
 export * from './calendar';
 export * from './date-picker';
 export * from './qr-code';
