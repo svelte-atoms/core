@@ -73,8 +73,24 @@
 	}
 
 	function setCursor(pos: number) {
-		// After Svelte render + browser paint
 		requestAnimationFrame(() => inputEl?.setSelectionRange(pos, pos));
+	}
+
+	// Snap caret to nearest valid digit slot position
+	function snapCaret() {
+		if (!format || !inputEl) return;
+		const pos = inputEl.selectionStart ?? 0;
+		// Find nearest digit slot at or after cursor pos
+		let best = tokens.length;
+		for (let i = 0; i < digitCount; i++) {
+			const p = slotPos(i);
+			if (p >= pos) { best = p; break; }
+		}
+		// If past all slots, put after last slot
+		if (best === tokens.length && digitCount > 0) {
+			best = slotPos(firstEmpty(digits) < digitCount ? firstEmpty(digits) : digitCount - 1);
+		}
+		inputEl.setSelectionRange(best, best);
 	}
 
 	function handleMaskedKeydown(ev: KeyboardEvent) {
@@ -119,11 +135,14 @@
 					break;
 				}
 			}
+		} else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight') {
+			// Let browser move caret, then snap to nearest slot
+			requestAnimationFrame(snapCaret);
 		} else if (!ev.ctrlKey && !ev.metaKey && !ev.altKey && ev.key.length === 1) {
 			// Block non-digit printable keys
 			ev.preventDefault();
 		}
-		// Allow: Tab, arrows, Ctrl+A/C/V/X, etc.
+		// Allow: Tab, Ctrl+A/C/V/X, etc.
 	}
 
 	function emitMasked() {
@@ -289,6 +308,9 @@
 		oninput={format ? undefined : handleInput}
 		onchange={handleChange}
 		onscroll={syncScroll}
+		onclick={format ? () => requestAnimationFrame(snapCaret) : undefined}
+		onfocus={format ? () => requestAnimationFrame(snapCaret) : undefined}
+		onselectionchange={format ? snapCaret : undefined}
 		{...restProps}
 	/>
 </span>
