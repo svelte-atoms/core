@@ -170,7 +170,7 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 export interface InputPhoneControlExtendProps {}
 
 export type PhoneSpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
-export type PhoneSpan = { text: string; cls: string; type: PhoneSpanType };
+export type PhoneSpan = { text: string; class: string; type: PhoneSpanType };
 
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	/** Clean digits only (no format chars). In free mode: full string. */
@@ -205,12 +205,12 @@ export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	/**
 	 * Optional snippet to render each overlay span.
 	 * - `text`: the characters in this span
-	 * - `cls`: default Tailwind class (can be ignored)
+	 * - `class`: default Tailwind class (can be ignored)
 	 * - `type`: segment type — `'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty'`
 	 * @example
 	 * ```svelte
-	 * {#snippet span({ text, cls, type })}
-	 *   <span class={type === 'country' ? 'text-green-500' : cls}>{text}</span>
+	 * {#snippet span({ text, class, type })}
+	 *   <span class={type === 'country' ? 'text-green-500' : class}>{text}</span>
 	 * {/snippet}
 	 * ```
 	 */
