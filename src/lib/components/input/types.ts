@@ -173,9 +173,15 @@ export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	/** Clean digits only (no format chars). In free mode: full string. */
 	value?: string;
 	/**
-	 * Input mask — `#` = digit slot, all other chars are literals.
-	 * Examples: "(###) ###-####"  |  "+# (###) ###-####"  |  "(+###) ### ### #####"
-	 * Without this prop: free-type mode.
+	 * Input mask — `#` = required digit, `[#]` = optional digit, all other chars are literals.
+	 *
+	 * Optional digits and the literals between them are hidden when empty,
+	 * shown as normal once filled. Digits fill left-to-right across all slots.
+	 *
+	 * Examples:
+	 *   "(###) ###-####"               → fixed US format
+	 *   "(+[#][#][#]) ### ###-####"    → 1–3 digit country code, rest fixed
+	 *   "+[#][#][#] (###) ###-####"    → international with optional country digits
 	 */
 	format?: string;
 	/**
