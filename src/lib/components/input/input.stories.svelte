@@ -88,7 +88,7 @@
 </Story>
 
 <!-- ─── TimeControl ──────────────────────────────────────────────────────── -->
-<Story name="TimeControl">
+<Story name="Time Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
 			<MyInput.TimeControl bind:value={timeValue} hourFormat={12} />
@@ -97,7 +97,7 @@
 	</div>
 </Story>
 
-<Story name="TimeControl (WithRange)">
+<Story name="Time Control (WithRange)">
 	<div class="flex flex-col gap-4 p-4">
 		<p class="text-muted-foreground text-sm">08:00 – 18:00 only</p>
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
@@ -107,7 +107,7 @@
 </Story>
 
 <!-- ─── DateTimeControl ─────────────────────────────────────────────────── -->
-<Story name="DateTimeControl">
+<Story name="Date Time Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border">
 			<MyInput.DateTimeControl bind:value={dateTimeValue} bind:date={dateTimeDate} />
@@ -120,7 +120,7 @@
 </Story>
 
 <!-- ─── FileControl ──────────────────────────────────────────────────────── -->
-<Story name="FileControl">
+<Story name="File Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.FileControl bind:files placeholder="Choose a file…" />
@@ -131,7 +131,7 @@
 	</div>
 </Story>
 
-<Story name="FileControl (Multiple)">
+<Story name="File Control (Multiple)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.FileControl bind:files multiple accept="image/*" placeholder="Choose images…" />
@@ -139,7 +139,7 @@
 	</div>
 </Story>
 
-<Story name="FileControl (CustomTrigger)">
+<Story name="File Control (CustomTrigger)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.FileControl bind:files>
@@ -158,7 +158,7 @@
 </Story>
 
 <!-- ─── UrlControl ───────────────────────────────────────────────────────── -->
-<Story name="UrlControl">
+<Story name="Url Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.UrlControl bind:value={urlValue} placeholder="example.com" />
@@ -167,7 +167,7 @@
 	</div>
 </Story>
 
-<Story name="UrlControl (HttpScheme)">
+<Story name="Url Control (HttpScheme)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
 			<MyInput.UrlControl bind:value={urlValue} scheme="http://" placeholder="example.com" />
@@ -176,7 +176,7 @@
 </Story>
 
 <!-- ─── PhoneControl ─────────────────────────────────────────────────────── -->
-<Story name="PhoneControl">
+<Story name="Phone Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
 			<MyInput.PhoneControl bind:value={phoneValue} format="+# (###) ###-####" />
@@ -185,7 +185,7 @@
 	</div>
 </Story>
 
-<Story name="PhoneControl (UK)">
+<Story name="Phone Control (UK)">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
 			<MyInput.PhoneControl bind:value={phoneValue} format="+44 #### ######" placeholder="7700 900000" />
