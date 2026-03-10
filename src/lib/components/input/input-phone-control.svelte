@@ -29,11 +29,13 @@
 	// ── Mask engine (only active when format is provided) ─────────────────
 	type Token = { type: 'lit'; char: string } | { type: 'digit'; index: number };
 
-	const tokens = $derived<Token[]>(() => {
-		if (!format) return [];
-		let di = 0;
-		return [...format].map(ch => ch === '#' ? { type: 'digit', index: di++ } : { type: 'lit', char: ch });
-	})();
+	const tokens = $derived<Token[]>(
+		!format ? [] :
+		(() => {
+			let di = 0;
+			return [...format].map(ch => ch === '#' ? { type: 'digit' as const, index: di++ } : { type: 'lit' as const, char: ch });
+		})()
+	);
 
 	const digitCount = $derived(tokens.filter(t => t.type === 'digit').length);
 
@@ -125,13 +127,9 @@
 	}
 
 	function emitMasked() {
-		const masked = buildMasked(digits, '_');
-		// External value = digits only (clean), display uses masked
 		const raw = digits.filter(Boolean).join('');
 		value = raw;
 		if (bond) bond.state.props.value = value;
-		// Update input display imperatively to avoid re-render focus loss
-		if (inputEl) inputEl.value = masked;
 		oninput?.(undefined as unknown as Event, { value });
 	}
 
@@ -192,9 +190,8 @@
 	// ── Overlay segments ──────────────────────────────────────────────────
 	type OverlaySegment = { text: string; cls: string };
 
-	const overlaySegments = $derived<OverlaySegment[]>(() => {
-		if (format) {
-			// Mask mode: color literals vs digits
+	const overlaySegments = $derived<OverlaySegment[]>(
+		format ? (() => {
 			const masked = buildMasked(digits, '_');
 			const segs: OverlaySegment[] = [];
 			for (let i = 0; i < tokens.length; i++) {
@@ -207,14 +204,12 @@
 					segs.push({ text: ch, cls: filled ? 'text-foreground' : 'text-muted-foreground/40' });
 				}
 			}
-			// Merge consecutive same-class spans
 			return segs.reduce<OverlaySegment[]>((acc, s) => {
 				const last = acc[acc.length - 1];
 				if (last && last.cls === s.cls) { last.text += s.text; return acc; }
 				return [...acc, { ...s }];
 			}, []);
-		} else {
-			const phoneSegs = parseSegments(value);
+		})() : (() => {
 			const kindClass: Record<string, string> = {
 				country: 'text-blue-500 dark:text-blue-400',
 				area:    'text-foreground font-medium',
@@ -223,9 +218,9 @@
 				sep:     'text-muted-foreground',
 				ext:     'text-purple-500 dark:text-purple-400',
 			};
-			return phoneSegs.map(s => ({ text: s.text, cls: kindClass[s.kind] }));
-		}
-	})();
+			return parseSegments(value).map(s => ({ text: s.text, cls: kindClass[s.kind] }));
+		})()
+	);
 
 	// ── Free-type event handlers (no format) ──────────────────────────────
 	function handleInput(ev: Event) {
@@ -245,13 +240,10 @@
 	}
 
 	// ── Init masked input display ─────────────────────────────────────────
+	// Keep masked input's displayed value in sync with digits state
 	$effect(() => {
 		if (format && inputEl) {
 			inputEl.value = buildMasked(digits, '_');
-			// Place cursor at first empty slot
-			const slot = firstEmpty(digits);
-			const pos = slot < digitCount ? slotPos(slot) : tokens.length;
-			inputEl.setSelectionRange(pos, pos);
 		}
 	});
 </script>
