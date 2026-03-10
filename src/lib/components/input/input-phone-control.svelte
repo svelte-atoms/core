@@ -196,7 +196,9 @@
 	// ── Sync external value → display ─────────────────────────────────────
 	$effect(() => {
 		if (!format || !inputEl) return;
-		const masked = value ? buildMasked(value) : '';
+		// When focused and empty, keep the placeholder mask visible (handleFocus/handleKeydown own it)
+		const focused = document.activeElement === inputEl;
+		const masked = (value || focused) ? buildMasked(value) : '';
 		if (inputEl.value !== masked) inputEl.value = masked;
 	});
 
@@ -231,9 +233,9 @@
 			ev.preventDefault();
 			if (!value) return;
 			const next = value.slice(0, -1);
-			const masked = next ? buildMasked(next) : '';
 			if (inputEl) {
-				inputEl.value = masked;
+				// If clearing the last digit, show placeholder mask so caret stays at first slot
+				inputEl.value = next ? buildMasked(next) : buildMasked('');
 				const pos = nextCursorPos(next);
 				inputEl.setSelectionRange(pos, pos);
 			}
