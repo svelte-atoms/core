@@ -118,3 +118,15 @@ export interface DatagridTrProps<
 	factory?: Factory<DataGridTrBond<T>>;
 	onclick?: (ev: Event, options: { tr?: DataGridTrBond<T> }) => void;
 }
+
+// ── Semantic type aliases — preferred going forward ───────────────────────
+/** Preferred alias for DatagridHeaderProps */
+export type DatagridHeadProps<T> = DatagridHeaderProps<T>;
+/** Preferred alias for DatagridFooterProps */
+export type DatagridFootProps<T> = DatagridFooterProps<T>;
+/** Preferred alias for DatagridTrProps */
+export type DatagridRowProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridTrProps<T, E, B>;
+/** Preferred alias for DatagridThProps */
+export type DatagridColProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridThProps<T, E, B>;
+/** Preferred alias for DatagridTdProps */
+export type DatagridCellProps<T> = DatagridTdProps<T>;
