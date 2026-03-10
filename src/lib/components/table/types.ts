@@ -57,15 +57,3 @@ export interface TableCellProps extends HtmlAtomProps<'td'>, TableCellExtendProp
 export interface TableCaptionProps extends HtmlAtomProps<'caption'>, TableCaptionExtendProps {
 	children?: Snippet<[]>;
 }
-
-// ── Deprecated aliases (will be removed in a future major version) ─────────
-/** @deprecated Use TableHeadProps */
-export type TableHeaderProps = TableHeadProps;
-/** @deprecated Use TableFootProps */
-export type TableFooterProps = TableFootProps;
-/** @deprecated Use TableRowProps */
-export type TableTrProps = TableRowProps;
-/** @deprecated Use TableColProps */
-export type TableThProps = TableColProps;
-/** @deprecated Use TableCellProps */
-export type TableTdProps = TableCellProps;
