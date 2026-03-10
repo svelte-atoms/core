@@ -47,11 +47,13 @@
 
 	const displayPlaceholder = placeholder ?? '—'.repeat(digits);
 
-	const display = $derived(() => {
-		if (buffer !== '') return buffer.padStart(digits, '_');
-		if (value !== null && value !== undefined) return String(value).padStart(digits, '0');
-		return displayPlaceholder;
-	});
+	const display = $derived(
+		buffer !== ''
+			? buffer.padStart(digits, '_')
+			: value !== null && value !== undefined
+				? String(value).padStart(digits, '0')
+				: displayPlaceholder
+	);
 
 	const isEmpty = $derived(value === null || value === undefined);
 
@@ -188,7 +190,7 @@
 	aria-valuenow={value ?? undefined}
 	aria-valuemin={min}
 	aria-valuemax={max}
-	aria-valuetext={display()}
+	aria-valuetext={display}
 	aria-label={placeholder}
 	aria-disabled={disabled}
 	data-empty={isEmpty}
@@ -207,5 +209,5 @@
 	onfocus={handleFocus}
 	onblur={() => { buffer = ''; }}
 >
-	{display()}
+	{display}
 </span>

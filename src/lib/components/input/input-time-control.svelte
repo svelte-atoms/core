@@ -37,14 +37,11 @@
 	let segMinutes = $state<{ focus(): void }>();
 	let segSeconds = $state<{ focus(): void }>();
 
-	// In 12h mode, the hours segment shows 1–12
-	const displayHours = $derived(() => {
-		if (hourFormat === 12 && hours !== null) {
-			const h = hours % 12;
-			return h === 0 ? 12 : h;
-		}
-		return hours;
-	});
+	const displayHours = $derived(
+		hourFormat === 12 && hours !== null
+			? (hours % 12 === 0 ? 12 : hours % 12)
+			: hours
+	);
 
 	const segments = $derived(
 		withSeconds
@@ -134,8 +131,8 @@
 	}
 
 	function handlePeriodKey(ev: KeyboardEvent) {
-		if (ev.key === 'a' || ev.key === 'A') { period = 'AM'; if (hours !== null) onHoursChange(displayHours() ?? null); }
-		else if (ev.key === 'p' || ev.key === 'P') { period = 'PM'; if (hours !== null) onHoursChange(displayHours() ?? null); }
+		if (ev.key === 'a' || ev.key === 'A') { period = 'AM'; if (hours !== null) onHoursChange(displayHours ?? null); }
+		else if (ev.key === 'p' || ev.key === 'P') { period = 'PM'; if (hours !== null) onHoursChange(displayHours ?? null); }
 		else if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown' || ev.key === ' ' || ev.key === 'Enter') {
 			ev.preventDefault();
 			togglePeriod();
@@ -189,7 +186,7 @@
 >
 	<Segment
 		bind:this={segHours}
-		value={displayHours()}
+		value={displayHours}
 		min={hourFormat === 12 ? 1 : 0}
 		max={hourFormat === 12 ? 12 : 23}
 		digits={2}
