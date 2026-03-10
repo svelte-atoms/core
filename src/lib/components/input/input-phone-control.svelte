@@ -27,33 +27,115 @@
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
 
-	// ── Mask helpers ───────────────────────────────────────────────────────
-	function applyMask(digits: string, fmt: string, empty = '_'): string {
-		let di = 0;
+	// ── Format token parser ────────────────────────────────────────────────
+	// Tokens:
+	//   { type: 'digit', optional: false }  →  # (required)
+	//   { type: 'digit', optional: true }   →  [#] (optional)
+	//   { type: 'lit', char, optional }     →  literal char, may belong to optional group
+	//
+	// Optional group: [#] tokens and the literals between them form a group.
+	// A group's literals are shown only if at least one digit in the group is filled.
+	// Literals outside any [#] group are always shown.
+
+	type Token =
+		| { type: 'digit'; optional: boolean; slotIndex: number }
+		| { type: 'lit'; char: string; optional: boolean };
+
+	function parseFormat(fmt: string): Token[] {
+		const tokens: Token[] = [];
+		let i = 0;
+		let slotIndex = 0;
+		// First pass: lex tokens
+		while (i < fmt.length) {
+			if (fmt[i] === '[' && fmt[i + 1] === '#' && fmt[i + 2] === ']') {
+				tokens.push({ type: 'digit', optional: true, slotIndex: slotIndex++ });
+				i += 3;
+			} else if (fmt[i] === '#') {
+				tokens.push({ type: 'digit', optional: false, slotIndex: slotIndex++ });
+				i++;
+			} else {
+				tokens.push({ type: 'lit', char: fmt[i], optional: false });
+				i++;
+			}
+		}
+
+		// Second pass: mark literals as optional if they sit between optional digit slots
+		// Rule: a literal is optional if the nearest digit token on both sides is optional.
+		// We scan left and right from each literal to find its bounding digit tokens.
+		for (let j = 0; j < tokens.length; j++) {
+			const t = tokens[j];
+			if (t.type !== 'lit') continue;
+			// Find nearest digit to the left
+			let leftOpt = false;
+			for (let k = j - 1; k >= 0; k--) {
+				if (tokens[k].type === 'digit') { leftOpt = tokens[k].optional; break; }
+			}
+			// Find nearest digit to the right
+			let rightOpt = false;
+			for (let k = j + 1; k < tokens.length; k++) {
+				if (tokens[k].type === 'digit') { rightOpt = tokens[k].optional; break; }
+			}
+			t.optional = leftOpt && rightOpt;
+		}
+
+		return tokens;
+	}
+
+	const tokens = $derived(format ? parseFormat(format) : []);
+	const maxDigits = $derived(tokens.filter(t => t.type === 'digit').length);
+	const requiredDigits = $derived(tokens.filter(t => t.type === 'digit' && !t.optional).length);
+
+	// ── Build masked string from digits + tokens ───────────────────────────
+	// empty: what to show for an unfilled required slot ('_' for display, '' for measuring)
+	function buildMasked(digits: string, empty = '_'): string {
 		let out = '';
-		for (const ch of fmt) {
-			if (ch === '#') { out += di < digits.length ? digits[di++] : empty; }
-			else { out += ch; }
+		for (const t of tokens) {
+			if (t.type === 'digit') {
+				const ch = digits[t.slotIndex];
+				if (ch !== undefined) {
+					out += ch;
+				} else if (!t.optional) {
+					out += empty;
+				}
+				// optional + unfilled = emit nothing
+			} else {
+				// Literal — show only if not optional, or if optional and at least
+				// one adjacent optional digit slot is filled
+				if (!t.optional) {
+					out += t.char;
+				} else {
+					// Show if surrounding optional slots have any filled digits
+					const adjacentFilled = tokens.some(
+						tok => tok.type === 'digit' && tok.optional && digits[tok.slotIndex] !== undefined
+					);
+					if (adjacentFilled) out += t.char;
+				}
+			}
 		}
 		return out;
 	}
 
-	function nextSlotPos(fmt: string, filledCount: number): number {
-		let count = 0;
-		for (let i = 0; i < fmt.length; i++) {
-			if (fmt[i] === '#') {
-				if (count === filledCount) return i;
-				count++;
+	// Position in the masked string of the next empty slot for `filledCount` digits
+	function nextCursorPos(digits: string): number {
+		let pos = 0;
+		for (const t of tokens) {
+			if (t.type === 'digit') {
+				const filled = digits[t.slotIndex] !== undefined;
+				if (!filled && !t.optional) return pos; // next required empty slot
+				if (!filled && t.optional) return pos;  // next optional empty slot
+				pos++; // filled digit occupies one char
+			} else {
+				// Literal: only counts if it will be rendered
+				const willRender = !t.optional || tokens.some(
+					tok => tok.type === 'digit' && tok.optional && digits[tok.slotIndex] !== undefined
+				);
+				if (willRender) pos++;
 			}
 		}
-		return fmt.length;
+		return pos; // all filled
 	}
 
-	const maxDigits = $derived(format ? (format.match(/#/g) ?? []).length : 0);
-
 	// ── Segment color map ─────────────────────────────────────────────────
-	// segmentMap: e.g. { country: 2, area: 3, prefix: 3, line: 4 }
-	// Maps digit slot index → color class
 	const segmentColors: Record<string, string> = {
 		country: 'text-blue-500 dark:text-blue-400',
 		area:    'text-foreground font-medium',
@@ -63,37 +145,41 @@
 	};
 
 	const digitSlotKind = $derived<string[]>(() => {
-		if (!format) return [];
 		const kinds: string[] = [];
 		if (segmentMap) {
 			for (const [kind, count] of Object.entries(segmentMap)) {
 				for (let i = 0; i < (count as number); i++) kinds.push(kind);
 			}
 		}
-		// Pad remaining slots as 'other'
 		while (kinds.length < maxDigits) kinds.push('other');
 		return kinds;
 	})();
 
-	// ── Overlay segments ──────────────────────────────────────────────────
+	// ── Overlay spans ─────────────────────────────────────────────────────
 	type Span = { text: string; cls: string };
 
 	const overlaySpans = $derived<Span[]>(() => {
 		if (!format) return [];
-		const masked = applyMask(value, format, '_');
 		const spans: Span[] = [];
-		let di = 0;
 
-		for (let i = 0; i < format.length; i++) {
-			const ch = format[i];
-			if (ch === '#') {
-				const filled = di < value.length;
-				const kind = digitSlotKind[di] ?? 'other';
-				const cls = filled ? (segmentMap ? segmentColors[kind] ?? segmentColors.other : 'text-foreground') : 'text-muted-foreground/40';
-				spans.push({ text: masked[i], cls });
-				di++;
+		for (const t of tokens) {
+			if (t.type === 'digit') {
+				const filled = value[t.slotIndex] !== undefined;
+				if (!filled && t.optional) continue; // optional empty = skip
+				const ch = filled ? value[t.slotIndex] : '_';
+				const kind = digitSlotKind[t.slotIndex] ?? 'other';
+				const cls = filled
+					? (segmentMap ? segmentColors[kind] ?? segmentColors.other : 'text-foreground')
+					: 'text-muted-foreground/40';
+				spans.push({ text: ch, cls });
 			} else {
-				spans.push({ text: ch, cls: 'text-muted-foreground' });
+				if (t.optional) {
+					const anyOptFilled = tokens.some(
+						tok => tok.type === 'digit' && tok.optional && value[tok.slotIndex] !== undefined
+					);
+					if (!anyOptFilled) continue;
+				}
+				spans.push({ text: t.char, cls: 'text-muted-foreground' });
 			}
 		}
 
@@ -105,10 +191,10 @@
 		}, []);
 	})();
 
-	// ── Sync: external value → display ────────────────────────────────────
+	// ── Sync external value → display ─────────────────────────────────────
 	$effect(() => {
 		if (!format || !inputEl) return;
-		const masked = applyMask(value, format);
+		const masked = buildMasked(value);
 		if (inputEl.value !== masked) inputEl.value = masked;
 	});
 
@@ -124,12 +210,12 @@
 		}
 
 		const digits = input.value.replace(/\D/g, '').slice(0, maxDigits);
-		const masked = applyMask(digits, format);
+		const masked = buildMasked(digits);
 
 		input.value = masked;
 		scrollLeft = input.scrollLeft;
 
-		const cursorPos = nextSlotPos(format, digits.length);
+		const cursorPos = nextCursorPos(digits);
 		input.setSelectionRange(cursorPos, cursorPos);
 
 		value = digits;
@@ -144,14 +230,9 @@
 	function snapCaret() {
 		if (!format || !inputEl) return;
 		const pos = inputEl.selectionStart ?? 0;
-		for (let i = 0; i < format.length; i++) {
-			if (format[i] === '#' && i >= pos) {
-				inputEl.setSelectionRange(i, i);
-				return;
-			}
-		}
-		const snapped = nextSlotPos(format, value.length);
-		inputEl.setSelectionRange(snapped, snapped);
+		const cursorPos = nextCursorPos(value);
+		// Snap to the first slot at or after cursor, or the current fill point
+		inputEl.setSelectionRange(Math.min(pos, cursorPos), Math.min(pos, cursorPos));
 	}
 
 	function syncScroll() {
@@ -160,7 +241,6 @@
 </script>
 
 {#if format}
-	<!-- Masked mode: overlay + transparent input -->
 	<span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
 		<!-- Coloured overlay -->
@@ -183,7 +263,7 @@
 		<input
 			bind:this={inputEl}
 			type="tel"
-			value={applyMask(value, format)}
+			value={buildMasked(value)}
 			{disabled}
 			{readonly}
 			class={cn(
