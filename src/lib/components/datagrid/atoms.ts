@@ -6,3 +6,15 @@ export { default as Root } from './datagrid-root.svelte';
 export { Tr } from './tr';
 export { Th } from './th';
 export { Td } from './td';
+
+// ── Semantic aliases — preferred going forward ────────────────────────────
+/** Preferred alias for Header (<thead>) */
+export { default as Head } from './datagrid-header.svelte';
+/** Preferred alias for Footer (<tfoot>) */
+export { default as Foot } from './datagrid-footer.svelte';
+/** Preferred alias for Tr */
+export { Row } from './tr';
+/** Preferred alias for Th */
+export { Col } from './th';
+/** Preferred alias for Td */
+export { Cell } from './td';
