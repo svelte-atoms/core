@@ -199,28 +199,28 @@
 	<span class="text-muted-foreground select-none">:</span>
 	<Segment
 		bind:this={segMinutes}
-		bind:value={minutes}
+		value={minutes}
 		min={0}
 		max={59}
 		digits={2}
 		placeholder="MM"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { minutes = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(1, dir)}
 	/>
 	{#if withSeconds}
 		<span class="text-muted-foreground select-none">:</span>
 		<Segment
 			bind:this={segSeconds}
-			bind:value={seconds}
+			value={seconds}
 			min={0}
 			max={59}
 			digits={2}
 			placeholder="SS"
 			{disabled}
 			{readonly}
-			onchange={() => emit()}
+			onchange={(v) => { seconds = v; emit(); }}
 			onfocusmove={(dir) => moveFocus(2, dir)}
 		/>
 	{/if}

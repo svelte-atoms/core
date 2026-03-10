@@ -138,40 +138,40 @@
 	<!-- Date part: MM / DD / YYYY -->
 	<Segment
 		bind:this={segMonth}
-		bind:value={month}
+		value={month}
 		min={1}
 		max={12}
 		digits={2}
 		placeholder="MM"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { month = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(0, dir)}
 	/>
 	<span class="text-muted-foreground select-none">/</span>
 	<Segment
 		bind:this={segDay}
-		bind:value={day}
+		value={day}
 		min={1}
 		max={maxDay}
 		digits={2}
 		placeholder="DD"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { day = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(1, dir)}
 	/>
 	<span class="text-muted-foreground select-none">/</span>
 	<Segment
 		bind:this={segYear}
-		bind:value={year}
+		value={year}
 		min={1}
 		max={9999}
 		digits={4}
 		placeholder="YYYY"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { year = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(2, dir)}
 	/>
 
@@ -181,41 +181,41 @@
 	<!-- Time part: HH : MM -->
 	<Segment
 		bind:this={segHours}
-		bind:value={hours}
+		value={hours}
 		min={0}
 		max={23}
 		digits={2}
 		placeholder="HH"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { hours = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(3, dir)}
 	/>
 	<span class="text-muted-foreground select-none">:</span>
 	<Segment
 		bind:this={segMinutes}
-		bind:value={minutes}
+		value={minutes}
 		min={0}
 		max={59}
 		digits={2}
 		placeholder="MM"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={(v) => { minutes = v; emit(); }}
 		onfocusmove={(dir) => moveFocus(4, dir)}
 	/>
 	{#if withSeconds}
 		<span class="text-muted-foreground select-none">:</span>
 		<Segment
 			bind:this={segSeconds}
-			bind:value={seconds}
+			value={seconds}
 			min={0}
 			max={59}
 			digits={2}
 			placeholder="SS"
 			{disabled}
 			{readonly}
-			onchange={() => emit()}
+			onchange={(v) => { seconds = v; emit(); }}
 			onfocusmove={(dir) => moveFocus(5, dir)}
 		/>
 	{/if}
