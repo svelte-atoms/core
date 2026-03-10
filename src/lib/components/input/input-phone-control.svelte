@@ -27,6 +27,7 @@
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
+	let isFocused = $state(false);
 
 	// ── Format token parser ────────────────────────────────────────────────
 	// Tokens:
@@ -117,18 +118,18 @@
 
 	// Position in the masked string of the next empty slot for `filledCount` digits
 	function nextCursorPos(digits: string): number {
+		const anyOptFilled = tokens.some(
+			t => t.type === 'digit' && t.optional && digits[t.slotIndex] !== undefined
+		);
 		let pos = 0;
 		for (const t of tokens) {
 			if (t.type === 'digit') {
 				const filled = digits[t.slotIndex] !== undefined;
-				if (!filled && !t.optional) return pos; // next required empty slot
-				if (!filled && t.optional) return pos;  // next optional empty slot
-				pos++; // filled digit occupies one char
+				if (t.optional && !filled && !anyOptFilled) continue; // not rendered, skip
+				if (!filled) return pos; // next empty slot in rendered string
+				pos++;
 			} else {
-				// Literal: only counts if it will be rendered
-				const willRender = !t.optional || tokens.some(
-					tok => tok.type === 'digit' && tok.optional && digits[tok.slotIndex] !== undefined
-				);
+				const willRender = !t.optional || anyOptFilled;
 				if (willRender) pos++;
 			}
 		}
@@ -193,13 +194,16 @@
 		}, []);
 	});
 
-	// ── Sync external value → display ─────────────────────────────────────
+	// ── Sync external value → display + caret ────────────────────────────
 	$effect(() => {
 		if (!format || !inputEl) return;
-		// When focused and empty, keep the placeholder mask visible (handleFocus/handleKeydown own it)
-		const focused = document.activeElement === inputEl;
-		const masked = (value || focused) ? buildMasked(value) : '';
+		const masked = (value || isFocused) ? buildMasked(value) : '';
 		if (inputEl.value !== masked) inputEl.value = masked;
+		// Always re-place caret after any value/focus change, via rAF to beat the browser
+		if (isFocused) {
+			const pos = nextCursorPos(value);
+			requestAnimationFrame(() => inputEl?.setSelectionRange(pos, pos));
+		}
 	});
 
 	// ── Input handler ──────────────────────────────────────────────────────
@@ -214,14 +218,8 @@
 		}
 
 		const digits = input.value.replace(/\D/g, '').slice(0, maxDigits);
-		const masked = buildMasked(digits);
-
-		input.value = masked;
+		input.value = buildMasked(digits);
 		scrollLeft = input.scrollLeft;
-
-		const cursorPos = nextCursorPos(digits);
-		input.setSelectionRange(cursorPos, cursorPos);
-
 		value = digits;
 		if (bond) bond.state.props.value = value;
 		oninput?.(ev, { value });
@@ -233,12 +231,7 @@
 			ev.preventDefault();
 			if (!value) return;
 			const next = value.slice(0, -1);
-			if (inputEl) {
-				// If clearing the last digit, show placeholder mask so caret stays at first slot
-				inputEl.value = next ? buildMasked(next) : buildMasked('');
-				const pos = nextCursorPos(next);
-				inputEl.setSelectionRange(pos, pos);
-			}
+			if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
 			value = next;
 			if (bond) bond.state.props.value = value;
 			oninput?.(undefined as unknown as Event, { value });
@@ -254,13 +247,8 @@
 					const filled = value[t.slotIndex] !== undefined;
 					if (!filled && t.optional) continue;
 					if (charPos >= pos) {
-						// Clear this slot and everything after
 						const next = value.slice(0, t.slotIndex);
-						const masked = next ? buildMasked(next) : '';
-						if (inputEl) {
-							inputEl.value = masked;
-							inputEl.setSelectionRange(charPos, charPos);
-						}
+						if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
 						value = next;
 						if (bond) bond.state.props.value = value;
 						oninput?.(undefined as unknown as Event, { value });
@@ -274,6 +262,13 @@
 					if (willRender) charPos++;
 				}
 			}
+		} else if (
+			ev.key.length === 1 &&      // printable character
+			!ev.ctrlKey && !ev.metaKey && // not a shortcut
+			!/\d/.test(ev.key)            // not a digit
+		) {
+			// Block non-digit printable keys — no input event fires, caret stays put
+			ev.preventDefault();
 		}
 	}
 
@@ -281,23 +276,16 @@
 		onchange?.(ev, { value });
 	}
 
-	function snapCaret() {
-		if (!format || !inputEl) return;
-		const pos = inputEl.selectionStart ?? 0;
-		const cursorPos = nextCursorPos(value);
-		inputEl.setSelectionRange(Math.min(pos, cursorPos), Math.min(pos, cursorPos));
-	}
-
 	function handleFocus() {
 		if (!format || !inputEl) return;
-		// Show the placeholder mask so caret can sit at the first digit slot
+		isFocused = true;
 		if (!value) inputEl.value = buildMasked('');
-		requestAnimationFrame(snapCaret);
+		// $effect will handle caret placement via rAF
 	}
 
 	function handleBlur() {
 		if (!format || !inputEl) return;
-		// If no digits were entered, restore empty state
+		isFocused = false;
 		if (!value) inputEl.value = '';
 	}
 
@@ -332,7 +320,8 @@
 		<!-- Real input — transparent text, visible caret, empty when no value -->
 		<input
 			bind:this={inputEl}
-			type="tel"
+			type="text"
+			inputmode="tel"
 			{disabled}
 			{readonly}
 			class={cn(
@@ -346,7 +335,6 @@
 			onkeydown={handleKeydown}
 			onchange={handleChange}
 			onscroll={syncScroll}
-			onclick={() => requestAnimationFrame(snapCaret)}
 			onfocus={handleFocus}
 			onblur={handleBlur}
 			{...restProps}
@@ -356,7 +344,8 @@
 	<!-- Free mode: plain input -->
 	<input
 		bind:this={inputEl}
-		type="tel"
+		type="text"
+		inputmode="tel"
 		bind:value
 		{placeholder}
 		{disabled}
