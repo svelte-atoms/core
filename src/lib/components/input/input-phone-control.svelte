@@ -263,7 +263,6 @@
 		<input
 			bind:this={inputEl}
 			type="tel"
-			value={value ? buildMasked(value) : ''}
 			{disabled}
 			{readonly}
 			class={cn(
