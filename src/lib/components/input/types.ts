@@ -71,8 +71,13 @@ export interface InputNumberControlProps extends HtmlAtomProps<'div'>, InputNumb
 export interface InputTimeControlExtendProps {}
 
 export interface InputTimeControlProps extends InputTimeControlExtendProps {
-	/** HH:MM or HH:MM:SS string */
+	/** HH:MM or HH:MM:SS string (always 24h format internally) */
 	value?: string;
+	/**
+	 * Hour display format
+	 * @default 24
+	 */
+	hourFormat?: 12 | 24;
 	/** Show the seconds segment
 	 * @default false
 	 */

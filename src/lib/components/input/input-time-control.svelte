@@ -12,6 +12,7 @@
 	let {
 		class: klass = '',
 		value = $bindable(''),
+		hourFormat = 24,
 		withSeconds = false,
 		disabled = false,
 		readonly = false,
@@ -24,30 +25,45 @@
 	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
 
 	// ── Segment state ──────────────────────────────────────────────────────
-	let hours = $state<number | null>(null);
+	let hours   = $state<number | null>(null); // always 0–23 internally
 	let minutes = $state<number | null>(null);
 	let seconds = $state<number | null>(null);
+	let period  = $state<'AM' | 'PM'>('AM');  // only used in 12h mode
 
-	// Segment refs for programmatic focus
-	let segHours = $state<ReturnType<typeof Segment>>();
-	let segMinutes = $state<ReturnType<typeof Segment>>();
-	let segSeconds = $state<ReturnType<typeof Segment>>();
+	// Segment refs
+	let segHours   = $state<{ focus(): void }>();
+	let segMinutes = $state<{ focus(): void }>();
+	let segSeconds = $state<{ focus(): void }>();
 
-	// Segments in order for focus navigation
-	const segments = $derived(withSeconds
-		? [segHours, segMinutes, segSeconds]
-		: [segHours, segMinutes]);
+	// In 12h mode, the hours segment shows 1–12
+	const displayHours = $derived(() => {
+		if (hourFormat === 12 && hours !== null) {
+			const h = hours % 12;
+			return h === 0 ? 12 : h;
+		}
+		return hours;
+	});
 
-	// ── Parse incoming value string → segments ────────────────────────────
+	const segments = $derived(
+		withSeconds
+			? [segHours, segMinutes, segSeconds]
+			: [segHours, segMinutes]
+	);
+
+	// ── Parse incoming value string → segments ─────────────────────────────
 	$effect(() => {
 		if (!value) { hours = null; minutes = null; seconds = null; return; }
 		const parts = value.split(':');
-		hours   = parts[0] ? parseInt(parts[0], 10) : null;
+		const h = parts[0] ? parseInt(parts[0], 10) : null;
+		hours   = h;
 		minutes = parts[1] ? parseInt(parts[1], 10) : null;
 		seconds = parts[2] ? parseInt(parts[2], 10) : null;
+		if (hourFormat === 12 && h !== null) {
+			period = h >= 12 ? 'PM' : 'AM';
+		}
 	});
 
-	// ── Compose value string from segments ────────────────────────────────
+	// ── Compose value string (always 24h output) ───────────────────────────
 	function buildValue(): string {
 		if (hours === null || minutes === null) return '';
 		const h = String(hours).padStart(2, '0');
@@ -62,28 +78,74 @@
 		if (v === value) return;
 		value = v;
 		if (bond) bond.state.props.value = value;
-		if (ev) {
-			onchange?.(ev, { value });
+		if (ev) onchange?.(ev, { value });
+		else oninput?.(undefined as unknown as Event, { value });
+	}
+
+	// ── 12h → 24h conversion when segment changes ─────────────────────────
+	function onHoursChange(h: number | null) {
+		if (hourFormat === 24 || h === null) {
+			hours = h;
 		} else {
-			oninput?.(undefined as unknown as Event, { value });
+			// Convert display 1–12 → internal 0–23
+			if (period === 'AM') {
+				hours = h === 12 ? 0 : h;
+			} else {
+				hours = h === 12 ? 12 : h + 12;
+			}
+		}
+		emit();
+	}
+
+	function togglePeriod() {
+		if (disabled || readonly) return;
+		period = period === 'AM' ? 'PM' : 'AM';
+		// Recompute internal hours from current display hours
+		if (hours !== null) {
+			const displayH = hours % 12 === 0 ? 12 : hours % 12;
+			onHoursChange(displayH);
+		}
+	}
+
+	function handlePeriodKey(ev: KeyboardEvent) {
+		if (ev.key === 'a' || ev.key === 'A') { period = 'AM'; if (hours !== null) onHoursChange(displayHours() ?? null); }
+		else if (ev.key === 'p' || ev.key === 'P') { period = 'PM'; if (hours !== null) onHoursChange(displayHours() ?? null); }
+		else if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown' || ev.key === ' ' || ev.key === 'Enter') {
+			ev.preventDefault();
+			togglePeriod();
+		} else if (ev.key === 'ArrowLeft') {
+			ev.preventDefault();
+			moveFocus(segments.length, -1);
 		}
 	}
 
 	// ── Focus navigation ──────────────────────────────────────────────────
 	function moveFocus(from: number, dir: -1 | 1) {
-		const next = segments[from + dir];
-		if (next) (next as { focus: () => void }).focus();
+		segments[from + dir]?.focus();
 	}
 
-	// ── Paste handler — parse full time string ────────────────────────────
+	// ── Paste handler ─────────────────────────────────────────────────────
 	function handlePaste(ev: ClipboardEvent) {
 		ev.preventDefault();
 		const text = ev.clipboardData?.getData('text') ?? '';
-		const m = text.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?/);
-		if (!m) return;
-		hours   = Math.min(23, parseInt(m[1], 10));
-		minutes = Math.min(59, parseInt(m[2], 10));
-		if (withSeconds && m[3]) seconds = Math.min(59, parseInt(m[3], 10));
+		// Support HH:MM, HH:MM:SS, H:MM AM/PM
+		const m12 = text.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)/i);
+		const m24 = text.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+		if (m12) {
+			let h = parseInt(m12[1], 10);
+			const pm = m12[4].toUpperCase() === 'PM';
+			if (pm && h !== 12) h += 12;
+			if (!pm && h === 12) h = 0;
+			hours   = Math.min(23, h);
+			minutes = Math.min(59, parseInt(m12[2], 10));
+			if (withSeconds && m12[3]) seconds = Math.min(59, parseInt(m12[3], 10));
+			period = pm ? 'PM' : 'AM';
+		} else if (m24) {
+			hours   = Math.min(23, parseInt(m24[1], 10));
+			minutes = Math.min(59, parseInt(m24[2], 10));
+			if (withSeconds && m24[3]) seconds = Math.min(59, parseInt(m24[3], 10));
+			if (hourFormat === 12) period = (hours ?? 0) >= 12 ? 'PM' : 'AM';
+		}
 		emit();
 	}
 </script>
@@ -101,14 +163,14 @@
 >
 	<Segment
 		bind:this={segHours}
-		bind:value={hours}
-		min={0}
-		max={23}
+		value={displayHours()}
+		min={hourFormat === 12 ? 1 : 0}
+		max={hourFormat === 12 ? 12 : 23}
 		digits={2}
 		placeholder="HH"
 		{disabled}
 		{readonly}
-		onchange={() => emit()}
+		onchange={onHoursChange}
 		onfocusmove={(dir) => moveFocus(0, dir)}
 	/>
 	<span class="text-muted-foreground select-none">:</span>
@@ -138,5 +200,29 @@
 			onchange={() => emit()}
 			onfocusmove={(dir) => moveFocus(2, dir)}
 		/>
+	{/if}
+
+	{#if hourFormat === 12}
+		<span class="ml-1 select-none"> </span>
+		<!-- AM/PM toggle -->
+		<span
+			role="spinbutton"
+			tabindex={disabled ? -1 : 0}
+			aria-label="AM/PM"
+			aria-valuenow={period === 'AM' ? 0 : 1}
+			aria-valuemin={0}
+			aria-valuemax={1}
+			aria-valuetext={period}
+			class={[
+				'inline-flex min-w-[3ch] cursor-pointer items-center justify-center rounded px-0.5 text-center font-sans text-sm font-medium',
+				'focus:bg-primary focus:text-primary-foreground focus:outline-none',
+				'text-foreground',
+				disabled && 'cursor-not-allowed opacity-50'
+			].filter(Boolean).join(' ')}
+			onclick={togglePeriod}
+			onkeydown={handlePeriodKey}
+		>
+			{period}
+		</span>
 	{/if}
 </span>
