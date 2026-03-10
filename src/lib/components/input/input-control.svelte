@@ -6,6 +6,7 @@
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputControlProps } from './types';
+	import { untrack } from 'svelte';
 
 	const bond = InputBond.get();
 
@@ -23,7 +24,7 @@
 		...restProps
 	}: InputControlProps<B> = $props();
 
-	const preset = getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]);
+	const preset = getPreset(untrack(()=> presetKey) as PresetModuleName)?.apply(bond, [bond]);
 
 	const valueProps = $derived({
 		...(bond?.input?.() ?? {}),

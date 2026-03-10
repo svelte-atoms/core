@@ -4,6 +4,7 @@
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputTimeControlProps } from './types';
+	import { untrack } from 'svelte';
 
 	const bond = InputBond.get();
 
@@ -21,7 +22,7 @@
 		...restProps
 	}: InputTimeControlProps = $props();
 
-	const preset = getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]);
+	const preset = getPreset(untrack(()=> presetKey) as PresetModuleName)?.apply(bond, [bond]);
 
 	function handleChange(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
@@ -42,8 +43,7 @@
 	type="time"
 	bind:value
 	class={cn(
-		'text-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
-		'[color-scheme:light] dark:[color-scheme:dark]',
+		'text-foreground h-full w-full flex-1 bg-transparent px-2 outline-none',
 		preset?.class,
 		toClassValue(klass, bond)
 	)}
