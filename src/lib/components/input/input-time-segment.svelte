@@ -35,17 +35,8 @@
 	}: SegmentProps = $props();
 
 	let el = $state<HTMLSpanElement>();
-	let isFocused = $state(false);
 	// Transient typing buffer — only lives while user is actively keying digits
 	let buffer = $state<string>('');
-
-	// If we have an active buffer and somehow lost focus (e.g. due to parent re-render),
-	// reclaim it immediately so the user can keep typing.
-	$effect(() => {
-		if (buffer && el && !isFocused) {
-			el.focus();
-		}
-	});
 
 	const displayPlaceholder = placeholder ?? '—'.repeat(digits);
 
@@ -63,13 +54,18 @@
 		return Math.max(min, Math.min(max, v));
 	}
 
-	function commitBuffer(buf: string, andAdvance = false) {
+	function commitBuffer(buf: string, andAdvance: boolean, keepFocus = false) {
 		const n = parseInt(buf, 10);
 		if (!isNaN(n)) {
 			onchange?.(clamp(n));
 		}
 		buffer = '';
-		if (andAdvance) onfocusmove?.(1);
+		if (andAdvance) {
+			onfocusmove?.(1);
+		} else if (keepFocus) {
+			// Re-focus after Svelte's render cycle in case parent re-render stole focus
+			queueMicrotask(() => el?.focus());
+		}
 	}
 
 	function handleKeydown(ev: KeyboardEvent) {
@@ -153,10 +149,7 @@
 		.join(' ')}
 	onkeydown={handleKeydown}
 	onpaste={handlePaste}
-	onfocus={() => { isFocused = true; }}
 	onblur={() => {
-		isFocused = false;
-		// Commit partial buffer on blur
 		if (buffer) commitBuffer(buffer, false);
 	}}
 >

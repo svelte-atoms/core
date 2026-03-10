@@ -101,7 +101,7 @@
 	<div class="flex flex-col gap-4 p-4">
 		<p class="text-muted-foreground text-sm">08:00 – 18:00 only</p>
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.TimeControl bind:value={timeValue} min="08:00" max="18:00" />
+			<MyInput.TimeControl bind:value={timeValue} min="08:00" max="18:00" hourFormat={24} />
 		</MyInput.Root>
 	</div>
 </Story>
