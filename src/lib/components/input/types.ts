@@ -73,10 +73,10 @@ export interface InputTimeControlExtendProps {}
 export interface InputTimeControlProps extends InputTimeControlExtendProps {
 	/** HH:MM or HH:MM:SS string */
 	value?: string;
-	min?: string;
-	max?: string;
-	/** Step in seconds */
-	step?: number;
+	/** Show the seconds segment
+	 * @default false
+	 */
+	withSeconds?: boolean;
 	disabled?: boolean;
 	readonly?: boolean;
 	class?: string;
@@ -90,13 +90,14 @@ export interface InputTimeControlProps extends InputTimeControlExtendProps {
 export interface InputDateTimeControlExtendProps {}
 
 export interface InputDateTimeControlProps extends InputDateTimeControlExtendProps {
-	/** datetime-local string value (YYYY-MM-DDTHH:MM) */
+	/** datetime-local string value (YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS) */
 	value?: string;
 	/** Parsed Date object (bindable, derived from value) */
 	date?: Date | null;
-	min?: string;
-	max?: string;
-	step?: number;
+	/** Show the seconds segment
+	 * @default false
+	 */
+	withSeconds?: boolean;
 	disabled?: boolean;
 	readonly?: boolean;
 	class?: string;
