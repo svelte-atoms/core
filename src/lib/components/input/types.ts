@@ -170,10 +170,14 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 export interface InputPhoneControlExtendProps {}
 
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
-	/** Full phone number including country code (e.g. "+1 555-0100") */
+	/** Full phone number string, including country code (e.g. "+1 (555) 123-4567") */
 	value?: string;
-	/** Country code prefix displayed before the input (default: '+1') */
-	countryCode?: string;
+	/**
+	 * Optional display format template — use `#` as digit placeholder.
+	 * e.g. "(###) ###-####" or "+## ## #### ####"
+	 * When omitted, segments are auto-detected from the input structure.
+	 */
+	format?: string;
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;
