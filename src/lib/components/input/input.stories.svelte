@@ -91,7 +91,7 @@
 <Story name="TimeControl">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.TimeControl bind:value={timeValue} />
+			<MyInput.TimeControl bind:value={timeValue} hourFormat={12} />
 		</MyInput.Root>
 		<p class="text-muted-foreground text-sm">Value: {timeValue || '(none)'}</p>
 	</div>

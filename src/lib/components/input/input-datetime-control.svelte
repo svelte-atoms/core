@@ -64,11 +64,11 @@
 	});
 
 	// ── Derive max days for current month/year ────────────────────────────
-	const maxDay = $derived(() => {
-		if (month && year) return new Date(year, month, 0).getDate();
-		if (month) return new Date(2000, month, 0).getDate();
-		return 31;
-	});
+	const maxDay = $derived(
+		month && year ? new Date(year, month, 0).getDate()
+		: month ? new Date(2000, month, 0).getDate()
+		: 31
+	);
 
 	// ── Compose value string from segments ────────────────────────────────
 	function buildValue(): string {
@@ -153,7 +153,7 @@
 		bind:this={segDay}
 		bind:value={day}
 		min={1}
-		max={maxDay()}
+		max={maxDay}
 		digits={2}
 		placeholder="DD"
 		{disabled}
