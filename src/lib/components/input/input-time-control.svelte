@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { getPreset } from '$svelte-atoms/core/context';
+	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputTimeControlProps } from './types';
 
@@ -13,11 +15,13 @@
 		step = undefined,
 		disabled = false,
 		readonly = false,
-		preset = 'input.time',
+		preset: presetKey = 'input.time',
 		onchange = undefined,
 		oninput = undefined,
 		...restProps
 	}: InputTimeControlProps = $props();
+
+	const preset = getPreset(presetKey as PresetModuleName)?.apply(bond, [bond]);
 
 	function handleChange(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
@@ -37,12 +41,12 @@
 <input
 	type="time"
 	bind:value
-	class={[
+	class={cn(
 		'text-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
-		'[color-scheme:dark] dark:[color-scheme:dark]',
-		'$preset',
-		klass
-	].filter(Boolean).join(' ')}
+		'[color-scheme:light] dark:[color-scheme:dark]',
+		preset?.class,
+		toClassValue(klass, bond)
+	)}
 	{min}
 	{max}
 	{step}
