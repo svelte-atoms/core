@@ -29,15 +29,16 @@
 				.replace(/\bms\b/g, String(d.milliseconds));
 		}
 
-		// Auto format: show most significant units
+		// Auto format: show non-zero units (or all units when showZero=true)
 		const parts: string[] = [];
-		if (d.years   && (showZero || d.years))   parts.push(`${d.years} ${d.years === 1 ? 'year' : 'years'}`);
-		if (d.months  && (showZero || d.months))  parts.push(`${d.months} ${d.months === 1 ? 'month' : 'months'}`);
-		if (d.days    && (showZero || d.days))    parts.push(`${d.days} ${d.days === 1 ? 'day' : 'days'}`);
-		if (d.hours   && (showZero || d.hours))   parts.push(`${d.hours} ${d.hours === 1 ? 'hour' : 'hours'}`);
-		if (d.minutes && (showZero || d.minutes)) parts.push(`${d.minutes} ${d.minutes === 1 ? 'minute' : 'minutes'}`);
-		if (d.seconds && (showZero || d.seconds)) parts.push(`${d.seconds} ${d.seconds === 1 ? 'second' : 'seconds'}`);
-		if (d.milliseconds && (showZero || d.milliseconds)) parts.push(`${d.milliseconds}ms`);
+		const show = (n: number) => showZero || n > 0;
+		if (show(d.years))        parts.push(`${d.years} ${d.years === 1 ? 'year' : 'years'}`);
+		if (show(d.months))       parts.push(`${d.months} ${d.months === 1 ? 'month' : 'months'}`);
+		if (show(d.days))         parts.push(`${d.days} ${d.days === 1 ? 'day' : 'days'}`);
+		if (show(d.hours))        parts.push(`${d.hours} ${d.hours === 1 ? 'hour' : 'hours'}`);
+		if (show(d.minutes))      parts.push(`${d.minutes} ${d.minutes === 1 ? 'minute' : 'minutes'}`);
+		if (show(d.seconds))      parts.push(`${d.seconds} ${d.seconds === 1 ? 'second' : 'seconds'}`);
+		if (show(d.milliseconds)) parts.push(`${d.milliseconds}ms`);
 
 		return parts.join(', ') || '0 seconds';
 	}
