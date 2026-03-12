@@ -217,7 +217,7 @@ ${'<'}/div>`;
 	</Card.Root>
 {/snippet}
 
-<div class="mx-auto grid max-w-4xl gap-16 px-4 py-12">
+<div class="grid gap-16 py-8">
 	<!-- Header -->
 	<div>
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Styling System</h1>

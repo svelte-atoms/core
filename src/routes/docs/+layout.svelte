@@ -99,7 +99,7 @@
 	];
 </script>
 
-<div class="mx-auto flex max-w-[1800px] items-start gap-4 px-4 lg:px-6">
+<div class="flex w-full items-start gap-4 px-4 lg:px-6">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
 	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">

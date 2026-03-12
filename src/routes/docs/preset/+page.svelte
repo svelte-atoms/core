@@ -299,7 +299,7 @@ setPreset({
 	</div>
 {/snippet}
 
-<div class="mx-auto max-w-4xl px-4 py-12">
+<div class="py-8">
 	<!-- Header -->
 	<div class="mb-12">
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Preset System</h1>
