@@ -8,12 +8,16 @@
 	let toc = $state<TocEntry[]>([]);
 	let activeId = $state('');
 	let mainEl = $state<HTMLElement | undefined>(undefined);
+	let mobileNavOpen = $state(false);
+
+	// Close mobile nav on route change
+	$effect(() => {
+		$page.url.pathname;
+		mobileNavOpen = false;
+	});
 
 	$effect(() => {
-		// re-run on route change
 		$page.url.pathname;
-
-		// Wait for DOM to settle after navigation
 		requestAnimationFrame(() => {
 			if (!mainEl) return;
 			const headings = Array.from(mainEl.querySelectorAll('h2[id]'));
@@ -31,7 +35,6 @@
 				{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }
 			);
 			headings.forEach((h) => observer.observe(h));
-
 			return () => observer.disconnect();
 		});
 	});
@@ -91,7 +94,6 @@
 				{ title: 'Stepper', href: '/docs/components/stepper' },
 				{ title: 'Tabs', href: '/docs/components/tabs' },
 				{ title: 'Textarea', href: '/docs/components/textarea' },
-				// { title: 'Toast', href: '/docs/components/toast' },
 				{ title: 'Tooltip', href: '/docs/components/tooltip' },
 				{ title: 'Tree', href: '/docs/components/tree' }
 			]
@@ -99,7 +101,50 @@
 	];
 </script>
 
-<div class="docs-layout w-full items-start gap-4 lg:gap-16 px-4 lg:px-6">
+<!-- Mobile nav bar -->
+<div class="border-border bg-background/80 sticky top-14 z-40 flex items-center gap-3 border-b px-4 py-2 backdrop-blur-md lg:hidden">
+	<button
+		onclick={() => (mobileNavOpen = !mobileNavOpen)}
+		class="text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors"
+		aria-label="Toggle navigation"
+	>
+		{#if mobileNavOpen}
+			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+			</svg>
+		{:else}
+			<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+			</svg>
+		{/if}
+		<span>Menu</span>
+	</button>
+
+	{#if toc.length > 0}
+		<span class="text-border">·</span>
+		<span class="text-muted-foreground truncate text-sm">On this page</span>
+	{/if}
+</div>
+
+<!-- Mobile nav drawer -->
+{#if mobileNavOpen}
+	<!-- Backdrop -->
+	<div
+		class="fixed inset-0 z-40 bg-black/40 lg:hidden"
+		role="button"
+		tabindex="-1"
+		onclick={() => (mobileNavOpen = false)}
+		onkeydown={(e) => e.key === 'Escape' && (mobileNavOpen = false)}
+		aria-label="Close navigation"
+	></div>
+	<!-- Drawer -->
+	<div class="bg-background border-border fixed top-14 bottom-0 left-0 z-50 w-72 overflow-y-auto border-r shadow-xl lg:hidden">
+		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
+	</div>
+{/if}
+
+<!-- Desktop layout -->
+<div class="docs-layout w-full items-start gap-4 px-4 lg:gap-16 lg:px-6">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
 	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">
@@ -131,7 +176,6 @@
 		{/if}
 	</aside>
 </div>
-
 
 <style>
 	.docs-layout {
