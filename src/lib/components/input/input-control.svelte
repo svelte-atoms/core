@@ -84,7 +84,7 @@
 		}
 	}
 	class={cn(
-		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
+		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-2 leading-none outline-none',
 		preset?.class,
 		toClassValue(klass, bond)
 	)}

@@ -16,8 +16,15 @@
 	{#snippet template()}
 		<Duration.Root bind:value class="flex flex-col gap-4 p-4">
 			<div class="flex gap-4">
-				<Duration.From label="Start" class="flex-1" />
-				<Duration.To label="End" class="flex-1" />
+				<div class="flex flex-col">
+					<label for="">Start</label>
+					<Duration.From />
+				</div>
+
+				<div class="flex flex-col">
+					<label for="">End</label>
+					<Duration.To />
+				</div>
 			</div>
 			<div class="text-sm text-muted-foreground">
 				Duration: <span class="font-medium text-foreground"><Duration.Display /></span>
@@ -30,8 +37,14 @@
 	{#snippet template()}
 		<Duration.Root class="flex flex-col gap-4 p-4">
 			<div class="flex gap-4">
-				<Duration.From label="Start" class="flex-1" />
-				<Duration.To label="End" class="flex-1" />
+				<div class="flex flex-col">
+					<label for="">Start</label>
+					<Duration.From />
+				</div>
+				<div class="flex flex-col">
+					<label for="">End</label>
+					<Duration.To />
+				</div>
 			</div>
 			<div class="text-sm text-muted-foreground">
 				<Duration.Display format="Y years, M months, D days" />
@@ -47,8 +60,14 @@
 	{#snippet template()}
 		<Duration.Root class="flex flex-col gap-4 p-4">
 			<div class="flex gap-4">
-				<Duration.From label="Start" class="flex-1" />
-				<Duration.To label="End" class="flex-1" />
+				<div class="flex flex-col">
+					<label for="">Start</label>
+					<Duration.From />
+				</div>
+				<div class="flex flex-col">
+					<label for="">End</label>
+					<Duration.To />
+				</div>
 			</div>
 			<Duration.Display showZero class="text-sm" />
 		</Duration.Root>

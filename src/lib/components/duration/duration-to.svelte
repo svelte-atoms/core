@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { Input } from '../input';
 	import { getDurationContext } from './context';
 	import type { DurationToProps } from './types';
 
 	let {
 		value = $bindable(''),
-		label = 'To',
 		placeholder = '',
 		disabled = false,
 		readonly = false,
@@ -32,11 +32,8 @@
 	}
 </script>
 
-<div class={klass} {...restProps}>
-	{#if label}
-		<label class="mb-1 block text-sm font-medium text-foreground">{label}</label>
-	{/if}
-	<input
+<Input.Root class={klass} {...restProps}>
+	<Input.Control
 		type="datetime-local"
 		value={ctx.to()}
 		{disabled}
@@ -45,6 +42,6 @@
 		{max}
 		{placeholder}
 		onchange={handleChange}
-		class="w-full rounded border border-border bg-background px-2 py-1 text-sm text-foreground outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+		class=""
 	/>
-</div>
+</Input.Root>

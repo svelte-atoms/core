@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$svelte-atoms/core/utils';
 	import { setDurationContext, computeDuration } from './context';
 	import type { DurationRootProps } from './types';
 
@@ -13,7 +14,7 @@
 	const duration = $derived(computeDuration(from, to));
 
 	// Sync computed duration out via bind:value
-	$effect(() => {
+	$effect.pre(() => {
 		value = duration;
 	});
 
@@ -26,6 +27,6 @@
 	});
 </script>
 
-<div class={klass}>
+<div class={cn('flex flex-col gap-0', klass)}>
 	{@render children?.()}
 </div>
