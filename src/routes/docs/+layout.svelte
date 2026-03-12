@@ -4,6 +4,38 @@
 
 	let { children } = $props();
 
+	type TocEntry = { id: string; text: string };
+	let toc = $state<TocEntry[]>([]);
+	let activeId = $state('');
+	let mainEl = $state<HTMLElement | undefined>(undefined);
+
+	$effect(() => {
+		// re-run on route change
+		$page.url.pathname;
+
+		// Wait for DOM to settle after navigation
+		requestAnimationFrame(() => {
+			if (!mainEl) return;
+			const headings = Array.from(mainEl.querySelectorAll('h2[id]'));
+			toc = headings.map((h) => ({ id: h.id, text: h.textContent?.trim() ?? '' }));
+
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							activeId = entry.target.id;
+							break;
+						}
+					}
+				},
+				{ rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+			);
+			headings.forEach((h) => observer.observe(h));
+
+			return () => observer.disconnect();
+		});
+	});
+
 	const sidebarData: PageContent[] = [
 		{
 			title: 'Getting Started',
@@ -64,37 +96,39 @@
 				{ title: 'Tree', href: '/docs/components/tree' }
 			]
 		}
-		// {
-		// 	title: 'Guides',
-		// 	children: [
-		// 		{ title: 'Theming', href: '/docs/guides/theming' },
-		// 		{ title: 'Dark Mode', href: '/docs/guides/dark-mode' },
-		// 		{ title: 'Customization', href: '/docs/guides/customization' }
-		// 	]
-		// }
 	];
 </script>
 
 <div class="mx-auto flex max-w-[1800px] items-start gap-8 px-6 lg:px-8">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
-	<main class="min-w-0 flex-1 py-8">
+	<main bind:this={mainEl} class="min-w-0 flex-1 py-8">
 		{@render children?.()}
 	</main>
 
 	<aside
-		class="sticky top-16 hidden w-64 shrink-0 overflow-y-auto xl:block"
-		style="height: calc(100vh - 4rem);"
+		class="sticky top-16 hidden w-56 shrink-0 xl:block"
+		style="height: calc(100vh - 4rem); overflow-y: auto;"
 	>
-		<div class="py-6 text-sm">
-			<h4 class="mb-4 font-semibold">On this page</h4>
-			<nav class="text-muted-foreground space-y-2">
-				<a href="#overview" class="hover:text-foreground block">Overview</a>
-				<a href="#installation" class="hover:text-foreground block">Installation</a>
-				<a href="#usage" class="hover:text-foreground block">Usage</a>
-				<a href="#api" class="hover:text-foreground block">API Reference</a>
-				<a href="#examples" class="hover:text-foreground block">Examples</a>
-			</nav>
-		</div>
+		{#if toc.length > 0}
+			<div class="py-6 text-sm">
+				<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
+					On this page
+				</h4>
+				<nav class="space-y-1">
+					{#each toc as entry (entry.id)}
+						<a
+							href="#{entry.id}"
+							class={[
+								'block py-1 pr-2 text-sm transition-colors',
+								activeId === entry.id
+									? 'text-foreground font-medium'
+									: 'text-muted-foreground hover:text-foreground'
+							]}
+						>{entry.text}</a>
+					{/each}
+				</nav>
+			</div>
+		{/if}
 	</aside>
 </div>
