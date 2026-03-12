@@ -11,7 +11,7 @@
 	{#if prev}
 		<a
 			href={prev.href}
-			class="group bg-card hover:bg-muted/50 flex flex-1 flex-col gap-1 rounded-lg p-4 transition-colors"
+			class="group hover:bg-muted/50 border-border/50 flex flex-1 flex-col gap-1 rounded-lg border p-4 transition-colors"
 		>
 			<div
 				class="text-muted-foreground flex items-center gap-2 text-xs font-medium tracking-wide uppercase"
@@ -35,7 +35,7 @@
 	{#if next}
 		<a
 			href={next.href}
-			class="group bg-card hover:bg-muted/50 flex flex-1 flex-col gap-1 rounded-lg p-4 text-right transition-colors"
+			class="group hover:bg-muted/50 border-border/50 flex flex-1 flex-col gap-1 rounded-lg border p-4 text-right transition-colors"
 		>
 			<div
 				class="text-muted-foreground flex items-center justify-end gap-2 text-xs font-medium tracking-wide uppercase"

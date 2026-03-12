@@ -25,6 +25,6 @@
 	});
 </script>
 
-<h2 bind:this={el} class="text-3xl font-bold {className}">
+<h2 bind:this={el} class="text-xl font-semibold {className}">
 	{@render children()}
 </h2>

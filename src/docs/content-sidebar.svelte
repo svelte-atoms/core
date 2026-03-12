@@ -17,7 +17,7 @@
 {#snippet tree(item: PageContent)}
 	{#if item.children && item.children.length > 0}
 		<Tree.Root open>
-			<Tree.Header class="hover:text-foreground/80 py-2 font-medium" disabled={item.disabled}
+			<Tree.Header class="text-muted-foreground hover:text-foreground/80 py-2 text-xs font-medium uppercase tracking-widest" disabled={item.disabled}
 				>{item.title}</Tree.Header
 			>
 			<Tree.Body class="text-muted-foreground flex flex-col gap-1 pl-4 text-sm">
@@ -31,7 +31,7 @@
 			href={item.disabled ? undefined : item.href}
 			class={[
 				'hover:text-foreground block py-1 transition-colors',
-				pathname.startsWith(item.href) ? 'text-foreground font-medium' : '',
+				pathname.startsWith(item.href) ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground',
 				item.disabled ? 'pointer-events-none opacity-50' : ''
 			]}
 			aria-disabled={item.disabled}

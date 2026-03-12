@@ -115,15 +115,15 @@
 				<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
 					On this page
 				</h4>
-				<nav class="space-y-1">
+				<nav class="space-y-0.5">
 					{#each toc as entry (entry.id)}
 						<a
 							href="#{entry.id}"
 							class={[
 								'block py-1 pr-2 text-sm transition-colors',
 								activeId === entry.id
-									? 'text-foreground font-medium'
-									: 'text-muted-foreground hover:text-foreground'
+									? 'text-foreground'
+									: 'text-muted-foreground/60 hover:text-foreground'
 							]}
 						>{entry.text}</a>
 					{/each}
