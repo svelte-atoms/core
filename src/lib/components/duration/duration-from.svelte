@@ -17,12 +17,12 @@
 	const ctx = getDurationContext();
 
 	// Sync inbound bind:value with context
-	$effect(() => {
+	$effect.pre(() => {
 		if (value !== ctx.from()) ctx.setFrom(value);
 	});
 
 	// Sync context changes back out (e.g. if Root's bind:from changes externally)
-	$effect(() => {
+	$effect.pre(() => {
 		const ctxVal = ctx.from();
 		if (ctxVal !== value) value = ctxVal;
 	});

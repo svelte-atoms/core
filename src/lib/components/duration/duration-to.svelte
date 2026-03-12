@@ -16,11 +16,11 @@
 
 	const ctx = getDurationContext();
 
-	$effect(() => {
+	$effect.pre(() => {
 		if (value !== ctx.to()) ctx.setTo(value);
 	});
 
-	$effect(() => {
+	$effect.pre(() => {
 		const ctxVal = ctx.to();
 		if (ctxVal !== value) value = ctxVal;
 	});
