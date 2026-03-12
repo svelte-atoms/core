@@ -90,7 +90,7 @@ const preset = setPreset({
 				code={basicCode}
 			>
 				<Scrollable.Root>
-					<Scrollable.Container class="rounded border" style="max-height: 200px;">
+					<Scrollable.Container class="rounded border max-h-[200px]">
 						<Scrollable.Content>
 							<div class="space-y-4 p-4">
 								{#each Array(20) as _, i}
@@ -128,10 +128,10 @@ const preset = setPreset({
 				code={bothCode}
 			>
 				<Scrollable.Root>
-					<Scrollable.Container class="rounded border" style="max-height: 300px;">
+					<Scrollable.Container class="rounded border max-h-[300px]">
 						<Scrollable.Content>
 							<div class="p-4">
-								<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
+								<div class="grid grid-cols-10 gap-4 min-w-[1200px]">
 									{#each Array(50) as _, i}
 										<div class="bg-muted rounded p-4 text-center">
 											{i + 1}

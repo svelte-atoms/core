@@ -60,7 +60,7 @@
 
 	<!-- Preview -->
 	{#if activeTab === 'preview'}
-		<div class="bg-card relative min-h-32 p-8" style="background-image: radial-gradient(circle, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px); background-size: 20px 20px;">
+		<div class="bg-card bg-dot-grid relative min-h-32 p-8">
 			<div class="flex items-center justify-center">
 				{@render children()}
 			</div>
@@ -87,7 +87,7 @@
 					{/if}
 				</button>
 			</div>
-			<CodeBlock lang="svelte" {code} />
+			<CodeBlock lang="svelte" code={code} showLeftBorder={false} />
 		</div>
 	{/if}
 </div>

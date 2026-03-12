@@ -46,7 +46,6 @@
 <Scrollable.Root
 	as="aside"
 	class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 lg:block"
-	style="height: calc(100vh - 4rem);"
 >
 	<Scrollable.Container>
 		<Scrollable.Content class="text-foreground flex flex-col gap-2 px-4 py-6">

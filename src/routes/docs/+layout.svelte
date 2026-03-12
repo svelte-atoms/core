@@ -107,8 +107,7 @@
 	</main>
 
 	<aside
-		class="sticky top-16 hidden w-56 shrink-0 xl:block"
-		style="height: calc(100vh - 4rem); overflow-y: auto;"
+		class="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto xl:block"
 	>
 		{#if toc.length > 0}
 			<div class="py-6 text-sm">
