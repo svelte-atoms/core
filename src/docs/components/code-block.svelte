@@ -65,11 +65,12 @@
 
 <style>
 	.code-block :global(pre) {
-		padding: 0.75rem 1rem;
+		padding: 1rem 1.25rem;
 		overflow-x: auto;
 		border-radius: 0;
-		border-left: 2px solid rgba(255, 255, 255, 0.12);
-		margin: 0.5rem 0;
+		border-left: 2px solid rgba(255, 255, 255, 0.2);
+		background: rgba(255, 255, 255, 0.03) !important;
+		margin: 0;
 	}
 
 	.code-block.transparent :global(pre) {
