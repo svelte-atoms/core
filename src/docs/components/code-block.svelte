@@ -14,30 +14,43 @@
 	let {
 		code,
 		lang = 'typescript',
-		theme = 'github-dark',
+		theme,
 		class: className = '',
 		showLineNumbers = false,
 		showLeftBorder = true,
 		transparent = true,
 	}: Props = $props();
 
+	let isDark = $state(false);
 	let highlightedCode = $state('');
 	let isLoading = $state(true);
 
 	$effect(() => {
+		const mq = window.matchMedia('(prefers-color-scheme: dark)');
+		// Also check if .dark class is on <html>
+		const check = () => {
+			isDark = document.documentElement.classList.contains('dark') || mq.matches;
+		};
+		check();
+		mq.addEventListener('change', check);
+
+		const observer = new MutationObserver(check);
+		observer.observe(document.documentElement, { attributeFilter: ['class'] });
+
+		return () => {
+			mq.removeEventListener('change', check);
+			observer.disconnect();
+		};
+	});
+
+	$effect(() => {
+		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'github-light');
 		isLoading = true;
 		codeToHtml(code, {
 			lang,
-			theme,
+			theme: resolvedTheme,
 			transformers: showLineNumbers
-				? [
-						{
-							name: 'line-numbers',
-							line(node, line) {
-								node.properties['data-line'] = line;
-							}
-						}
-					]
+				? [{ name: 'line-numbers', line(node, line) { node.properties['data-line'] = line; } }]
 				: []
 		})
 			.then((html) => {
@@ -59,7 +72,7 @@
 			<div class="bg-muted-foreground/20 mt-2 h-4 w-1/2 rounded"></div>
 		</div>
 	{:else}
-		<div class="overflow-x-auto rounded-lg">
+		<div class="overflow-x-auto">
 			{@html highlightedCode}
 		</div>
 	{/if}
@@ -70,13 +83,9 @@
 		padding: 1rem 1.25rem;
 		overflow-x: auto;
 		border-radius: 0;
-		border-left: var(--left-border-width, 0px) solid rgba(255, 255, 255, 0.2);
-		background: rgba(255, 255, 255, 0.03) !important;
-		margin: 0;
-	}
-
-	.code-block.transparent :global(pre) {
+		border-left: var(--left-border-width, 0px) solid color-mix(in oklch, currentColor 15%, transparent);
 		background: transparent !important;
+		margin: 0;
 	}
 
 	.code-block :global(code) {
@@ -96,6 +105,6 @@
 		width: 2rem;
 		margin-right: 1rem;
 		text-align: right;
-		color: rgba(255, 255, 255, 0.4);
+		opacity: 0.4;
 	}
 </style>
