@@ -188,7 +188,7 @@ const preset = setPreset({
 	</Section.Root>
 
 	<PageNavigation
-		prev={{ label: 'Back to Components', href: '/components' }}
+		prev={{ label: 'Back to Components', href: '/docs/components' }}
 		next={{ label: 'Next: Checkbox', href: '/components/checkbox' }}
 	/>
 </div>

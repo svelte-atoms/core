@@ -266,7 +266,7 @@
 	</Section.Root>
 
 	<PageNavigation
-		prev={{ label: 'Back to Components', href: '/components' }}
+		prev={{ label: 'Back to Components', href: '/docs/components' }}
 		next={{ label: 'Next: Button', href: '/components/button' }}
 	/>
 </div>

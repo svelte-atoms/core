@@ -1,5 +1,5 @@
 const basicCode = `
-<Accordion.Root>
+<Accordion>
   <AccordionItem.Root>
     <AccordionItem.Header>
       What is Svelte Atoms?
@@ -20,10 +20,10 @@ const basicCode = `
       Run: npm install @svelte-atoms/core
     </AccordionItem.Body>
   </AccordionItem.Root>
-</Accordion.Root>`.trim();
+</Accordion>`.trim();
 
 const collapsibleCode = `
-<Accordion.Root collapsible>
+<Accordion collapsible>
   <AccordionItem.Root>
     <AccordionItem.Header>
       What is Svelte Atoms?
@@ -43,10 +43,10 @@ const collapsibleCode = `
       Run: npm install @svelte-atoms/core
     </AccordionItem.Body>
   </AccordionItem.Root>
-</Accordion.Root>`.trim();
+</Accordion>`.trim();
 
 const multipleCode = `
-<Accordion.Root multiple={true}>
+<Accordion multiple={true}>
   <AccordionItem.Root>
     <AccordionItem.Header>Section 1</AccordionItem.Header>
     <AccordionItem.Body>Content 1</AccordionItem.Body>
@@ -56,7 +56,7 @@ const multipleCode = `
     <AccordionItem.Header>Section 2</AccordionItem.Header>
     <AccordionItem.Body>Content 2</AccordionItem.Body>
   </AccordionItem.Root>
-</Accordion.Root>`.trim();
+</Accordion>`.trim();
 
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';

@@ -140,6 +140,6 @@
 
 	<PageNavigation
 		prev={{ label: 'Previous: Button', href: '/components/button' }}
-		next={{ label: 'Back to Components', href: '/components' }}
+		next={{ label: 'Back to Components', href: '/docs/components' }}
 	/>
 </div>
