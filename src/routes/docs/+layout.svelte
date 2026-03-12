@@ -139,7 +139,7 @@
 	></div>
 	<!-- Drawer -->
 	<div class="bg-background border-border fixed top-14 bottom-0 left-0 z-50 w-72 overflow-y-auto border-r shadow-xl lg:hidden">
-		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
+		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} mobile={true} />
 	</div>
 {/if}
 
