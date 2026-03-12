@@ -160,14 +160,14 @@
 <!-- Mobile TOC drawer -->
 {#if mobileTocOpen && toc.length > 0}
 	<div
-		class="fixed inset-0 z-40 lg:hidden"
+		class="fixed inset-0 z-40 bg-black/40 lg:hidden"
 		role="button"
 		tabindex="-1"
 		onclick={() => (mobileTocOpen = false)}
 		onkeydown={(e) => e.key === 'Escape' && (mobileTocOpen = false)}
 		aria-label="Close table of contents"
 	></div>
-	<div class="bg-background border-border fixed right-0 z-50 w-64 overflow-y-auto border-l shadow-xl lg:hidden" style="top: calc(3.5rem + 2.25rem);">
+	<div class="bg-background border-border fixed top-14 right-0 bottom-0 z-50 w-72 overflow-y-auto border-l shadow-xl lg:hidden">
 		<div class="p-4 text-sm">
 			<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
 			<nav class="space-y-0.5">
