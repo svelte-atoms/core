@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { codeToHtml } from 'shiki';
+	import { Theme } from '../../routes/theme.svelte';
 
 	type Props = {
 		code: string;
@@ -21,27 +22,11 @@
 		transparent = true,
 	}: Props = $props();
 
-	let isDark = $state(false);
+	const appTheme = Theme.get();
+
+	let isDark = $derived(appTheme ? appTheme.colorScheme === 'dark' : true);
 	let highlightedCode = $state('');
 	let isLoading = $state(true);
-
-	$effect(() => {
-		const mq = window.matchMedia('(prefers-color-scheme: dark)');
-		// Also check if .dark class is on <html>
-		const check = () => {
-			isDark = document.documentElement.classList.contains('dark') || mq.matches;
-		};
-		check();
-		mq.addEventListener('change', check);
-
-		const observer = new MutationObserver(check);
-		observer.observe(document.documentElement, { attributeFilter: ['class'] });
-
-		return () => {
-			mq.removeEventListener('change', check);
-			observer.disconnect();
-		};
-	});
 
 	$effect(() => {
 		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'vitesse-light');
