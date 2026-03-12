@@ -8,31 +8,41 @@
 	} from '$svelte-atoms/core/components/atom';
 	import { StackBond, StackState } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { values } from 'es-toolkit/compat';
 	import './stack.css';
 
 	type Element = ElementType<E>;
 
 	let {
-		value = $bindable(),
+		value = $bindable<string | undefined>(undefined),
 		class: klass = '',
+		factory = _factory,
 		children,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
+	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { factory?: typeof _factory } = $props();
 
 	const bondProps = defineState([
-		defineProperty('value', ()=> values, (v)=> (value=v))
-	])
+		defineProperty(
+			'value',
+			() => value,
+			(v) => { value = v; }
+		)
+	]);
 
-	const bond = defaultFactory().share()
+	const bond = factory(bondProps).share();
+
+	// Reactively sync topmost item → bind:value
+	$effect(() => {
+		const top = bond.state.items.at(-1)?.id;
+		if (top !== undefined && top !== value) value = top;
+	});
 
 	const rootProps = $derived({
 		...bond.root(),
 		...restProps
-	})
-		
-	function defaultFactory(){
-		const bondState = new StackState(()=> bondProps);
+	});
+
+	function _factory(props: typeof bondProps) {
+		const bondState = new StackState(() => props);
 		return new StackBond(bondState);
 	}
 
@@ -43,7 +53,8 @@
 
 <HtmlAtom
 	preset="stack.root"
-	class={['stack-root border-border flex flex-1', '$preset', klass]}
+	{bond}
+	class={['stack-root', '$preset', klass]}
 	{...rootProps}
 >
 	{@render children?.()}
