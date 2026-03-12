@@ -99,7 +99,7 @@
 	];
 </script>
 
-<div class="flex w-full items-start gap-4 px-4 lg:px-6">
+<div class="docs-layout w-full items-start gap-4 lg:gap-16 px-4 lg:px-6">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
 	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">
@@ -131,3 +131,11 @@
 		{/if}
 	</aside>
 </div>
+
+
+<style>
+	.docs-layout {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+</style>
