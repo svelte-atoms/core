@@ -12,7 +12,6 @@
 	let { title, description, code, children }: Props = $props();
 
 	let activeTab = $state<'preview' | 'code'>('preview');
-
 	let copySuccess = $state(false);
 
 	function copyToClipboard(text: string) {
@@ -61,7 +60,7 @@
 
 	<!-- Preview -->
 	{#if activeTab === 'preview'}
-		<div class="preview-panel relative min-h-32 p-8">
+		<div class="bg-card relative min-h-32 p-8" style="background-image: radial-gradient(circle, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px); background-size: 20px 20px;">
 			<div class="flex items-center justify-center">
 				{@render children()}
 			</div>
@@ -71,11 +70,10 @@
 	<!-- Code -->
 	{#if code && activeTab === 'code'}
 		<div class="border-border border-t">
-			<div class="flex items-center justify-between px-4 py-2" style="background-color: #1f1f1f;">
-				<span class="text-xs" style="color: #666;">svelte</span>
+			<div class="flex items-center justify-between px-4 py-2">
+				<span class="text-xs text-zinc-500">svelte</span>
 				<button
-					class="transition-colors"
-					style="color: {copySuccess ? '#4ade80' : '#666'};"
+					class={['transition-colors', copySuccess ? 'text-green-400' : 'text-zinc-500 hover:text-zinc-300']}
 					onclick={() => copyToClipboard(code)}
 				>
 					{#if copySuccess}
@@ -89,15 +87,7 @@
 					{/if}
 				</button>
 			</div>
-			<CodeBlock lang="svelte" code={code} />
+			<CodeBlock lang="svelte" {code} />
 		</div>
 	{/if}
 </div>
-
-<style>
-	.preview-panel {
-		background-color: var(--card);
-		background-image: radial-gradient(circle, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px);
-		background-size: 20px 20px;
-	}
-</style>

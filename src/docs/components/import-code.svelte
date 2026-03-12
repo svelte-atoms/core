@@ -22,11 +22,11 @@
 
 <div class="space-y-2">
 	<!-- Install -->
-	<div class="install-card group relative overflow-hidden rounded-lg">
+	<div class="border-white/[0.06] group relative overflow-hidden rounded-lg border">
 		<div class="absolute top-2.5 right-3 z-10 flex items-center gap-2">
-			<span class="text-[11px] opacity-40">bash</span>
+			<span class="text-[11px] text-white/40">bash</span>
 			<button
-				class="opacity-40 transition-opacity hover:opacity-100"
+				class="text-white/40 transition-opacity hover:text-white/90"
 				onclick={() => copy(installCmd, (v) => (installCopySuccess = v))}
 				aria-label="Copy install command"
 			>
@@ -45,11 +45,11 @@
 	</div>
 
 	<!-- Import -->
-	<div class="install-card group relative overflow-hidden rounded-lg">
+	<div class="border-white/[0.06] group relative overflow-hidden rounded-lg border">
 		<div class="absolute top-2.5 right-3 z-10 flex items-center gap-2">
-			<span class="text-[11px] opacity-40">ts</span>
+			<span class="text-[11px] text-white/40">ts</span>
 			<button
-				class="opacity-40 transition-opacity hover:opacity-100"
+				class="text-white/40 transition-opacity hover:text-white/90"
 				onclick={() => copy(importCode, (v) => (importCopySuccess = v))}
 				aria-label="Copy import statement"
 			>
@@ -67,13 +67,3 @@
 		<CodeBlock lang="typescript" code={importCode} showLeftBorder={false} />
 	</div>
 </div>
-
-<style>
-	.install-card {
-		border: 1px solid rgba(255, 255, 255, 0.06);
-	}
-
-	.install-card :global(.code-block) {
-		color: rgba(255, 255, 255, 0.85);
-	}
-</style>
