@@ -102,12 +102,12 @@
 <div class="mx-auto flex max-w-[1800px] items-start gap-8 px-6 lg:px-8">
 	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
 
-	<main bind:this={mainEl} class="min-w-0 flex-1 py-8">
+	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">
 		{@render children?.()}
 	</main>
 
 	<aside
-		class="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto xl:block"
+		class="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto docs-scroll xl:block"
 	>
 		{#if toc.length > 0}
 			<div class="py-6 text-sm">

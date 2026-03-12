@@ -60,7 +60,7 @@
 
 	<!-- Preview -->
 	{#if activeTab === 'preview'}
-		<div class="bg-card bg-dot-grid relative min-h-32 p-8">
+		<div class="bg-dot-grid relative min-h-32 p-8">
 			<div class="flex items-center justify-center">
 				{@render children()}
 			</div>
