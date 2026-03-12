@@ -3,6 +3,7 @@
 	import { StackBond } from './bond.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { ElementType } from '$svelte-atoms/core/components/atom';
+	import { untrack } from 'svelte';
 
 	type Element = ElementType<E>;
 
@@ -17,7 +18,7 @@
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { id?: string } = $props();
 
 	$effect.pre(() => {
-		bond?.state.register(id);
+		untrack(()=> bond?.state.register(id));
 		return () => bond?.state.unregister(id);
 	});
 
