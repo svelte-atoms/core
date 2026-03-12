@@ -17,10 +17,10 @@
 {#snippet tree(item: PageContent)}
 	{#if item.children && item.children.length > 0}
 		<Tree.Root open>
-			<Tree.Header class="text-muted-foreground hover:text-foreground/80 py-2 text-xs font-medium uppercase tracking-widest" disabled={item.disabled}
+			<Tree.Header class="text-muted-foreground hover:text-foreground/80 py-2 text-xs font-medium uppercase tracking-widest text-right" disabled={item.disabled}
 				>{item.title}</Tree.Header
 			>
-			<Tree.Body class="text-muted-foreground flex flex-col gap-1 pl-4 text-sm">
+			<Tree.Body class="text-muted-foreground flex flex-col gap-1 pr-4 text-sm text-right">
 				{#each item.children as child (child)}
 					{@render tree(child)}
 				{/each}
@@ -30,7 +30,7 @@
 		<a
 			href={item.disabled ? undefined : item.href}
 			class={[
-				'hover:text-foreground block py-1 transition-colors',
+				'hover:text-foreground block py-1 text-right transition-colors',
 				pathname.startsWith(item.href) ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground',
 				item.disabled ? 'pointer-events-none opacity-50' : ''
 			]}
@@ -48,7 +48,7 @@
 	class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 docs-scroll lg:block"
 >
 	<Scrollable.Container>
-		<Scrollable.Content class="text-foreground flex flex-col gap-2 px-4 py-6">
+		<Scrollable.Content class="text-foreground flex flex-col gap-2 px-4 py-6 items-end">
 			{#each data as item (item)}
 				{@render tree(item)}
 			{/each}
