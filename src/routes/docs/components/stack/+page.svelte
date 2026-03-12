@@ -174,6 +174,40 @@
 					</div>
 				</div>
 			</DemoExample>
+
+			<DemoExample
+				title="Programmatic Z-Order"
+				description="Use getBond() to reorder layers at runtime. bind:value tracks the topmost item."
+				code={zOrderCode}
+			>
+				<div class="flex flex-col gap-4">
+					<div class="flex gap-2 flex-wrap">
+						{#each items as item (item.id)}
+							<button
+								class={['rounded px-3 py-1 text-sm font-medium text-white transition-all', item.bg, active === item.id ? 'ring-2 ring-offset-2 ring-black scale-105' : 'opacity-60']}
+								onclick={() => (active = item.id)}
+							>{item.label}</button>
+						{/each}
+					</div>
+					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 w-64">
+						{#each items as item (item.id)}
+							<Stack.Item
+								id={item.id}
+								class={['flex cursor-pointer items-center justify-center rounded-xl text-white font-bold text-xl shadow-lg transition-all', item.bg, item.offset, active === item.id ? 'ring-4 ring-white ring-offset-2' : '']}
+								onclick={() => (active = item.id)}
+							>
+								{item.label}
+							</Stack.Item>
+						{/each}
+					</Stack.Root>
+					<div class="flex gap-2 flex-wrap">
+						<Button variant="outline" size="sm" onclick={() => bond?.bringToFront(active)}>Bring to Front</Button>
+						<Button variant="outline" size="sm" onclick={() => bond?.bringForward(active)}>Forward</Button>
+						<Button variant="outline" size="sm" onclick={() => bond?.sendBackward(active)}>Backward</Button>
+						<Button variant="outline" size="sm" onclick={() => bond?.sendToBack(active)}>Send to Back</Button>
+					</div>
+				</div>
+			</DemoExample>
 		</div>
 	</Section.Root>
 
