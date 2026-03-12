@@ -1,5 +1,7 @@
 <script lang="ts">
-	import ContentSidebar, { type PageContent } from '$docs/content-sidebar.svelte';
+	import { type PageContent } from '$docs/content-sidebar.svelte';
+	import DocsNavSidebar from '$docs/docs-nav-sidebar.svelte';
+	import DocsTocSidebar from '$docs/docs-toc-sidebar.svelte';
 	import { page } from '$app/stores';
 
 	let { children } = $props();
@@ -103,7 +105,7 @@
 	];
 </script>
 
-<!-- Mobile nav bar -->
+<!-- Mobile sticky bar (hidden on desktop) -->
 <div class="border-border bg-background/80 sticky top-14 z-40 flex items-center border-b px-4 py-2 backdrop-blur-md lg:hidden">
 	<!-- Left: hamburger -->
 	<button
@@ -140,84 +142,25 @@
 	{/if}
 </div>
 
-<!-- Mobile nav drawer -->
-{#if mobileNavOpen}
-	<!-- Backdrop -->
-	<div
-		class="fixed inset-0 z-40 bg-black/40 lg:hidden"
-		role="button"
-		tabindex="-1"
-		onclick={() => (mobileNavOpen = false)}
-		onkeydown={(e) => e.key === 'Escape' && (mobileNavOpen = false)}
-		aria-label="Close navigation"
-	></div>
-	<!-- Drawer -->
-	<div class="bg-background border-border fixed top-14 bottom-0 left-0 z-50 w-72 overflow-y-auto border-r shadow-xl lg:hidden">
-		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} mobile={true} />
-	</div>
-{/if}
-
-<!-- Mobile TOC drawer -->
-{#if mobileTocOpen && toc.length > 0}
-	<div
-		class="fixed inset-0 z-40 bg-black/40 lg:hidden"
-		role="button"
-		tabindex="-1"
-		onclick={() => (mobileTocOpen = false)}
-		onkeydown={(e) => e.key === 'Escape' && (mobileTocOpen = false)}
-		aria-label="Close table of contents"
-	></div>
-	<div class="bg-background border-border fixed top-14 right-0 bottom-0 z-50 w-72 overflow-y-auto border-l shadow-xl lg:hidden">
-		<div class="p-4 text-sm">
-			<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
-			<nav class="space-y-0.5">
-				{#each toc as entry (entry.id)}
-					<a
-						href="#{entry.id}"
-						onclick={() => (mobileTocOpen = false)}
-						class={[
-							'block py-1.5 text-sm transition-colors',
-							activeId === entry.id ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
-						]}
-					>{entry.text}</a>
-				{/each}
-			</nav>
-		</div>
-	</div>
-{/if}
-
-<!-- Desktop layout -->
+<!-- Layout -->
 <div class="docs-layout w-full items-start gap-4 px-4 lg:gap-16 lg:px-6">
-	<ContentSidebar data={sidebarData} pathname={$page.url.pathname} />
+	<DocsNavSidebar
+		data={sidebarData}
+		pathname={$page.url.pathname}
+		open={mobileNavOpen}
+		onclose={() => (mobileNavOpen = false)}
+	/>
 
 	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">
 		{@render children?.()}
 	</main>
 
-	<aside
-		class="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto docs-scroll xl:block"
-	>
-		{#if toc.length > 0}
-			<div class="py-6 text-sm">
-				<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
-					On this page
-				</h4>
-				<nav class="space-y-0.5">
-					{#each toc as entry (entry.id)}
-						<a
-							href="#{entry.id}"
-							class={[
-								'block py-1 pr-2 text-sm transition-colors',
-								activeId === entry.id
-									? 'text-foreground'
-									: 'text-muted-foreground/60 hover:text-foreground'
-							]}
-						>{entry.text}</a>
-					{/each}
-				</nav>
-			</div>
-		{/if}
-	</aside>
+	<DocsTocSidebar
+		{toc}
+		{activeId}
+		open={mobileTocOpen}
+		onclose={() => (mobileTocOpen = false)}
+	/>
 </div>
 
 <style>
