@@ -1,6 +1,6 @@
 const buttonCode = `
 <script lang="ts">
-  import { Button } from '@svelte-atoms/core/button';
+  import { Button } from '@svelte-atoms/core';
 <\/script>
 
 <Button>Click me</Button>`.trim();
@@ -83,7 +83,7 @@ export const metadata = {
 	description: 'Interactive button component for triggering actions and events.',
 	componentTitle: 'Button',
 	componentDescription:
-		'A versatile button component with support for different variants, sizes, and states.',
+		'A versatile button component built on a native `<button>` element with full HTML attribute support. Style it through presets with any variant, size, or color scheme. Supports disabled states, loading indicators, and icon content out of the box.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -41,20 +41,17 @@
 </script>
 
 <svelte:head>
-	<title>DataGrid - Svelte Atoms</title>
-	<meta
-		name="description"
-		content="Flexible and powerful data grid component for displaying tabular data."
-	/>
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'DataGrid' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="DataGrid"
-		description="Flexible and powerful implementation for managing and displaying tabular data. Built with reactive state management using Bond and BondState."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -62,8 +59,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; DataGrid &#125; from '@svelte-atoms/core/datagrid';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -152,15 +149,7 @@ const preset = setPreset({
 		<Section.Header>
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
-		<AccessibilityInfo
-			features={[
-				'Proper table semantics with ARIA attributes',
-				'Keyboard navigation support',
-				'Screen reader announcements for sorting',
-				'Focus management for interactive cells',
-				'Row selection with keyboard'
-			]}
-		/>
+		<AccessibilityInfo features={metadata.accessibility} />
 	</Section.Root>
 
 	<PageNavigation

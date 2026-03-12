@@ -30,38 +30,43 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Section Separation',
+		description: 'Visually separate distinct sections of a page or card, such as between a header and body, or between content groups.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
-	}
-	// TODO: Add 4-6 use cases total
-];
-
-// TODO: Remove if simple component, or fill in for compound component
-const componentsSummary = [
+		title: 'List Item Separation',
+		description: 'Add subtle horizontal lines between list items in menus, settings panels, or navigation drawers.'
+	},
 	{
-		name: 'Divider.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		title: 'Inline Content Separation',
+		description: 'Use the vertical variant to separate inline elements like breadcrumb items, toolbar buttons, or header action groups.'
+	},
+	{
+		title: 'Form Section Grouping',
+		description: 'Divide a long form into labeled sections (e.g., "Personal Info" / "Account Settings") with an optional text label.'
+	},
+	{
+		title: 'Authentication Alternatives',
+		description: 'Display an "OR" divider between social login buttons and email/password form inputs.'
+	},
+	{
+		title: 'Card Layout Structure',
+		description: 'Separate card header, body, and footer regions with consistent visual boundaries.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Divider - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Visual separator for structuring content sections, supporting horizontal, vertical, and labeled variants.',
 	componentTitle: 'Divider',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A simple but versatile separator component for creating visual boundaries between content sections. Supports horizontal and vertical orientations, optional label content, and transparent mode. Uses a single element for both orientations via the vertical prop.',
+	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Divider } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Divider' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
 		orientation: orientationCode,

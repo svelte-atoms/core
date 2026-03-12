@@ -7,88 +7,93 @@ export interface PropDefinition {
 
 export const listRootProps: PropDefinition[] = [
 	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
 		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
+		type: "'ul' | 'ol' | string",
+		default: "'ul'",
+		description: 'The HTML element to render as. Use "ol" for ordered lists and "ul" for unordered lists.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet | undefined',
 		default: 'undefined',
-		description: 'Children content snippet'
+		description: 'List content, typically List.Item, List.Group, or List.Divider components.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
 
+export const listGroupProps: PropDefinition[] = [
+	{
+		name: 'children',
+		type: 'Snippet | undefined',
+		default: 'undefined',
+		description: 'Group content, typically List.Title and List.Item components.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
+];
+
+export const listItemProps: PropDefinition[] = [
+	{
+		name: 'as',
+		type: "'li' | string",
+		default: "'li'",
+		description: 'The HTML element to render as.'
+	},
+	{
+		name: 'children',
+		type: 'Snippet | undefined',
+		default: 'undefined',
+		description: 'Item content. Can include icons, text, and action elements.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
+];
+
+export const listTitleProps: PropDefinition[] = [
+	{
+		name: 'as',
+		type: "'h3' | string",
+		default: "'h3'",
+		description: 'The HTML heading element to render as.'
+	},
+	{
+		name: 'children',
+		type: 'Snippet | undefined',
+		default: 'undefined',
+		description: 'Title text or content for the group section.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
+];
+
+export const listDividerProps: PropDefinition[] = [
+	{
+		name: 'vertical',
+		type: 'boolean | undefined',
+		default: 'false',
+		description: 'Whether to render a vertical divider instead of the default horizontal one.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
+];

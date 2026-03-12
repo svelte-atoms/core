@@ -10,73 +10,73 @@ export const comboboxRootProps: PropDefinition[] = [
 		name: 'open',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Open'
+		description: 'Controls whether the combobox dropdown is open. Can be bound for controlled usage.'
 	},
 	{
 		name: 'value',
 		type: 'unknown',
 		default: 'undefined',
-		description: 'Value'
+		description: 'The currently selected value in single-select mode.'
 	},
 	{
 		name: 'values',
 		type: 'unknown[] | undefined',
 		default: 'undefined',
-		description: 'Values'
+		description: 'Array of selected values in multi-select mode.'
 	},
 	{
 		name: 'label',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Label'
+		default: "''",
+		description: 'Display label for the currently selected item (single-select mode).'
 	},
 	{
 		name: 'labels',
 		type: 'string[] | undefined',
-		default: '\'\'',
-		description: 'Labels'
+		default: "''",
+		description: 'Array of display labels for selected items (multi-select mode).'
 	},
 	{
 		name: 'multiple',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Multiple'
+		description: 'When true, enables multiple item selection and shows selection chips.'
 	},
 	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Disabled'
+		description: 'Disables the combobox, preventing user interaction.'
 	},
 	{
 		name: 'placements',
 		type: 'string[] | undefined',
-		default: '\'\'',
-		description: 'Placements'
+		default: "['bottom-start', 'top-start']",
+		description: 'Ordered list of preferred placement positions for the dropdown content.'
 	},
 	{
 		name: 'placement',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Placement'
+		default: "'bottom-start'",
+		description: 'Preferred placement position for the dropdown content (floating-ui placement value).'
 	},
 	{
 		name: 'offset',
 		type: 'number | undefined',
 		default: '0',
-		description: 'Offset'
+		description: 'Distance in pixels between the trigger and the dropdown content.'
 	},
 	{
 		name: 'factory',
 		type: 'Factory<ComboboxBond> | undefined',
 		default: 'undefined',
-		description: 'Factory'
+		description: 'Custom factory function to create a ComboboxBond instance.'
 	},
 	{
 		name: 'children',
 		type: 'Snippet<[{ combobox: ComboboxBond; }]> | undefined',
 		default: 'undefined',
-		description: 'Children content snippet'
+		description: 'Combobox content. Receives the ComboboxBond instance for custom composition.'
 	},
 	{
 		name: '...atomProps',
@@ -97,7 +97,7 @@ export const comboboxSelectionsProps: PropDefinition[] = [
 		name: 'Selection',
 		type: 'Component<{}, {}, string> | undefined',
 		default: '\'\'',
-		description: 'Selection'
+		description: 'Custom component to render each individual selection badge.',
 	},
 	{
 		name: 'children',

@@ -38,12 +38,12 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
+${'componentsSummary' in metadata && metadata.componentsSummary ? `
 ## Components
 
 The Divider module consists of the following components:
 
-${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
+${(metadata as typeof metadata & { componentsSummary: { name: string; description: string }[] }).componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
 ` : ''}
 
 ### Divider.Root

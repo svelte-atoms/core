@@ -46,38 +46,39 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Internal Navigation',
+		description: 'Link to pages within your application with consistent, styled anchor elements that match your design system.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
-	}
-	// TODO: Add 4-6 use cases total
-];
-
-// TODO: Remove if simple component, or fill in for compound component
-const componentsSummary = [
+		title: 'External Links',
+		description: 'Link to external websites with target="_blank" and rel="noopener noreferrer" for security and UX best practices.'
+	},
 	{
-		name: 'Link.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		title: 'Inline Text Links',
+		description: 'Embed contextual links within paragraphs or body text with underline styling to signal clickability.'
+	},
+	{
+		title: 'Navigation Menus',
+		description: 'Build navigation bars, sidebars, and breadcrumbs using consistently styled link components.'
+	},
+	{
+		title: 'Call to Action',
+		description: 'Use styled link variants to create muted or destructive contextual links for secondary or dangerous actions.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Link - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Accessible anchor component for internal and external navigation links.',
 	componentTitle: 'Link',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A styled anchor element built on top of HtmlAtom that provides consistent link styling with hover and active states. Supports preset-based customization for variants like muted, underline, and destructive.',
+	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Link } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Link' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
 		external: externalCode,

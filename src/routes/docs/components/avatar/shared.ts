@@ -24,58 +24,80 @@ import { setPreset } from '@svelte-atoms/core';
 
 const preset = setPreset({
   avatar: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'inline-flex items-center justify-center rounded-full bg-muted text-muted-foreground overflow-hidden',
+    variants: {
+      size: {
+        sm: { class: 'h-8 w-8 text-xs' },
+        md: { class: 'h-10 w-10 text-sm' },
+        lg: { class: 'h-12 w-12 text-base' },
+        xl: { class: 'h-16 w-16 text-lg' }
+      }
+    },
+    defaults: {
+      size: 'md'
+    }
   })
-});
-`.trim();
+});`.trim();
 
 const accessibilityFeatures = [
-	'Proper alt text for images',
-	'Meaningful fallback initials',
-	'Adequate color contrast for initials',
-	'Semantic img element usage',
-	'ARIA labels when needed'
+	'Proper alt text for images passed to screen readers',
+	'Meaningful initials as fallback when image fails or is absent',
+	'Adequate color contrast for initials against background',
+	'Image uses role="presentation" to avoid redundant announcements',
+	'aria-label support for custom content'
 ];
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'User Profile Pictures',
+		description:
+			'Display profile images in navigation bars, sidebars, and headers to identify the currently signed-in user.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
-	}
-	// TODO: Add 4-6 use cases total
-];
-
-// TODO: Remove if simple component, or fill in for compound component
-const componentsSummary = [
+		title: 'Comment Threads',
+		description:
+			'Show author avatars alongside comments, posts, and replies in discussion boards and social feeds.'
+	},
 	{
-		name: 'Avatar.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		title: 'Contact Lists',
+		description:
+			'Represent contacts, team members, or collaborators with images or initials in lists and tables.'
+	},
+	{
+		title: 'Avatar Groups',
+		description:
+			'Stack multiple avatars to show who has liked, viewed, or is participating in a shared resource.'
+	},
+	{
+		title: 'Activity Feeds',
+		description:
+			'Pair avatars with activity entries to give visual context about who performed each action.'
+	},
+	{
+		title: 'Chat Interfaces',
+		description:
+			'Display sender avatars in chat UIs so users can quickly identify message authors at a glance.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Avatar - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Display user profile images with automatic initials fallback.',
 	componentTitle: 'Avatar',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A simple avatar component that displays a user profile image with automatic fallback to generated initials. Supports various sizes and custom Svelte component icons. Ideal for any UI that needs to visually identify users.',
+	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Avatar } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Avatar' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
 		sizes: sizesCode,
 		fallback: fallbackCode,
-		group: groupCode
+		group: groupCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

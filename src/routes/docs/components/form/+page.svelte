@@ -30,20 +30,17 @@
 </script>
 
 <svelte:head>
-	<title>Form & Field - Atomic SV</title>
-	<meta
-		name="description"
-		content="Flexible form and field components for building accessible forms with validation."
-	/>
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/components' }, { label: 'Form' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Form & Field"
-		description="Composable form and field components for building accessible, validated forms with powerful state management."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -51,8 +48,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Form, Field &#125; from '@svelte-atoms/core/form';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 

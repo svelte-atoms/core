@@ -14,24 +14,21 @@
 	import { cardRootProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, variants: variantsCode, clickable: clickableCode, actions: actionsCode } = metadata.examples;
+	const { basic: basicCode, withMedia: withMediaCode, clickable: clickableCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
-	<title>Card - Svelte Atoms</title>
-	<meta
-		name="description"
-		content="Flexible container component for displaying content in a structured way."
-	/>
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Card' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Card"
-		description="Flexible and modular card component for displaying content in a structured and visually appealing way. Built with atomic design principles."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -39,8 +36,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Card &#125; from '@svelte-atoms/core/card';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -115,26 +112,28 @@ const preset = setPreset({
 			</DemoExample>
 
 			<DemoExample
-				title="Card Variants"
-				description="Different visual styles for cards"
-				code={variantsCode}
+				title="Card with Media"
+				description="Card with an image or media section"
+				code={withMediaCode}
 			>
 				<div class="grid gap-4 md:grid-cols-3">
-					<Card.Root variant="default">
+					<Card.Root>
 						<Card.Header>
 							<Card.Title>Default</Card.Title>
 						</Card.Header>
 					</Card.Root>
 
-					<Card.Root variant="outlined">
+					<Card.Root>
 						<Card.Header>
-							<Card.Title>Outlined</Card.Title>
+							<Card.Title>Card Two</Card.Title>
 						</Card.Header>
 					</Card.Root>
 
-					<Card.Root variant="elevated">
+					<Card.Root>
 						<Card.Header>
-							<Card.Title>Elevated</Card.Title>
+							<Card.Title>Card Three</Card.Title>
+						</Card.Header>
+					</Card.Root>
 						</Card.Header>
 					</Card.Root>
 				</div>
@@ -145,7 +144,7 @@ const preset = setPreset({
 				description="Interactive card with click handler"
 				code={clickableCode}
 			>
-				<Card.Root clickable onclick={() => alert('Card clicked!')}>
+				<Card.Root onclick={() => alert('Card clicked!')}>
 					<Card.Header>
 						<Card.Title>Clickable Card</Card.Title>
 						<Card.Description>Click anywhere on this card.</Card.Description>
@@ -154,9 +153,9 @@ const preset = setPreset({
 			</DemoExample>
 
 			<DemoExample
-				title="Card with Actions"
-				description="Card with action buttons"
-				code={actionsCode}
+				title="Card with Footer Actions"
+				description="Card with action buttons in the footer"
+				code={presetCode}
 			>
 				<Card.Root>
 					<Card.Header>

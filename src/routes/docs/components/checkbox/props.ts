@@ -7,58 +7,46 @@ export interface PropDefinition {
 
 export const checkboxProps: PropDefinition[] = [
 	{
-		name: 'value',
-		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Value'
-	},
-	{
-		name: 'group',
-		type: 'string[] | undefined',
-		default: '\'\'',
-		description: 'Group'
-	},
-	{
 		name: 'checked',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Checked'
+		description: 'Whether the checkbox is checked. Supports two-way binding with bind:checked.'
 	},
 	{
 		name: 'indeterminate',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Indeterminate'
+		description: 'Whether the checkbox is in the indeterminate state (partially selected group)'
+	},
+	{
+		name: 'value',
+		type: 'string | undefined',
+		default: 'undefined',
+		description: 'The value attribute for group binding. Used alongside the group prop.'
+	},
+	{
+		name: 'group',
+		type: 'string[] | undefined',
+		default: 'undefined',
+		description: 'Bindable array for multi-checkbox group management (similar to Svelte bind:group)'
 	},
 	{
 		name: 'checkedContent',
-		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
-		default: '\'\'',
-		description: 'Checked Content'
+		type: 'Component | Snippet | undefined',
+		default: 'undefined',
+		description: 'Custom content to render inside the checkbox when it is checked (e.g., a checkmark icon)'
 	},
 	{
 		name: 'indeterminateContent',
-		type: 'Component<{}, {}, string> | Snippet<[]> | undefined',
-		default: '\'\'',
-		description: 'Indeterminate Content'
-	},
-	{
-		name: 'children',
-		type: 'Snippet<[]> | undefined',
+		type: 'Component | Snippet | undefined',
 		default: 'undefined',
-		description: 'Children'
-	},
-	{
-		name: 'onclick',
-		type: '((ev?: Event | undefined) => void) | undefined',
-		default: 'undefined',
-		description: 'Onclick'
+		description: 'Custom content to render when the checkbox is in the indeterminate state'
 	},
 	{
 		name: 'onchange',
-		type: '((ev?: Event | undefined, options?: { checked: boolean; } | undefined) => void) | undefined',
-		default: 'false',
-		description: 'Onchange'
+		type: '((ev?: Event, options?: { checked: boolean }) => void) | undefined',
+		default: 'undefined',
+		description: 'Callback fired when the checked state changes'
 	},
 	{
 		name: '...atomProps',
@@ -67,4 +55,3 @@ export const checkboxProps: PropDefinition[] = [
 		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
-

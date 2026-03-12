@@ -18,17 +18,17 @@
 </script>
 
 <svelte:head>
-	<title>Divider - Svelte Atoms</title>
-	<meta name="description" content="Visual separator for content sections." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Divider' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Divider"
-		description="Visual separator for content sections. Creates clear boundaries between different parts of your UI."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -36,8 +36,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Divider &#125; from '@svelte-atoms/core/divider';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -137,15 +137,7 @@ const preset = setPreset({
 		<Section.Header>
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
-		<AccessibilityInfo
-			features={[
-				'Semantic hr element for horizontal dividers',
-				'Proper ARIA role when needed',
-				'Sufficient visual contrast',
-				'Does not interfere with screen readers',
-				'Decorative element properly marked'
-			]}
-		/>
+		<AccessibilityInfo features={metadata.accessibility} />
 	</Section.Root>
 
 	<PageNavigation

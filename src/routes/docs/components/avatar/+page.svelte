@@ -14,21 +14,21 @@
 	import { avatarProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, sizes: sizesCode, fallback: fallbackCode, group: groupCode } = metadata.examples;
+	const { basic: basicCode, sizes: sizesCode, fallback: fallbackCode, group: groupCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
-	<title>Avatar - Svelte Atoms</title>
-	<meta name="description" content="Display user profile images with fallback support." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Avatar' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Avatar"
-		description="Display user profile images with automatic fallback to initials. Supports various sizes and grouping."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -36,8 +36,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Avatar &#125; from '@svelte-atoms/core/avatar';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 

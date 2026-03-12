@@ -16,11 +16,7 @@
 	import { cn } from '$lib/utils';
 	import {
 		alertRootProps,
-		alertActionsProps,
-		alertContentProps,
-		alertDescriptionProps,
-		alertIconProps,
-		alertTitleProps
+		alertSubPartProps
 	} from './props';
 	import { metadata } from './shared';
 
@@ -30,8 +26,8 @@
 </script>
 
 <svelte:head>
-	<title>Alert - Svelte Atoms</title>
-	<meta name="description" content="Display important messages and notifications to users." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 {#snippet alertLayout({ children, class: klass, ...args })}
@@ -49,12 +45,12 @@
 {/snippet}
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Alert' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Alert"
-		description="Display important messages and notifications to users. Alerts provide contextual feedback for user actions."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -62,8 +58,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Alert &#125; from '@svelte-atoms/core/alert';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -366,27 +362,27 @@ const preset = setPreset({
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Title Props</h3>
-				<Props data={alertTitleProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Actions Props</h3>
-				<Props data={alertActionsProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Content Props</h3>
-				<Props data={alertContentProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Description Props</h3>
-				<Props data={alertDescriptionProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Icon Props</h3>
-				<Props data={alertIconProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 		</div>
 	</Section.Root>

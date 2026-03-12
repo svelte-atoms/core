@@ -14,23 +14,23 @@
 	import breadcrumbProps from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, customSeparator: customSeparatorCode } = metadata.examples;
+	const { basic: basicCode, customSeparator: customSeparatorCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
-	<title>Breadcrumb - Svelte Atoms</title>
-	<meta name="description" content="Navigation component showing page hierarchy." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 	<Breadcrumb
-		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]}
+		items={metadata.breadcrumbs}
 	/>
 
 	<PageHeader
-		title="Breadcrumb"
-		description="Navigation component that displays the user's location within the app hierarchy."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -38,8 +38,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Breadcrumb &#125; from '@svelte-atoms/core/breadcrumb';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -55,19 +55,7 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core/context';
-
-setPreset({
-  'breadcrumb': () => ({
-    class: 'flex items-center gap-1 text-sm'
-  }),
-  'breadcrumb.item': () => ({
-    class: 'hover:text-primary rounded-lg px-2 py-1 hover:bg-primary/5'
-  }),
-  'breadcrumb.separator': () => ({
-    class: 'text-muted-foreground px-0'
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
 	</Section.Root>

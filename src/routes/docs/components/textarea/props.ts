@@ -7,88 +7,16 @@ export interface PropDefinition {
 
 export const textareaRootProps: PropDefinition[] = [
 	{
-		name: 'bond',
-		type: 'Bond',
-		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
-	},
-	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
-		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	},
-	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet | undefined',
 		default: 'undefined',
-		description: 'Children content snippet'
+		description: 'Content of the textarea root wrapper, typically Textarea.Control.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
 
@@ -96,80 +24,79 @@ export const textareaInputProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Value'
+		default: 'undefined',
+		description: 'The current text value of the textarea. Bindable for two-way sync.'
 	},
 	{
 		name: 'placeholder',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Placeholder'
+		default: 'undefined',
+		description: 'Placeholder text shown when the textarea is empty.'
 	},
 	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Disabled'
+		description: 'Disables the textarea, preventing user input and applying disabled styling.'
 	},
 	{
 		name: 'readonly',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Readonly'
+		description: 'Makes the textarea read-only; the value is visible but cannot be changed by the user.'
 	},
 	{
 		name: 'rows',
 		type: 'number | undefined',
-		default: '0',
-		description: 'Rows'
+		default: 'undefined',
+		description: 'Number of visible text rows. Determines the initial height of the textarea.'
 	},
 	{
 		name: 'cols',
 		type: 'number | undefined',
-		default: '0',
-		description: 'Cols'
+		default: 'undefined',
+		description: 'Number of visible text columns. Determines the initial width of the textarea.'
 	},
 	{
 		name: 'maxlength',
 		type: 'number | undefined',
-		default: '0',
-		description: 'Maxlength'
+		default: 'undefined',
+		description: 'Maximum number of characters allowed in the textarea.'
 	},
 	{
 		name: 'minlength',
 		type: 'number | undefined',
-		default: '0',
-		description: 'Minlength'
+		default: 'undefined',
+		description: 'Minimum number of characters required for form validation.'
 	},
 	{
 		name: 'required',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Required'
+		description: 'Whether the textarea must have a value for form submission.'
 	},
 	{
 		name: 'autofocus',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Autofocus'
+		description: 'Whether the textarea should receive focus automatically when the page loads.'
 	},
 	{
 		name: 'autocomplete',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Autocomplete'
+		default: 'undefined',
+		description: 'Browser autocomplete hint. Use "on", "off", or a specific token like "street-address".'
 	},
 	{
 		name: 'spellcheck',
 		type: 'boolean | undefined',
-		default: 'false',
-		description: 'Spellcheck'
+		default: 'undefined',
+		description: 'Whether the browser should check spelling in the textarea content.'
 	},
 	{
 		name: 'wrap',
 		type: '"soft" | "hard" | "off" | undefined',
 		default: 'undefined',
-		description: 'Wrap'
+		description: 'How the textarea wraps text during form submission. "hard" inserts newlines; "soft" does not.'
 	},
 ];
-

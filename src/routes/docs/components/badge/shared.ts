@@ -77,7 +77,7 @@ export const metadata = {
 	description: 'Small count and labeling component for status and notifications.',
 	componentTitle: 'Badge',
 	componentDescription:
-		'A compact inline element for displaying counts, labels, and status indicators.',
+		'A compact inline element for displaying status labels, counts, and category tags. Badges are non-interactive by default but can receive any HTML element props for custom behavior. Style them with variants, colors, and sizes via presets to match your design system.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

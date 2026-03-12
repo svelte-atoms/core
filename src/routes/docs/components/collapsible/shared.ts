@@ -1,21 +1,21 @@
 const basicCode = `
 <script lang="ts">
   let open = $state(false);
-</script>
+<\/script>
 
 <Collapsible.Root bind:open>
-  <Collapsible.Trigger>
-    <button>Toggle Content</button>
-  </Collapsible.Trigger>
-  <Collapsible.Content>
+  <Collapsible.Header>
+    Toggle Content
+  </Collapsible.Header>
+  <Collapsible.Body>
     <p>This content can be shown or hidden.</p>
-  </Collapsible.Content>
+  </Collapsible.Body>
 </Collapsible.Root>`.trim();
 
 const controlledCode = `
 <script lang="ts">
   let isOpen = $state(true);
-</script>
+<\/script>
 
 <Collapsible.Root bind:open={isOpen}>
   <Collapsible.Header>
@@ -40,10 +40,10 @@ const preset = setPreset({
   collapsible: () => ({
     class: 'w-full space-y-2'
   }),
-  'collapsible.trigger': () => ({
+  'collapsible.header': () => ({
     class: 'flex w-full items-center justify-between rounded-md border border-border bg-background px-4 py-3 text-sm font-medium hover:bg-accent transition-colors'
   }),
-  'collapsible.content': () => ({
+  'collapsible.body': () => ({
     class: 'overflow-hidden text-sm text-muted-foreground px-4 py-3 border border-t-0 rounded-b-md border-border'
   })
 });`.trim();
@@ -93,41 +93,31 @@ const componentsSummary = [
 	{
 		name: 'Collapsible.Root',
 		description:
-			'Root container that manages the collapsible state and coordinates child components.'
-	},
-	{
-		name: 'Collapsible.Trigger',
-		description:
-			'Interactive element that toggles the collapsible open/closed state. Can be customized with any clickable content.'
+			'Root container that manages the collapsible open/closed state and coordinates child components.'
 	},
 	{
 		name: 'Collapsible.Header',
 		description:
-			'Header section containing the trigger and any additional header content.'
+			'Clickable header element that toggles the collapsible open/closed state. Can contain any content.'
 	},
 	{
 		name: 'Collapsible.Body',
 		description:
-			'Collapsible content area that expands and collapses based on state.'
-	},
-	{
-		name: 'Collapsible.Content',
-		description:
-			'Alias for Collapsible.Body, providing semantic naming flexibility.'
+			'Collapsible content area that expands and collapses with animated transitions based on the open state.'
 	},
 	{
 		name: 'Collapsible.Indicator',
 		description:
-			'Optional visual indicator (e.g., chevron icon) that reflects the open/closed state.'
+			'Optional visual indicator (e.g., chevron icon) that rotates or changes to reflect the open/closed state.'
 	}
 ];
 
 export const metadata = {
 	title: 'Collapsible - Svelte Atoms',
-	description: 'Expandable container for showing and hiding content.',
+	description: 'Expandable container for showing and hiding content on demand.',
 	componentTitle: 'Collapsible',
 	componentDescription:
-		'Expandable container for showing and hiding content. Perfect for FAQs, settings, and progressive disclosure.',
+		'A compound component for toggling the visibility of content sections. Unlike Accordion, Collapsible manages a single independent open/closed state, making it ideal for standalone expandable sections, progressive disclosure patterns, and sidebar filters. Supports controlled state and animated transitions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -22,17 +22,17 @@
 </script>
 
 <svelte:head>
-	<title>Radio - Svelte Atoms</title>
-	<meta name="description" content="Radio button for single selection from multiple options." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Radio' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Radio"
-		description="Radio buttons allow users to select a single option from a set of choices."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -40,8 +40,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Radio &#125; from '@svelte-atoms/core/radio';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -144,13 +144,7 @@ const preset = setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Use proper grouping with fieldset/legend',
-				'Associate labels with radio buttons',
-				'Keyboard navigation (Arrow keys)',
-				'Clear visual focus indicators',
-				'Screen reader friendly'
-			]}
+			features={metadata.accessibility}
 		/>
 	</Section.Root>
 

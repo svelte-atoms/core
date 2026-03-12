@@ -6,52 +6,36 @@ const basicCode = `
 <Card.Root>
   <Card.Header>
     <Card.Title>Card Title</Card.Title>
-    <Card.Description>This is a card description.</Card.Description>
+    <Card.Subtitle>Card subtitle</Card.Subtitle>
   </Card.Header>
-  <Card.Content>
+  <Card.Body>
     <p>Main content goes here.</p>
-  </Card.Content>
+  </Card.Body>
+  <Card.Footer>
+    <button>Action</button>
+  </Card.Footer>
 </Card.Root>`.trim();
 
-const variantsCode = `
-<Card.Root variant="default">
+const withMediaCode = `
+<Card.Root>
+  <Card.Media>
+    <img src="/card-image.jpg" alt="Card visual" />
+  </Card.Media>
   <Card.Header>
-    <Card.Title>Default Card</Card.Title>
+    <Card.Title>Media Card</Card.Title>
+    <Card.Description>Card with an image media section.</Card.Description>
   </Card.Header>
-</Card.Root>
-
-<Card.Root variant="outlined">
-  <Card.Header>
-    <Card.Title>Outlined Card</Card.Title>
-  </Card.Header>
-</Card.Root>
-
-<Card.Root variant="elevated">
-  <Card.Header>
-    <Card.Title>Elevated Card</Card.Title>
-  </Card.Header>
+  <Card.Body>
+    <p>Card body content after the media section.</p>
+  </Card.Body>
 </Card.Root>`.trim();
 
 const clickableCode = `
-<Card.Root clickable onclick={() => console.log('Clicked!')}>
+<Card.Root onclick={() => console.log('Clicked!')}>
   <Card.Header>
     <Card.Title>Clickable Card</Card.Title>
-    <Card.Description>Click anywhere on this card.</Card.Description>
+    <Card.Description>Click anywhere on this card to trigger an action.</Card.Description>
   </Card.Header>
-</Card.Root>`.trim();
-
-const actionsCode = `
-<Card.Root>
-  <Card.Header>
-    <Card.Title>Action Card</Card.Title>
-  </Card.Header>
-  <Card.Content>
-    <p>Content with actions.</p>
-  </Card.Content>
-  <Card.Actions>
-    <button>Primary Action</button>
-    <button>Secondary</button>
-  </Card.Actions>
 </Card.Root>`.trim();
 
 const presetCode = `
@@ -67,14 +51,20 @@ const preset = setPreset({
   'card.title': () => ({
     class: 'text-2xl font-semibold leading-none tracking-tight'
   }),
+  'card.subtitle': () => ({
+    class: 'text-sm text-muted-foreground'
+  }),
   'card.description': () => ({
     class: 'text-sm text-muted-foreground'
   }),
-  'card.content': () => ({
+  'card.body': () => ({
     class: 'p-6 pt-0'
   }),
-  'card.actions': () => ({
+  'card.footer': () => ({
     class: 'flex items-center p-6 pt-0'
+  }),
+  'card.media': () => ({
+    class: 'overflow-hidden rounded-t-lg'
   })
 });
 `.trim();
@@ -124,41 +114,48 @@ const componentsSummary = [
 	{
 		name: 'Card.Root',
 		description:
-			'Container component that provides the card structure, variants, and clickable behavior.'
+			'Container component that provides the card structure, clickable behavior, and coordinates child components.'
 	},
 	{
 		name: 'Card.Header',
 		description:
-			'Header section containing title and optional description, typically at the top of the card.'
+			'Header section typically containing the title, subtitle, and description at the top of the card.'
 	},
 	{
 		name: 'Card.Title',
-		description:
-			'Main heading element for the card, usually displayed prominently in the header.'
+		description: 'Main heading element for the card, displayed prominently in the header.'
+	},
+	{
+		name: 'Card.Subtitle',
+		description: 'Secondary heading below the title, providing a brief additional descriptor.'
 	},
 	{
 		name: 'Card.Description',
 		description:
-			'Subtitle or supporting text that provides additional context below the title.'
+			'Supporting text that provides additional context or detail beneath the title/subtitle.'
 	},
 	{
-		name: 'Card.Content',
+		name: 'Card.Body',
 		description:
-			'Main content area for the card body, containing the primary information or interactive elements.'
+			'Main content area for the card, containing the primary information or interactive elements.'
 	},
 	{
-		name: 'Card.Actions',
+		name: 'Card.Media',
 		description:
-			'Footer section for action buttons or links, typically aligned to the bottom of the card.'
+			'Media container for images, videos, or other visual content, typically placed at the top of the card.'
+	},
+	{
+		name: 'Card.Footer',
+		description: 'Bottom section for action buttons, metadata, or supplementary content.'
 	}
 ];
 
 export const metadata = {
 	title: 'Card - Svelte Atoms',
-	description: 'Flexible container component for grouped content and actions.',
+	description: 'Flexible container component for grouped content with headers, body, and footers.',
 	componentTitle: 'Card',
 	componentDescription:
-		'A versatile card component for displaying content in a contained, elevated format with headers, content, and actions.',
+		'A modular card component for organizing content into distinct sections. Supports headers with title/subtitle/description, a body for main content, a media section for images, and a footer for actions. Cards can optionally be made interactive/clickable.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
@@ -168,9 +165,8 @@ export const metadata = {
 	componentsSummary,
 	examples: {
 		basic: basicCode,
-		variants: variantsCode,
+		withMedia: withMediaCode,
 		clickable: clickableCode,
-		actions: actionsCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

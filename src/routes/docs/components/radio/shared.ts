@@ -29,38 +29,51 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Single-choice Forms',
+		description: 'Present mutually exclusive options in forms where users must select exactly one value, such as gender, subscription tier, or payment method.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Settings and Preferences',
+		description: 'Allow users to choose between predefined options for app settings like theme, language, or notification frequency.'
+	},
+	{
+		title: 'Survey Questions',
+		description: 'Render single-answer survey or quiz questions with clear, labeled options grouped under a shared question.'
+	},
+	{
+		title: 'Filter Controls',
+		description: 'Build exclusive filter toggles for sorting or filtering data views, like choosing between ascending and descending order.'
+	},
+	{
+		title: 'Shipping or Delivery Options',
+		description: 'Let users select one delivery method (standard, express, overnight) from a visually grouped set of options.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
-		name: 'Radio.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		name: 'Radio',
+		description: 'Individual radio input with an optional label. Manages checked state based on value comparison.'
+	},
+	{
+		name: 'RadioGroup',
+		description: 'Container that groups multiple Radio inputs, synchronizing their selection state and shared name/disabled/required attributes.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Radio - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Radio button component for selecting a single option from a group of mutually exclusive choices.',
 	componentTitle: 'Radio',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A radio button component for making single selections from a group of options. Supports standalone usage or grouped via RadioGroup for synchronized state management, with full support for disabled, readonly, and required states.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Radio } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Radio' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode
 	},

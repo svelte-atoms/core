@@ -21,56 +21,92 @@ import { setPreset } from '@svelte-atoms/core';
 
 const preset = setPreset({
   breadcrumb: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'flex items-center gap-1 text-sm'
+  }),
+  'breadcrumb.item': () => ({
+    class: 'text-foreground/70 hover:text-foreground rounded-lg px-2 py-1 hover:bg-accent/50 transition-colors'
+  }),
+  'breadcrumb.separator': () => ({
+    class: 'text-muted-foreground px-0'
   })
-});
-`.trim();
+});`.trim();
 
 const accessibilityFeatures = [
-	'Uses nav element with aria-label',
-	'Semantic ordered list structure',
-	'Current page indicated with aria-current',
-	'Keyboard navigable links',
-	'Screen reader friendly structure'
+	'Renders inside a nav element for landmark navigation',
+	'Current page item can be marked with aria-current="page"',
+	'Keyboard navigable links with visible focus indicators',
+	'Default "/" separator is screen-reader friendly',
+	'Semantic structure aids page orientation for screen reader users'
 ];
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Multi-level Navigation',
+		description:
+			'Show the user\'s current position within a nested site structure, such as product categories or documentation sections.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'E-commerce Category Paths',
+		description:
+			'Display the full path from root to a product page (e.g., Home > Electronics > Laptops) for quick back-navigation.'
+	},
+	{
+		title: 'Documentation Sites',
+		description:
+			'Help readers understand where a page sits within the documentation hierarchy and navigate to parent sections quickly.'
+	},
+	{
+		title: 'Admin Dashboards',
+		description:
+			'Provide context in complex admin UIs where users drill down through resources, settings, or records.'
+	},
+	{
+		title: 'File Explorers',
+		description:
+			'Display the current directory path and allow users to jump to any parent directory in a file browser.'
+	},
+	{
+		title: 'SEO Structured Data',
+		description:
+			'Complement JSON-LD breadcrumb schema markup with a visible, accessible breadcrumb trail on the page.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Breadcrumb.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description:
+			'Container element (renders as a div by default) that wraps all breadcrumb items and separators.'
+	},
+	{
+		name: 'Breadcrumb.Item',
+		description:
+			'Individual breadcrumb link or text node. Renders as an anchor by default; omit href for the current (non-linked) page item.'
+	},
+	{
+		name: 'Breadcrumb.Separator',
+		description:
+			'Visual separator between items. Renders "/" by default; pass custom content to override.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Breadcrumb - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Navigation component showing the user\'s location within a site hierarchy.',
 	componentTitle: 'Breadcrumb',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A compound breadcrumb component for displaying the navigational path within a site or application. Use it to help users understand their current location and quickly jump back to parent sections. Fully customizable separators and styling via presets.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Breadcrumb } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
-		customSeparator: customSeparatorCode
+		customSeparator: customSeparatorCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

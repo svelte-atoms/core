@@ -5,30 +5,69 @@ export interface PropDefinition {
 	description: string;
 }
 
-export const accordionItemRootProps: PropDefinition[] = [
+export const accordionRootProps: PropDefinition[] = [
 	{
 		name: 'value',
 		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Value'
+		default: 'undefined',
+		description: 'The value of the currently open item (controlled single-item mode)'
 	},
 	{
-		name: 'data',
-		type: 'any',
+		name: 'values',
+		type: 'string[] | undefined',
 		default: 'undefined',
-		description: 'Data'
+		description: 'Array of currently open item values (controlled multiple-item mode)'
+	},
+	{
+		name: 'multiple',
+		type: 'boolean | undefined',
+		default: 'false',
+		description: 'Allow multiple accordion items to be open simultaneously'
+	},
+	{
+		name: 'collapsible',
+		type: 'boolean | undefined',
+		default: 'false',
+		description: 'Allow all items to be collapsed (no forced-open item)'
 	},
 	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Disabled'
+		description: 'Disable all accordion items'
+	},
+	{
+		name: 'factory',
+		type: 'Factory<AccordionBond> | undefined',
+		default: 'undefined',
+		description: 'Custom factory for the accordion bond, enabling advanced behavioral customization'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	},
+];
+
+export const accordionItemRootProps: PropDefinition[] = [
+	{
+		name: 'value',
+		type: 'string | undefined',
+		default: 'undefined',
+		description: 'Unique identifier for this accordion item. Used to control open state programmatically.'
+	},
+	{
+		name: 'disabled',
+		type: 'boolean | undefined',
+		default: 'false',
+		description: 'Disable this accordion item individually'
 	},
 	{
 		name: 'factory',
 		type: 'Factory<AccordionItemBond> | undefined',
 		default: 'undefined',
-		description: 'Factory'
+		description: 'Custom factory for the item bond, enabling advanced behavioral customization'
 	},
 	{
 		name: '...atomProps',
@@ -41,312 +80,80 @@ export const accordionItemRootProps: PropDefinition[] = [
 export const accordionItemHeaderProps: PropDefinition[] = [
 	{
 		name: 'bond',
-		type: 'Bond',
+		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
+		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
 	},
 	{
 		name: 'preset',
 		type: 'PresetModuleName | string',
 		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
+		description: 'Preset module name for styling this header'
 	},
 	{
 		name: 'class',
 		type: 'ClassValue | ClassValue[]',
 		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
+		description: 'CSS class(es) to apply'
 	},
 	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	},
-	{
-		name: 'children',
-		type: 'Snippet',
-		default: 'undefined',
-		description: 'Children content snippet'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
 
 export const accordionItemBodyProps: PropDefinition[] = [
 	{
 		name: 'bond',
-		type: 'Bond',
+		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
+		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
 	},
 	{
 		name: 'preset',
 		type: 'PresetModuleName | string',
 		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
+		description: 'Preset module name for styling this body'
 	},
 	{
 		name: 'class',
 		type: 'ClassValue | ClassValue[]',
 		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
+		description: 'CSS class(es) to apply'
 	},
 	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	},
-	{
-		name: 'children',
-		type: 'Snippet',
-		default: 'undefined',
-		description: 'Children content snippet'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
 
 export const accordionItemIndicatorProps: PropDefinition[] = [
 	{
 		name: 'bond',
-		type: 'Bond',
+		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object for component communication'
-	},
-	{
-		name: 'base',
-		type: 'Component | Snippet',
-		default: 'undefined',
-		description: 'Base component or snippet to render'
+		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
 	},
 	{
 		name: 'preset',
 		type: 'PresetModuleName | string',
 		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
+		description: 'Preset module name for styling this indicator'
 	},
 	{
 		name: 'class',
 		type: 'ClassValue | ClassValue[]',
 		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
+		description: 'CSS class(es) to apply'
 	},
 	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
-	},
-	{
-		name: 'children',
-		type: 'Snippet',
-		default: 'undefined',
-		description: 'Children content snippet'
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
-
-export const accordionRootProps: PropDefinition[] = [
-	{
-		name: 'value',
-		type: 'string | undefined',
-		default: '\'\'',
-		description: 'Value'
-	},
-	{
-		name: 'values',
-		type: 'string[] | undefined',
-		default: '\'\'',
-		description: 'Values'
-	},
-	{
-		name: 'data',
-		type: 'unknown',
-		default: 'undefined',
-		description: 'Data'
-	},
-	{
-		name: 'multiple',
-		type: 'boolean | undefined',
-		default: 'false',
-		description: 'Multiple'
-	},
-	{
-		name: 'collapsible',
-		type: 'boolean | undefined',
-		default: 'false',
-		description: 'Collapsible'
-	},
-	{
-		name: 'disabled',
-		type: 'boolean | undefined',
-		default: 'false',
-		description: 'Disabled'
-	},
-	{
-		name: 'factory',
-		type: 'Factory<AccordionBond> | undefined',
-		default: 'undefined',
-		description: 'Factory'
-	},
-	{
-		name: 'children',
-		type: 'Snippet<[{ accordion: AccordionBond; }]> | undefined',
-		default: 'undefined',
-		description: 'Children'
-	},
-];
-

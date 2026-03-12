@@ -7,88 +7,33 @@ export interface PropDefinition {
 
 export const linkProps: PropDefinition[] = [
 	{
-		name: 'bond',
-		type: 'Bond',
+		name: 'href',
+		type: 'string | undefined',
 		default: 'undefined',
-		description: 'Bond object for component communication'
+		description: 'The URL the link navigates to.'
 	},
 	{
-		name: 'base',
-		type: 'Component | Snippet',
+		name: 'target',
+		type: 'string | undefined',
 		default: 'undefined',
-		description: 'Base component or snippet to render'
+		description: 'Where to open the linked URL. Use "_blank" for external links.'
 	},
 	{
-		name: 'preset',
-		type: 'PresetModuleName | string',
+		name: 'rel',
+		type: 'string | undefined',
 		default: 'undefined',
-		description: 'Preset module name for styling'
-	},
-	{
-		name: 'variants',
-		type: 'VariantDefinition | Function',
-		default: 'undefined',
-		description: 'Variant definition or function to resolve variants'
-	},
-	{
-		name: 'class',
-		type: 'ClassValue | ClassValue[]',
-		default: 'undefined',
-		description: 'CSS class(es) to apply to the element'
-	},
-	{
-		name: 'as',
-		type: 'string',
-		default: 'undefined',
-		description: 'HTML tag to render as'
-	},
-	{
-		name: 'global',
-		type: 'boolean',
-		default: 'false',
-		description: 'Whether to use global styles'
-	},
-	{
-		name: 'initial',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called on initial render'
-	},
-	{
-		name: 'enter',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for entering'
-	},
-	{
-		name: 'exit',
-		type: 'TransitionFunction',
-		default: 'undefined',
-		description: 'Transition function for exiting'
-	},
-	{
-		name: 'animate',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Animation function'
-	},
-	{
-		name: 'onmount',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is mounted'
-	},
-	{
-		name: 'ondestroy',
-		type: 'NodeFunction',
-		default: 'undefined',
-		description: 'Function called when element is destroyed'
+		description: 'Relationship between the current document and the linked URL. Use "noopener noreferrer" for external links.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet',
+		type: 'Snippet | undefined',
 		default: 'undefined',
-		description: 'Children content snippet'
+		description: 'Link text or content rendered inside the anchor element.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
-

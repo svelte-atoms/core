@@ -92,38 +92,51 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Navigation Drawers',
+		description: 'Implement collapsible navigation panels that slide in from the left or right edge to display menus, links, or filters.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Detail Panels',
+		description: 'Show contextual details or metadata for a selected item without navigating away from the main content view.'
+	},
+	{
+		title: 'Filter and Search Panels',
+		description: 'Reveal advanced filter controls or search options in a side panel to keep the main UI uncluttered.'
+	},
+	{
+		title: 'Dashboard Widgets',
+		description: 'Expand collapsible sidebar sections to display charts, stats, or additional data alongside the primary content area.'
+	},
+	{
+		title: 'Settings Panels',
+		description: 'Slide in application or page-level settings alongside the content being edited or viewed.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Sidebar.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Root container that manages the open/closed state and provides the sidebar context to child components.'
+	},
+	{
+		name: 'Sidebar.Content',
+		description: 'The animated sidebar panel that slides in/out. Accepts width, enter/exit animations, and custom styling.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Sidebar - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Collapsible side panel component for navigation drawers, detail views, and filter panels.',
 	componentTitle: 'Sidebar',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A compound sidebar component that provides an animated, collapsible side panel. Supports both left and right placement with configurable widths, smooth enter/exit animations, and open/closed state binding.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Sidebar } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Sidebar' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		right: rightCode
