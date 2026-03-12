@@ -96,8 +96,8 @@
 
 <style>
 	.preview-panel {
-		background-color: hsl(var(--muted) / 0.3);
-		background-image: radial-gradient(circle, hsl(var(--foreground) / 0.12) 1px, transparent 1px);
-		background-size: 18px 18px;
+		background-color: #111113;
+		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+		background-size: 20px 20px;
 	}
 </style>
