@@ -61,10 +61,7 @@
 
 	<!-- Preview -->
 	{#if activeTab === 'preview'}
-		<div
-			class="relative min-h-32 p-8"
-			style="background-color: hsl(var(--muted) / 0.3); background-image: radial-gradient(circle, hsl(var(--foreground) / 0.12) 1px, transparent 1px); background-size: 18px 18px;"
-		>
+		<div class="preview-panel relative min-h-32 p-8">
 			<div class="flex items-center justify-center">
 				{@render children()}
 			</div>
@@ -96,3 +93,11 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.preview-panel {
+		background-color: hsl(var(--muted) / 0.3);
+		background-image: radial-gradient(circle, hsl(var(--foreground) / 0.12) 1px, transparent 1px);
+		background-size: 18px 18px;
+	}
+</style>
