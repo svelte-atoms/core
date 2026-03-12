@@ -6,6 +6,11 @@ import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/
 export type DialogBondProps = BondStateProps & {
 	open: boolean;
 	disabled: boolean;
+	configs: {
+		popovers: {
+			strategy: 'fixed' | 'absolute';
+		};
+	};
 	readonly rest?: Record<string, unknown>;
 };
 
@@ -68,12 +73,6 @@ export class DialogBond<
 			inert: !isOpen ? '' : undefined,
 			'data-kind': DIALOG_ELEMENTS_KIND.root,
 			'data-open': isOpen,
-			onclick: (ev: MouseEvent) => {
-				// Close on backdrop click (clicking outside content)
-				if (ev.target === ev.currentTarget && !isDisabled) {
-					this.state.close();
-				}
-			},
 			onkeydown: (ev: KeyboardEvent) => {
 				// Close on Escape key
 				if (ev.key === 'Escape') {
@@ -91,8 +90,13 @@ export class DialogBond<
 					this.#activeElement = document.activeElement;
 
 					// Focus first focusable element or dialog itself
-					setTimeout(() => {
-						const firstFocusable = this.elements.content.querySelector<HTMLElement>(
+					requestAnimationFrame(() => {
+						const contentElement = this.elements.content;
+						if (!contentElement) {
+							return;
+						}
+
+						const firstFocusable = contentElement.querySelector<HTMLElement>(
 							'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 						);
 
@@ -101,7 +105,7 @@ export class DialogBond<
 						} else {
 							node.focus();
 						}
-					}, 0);
+					});
 				} else {
 					// Restore focus to previous element
 					if (this.#activeElement instanceof HTMLElement) {
@@ -190,7 +194,7 @@ export class DialogBond<
 			}
 		};
 	}
-	
+
 	trigger() {
 		return {
 			'data-kind': DIALOG_ELEMENTS_KIND.trigger,

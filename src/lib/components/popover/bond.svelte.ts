@@ -43,6 +43,7 @@ export type PopoverStateProps = BondStateProps & {
 	placement: Placement | undefined;
 	offset: number;
 	portal?: string | PortalBond;
+	readonly positionStrategy: 'fixed' | 'absolute';
 	readonly rest?: Record<string, unknown>;
 };
 
@@ -329,7 +330,8 @@ function popover(bond: PopoverBond) {
 
 			const position = await computePosition(trigger, content, {
 				placement: placement ?? 'bottom',
-				middleware
+				middleware,
+				strategy: bond.state.props.positionStrategy
 			});
 
 			// Round to 0.001 precision to avoid excessive updates from sub-pixel changes

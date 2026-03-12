@@ -86,7 +86,7 @@
 	bond={controller}
 	preset={presetKey}
 	class={[
-		'border-border last:border-b-none hover:bg-foreground/5 active:bg-foreground/10 outline-primary cursor-pointer border-b',
+		'border-border last:border-b-0 hover:bg-foreground/5 active:bg-foreground/10 outline-primary cursor-pointer border-b',
 		'$preset',
 		klass
 	]}

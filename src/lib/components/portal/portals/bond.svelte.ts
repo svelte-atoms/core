@@ -5,6 +5,7 @@ import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/
 
 export type PortalsStateProps = BondStateProps & {
 	id: string;
+	zindex?: number;
 };
 
 export class PortalsBond extends Bond<PortalsStateProps, PortalsState> {
@@ -48,5 +49,9 @@ export class PortalsState extends BondState<PortalsStateProps> {
 
 	delete(id: string) {
 		this.#portals.delete(id);
+	}
+
+	zindex() {
+		return this.props.zindex ?? 1;
 	}
 }

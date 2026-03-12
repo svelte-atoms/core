@@ -3,14 +3,18 @@
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
+	import { ZIndex } from '../portal/zindex';
 
 	let {
 		open = $bindable(false),
 		disabled = false,
+		"z-index": zindex = 1,
 		factory = _factory,
 		children = undefined,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
+
+	new ZIndex(() => zindex).share();
 
 	const bondProps = defineState<SidebarBondProps>([
 		defineProperty(

@@ -15,6 +15,20 @@
 import type { ClassValue } from 'svelte/elements';
 import type { Bond } from '$svelte-atoms/core/shared';
 
+/**
+ * Internal symbol used to tag functions returned by `defineVariants`.
+ * Allows `resolveLocalVariants` in atom/utils.ts to detect them and route
+ * through the cached `resolveVariants` engine instead of calling them directly.
+ */
+export const VARIANT_DEF_TAG = Symbol('svelte-atoms/variant-def');
+
+export type TaggedVariantFn<V extends Record<string, Record<string, any>>> = ((
+	bond: Bond,
+	props?: VariantProps<V>
+) => Record<string, any>) & {
+	[VARIANT_DEF_TAG]: VariantDefinition<V> | ((bond?: Bond | null) => VariantDefinition<V>);
+};
+
 // ============================================================================
 // Core Variant System
 // ============================================================================
@@ -126,8 +140,8 @@ export type VariantProps<V extends Record<string, Record<string, any>>> = Partia
  */
 export function defineVariants<V extends Record<string, Record<string, any>>>(
 	config: VariantDefinition<V> | ((bond?: Bond | null) => VariantDefinition<V>)
-) {
-	return (bond: Bond, props?: VariantProps<V>): Record<string, any> => {
+): TaggedVariantFn<V> {
+	const fn = (bond: Bond, props?: VariantProps<V>): Record<string, any> => {
 		// Get config (either static or dynamic based on bond)
 		const resolvedConfig = typeof config === 'function' ? config(bond) : config;
 
@@ -188,6 +202,12 @@ export function defineVariants<V extends Record<string, Record<string, any>>>(
 			...attributes
 		};
 	};
+
+	// Tag the function with the original config so atom/utils.ts can detect it
+	// and route through the cached resolveVariants engine.
+	(fn as TaggedVariantFn<V>)[VARIANT_DEF_TAG] = config;
+
+	return fn as TaggedVariantFn<V>;
 }
 
 // ============================================================================

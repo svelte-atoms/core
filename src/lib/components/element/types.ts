@@ -25,6 +25,7 @@ export type SvgElementTagName = keyof SVGElementTagNameMap;
 export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {
 	children?: Snippet<[]>;
 	onintroend?: (ev: TransitionEvent) => void;
+	onexitend?: (ev: TransitionEvent) => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {
@@ -50,7 +51,7 @@ export type ElementAttributes<T extends ElementTagName> = T extends HtmlElementT
 		: never;
 
 export interface TransitionFunction<T extends ElementTagName> {
-	(node: ElementType<T>): Partial<TransitionConfig> | (() => Partial<TransitionConfig>);
+	(node: ElementType<T>): Partial<TransitionConfig> | void;
 }
 
 export interface NodeFunction<T extends ElementTagName> {

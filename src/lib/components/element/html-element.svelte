@@ -17,13 +17,16 @@
 		onmount = undefined,
 		ondestroy = undefined,
 		onintroend = undefined,
+		onexitend = undefined,
 		children = undefined,
 		...restProps
 	}: HtmlElementProps<T> & Omit<HTMLAttributes<Element>, keyof HtmlElementProps<T>> = $props();
 
 	let node = $state<Element>();
-	// If enter animation is defined, we want to wait for it first beafore running animate
+	// If enter animation is defined, we want to wait for it first before running animate
 	let hasEntered = $state(!(untrack(() => enter) ?? false));
+	// Track whether initial() has been applied — must only fire once at mount
+	let hasInitialized = false;
 
 	$effect(() => {
 		if (!node) return;
@@ -37,7 +40,7 @@
 	});
 
 	$effect(() => {
-		if(!hasEntered) return;
+		if (!hasEntered) return;
 		if (!node) return;
 
 		animate?.(node);
@@ -47,40 +50,63 @@
 		node = n;
 	};
 
-	const elementProps = $derived({
-		onintroend: handleIntroEnd,
-		...restProps
-	}) as Record<string, any>;
-
 	const finalKlass = $derived(cn(toClassValue(klass)));
-	const transitionSnippet = $derived(global ? globalTransition : localTransition);
+	const hasTransitions = $derived(!!(enter ?? exit));
+	const transitionSnippet = $derived(
+		!hasTransitions ? bareElement : global ? globalTransition : localTransition
+	);
+
+	// Only include onintroend/onexitend when transitions are active —
+	// avoids attaching handlers that can never fire on bare elements.
+	const elementProps = $derived.by(() => {
+		const base = { ...restProps };
+		if (hasTransitions) {
+			base.onintroend = handleIntroEnd;
+			base.onoutroend = handleExitEnd;
+		}
+		return base as Record<string, any>;
+	});
 
 	function handleIntroEnd(ev: TransitionEvent) {
 		onintroend?.(ev);
 		if (ev.defaultPrevented) return;
-
 		hasEntered = true;
 	}
 
+	function handleExitEnd(ev: TransitionEvent) {
+		onexitend?.(ev);
+	}
+
 	function enterTransition(node: Element) {
-		initial?.(node);
-		
 		return enter?.(node) ?? {};
 	}
 
 	function exitTransition(node: Element) {
 		return exit?.(node) ?? {};
 	}
+
+	function applyInitial(node: Element) {
+		if (!node) return;
+		if (hasInitialized) return;
+		hasInitialized = true;
+		untrack(() => initial?.(node!));
+	}
 </script>
 
+{#snippet bareElement()}
+	<svelte:element this={as} {@attach applyInitial} {@attach attachFunction} class={finalKlass} {...elementProps}>
+		{@render children?.()}
+	</svelte:element>
+{/snippet}
+
 {#snippet globalTransition()}
-	<svelte:element this={as} {@attach attachFunction} class={finalKlass} in:enterTransition|global out:exitTransition|global {...elementProps}>
+	<svelte:element this={as} {@attach applyInitial} {@attach attachFunction} class={finalKlass} in:enterTransition|global out:exitTransition|global {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
 {/snippet}
 
 {#snippet localTransition()}
-	<svelte:element this={as} {@attach attachFunction} class={finalKlass} in:enterTransition out:exitTransition {...elementProps}>
+	<svelte:element this={as} {@attach applyInitial} {@attach attachFunction} class={finalKlass} in:enterTransition out:exitTransition {...elementProps}>
 		{@render children?.()}
 	</svelte:element>
 {/snippet}

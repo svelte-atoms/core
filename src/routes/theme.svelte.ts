@@ -7,7 +7,15 @@ export class Theme {
 	#systemColorScheme = colorScheme();
 	#userColorScheme: ColorScheme | undefined = $state();
 
-	constructor() {}
+	constructor() {
+		$effect.pre(() => {
+			if (this.colorScheme === 'dark') {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		});
+	}
 
 	get systemColorScheme() {
 		return this.#systemColorScheme;
@@ -22,7 +30,7 @@ export class Theme {
 	}
 
 	get colorScheme() {
-		return this.userColorScheme ?? this.systemColorScheme;
+		return this.userColorScheme ?? this.systemColorScheme.current;
 	}
 
 	share() {
