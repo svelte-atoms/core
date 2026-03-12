@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Drawer } from '$lib/components/drawer';
+
 	type TocEntry = { id: string; text: string };
 
 	type Props = {
@@ -8,11 +10,12 @@
 		onclose?: () => void;
 	};
 
-	let { toc, activeId = '', open = false, onclose }: Props = $props();
+	let { toc, activeId = '', open = $bindable(false), onclose }: Props = $props();
 
-	const activeText = $derived(
-		toc.find((t) => t.id === activeId)?.text ?? toc[0]?.text ?? ''
-	);
+	function handleClose() {
+		open = false;
+		onclose?.();
+	}
 </script>
 
 <!-- Desktop: always-visible sticky aside -->
@@ -39,33 +42,34 @@
 	</aside>
 {/if}
 
-<!-- Mobile: slide-in drawer from the right -->
-{#if open && toc.length > 0}
-	<div
-		class="fixed inset-0 z-40 bg-black/40 lg:hidden"
-		role="button"
-		tabindex="-1"
-		onclick={onclose}
-		onkeydown={(e) => e.key === 'Escape' && onclose?.()}
-		aria-label="Close table of contents"
-	></div>
-	<div class="bg-background border-border fixed top-14 right-0 bottom-0 z-50 w-72 overflow-y-auto border-l shadow-xl lg:hidden">
-		<div class="p-4 text-sm">
-			<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
-			<nav class="space-y-0.5">
-				{#each toc as entry (entry.id)}
-					<a
-						href="#{entry.id}"
-						onclick={onclose}
-						class={[
-							'block py-1.5 text-sm transition-colors',
-							activeId === entry.id
-								? 'text-foreground font-medium'
-								: 'text-muted-foreground hover:text-foreground'
-						]}
-					>{entry.text}</a>
-				{/each}
-			</nav>
-		</div>
-	</div>
+<!-- Mobile: internal Drawer component -->
+{#if toc.length > 0}
+	<Drawer.Root bind:open {onclose} class="lg:hidden">
+		{#snippet children({ drawer })}
+			<Drawer.Backdrop {drawer} class="bg-black/40" />
+			<Drawer.Content
+				{drawer}
+				side="right"
+				class="bg-background border-border w-72 border-l p-0 shadow-xl"
+			>
+				<Drawer.Body {drawer} class="p-4 overflow-y-auto h-full">
+					<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
+					<nav class="space-y-0.5">
+						{#each toc as entry (entry.id)}
+							<a
+								href="#{entry.id}"
+								onclick={handleClose}
+								class={[
+									'block py-1.5 text-sm transition-colors',
+									activeId === entry.id
+										? 'text-foreground font-medium'
+										: 'text-muted-foreground hover:text-foreground'
+								]}
+							>{entry.text}</a>
+						{/each}
+					</nav>
+				</Drawer.Body>
+			</Drawer.Content>
+		{/snippet}
+	</Drawer.Root>
 {/if}
