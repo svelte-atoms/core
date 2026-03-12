@@ -2,7 +2,7 @@
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
 	import { Alert } from '$svelte-atoms/core/components/alert';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 
 	const tailwindExample = `<!-- Layout & spacing -->
 <Card.Root class="max-w-sm p-4">
@@ -211,7 +211,7 @@ ${'<'}/div>`;
 				</p>
 			{/if}
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
 			</div>
 		</Card.Body>
 	</Card.Root>
@@ -301,8 +301,7 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Common Patterns</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{tailwindExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={tailwindExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -329,7 +328,7 @@ ${'<'}/div>`;
 				the last one wins.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{cnExample}</code></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={cnExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -462,9 +461,7 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Usage Examples</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{conditionalExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={conditionalExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -538,9 +535,7 @@ ${'<'}/div>`;
 				<h3 class="font-semibold">Basic Variant Definition</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{variantBasicExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={variantBasicExample} /></div>
 			</div>
 		</div>
 
@@ -625,9 +620,7 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code> attributes.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{compoundVariantsExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={compoundVariantsExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -655,9 +648,7 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isDisabled</code>.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{reactiveVariantsExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={reactiveVariantsExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -684,9 +675,7 @@ ${'<'}/div>`;
 				placeholder is present, preset classes are automatically prepended to your class array.
 			</p>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{presetPlaceholderExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={presetPlaceholderExample} /></div>
 			</div>
 		</div>
 	</Section.Root>

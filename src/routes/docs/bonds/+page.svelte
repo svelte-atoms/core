@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import LinkCard from '$docs/components/link-card.svelte';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 </script>
 
 {#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
@@ -15,7 +15,7 @@
 			</p>
 		{/if}
 		<div class="bg-muted rounded-lg p-4">
-			<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
+			<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
 		</div>
 	</div>
 {/snippet}

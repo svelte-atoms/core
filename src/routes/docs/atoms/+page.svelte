@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Icon } from '$svelte-atoms/core';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 	import LinkCard from '$docs/components/link-card.svelte';
 	import { metadata } from './shared';
 </script>
@@ -112,9 +112,7 @@
 		</Section.Header>
 
 		<div class="bg-muted/30 rounded-lg p-4">
-			<pre class="text-xs leading-relaxed"><code class="text-foreground"
-					>{metadata.examples.anatomy}</code
-				></pre>
+			<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={metadata.examples.anatomy} /></div>
 		</div>
 
 		<div class="border-border/50 rounded-lg border p-6">

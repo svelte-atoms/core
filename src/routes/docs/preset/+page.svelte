@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 
 	const globalPresetCode = `// +layout.svelte (App Root)
 import { setPreset } from '@svelte-atoms/core/context';
@@ -294,7 +294,7 @@ setPreset({
 			</p>
 		{/if}
 		<div class="bg-muted/30 rounded-lg p-4">
-			<pre class="text-xs leading-relaxed"><code class="text-foreground">{code}</code></pre>
+			<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
 		</div>
 	</div>
 {/snippet}
@@ -836,8 +836,7 @@ setPreset({
 						data-*, aria-*, role, etc.
 					</p>
 					<div class="bg-muted/30 rounded-lg p-3">
-						<pre class="overflow-x-auto text-xs"><code class="text-foreground"
-								>{`{
+						<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={`{
   class?: ClassValue;
   as?: string;
   base?: Base;
@@ -854,8 +853,7 @@ setPreset({
   // role?: string;
   // tabindex?: number;
   // etc.
-}`}</code
-							></pre>
+}`} /></div>
 					</div>
 				</Card.Body>
 			</Card.Root>

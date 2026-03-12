@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 	import { metadata } from './shared';
 
 	const {
@@ -200,8 +200,7 @@
 				<h3 class="font-semibold">Component Examples</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{keyboardExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={keyboardExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -323,8 +322,7 @@
 				<h3 class="font-semibold">Automatic ARIA Management</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{ariaExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={ariaExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -411,8 +409,7 @@
 				<h3 class="font-semibold">Focus Trap Example</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{focusTrapExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={focusTrapExample} /></div>
 			</div>
 		</div>
 
@@ -421,9 +418,7 @@
 				<h3 class="font-semibold">Focus Restoration Example</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{focusManagementExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={focusManagementExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -454,8 +449,7 @@
 				<h3 class="font-semibold">Semantic Structure</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{semanticExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={semanticExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -542,9 +536,7 @@
 				<h3 class="font-semibold">Screen Reader Patterns</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{screenReaderExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={screenReaderExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -574,9 +566,7 @@
 				<h3 class="font-semibold">Variants with ARIA</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{customAttributesExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={customAttributesExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -609,9 +599,7 @@
 				<h3 class="font-semibold">Disabled State Handling</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{disabledStateExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={disabledStateExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -644,9 +632,7 @@
 				<h3 class="font-semibold">Focus Styles</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{visualIndicatorsExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={visualIndicatorsExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -677,9 +663,7 @@
 				<h3 class="font-semibold">Reduced Motion Pattern</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{reducedMotionExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={reducedMotionExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -709,9 +693,7 @@
 				<h3 class="font-semibold">Accessible Color Pairs</h3>
 			</div>
 			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{colorContrastExample}</code
-					></pre>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={colorContrastExample} /></div>
 			</div>
 		</div>
 	</Section.Root>
@@ -813,9 +795,7 @@
 					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
 				</div>
 				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{testingExample}</code
-						></pre>
+					<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={testingExample} /></div>
 				</div>
 			</Card.Body>
 		</Card.Root>

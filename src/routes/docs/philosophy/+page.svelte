@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 </script>
 
 <div class="mx-auto max-w-4xl px-4 py-12">
@@ -125,8 +125,7 @@
 				inside a component tree, managing its own state and exposing methods to interact with it.
 			</p>
 			<div class="bg-muted/30 rounded-lg p-4">
-				<pre class="text-sm leading-relaxed"><code class="text-foreground"
-						>{`// Creating a Bond
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="svelte" code={`// Creating a Bond
 const accordion = createAccordionBond({
   multiple: false,
   defaultValue: 'item-1'
@@ -136,8 +135,7 @@ const accordion = createAccordionBond({
 <Accordion bond={accordion}>
   <AccordionItem value="item-1">...</AccordionItem>
   <AccordionItem value="item-2">...</AccordionItem>
-</Accordion>`}</code
-					></pre>
+</Accordion>`} /></div>
 			</div>
 		</div>
 
