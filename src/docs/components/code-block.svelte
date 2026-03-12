@@ -44,7 +44,7 @@
 	});
 
 	$effect(() => {
-		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'one-light');
+		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'vitesse-light');
 		isLoading = true;
 		codeToHtml(code, {
 			lang,
