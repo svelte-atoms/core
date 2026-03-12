@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Stack } from '$lib/components/stack';
-	import type { StackBond } from '$lib/components/stack';
 	import {
 		PageHeader,
 		Breadcrumb,
 		Section,
 		Installation,
 		AccessibilityInfo,
+		PageNavigation,
 		DemoExample,
 		Props,
 		CodeBlock,
@@ -16,34 +16,26 @@
 	import { stackRootProps, stackItemProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, badge: badgeCode, loading: loadingCode, zOrder: zOrderCode, preset: presetCode } = metadata.examples;
-
-	// z-order demo state
-	const items = [
-		{ id: 'a', label: 'A', bg: 'bg-blue-400',  offset: '' },
-		{ id: 'b', label: 'B', bg: 'bg-green-400', offset: 'mt-4 ml-4' },
-		{ id: 'c', label: 'C', bg: 'bg-red-400',   offset: 'mt-8 ml-8' }
-	];
-	let active = $state('a');
-	let stackRoot = $state<any>(undefined);
-	const bond = $derived(stackRoot?.getBond() as StackBond | undefined);
+	const { basic: basicCode, badge: badgeCode, loading: loadingCode } = metadata.examples;
 </script>
 
 <svelte:head>
-	<title>{metadata.title}</title>
-	<meta name="description" content={metadata.description} />
+	<title>Stack - Svelte Atoms</title>
+	<meta
+		name="description"
+		content="Layout component for layering elements on top of each other in the same space."
+	/>
 </svelte:head>
 
 <div class="py-8">
 	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title={metadata.componentTitle}
-		description={metadata.componentDescription}
-		status={metadata.status}
+		title="Stack"
+		description="Layout component for layering elements on top of each other while keeping them in the document flow. Unlike absolute positioning, Stack maintains parent container sizing based on content."
+		status="stable"
 	/>
 
-	<!-- Overview -->
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Overview</Section.Title>
@@ -65,28 +57,56 @@
 		</DocCallout>
 	</Section.Root>
 
-	<!-- Installation -->
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName={metadata.packageName}
-			importCode={metadata.importCode}
+			packageName="@svelte-atoms/core"
+			importCode="import &#123; Stack &#125; from '@svelte-atoms/core/stack';"
 		/>
 	</Section.Root>
 
-	<!-- Examples -->
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the stack appearance using presets</Section.Subtitle>
+		</Section.Header>
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Stack components by defining presets in your
+				configuration:
+			</p>
+			<CodeBlock
+				lang="typescript"
+				code={`import { setPreset } from '@svelte-atoms/core/context';
+
+setPreset({
+  'stack.root': () => ({
+    class: 'p-4' // Creates grid container
+  }),
+  'stack.item': () => ({
+    class: '' // Each item occupies grid-area: 'stack'
+  })
+});
+
+// Stack uses CSS Grid with grid-template-areas: 'stack'
+// All items share the same grid area, layering naturally.
+// Parent size is determined by the largest child.
+// Use z-index or DOM order to control stacking order.`}
+			/>
+		</div>
+	</Section.Root>
+
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Examples</Section.Title>
-			<Section.Subtitle>Common layering patterns</Section.Subtitle>
+			<Section.Subtitle>Explore different stack layering patterns</Section.Subtitle>
 		</Section.Header>
 		<div class="space-y-8">
-
 			<DemoExample
 				title="Image with Overlay"
-				description="Layer text over an image. The container sizes to the image — no height needed on the parent."
+				description="Layer text over an image while maintaining container size"
 				code={basicCode}
 			>
 				<div>
@@ -106,7 +126,7 @@
 
 			<DemoExample
 				title="Button with Badge"
-				description="Notification badge over a button. The badge uses negative margins to break out of the grid cell."
+				description="Notification badge positioned over a button"
 				code={badgeCode}
 			>
 				<div>
@@ -123,7 +143,7 @@
 
 			<DemoExample
 				title="Loading Overlay"
-				description="Show a loading state over content without layout shifts. The card determines the container size."
+				description="Show loading state over content without breaking layout"
 				code={loadingCode}
 			>
 				<div>
@@ -174,72 +194,27 @@
 					</div>
 				</div>
 			</DemoExample>
-
-			<DemoExample
-				title="Programmatic Z-Order"
-				description="Use getBond() to reorder layers at runtime. bind:value tracks the topmost item."
-				code={zOrderCode}
-			>
-				<div class="flex flex-col gap-4">
-					<div class="flex gap-2 flex-wrap">
-						{#each items as item (item.id)}
-							<button
-								class={['rounded px-3 py-1 text-sm font-medium text-white transition-all', item.bg, active === item.id ? 'ring-2 ring-offset-2 ring-black scale-105' : 'opacity-60']}
-								onclick={() => (active = item.id)}
-							>{item.label}</button>
-						{/each}
-					</div>
-					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 w-64">
-						{#each items as item (item.id)}
-							<Stack.Item
-								id={item.id}
-								class={['flex cursor-pointer items-center justify-center rounded-xl text-white font-bold text-xl shadow-lg transition-all', item.bg, item.offset, active === item.id ? 'ring-4 ring-white ring-offset-2' : '']}
-								onclick={() => (active = item.id)}
-							>
-								{item.label}
-							</Stack.Item>
-						{/each}
-					</Stack.Root>
-					<div class="flex gap-2 flex-wrap">
-						<Button variant="outline" size="sm" onclick={() => bond?.bringToFront(active)}>Bring to Front</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.bringForward(active)}>Forward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.sendBackward(active)}>Backward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.sendToBack(active)}>Send to Back</Button>
-					</div>
-				</div>
-			</DemoExample>
 		</div>
 	</Section.Root>
 
-	<!-- Preset -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title>Preset Configuration</Section.Title>
-			<Section.Subtitle>Customize default styles via the preset system</Section.Subtitle>
-		</Section.Header>
-		<CodeBlock lang="typescript" code={presetCode} />
-	</Section.Root>
-
-	<!-- API Reference -->
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>API Reference</Section.Title>
 		</Section.Header>
 		<div class="space-y-8">
 			<div>
-				<h3 class="text-foreground mb-1 text-lg font-semibold">Stack.Root</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Root</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
-					Creates the CSS Grid stacking container. Exposes <code class="bg-muted rounded px-1 text-xs">bind:value</code> (id of the topmost item)
-					and <code class="bg-muted rounded px-1 text-xs">getBond()</code> for programmatic control.
+					Container that creates a grid area for layering child items.
 				</p>
-				<Props data={stackRootProps} />
+				<Props data={stackProps} />
 			</div>
 
 			<div>
-				<h3 class="text-foreground mb-1 text-lg font-semibold">Stack.Item</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Item</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
-					Occupies the shared grid area. Registers with <code class="bg-muted rounded px-1 text-xs">StackState</code> on mount
-					and unregisters on destroy. Use flexbox, z-index, or margins for fine-grained positioning within the cell.
+					Individual item that occupies the same grid area, layering on top of siblings while
+					remaining in document flow. Use flexbox, margins, or z-index for positioning control.
 				</p>
 				<Props data={stackItemProps} />
 			</div>
@@ -279,13 +254,21 @@
 				</div>
 			</div>
 		</div>
-	</Section.Root>
+</Section.Root>
 
-	<!-- Accessibility -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title>Accessibility</Section.Title>
-		</Section.Header>
-		<AccessibilityInfo features={metadata.accessibility} />
-	</Section.Root>
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Accessibility</Section.Title>
+	</Section.Header>
+	<AccessibilityInfo
+		features={[
+			'Semantic HTML structure',
+			'Uses CSS Grid for proper layering',
+			'Maintains DOM order for screen readers',
+			'Works with absolute positioning and z-index',
+			'Keyboard navigation preserves natural tab order'
+		]}
+	/>
+</Section.Root>
+	/>
 </div>

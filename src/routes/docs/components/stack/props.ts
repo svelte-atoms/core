@@ -5,38 +5,36 @@ export interface PropDefinition {
 	description: string;
 }
 
-export const stackRootProps: PropDefinition[] = [
+export const stackProps: PropDefinition[] = [
 	{
-		name: 'value',
-		type: 'string | undefined',
+		name: 'direction',
+		type: '"row" | "column" | undefined',
 		default: 'undefined',
-		description: 'The id of the topmost (front) item. Bindable — updates reactively as items are reordered.'
+		description: 'Direction'
 	},
 	{
-		name: 'factory',
-		type: 'Factory<StackBond> | undefined',
+		name: 'gap',
+		type: 'string | number | undefined',
+		default: '\'\'',
+		description: 'Gap'
+	},
+	{
+		name: 'align',
+		type: '"start" | "center" | "end" | "stretch" | undefined',
 		default: 'undefined',
-		description: 'Custom bond factory for advanced use cases such as injecting a pre-configured StackBond.'
+		description: 'Align'
+	},
+	{
+		name: 'justify',
+		type: '"start" | "center" | "end" | "between" | "around" | "evenly" | undefined',
+		default: 'undefined',
+		description: 'Justify'
 	},
 	{
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
 		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	}
+	},
 ];
 
-export const stackItemProps: PropDefinition[] = [
-	{
-		name: 'id',
-		type: 'string',
-		default: 'auto-generated',
-		description: 'Unique identifier for this item within the stack. Used to reference it when calling bringToFront, sendToBack, etc. Auto-generated via $props.id() if omitted.'
-	},
-	{
-		name: '...atomProps',
-		type: 'HtmlAtomProps',
-		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	}
-];
