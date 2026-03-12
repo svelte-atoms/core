@@ -96,8 +96,8 @@
 
 <style>
 	.preview-panel {
-		background-color: #18181b;
-		background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+		background-color: var(--card);
+		background-image: radial-gradient(circle, color-mix(in srgb, var(--foreground) 8%, transparent) 1px, transparent 1px);
 		background-size: 20px 20px;
 	}
 </style>
