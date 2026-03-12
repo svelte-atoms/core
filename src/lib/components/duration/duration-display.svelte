@@ -29,16 +29,23 @@
 				.replace(/\bms\b/g, String(d.milliseconds));
 		}
 
-		// Auto format: show non-zero units (or all units when showZero=true)
+		// Auto format: skip leading zeros, then include remaining units per showZero
+		const units = [
+			{ n: d.years,        label: d.years === 1        ? 'year'        : 'years'        },
+			{ n: d.months,       label: d.months === 1       ? 'month'       : 'months'       },
+			{ n: d.days,         label: d.days === 1         ? 'day'         : 'days'         },
+			{ n: d.hours,        label: d.hours === 1        ? 'hour'        : 'hours'        },
+			{ n: d.minutes,      label: d.minutes === 1      ? 'minute'      : 'minutes'      },
+			{ n: d.seconds,      label: d.seconds === 1      ? 'second'      : 'seconds'      },
+			{ n: d.milliseconds, label: 'ms' },
+		];
 		const parts: string[] = [];
-		const show = (n: number) => showZero || n > 0;
-		if (show(d.years))        parts.push(`${d.years} ${d.years === 1 ? 'year' : 'years'}`);
-		if (show(d.months))       parts.push(`${d.months} ${d.months === 1 ? 'month' : 'months'}`);
-		if (show(d.days))         parts.push(`${d.days} ${d.days === 1 ? 'day' : 'days'}`);
-		if (show(d.hours))        parts.push(`${d.hours} ${d.hours === 1 ? 'hour' : 'hours'}`);
-		if (show(d.minutes))      parts.push(`${d.minutes} ${d.minutes === 1 ? 'minute' : 'minutes'}`);
-		if (show(d.seconds))      parts.push(`${d.seconds} ${d.seconds === 1 ? 'second' : 'seconds'}`);
-		if (show(d.milliseconds)) parts.push(`${d.milliseconds}ms`);
+		let started = false;
+		for (const { n, label } of units) {
+			if (!started && n === 0) continue; // skip leading zeros always
+			started = true;
+			if (n > 0 || showZero) parts.push(label === 'ms' ? `${n}ms` : `${n} ${label}`);
+		}
 
 		return parts.join(', ') || '0 seconds';
 	}
