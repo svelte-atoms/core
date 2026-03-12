@@ -16,7 +16,7 @@
 		theme = 'github-dark',
 		class: className = '',
 		showLineNumbers = false,
-		transparent = false
+		transparent = true
 	}: Props = $props();
 
 	let highlightedCode = $state('');
@@ -65,9 +65,11 @@
 
 <style>
 	.code-block :global(pre) {
-		padding: 1rem;
+		padding: 0.75rem 1rem;
 		overflow-x: auto;
-		border-radius: 0.5rem;
+		border-radius: 0;
+		border-left: 2px solid rgba(255, 255, 255, 0.12);
+		margin: 0.5rem 0;
 	}
 
 	.code-block.transparent :global(pre) {
