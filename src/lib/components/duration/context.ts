@@ -24,6 +24,7 @@ export function computeDuration(from: string, to: string): DurationValue {
 		years: 0, months: 0, days: 0,
 		hours: 0, minutes: 0, seconds: 0,
 		milliseconds: 0, totalMilliseconds: 0,
+		negative: false,
 	};
 
 	if (!from || !to) return zero;
@@ -32,33 +33,33 @@ export function computeDuration(from: string, to: string): DurationValue {
 	const b = new Date(to);
 	if (isNaN(a.getTime()) || isNaN(b.getTime())) return zero;
 
-	const totalMs = Math.max(0, b.getTime() - a.getTime());
+	const negative = b.getTime() < a.getTime();
+	// Always compute magnitude: earlier → later
+	const start = negative ? b : a;
+	const end   = negative ? a : b;
 
-	// Walk calendar units
-	let cur = new Date(a);
-	const end = new Date(b);
+	const totalMs = end.getTime() - start.getTime();
 
+	let cur = new Date(start);
 	let years = 0, months = 0;
 
-	// Years
 	cur.setFullYear(cur.getFullYear() + 1);
 	while (cur <= end) { years++; cur.setFullYear(cur.getFullYear() + 1); }
-	cur.setFullYear(cur.getFullYear() - 1); // back off one
+	cur.setFullYear(cur.getFullYear() - 1);
 
-	// Months
 	cur.setMonth(cur.getMonth() + 1);
 	while (cur <= end) { months++; cur.setMonth(cur.getMonth() + 1); }
 	cur.setMonth(cur.getMonth() - 1);
 
 	const remainMs = end.getTime() - cur.getTime();
-	const days = Math.floor(remainMs / 86_400_000);
-	const rem1 = remainMs % 86_400_000;
-	const hours = Math.floor(rem1 / 3_600_000);
-	const rem2 = rem1 % 3_600_000;
-	const minutes = Math.floor(rem2 / 60_000);
-	const rem3 = rem2 % 60_000;
-	const seconds = Math.floor(rem3 / 1000);
+	const days         = Math.floor(remainMs / 86_400_000);
+	const rem1         = remainMs % 86_400_000;
+	const hours        = Math.floor(rem1 / 3_600_000);
+	const rem2         = rem1 % 3_600_000;
+	const minutes      = Math.floor(rem2 / 60_000);
+	const rem3         = rem2 % 60_000;
+	const seconds      = Math.floor(rem3 / 1000);
 	const milliseconds = rem3 % 1000;
 
-	return { years, months, days, hours, minutes, seconds, milliseconds, totalMilliseconds: totalMs };
+	return { years, months, days, hours, minutes, seconds, milliseconds, totalMilliseconds: totalMs, negative };
 }

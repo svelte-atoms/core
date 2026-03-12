@@ -42,7 +42,7 @@
 		return parts.join(', ') || '0 seconds';
 	}
 
-	const display = $derived(formatDuration(d, format, showZero));
+	const display = $derived((d.negative ? '−' : '') + formatDuration(d, format, showZero));
 </script>
 
 <span class={klass}>{display}</span>

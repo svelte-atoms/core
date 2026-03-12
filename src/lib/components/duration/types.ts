@@ -10,6 +10,8 @@ export interface DurationValue {
 	seconds: number;
 	milliseconds: number;
 	totalMilliseconds: number;
+	/** true when `to` is before `from` (backwards duration) */
+	negative: boolean;
 }
 
 export interface DurationRootProps {
