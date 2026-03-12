@@ -134,8 +134,6 @@ const preset = setPreset({
 							<Card.Title>Card Three</Card.Title>
 						</Card.Header>
 					</Card.Root>
-						</Card.Header>
-					</Card.Root>
 				</div>
 			</DemoExample>
 

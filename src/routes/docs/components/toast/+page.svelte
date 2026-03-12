@@ -15,34 +15,28 @@
 	import { toastRootProps, toastTitleProps, toastDescriptionProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode } = metadata.examples;
-
-	let showToast = $state(false);
-	let toastVariant = $state<'default' | 'success' | 'error' | 'warning'>('default');
+	let showBasic = $state(false);
 </script>
 
 <svelte:head>
-	<title>Toast - Svelte Atoms</title>
-	<meta name="description" content="Brief notification messages." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Toast' }]} />
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Toast"
-		description="Brief notification messages that appear temporarily. Use for feedback after user actions."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
-		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Toast, toast &#125; from '@svelte-atoms/core/toast';"
-		/>
+		<Installation packageName={metadata.packageName} importCode={metadata.importCode} />
 	</Section.Root>
 
 	<Section.Root>
@@ -50,105 +44,30 @@
 			<Section.Title>Preset Configuration</Section.Title>
 			<Section.Subtitle>Customize the toast appearance using presets</Section.Subtitle>
 		</Section.Header>
-		<div class="space-y-4">
-			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for Toast components by defining presets in your
-				configuration:
-			</p>
-			<CodeBlock
-				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core';
-
-const preset = setPreset({
-  toast: () => ({
-    class: 'fixed z-50 flex w-full max-w-md items-center justify-between gap-2 rounded-lg border p-4 shadow-lg transition-all',
-    variants: {
-      variant: {
-        default: { class: 'bg-background text-foreground' },
-        success: { class: 'bg-green-50 text-green-900 border-green-200' },
-        error: { class: 'bg-red-50 text-red-900 border-red-200' },
-        warning: { class: 'bg-yellow-50 text-yellow-900 border-yellow-200' },
-        info: { class: 'bg-blue-50 text-blue-900 border-blue-200' }
-      }
-    },
-    defaults: {
-      variant: 'default'
-    }
-  })
-});`}
-			/>
-		</div>
+		<CodeBlock lang="typescript" code={metadata.examples.preset} />
 	</Section.Root>
 
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Examples</Section.Title>
-			<Section.Subtitle>Explore different toast notifications</Section.Subtitle>
 		</Section.Header>
 		<div class="space-y-8">
-			<DemoExample title="Basic Toast" description="Simple notification" code={basicCode}>
-				<Toast.Root onclose={() => (showToast = false)}>
-					<Toast.Trigger
-						base={Button}
-						variant="secondary"
-						onclick={() => {
-							showToast = true;
-							toastVariant = 'default';
-						}}
-					>
-						Show Toast
-					</Toast.Trigger>
-					<Toast.Content>This is a toast message</Toast.Content>
-				</Toast.Root>
+			<DemoExample title="Basic Toast" description="A simple notification with title and description" code={metadata.examples.basic}>
+				<div class="flex flex-col gap-4">
+					<Button variant="secondary" onclick={() => (showBasic = !showBasic)}>
+						{showBasic ? 'Hide Toast' : 'Show Toast'}
+					</Button>
+					{#if showBasic}
+						<Toast.Root>
+							<Toast.Title>Saved successfully</Toast.Title>
+							<Toast.Description>Your changes have been saved.</Toast.Description>
+						</Toast.Root>
+					{/if}
+				</div>
 			</DemoExample>
 
-			<DemoExample
-				title="Toast Variants"
-				description="Different notification types"
-				code={`<Toast variant="success">Success!</Toast>
-<Toast variant="error">Error!</Toast>
-<Toast variant="warning">Warning!</Toast>`}
-			>
-				<div class="flex flex-wrap gap-2">
-					<Button
-						variant="outline"
-						onclick={() => {
-							showToast = true;
-							toastVariant = 'success';
-						}}
-					>
-						Success
-					</Button>
-					<Button
-						variant="outline"
-						onclick={() => {
-							showToast = true;
-							toastVariant = 'error';
-						}}
-					>
-						Error
-					</Button>
-					<Button
-						variant="outline"
-						onclick={() => {
-							showToast = true;
-							toastVariant = 'warning';
-						}}
-					>
-						Warning
-					</Button>
-				</div>
-				{#if showToast && toastVariant === 'success'}
-					<Toast variant="success" onclose={() => (showToast = false)}>
-						Operation completed successfully!
-					</Toast>
-				{:else if showToast && toastVariant === 'error'}
-					<Toast variant="error" onclose={() => (showToast = false)}>Something went wrong!</Toast>
-				{:else if showToast && toastVariant === 'warning'}
-					<Toast variant="warning" onclose={() => (showToast = false)}>
-						Please review your changes
-					</Toast>
-				{/if}
+			<DemoExample title="Toaster" description="Use Toast.Toaster to render a portal-based notification stack" code={metadata.examples.toaster}>
+				<p class="text-muted-foreground text-sm">Add <code>&lt;Toast.Toaster /&gt;</code> once to your root layout to enable programmatic toasts.</p>
 			</DemoExample>
 		</div>
 	</Section.Root>
@@ -159,8 +78,16 @@ const preset = setPreset({
 		</Section.Header>
 		<div class="space-y-6">
 			<div>
-				<h3 class="text-foreground mb-3 text-lg font-semibold">Toast Props</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Toast.Root</h3>
 				<Props data={toastRootProps} />
+			</div>
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Toast.Title</h3>
+				<Props data={toastTitleProps} />
+			</div>
+			<div>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Toast.Description</h3>
+				<Props data={toastDescriptionProps} />
 			</div>
 		</div>
 	</Section.Root>
@@ -169,15 +96,7 @@ const preset = setPreset({
 		<Section.Header>
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
-		<AccessibilityInfo
-			features={[
-				'Uses ARIA live regions',
-				'role="status" for announcements',
-				'Keyboard dismissible',
-				'Respects prefers-reduced-motion',
-				'Screen reader friendly'
-			]}
-		/>
+		<AccessibilityInfo features={metadata.accessibility} />
 	</Section.Root>
 
 	<PageNavigation
