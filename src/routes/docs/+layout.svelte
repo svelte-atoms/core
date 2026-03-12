@@ -9,11 +9,13 @@
 	let activeId = $state('');
 	let mainEl = $state<HTMLElement | undefined>(undefined);
 	let mobileNavOpen = $state(false);
+	let mobileTocOpen = $state(false);
 
 	// Close mobile nav on route change
 	$effect(() => {
 		$page.url.pathname;
 		mobileNavOpen = false;
+		mobileTocOpen = false;
 	});
 
 	$effect(() => {
@@ -102,9 +104,10 @@
 </script>
 
 <!-- Mobile nav bar -->
-<div class="border-border bg-background/80 sticky top-14 z-40 flex items-center gap-3 border-b px-4 py-2 backdrop-blur-md lg:hidden">
+<div class="border-border bg-background/80 sticky top-14 z-40 flex items-center border-b px-4 py-2 backdrop-blur-md lg:hidden">
+	<!-- Left: hamburger -->
 	<button
-		onclick={() => (mobileNavOpen = !mobileNavOpen)}
+		onclick={() => { mobileNavOpen = !mobileNavOpen; mobileTocOpen = false; }}
 		class="text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors"
 		aria-label="Toggle navigation"
 	>
@@ -120,9 +123,20 @@
 		<span>Menu</span>
 	</button>
 
+	<!-- Right: current heading + TOC toggle -->
 	{#if toc.length > 0}
-		<span class="text-border">·</span>
-		<span class="text-muted-foreground truncate text-sm">On this page</span>
+		<button
+			onclick={() => { mobileTocOpen = !mobileTocOpen; mobileNavOpen = false; }}
+			class="text-muted-foreground hover:text-foreground hover:bg-muted ml-auto flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm transition-colors"
+			aria-label="Toggle table of contents"
+		>
+			<span class="max-w-[180px] truncate">
+				{activeId ? (toc.find(t => t.id === activeId)?.text ?? toc[0]?.text) : toc[0]?.text}
+			</span>
+			<svg class="h-3.5 w-3.5 shrink-0 transition-transform {mobileTocOpen ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+			</svg>
+		</button>
 	{/if}
 </div>
 
@@ -140,6 +154,35 @@
 	<!-- Drawer -->
 	<div class="bg-background border-border fixed top-14 bottom-0 left-0 z-50 w-72 overflow-y-auto border-r shadow-xl lg:hidden">
 		<ContentSidebar data={sidebarData} pathname={$page.url.pathname} mobile={true} />
+	</div>
+{/if}
+
+<!-- Mobile TOC drawer -->
+{#if mobileTocOpen && toc.length > 0}
+	<div
+		class="fixed inset-0 z-40 lg:hidden"
+		role="button"
+		tabindex="-1"
+		onclick={() => (mobileTocOpen = false)}
+		onkeydown={(e) => e.key === 'Escape' && (mobileTocOpen = false)}
+		aria-label="Close table of contents"
+	></div>
+	<div class="bg-background border-border fixed right-0 z-50 w-64 overflow-y-auto border-l shadow-xl lg:hidden" style="top: calc(3.5rem + 2.25rem);">
+		<div class="p-4 text-sm">
+			<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
+			<nav class="space-y-0.5">
+				{#each toc as entry (entry.id)}
+					<a
+						href="#{entry.id}"
+						onclick={() => (mobileTocOpen = false)}
+						class={[
+							'block py-1.5 text-sm transition-colors',
+							activeId === entry.id ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'
+						]}
+					>{entry.text}</a>
+				{/each}
+			</nav>
+		</div>
 	</div>
 {/if}
 
