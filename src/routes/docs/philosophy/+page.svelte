@@ -124,7 +124,6 @@
 				A Bond is a self-contained unit of state and behavior. It's like a mini store that lives
 				inside a component tree, managing its own state and exposing methods to interact with it.
 			</p>
-			<div class="bg-muted/30 rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="svelte" code={`// Creating a Bond
 const accordion = createAccordionBond({
   multiple: false,
@@ -136,7 +135,6 @@ const accordion = createAccordionBond({
   <AccordionItem value="item-1">...</AccordionItem>
   <AccordionItem value="item-2">...</AccordionItem>
 </Accordion>`} /></div>
-			</div>
 		</div>
 
 		<div class="space-y-4">

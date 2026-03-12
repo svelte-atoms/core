@@ -41,7 +41,7 @@
 				{/if}
 			</button>
 		</div>
-		<CodeBlock lang="bash" code={installCmd} />
+		<CodeBlock lang="bash" code={installCmd} showLeftBorder={false} />
 	</div>
 
 	<!-- Import -->
@@ -64,7 +64,7 @@
 				{/if}
 			</button>
 		</div>
-		<CodeBlock lang="typescript" code={importCode} />
+		<CodeBlock lang="typescript" code={importCode} showLeftBorder={false} />
 	</div>
 </div>
 

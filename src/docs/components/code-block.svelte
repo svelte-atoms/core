@@ -7,6 +7,7 @@
 		theme?: string;
 		class?: string;
 		showLineNumbers?: boolean;
+		showLeftBorder?: boolean;
 		transparent?: boolean;
 	};
 
@@ -16,7 +17,8 @@
 		theme = 'github-dark',
 		class: className = '',
 		showLineNumbers = false,
-		transparent = true
+		showLeftBorder = true,
+		transparent = true,
 	}: Props = $props();
 
 	let highlightedCode = $state('');
@@ -50,7 +52,7 @@
 	});
 </script>
 
-<div class="code-block {transparent ? 'transparent' : ''} {className}">
+<div class="code-block {transparent ? 'transparent' : ''} {className}" style:--left-border-width={showLeftBorder ? '1px' : '0px'}>
 	{#if isLoading}
 		<div class="bg-muted animate-pulse rounded-lg p-4">
 			<div class="bg-muted-foreground/20 h-4 w-3/4 rounded"></div>
@@ -68,7 +70,7 @@
 		padding: 1rem 1.25rem;
 		overflow-x: auto;
 		border-radius: 0;
-		border-left: 2px solid rgba(255, 255, 255, 0.2);
+		border-left: var(--left-border-width, 0px) solid rgba(255, 255, 255, 0.2);
 		background: rgba(255, 255, 255, 0.03) !important;
 		margin: 0;
 	}

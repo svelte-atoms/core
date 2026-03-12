@@ -111,9 +111,7 @@
 			</Section.Subtitle>
 		</Section.Header>
 
-		<div class="bg-muted/30 rounded-lg p-4">
-			<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={metadata.examples.anatomy} /></div>
-		</div>
+		<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={metadata.examples.anatomy} /></div>
 
 		<div class="border-border/50 rounded-lg border p-6">
 			<h3 class="mb-3 text-lg font-semibold">Key Features</h3>
