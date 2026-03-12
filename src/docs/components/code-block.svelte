@@ -7,6 +7,7 @@
 		theme?: string;
 		class?: string;
 		showLineNumbers?: boolean;
+		transparent?: boolean;
 	};
 
 	let {
@@ -14,7 +15,8 @@
 		lang = 'typescript',
 		theme = 'github-dark',
 		class: className = '',
-		showLineNumbers = false
+		showLineNumbers = false,
+		transparent = false
 	}: Props = $props();
 
 	let highlightedCode = $state('');
@@ -48,7 +50,7 @@
 	});
 </script>
 
-<div class="code-block {className}">
+<div class="code-block {transparent ? 'transparent' : ''} {className}">
 	{#if isLoading}
 		<div class="bg-muted animate-pulse rounded-lg p-4">
 			<div class="bg-muted-foreground/20 h-4 w-3/4 rounded"></div>
@@ -66,6 +68,10 @@
 		padding: 1rem;
 		overflow-x: auto;
 		border-radius: 0.5rem;
+	}
+
+	.code-block.transparent :global(pre) {
+		background: transparent !important;
 	}
 
 	.code-block :global(code) {
