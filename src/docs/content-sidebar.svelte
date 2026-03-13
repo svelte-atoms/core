@@ -50,7 +50,7 @@
 		: 'sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 docs-scroll lg:block'}
 >
 	<Scrollable.Container>
-		<Scrollable.Content class="text-foreground flex flex-col gap-2 px-4 py-6 items-end">
+		<Scrollable.Content class={["text-foreground flex flex-col gap-2 px-4 items-end", mobile ? '' : 'py-6']}>
 			{#each data as item (item)}
 				{@render tree(item)}
 			{/each}

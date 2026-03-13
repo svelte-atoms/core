@@ -60,22 +60,22 @@
 <Drawer.Root bind:open {onclose} class="lg:hidden z-50">
 	{#snippet children({ drawer })}
 		<Drawer.Backdrop class={['duration-75 bg-black/0 transition-[backdrop-filter]', drawer.state.props.open ? 'backdrop-grayscale-100' : '']} />
-		<Drawer.Content side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl" animate={animateDrawerContentFromRight({duration: DURATION.smooth/1000})}>
-		<Drawer.Header as="h4" class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</Drawer.Header>
-		<Drawer.Body as="nav" class="h-full overflow-y-auto p-4 gap-0.5">
-			{#each toc as entry (entry.id)}
-				<a
-					href="#{entry.id}"
-					onclick={(e) => handleAnchorClick(e, entry.id)}
-					class={[
-						'block py-1.5 text-sm transition-colors',
-						activeId === entry.id
-							? 'text-foreground font-medium'
-							: 'text-muted-foreground hover:text-foreground'
-					]}
-				>{entry.text}</a>
-			{/each}
-		</Drawer.Body>
+		<Drawer.Content side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl pt-32" animate={animateDrawerContentFromRight({duration: DURATION.smooth/1000})}>
+			<Drawer.Header as="h4" class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider px-4">On this page</Drawer.Header>
+			<Drawer.Body as="nav" class="h-full overflow-y-auto p-4 gap-0.5">
+				{#each toc as entry (entry.id)}
+					<a
+						href="#{entry.id}"
+						onclick={(e) => handleAnchorClick(e, entry.id)}
+						class={[
+							'block py-1.5 text-sm transition-colors',
+							activeId === entry.id
+								? 'text-foreground font-medium'
+								: 'text-muted-foreground hover:text-foreground'
+						]}
+					>{entry.text}</a>
+				{/each}
+			</Drawer.Body>
 		</Drawer.Content>
 	{/snippet}
 </Drawer.Root>
