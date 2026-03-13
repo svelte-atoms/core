@@ -25,10 +25,10 @@
 </script>
 
 <footer class="border-border border-t">
-	<div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
 
 		<!-- Top row: brand + nav columns -->
-		<div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
+		<div class="flex flex-col gap-8 lg:flex-row lg:gap-16">
 
 			<!-- Brand column -->
 			<div class="shrink-0 lg:w-56">
@@ -54,8 +54,8 @@
 				</a>
 			</div>
 
-			<!-- Nav columns: 2-col on mobile/tablet, 3-col on sm+ -->
-			<div class="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-3">
+			<!-- Nav columns: always 3-col so all groups fit in one row -->
+			<div class="grid flex-1 grid-cols-3 gap-4">
 				{#each Object.entries(footerLinks) as [group, links]}
 					<div>
 						<p class="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">{group}</p>
@@ -78,7 +78,7 @@
 		</div>
 
 		<!-- Divider -->
-		<div class="border-border mt-10 border-t pt-6">
+		<div class="border-border mt-8 border-t pt-5">
 			<div class="flex flex-col items-center justify-between gap-2 sm:flex-row">
 				<p class="text-muted-foreground text-xs">
 					© {year} Svelte Atoms. Open source under the MIT license.
