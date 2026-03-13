@@ -42,17 +42,13 @@
 	</aside>
 {/if}
 
-<!-- Mobile: internal Drawer component -->
+<!-- Mobile: Drawer from right -->
 {#if toc.length > 0}
 	<Drawer.Root bind:open {onclose} class="lg:hidden">
 		{#snippet children({ drawer })}
-			<Drawer.Backdrop {drawer} class="bg-black/40" />
-			<Drawer.Content
-				{drawer}
-				side="right"
-				class="bg-background border-border w-72 border-l p-0 shadow-xl"
-			>
-				<Drawer.Body {drawer} class="p-4 overflow-y-auto h-full">
+			<Drawer.Backdrop {drawer} />
+			<Drawer.Content {drawer} side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl">
+				<Drawer.Body {drawer} class="h-full overflow-y-auto p-4">
 					<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
 					<nav class="space-y-0.5">
 						{#each toc as entry (entry.id)}
