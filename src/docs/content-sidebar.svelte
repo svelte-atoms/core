@@ -47,7 +47,7 @@
 	as="aside"
 	class={mobile
 		? 'h-full w-full docs-scroll'
-		: 'sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 docs-scroll lg:block'}
+		: 'sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 docs-scroll lg:block'}
 >
 	<Scrollable.Container>
 		<Scrollable.Content class="text-foreground flex flex-col gap-2 px-4 py-6 items-end">

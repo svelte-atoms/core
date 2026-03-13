@@ -32,7 +32,7 @@
 
 <!-- Desktop: always-visible sticky aside -->
 {#if toc.length > 0}
-	<aside class="sticky top-16 hidden h-[calc(100vh-4rem)] w-56 shrink-0 overflow-y-auto docs-scroll xl:block">
+	<aside class="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto docs-scroll xl:block">
 		<div class="py-6 text-sm">
 			<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
 				On this page
