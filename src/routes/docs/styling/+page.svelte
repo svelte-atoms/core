@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { Card } from '$svelte-atoms/core/components/card';
-	import { Badge } from '$svelte-atoms/core/components/badge';
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import { Section, CodeBlock } from '$docs/components';
 
 	const tailwindExample = `<!-- Layout & spacing -->
-<Card.Root class="max-w-sm p-4">
-  <Card.Header>
     <Card.Title class="text-lg font-semibold">Title</Card.Title>
   </Card.Header>
-</Card.Root>
 
 <!-- Interactive states -->
 <button class="bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90 active:bg-primary/100">
@@ -55,8 +50,7 @@ cn(['text-sm', 'font-medium'], 'text-lg');
 <div class="bg-foreground/10 text-foreground/50">Subtle styling</div>
 
 <!-- Borders and shadows -->
-<Card.Root class="border-border border shadow-lg">Card</Card.Root>
-
+<Card.Root class="border-border border shadow-lg">Card
 <!-- All available colors -->
 <div class="bg-secondary text-secondary-foreground">Secondary</div>
 <div class="bg-muted text-muted-foreground">Muted</div>
@@ -200,21 +194,15 @@ ${'<'}/div>`;
 </script>
 
 {#snippet SectionCard(title: string, code: string, description?: string)}
-	<Card.Root class="">
-		<Card.Header class="border-border py-2.5">
-			<h3 class="font-semibold">{title}</h3>
-		</Card.Header>
-		<Card.Body class="p-0">
-			{#if description}
-				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-					{@html description}
-				</p>
-			{/if}
-			<div class="bg-muted rounded-lg p-4">
-				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
-			</div>
-		</Card.Body>
-	</Card.Root>
+	<div class="flex flex-col">
+		<h3 class="font-semibold mb-3">{title}</h3>
+		{#if description}
+			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
+				{@html description}
+			</p>
+		{/if}
+		<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
+	</div>
 {/snippet}
 
 <div class="grid gap-16 py-8">
@@ -230,7 +218,7 @@ ${'<'}/div>`;
 	<!-- Overview -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Overview</Section.Title>
+			<Section.Title id="overview">Overview</Section.Title>
 			<Section.Subtitle>
 				The styling system combines utility-first CSS with powerful variant definitions and global
 				theming.
@@ -250,39 +238,23 @@ ${'<'}/div>`;
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Class Prop Formats</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">String</h4>
 						<code class="text-muted-foreground block text-xs">class="bg-primary text-white"</code>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Array</h4>
 						<code class="text-muted-foreground block text-xs"
 							>class={`{['base', isActive && 'active']}`}</code
 						>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Object</h4>
 						<code class="text-muted-foreground block text-xs"
 							>class={`{{ 'active': isActive }}`}</code
 						>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Mixed</h4>
 						<code class="text-muted-foreground block text-xs"
 							>class={`{['base', condition && 'class', klass]}`}</code
 						>
-					</Card.Body>
-				</Card.Root>
 			</div>
 		</div>
 	</Section.Root>
@@ -290,7 +262,7 @@ ${'<'}/div>`;
 	<!-- TailwindCSS -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>TailwindCSS Utilities</Section.Title>
+			<Section.Title id="tailwindcss-utilities">TailwindCSS Utilities</Section.Title>
 			<Section.Subtitle>
 				Use Tailwind utility classes for 90% of your styling needs with full responsive support.
 			</Section.Subtitle>
@@ -300,16 +272,15 @@ ${'<'}/div>`;
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Common Patterns</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={tailwindExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- cn() Utility -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>The cn() Utility</Section.Title>
+			<Section.Title id="the-cn-utility">The cn() Utility</Section.Title>
 			<Section.Subtitle>
 				Intelligent class merging with automatic conflict resolution using clsx and tailwind-merge.
 			</Section.Subtitle>
@@ -327,16 +298,15 @@ ${'<'}/div>`;
 				intelligent Tailwind class conflict resolution. When conflicting utility classes are provided,
 				the last one wins.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={cnExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Color Tokens -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>CSS Custom Properties</Section.Title>
+			<Section.Title id="css-custom-properties">CSS Custom Properties</Section.Title>
 			<Section.Subtitle>
 				Use theme color tokens for consistent, theme-aware styling across your application. The
 				library uses a token system following <a
@@ -348,8 +318,6 @@ ${'<'}/div>`;
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="mb-6 ">
-			<Card.Body class="">
 				<div class="mb-4">
 					<h4 class="mb-3 text-sm font-semibold">Available Color Tokens</h4>
 					<div class="grid gap-2 sm:grid-cols-2">
@@ -440,8 +408,6 @@ ${'<'}/div>`;
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
 
 		{@render SectionCard('Color Token Usage', colorTokensExample)}
 	</Section.Root>
@@ -449,7 +415,7 @@ ${'<'}/div>`;
 	<!-- Conditional Classes -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Conditional Styling</Section.Title>
+			<Section.Title id="conditional-styling">Conditional Styling</Section.Title>
 			<Section.Subtitle>
 				Apply classes conditionally based on component state or props using arrays and ternary
 				operators.
@@ -460,16 +426,15 @@ ${'<'}/div>`;
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Usage Examples</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={conditionalExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Variant System -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Variant System</Section.Title>
+			<Section.Title id="variant-system">Variant System</Section.Title>
 			<Section.Subtitle>
 				Define reusable component variants with full TypeScript support and bond state access.
 			</Section.Subtitle>
@@ -534,67 +499,42 @@ ${'<'}/div>`;
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Basic Variant Definition</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={variantBasicExample} /></div>
-			</div>
+
 		</div>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Key Features</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Base Classes</h4>
 						<p class="text-muted-foreground text-sm">
 							Define base styling that applies to all variants
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Multiple Dimensions</h4>
 						<p class="text-muted-foreground text-sm">
 							Combine variant, size, state, and custom dimensions
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Default Values</h4>
 						<p class="text-muted-foreground text-sm">
 							Set sensible defaults for all variant dimensions
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Type Safety</h4>
 						<p class="text-muted-foreground text-sm">
 							Automatic TypeScript inference for all variant options
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Compound Variants</h4>
 						<p class="text-muted-foreground text-sm">
 							Apply styling when multiple conditions match
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Attribute Support</h4>
 						<p class="text-muted-foreground text-sm">
 							Return aria-*, data-*, and other HTML attributes
 						</p>
-					</Card.Body>
-				</Card.Root>
 			</div>
 		</div>
 	</Section.Root>
@@ -602,7 +542,7 @@ ${'<'}/div>`;
 	<!-- Compound Variants -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Compound Variants</Section.Title>
+			<Section.Title id="compound-variants">Compound Variants</Section.Title>
 			<Section.Subtitle>
 				Apply additional styling when multiple variant conditions match simultaneously.
 			</Section.Subtitle>
@@ -619,16 +559,15 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">role</code> and
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">aria-*</code> attributes.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={compoundVariantsExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Reactive Variants -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Reactive Variants</Section.Title>
+			<Section.Title id="reactive-variants">Reactive Variants</Section.Title>
 			<Section.Subtitle>
 				Access component bond state for dynamic, reactive variant styling.
 			</Section.Subtitle>
@@ -647,16 +586,15 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isActive</code>, or
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">isDisabled</code>.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={reactiveVariantsExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Preset Placeholder -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>The $preset Placeholder</Section.Title>
+			<Section.Title id="the-preset-placeholderpreset-placeholder">The $preset Placeholder</Section.Title>
 			<Section.Subtitle>
 				Control exactly where preset classes are inserted in your class arrays.
 			</Section.Subtitle>
@@ -674,16 +612,15 @@ ${'<'}/div>`;
 				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">'$preset'</code>
 				placeholder is present, preset classes are automatically prepended to your class array.
 			</p>
-			<div class="bg-muted rounded-lg p-4">
 				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={presetPlaceholderExample} /></div>
-			</div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Inline Styles -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Inline Styles</Section.Title>
+			<Section.Title id="inline-styles">Inline Styles</Section.Title>
 			<Section.Subtitle>
 				Use inline styles sparingly, only for truly dynamic values that cannot be expressed with
 				classes.
@@ -745,15 +682,13 @@ ${'<'}/div>`;
 	<!-- Best Practices -->
 	<Section.Root class="mb-0">
 		<Section.Header>
-			<Section.Title>Best Practices</Section.Title>
+			<Section.Title id="best-practices">Best Practices</Section.Title>
 			<Section.Subtitle>
 				Guidelines for effective styling that leads to maintainable, performant applications.
 			</Section.Subtitle>
 		</Section.Header>
 
 		<div class="grid gap-3 md:grid-cols-2">
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
 						<div>
@@ -764,11 +699,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
 						<div>
@@ -779,11 +710,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
 						<div>
@@ -794,11 +721,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
 						<div>
@@ -810,11 +733,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
 						<div>
@@ -825,11 +744,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">6.</div>
 						<div>
@@ -842,11 +757,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">7.</div>
 						<div>
@@ -861,11 +772,7 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">8.</div>
 						<div>
@@ -878,8 +785,6 @@ ${'<'}/div>`;
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 		</div>
 	</Section.Root>
 </div>

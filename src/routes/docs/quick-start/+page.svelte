@@ -16,7 +16,7 @@
 
 <div class="py-8">
 	<!-- Header -->
-	<div class="mb-12">
+	<div class="mb-16">
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Quick Start</h1>
 		<p class="text-muted-foreground text-lg">
 			Get up and running with Svelte Atoms in minutes. This guide will walk you through
@@ -27,86 +27,84 @@
 	<!-- Requirements Section -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Requirements</Section.Title>
+			<Section.Title id="requirements">Requirements</Section.Title>
 			<Section.Subtitle>Make sure your project meets the following requirements:</Section.Subtitle>
 		</Section.Header>
 
-		<div class="border-border/50 rounded-lg border p-6">
-			<ul class="space-y-3">
-				<li class="flex items-start gap-3">
-					<Icon class="text-primary mt-1 size-5">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</Icon>
-					<div>
-						<p class="font-semibold">Svelte 5</p>
-						<p class="text-muted-foreground text-sm">
-							Svelte Atoms is built for Svelte 5 and uses the new Runes API.
-						</p>
-					</div>
-				</li>
-				<li class="flex items-start gap-3">
-					<Icon class="text-primary mt-1 size-5">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</Icon>
-					<div>
-						<p class="font-semibold">Tailwind CSS (Version 4)</p>
-						<p class="text-muted-foreground text-sm">
-							Components are styled with Tailwind CSS utilities for easy customization.
-						</p>
-					</div>
-				</li>
-				<li class="flex items-start gap-3">
-					<Icon class="text-primary mt-1 size-5">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</Icon>
-					<div>
-						<p class="font-semibold">Node.js 18+</p>
-						<p class="text-muted-foreground text-sm">
-							Modern Node.js version for build tools and development.
-						</p>
-					</div>
-				</li>
-			</ul>
-		</div>
+		<ul class="space-y-3">
+			<li class="flex items-start gap-3">
+				<Icon class="text-primary mt-1 size-5">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+						<polyline points="22 4 12 14.01 9 11.01"></polyline>
+					</svg>
+				</Icon>
+				<div>
+					<p class="font-semibold">Svelte 5</p>
+					<p class="text-muted-foreground text-sm">
+						Svelte Atoms is built for Svelte 5 and uses the new Runes API.
+					</p>
+				</div>
+			</li>
+			<li class="flex items-start gap-3">
+				<Icon class="text-primary mt-1 size-5">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+						<polyline points="22 4 12 14.01 9 11.01"></polyline>
+					</svg>
+				</Icon>
+				<div>
+					<p class="font-semibold">Tailwind CSS (Version 4)</p>
+					<p class="text-muted-foreground text-sm">
+						Components are styled with Tailwind CSS utilities for easy customization.
+					</p>
+				</div>
+			</li>
+			<li class="flex items-start gap-3">
+				<Icon class="text-primary mt-1 size-5">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+						<polyline points="22 4 12 14.01 9 11.01"></polyline>
+					</svg>
+				</Icon>
+				<div>
+					<p class="font-semibold">Node.js 18+</p>
+					<p class="text-muted-foreground text-sm">
+						Modern Node.js version for build tools and development.
+					</p>
+				</div>
+			</li>
+		</ul>
 	</Section.Root>
 
 	<!-- Installation Section -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Installation</Section.Title>
+			<Section.Title id="installation">Installation</Section.Title>
 			<Section.Subtitle>
 				Install <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-semibold"
 					>@svelte-atoms/core</code
@@ -114,7 +112,7 @@
 			</Section.Subtitle>
 		</Section.Header>
 
-		<div class="border-border/50 overflow-hidden rounded-lg border">
+		<div class="overflow-hidden rounded-lg">
 			<!-- Package Manager Tabs -->
 			<div class="border-border/30 flex border-b">
 				{#each ['npm', 'pnpm', 'yarn', 'bun'] as pm}
@@ -163,7 +161,7 @@
 	<!-- Configuration Section -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Configuration</Section.Title>
+			<Section.Title id="configuration">Configuration</Section.Title>
 			<Section.Subtitle>
 				After installing the package, you need to configure your project to use the Svelte Atoms
 				components and styling system.
@@ -171,15 +169,16 @@
 		</Section.Header>
 
 		<!-- Step 1: Import Internal Styles -->
-		<div class="mb-10">
-			<div class="mb-4 flex items-center gap-3">
+		<div class="relative mb-10 pl-12">
+			<div class="absolute left-0 top-0 flex flex-col items-center">
 				<div
-					class="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+					class="bg-primary text-primary-foreground z-10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 				>
 					1
 				</div>
-				<h3 class="text-2xl font-semibold">Import Internal Styles</h3>
+				<div class="bg-border mt-1 w-px flex-1"></div>
 			</div>
+			<h3 class="mb-4 pt-1 text-2xl font-semibold">Import Internal Styles</h3>
 			<p class="text-muted-foreground mb-4">
 				Import the internal style file in your root layout file (e.g., <code
 					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-semibold"
@@ -189,41 +188,23 @@
 
 			<DocCodeBlock filepath="src/routes/+layout.svelte" language="Svelte" code={layoutCode} />
 
-			<Alert.Root variant="info" class="mt-4">
-				<Alert.Icon class="size-5">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<circle cx="12" cy="12" r="10"></circle>
-						<path d="M12 16v-4M12 8h.01"></path>
-					</svg>
-				</Alert.Icon>
-				<Alert.Content>
-					<Alert.Title>Important</Alert.Title>
-					<Alert.Description>
-						Make sure to import the internal styles before your app.css to ensure proper style
-						precedence.
-					</Alert.Description>
-				</Alert.Content>
-			</Alert.Root>
+			<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
+				<p class="text-sm font-medium text-foreground mb-1">Important</p>
+				<p class="text-sm">Make sure to import the internal styles before your app.css to ensure proper style precedence.</p>
+			</div>
 		</div>
 
 		<!-- Step 2: Setup App CSS -->
-		<div class="mb-10">
-			<div class="mb-4 flex items-center gap-3">
+		<div class="relative mb-10 pl-12">
+			<div class="absolute left-0 top-0 flex flex-col items-center">
 				<div
-					class="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+					class="bg-primary text-primary-foreground z-10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 				>
 					2
 				</div>
-				<h3 class="text-2xl font-semibold">Setup App CSS for Tailwind</h3>
+				<div class="bg-border mt-1 w-px flex-1"></div>
 			</div>
+			<h3 class="mb-4 pt-1 text-2xl font-semibold">Setup App CSS for Tailwind</h3>
 			<p class="text-muted-foreground mb-4">
 				Create or update your <code
 					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-semibold">app.css</code
@@ -232,36 +213,27 @@
 
 			<DocCodeBlock filepath="src/app.css" language="CSS" code={appCssCode} />
 
-			<p class="text-muted-foreground mt-4">
+			<p class="text-muted-foreground mt-4 mb-4">
 				These CSS variables provide a complete theming system with light and dark mode support. You
 				can customize these values to match your brand colors.
 			</p>
 
-			<Alert.Root variant="warning" class="mt-4">
-				<Alert.Icon class="size-5" />
-				<Alert.Content>
-					<Alert.Title>Note</Alert.Title>
-					<Alert.Description>
-						Make sure to include <code
-							class="leading-0 bg-amber-500/10 text-amber-800 rounded px-1 py-0.5 text-xs font-semibold"
-							>node_modules/@svelte-atoms/core/**/*</code
-						>
-						in your content array so Tailwind can detect classes used in the library components.
-					</Alert.Description>
-				</Alert.Content>
-			</Alert.Root>
+			<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
+				<p class="text-sm font-medium text-foreground mb-1">Note</p>
+				<p class="text-sm">Make sure to include <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs font-semibold">node_modules/@svelte-atoms/core/**/*</code> in your content array so Tailwind can detect classes used in the library components.</p>
+			</div>
 		</div>
 
 		<!-- Step 3: Configure Component Preset -->
-		<div class="mb-10">
-			<div class="mb-4 flex items-center gap-3">
+		<div class="relative mb-10 pl-12">
+			<div class="absolute left-0 top-0 flex flex-col items-center">
 				<div
-					class="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+					class="bg-primary text-primary-foreground z-10 flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
 				>
 					3
 				</div>
-				<h3 class="text-2xl font-semibold">Configure Component Preset</h3>
 			</div>
+			<h3 class="mb-4 pt-1 text-2xl font-semibold">Configure Component Preset</h3>
 			<p class="text-muted-foreground mb-4">
 				Create a preset file to customize the default styles for Svelte Atoms components. This
 				allows you to define your own variants and default classes:
@@ -274,7 +246,7 @@
 	<!-- First Component Section -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Your First Component</Section.Title>
+			<Section.Title id="your-first-component">Your First Component</Section.Title>
 			<Section.Subtitle>
 				Now that everything is configured, let's create a simple example using a Button component:
 			</Section.Subtitle>
@@ -282,22 +254,16 @@
 
 		<DocCodeBlock filepath="src/routes/+page.svelte" language="Svelte" code={firstComponentCode} />
 
-		<Alert.Root variant="success" class="mt-4">
-			<Alert.Icon />
-			<Alert.Content>
-				<Alert.Title>Success!</Alert.Title>
-				<Alert.Description>
-					You now have a working setup with Svelte Atoms. The components are fully styled and ready
-					to use.
-				</Alert.Description>
-			</Alert.Content>
-		</Alert.Root>
+		<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
+			<p class="text-sm font-medium text-foreground mb-1">Success!</p>
+			<p class="text-sm">You now have a working setup with Svelte Atoms. The components are fully styled and ready to use.</p>
+		</div>
 	</Section.Root>
 
 	<!-- Next Steps Section -->
 	<Section.Root class="mb-0">
 		<Section.Header>
-			<Section.Title>Next Steps</Section.Title>
+			<Section.Title id="next-steps">Next Steps</Section.Title>
 			<Section.Subtitle>
 				Now that you have Svelte Atoms set up, here are some recommended next steps:
 			</Section.Subtitle>
@@ -485,54 +451,33 @@
 	</Section.Root>
 
 	<!-- Troubleshooting Section -->
-	<div class="border-border/50 bg-muted/30 mt-8 rounded-lg border p-6">
-		<div class="flex items-start gap-4">
-			<div class="text-primary">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="28"
-					height="28"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<circle cx="12" cy="12" r="10"></circle>
-					<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-					<path d="M12 17h.01"></path>
-				</svg>
-			</div>
-			<div>
-				<h3 class="mb-2 text-xl font-semibold">Need Help?</h3>
-				<p class="text-muted-foreground mb-4">
-					If you're still having issues, check out our GitHub repository for more examples and to
-					report bugs.
-				</p>
-				<a
-					href="https://github.com/svelte-atoms/core"
-					class="text-primary inline-flex items-center gap-2 font-semibold transition-all hover:gap-3"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="20"
-						height="20"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path
-							d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
-						/>
-						<path d="M9 18c-4.51 2-5-2-7-2" />
-					</svg>
-					View on GitHub
-				</a>
-			</div>
-		</div>
+	<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-8">
+		<h3 class="mb-2 text-base font-semibold text-foreground">Need Help?</h3>
+		<p class="text-sm mb-4">
+			If you're still having issues, check out our GitHub repository for more examples and to
+			report bugs.
+		</p>
+		<a
+			href="https://github.com/svelte-atoms/core"
+			class="text-primary inline-flex items-center gap-2 text-sm font-semibold transition-all hover:gap-3"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path
+					d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+				/>
+				<path d="M9 18c-4.51 2-5-2-7-2" />
+			</svg>
+			View on GitHub
+		</a>
 	</div>
 </div>

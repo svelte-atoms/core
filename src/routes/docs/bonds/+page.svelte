@@ -6,17 +6,13 @@
 
 {#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
 	<div class="flex flex-col">
-		<div class="border-border py-2.5">
-			<h3 class="font-semibold">{title}</h3>
-		</div>
+		<h3 class="font-semibold mb-3">{title}</h3>
 		{#if description}
 			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
 				{@html description}
 			</p>
 		{/if}
-		<div class="bg-muted rounded-lg p-4">
-			<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
-		</div>
+		<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
 	</div>
 {/snippet}
 
@@ -32,7 +28,7 @@
 	<!-- What Are Bonds -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>What Are Bonds?</Section.Title>
+			<Section.Title id="what-are-bonds">What Are Bonds?</Section.Title>
 			<Section.Subtitle>
 				Bonds are class-based state containers designed for building compound components that need
 				to share state across multiple parts.
@@ -65,7 +61,7 @@
 	<!-- Creating a Bond -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Creating a Bond</Section.Title>
+			<Section.Title id="creating-a-bond">Creating a Bond</Section.Title>
 			<Section.Subtitle>
 				Creating a bond requires four key pieces: a Bond class, a BondState class, bond state props
 				definition, and bond HTML element types.
@@ -236,7 +232,7 @@ export class MyComponentBond<
 	<!-- Key Features -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Key Features</Section.Title>
+			<Section.Title id="key-features">Key Features</Section.Title>
 			<Section.Subtitle>
 				Bonds provide several advantages over traditional state management approaches.
 			</Section.Subtitle>
@@ -398,7 +394,7 @@ export class MyComponentBond<
 	<!-- Bond Architecture -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Bond Architecture</Section.Title>
+			<Section.Title id="bond-architecture">Bond Architecture</Section.Title>
 			<Section.Subtitle>
 				Understanding the two-part Bond architecture and how the pieces work together.
 			</Section.Subtitle>
@@ -513,7 +509,7 @@ const state = new DialogBondState(() => bondProps);`,
 	<!-- Using Bonds in Components -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Using Bonds in Components</Section.Title>
+			<Section.Title id="using-bonds-in-components">Using Bonds in Components</Section.Title>
 			<Section.Subtitle>
 				Bonds are typically created in root components and shared via context to child components.
 			</Section.Subtitle>
@@ -610,7 +606,7 @@ function _factory(props) {
 	<!-- When to Use Bonds -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>When to Use Bonds</Section.Title>
+			<Section.Title id="when-to-use-bonds">When to Use Bonds</Section.Title>
 			<Section.Subtitle>
 				Bonds are powerful but not always necessary. Here's when to use them.
 			</Section.Subtitle>
@@ -752,7 +748,7 @@ function _factory(props) {
 	<!-- Best Practices -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Best Practices</Section.Title>
+			<Section.Title id="best-practices">Best Practices</Section.Title>
 			<Section.Subtitle>Guidelines for working effectively with Bonds.</Section.Subtitle>
 		</Section.Header>
 
@@ -822,7 +818,7 @@ function _factory(props) {
 	<!-- Learn More -->
 	<Section.Root class="mb-0">
 		<Section.Header>
-			<Section.Title>Learn More</Section.Title>
+			<Section.Title id="learn-more">Learn More</Section.Title>
 			<Section.Subtitle>
 				Ready to dive deeper into Bonds and the architecture behind them?
 			</Section.Subtitle>
