@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Drawer } from '$lib/components/drawer';
+	import { animateDrawerContentFromRight, Drawer } from '$lib/components/drawer';
+	import { DURATION } from '$svelte-atoms/core';
 
 	type TocEntry = { id: string; text: string };
 
@@ -16,6 +17,17 @@
 		open = false;
 		onclose?.();
 	}
+
+	    function handleAnchorClick(event: MouseEvent, id: string) {
+        event.preventDefault();
+        handleClose();
+
+        // Let the drawer close animation complete before scrolling
+        setTimeout(() => {
+            const target = document.getElementById(id);
+            target?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+    }
 </script>
 
 <!-- Desktop: always-visible sticky aside -->
@@ -29,6 +41,8 @@
 				{#each toc as entry (entry.id)}
 					<a
 						href="#{entry.id}"
+						tabindex="-1"
+						onclick={(e) => handleAnchorClick(e, entry.id)}
 						class={[
 							'block py-1 pr-2 text-sm transition-colors',
 							activeId === entry.id
@@ -43,27 +57,25 @@
 {/if}
 
 <!-- Mobile: Drawer from right -->
-<Drawer.Root bind:open {onclose} class="lg:hidden">
+<Drawer.Root bind:open {onclose} class="lg:hidden z-50">
 	{#snippet children({ drawer })}
-		<Drawer.Backdrop {drawer} />
-		<Drawer.Content {drawer} side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl">
-			<Drawer.Body {drawer} class="h-full overflow-y-auto p-4">
-				<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
-				<nav class="space-y-0.5">
-					{#each toc as entry (entry.id)}
-						<a
-							href="#{entry.id}"
-							onclick={handleClose}
-							class={[
-								'block py-1.5 text-sm transition-colors',
-								activeId === entry.id
-									? 'text-foreground font-medium'
-									: 'text-muted-foreground hover:text-foreground'
-							]}
-						>{entry.text}</a>
-					{/each}
-				</nav>
-			</Drawer.Body>
+		<Drawer.Backdrop class={['duration-75 bg-black/0 transition-[backdrop-filter]', drawer.state.props.open ? 'backdrop-grayscale-100' : '']} />
+		<Drawer.Content side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl" animate={animateDrawerContentFromRight({duration: DURATION.smooth/1000})}>
+		<Drawer.Header as="h4" class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</Drawer.Header>
+		<Drawer.Body as="nav" class="h-full overflow-y-auto p-4 gap-0.5">
+			{#each toc as entry (entry.id)}
+				<a
+					href="#{entry.id}"
+					onclick={(e) => handleAnchorClick(e, entry.id)}
+					class={[
+						'block py-1.5 text-sm transition-colors',
+						activeId === entry.id
+							? 'text-foreground font-medium'
+							: 'text-muted-foreground hover:text-foreground'
+					]}
+				>{entry.text}</a>
+			{/each}
+		</Drawer.Body>
 		</Drawer.Content>
 	{/snippet}
 </Drawer.Root>
