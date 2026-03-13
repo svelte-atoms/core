@@ -16,7 +16,7 @@
 		onmount = undefined,
 		ondestroy = undefined,
 		side = 'right' as DrawerSide,
-		animate = animateDrawerContent({ ease: [0.32, 0.72, 0, 1], side }),
+		animate = animateDrawerContent({ side }),
 		enter = undefined,
 		exit = undefined,
 		initial = animateDrawerContent({ duration: 0, side }),
