@@ -27,7 +27,7 @@
 <HtmlAtom
 	{bond}
 	preset="drawer.backdrop"
-	class={['border-border absolute inset-0 z-0 bg-black/30', '$preset', klass]}
+	class={['border-border absolute inset-0 bg-black/30', '$preset', klass]}
 	onmount={onmount?.bind(bond.state)}
 	ondestroy={ondestroy?.bind(bond.state)}
 	enter={enter?.bind(bond.state)}
