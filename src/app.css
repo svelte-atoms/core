@@ -207,3 +207,16 @@
 	--scrollbar-thumb: oklch(0.32 0 0);
 	--scrollbar-thumb-hover: oklch(0.45 0 0);
 }
+
+/* ─── Scroll offset for sticky bars ─────────────────────────────── */
+/* Desktop: just the header (3.5rem) + a little breathing room */
+h1[id], h2[id], h3[id], h4[id] {
+	scroll-margin-top: 5rem;
+}
+
+/* Mobile: header (3.5rem) + sticky nav bar (~2.5rem) + breathing room */
+@media (max-width: 1023px) {
+	h1[id], h2[id], h3[id], h4[id] {
+		scroll-margin-top: 7.5rem;
+	}
+}
