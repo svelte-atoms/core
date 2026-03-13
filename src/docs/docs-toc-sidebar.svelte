@@ -43,12 +43,12 @@
 {/if}
 
 <!-- Mobile: Drawer from right -->
-{#if toc.length > 0}
-	<Drawer.Root bind:open {onclose} class="lg:hidden">
-		{#snippet children({ drawer })}
-			<Drawer.Backdrop {drawer} />
-			<Drawer.Content {drawer} side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl">
-				<Drawer.Body {drawer} class="h-full overflow-y-auto p-4">
+<Drawer.Root bind:open {onclose} class="lg:hidden">
+	{#snippet children({ drawer })}
+		<Drawer.Backdrop {drawer} />
+		<Drawer.Content {drawer} side="right" class="bg-background border-border w-72 border-l p-0 shadow-xl">
+			<Drawer.Body {drawer} class="h-full overflow-y-auto p-4">
+				{#if toc.length > 0}
 					<h4 class="text-foreground mb-3 text-xs font-semibold uppercase tracking-wider">On this page</h4>
 					<nav class="space-y-0.5">
 						{#each toc as entry (entry.id)}
@@ -64,8 +64,8 @@
 							>{entry.text}</a>
 						{/each}
 					</nav>
-				</Drawer.Body>
-			</Drawer.Content>
-		{/snippet}
-	</Drawer.Root>
-{/if}
+				{/if}
+			</Drawer.Body>
+		</Drawer.Content>
+	{/snippet}
+</Drawer.Root>
