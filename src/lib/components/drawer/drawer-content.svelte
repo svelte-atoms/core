@@ -3,7 +3,7 @@
 	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { SlideoverContentProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { animateDrawerContent } from './motion';
+	import { animateDrawerContent, type DrawerSide } from './motion';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -15,12 +15,13 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		animate = animateDrawerContent({ ease: 'easeOut', side: 'left' }),
+		side = 'right' as DrawerSide,
+		animate = animateDrawerContent({ ease: [0.32, 0.72, 0, 1], side }),
 		enter = undefined,
 		exit = undefined,
-		initial = animateDrawerContent({ ease: 'easeOut', side: 'left', duration: 0 }),
+		initial = animateDrawerContent({ duration: 0, side }),
 		...restProps
-	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> = $props();
+	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();
 
 	const contentProps = $derived({
 		...bond?.content(),
