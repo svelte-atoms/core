@@ -9,3 +9,4 @@ export { default as DemoExample } from './demo-example.svelte';
 export { default as Props } from '../props-datagrid.svelte';
 export { default as LLMAccess } from './llm-access.svelte';
 export { default as CodeBlock } from './code-block.svelte';
+export { default as DocCallout } from './callout.svelte';

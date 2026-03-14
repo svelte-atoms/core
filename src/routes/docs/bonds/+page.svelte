@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import LinkCard from '$docs/components/link-card.svelte';
-	import { Section, CodeBlock } from '$docs/components';
+	import { Section, CodeBlock, DocCallout } from '$docs/components';
 </script>
 
 {#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
@@ -716,33 +716,9 @@ function _factory(props) {
 			</div>
 		</div>
 
-		<Alert.Root variant="warning" class="mt-6">
-			<Alert.Title>
-				<Alert.Icon>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<circle cx="12" cy="12" r="10" />
-						<line x1="12" y1="8" x2="12" y2="12" />
-						<line x1="12" y1="16" x2="12.01" y2="16" />
-					</svg>
-				</Alert.Icon>
-				<span>When Not to Use Bonds</span>
-			</Alert.Title>
-			<Alert.Content>
-				For simple components with a single piece of state, a plain <code
-					class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`$state`}</code
-				> variable is often clearer. Don't over-engineer.
-			</Alert.Content>
-		</Alert.Root>
+		<DocCallout variant="warning" title="When Not to Use Bonds" class="mt-6">
+			For simple components with a single piece of state, a plain <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`$state`}</code> variable is often clearer. Don't over-engineer.
+		</DocCallout>
 	</Section.Root>
 
 	<!-- Best Practices -->

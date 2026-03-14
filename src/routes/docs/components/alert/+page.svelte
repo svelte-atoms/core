@@ -77,50 +77,29 @@
 				lang="typescript"
 				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = setPreset({
+setPreset({
   alert: () => ({
-    class: 'relative gap-1 rounded-md border p-4 transition-all duration-200',
+    class: 'border-l-2 rounded-none border-y-0 border-r-0 bg-transparent px-4 py-3',
     variants: {
       variant: {
-        primary: {
-          class: 'bg-primary/10 text-primary border-primary'
-        },
-        secondary: {
-          class: 'bg-secondary text-secondary-foreground'
-        },
-        destructive: {
-          class: 'bg-destructive text-destructive-foreground'
-        },
-        outline: {
-          class: 'bg-transparent border border-border'
-        },
-        ghost: {
-          class: 'bg-transparent'
-        }
-      }
-    },
-    defaults: {
-      variant: 'primary'
+        info:        { class: 'border-primary/50 text-foreground' },
+        warning:     { class: 'border-yellow-500/60 text-foreground' },
+        success:     { class: 'border-green-500/60 text-foreground' },
+        destructive: { class: 'border-destructive/60 text-foreground' },
+        outline:     { class: 'border-border text-foreground' },
+      },
+      defaultVariants: { variant: 'info' }
     }
   }),
-  'alert.icon': () => ({
-    class: 'inline-flex aspect-square size-4 shrink-0 items-center justify-center'
-  }),
   'alert.title': () => ({
-    class: 'text-md font-semibold leading-tight'
-  }),
-  'alert.description': () => ({
-    class: 'text-sm leading-relaxed opacity-90'
+    class: 'text-sm font-semibold text-foreground mb-0.5'
   }),
   'alert.content': () => ({
-    class: 'flex-1 space-y-1'
+    class: 'text-sm leading-relaxed text-muted-foreground'
   }),
-  'alert.actions': () => ({
-    class: 'mt-3 flex items-center gap-2'
+  'alert.icon': () => ({
+    class: 'inline-flex size-4 shrink-0 items-center justify-center'
   }),
-  'alert.close-button': () => ({
-    class: 'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100'
-  })
 });`}
 			/>
 			<div class="bg-muted/50 border-border rounded-lg border p-4">

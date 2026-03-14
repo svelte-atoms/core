@@ -2,7 +2,7 @@
 	import DocCodeBlock from '$docs/components/doc-code-block.svelte';
 	import { Alert, Button, Icon } from '$svelte-atoms/core';
 	import { layoutCode, appCssCode, presetCode, firstComponentCode } from './codes';
-	import { Section } from '$docs/components';
+	import { Section, DocCallout } from '$docs/components';
 
 	let packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun' = 'npm';
 
@@ -188,10 +188,9 @@
 
 			<DocCodeBlock filepath="src/routes/+layout.svelte" language="Svelte" code={layoutCode} />
 
-			<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
-				<p class="text-sm font-medium text-foreground mb-1">Important</p>
-				<p class="text-sm">Make sure to import the internal styles before your app.css to ensure proper style precedence.</p>
-			</div>
+			<DocCallout variant="warning" title="Important" class="mt-4">
+				Make sure to import the internal styles before your app.css to ensure proper style precedence.
+			</DocCallout>
 		</div>
 
 		<!-- Step 2: Setup App CSS -->
@@ -218,10 +217,9 @@
 				can customize these values to match your brand colors.
 			</p>
 
-			<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
-				<p class="text-sm font-medium text-foreground mb-1">Note</p>
-				<p class="text-sm">Make sure to include <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs font-semibold">node_modules/@svelte-atoms/core/**/*</code> in your content array so Tailwind can detect classes used in the library components.</p>
-			</div>
+			<DocCallout variant="note" title="Note" class="mt-4">
+				Make sure to include <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs font-semibold">node_modules/@svelte-atoms/core/**/*</code> in your content array so Tailwind can detect classes used in the library components.
+			</DocCallout>
 		</div>
 
 		<!-- Step 3: Configure Component Preset -->
@@ -254,10 +252,9 @@
 
 		<DocCodeBlock filepath="src/routes/+page.svelte" language="Svelte" code={firstComponentCode} />
 
-		<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-4">
-			<p class="text-sm font-medium text-foreground mb-1">Success!</p>
-			<p class="text-sm">You now have a working setup with Svelte Atoms. The components are fully styled and ready to use.</p>
-		</div>
+		<DocCallout variant="success" title="Success!" class="mt-4">
+			You now have a working setup with Svelte Atoms. The components are fully styled and ready to use.
+		</DocCallout>
 	</Section.Root>
 
 	<!-- Next Steps Section -->
@@ -451,8 +448,7 @@
 	</Section.Root>
 
 	<!-- Troubleshooting Section -->
-	<div class="border-l-2 border-primary/40 pl-4 py-2 text-muted-foreground mt-8">
-		<h3 class="mb-2 text-base font-semibold text-foreground">Need Help?</h3>
+	<DocCallout variant="tip" title="Need Help?" class="mt-8">
 		<p class="text-sm mb-4">
 			If you're still having issues, check out our GitHub repository for more examples and to
 			report bugs.
@@ -479,5 +475,5 @@
 			</svg>
 			View on GitHub
 		</a>
-	</div>
+	</DocCallout>
 </div>

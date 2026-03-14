@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Input } from '$lib/components/input';
-	import { Alert } from '$lib/components/alert';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -10,7 +9,8 @@
 		PageNavigation,
 		DemoExample,
 		Props,
-		CodeBlock
+		CodeBlock,
+		DocCallout
 	} from '$docs/components';
 	import { inputRootProps, inputControlProps } from './props';
 	import { metadata } from './shared';
@@ -44,19 +44,13 @@
 		/>
 	</Section.Root>
 
-	<Alert.Root variant="info" class="my-8">
-		<Alert.Title>Why a Compound Component?</Alert.Title>
-		<Alert.Content class="text-foreground/60">
-			Input is designed as a compound component (Root, Control, Icon, Placeholder) to maximize
-			reusability. This means other components can reuse <code
-				class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code
-			>
-			styling without recreating it from scratch. For example, a dropdown trigger can look exactly like
-			an input by wrapping its content with
-			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code>,
-			maintaining consistent styling across your application.
-		</Alert.Content>
-	</Alert.Root>
+	<DocCallout variant="info" title="Why a Compound Component?" class="my-8">
+		Input is designed as a compound component (Root, Control, Icon, Placeholder) to maximize
+		reusability. This means other components can reuse <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code>
+		styling without recreating it from scratch. For example, a dropdown trigger can look exactly like
+		an input by wrapping its content with <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Input.Root</code>,
+		maintaining consistent styling across your application.
+	</DocCallout>
 
 	<Section.Root>
 		<Section.Header>

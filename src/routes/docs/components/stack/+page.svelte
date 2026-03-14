@@ -9,9 +9,10 @@
 		AccessibilityInfo,
 		DemoExample,
 		Props,
-		CodeBlock
+		CodeBlock,
+		DocCallout
 	} from '$docs/components';
-	import { Alert, Button, Card } from '$svelte-atoms/core';
+	import { Button, Card } from '$svelte-atoms/core';
 	import { stackRootProps, stackItemProps } from './props';
 	import { metadata } from './shared';
 
@@ -47,24 +48,21 @@
 		<Section.Header>
 			<Section.Title>Overview</Section.Title>
 		</Section.Header>
-		<Alert.Root variant="info">
-			<Alert.Title>Why Stack?</Alert.Title>
-			<Alert.Content class="text-foreground/70">
-				<div class="space-y-4">
-					<p class="text-sm leading-relaxed">
-						Stack layers multiple elements in the same visual space using CSS Grid
-						<code class="bg-muted rounded px-1 text-xs">grid-template-areas: 'stack'</code>.
-						Unlike absolute positioning:
-					</p>
-					<ul class="space-y-2 text-sm">
-						<li class="flex gap-2"><span class="text-primary">✓</span> Parent container sizes to its largest child — no manual height/width needed</li>
-						<li class="flex gap-2"><span class="text-primary">✓</span> DOM order is preserved for screen readers and keyboard navigation</li>
-						<li class="flex gap-2"><span class="text-primary">✓</span> Programmatic z-order: bringToFront, sendToBack, bringForward, sendBackward</li>
-						<li class="flex gap-2"><span class="text-primary">✓</span> <code class="bg-muted rounded px-1 text-xs">bind:value</code> tracks the topmost item id reactively</li>
-					</ul>
-				</div>
-			</Alert.Content>
-		</Alert.Root>
+		<DocCallout variant="info" title="Why Stack?">
+			<div class="space-y-4">
+				<p class="text-sm leading-relaxed">
+					Stack layers multiple elements in the same visual space using CSS Grid
+					<code class="bg-muted rounded px-1 text-xs">grid-template-areas: 'stack'</code>.
+					Unlike absolute positioning:
+				</p>
+				<ul class="space-y-2 text-sm">
+					<li class="flex gap-2"><span class="text-primary">✓</span> Parent container sizes to its largest child — no manual height/width needed</li>
+					<li class="flex gap-2"><span class="text-primary">✓</span> DOM order is preserved for screen readers and keyboard navigation</li>
+					<li class="flex gap-2"><span class="text-primary">✓</span> Programmatic z-order: bringToFront, sendToBack, bringForward, sendBackward</li>
+					<li class="flex gap-2"><span class="text-primary">✓</span> <code class="bg-muted rounded px-1 text-xs">bind:value</code> tracks the topmost item id reactively</li>
+				</ul>
+			</div>
+		</DocCallout>
 	</Section.Root>
 
 	<!-- Installation -->
