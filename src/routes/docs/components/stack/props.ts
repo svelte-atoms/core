@@ -10,13 +10,13 @@ export const stackRootProps: PropDefinition[] = [
 		name: 'value',
 		type: 'string | undefined',
 		default: 'undefined',
-		description: 'The id of the topmost (front) item. Bindable — updates reactively as items are reordered.'
+		description: 'Bindable. Reflects the id of the topmost (most recently raised) Stack.Item. Updates reactively as z-order changes.'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<StackBond> | undefined',
-		default: 'undefined',
-		description: 'Custom bond factory for advanced use cases such as injecting a pre-configured StackBond.'
+		type: '(props) => StackBond',
+		default: 'built-in',
+		description: 'Custom factory for creating the StackBond instance.'
 	},
 	{
 		name: '...atomProps',
@@ -30,8 +30,8 @@ export const stackItemProps: PropDefinition[] = [
 	{
 		name: 'id',
 		type: 'string',
-		default: 'auto-generated',
-		description: 'Unique identifier for this item within the stack. Used to reference it when calling bringToFront, sendToBack, etc. Auto-generated via $props.id() if omitted.'
+		default: '$props.id()',
+		description: 'Unique identifier for this item within the stack. Used to reference it in bond.state z-order methods (bringToFront, sendToBack, etc.). Auto-generated if omitted.'
 	},
 	{
 		name: '...atomProps',

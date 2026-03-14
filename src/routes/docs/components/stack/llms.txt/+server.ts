@@ -41,17 +41,11 @@ ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n
 
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
 
-## How It Works
-
-Stack uses \`CSS Grid\` with \`grid-template-areas: 'stack'\`. Every \`Stack.Item\` is assigned to the same named grid area, so they all occupy the same visual space. The parent container sizes itself to the largest child — no manual height or absolute positioning required.
-
-z-index values start at 1 and are re-assigned as consecutive integers on every reorder operation.
-
-## API
-
 ### Stack.Root
 
 **Preset Key:** \`stack.root\`
+
+**Props:**
 
 ${propsTable(stackRootProps)}
 
@@ -59,9 +53,11 @@ ${propsTable(stackRootProps)}
 
 **Preset Key:** \`stack.item\`
 
+**Props:**
+
 ${propsTable(stackItemProps)}
 
-### StackBond methods (via root.getBond())
+### StackState methods (via bond.state)
 
 | Method | Description |
 |--------|-------------|
@@ -69,6 +65,7 @@ ${propsTable(stackItemProps)}
 | sendToBack(id) | Move item to the lowest z-index |
 | bringForward(id) | Increase z-index by one step |
 | sendBackward(id) | Decrease z-index by one step |
+| raise(id) | Alias for bringToFront |
 
 ## Examples
 
@@ -78,19 +75,7 @@ ${propsTable(stackItemProps)}
 ${metadata.examples.basic}
 \`\`\`
 
-### Button with Badge
-
-\`\`\`svelte
-${metadata.examples.badge}
-\`\`\`
-
-### Loading Overlay
-
-\`\`\`svelte
-${metadata.examples.loading}
-\`\`\`
-
-### Programmatic Z-Order
+### App Shell Navigation
 
 \`\`\`svelte
 ${metadata.examples.zOrder}
@@ -108,6 +93,6 @@ ${metadata.accessibility.map((feature) => `- ${feature}`).join('\n')}
 
 ## License
 
-MIT
+This module is licensed under the MIT License.
 `.trim();
 }

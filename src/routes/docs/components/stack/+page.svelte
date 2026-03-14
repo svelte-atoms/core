@@ -7,6 +7,7 @@
 		Section,
 		Installation,
 		AccessibilityInfo,
+		PageNavigation,
 		DemoExample,
 		Props,
 		CodeBlock,
@@ -16,17 +17,50 @@
 	import { stackRootProps, stackItemProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, badge: badgeCode, loading: loadingCode, zOrder: zOrderCode, preset: presetCode } = metadata.examples;
+	const { basic: basicCode, badge: badgeCode, loading: loadingCode, zOrder: zOrderCode } = metadata.examples;
 
-	// z-order demo state
-	const items = [
-		{ id: 'a', label: 'A', bg: 'bg-blue-400',  offset: '' },
-		{ id: 'b', label: 'B', bg: 'bg-green-400', offset: 'mt-4 ml-4' },
-		{ id: 'c', label: 'C', bg: 'bg-red-400',   offset: 'mt-8 ml-8' }
-	];
-	let active = $state('a');
-	let stackRoot = $state<any>(undefined);
+	let stackRoot = $state<any>();
+	let activePage = $state('dashboard');
 	const bond = $derived(stackRoot?.getBond() as StackBond | undefined);
+
+	const pages = [
+		{
+			id: 'dashboard',
+			label: 'Dashboard',
+			icon: '⊞',
+			content: { title: 'Dashboard', subtitle: 'Welcome back! Here\'s your overview.', color: 'bg-blue-500/10 border-blue-500/20' }
+		},
+		{
+			id: 'analytics',
+			label: 'Analytics',
+			icon: '↗',
+			content: { title: 'Analytics', subtitle: 'Traffic and engagement metrics.', color: 'bg-violet-500/10 border-violet-500/20' }
+		},
+		{
+			id: 'settings',
+			label: 'Settings',
+			icon: '⚙',
+			content: { title: 'Settings', subtitle: 'Configure your preferences.', color: 'bg-emerald-500/10 border-emerald-500/20' }
+		},
+	];
+
+	function navigate(id: string) {
+		activePage = id;
+		bond?.state.bringToFront(id);
+	}
+
+	function pageOffset(i: number): number {
+		const activeIdx = pages.findIndex(p => p.id === activePage);
+		const rel = (i - activeIdx + pages.length) % pages.length;
+		return rel === 0 ? 0 : rel;
+	}
+
+	function pageStyle(i: number): string {
+		const offset = pageOffset(i);
+		if (offset === 0) return 'transform: translate(0,0) scale(1); opacity: 1; z-index: 10;';
+		if (offset === 1) return 'transform: translate(8px,-8px) scale(0.97); opacity: 0.7; z-index: 5;';
+		return 'transform: translate(16px,-16px) scale(0.94); opacity: 0.4; z-index: 1;';
+	}
 </script>
 
 <svelte:head>
@@ -52,13 +86,13 @@
 			<div class="space-y-4">
 				<p class="text-sm leading-relaxed">
 					Stack layers multiple elements in the same visual space using CSS Grid
-					<code class="bg-muted rounded px-1 text-xs">grid-template-areas: 'stack'</code>.
+					(<code class="bg-muted rounded px-1 text-xs">grid-template-areas: 'stack'</code>).
 					Unlike absolute positioning:
 				</p>
 				<ul class="space-y-2 text-sm">
 					<li class="flex gap-2"><span class="text-primary">✓</span> Parent container sizes to its largest child — no manual height/width needed</li>
 					<li class="flex gap-2"><span class="text-primary">✓</span> DOM order is preserved for screen readers and keyboard navigation</li>
-					<li class="flex gap-2"><span class="text-primary">✓</span> Programmatic z-order: bringToFront, sendToBack, bringForward, sendBackward</li>
+					<li class="flex gap-2"><span class="text-primary">✓</span> Programmatic z-order via <code class="bg-muted rounded px-1 text-xs">bond.state</code>: bringToFront, sendToBack, bringForward, sendBackward</li>
 					<li class="flex gap-2"><span class="text-primary">✓</span> <code class="bg-muted rounded px-1 text-xs">bind:value</code> tracks the topmost item id reactively</li>
 				</ul>
 			</div>
@@ -76,21 +110,37 @@
 		/>
 	</Section.Root>
 
+	<!-- Preset -->
+	<Section.Root>
+		<Section.Header>
+			<Section.Title>Preset Configuration</Section.Title>
+			<Section.Subtitle>Customize the stack appearance using presets</Section.Subtitle>
+		</Section.Header>
+		<div class="space-y-4">
+			<p class="text-muted-foreground text-sm">
+				You can customize the default styles for Stack components by defining presets in your configuration:
+			</p>
+			<CodeBlock
+				lang="typescript"
+				code={metadata.examples.preset}
+			/>
+		</div>
+	</Section.Root>
+
 	<!-- Examples -->
 	<Section.Root>
 		<Section.Header>
 			<Section.Title>Examples</Section.Title>
-			<Section.Subtitle>Common layering patterns</Section.Subtitle>
+			<Section.Subtitle>Explore different stack layering patterns</Section.Subtitle>
 		</Section.Header>
 		<div class="space-y-8">
 
 			<DemoExample
 				title="Image with Overlay"
-				description="Layer text over an image. The container sizes to the image — no height needed on the parent."
+				description="Layer text over an image while maintaining container size"
 				code={basicCode}
 			>
-				<div>
-					<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
+				<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
 					<Stack.Item>
 						<div class="h-64 w-64 bg-gradient-to-br from-blue-500 to-purple-600"></div>
 					</Stack.Item>
@@ -101,89 +151,117 @@
 						</div>
 					</Stack.Item>
 				</Stack.Root>
-				</div>
 			</DemoExample>
 
 			<DemoExample
 				title="Button with Badge"
-				description="Notification badge over a button. The badge uses negative margins to break out of the grid cell."
+				description="Notification badge positioned over a button"
 				code={badgeCode}
 			>
-				<div>
-					<Stack.Root class="inline-block w-fit">
+				<Stack.Root class="inline-block w-fit">
 					<Stack.Item base={Button} variant="primary">Messages</Stack.Item>
-					<Stack.Item class="flex justify-end -mt-2 -mr-2 pointer-events-none">
+					<Stack.Item class="pointer-events-none -mr-2 -mt-2 flex justify-end">
 						<span class="bg-destructive text-destructive-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
 							5
 						</span>
 					</Stack.Item>
 				</Stack.Root>
-				</div>
 			</DemoExample>
 
 			<DemoExample
 				title="Loading Overlay"
-				description="Show a loading state over content without layout shifts. The card determines the container size."
+				description="Show loading state over content without breaking layout"
 				code={loadingCode}
 			>
-				<div>
-					<Stack.Root class="w-64 overflow-hidden">
-						<Stack.Item base={Card.Root} class="border p-8 rounded-lg">
-							<h3 class="mb-2 text-lg font-bold">Content Card</h3>
-							<p class="text-muted-foreground text-sm">Your content here determines the container size</p>
-						</Stack.Item>
-						<Stack.Item class="flex items-center justify-center backdrop-blur-xs rounded-lg">
-							<div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg">
-								<div class="text-muted-foreground text-sm">Loading…</div>
-							</div>
-						</Stack.Item>
-					</Stack.Root>
-				</div>
+				<Stack.Root class="w-64 overflow-hidden">
+					<Stack.Item base={Card.Root} class="rounded-lg border p-8">
+						<h3 class="mb-2 text-lg font-bold">Content Card</h3>
+						<p class="text-muted-foreground text-sm">Your content here determines the container size</p>
+					</Stack.Item>
+					<Stack.Item class="flex items-center justify-center rounded-lg backdrop-blur-sm">
+						<div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg">
+							<div class="text-muted-foreground text-sm">Loading…</div>
+						</div>
+					</Stack.Item>
+				</Stack.Root>
 			</DemoExample>
 
 			<DemoExample
-				title="Programmatic Z-Order"
-				description="Use getBond() to reorder layers at runtime. bind:value tracks the topmost item."
+				title="App Shell Navigation"
+				description="Sidebar + header layout where the content area is a Stack of pages — clicking a nav item brings that page to front."
 				code={zOrderCode}
 			>
-				<div class="flex flex-col gap-4">
-					<div class="flex gap-2 flex-wrap">
-						{#each items as item (item.id)}
-							<button
-								class={['rounded px-3 py-1 text-sm font-medium text-white transition-all', item.bg, active === item.id ? 'ring-2 ring-offset-2 ring-black scale-105' : 'opacity-60']}
-								onclick={() => (active = item.id)}
-							>{item.label}</button>
-						{/each}
-					</div>
-					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 max-w-64">
-						{#each items as item (item.id)}
-							<Stack.Item
-								id={item.id}
-								class={['flex cursor-pointer items-center justify-center rounded-xl text-white font-bold text-xl shadow-lg transition-all', item.bg, item.offset, active === item.id ? 'ring-4 ring-white ring-offset-2' : '']}
-								onclick={() => (active = item.id)}
-							>
-								{item.label}
-							</Stack.Item>
-						{/each}
-					</Stack.Root>
-					<div class="flex gap-2 flex-wrap">
-						<Button variant="outline" size="sm" onclick={() => bond?.bringToFront(active)}>Bring to Front</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.bringForward(active)}>Forward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.sendBackward(active)}>Backward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.sendToBack(active)}>Send to Back</Button>
+				<!-- Mini app shell -->
+				<div class="border-border bg-background overflow-hidden rounded-xl border" style="height: 320px; width: 100%; max-width: 580px;">
+					<div class="flex h-full">
+
+						<!-- Sidebar -->
+						<aside class="border-border bg-muted/30 flex w-36 flex-col border-r">
+							<div class="border-border border-b px-4 py-3">
+								<span class="text-foreground text-sm font-semibold">MyApp</span>
+							</div>
+							<nav class="flex flex-col gap-0.5 p-2">
+								{#each pages as page (page.id)}
+									<button
+										class={[
+											'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
+											activePage === page.id
+												? 'bg-primary/10 text-primary font-medium'
+												: 'text-muted-foreground hover:bg-muted hover:text-foreground'
+										]}
+										onclick={() => navigate(page.id)}
+									>
+										<span class="text-base leading-none">{page.icon}</span>
+										{page.label}
+									</button>
+								{/each}
+							</nav>
+						</aside>
+
+						<!-- Main area -->
+						<div class="flex min-w-0 flex-1 flex-col">
+
+							<!-- App header -->
+							<header class="border-border bg-background flex h-12 shrink-0 items-center border-b px-4">
+								<span class="text-foreground text-sm font-medium">
+									{pages.find(p => p.id === activePage)?.label}
+								</span>
+							</header>
+
+							<!-- Stacked page content — cascade effect -->
+							<div class="relative min-h-0 flex-1 flex items-center justify-center p-6">
+								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="w-full">
+									{#each pages as page, i (page.id)}
+										<Stack.Item
+											id={page.id}
+											class={[
+												'rounded-xl border p-5 transition-all duration-300 cursor-pointer select-none',
+												page.content.color,
+											]}
+											style={pageStyle(i)}
+											onclick={() => navigate(page.id)}
+										>
+											<h3 class="text-foreground mb-1 text-sm font-semibold">{page.content.title}</h3>
+											<p class="text-muted-foreground text-xs">{page.content.subtitle}</p>
+											<div class="mt-3 grid grid-cols-2 gap-1.5">
+												{#each [1, 2, 3, 4] as _ (_)}
+													<div class="bg-background/60 border-border/40 rounded border p-2">
+														<div class="bg-muted-foreground/20 mb-1.5 h-1.5 w-12 rounded"></div>
+														<div class="bg-muted-foreground/10 h-1.5 w-8 rounded"></div>
+													</div>
+												{/each}
+											</div>
+										</Stack.Item>
+									{/each}
+								</Stack.Root>
+							</div>
+
+						</div>
 					</div>
 				</div>
 			</DemoExample>
-		</div>
-	</Section.Root>
 
-	<!-- Preset -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title>Preset Configuration</Section.Title>
-			<Section.Subtitle>Customize default styles via the preset system</Section.Subtitle>
-		</Section.Header>
-		<CodeBlock lang="typescript" code={presetCode} />
+		</div>
 	</Section.Root>
 
 	<!-- API Reference -->
@@ -192,28 +270,28 @@
 			<Section.Title>API Reference</Section.Title>
 		</Section.Header>
 		<div class="space-y-8">
+
 			<div>
-				<h3 class="text-foreground mb-1 text-lg font-semibold">Stack.Root</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Root</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
-					Creates the CSS Grid stacking container. Exposes <code class="bg-muted rounded px-1 text-xs">bind:value</code> (id of the topmost item)
-					and <code class="bg-muted rounded px-1 text-xs">getBond()</code> for programmatic control.
+					Container that creates the shared grid stacking context. Bind <code class="bg-muted rounded px-1 text-xs">value</code> to reactively track the topmost item id.
 				</p>
 				<Props data={stackRootProps} />
 			</div>
 
 			<div>
-				<h3 class="text-foreground mb-1 text-lg font-semibold">Stack.Item</h3>
+				<h3 class="text-foreground mb-3 text-lg font-semibold">Stack.Item</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
 					Occupies the shared grid area. Registers with <code class="bg-muted rounded px-1 text-xs">StackState</code> on mount
-					and unregisters on destroy. Use flexbox, z-index, or margins for fine-grained positioning within the cell.
+					and unregisters on destroy. Use flexbox, margins, or z-index for fine-grained positioning within the cell.
 				</p>
 				<Props data={stackItemProps} />
 			</div>
 
 			<div>
-				<h3 class="text-foreground mb-1 text-lg font-semibold">StackBond methods</h3>
+				<h3 class="text-foreground mb-1 text-lg font-semibold">StackState methods</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
-					Retrieve via <code class="bg-muted rounded px-1 text-xs">root.getBond()</code>:
+					Access via <code class="bg-muted rounded px-1 text-xs">bond.state</code> (where <code class="bg-muted rounded px-1 text-xs">bond = root.getBond()</code>):
 				</p>
 				<div class="overflow-x-auto">
 					<table class="w-full text-left">
@@ -240,10 +318,15 @@
 								<td class="text-foreground px-4 py-3 font-mono text-sm">sendBackward(id)</td>
 								<td class="text-foreground/80 px-4 py-3 text-sm">Decrease z-index by one step</td>
 							</tr>
+							<tr class="border-border/50 border-b">
+								<td class="text-foreground px-4 py-3 font-mono text-sm">raise(id)</td>
+								<td class="text-foreground/80 px-4 py-3 text-sm">Alias for bringToFront</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
 			</div>
+
 		</div>
 	</Section.Root>
 
@@ -254,4 +337,6 @@
 		</Section.Header>
 		<AccessibilityInfo features={metadata.accessibility} />
 	</Section.Root>
+
+	<PageNavigation />
 </div>
