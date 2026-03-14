@@ -89,7 +89,8 @@
 				description="Layer text over an image. The container sizes to the image — no height needed on the parent."
 				code={basicCode}
 			>
-				<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
+				<div>
+					<Stack.Root class="h-64 w-64 overflow-hidden rounded-lg">
 					<Stack.Item>
 						<div class="h-64 w-64 bg-gradient-to-br from-blue-500 to-purple-600"></div>
 					</Stack.Item>
@@ -100,6 +101,7 @@
 						</div>
 					</Stack.Item>
 				</Stack.Root>
+				</div>
 			</DemoExample>
 
 			<DemoExample
@@ -107,7 +109,8 @@
 				description="Notification badge over a button. The badge uses negative margins to break out of the grid cell."
 				code={badgeCode}
 			>
-				<Stack.Root class="inline-block w-fit">
+				<div>
+					<Stack.Root class="inline-block w-fit">
 					<Stack.Item base={Button} variant="primary">Messages</Stack.Item>
 					<Stack.Item class="flex justify-end -mt-2 -mr-2">
 						<span class="bg-destructive text-destructive-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
@@ -115,6 +118,7 @@
 						</span>
 					</Stack.Item>
 				</Stack.Root>
+				</div>
 			</DemoExample>
 
 			<DemoExample
@@ -122,17 +126,19 @@
 				description="Show a loading state over content without layout shifts. The card determines the container size."
 				code={loadingCode}
 			>
-				<Stack.Root class="w-64">
-					<Stack.Item base={Card.Root} class="rounded-lg border p-8">
-						<h3 class="mb-2 text-lg font-bold">Content Card</h3>
-						<p class="text-muted-foreground text-sm">Your content here determines the container size</p>
-					</Stack.Item>
-					<Stack.Item class="flex items-center justify-center">
-						<div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg backdrop-blur-sm">
-							<div class="text-muted-foreground text-sm">Loading…</div>
-						</div>
-					</Stack.Item>
-				</Stack.Root>
+				<div>
+					<Stack.Root class="w-64">
+						<Stack.Item base={Card.Root} class="rounded-lg border p-8">
+							<h3 class="mb-2 text-lg font-bold">Content Card</h3>
+							<p class="text-muted-foreground text-sm">Your content here determines the container size</p>
+						</Stack.Item>
+						<Stack.Item class="flex items-center justify-center backdrop-blur-xs">
+							<div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg">
+								<div class="text-muted-foreground text-sm">Loading…</div>
+							</div>
+						</Stack.Item>
+					</Stack.Root>
+				</div>
 			</DemoExample>
 
 			<DemoExample
@@ -149,7 +155,7 @@
 							>{item.label}</button>
 						{/each}
 					</div>
-					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 w-64">
+					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 max-w-64">
 						{#each items as item (item.id)}
 							<Stack.Item
 								id={item.id}
