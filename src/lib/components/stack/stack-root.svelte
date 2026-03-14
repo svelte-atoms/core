@@ -32,7 +32,7 @@
 	const bond = untrack(()=> factory(bondProps)).share();
 
 	// Reactively sync topmost item → bind:value
-	$effect(() => {
+	$effect.pre(() => {
 		const top = bond.state.items.at(-1)?.id;
 		if (top !== undefined && top !== value) value = top;
 	});
