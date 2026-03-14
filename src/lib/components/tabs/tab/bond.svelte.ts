@@ -37,19 +37,23 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 		this.#tabs = TabsBond.get() as TabsBond<T>;
 	}
 
+	get value() {
+		return this.state.props.value;
+	}
+
 	get text() {
 		return this.elements?.header?.innerText ?? '';
 	}
 
 	mount() {
-		return this.#tabs?.state.mountItem(this.id, this);
+		return this.#tabs?.state.mountItem(this.value, this);
 	}
 	unmount() {
 		this.#tabs?.state.unmountItem(this.id);
 	}
 
 	share(): this {
-		return TabBond.set<T>(this) as this;
+		return TabBond.set(this) as this;
 	}
 
 	header() {
@@ -123,7 +127,7 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 }
 
 export class TabBondState<T> extends BondState<TabBondProps<T>> {
-	#tabsBond?: TabsBond<T>;
+	#tabsBond?: TabsBond<T> = $state();
 	#tabsState?: TabsBondState<T> = $derived(this.#tabsBond?.state);
 
 	constructor(props: () => TabBondProps<T>) {
@@ -137,7 +141,10 @@ export class TabBondState<T> extends BondState<TabBondProps<T>> {
 	}
 
 	get isDisabled() {
-		return this.props.disabled ?? (this.#tabsBond?.elements?.header?.getAttribute?.('aria-disabled') === "true");
+		return (
+			this.props.disabled ??
+			this.#tabsBond?.elements?.header?.getAttribute?.('aria-disabled') === 'true'
+		);
 	}
 
 	select() {

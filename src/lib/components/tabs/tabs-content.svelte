@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { Stack } from '../stack';
 	import { TabsBond } from './bond.svelte';
 	import type { TabsContentProps } from './types';
 
@@ -26,11 +27,10 @@
 		};
 	});
 
+	const content = $derived(activeTabContent && bond ? item : undefined)
 </script>
-
-{#if activeTabContent && bond}
-	{#key activeTabContent}
-		<HtmlAtom
+{#snippet item()}
+	<HtmlAtom
 			{preset}
 			{bond}
 			class={[
@@ -39,13 +39,23 @@
 				contentKlass,
 				klass
 			]}
-			{...allProps}
+			
 		>
 			<!-- Render teleported tab content -->
-			{@render activeTabContent.children({ tab: activeTab })}
+			{@render activeTabContent?.children?.({ tab: activeTab })}
 
 			<!-- Optional custom content wrapper -->
 			<!-- {@render children?.({ tabs: bond })} -->
 		</HtmlAtom>
-	{/key}
-{/if}
+{/snippet}
+
+<Stack.Root
+	{bond}
+	{preset}
+	class={['tabs-body border-border relative flex-1', '$preset', klass]}
+	{...{...allProps}}
+>
+	{@render content?.()}
+</Stack.Root>
+
+
