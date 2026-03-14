@@ -127,12 +127,12 @@
 				code={loadingCode}
 			>
 				<div>
-					<Stack.Root class="w-64">
-						<Stack.Item base={Card.Root} class="rounded-lg border p-8">
+					<Stack.Root class="w-64 overflow-hidden">
+						<Stack.Item base={Card.Root} class="border p-8 rounded-lg">
 							<h3 class="mb-2 text-lg font-bold">Content Card</h3>
 							<p class="text-muted-foreground text-sm">Your content here determines the container size</p>
 						</Stack.Item>
-						<Stack.Item class="flex items-center justify-center backdrop-blur-xs">
+						<Stack.Item class="flex items-center justify-center backdrop-blur-xs rounded-lg">
 							<div class="bg-background/90 border-border/50 rounded-lg border p-4 shadow-lg">
 								<div class="text-muted-foreground text-sm">Loading…</div>
 							</div>
