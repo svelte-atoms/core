@@ -209,19 +209,31 @@
 				<p class="text-muted-foreground mb-4 text-sm">
 					Retrieve via <code class="bg-muted rounded px-1 text-xs">root.getBond()</code>:
 				</p>
-				<div class="overflow-x-auto rounded border">
-					<table class="text-sm w-full">
-						<thead class="bg-muted/50">
-							<tr>
-								<th class="px-4 py-2 text-left font-medium">Method</th>
-								<th class="px-4 py-2 text-left font-medium">Description</th>
+				<div class="overflow-x-auto">
+					<table class="w-full text-left">
+						<thead>
+							<tr class="border-border border-b">
+								<th class="text-muted-foreground px-4 py-2 text-xs font-medium uppercase tracking-wide">Method</th>
+								<th class="text-muted-foreground px-4 py-2 text-xs font-medium uppercase tracking-wide">Description</th>
 							</tr>
 						</thead>
-						<tbody class="divide-y">
-							<tr><td class="px-4 py-2 font-mono text-xs">bringToFront(id)</td><td class="px-4 py-2 text-muted-foreground">Move item to the highest z-index</td></tr>
-							<tr><td class="px-4 py-2 font-mono text-xs">sendToBack(id)</td><td class="px-4 py-2 text-muted-foreground">Move item to the lowest z-index</td></tr>
-							<tr><td class="px-4 py-2 font-mono text-xs">bringForward(id)</td><td class="px-4 py-2 text-muted-foreground">Increase z-index by one step</td></tr>
-							<tr><td class="px-4 py-2 font-mono text-xs">sendBackward(id)</td><td class="px-4 py-2 text-muted-foreground">Decrease z-index by one step</td></tr>
+						<tbody>
+							<tr class="border-border/50 border-b">
+								<td class="text-foreground px-4 py-3 font-mono text-sm">bringToFront(id)</td>
+								<td class="text-foreground/80 px-4 py-3 text-sm">Move item to the highest z-index</td>
+							</tr>
+							<tr class="border-border/50 border-b">
+								<td class="text-foreground px-4 py-3 font-mono text-sm">sendToBack(id)</td>
+								<td class="text-foreground/80 px-4 py-3 text-sm">Move item to the lowest z-index</td>
+							</tr>
+							<tr class="border-border/50 border-b">
+								<td class="text-foreground px-4 py-3 font-mono text-sm">bringForward(id)</td>
+								<td class="text-foreground/80 px-4 py-3 text-sm">Increase z-index by one step</td>
+							</tr>
+							<tr class="border-border/50 border-b">
+								<td class="text-foreground px-4 py-3 font-mono text-sm">sendBackward(id)</td>
+								<td class="text-foreground/80 px-4 py-3 text-sm">Decrease z-index by one step</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
