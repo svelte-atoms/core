@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { treeProps } from '../props';
+import { treeRootProps, treeHeaderProps, treeBodyProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +37,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Tree module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Tree.Root
 
@@ -52,7 +47,23 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(treeProps)
+${propsTable(treeRootProps)}
+
+### Tree.Header
+
+**Preset Key:** \`tree.header\`
+
+**Props:**
+
+${propsTable(treeHeaderProps)}
+
+### Tree.Body
+
+**Preset Key:** \`tree.body\`
+
+**Props:**
+
+${propsTable(treeBodyProps)}
 
 ## Examples
 

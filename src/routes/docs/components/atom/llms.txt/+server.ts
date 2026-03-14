@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { atomProps } from '../props';
+import { htmlAtomProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,21 +37,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
-## Components
+## Props
 
-The Atom module consists of the following components:
-
-${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
-
-### Atom.Root
-
-**Preset Key:** \`atom\`
-
-**Props:**
-
-TODO: Add propsTable(atomProps)
+${propsTable(htmlAtomProps)}
 
 ## Examples
 

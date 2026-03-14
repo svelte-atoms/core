@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { dividerProps } from '../props';
+import { dividerProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,21 +37,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${'componentsSummary' in metadata && metadata.componentsSummary ? `
-## Components
+## Props
 
-The Divider module consists of the following components:
-
-${(metadata as typeof metadata & { componentsSummary: { name: string; description: string }[] }).componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
-
-### Divider.Root
-
-**Preset Key:** \`divider\`
-
-**Props:**
-
-TODO: Add propsTable(dividerProps)
+${propsTable(dividerProps)}
 
 ## Examples
 

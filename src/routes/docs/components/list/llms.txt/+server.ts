@@ -1,7 +1,12 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { listProps } from '../props';
+import {
+	listRootProps,
+	listGroupProps,
+	listItemProps,
+	listTitleProps,
+	listDividerProps
+} from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +43,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The List module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### List.Root
 
@@ -52,7 +53,39 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(listProps)
+${propsTable(listRootProps)}
+
+### List.Group
+
+**Preset Key:** \`list.group\`
+
+**Props:**
+
+${propsTable(listGroupProps)}
+
+### List.Item
+
+**Preset Key:** \`list.item\`
+
+**Props:**
+
+${propsTable(listItemProps)}
+
+### List.Title
+
+**Preset Key:** \`list.title\`
+
+**Props:**
+
+${propsTable(listTitleProps)}
+
+### List.Divider
+
+**Preset Key:** \`list.divider\`
+
+**Props:**
+
+${propsTable(listDividerProps)}
 
 ## Examples
 
