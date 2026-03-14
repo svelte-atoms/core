@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { stackProps } from '../props';
+import { stackRootProps, stackItemProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -32,34 +31,54 @@ related:
 
 ${metadata.componentDescription}
 
-**Type**: ${metadata.componentType === 'compound' ? 'Compound Component' : 'Simple Component'}
+**Type**: Compound Component
 
 ## Use Cases
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Stack module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Stack.Root
 
-**Preset Key:** \`stack\`
+**Preset Key:** \`stack.root\`
 
 **Props:**
 
-TODO: Add propsTable(stackProps)
+${propsTable(stackRootProps)}
+
+### Stack.Item
+
+**Preset Key:** \`stack.item\`
+
+**Props:**
+
+${propsTable(stackItemProps)}
+
+### StackState methods (via bond.state)
+
+| Method | Description |
+|--------|-------------|
+| bringToFront(id) | Move item to the highest z-index |
+| sendToBack(id) | Move item to the lowest z-index |
+| bringForward(id) | Increase z-index by one step |
+| sendBackward(id) | Decrease z-index by one step |
+| raise(id) | Alias for bringToFront |
 
 ## Examples
 
-### Basic Example
+### Image with Overlay
 
 \`\`\`svelte
 ${metadata.examples.basic}
+\`\`\`
+
+### App Shell Navigation
+
+\`\`\`svelte
+${metadata.examples.zOrder}
 \`\`\`
 
 ### Preset Configuration

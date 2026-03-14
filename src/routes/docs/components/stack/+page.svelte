@@ -48,6 +48,19 @@
 		activePage = id;
 		bond?.state.bringToFront(id);
 	}
+
+	function pageOffset(i: number): number {
+		const activeIdx = pages.findIndex(p => p.id === activePage);
+		const rel = (i - activeIdx + pages.length) % pages.length;
+		return rel === 0 ? 0 : rel;
+	}
+
+	function pageStyle(i: number): string {
+		const offset = pageOffset(i);
+		if (offset === 0) return 'transform: translate(0,0) scale(1); opacity: 1; z-index: 10;';
+		if (offset === 1) return 'transform: translate(8px,-8px) scale(0.97); opacity: 0.7; z-index: 5;';
+		return 'transform: translate(16px,-16px) scale(0.94); opacity: 0.4; z-index: 1;';
+	}
 </script>
 
 <svelte:head>
@@ -188,7 +201,7 @@
 								<span class="text-foreground text-sm font-semibold">MyApp</span>
 							</div>
 							<nav class="flex flex-col gap-0.5 p-2">
-								{#each pages as page}
+								{#each pages as page (page.id)}
 									<button
 										class={[
 											'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
@@ -215,25 +228,26 @@
 								</span>
 							</header>
 
-							<!-- Stacked page content -->
-							<div class="relative min-h-0 flex-1">
-								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="h-full w-full">
-									{#each pages as page}
+							<!-- Stacked page content — cascade effect -->
+							<div class="relative min-h-0 flex-1 flex items-center justify-center p-6">
+								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="w-full max-w-xs">
+									{#each pages as page, i (page.id)}
 										<Stack.Item
 											id={page.id}
 											class={[
-												'h-full w-full border p-6 transition-opacity duration-200',
+												'rounded-xl border p-5 transition-all duration-300 cursor-pointer select-none',
 												page.content.color,
-												activePage === page.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
 											]}
+											style={pageStyle(i)}
+											onclick={() => navigate(page.id)}
 										>
-											<h3 class="text-foreground mb-1 text-base font-semibold">{page.content.title}</h3>
-											<p class="text-muted-foreground text-sm">{page.content.subtitle}</p>
-											<div class="mt-4 grid grid-cols-2 gap-2">
-												{#each [1, 2, 3, 4] as n}
-													<div class="bg-background/60 border-border/50 rounded-md border p-3">
-														<div class="bg-muted-foreground/20 mb-2 h-2 w-16 rounded"></div>
-														<div class="bg-muted-foreground/10 h-2 w-12 rounded"></div>
+											<h3 class="text-foreground mb-1 text-sm font-semibold">{page.content.title}</h3>
+											<p class="text-muted-foreground text-xs">{page.content.subtitle}</p>
+											<div class="mt-3 grid grid-cols-2 gap-1.5">
+												{#each [1, 2, 3, 4] as _ (_)}
+													<div class="bg-background/60 border-border/40 rounded border p-2">
+														<div class="bg-muted-foreground/20 mb-1.5 h-1.5 w-12 rounded"></div>
+														<div class="bg-muted-foreground/10 h-1.5 w-8 rounded"></div>
 													</div>
 												{/each}
 											</div>
