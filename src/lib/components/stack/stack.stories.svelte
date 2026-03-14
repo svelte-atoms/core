@@ -53,16 +53,16 @@
 
 		<!-- action buttons -->
 		<div class="flex flex-wrap gap-2">
-			<Button variant="outline" size="sm" onclick={() => bond?.bringToFront(selected)}>
+			<Button variant="outline" size="sm" onclick={() => bond?.state.bringToFront(selected)}>
 				Bring to Front
 			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.bringForward(selected)}>
+			<Button variant="outline" size="sm" onclick={() => bond?.state.bringForward(selected)}>
 				Bring Forward
 			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.sendBackward(selected)}>
+			<Button variant="outline" size="sm" onclick={() => bond?.state.sendBackward(selected)}>
 				Send Backward
 			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.sendToBack(selected)}>
+			<Button variant="outline" size="sm" onclick={() => bond?.state.sendToBack(selected)}>
 				Send to Back
 			</Button>
 		</div>

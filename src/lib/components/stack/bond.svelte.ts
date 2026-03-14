@@ -46,26 +46,6 @@ export class StackBond extends Bond<StackStateProps, StackState, StackElements> 
 		};
 	}
 
-	raise(id: string) {
-		this.state.raise(id);
-	}
-
-	bringToFront(id: string) {
-		this.state.bringToFront(id);
-	}
-
-	sendToBack(id: string) {
-		this.state.sendToBack(id);
-	}
-
-	bringForward(id: string) {
-		this.state.bringForward(id);
-	}
-
-	sendBackward(id: string) {
-		this.state.sendBackward(id);
-	}
-
 	static get(): StackBond | undefined {
 		return getContext(StackBond.CONTEXT_KEY);
 	}
