@@ -4,11 +4,13 @@
 		title?: string;
 	};
 
-	let { features, title = 'Accessibility' }: Props = $props();
+	let { features, title = '' }: Props = $props();
 </script>
 
 <div class="border-primary/40 border-l-2 pl-4">
-	<p class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide">{title}</p>
+	{#if title}
+		<p class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide">{title}</p>
+	{/if}
 	<ul class="space-y-1.5">
 		{#each features as feature}
 			<li class="flex items-start gap-2">
