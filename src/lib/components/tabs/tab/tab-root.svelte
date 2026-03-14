@@ -1,29 +1,31 @@
-<script
-	lang="ts"
-	generics="D, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
->
+<script lang="ts">
 	import { nanoid } from 'nanoid';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import type { Snippet } from 'svelte';
 
 	const tabsBond = TabsBond.get();
 
-	if(!tabsBond) {
+	if (!tabsBond) {
 		throw new Error('TabRoot must be used within a Tabs component.');
 	}
 
 	let {
-		class: klass = '',
 		value = nanoid(),
 		disabled = false,
-		data = undefined,
+		data = undefined as unknown,
 		factory = _factory,
 		children,
+	}: {
+		value?: string;
+		disabled?: boolean;
+		data?: unknown;
+		factory?: typeof _factory;
+		children?: Snippet<[{ tab: TabBond }]>;
 	} = $props();
 
-	const bondProps = defineState<TabBondProps<D>>([
+	const bondProps = defineState<TabBondProps<unknown>>([
 		defineProperty('value', () => value),
 		defineProperty('disabled', () => disabled),
 		defineProperty('data', () => data)

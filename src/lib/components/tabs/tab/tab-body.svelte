@@ -28,7 +28,7 @@
 	$effect.pre(() => {
 		if (tabBond && tabsBond && children) {
 			const id = tabBond.state.props.value;
-			tabsBond.state.registerTabContent(id, contentProps, body);
+			tabsBond.state.registerTabContent(id, body);
 
 			return () => {
 				tabsBond.state.unregisterTabContent(id);
@@ -37,9 +37,9 @@
 	});
 </script>
 
-{#snippet body()}
-	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps}>
-		{@render children?.({ tab: tabBond, tabs: tabsBond })}
+{#snippet body(props: Record<string, unknown> = {})}
+	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps} {...props}>
+		{@render children?.({ ...(tabBond ? { tab: tabBond } : {}), ...(tabsBond ? { tabs: tabsBond } : {}) })}
 	</Stack.Item>
 {/snippet}
 

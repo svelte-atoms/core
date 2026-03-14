@@ -6,12 +6,13 @@ import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import type { Snippet } from 'svelte';
 
-export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> = BondStateProps & {
-	value?: string|undefined;
-	multiple?: boolean;
-	extend?: T;
-	readonly rest?: Record<string, unknown>;
-};
+export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
+	BondStateProps & {
+		value?: string | undefined;
+		multiple?: boolean;
+		extend?: T;
+		readonly rest?: Record<string, unknown>;
+	};
 
 export type TabElements = {
 	root: HTMLElement;
@@ -95,7 +96,7 @@ export class TabsBond<T = unknown> extends Bond<TabsBondProps, TabsBondState<T>,
 
 export class TabsBondState<T> extends BondState<TabsBondProps> {
 	#items: Map<string, TabBond<T>> = new SvelteMap();
-	#tabContents: SvelteMap<string, TabContentSnippet> = new SvelteMap();
+	#tabContents: SvelteMap<string, Snippet<[Record<string, unknown>]>> = new SvelteMap();
 	#selectedItem = $derived(
 		this.props?.value ? this.#items.get(this.props?.value) : undefined
 	) as TabBond<T>;
@@ -134,8 +135,8 @@ export class TabsBondState<T> extends BondState<TabsBondProps> {
 		this.props.value = undefined;
 	}
 
-	registerTabContent(id: string, props: Record<string, unknown>, children: Snippet<[{ tab?: TabBond }]>) {
-		this.#tabContents.set(id, { props, children });
+	registerTabContent(id: string, content: Snippet<[Record<string, unknown>]>) {
+		this.#tabContents.set(id, content);
 	}
 
 	unregisterTabContent(id: string) {
