@@ -230,7 +230,7 @@
 
 							<!-- Stacked page content — cascade effect -->
 							<div class="relative min-h-0 flex-1 flex items-center justify-center p-6">
-								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="w-full max-w-xs">
+								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="w-full">
 									{#each pages as page, i (page.id)}
 										<Stack.Item
 											id={page.id}
