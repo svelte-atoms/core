@@ -1,4 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import {
 		HtmlAtom,
@@ -6,8 +7,8 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { StackBond, StackState } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { StackBond, StackState } from './bond.svelte';
 	import './stack.css';
 
 	type Element = ElementType<E>;
@@ -28,7 +29,7 @@
 		)
 	]);
 
-	const bond = factory(bondProps).share();
+	const bond = untrack(()=> factory(bondProps)).share();
 
 	// Reactively sync topmost item → bind:value
 	$effect(() => {
