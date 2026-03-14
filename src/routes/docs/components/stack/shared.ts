@@ -44,54 +44,88 @@ const zOrderCode = `
   const bond = $derived(stackRoot?.getBond() as StackBond | undefined);
 
   const pages = [
-    { id: 'dashboard', label: 'Dashboard', icon: '⊞' },
-    { id: 'analytics',  label: 'Analytics',  icon: '↗' },
-    { id: 'settings',   label: 'Settings',   icon: '⚙' },
+    { id: 'dashboard', label: 'Dashboard', icon: '⊞', content: { title: 'Dashboard', subtitle: "Welcome back! Here's your overview.", color: 'bg-blue-500/10 border-blue-500/20' } },
+    { id: 'analytics',  label: 'Analytics',  icon: '↗', content: { title: 'Analytics',  subtitle: 'Traffic and engagement metrics.',    color: 'bg-violet-500/10 border-violet-500/20' } },
+    { id: 'settings',   label: 'Settings',   icon: '⚙', content: { title: 'Settings',   subtitle: 'Configure your preferences.',         color: 'bg-emerald-500/10 border-emerald-500/20' } },
   ];
 
   function navigate(id: string) {
     activePage = id;
     bond?.state.bringToFront(id);
   }
+
+  function pageStyle(i: number): string {
+    const activeIdx = pages.findIndex(p => p.id === activePage);
+    const offset = (i - activeIdx + pages.length) % pages.length;
+    if (offset === 0) return 'transform: translate(0,0) scale(1); opacity: 1; z-index: 10;';
+    if (offset === 1) return 'transform: translate(8px,-8px) scale(0.97); opacity: 0.7; z-index: 5;';
+    return 'transform: translate(16px,-16px) scale(0.94); opacity: 0.4; z-index: 1;';
+  }
 <\/script>
 
-<!-- App shell -->
-<div class="flex h-full">
+<div class="border-border bg-background overflow-hidden rounded-xl border" style="height: 320px;">
+  <div class="flex h-full">
 
-  <!-- Sidebar -->
-  <aside class="flex w-36 flex-col border-r">
-    <nav class="flex flex-col gap-1 p-2">
-      {#each pages as page}
-        <button
-          class={activePage === page.id ? 'bg-primary/10 text-primary' : 'text-muted-foreground'}
-          onclick={() => navigate(page.id)}
-        >
-          {page.icon} {page.label}
-        </button>
-      {/each}
-    </nav>
-  </aside>
+    <!-- Sidebar -->
+    <aside class="border-border bg-muted/30 flex w-36 flex-col border-r">
+      <div class="border-border border-b px-4 py-3">
+        <span class="text-foreground text-sm font-semibold">MyApp</span>
+      </div>
+      <nav class="flex flex-col gap-0.5 p-2">
+        {#each pages as page (page.id)}
+          <button
+            class={[
+              'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
+              activePage === page.id
+                ? 'bg-primary/10 text-primary font-medium'
+                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            ]}
+            onclick={() => navigate(page.id)}
+          >
+            <span class="text-base leading-none">{page.icon}</span>
+            {page.label}
+          </button>
+        {/each}
+      </nav>
+    </aside>
 
-  <!-- Main -->
-  <div class="flex flex-1 flex-col">
-    <header class="border-b px-4 py-3 text-sm font-medium">
-      {pages.find(p => p.id === activePage)?.label}
-    </header>
+    <!-- Main area -->
+    <div class="flex min-w-0 flex-1 flex-col">
 
-    <!-- Stacked pages — only the active one is visible -->
-    <Stack.Root bind:this={stackRoot} bind:value={activePage} class="flex-1">
-      {#each pages as page}
-        <Stack.Item
-          id={page.id}
-          class={['h-full w-full p-6 transition-opacity', activePage === page.id ? 'opacity-100' : 'opacity-0 pointer-events-none']}
-        >
-          <h2>{page.label}</h2>
-          <p>Content for {page.label}</p>
-        </Stack.Item>
-      {/each}
-    </Stack.Root>
+      <!-- Header -->
+      <header class="border-border bg-background flex h-12 shrink-0 items-center border-b px-4">
+        <span class="text-foreground text-sm font-medium">
+          {pages.find(p => p.id === activePage)?.label}
+        </span>
+      </header>
+
+      <!-- Stacked pages with cascade effect -->
+      <div class="relative min-h-0 flex-1 flex items-center justify-center p-6">
+        <Stack.Root bind:this={stackRoot} bind:value={activePage} class="w-full">
+          {#each pages as page, i (page.id)}
+            <Stack.Item
+              id={page.id}
+              class={['rounded-xl border p-5 transition-all duration-300 cursor-pointer', page.content.color]}
+              style={pageStyle(i)}
+              onclick={() => navigate(page.id)}
+            >
+              <h3 class="text-foreground mb-1 text-sm font-semibold">{page.content.title}</h3>
+              <p class="text-muted-foreground text-xs">{page.content.subtitle}</p>
+              <div class="mt-3 grid grid-cols-2 gap-1.5">
+                {#each [1, 2, 3, 4] as _ (_)}
+                  <div class="bg-background/60 border-border/40 rounded border p-2">
+                    <div class="bg-muted-foreground/20 mb-1.5 h-1.5 w-12 rounded"></div>
+                    <div class="bg-muted-foreground/10 h-1.5 w-8 rounded"></div>
+                  </div>
+                {/each}
+              </div>
+            </Stack.Item>
+          {/each}
+        </Stack.Root>
+      </div>
+
+    </div>
   </div>
-
 </div>`.trim();
 
 const presetCode = `
