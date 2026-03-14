@@ -40,33 +40,58 @@ const zOrderCode = `
   import type { StackBond } from '@svelte-atoms/core';
 
   let stackRoot = $state<any>();
-  let active = $state('a');
+  let activePage = $state('dashboard');
   const bond = $derived(stackRoot?.getBond() as StackBond | undefined);
 
-  const items = [
-    { id: 'a', label: 'A', bg: 'bg-blue-500',  offset: '' },
-    { id: 'b', label: 'B', bg: 'bg-green-500', offset: 'mt-4 ml-4' },
-    { id: 'c', label: 'C', bg: 'bg-rose-500',  offset: 'mt-8 ml-8' },
+  const pages = [
+    { id: 'dashboard', label: 'Dashboard', icon: '⊞' },
+    { id: 'analytics',  label: 'Analytics',  icon: '↗' },
+    { id: 'settings',   label: 'Settings',   icon: '⚙' },
   ];
+
+  function navigate(id: string) {
+    activePage = id;
+    bond?.state.bringToFront(id);
+  }
 <\/script>
 
-<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 w-64">
-  {#each items as item (item.id)}
-    <Stack.Item
-      id={item.id}
-      class={[item.bg, item.offset, 'flex cursor-pointer items-center justify-center rounded-xl text-white font-bold text-xl']}
-      onclick={() => (active = item.id)}
-    >
-      {item.label}
-    </Stack.Item>
-  {/each}
-</Stack.Root>
+<!-- App shell -->
+<div class="flex h-full">
 
-<div class="flex gap-2 mt-4">
-  <button onclick={() => bond?.state.bringToFront(active)}>Bring to Front</button>
-  <button onclick={() => bond?.state.bringForward(active)}>Forward</button>
-  <button onclick={() => bond?.state.sendBackward(active)}>Backward</button>
-  <button onclick={() => bond?.state.sendToBack(active)}>Send to Back</button>
+  <!-- Sidebar -->
+  <aside class="flex w-36 flex-col border-r">
+    <nav class="flex flex-col gap-1 p-2">
+      {#each pages as page}
+        <button
+          class={activePage === page.id ? 'bg-primary/10 text-primary' : 'text-muted-foreground'}
+          onclick={() => navigate(page.id)}
+        >
+          {page.icon} {page.label}
+        </button>
+      {/each}
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex flex-1 flex-col">
+    <header class="border-b px-4 py-3 text-sm font-medium">
+      {pages.find(p => p.id === activePage)?.label}
+    </header>
+
+    <!-- Stacked pages — only the active one is visible -->
+    <Stack.Root bind:this={stackRoot} bind:value={activePage} class="flex-1">
+      {#each pages as page}
+        <Stack.Item
+          id={page.id}
+          class={['h-full w-full p-6 transition-opacity', activePage === page.id ? 'opacity-100' : 'opacity-0 pointer-events-none']}
+        >
+          <h2>{page.label}</h2>
+          <p>Content for {page.label}</p>
+        </Stack.Item>
+      {/each}
+    </Stack.Root>
+  </div>
+
 </div>`.trim();
 
 const presetCode = `

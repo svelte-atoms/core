@@ -19,15 +19,35 @@
 
 	const { basic: basicCode, badge: badgeCode, loading: loadingCode, zOrder: zOrderCode } = metadata.examples;
 
-	let stackRoot = $state<ReturnType<typeof Stack.Root.prototype.getBond> extends infer B ? any : any>();
-	let active = $state('a');
+	let stackRoot = $state<any>();
+	let activePage = $state('dashboard');
 	const bond = $derived(stackRoot?.getBond() as StackBond | undefined);
 
-	const items = [
-		{ id: 'a', label: 'A', bg: 'bg-blue-500',   offset: '' },
-		{ id: 'b', label: 'B', bg: 'bg-green-500',  offset: 'mt-4 ml-4' },
-		{ id: 'c', label: 'C', bg: 'bg-rose-500',   offset: 'mt-8 ml-8' },
+	const pages = [
+		{
+			id: 'dashboard',
+			label: 'Dashboard',
+			icon: '⊞',
+			content: { title: 'Dashboard', subtitle: 'Welcome back! Here\'s your overview.', color: 'bg-blue-500/10 border-blue-500/20' }
+		},
+		{
+			id: 'analytics',
+			label: 'Analytics',
+			icon: '↗',
+			content: { title: 'Analytics', subtitle: 'Traffic and engagement metrics.', color: 'bg-violet-500/10 border-violet-500/20' }
+		},
+		{
+			id: 'settings',
+			label: 'Settings',
+			icon: '⚙',
+			content: { title: 'Settings', subtitle: 'Configure your preferences.', color: 'bg-emerald-500/10 border-emerald-500/20' }
+		},
 	];
+
+	function navigate(id: string) {
+		activePage = id;
+		bond?.state.bringToFront(id);
+	}
 </script>
 
 <svelte:head>
@@ -154,44 +174,75 @@
 			</DemoExample>
 
 			<DemoExample
-				title="Programmatic Z-Order"
-				description="Use bond.state to reorder layers at runtime. bind:value tracks the topmost item."
+				title="App Shell Navigation"
+				description="Sidebar + header layout where the content area is a Stack of pages — clicking a nav item brings that page to front."
 				code={zOrderCode}
 			>
-				<div class="flex flex-col gap-4">
-					<div class="flex gap-2 flex-wrap">
-						{#each items as item (item.id)}
-							<button
-								class={[
-									'rounded px-3 py-1 text-sm font-medium text-white transition-all',
-									item.bg,
-									active === item.id ? 'scale-105 ring-2 ring-black ring-offset-2' : 'opacity-60'
-								]}
-								onclick={() => (active = item.id)}
-							>{item.label}</button>
-						{/each}
-					</div>
-					<Stack.Root bind:this={stackRoot} bind:value={active} class="relative h-40 max-w-64">
-						{#each items as item (item.id)}
-							<Stack.Item
-								id={item.id}
-								class={[
-									'flex cursor-pointer items-center justify-center rounded-xl text-white font-bold text-xl shadow-lg transition-all',
-									item.bg,
-									item.offset,
-									active === item.id ? 'ring-4 ring-white ring-offset-2' : ''
-								]}
-								onclick={() => (active = item.id)}
-							>
-								{item.label}
-							</Stack.Item>
-						{/each}
-					</Stack.Root>
-					<div class="flex gap-2 flex-wrap">
-						<Button variant="outline" size="sm" onclick={() => bond?.state.bringToFront(active)}>Bring to Front</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.state.bringForward(active)}>Forward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.state.sendBackward(active)}>Backward</Button>
-						<Button variant="outline" size="sm" onclick={() => bond?.state.sendToBack(active)}>Send to Back</Button>
+				<!-- Mini app shell -->
+				<div class="border-border bg-background overflow-hidden rounded-xl border" style="height: 320px; width: 100%; max-width: 580px;">
+					<div class="flex h-full">
+
+						<!-- Sidebar -->
+						<aside class="border-border bg-muted/30 flex w-36 flex-col border-r">
+							<div class="border-border border-b px-4 py-3">
+								<span class="text-foreground text-sm font-semibold">MyApp</span>
+							</div>
+							<nav class="flex flex-col gap-0.5 p-2">
+								{#each pages as page}
+									<button
+										class={[
+											'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
+											activePage === page.id
+												? 'bg-primary/10 text-primary font-medium'
+												: 'text-muted-foreground hover:bg-muted hover:text-foreground'
+										]}
+										onclick={() => navigate(page.id)}
+									>
+										<span class="text-base leading-none">{page.icon}</span>
+										{page.label}
+									</button>
+								{/each}
+							</nav>
+						</aside>
+
+						<!-- Main area -->
+						<div class="flex min-w-0 flex-1 flex-col">
+
+							<!-- App header -->
+							<header class="border-border bg-background flex h-12 shrink-0 items-center border-b px-4">
+								<span class="text-foreground text-sm font-medium">
+									{pages.find(p => p.id === activePage)?.label}
+								</span>
+							</header>
+
+							<!-- Stacked page content -->
+							<div class="relative min-h-0 flex-1">
+								<Stack.Root bind:this={stackRoot} bind:value={activePage} class="h-full w-full">
+									{#each pages as page}
+										<Stack.Item
+											id={page.id}
+											class={[
+												'h-full w-full border p-6 transition-opacity duration-200',
+												page.content.color,
+												activePage === page.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
+											]}
+										>
+											<h3 class="text-foreground mb-1 text-base font-semibold">{page.content.title}</h3>
+											<p class="text-muted-foreground text-sm">{page.content.subtitle}</p>
+											<div class="mt-4 grid grid-cols-2 gap-2">
+												{#each [1, 2, 3, 4] as n}
+													<div class="bg-background/60 border-border/50 rounded-md border p-3">
+														<div class="bg-muted-foreground/20 mb-2 h-2 w-16 rounded"></div>
+														<div class="bg-muted-foreground/10 h-2 w-12 rounded"></div>
+													</div>
+												{/each}
+											</div>
+										</Stack.Item>
+									{/each}
+								</Stack.Root>
+							</div>
+
+						</div>
 					</div>
 				</div>
 			</DemoExample>
