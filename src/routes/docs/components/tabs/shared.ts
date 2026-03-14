@@ -59,12 +59,12 @@ const preset = setPreset({
 });`.trim();
 
 const accessibilityFeatures = [
-	'ARIA tabs pattern (role="tablist", "tab", "tabpanel")',
-	'Keyboard navigation (Arrow keys, Home, End)',
-	'aria-selected state',
-	'Automatic tab panel association',
-	'Focus management',
-	'Screen reader friendly'
+	'ARIA tabs pattern (`role="tablist"` on `Tabs.Header`, `role="tab"` on `Tab.Header`, `role="tabpanel"` on `Tab.Body`)',
+	'`aria-controls` linking each tab trigger to its content panel',
+	'`aria-labelledby` / `aria-describedby` on content panels',
+	'`aria-disabled` reflects the `disabled` prop on `Tab.Root`',
+	'`aria-orientation="horizontal"` on the root container',
+	'`data-active` attribute on both header and body for CSS state targeting'
 ];
 
 const useCases = [
@@ -141,7 +141,7 @@ export const metadata = {
 	title: 'Tabs - Svelte Atoms',
 	description: 'Organize content into multiple panels.',
 	componentTitle: 'Tabs',
-	componentDescription: 'Organize content into separate views that users can switch between.',
+	componentDescription: 'Accessible tabbed navigation built on the Bond architecture. Tab headers are portaled into the tablist and content is teleported to Tabs.Content, keeping markup co-located while the DOM stays semantic.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
