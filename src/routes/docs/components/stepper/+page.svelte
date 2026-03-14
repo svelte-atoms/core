@@ -26,6 +26,7 @@
 		stepSeparatorProps,
 		stepBodyProps
 	} from './props';
+	import { metadata } from './shared';
 
 	const basicCode = `<script lang="ts">
   import { Stepper, Step } from '@svelte-atoms/core/stepper';
@@ -81,20 +82,17 @@
 </script>
 
 <svelte:head>
-	<title>Stepper - Svelte Atoms</title>
-	<meta
-		name="description"
-		content="Multi-step workflow component for building guided processes and forms."
-	/>
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Stepper' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Stepper"
-		description="A flexible stepper component for building multi-step workflows, forms, and guided processes with support for linear and non-linear progression."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -102,8 +100,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Stepper, Step &#125; from '@svelte-atoms/core/stepper';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -333,12 +331,7 @@ setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Keyboard navigation support',
-				'ARIA attributes for step status',
-				'Focus management',
-				'Screen reader announcements for step changes'
-			]}
+			features={metadata.accessibility}
 		/>
 	</Section.Root>
 </div>

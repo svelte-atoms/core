@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { radioProps } from '../props';
+import { radioProps, radioGroupProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,21 +37,25 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Radio module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
-### Radio.Root
+### Radio
 
 **Preset Key:** \`radio\`
 
 **Props:**
 
-TODO: Add propsTable(radioProps)
+${propsTable(radioProps)}
+
+### Radio.Group
+
+**Preset Key:** \`radio.group\`
+
+**Props:**
+
+${propsTable(radioGroupProps)}
 
 ## Examples
 

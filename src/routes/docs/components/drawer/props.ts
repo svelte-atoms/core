@@ -10,31 +10,31 @@ export const slideoverRootProps: PropDefinition[] = [
 		name: 'open',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Open'
+		description: 'Controls whether the drawer is open. Bind this prop for controlled usage.'
 	},
 	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Disabled'
+		description: 'Disables the drawer trigger, preventing the drawer from being opened.'
 	},
 	{
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
-		default: '\'\'',
-		description: 'Portal'
+		default: "''",
+		description: 'Portal target selector or PortalBond instance. Teleports drawer content to a different DOM node.'
 	},
 	{
 		name: 'onclose',
-		type: '((event: Event, bond: DrawerBond<DrawerBondProps<Record<string, unknown>>, DrawerBondState<DrawerBondProps<Record<string, unknown>>>>) => void) | undefined',
-		default: '\'\'',
-		description: 'Onclose'
+		type: '((event: Event, bond: DrawerBond<...>) => void) | undefined',
+		default: 'undefined',
+		description: 'Callback fired when the drawer is closed. Receives the closing event and DrawerBond instance.'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<DrawerBond<DrawerBondProps<Record<string, unknown>>, DrawerBondState<DrawerBondProps<Record<string, unknown>>>>> | undefined',
-		default: '\'\'',
-		description: 'Factory'
+		type: 'Factory<DrawerBond<...>> | undefined',
+		default: 'undefined',
+		description: 'Custom factory function to create a DrawerBond instance with custom logic.'
 	},
 ];
 

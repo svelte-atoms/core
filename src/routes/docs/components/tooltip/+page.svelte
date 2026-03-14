@@ -19,17 +19,17 @@
 </script>
 
 <svelte:head>
-	<title>Tooltip - Svelte Atoms</title>
-	<meta name="description" content="Contextual information on hover." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Tooltip' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Tooltip"
-		description="Contextual information that appears when hovering over elements. Use for supplementary information."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -37,8 +37,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Tooltip &#125; from '@svelte-atoms/core/tooltip';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 

@@ -21,19 +21,18 @@
 </script>
 
 <svelte:head>
-	<title>Scrollable - Svelte Atoms</title>
-	<meta name="description" content="Scrollable container with custom scrollbars." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb
-		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Scrollable' }]}
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs}
 	/>
 
 	<PageHeader
-		title="Scrollable"
-		description="Container with custom-styled scrollbars for consistent scrolling experience across browsers."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -41,8 +40,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Scrollable &#125; from '@svelte-atoms/core/scrollable';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -91,7 +90,7 @@ const preset = setPreset({
 				code={basicCode}
 			>
 				<Scrollable.Root>
-					<Scrollable.Container class="rounded border" style="max-height: 200px;">
+					<Scrollable.Container class="rounded border max-h-[200px]">
 						<Scrollable.Content>
 							<div class="space-y-4 p-4">
 								{#each Array(20) as _, i}
@@ -129,10 +128,10 @@ const preset = setPreset({
 				code={bothCode}
 			>
 				<Scrollable.Root>
-					<Scrollable.Container class="rounded border" style="max-height: 300px;">
+					<Scrollable.Container class="rounded border max-h-[300px]">
 						<Scrollable.Content>
 							<div class="p-4">
-								<div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
+								<div class="grid grid-cols-10 gap-4 min-w-[1200px]">
 									{#each Array(50) as _, i}
 										<div class="bg-muted rounded p-4 text-center">
 											{i + 1}
@@ -164,13 +163,7 @@ const preset = setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Keyboard scrolling (Arrow keys)',
-				'Focus visible on scroll container',
-				'Screen reader compatible',
-				'Respects prefers-reduced-motion',
-				'Touch-friendly scrolling'
-			]}
+			features={metadata.accessibility}
 		/>
 	</Section.Root>
 

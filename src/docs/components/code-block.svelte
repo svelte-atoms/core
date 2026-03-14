@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { codeToHtml } from 'shiki';
+	import { Theme } from '../../routes/theme.svelte';
 
 	type Props = {
 		code: string;
@@ -7,33 +8,34 @@
 		theme?: string;
 		class?: string;
 		showLineNumbers?: boolean;
+		showLeftBorder?: boolean;
+		transparent?: boolean;
 	};
 
 	let {
 		code,
 		lang = 'typescript',
-		theme = 'github-dark',
+		theme,
 		class: className = '',
-		showLineNumbers = false
+		showLineNumbers = false,
+		showLeftBorder = true,
+		transparent = true,
 	}: Props = $props();
 
+	const appTheme = Theme.get();
+
+	let isDark = $derived(appTheme ? appTheme.colorScheme === 'dark' : true);
 	let highlightedCode = $state('');
 	let isLoading = $state(true);
 
 	$effect(() => {
+		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'vitesse-light');
 		isLoading = true;
 		codeToHtml(code, {
 			lang,
-			theme,
+			theme: resolvedTheme,
 			transformers: showLineNumbers
-				? [
-						{
-							name: 'line-numbers',
-							line(node, line) {
-								node.properties['data-line'] = line;
-							}
-						}
-					]
+				? [{ name: 'line-numbers', line(node, line) { node.properties['data-line'] = line; } }]
 				: []
 		})
 			.then((html) => {
@@ -48,14 +50,14 @@
 	});
 </script>
 
-<div class="code-block {className}">
+<div class="code-block {transparent ? 'transparent' : ''} {className}" style:--left-border-width={showLeftBorder ? '1px' : '0px'}>
 	{#if isLoading}
 		<div class="bg-muted animate-pulse rounded-lg p-4">
 			<div class="bg-muted-foreground/20 h-4 w-3/4 rounded"></div>
 			<div class="bg-muted-foreground/20 mt-2 h-4 w-1/2 rounded"></div>
 		</div>
 	{:else}
-		<div class="overflow-x-auto rounded-lg">
+		<div class="overflow-x-auto">
 			{@html highlightedCode}
 		</div>
 	{/if}
@@ -63,9 +65,12 @@
 
 <style>
 	.code-block :global(pre) {
-		padding: 1rem;
+		padding: 1rem 1.25rem;
 		overflow-x: auto;
-		border-radius: 0.5rem;
+		border-radius: 0;
+		border-left: var(--left-border-width, 0px) solid color-mix(in oklch, currentColor 15%, transparent);
+		background: transparent !important;
+		margin: 0;
 	}
 
 	.code-block :global(code) {
@@ -85,6 +90,6 @@
 		width: 2rem;
 		margin-right: 1rem;
 		text-align: right;
-		color: rgba(255, 255, 255, 0.4);
+		opacity: 0.4;
 	}
 </style>

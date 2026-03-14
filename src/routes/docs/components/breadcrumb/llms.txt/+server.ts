@@ -1,4 +1,6 @@
+import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
+import breadcrumbProps from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -35,13 +37,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Breadcrumb module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Breadcrumb.Root
 
@@ -49,7 +47,23 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(breadcrumbProps)
+${propsTable(breadcrumbProps.root)}
+
+### Breadcrumb.Item
+
+**Preset Key:** \`breadcrumb.item\`
+
+**Props:**
+
+${propsTable(breadcrumbProps.item)}
+
+### Breadcrumb.Separator
+
+**Preset Key:** \`breadcrumb.separator\`
+
+**Props:**
+
+${propsTable(breadcrumbProps.separator)}
 
 ## Examples
 

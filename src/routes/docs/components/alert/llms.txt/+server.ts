@@ -2,12 +2,7 @@ import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
 import {
 	alertRootProps,
-	alertContentProps,
-	alertTitleProps,
-	alertDescriptionProps,
-	alertIconProps,
-	alertActionsProps,
-	alertCloseButtonProps
+	alertSubPartProps
 } from '../props';
 import { metadata } from '../shared';
 
@@ -57,41 +52,9 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 ${propsTable(alertRootProps)}
 
-### Alert.Content
+### Sub-Components (Content, Title, Description, Icon, Actions, CloseButton)
 
-**Preset Key:** \`alert.content\`
-
-${propsTable(alertContentProps)}
-
-### Alert.Title
-
-**Preset Key:** \`alert.title\`
-
-${propsTable(alertTitleProps)}
-
-### Alert.Description
-
-**Preset Key:** \`alert.description\`
-
-${propsTable(alertDescriptionProps)}
-
-### Alert.Icon
-
-**Preset Key:** \`alert.icon\`
-
-${propsTable(alertIconProps)}
-
-### Alert.Actions
-
-**Preset Key:** \`alert.actions\`
-
-${propsTable(alertActionsProps)}
-
-### Alert.CloseButton
-
-**Preset Key:** \`alert.closebutton\`
-
-${propsTable(alertCloseButtonProps)}
+${propsTable(alertSubPartProps)}
 
 ## Examples
 

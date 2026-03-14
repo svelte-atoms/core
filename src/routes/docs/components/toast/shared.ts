@@ -72,6 +72,18 @@ export const metadata = {
 	useCases,
 	examples: {
 		basic: basicCode,
+		toaster: `<!-- In your root +layout.svelte -->
+<Toast.Toaster />
+
+<!-- Then anywhere in your app -->
+<script lang="ts">
+  import { Toast } from '@svelte-atoms/core';
+<\/script>
+
+<Toast.Root>
+  <Toast.Title>Saved</Toast.Title>
+  <Toast.Description>Your changes have been saved.</Toast.Description>
+</Toast.Root>`,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

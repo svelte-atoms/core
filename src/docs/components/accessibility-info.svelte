@@ -4,31 +4,31 @@
 		title?: string;
 	};
 
-	let { features, title = 'Built-in Accessibility Features' }: Props = $props();
+	let { features, title = '' }: Props = $props();
 </script>
 
-<div class="rounded-lg border border-palette-ion/30 bg-palette-ion/10 p-6">
-	<div class="flex items-start">
-		<svg
-			class="mt-1 mr-3 h-6 w-6 flex-shrink-0 text-palette-ion"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-			/>
-		</svg>
-		<div>
-			<h3 class="text-foreground mb-2 text-lg font-semibold">{title}</h3>
-			<ul class="text-foreground/90 space-y-1">
-				{#each features as feature}
-					<li>• {feature}</li>
-				{/each}
-			</ul>
-		</div>
-	</div>
+<div class="border-primary/40 border-l-2 pl-4">
+	{#if title}
+		<p class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide">{title}</p>
+	{/if}
+	<ul class="space-y-1.5">
+		{#each features as feature}
+			<li class="flex items-start gap-2">
+				<svg
+					class="text-primary/60 mt-0.5 h-3.5 w-3.5 flex-shrink-0"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2.5"
+						d="M5 13l4 4L19 7"
+					/>
+				</svg>
+				<span class="text-foreground/80 text-sm">{feature}</span>
+			</li>
+		{/each}
+	</ul>
 </div>

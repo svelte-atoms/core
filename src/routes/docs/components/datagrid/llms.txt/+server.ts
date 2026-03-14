@@ -1,7 +1,15 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { datagridProps } from '../props';
+import {
+	datagridRootProps,
+	datagridHeaderProps,
+	datagridBodyProps,
+	datagridFooterProps,
+	datagridThProps,
+	datagridTdProps,
+	datagridCheckboxProps,
+	datagridTrProps
+} from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +46,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Datagrid module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Datagrid.Root
 
@@ -52,7 +56,63 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(datagridProps)
+${propsTable(datagridRootProps)}
+
+### Datagrid.Header
+
+**Preset Key:** \`datagrid.header\`
+
+**Props:**
+
+${propsTable(datagridHeaderProps)}
+
+### Datagrid.Body
+
+**Preset Key:** \`datagrid.body\`
+
+**Props:**
+
+${propsTable(datagridBodyProps)}
+
+### Datagrid.Footer
+
+**Preset Key:** \`datagrid.footer\`
+
+**Props:**
+
+${propsTable(datagridFooterProps)}
+
+### Datagrid.Th
+
+**Preset Key:** \`datagrid.th\`
+
+**Props:**
+
+${propsTable(datagridThProps)}
+
+### Datagrid.Td
+
+**Preset Key:** \`datagrid.td\`
+
+**Props:**
+
+${propsTable(datagridTdProps)}
+
+### Datagrid.Checkbox
+
+**Preset Key:** \`datagrid.checkbox\`
+
+**Props:**
+
+${propsTable(datagridCheckboxProps)}
+
+### Datagrid.Tr
+
+**Preset Key:** \`datagrid.tr\`
+
+**Props:**
+
+${propsTable(datagridTrProps)}
 
 ## Examples
 

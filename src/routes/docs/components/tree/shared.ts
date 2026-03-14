@@ -63,37 +63,59 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'File System Browsers',
+		description: 'Display directory and file structures with expandable folder nodes and nested file items.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Organization Charts',
+		description: 'Render hierarchical org structures with nested groups and team members as expandable tree nodes.'
+	},
+	{
+		title: 'Category Navigation',
+		description: 'Build nested category trees for e-commerce filters, taxonomy browsers, or content classification.'
+	},
+	{
+		title: 'JSON or XML Viewers',
+		description: 'Visualize structured data like JSON objects or XML elements as an expandable tree for debugging or exploration.'
+	},
+	{
+		title: 'Documentation Sidebar',
+		description: 'Create a hierarchical docs navigation with expandable section groups and nested page links.'
+	},
+	{
+		title: 'Permission Trees',
+		description: 'Display and manage nested permission or role hierarchies in admin interfaces.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Tree.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Root node container that manages the open/closed expanded state. Bindable open prop for controlled usage.'
+	},
+	{
+		name: 'Tree.Header',
+		description: 'Clickable header element that toggles the expanded/collapsed state of the tree node when clicked.'
+	},
+	{
+		name: 'Tree.Body',
+		description: 'Collapsible content container for nested tree items, shown when the node is expanded.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Tree - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Hierarchical tree view component for displaying expandable nested data structures.',
 	componentTitle: 'Tree',
-	componentDescription: 'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+	componentDescription:
+		'A recursive, compound tree component for rendering hierarchical data with expandable and collapsible nodes. Supports nested Tree instances for unlimited depth, bindable open state, and fully customizable header and body content.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Tree } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Tree' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		nested: nestedCode,

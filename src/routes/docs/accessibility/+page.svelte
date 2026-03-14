@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Card } from '$svelte-atoms/core/components/card';
 	import { Badge } from '$svelte-atoms/core/components/badge';
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 	import { metadata } from './shared';
 
 	const {
@@ -20,7 +19,7 @@
 	} = metadata.examples;
 </script>
 
-<div class="mx-auto max-w-4xl px-4 py-12">
+<div class="py-8">
 	<!-- Header -->
 	<div class="mb-12">
 		<h1 class="mb-4 text-4xl font-bold tracking-tight">Accessibility</h1>
@@ -33,80 +32,52 @@
 	<!-- Overview -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Overview</Section.Title>
+			<Section.Title id="overview">Overview</Section.Title>
 			<Section.Subtitle>
 				All components are designed with accessibility as a first-class concern, not an
 				afterthought.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-6 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground leading-relaxed">
 					@svelte-atoms/core follows the <strong>WAI-ARIA Authoring Practices Guide (APG)</strong>
 					to ensure components are accessible to users of assistive technologies. Every component includes
 					proper ARIA attributes, keyboard navigation, focus management, and semantic HTML structure
 					by default. You don't need to add these features manually—they're built in.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Core Accessibility Features</h3>
 			<div class="grid gap-4 sm:grid-cols-2">
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Keyboard Navigation</h4>
 						<p class="text-muted-foreground text-sm">
 							Full keyboard support with Tab, Arrow keys, Enter, Space, Escape, Home, and End
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">ARIA Attributes</h4>
 						<p class="text-muted-foreground text-sm">
 							Automatic role, state, and property attributes following ARIA specifications
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Focus Management</h4>
 						<p class="text-muted-foreground text-sm">
 							Focus trapping for modals, focus restoration on close, and visible focus indicators
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Screen Readers</h4>
 						<p class="text-muted-foreground text-sm">
 							Proper announcements, semantic structure, and live region support
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Semantic HTML</h4>
 						<p class="text-muted-foreground text-sm">
 							Native elements and proper element types for better accessibility
 						</p>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<h4 class="mb-2 font-semibold">Color Contrast</h4>
 						<p class="text-muted-foreground text-sm">
 							WCAG AA compliant color contrast ratios for all theme colors
 						</p>
-					</Card.Body>
-				</Card.Root>
 			</div>
 		</div>
 	</Section.Root>
@@ -114,14 +85,12 @@
 	<!-- Keyboard Navigation -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Keyboard Navigation</Section.Title>
+			<Section.Title id="keyboard-navigation">Keyboard Navigation</Section.Title>
 			<Section.Subtitle>
 				All interactive components support standard keyboard interactions out of the box.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-6 border">
-			<Card.Body class="p-6">
 				<div class="space-y-4">
 					<div>
 						<h4 class="mb-2 text-sm font-semibold">Universal Keys</h4>
@@ -192,31 +161,25 @@
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Component Examples</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{keyboardExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={keyboardExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- ARIA Attributes -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>ARIA Attributes</Section.Title>
+			<Section.Title id="aria-attributes">ARIA Attributes</Section.Title>
 			<Section.Subtitle>
 				Components automatically manage ARIA attributes for roles, states, and relationships.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-6 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
 					ARIA (Accessible Rich Internet Applications) attributes provide semantic information to
 					assistive technologies. All components in @svelte-atoms/core automatically apply and
@@ -315,24 +278,20 @@
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Automatic ARIA Management</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{ariaExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={ariaExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Focus Management -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Focus Management</Section.Title>
+			<Section.Title id="focus-management">Focus Management</Section.Title>
 			<Section.Subtitle>
 				Automatic focus trapping, restoration, and visible focus indicators for better keyboard
 				navigation.
@@ -342,8 +301,6 @@
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Focus Features</h3>
 			<div class="space-y-3">
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
 							<div>
@@ -354,11 +311,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
 							<div>
@@ -369,11 +322,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
 							<div>
@@ -384,11 +333,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
 							<div>
@@ -401,8 +346,6 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 			</div>
 		</div>
 
@@ -410,35 +353,28 @@
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Focus Trap Example</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{focusTrapExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={focusTrapExample} /></div>
+
 		</div>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Focus Restoration Example</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{focusManagementExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={focusManagementExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Semantic HTML -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Semantic HTML</Section.Title>
+			<Section.Title id="semantic-html">Semantic HTML</Section.Title>
 			<Section.Subtitle>
 				Components use proper semantic HTML elements and can be customized with the `as` prop.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Semantic HTML uses elements that convey meaning about the content they contain. This helps
 					screen readers, search engines, and other tools understand the structure and purpose of
@@ -446,31 +382,25 @@
 					the <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">as</code> prop when
 					needed.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Semantic Structure</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground">{semanticExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={semanticExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Screen Reader Support -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Screen Reader Support</Section.Title>
+			<Section.Title id="screen-reader-support">Screen Reader Support</Section.Title>
 			<Section.Subtitle>
 				Proper labeling, announcements, and semantic structure for assistive technologies.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-6 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
 					Screen readers rely on proper semantic structure, ARIA attributes, and accessible labels
 					to convey information to users. Components ensure that all interactive elements have
@@ -534,64 +464,50 @@
 						</div>
 					</div>
 				</div>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Screen Reader Patterns</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{screenReaderExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={screenReaderExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Custom Attributes -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Custom ARIA Attributes</Section.Title>
+			<Section.Title id="custom-aria-attributes">Custom ARIA Attributes</Section.Title>
 			<Section.Subtitle>
 				Extend components with custom ARIA attributes using variants or props.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					While components provide sensible ARIA defaults, you can add or override attributes using
 					either the variant system (for global configuration) or by passing them directly as props.
 					The variant system is particularly powerful for applying ARIA attributes based on
 					component state.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Variants with ARIA</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{customAttributesExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={customAttributesExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Disabled States -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Disabled States</Section.Title>
+			<Section.Title id="disabled-states">Disabled States</Section.Title>
 			<Section.Subtitle>
 				Proper handling of disabled states with visual cues and ARIA attributes.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Disabled elements are excluded from keyboard navigation and properly announced to screen
 					readers. Components use <code
@@ -601,32 +517,25 @@
 					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">disabled</code>
 					attribute (for form inputs) along with visual styling to indicate their state.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Disabled State Handling</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{disabledStateExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={disabledStateExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Visual Indicators -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Focus Indicators</Section.Title>
+			<Section.Title id="focus-indicators">Focus Indicators</Section.Title>
 			<Section.Subtitle>
 				Clear visual focus indicators for keyboard navigation users.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					All interactive components include visible focus indicators using the <code
 						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">:focus-visible</code
@@ -636,30 +545,23 @@
 					<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">--ring</code> CSS custom
 					property.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Focus Styles</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{visualIndicatorsExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={visualIndicatorsExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Reduced Motion -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Reduced Motion Support</Section.Title>
+			<Section.Title id="reduced-motion-support">Reduced Motion Support</Section.Title>
 			<Section.Subtitle>Respect user preferences for reduced motion animations.</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					Components that include animations automatically respect the <code
 						class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
@@ -669,57 +571,45 @@
 					disabled or significantly reduced. You should follow this pattern in your custom animations
 					as well.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Reduced Motion Pattern</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{reducedMotionExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={reducedMotionExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Color Contrast -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Color Contrast</Section.Title>
+			<Section.Title id="color-contrast">Color Contrast</Section.Title>
 			<Section.Subtitle>
 				All theme colors meet WCAG AA standards for color contrast ratios.
 			</Section.Subtitle>
 		</Section.Header>
 
-		<Card.Root class="border-border/50 mb-4 border">
-			<Card.Body class="p-6">
 				<p class="text-muted-foreground text-sm leading-relaxed">
 					The default theme is designed to meet <strong>WCAG AA</strong> standards with a minimum contrast
 					ratio of 4.5:1 for normal text and 3:1 for large text. All foreground/background color combinations
 					have been tested for sufficient contrast. When creating custom themes, ensure your color pairs
 					maintain these ratios.
 				</p>
-			</Card.Body>
-		</Card.Root>
 
 		<div class="flex flex-col">
 			<div class="border-border py-2.5">
 				<h3 class="font-semibold">Accessible Color Pairs</h3>
 			</div>
-			<div class="bg-muted rounded-lg p-4">
-				<pre class="text-xs leading-relaxed"><code class="text-foreground"
-						>{colorContrastExample}</code
-					></pre>
-			</div>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={colorContrastExample} /></div>
+
 		</div>
 	</Section.Root>
 
 	<!-- Testing -->
 	<Section.Root>
 		<Section.Header>
-			<Section.Title>Accessibility Testing</Section.Title>
+			<Section.Title id="accessibility-testing">Accessibility Testing</Section.Title>
 			<Section.Subtitle>
 				Test accessibility with automated tools and manual keyboard/screen reader testing.
 			</Section.Subtitle>
@@ -728,8 +618,6 @@
 		<div class="mb-6">
 			<h3 class="text-foreground mb-4 text-lg font-semibold">Testing Checklist</h3>
 			<div class="space-y-3">
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
 							<div>
@@ -740,11 +628,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
 							<div>
@@ -755,11 +639,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
 							<div>
@@ -770,11 +650,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
 							<div>
@@ -785,11 +661,7 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 
-				<Card.Root class="border-border/50 border">
-					<Card.Body class="p-4">
 						<div class="flex gap-2">
 							<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
 							<div>
@@ -799,40 +671,23 @@
 								</p>
 							</div>
 						</div>
-					</Card.Body>
-				</Card.Root>
 			</div>
 		</div>
 
-		<Card.Root class="border-border/50 border">
-			<Card.Body class="p-0">
-				<div
-					class="border-border bg-muted/50 flex items-center justify-between border-b px-4 py-2.5"
-				>
-					<span class="text-muted-foreground text-sm font-medium">Testing Example</span>
-					<Badge variant="secondary" class="text-xs">TypeScript</Badge>
-				</div>
-				<div class="bg-muted p-5">
-					<pre class="overflow-x-auto text-sm leading-relaxed"><code class="text-foreground"
-							>{testingExample}</code
-						></pre>
-				</div>
-			</Card.Body>
-		</Card.Root>
+				<h3 class="font-semibold mb-3">Testing Example</h3>
+				<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={testingExample} /></div>
 	</Section.Root>
 
 	<!-- Best Practices -->
 	<Section.Root class="mb-0">
 		<Section.Header>
-			<Section.Title>Best Practices</Section.Title>
+			<Section.Title id="best-practices">Best Practices</Section.Title>
 			<Section.Subtitle>
 				Guidelines for building accessible applications with @svelte-atoms/core.
 			</Section.Subtitle>
 		</Section.Header>
 
 		<div class="space-y-3">
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">1.</div>
 						<div>
@@ -847,11 +702,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">2.</div>
 						<div>
@@ -863,11 +714,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">3.</div>
 						<div>
@@ -878,11 +725,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">4.</div>
 						<div>
@@ -893,11 +736,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">5.</div>
 						<div>
@@ -909,11 +748,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">6.</div>
 						<div>
@@ -924,11 +759,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">7.</div>
 						<div>
@@ -939,11 +770,7 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 
-			<Card.Root class="border-border/50 border">
-				<Card.Body class="p-4">
 					<div class="flex gap-2">
 						<div class="text-primary mt-0.5 flex-shrink-0 font-bold">8.</div>
 						<div>
@@ -954,8 +781,6 @@
 							</p>
 						</div>
 					</div>
-				</Card.Body>
-			</Card.Root>
 		</div>
 	</Section.Root>
 </div>

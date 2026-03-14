@@ -1,26 +1,36 @@
 const basicCode = `
 <script lang="ts">
-  import { Checkbox } from '@svelte-atoms/core/checkbox';
+  import { Checkbox } from '@svelte-atoms/core';
 <\/script>
 
-<Checkbox id="basic" />
-<label for="basic">Accept terms and conditions</label>`.trim();
+<div class="flex items-center gap-2">
+  <Checkbox id="basic" />
+  <label for="basic">Accept terms and conditions</label>
+</div>`.trim();
 
 const groupCode = `
 <div class="space-y-3">
-  <div class="flex items-center space-x-2">
+  <div class="flex items-center gap-2">
     <Checkbox id="option1" />
     <label for="option1">Newsletter updates</label>
   </div>
-  <div class="flex items-center space-x-2">
+  <div class="flex items-center gap-2">
     <Checkbox id="option2" />
     <label for="option2">Marketing emails</label>
   </div>
-  <div class="flex items-center space-x-2">
+  <div class="flex items-center gap-2">
     <Checkbox id="option3" />
     <label for="option3">Product announcements</label>
   </div>
 </div>`.trim();
+
+const indeterminateCode = `
+<script lang="ts">
+  let indeterminate = $state(true);
+  let checked = $state(false);
+<\/script>
+
+<Checkbox bind:checked bind:indeterminate />`.trim();
 
 const disabledCode = `
 <Checkbox id="disabled" disabled />
@@ -31,58 +41,76 @@ import { setPreset } from '@svelte-atoms/core';
 
 const preset = setPreset({
   checkbox: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'h-5 w-5 rounded-sm border border-border bg-input cursor-pointer transition-colors',
+  }),
+  'checkbox.checkmark': () => ({
+    class: 'flex items-center justify-center text-accent'
+  }),
+  'checkbox.indeterminate': () => ({
+    class: 'flex items-center justify-center scale-50 bg-current rounded-[inherit]'
   })
-});
-`.trim();
+});`.trim();
 
 const accessibilityFeatures = [
-	'Proper semantic input element with type=\'checkbox\'',
-	'Keyboard navigation support (Space key to toggle)',
-	'Focus management with visible focus indicators',
-	'Screen reader compatible with proper labels',
-	'Disabled state handling with aria-disabled',
-	'Associated label support for larger click targets'
+	'Uses role="checkbox" with aria-checked for correct screen reader semantics',
+	'Supports aria-checked="mixed" for the indeterminate state',
+	'Wraps a hidden native <input type="checkbox"> for form compatibility',
+	'Click and keyboard (Space) support for toggling',
+	'Associates with a <label> via id/for for an enlarged click target',
+	'Disabled state prevents interaction and can be read by assistive technologies'
 ];
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Terms & Conditions',
+		description:
+			'Require users to explicitly agree to terms of service or privacy policies before submitting a form.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
-	}
-	// TODO: Add 4-6 use cases total
-];
-
-// TODO: Remove if simple component, or fill in for compound component
-const componentsSummary = [
+		title: 'Multi-select Filters',
+		description:
+			'Allow users to filter content by selecting one or more categories, tags, or attributes simultaneously.'
+	},
 	{
-		name: 'Checkbox.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		title: 'Preference Settings',
+		description:
+			'Let users configure notification preferences, feature toggles, or subscription options independently.'
+	},
+	{
+		title: 'Bulk Selection',
+		description:
+			'Enable selecting multiple rows in a table for bulk actions like delete, export, or status update.'
+	},
+	{
+		title: 'Todo Lists',
+		description:
+			'Mark individual tasks as complete or incomplete in a checklist or task management interface.'
+	},
+	{
+		title: 'Indeterminate Parent Selection',
+		description:
+			'Use the indeterminate state for a parent checkbox that represents a partially-selected group of children.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Checkbox - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Accessible checkbox input for boolean and multi-select form controls.',
 	componentTitle: 'Checkbox',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A custom checkbox component built on a native hidden input for full form compatibility. Supports checked, unchecked, and indeterminate states, group binding, custom checkmark icons, and smooth transitions. Use it for any boolean or multi-select form control.',
+	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Checkbox } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Checkbox' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
 		group: groupCode,
-		disabled: disabledCode
+		indeterminate: indeterminateCode,
+		disabled: disabledCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

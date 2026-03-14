@@ -18,17 +18,17 @@
 </script>
 
 <svelte:head>
-	<title>Button - Atomic SV</title>
-	<meta name="description" content="Interactive button component for triggering actions." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/components' }, { label: 'Button' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Button"
-		description="Interactive element for triggering actions. Supports various styles, sizes, and states."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -36,8 +36,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Button &#125; from '@svelte-atoms/core/button';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -188,7 +188,7 @@ const preset = setPreset({
 	</Section.Root>
 
 	<PageNavigation
-		prev={{ label: 'Back to Components', href: '/components' }}
+		prev={{ label: 'Back to Components', href: '/docs/components' }}
 		next={{ label: 'Next: Checkbox', href: '/components/checkbox' }}
 	/>
 </div>

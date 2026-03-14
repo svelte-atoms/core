@@ -19,17 +19,17 @@
 </script>
 
 <svelte:head>
-	<title>Label - Svelte Atoms</title>
-	<meta name="description" content="Label element for form controls." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Label' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Label"
-		description="Label element for form controls. Provides accessible names and improves usability."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -37,8 +37,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Label &#125; from '@svelte-atoms/core/label';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -139,13 +139,7 @@ const preset = setPreset({
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
 		<AccessibilityInfo
-			features={[
-				'Always use for attribute to associate with input',
-				'Place labels consistently (before or after inputs)',
-				'Make required fields clear to screen readers',
-				'Use semantic label element',
-				'Ensure sufficient color contrast'
-			]}
+			features={metadata.accessibility}
 		/>
 	</Section.Root>
 

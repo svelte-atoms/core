@@ -16,11 +16,7 @@
 	import { cn } from '$lib/utils';
 	import {
 		alertRootProps,
-		alertActionsProps,
-		alertContentProps,
-		alertDescriptionProps,
-		alertIconProps,
-		alertTitleProps
+		alertSubPartProps
 	} from './props';
 	import { metadata } from './shared';
 
@@ -30,8 +26,8 @@
 </script>
 
 <svelte:head>
-	<title>Alert - Svelte Atoms</title>
-	<meta name="description" content="Display important messages and notifications to users." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
 {#snippet alertLayout({ children, class: klass, ...args })}
@@ -48,13 +44,13 @@
 	</div>
 {/snippet}
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Alert' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Alert"
-		description="Display important messages and notifications to users. Alerts provide contextual feedback for user actions."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -62,8 +58,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Alert &#125; from '@svelte-atoms/core/alert';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -81,50 +77,29 @@
 				lang="typescript"
 				code={`import { setPreset } from '@svelte-atoms/core';
 
-const preset = setPreset({
+setPreset({
   alert: () => ({
-    class: 'relative gap-1 rounded-md border p-4 transition-all duration-200',
+    class: 'border-l-2 rounded-none border-y-0 border-r-0 bg-transparent px-4 py-3',
     variants: {
       variant: {
-        primary: {
-          class: 'bg-primary/10 text-primary border-primary'
-        },
-        secondary: {
-          class: 'bg-secondary text-secondary-foreground'
-        },
-        destructive: {
-          class: 'bg-destructive text-destructive-foreground'
-        },
-        outline: {
-          class: 'bg-transparent border border-border'
-        },
-        ghost: {
-          class: 'bg-transparent'
-        }
-      }
-    },
-    defaults: {
-      variant: 'primary'
+        info:        { class: 'border-primary/50 text-foreground' },
+        warning:     { class: 'border-yellow-500/60 text-foreground' },
+        success:     { class: 'border-green-500/60 text-foreground' },
+        destructive: { class: 'border-destructive/60 text-foreground' },
+        outline:     { class: 'border-border text-foreground' },
+      },
+      defaultVariants: { variant: 'info' }
     }
   }),
-  'alert.icon': () => ({
-    class: 'inline-flex aspect-square size-4 shrink-0 items-center justify-center'
-  }),
   'alert.title': () => ({
-    class: 'text-md font-semibold leading-tight'
-  }),
-  'alert.description': () => ({
-    class: 'text-sm leading-relaxed opacity-90'
+    class: 'text-sm font-semibold text-foreground mb-0.5'
   }),
   'alert.content': () => ({
-    class: 'flex-1 space-y-1'
+    class: 'text-sm leading-relaxed text-muted-foreground'
   }),
-  'alert.actions': () => ({
-    class: 'mt-3 flex items-center gap-2'
+  'alert.icon': () => ({
+    class: 'inline-flex size-4 shrink-0 items-center justify-center'
   }),
-  'alert.close-button': () => ({
-    class: 'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100'
-  })
 });`}
 			/>
 			<div class="bg-muted/50 border-border rounded-lg border p-4">
@@ -366,27 +341,27 @@ const preset = setPreset({
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Title Props</h3>
-				<Props data={alertTitleProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Actions Props</h3>
-				<Props data={alertActionsProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Content Props</h3>
-				<Props data={alertContentProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Description Props</h3>
-				<Props data={alertDescriptionProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">Alert.Icon Props</h3>
-				<Props data={alertIconProps} />
+				<Props data={alertSubPartProps} />
 			</div>
 		</div>
 	</Section.Root>

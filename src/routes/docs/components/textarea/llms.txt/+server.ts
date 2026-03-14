@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { textareaProps } from '../props';
+import { textareaRootProps, textareaInputProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +37,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Textarea module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Textarea.Root
 
@@ -52,7 +47,15 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(textareaProps)
+${propsTable(textareaRootProps)}
+
+### Textarea.Input
+
+**Preset Key:** \`textarea.input\`
+
+**Props:**
+
+${propsTable(textareaInputProps)}
 
 ## Examples
 

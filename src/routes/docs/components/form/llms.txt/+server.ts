@@ -1,7 +1,12 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { formProps } from '../props';
+import {
+	formRootProps,
+	fieldRootProps,
+	fieldLabelProps,
+	fieldControlProps,
+	fieldErrorsProps
+} from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +43,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Form module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Form.Root
 
@@ -52,7 +53,39 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(formProps)
+${propsTable(formRootProps)}
+
+### Field.Root
+
+**Preset Key:** \`field\`
+
+**Props:**
+
+${propsTable(fieldRootProps)}
+
+### Field.Label
+
+**Preset Key:** \`field.label\`
+
+**Props:**
+
+${propsTable(fieldLabelProps)}
+
+### Field.Control
+
+**Preset Key:** \`field.control\`
+
+**Props:**
+
+${propsTable(fieldControlProps)}
+
+### Field.Errors
+
+**Preset Key:** \`field.errors\`
+
+**Props:**
+
+${propsTable(fieldErrorsProps)}
 
 ## Examples
 

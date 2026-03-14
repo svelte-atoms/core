@@ -7,6 +7,10 @@ export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
 
 type EasingOption = Easing | Easing[] | Spring;
 
+export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
+
+type EasingOption = Easing | Easing[] | Spring;
+
 type AnimateDrawerContentParams = {
 	duration?: number;
 	delay?: number;

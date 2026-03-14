@@ -78,38 +78,79 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Admin Data Tables',
+		description: 'Display and manage records (users, orders, products) in admin dashboards with sortable columns and row selection.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Reporting and Analytics',
+		description: 'Present structured data with sortable columns and column visibility controls for business reports and analytics views.'
+	},
+	{
+		title: 'Selectable Row Lists',
+		description: 'Allow users to select one or multiple rows with checkboxes for bulk operations like deletion, export, or status updates.'
+	},
+	{
+		title: 'Inventory Management',
+		description: 'Manage product or asset inventories with rich row data, custom cell rendering, and action buttons per row.'
+	},
+	{
+		title: 'Log Viewers',
+		description: 'Display time-series or event logs in a structured table with sortable timestamps and filterable severity columns.'
+	},
+	{
+		title: 'Comparison Tables',
+		description: 'Show feature comparisons or side-by-side data with fixed header rows and responsive column layouts.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
-		name: 'Datagrid.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		name: 'DataGrid.Root',
+		description: 'Root table container that sets up the datagrid context, manages column templates and selection state. Renders as a <table> element.'
+	},
+	{
+		name: 'DataGrid.Header',
+		description: 'Table header section (<thead>). Contains one or more DataGrid.Tr rows with DataGrid.Th column headers.'
+	},
+	{
+		name: 'DataGrid.Body',
+		description: 'Table body section (<tbody>). Contains the data rows rendered with DataGrid.Tr.'
+	},
+	{
+		name: 'DataGrid.Footer',
+		description: 'Optional table footer section (<tfoot>). Useful for summary rows, pagination, or totals.'
+	},
+	{
+		name: 'DataGrid.Tr',
+		description: 'Table row element. In the body, accepts a data prop for row-level data context and supports row selection via value prop.'
+	},
+	{
+		name: 'DataGrid.Th',
+		description: 'Table header cell. Supports sortable prop for clickable sort headers with direction indicators, and width/hidden for column control.'
+	},
+	{
+		name: 'DataGrid.Td',
+		description: 'Table data cell. Renders cell content and can access the datagrid context via the children snippet.'
+	},
+	{
+		name: 'DataGrid.Checkbox',
+		description: 'Convenience checkbox cell for row selection. Handles checked state based on the datagrid selection context.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
-	title: 'Datagrid - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
-	componentTitle: 'Datagrid',
+	title: 'DataGrid - Svelte Atoms',
+	description: 'Flexible and powerful data grid component for displaying tabular data with sorting, selection, and custom cell rendering.',
+	componentTitle: 'DataGrid',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A compound table component for displaying and managing structured data. Supports sortable columns, row selection (single and multiple), custom cell rendering, and responsive layouts. Built with Bond-based reactive state management for predictable data flow.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
-	importCode: "import { Datagrid } from '@svelte-atoms/core';",
-	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Datagrid' }],
+	importCode: "import { DataGrid } from '@svelte-atoms/core';",
+	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'DataGrid' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		selectable: selectableCode

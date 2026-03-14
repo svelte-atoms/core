@@ -116,44 +116,46 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Custom Elements',
+		description: 'Render any HTML element type via the `as` prop while retaining all atom capabilities.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
-	}
-	// TODO: Add 4-6 use cases total
-];
-
-// TODO: Remove if simple component, or fill in for compound component
-const componentsSummary = [
+		title: 'Animation Hooks',
+		description: 'Attach enter/exit/animate functions directly to elements without wrapper components.'
+	},
 	{
-		name: 'Atom.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		title: 'Preset Styling',
+		description: 'Apply named preset styles that are overridable at the theme level.'
+	},
+	{
+		title: 'Bond Integration',
+		description: 'Connect elements to Bond state machines for reactive ARIA attribute management.'
+	},
+	{
+		title: 'Polymorphic Components',
+		description: 'Build higher-level components that delegate the underlying element type to consumers.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Atom - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'The foundational building block for all svelte-atoms components.',
 	componentTitle: 'Atom',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'The foundational building block for all svelte-atoms components. HtmlAtom provides a polymorphic HTML element with preset styling, Bond integration, and animation lifecycle hooks.',
+	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Atom } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Atom' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
 		composition: compositionCode,
 		animation: animationCode,
 		variants: variantsCode,
-		customComponent: customComponentCode
+		customComponent: customComponentCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

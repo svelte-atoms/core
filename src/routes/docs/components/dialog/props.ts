@@ -10,31 +10,31 @@ export const dialogProps: PropDefinition[] = [
 		name: 'open',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Open'
+		description: 'Controls whether the dialog is visible. Bind this prop for controlled usage.'
 	},
 	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
-		description: 'Disabled'
+		description: 'Disables the dialog trigger, preventing the dialog from being opened.'
 	},
 	{
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
-		default: '\'\'',
-		description: 'Portal'
+		default: "''",
+		description: 'Portal target selector or PortalBond instance. Teleports dialog content to a different DOM node (e.g., document.body).'
 	},
 	{
 		name: 'factory',
 		type: '((props: DialogBondProps) => DialogBond<DialogBondState<DialogBondProps>>) | undefined',
 		default: 'undefined',
-		description: 'Factory'
+		description: 'Custom factory function to create a DialogBond instance with custom logic.'
 	},
 	{
 		name: 'children',
 		type: 'Snippet<[{ dialog: DialogBond<DialogBondState<DialogBondProps>>; }]> | undefined',
 		default: 'undefined',
-		description: 'Children'
+		description: 'Dialog content. Receives the DialogBond for accessing open state and close functionality.'
 	},
 ];
 

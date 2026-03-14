@@ -25,13 +25,13 @@
 </script>
 
 <footer class="border-border border-t">
-	<div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
 
 		<!-- Top row: brand + nav columns -->
-		<div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+		<div class="flex flex-col gap-8 lg:flex-row lg:gap-16">
 
 			<!-- Brand column -->
-			<div class="sm:col-span-2 lg:col-span-1">
+			<div class="shrink-0 lg:w-56">
 				<a href="/" class="mb-3 flex items-center gap-2">
 					<Logo class="h-6 w-6" />
 					<span class="text-base font-bold">Svelte Atoms</span>
@@ -54,29 +54,31 @@
 				</a>
 			</div>
 
-			<!-- Nav columns -->
-			{#each Object.entries(footerLinks) as [group, links]}
-				<div>
-					<p class="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">{group}</p>
-					<ul class="space-y-2">
-						{#each links as link}
-							<li>
-								<a
-									href={link.href}
-									class="text-muted-foreground hover:text-foreground text-sm transition-colors"
-								>
-									{link.label}
-								</a>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{/each}
+			<!-- Nav columns: always 3-col so all groups fit in one row -->
+			<div class="grid flex-1 grid-cols-3 gap-4">
+				{#each Object.entries(footerLinks) as [group, links]}
+					<div>
+						<p class="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">{group}</p>
+						<ul class="space-y-2">
+							{#each links as link}
+								<li>
+									<a
+										href={link.href}
+										class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+									>
+										{link.label}
+									</a>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				{/each}
+			</div>
 
 		</div>
 
 		<!-- Divider -->
-		<div class="border-border mt-10 border-t pt-6">
+		<div class="border-border mt-8 border-t pt-5">
 			<div class="flex flex-col items-center justify-between gap-2 sm:flex-row">
 				<p class="text-muted-foreground text-xs">
 					© {year} Svelte Atoms. Open source under the MIT license.

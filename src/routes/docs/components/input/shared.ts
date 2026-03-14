@@ -109,10 +109,10 @@ const componentsSummary = [
 
 export const metadata = {
 	title: 'Input - Svelte Atoms',
-	description: 'Text input component for forms and user data entry.',
+	description: 'Compound input component for forms and data entry, supporting icons, placeholder, and all HTML input types.',
 	componentTitle: 'Input',
 	componentDescription:
-		'A flexible input component supporting various types, icons, and validation states for text entry.',
+		'A compound input component built from composable parts: Root (the styled container), Control (the native input element), Icon (prefix/suffix icons), and Placeholder (animated custom placeholders). Supports all standard HTML input types and integrates with Form.Field for accessible, validated form fields. Input.Root is intentionally reusable — other components can use it as a styled wrapper.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

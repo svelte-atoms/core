@@ -194,7 +194,7 @@ export const metadata = {
 	description: 'Display important messages and notifications to users.',
 	componentTitle: 'Alert',
 	componentDescription:
-		'A flexible alert component for displaying contextual feedback messages with various severity levels.',
+		'A compound alert component for displaying contextual feedback to users. Use it for system notifications, validation errors, success confirmations, and warnings. Supports optional icons, action buttons, dismissal, and fully customizable styling via presets.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

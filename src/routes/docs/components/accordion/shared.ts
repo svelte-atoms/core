@@ -2,42 +2,45 @@ const basicCode = `
 <Accordion>
   <AccordionItem.Root>
     <AccordionItem.Header>
-      What is Atomic SV?
+      What is Svelte Atoms?
+      <AccordionItem.Indicator />
     </AccordionItem.Header>
     <AccordionItem.Body>
-      Atomic SV is a modular, accessible, and extensible 
-      Svelte UI component library built with Svelte 5.
+      Svelte Atoms is a modular, accessible, and extensible 
+      Svelte 5 UI component library with TailwindCSS.
     </AccordionItem.Body>
   </AccordionItem.Root>
   
   <AccordionItem.Root>
     <AccordionItem.Header>
       How do I install it?
+      <AccordionItem.Indicator />
     </AccordionItem.Header>
     <AccordionItem.Body>
-      Simply run npm install atomic-sv
+      Run: npm install @svelte-atoms/core
     </AccordionItem.Body>
   </AccordionItem.Root>
 </Accordion>`.trim();
 
 const collapsibleCode = `
-<Accordion>
-  <AccordionItem.Root collapsible>
+<Accordion collapsible>
+  <AccordionItem.Root>
     <AccordionItem.Header>
-      What is Atomic SV?
+      What is Svelte Atoms?
+      <AccordionItem.Indicator />
     </AccordionItem.Header>
     <AccordionItem.Body>
-      Atomic SV is a modular, accessible, and extensible 
-      Svelte UI component library built with Svelte 5.
+      A modular UI component library for Svelte 5.
     </AccordionItem.Body>
   </AccordionItem.Root>
   
   <AccordionItem.Root>
     <AccordionItem.Header>
       How do I install it?
+      <AccordionItem.Indicator />
     </AccordionItem.Header>
     <AccordionItem.Body>
-      Simply run npm install atomic-sv
+      Run: npm install @svelte-atoms/core
     </AccordionItem.Body>
   </AccordionItem.Root>
 </Accordion>`.trim();
@@ -116,38 +119,38 @@ const useCases = [
 
 const componentsSummary = [
 	{
-		name: 'Accordion',
+		name: 'Accordion.Root',
 		description:
-			'Root container that manages the accordion state and coordinates which items are open. Controls single or multiple open items.'
+			'Root container that manages accordion state. Controls whether one or multiple items can be open simultaneously, and whether items can all be collapsed.'
 	},
 	{
 		name: 'AccordionItem.Root',
 		description:
-			'Individual accordion item container. Each item can be independently opened or closed.'
+			'Individual accordion item container. Can be disabled independently from the root accordion.'
 	},
 	{
 		name: 'AccordionItem.Header',
 		description:
-			'Clickable header that toggles the accordion item. Can contain text, icons, or custom content.'
+			'Clickable header button that toggles the accordion item open/closed. Can contain text, icons, or custom content.'
 	},
 	{
 		name: 'AccordionItem.Body',
 		description:
-			'Collapsible content area that shows/hides based on the item state.'
+			'Collapsible content area that reveals or hides based on the item\'s open state with animated transitions.'
 	},
 	{
 		name: 'AccordionItem.Indicator',
 		description:
-			'Optional visual indicator (e.g., chevron icon) that reflects the item\'s open/closed state.'
+			'Optional visual indicator (chevron/arrow icon) that rotates to reflect the item\'s open/closed state.'
 	}
 ];
 
 export const metadata = {
 	title: 'Accordion - Svelte Atoms',
-	description: 'Collapsible content sections for organizing information.',
+	description: 'Collapsible content sections for organizing information in a space-efficient way.',
 	componentTitle: 'Accordion',
 	componentDescription:
-		'Collapsible content sections for organizing information. Perfect for FAQs, settings panels, and content organization.',
+		'A compound accordion component for collapsing and expanding content sections. Use it to organize related information, FAQs, or settings into a compact vertical list. Supports single or multiple open items, optional collapse-all behavior, and keyboard navigation.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

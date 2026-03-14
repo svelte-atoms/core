@@ -1,7 +1,11 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { comboboxProps } from '../props';
+import {
+	comboboxRootProps,
+	comboboxSelectionsProps,
+	comboboxSelectionProps,
+	comboboxControlProps
+} from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +42,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Combobox module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Combobox.Root
 
@@ -52,7 +52,31 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(comboboxProps)
+${propsTable(comboboxRootProps)}
+
+### Combobox.Selections
+
+**Preset Key:** \`combobox.selections\`
+
+**Props:**
+
+${propsTable(comboboxSelectionsProps)}
+
+### Combobox.Selection
+
+**Preset Key:** \`combobox.selection\`
+
+**Props:**
+
+${propsTable(comboboxSelectionProps)}
+
+### Combobox.Control
+
+**Preset Key:** \`combobox.control\`
+
+**Props:**
+
+${propsTable(comboboxControlProps)}
 
 ## Examples
 

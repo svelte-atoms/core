@@ -14,21 +14,21 @@
 	import { checkboxProps } from './props';
 	import { metadata } from './shared';
 
-	const { basic: basicCode, group: groupCode, disabled: disabledCode } = metadata.examples;
+	const { basic: basicCode, group: groupCode, disabled: disabledCode, preset: presetCode } = metadata.examples;
 </script>
 
 <svelte:head>
-	<title>Checkbox - Atomic SV</title>
-	<meta name="description" content="Selection control for multiple choices." />
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/components' }, { label: 'Checkbox' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Checkbox"
-		description="Selection control for multiple choices. Allows users to select one or more options from a set."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -36,8 +36,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Checkbox &#125; from '@svelte-atoms/core/checkbox';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -53,13 +53,7 @@
 			</p>
 			<CodeBlock
 				lang="typescript"
-				code={`import { setPreset } from '@svelte-atoms/core';
-
-const preset = setPreset({
-  checkbox: () => ({
-    class: 'h-4 w-4 rounded border border-primary text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
-  })
-});`}
+				code={presetCode}
 			/>
 		</div>
 	</Section.Root>
@@ -146,6 +140,6 @@ const preset = setPreset({
 
 	<PageNavigation
 		prev={{ label: 'Previous: Button', href: '/components/button' }}
-		next={{ label: 'Back to Components', href: '/components' }}
+		next={{ label: 'Back to Components', href: '/docs/components' }}
 	/>
 </div>

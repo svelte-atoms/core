@@ -2,13 +2,7 @@ import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
 import {
 	cardRootProps,
-	cardHeaderProps,
-	cardBodyProps,
-	cardFooterProps,
-	cardTitleProps,
-	cardSubtitleProps,
-	cardDescriptionProps,
-	cardMediaProps
+	cardSubPartProps
 } from '../props';
 import { metadata } from '../shared';
 
@@ -58,47 +52,9 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 ${propsTable(cardRootProps)}
 
-### Card.Header
+### Sub-Components (Header, Title, Subtitle, Description, Body, Footer, Media)
 
-**Preset Key:** \`card.header\`
-
-${propsTable(cardHeaderProps)}
-
-### Card.Title
-
-**Preset Key:** \`card.title\`
-
-${propsTable(cardTitleProps)}
-
-### Card.Subtitle
-
-**Preset Key:** \`card.subtitle\`
-
-${propsTable(cardSubtitleProps)}
-
-### Card.Description
-
-**Preset Key:** \`card.description\`
-
-${propsTable(cardDescriptionProps)}
-
-### Card.Content (Card.Body)
-
-**Preset Key:** \`card.body\`
-
-${propsTable(cardBodyProps)}
-
-### Card.Actions (Card.Footer)
-
-**Preset Key:** \`card.footer\`
-
-${propsTable(cardFooterProps)}
-
-### Card.Media
-
-**Preset Key:** \`card.media\`
-
-${propsTable(cardMediaProps)}
+${propsTable(cardSubPartProps)}
 
 ## Examples
 

@@ -1,7 +1,6 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { stackProps } from '../props';
+import { stackRootProps, stackItemProps } from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -32,34 +31,69 @@ related:
 
 ${metadata.componentDescription}
 
-**Type**: ${metadata.componentType === 'compound' ? 'Compound Component' : 'Simple Component'}
+**Type**: Compound Component
 
 ## Use Cases
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Stack module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
+
+## How It Works
+
+Stack uses \`CSS Grid\` with \`grid-template-areas: 'stack'\`. Every \`Stack.Item\` is assigned to the same named grid area, so they all occupy the same visual space. The parent container sizes itself to the largest child — no manual height or absolute positioning required.
+
+z-index values start at 1 and are re-assigned as consecutive integers on every reorder operation.
+
+## API
 
 ### Stack.Root
 
-**Preset Key:** \`stack\`
+**Preset Key:** \`stack.root\`
 
-**Props:**
+${propsTable(stackRootProps)}
 
-TODO: Add propsTable(stackProps)
+### Stack.Item
+
+**Preset Key:** \`stack.item\`
+
+${propsTable(stackItemProps)}
+
+### StackBond methods (via root.getBond())
+
+| Method | Description |
+|--------|-------------|
+| bringToFront(id) | Move item to the highest z-index |
+| sendToBack(id) | Move item to the lowest z-index |
+| bringForward(id) | Increase z-index by one step |
+| sendBackward(id) | Decrease z-index by one step |
 
 ## Examples
 
-### Basic Example
+### Image with Overlay
 
 \`\`\`svelte
 ${metadata.examples.basic}
+\`\`\`
+
+### Button with Badge
+
+\`\`\`svelte
+${metadata.examples.badge}
+\`\`\`
+
+### Loading Overlay
+
+\`\`\`svelte
+${metadata.examples.loading}
+\`\`\`
+
+### Programmatic Z-Order
+
+\`\`\`svelte
+${metadata.examples.zOrder}
 \`\`\`
 
 ### Preset Configuration
@@ -74,6 +108,6 @@ ${metadata.accessibility.map((feature) => `- ${feature}`).join('\n')}
 
 ## License
 
-This module is licensed under the MIT License.
+MIT
 `.trim();
 }

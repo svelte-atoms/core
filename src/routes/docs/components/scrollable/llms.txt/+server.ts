@@ -1,7 +1,12 @@
 import { propsTable } from '$docs/md/page';
 import { md } from '$docs/md/template';
-// TODO: Import all props from props.ts
-// import { scrollableProps } from '../props';
+import {
+	scrollableRootProps,
+	scrollableContainerProps,
+	scrollableContentProps,
+	scrollableTrackProps,
+	scrollableThumbProps
+} from '../props';
 import { metadata } from '../shared';
 
 export function GET() {
@@ -38,13 +43,9 @@ ${metadata.componentDescription}
 
 ${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
 
-${metadata.componentType === 'compound' ? `
 ## Components
 
-The Scrollable module consists of the following components:
-
 ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-` : ''}
 
 ### Scrollable.Root
 
@@ -52,7 +53,39 @@ ${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.descripti
 
 **Props:**
 
-TODO: Add propsTable(scrollableProps)
+${propsTable(scrollableRootProps)}
+
+### Scrollable.Container
+
+**Preset Key:** \`scrollable.container\`
+
+**Props:**
+
+${propsTable(scrollableContainerProps)}
+
+### Scrollable.Content
+
+**Preset Key:** \`scrollable.content\`
+
+**Props:**
+
+${propsTable(scrollableContentProps)}
+
+### Scrollable.Track
+
+**Preset Key:** \`scrollable.track\`
+
+**Props:**
+
+${propsTable(scrollableTrackProps)}
+
+### Scrollable.Thumb
+
+**Preset Key:** \`scrollable.thumb\`
+
+**Props:**
+
+${propsTable(scrollableThumbProps)}
 
 ## Examples
 

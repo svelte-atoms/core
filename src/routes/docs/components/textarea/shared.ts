@@ -34,38 +34,51 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Message Composition',
+		description: 'Provide a multi-line text input for composing messages, emails, or comments in chat and communication interfaces.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Form Long-text Fields',
+		description: 'Capture longer user inputs like addresses, bios, descriptions, or feedback in form submissions.'
+	},
+	{
+		title: 'Code or Markdown Editors',
+		description: 'Use as a base for simple code snippet editors or markdown input fields with monospace fonts and resizing control.'
+	},
+	{
+		title: 'Product or Content Descriptions',
+		description: 'Allow authors to enter multi-line product descriptions, blog post excerpts, or content summaries in CMS interfaces.'
+	},
+	{
+		title: 'Support Ticket Forms',
+		description: 'Collect detailed issue descriptions or support requests in help desk and customer service forms.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Textarea.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Wrapper container for the textarea, providing layout context and preset styling for the field group.'
+	},
+	{
+		name: 'Textarea.Control',
+		description: 'The actual textarea input element with full support for value, placeholder, rows, cols, maxlength, and validation attributes.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Textarea - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Multi-line text input component for capturing longer text content in forms.',
 	componentTitle: 'Textarea',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A multi-line text input component for capturing longer user input. Supports configurable rows and columns, character limits, placeholder text, readonly and disabled states, and full form validation attributes.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Textarea } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Textarea' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		rows: rowsCode

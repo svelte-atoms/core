@@ -82,35 +82,64 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Registration & Login Forms',
+		description: 'Build accessible sign-up and login forms with field-level validation, error messages, and label associations.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Settings & Profile Editing',
+		description: 'Create user settings panels where fields map to specific data keys, with schema-based validation and error feedback.'
+	},
+	{
+		title: 'Multi-Step Forms',
+		description: 'Compose individual Field groups across steps in a wizard flow, with shared validation logic and state management.'
+	},
+	{
+		title: 'Contact & Feedback Forms',
+		description: 'Collect user input like name, email, and message in a structured form with required field validation and submission handling.'
+	},
+	{
+		title: 'Data Entry Interfaces',
+		description: 'Build admin or internal forms for creating or editing records (products, users, configurations) with rich input types and validation adapters.'
+	},
+	{
+		title: 'Checkout & Payment Forms',
+		description: 'Compose complex checkout flows with address, payment, and billing fields using consistent layout and field error display.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Form.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Root form element that manages form state, mounts field bonds, and provides the validator context to all child fields. Renders as a semantic <form> element.'
+	},
+	{
+		name: 'Field.Root',
+		description: 'Container for a single form field. Manages the field bond (name, value, validation), and provides field context to Label, Control, and Errors.'
+	},
+	{
+		name: 'Field.Label',
+		description: 'Accessible label element automatically associated with the field control via the field bond.'
+	},
+	{
+		name: 'Field.Control',
+		description: 'Wrapper component that connects an input element (Input.Root, Textarea.Root, etc.) to the field bond for value and validation state wiring.'
+	},
+	{
+		name: 'Field.Errors',
+		description: 'Displays validation error messages for the field. Reads errors from the field bond and renders them with proper ARIA attributes.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
-	title: 'Form - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
-	componentTitle: 'Form',
+	title: 'Form & Field - Svelte Atoms',
+	description: 'Composable form and field components for building accessible, validated forms with Bond-based state management.',
+	componentTitle: 'Form & Field',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'Composable form and field components for building accessible, validated forms. Form.Root manages form-level state and validator context, while Field.Root, Label, Control, and Errors handle individual fields. Supports custom validation adapters, schema-based validation, and renderless mode for headless integration.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
-	importCode: "import { Form } from '@svelte-atoms/core';",
+	importCode: "import { Form, Field } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Form' }],
 	useCases,
 	componentsSummary, // TODO: Remove if simple component

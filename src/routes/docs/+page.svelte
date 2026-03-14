@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Section } from '$docs/components';
+	import { Section, CodeBlock } from '$docs/components';
 	import { Card } from '$lib/components/card';
 	import { Badge } from '$lib/components/badge';
 	import { Button } from '$lib/components/button';
@@ -149,10 +149,8 @@
 							Import the internal stylesheet in your root layout to include base styles:
 						</p>
 						<div class="bg-muted/30 rounded-lg p-4">
-							<pre class="text-sm"><code
-									>{`// +layout.svelte or app entry point
-import '@svelte-atoms/core/tw';`}</code
-								></pre>
+							<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={`// +layout.svelte or app entry point
+import '@svelte-atoms/core/tw';`} /></div>
 						</div>
 					</div>
 				</Card.Body>
@@ -167,27 +165,23 @@ import '@svelte-atoms/core/tw';`}</code
 						<div>
 							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v3:</p>
 							<div class="bg-muted/30 rounded-lg p-4">
-								<pre class="text-sm"><code
-										>{`// tailwind.config.js
+								<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={`// tailwind.config.js
 export default {
   content: [
     './src/**/*.{html,js,svelte,ts}',
     './node_modules/@svelte-atoms/core/dist/**/*.{js,svelte}'
   ],
   // ... rest of config
-};`}</code
-									></pre>
+};`} /></div>
 							</div>
 						</div>
 
 						<div>
 							<p class="text-muted-foreground mb-2 text-sm font-medium">For Tailwind CSS v4:</p>
 							<div class="bg-muted/30 rounded-lg p-4">
-								<pre class="text-sm"><code
-										>{`/* app.css or main stylesheet */
+								<div class="overflow-hidden rounded-lg"><CodeBlock lang="css" code={`/* app.css or main stylesheet */
 @import 'tailwindcss';
-@source './node_modules/@svelte-atoms/core/dist/**/*.{js,svelte}';`}</code
-									></pre>
+@source './node_modules/@svelte-atoms/core/dist/**/*.{js,svelte}';`} /></div>
 							</div>
 						</div>
 
@@ -204,13 +198,11 @@ export default {
 				</Card.Header>
 				<Card.Body>
 					<div class="bg-muted/30 rounded-lg p-4">
-						<pre class="text-sm"><code
-								>{`<script>
+						<div class="overflow-hidden rounded-lg"><CodeBlock lang="svelte" code={`<script>
   import { Button } from '@svelte-atoms/core/button';
 </script>
 
-<Button>Click me</Button>`}</code
-							></pre>
+<Button>Click me</Button>`} /></div>
 					</div>
 				</Card.Body>
 			</Card.Root>
@@ -221,8 +213,7 @@ export default {
 				</Card.Header>
 				<Card.Body>
 					<div class="bg-muted/30 rounded-lg p-4">
-						<pre class="text-sm"><code
-								>{`import { setPreset } from '@svelte-atoms/core/context';
+						<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={`import { setPreset } from '@svelte-atoms/core/context';
 
 setPreset({
   button: () => ({
@@ -233,8 +224,7 @@ setPreset({
       }
     }
   })
-});`}</code
-							></pre>
+});`} /></div>
 					</div>
 				</Card.Body>
 			</Card.Root>

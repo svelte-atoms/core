@@ -20,6 +20,7 @@
 		comboboxSelectionProps,
 		comboboxControlProps
 	} from './props';
+	import { metadata } from './shared';
 
 	let selectedValue = $state<string | undefined>();
 	let selectedValues = $state<string[]>([]);
@@ -146,20 +147,17 @@
 </script>
 
 <svelte:head>
-	<title>Combobox - Svelte Atoms</title>
-	<meta
-		name="description"
-		content="Accessible combobox component with keyboard navigation and filtering."
-	/>
+	<title>{metadata.title}</title>
+	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-	<Breadcrumb items={[{ label: 'Components', href: '/docs/components' }, { label: 'Combobox' }]} />
+<div class="py-8">
+	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
-		title="Combobox"
-		description="Flexible and accessible combobox component with keyboard navigation support. Built on top of Dropdown and Popover modules."
-		status="stable"
+		title={metadata.componentTitle}
+		description={metadata.componentDescription}
+		status={metadata.status}
 	/>
 
 	<Section.Root>
@@ -167,8 +165,8 @@
 			<Section.Title>Installation</Section.Title>
 		</Section.Header>
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import &#123; Combobox &#125; from '@svelte-atoms/core';"
+			packageName={metadata.packageName}
+			importCode={metadata.importCode}
 		/>
 	</Section.Root>
 
@@ -397,17 +395,7 @@ filtered.current; // Returns filtered results`}
 		<Section.Header>
 			<Section.Title>Accessibility</Section.Title>
 		</Section.Header>
-		<AccessibilityInfo
-			features={[
-				'Full ARIA attributes support with proper roles (combobox, listbox, option)',
-				'Keyboard navigation (Arrow keys to navigate, Escape to close, Enter to select)',
-				'Screen reader announcements for selection changes',
-				'Focus management with proper focus trapping',
-				'aria-activedescendant for highlighted items',
-				'aria-multiselectable for multiple selection mode',
-				'Proper labeling and descriptions'
-			]}
-		/>
+		<AccessibilityInfo features={metadata.accessibility} />
 	</Section.Root>
 
 	<PageNavigation

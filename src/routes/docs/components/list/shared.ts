@@ -116,38 +116,67 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Navigation Menus',
+		description: 'Build sidebar navigation or dropdown menus with grouped, titled sections and clickable list items.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Settings Panels',
+		description: 'Display grouped settings categories with titles and dividers for organized, scannable interfaces.'
+	},
+	{
+		title: 'Content Feeds',
+		description: 'Render lists of articles, notifications, or messages where each item may include icons, metadata, and actions.'
+	},
+	{
+		title: 'Step-by-step Instructions',
+		description: 'Use ordered lists to present numbered instructions or ranked items in a clear sequence.'
+	},
+	{
+		title: 'Feature Lists',
+		description: 'Enumerate product features, benefits, or comparison points with optional icons for visual emphasis.'
+	},
+	{
+		title: 'Action Lists',
+		description: 'Create interactive item lists where users can click items to trigger actions like navigation or selection.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'List.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Root container element rendered as ul or ol depending on context. Manages layout and shared list styles.'
+	},
+	{
+		name: 'List.Item',
+		description: 'Individual list item rendered as an li element. Supports icons, actions, and clickable interactions.'
+	},
+	{
+		name: 'List.Group',
+		description: 'Groups related list items together, typically with visual separation or indentation.'
+	},
+	{
+		name: 'List.Title',
+		description: 'Section header within a grouped list, providing a label for a group of related items.'
+	},
+	{
+		name: 'List.Divider',
+		description: 'Visual separator between sections or groups of items in the list.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'List - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Flexible list component for displaying collections of items with grouping, titles, and dividers.',
 	componentTitle: 'List',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A compound list component for displaying structured collections of items. Supports grouping with titles and dividers, ordered and unordered variants, icon-enriched items, and clickable interactions.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { List } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'List' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		ordered: orderedCode,

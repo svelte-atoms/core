@@ -26,7 +26,7 @@
 	<meta name="description" content={metadata.description} />
 </svelte:head>
 
-<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+<div class="py-8">
 	<Breadcrumb items={metadata.breadcrumbs} />
 
 	<PageHeader
@@ -266,7 +266,7 @@
 	</Section.Root>
 
 	<PageNavigation
-		prev={{ label: 'Back to Components', href: '/components' }}
+		prev={{ label: 'Back to Components', href: '/docs/components' }}
 		next={{ label: 'Next: Button', href: '/components/button' }}
 	/>
 </div>

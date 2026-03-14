@@ -64,38 +64,95 @@ const accessibilityFeatures = [
 
 const useCases = [
 	{
-		title: 'Use Case 1',
-		description: 'TODO: Describe when and why to use this component in this scenario.'
+		title: 'Multi-step Forms',
+		description: 'Break complex registration or checkout forms into discrete, guided steps to reduce cognitive load and improve completion rates.'
 	},
 	{
-		title: 'Use Case 2',
-		description: 'TODO: Describe another practical application.'
+		title: 'Onboarding Flows',
+		description: 'Guide new users through a structured onboarding sequence with progress indicators showing where they are in the process.'
+	},
+	{
+		title: 'Installation Wizards',
+		description: 'Lead users through software setup or configuration processes with clear step indicators and back/next navigation.'
+	},
+	{
+		title: 'Order or Booking Process',
+		description: 'Present e-commerce checkout or reservation flows (select, configure, confirm, pay) as sequential, trackable steps.'
+	},
+	{
+		title: 'Progress Tracking',
+		description: 'Visualize progress through a workflow, project phase, or approval process with completed, active, and pending step states.'
+	},
+	{
+		title: 'Educational Modules',
+		description: 'Structure learning paths or tutorials as steps with optional and required segments and linear or free navigation modes.'
 	}
-	// TODO: Add 4-6 use cases total
 ];
 
-// TODO: Remove if simple component, or fill in for compound component
 const componentsSummary = [
 	{
 		name: 'Stepper.Root',
-		description: 'TODO: Describe what this sub-component does.'
+		description: 'Root container managing the active step state, orientation, and linear progression mode.'
+	},
+	{
+		name: 'Stepper.Header',
+		description: 'Container for the step indicator row, typically rendered horizontally at the top.'
+	},
+	{
+		name: 'Stepper.Body',
+		description: 'Container that renders the active step content area.'
+	},
+	{
+		name: 'Stepper.Content',
+		description: 'Displays the body content of the currently active step with optional enter/exit animations.'
+	},
+	{
+		name: 'Stepper.Footer',
+		description: 'Container for navigation buttons (Previous/Next) with access to the stepper bond for state.'
+	},
+	{
+		name: 'Step.Root',
+		description: 'Individual step item managing its own active, completed, optional, and disabled states.'
+	},
+	{
+		name: 'Step.Header',
+		description: 'Clickable header area of a step that triggers step navigation when clicked.'
+	},
+	{
+		name: 'Step.Indicator',
+		description: 'Visual step number or icon indicator showing the step index or completion state.'
+	},
+	{
+		name: 'Step.Title',
+		description: 'Title text for the step, displayed alongside the indicator.'
+	},
+	{
+		name: 'Step.Description',
+		description: 'Optional subtitle or description text for additional context about the step.'
+	},
+	{
+		name: 'Step.Separator',
+		description: 'Visual line connecting adjacent step indicators in the header.'
+	},
+	{
+		name: 'Step.Body',
+		description: 'Content area for the step, shown when this step is active in the stepper body.'
 	}
-	// TODO: Add all sub-components
 ];
 
 export const metadata = {
 	title: 'Stepper - Svelte Atoms',
-	description: 'TODO: Brief SEO description',
+	description: 'Multi-step wizard component for guided workflows, forms, and onboarding processes.',
 	componentTitle: 'Stepper',
 	componentDescription:
-		'TODO: Detailed component description',
-	componentType: 'compound' as const, // TODO: Change to 'simple' if not compound
+		'A compound stepper component for building multi-step workflows, wizards, and guided processes. Supports linear and free navigation, horizontal and vertical orientations, optional steps, and animated content transitions.',
+	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
 	importCode: "import { Stepper } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Stepper' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
 		basic: basicCode,
 		linear: linearCode,
