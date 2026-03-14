@@ -37,7 +37,7 @@
 		...restProps
 	});
 
-	$effect(() => {
+	$effect.pre(() => {
 		onchange?.(value as D);
 	});
 

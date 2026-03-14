@@ -14,24 +14,21 @@
 
 	let {
 		class: klass = '',
-		base= Stack.Item,
 		children,
 		preset = 'tab.body' as const,
 		...restProps
 	}: TabBodyProps<E, B> = $props();
 
 	const contentProps = $derived({
-		class: klass,
 		preset,
-		base,
 		...restProps
 	});
 
 	// Register content snippet with props and children with tabs on mount
-	$effect(() => {
+	$effect.pre(() => {
 		if (tabBond && tabsBond && children) {
 			const id = tabBond.state.props.value;
-			tabsBond.state.registerTabContent(id, contentProps, children);
+			tabsBond.state.registerTabContent(id, contentProps, body);
 
 			return () => {
 				tabsBond.state.unregisterTabContent(id);
@@ -39,5 +36,11 @@
 		}
 	});
 </script>
+
+{#snippet body()}
+	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps}>
+		{@render children?.({ tab: tabBond, tabs: tabsBond })}
+	</Stack.Item>
+{/snippet}
 
 <!-- Content is teleported to Tabs.Content, so we don't render anything here -->
