@@ -31,7 +31,7 @@
 	function handlePointerDown(ev: PointerEvent) {
 		if (isDisabled) return;
 
-		onpointerdown?.(ev, { tab: bond });
+		onpointerdown?.(ev, { ...(bond ? { tab: bond } : {}) });
 
 		if (ev.defaultPrevented) {
 			return;
@@ -57,5 +57,5 @@
 	onpointerdown={handlePointerDown}
 	{...headerProps}
 >
-	{@render children?.({ tab: bond })}
+	{@render children?.({ ...(bond ? { tab: bond } : {}) })}
 </Atom>

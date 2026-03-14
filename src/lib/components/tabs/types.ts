@@ -8,7 +8,7 @@ export interface TabsRootProps<
 	D extends string = string,
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	value?: D;
 	factory?: Factory<TabsBond>;
 	children?: Snippet<[{ tabs: TabsBond }]>;
@@ -18,7 +18,7 @@ export interface TabsRootProps<
 export interface TabHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
 	onpointerdown?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
 }
@@ -26,35 +26,35 @@ export interface TabHeaderProps<
 export interface TabBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
-	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
+	children?: Snippet<[{ tab?: TabBond<unknown>; tabs?: TabsBond }]>;
 }
 
 export interface TabDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ tab?: TabBond<unknown> }]>;
 }
 
 export interface TabsHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ tabs?: TabsBond }]>;
 }
 
 export interface TabsBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ tabs?: TabsBond }]>;
 }
 
 export interface TabsContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ tabs?: TabsBond }]>;
 }
 

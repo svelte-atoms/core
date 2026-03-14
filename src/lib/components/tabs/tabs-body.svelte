@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { Stack } from '../stack';
 	import { TabsBond } from './bond.svelte';
 	import type { TabsBodyProps } from './types';
 
@@ -23,7 +24,7 @@
 	});
 </script>
 
-<Atom.Html
+<Stack.Root
 	{bond}
 	{preset}
 	{as}
@@ -31,4 +32,4 @@
 	{...bodyProps}
 >
 	{@render children?.({ tabs: bond })}
-</Atom.Html>
+</Stack.Root>

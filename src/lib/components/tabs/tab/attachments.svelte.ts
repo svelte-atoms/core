@@ -1,9 +1,11 @@
 import { TabsBond } from '../bond.svelte';
-import type { TabBond } from './bond.svelte';
+import { TabBond } from './bond.svelte';
 
-export function tab(callback: (node: HTMLElement, tab?: TabBond, tabs?: TabsBond) => any) {
-	const bond = TabsBond.get();
-	const tabs = bond.tabs;
+export function tab(
+	callback: (node: HTMLElement, { tab, tabs }: { tab?: TabBond<unknown>|undefined; tabs?: TabsBond<unknown>|undefined }) => any
+) {
+	const tabBond = TabBond.get();
+	const tabsBond = TabsBond.get();
 
-	return (node: HTMLElement) => callback(node, bond, tabs);
+	return (node: HTMLElement) => callback(node, { tab: tabBond, tabs: tabsBond });
 }
