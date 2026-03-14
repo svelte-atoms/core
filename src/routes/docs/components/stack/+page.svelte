@@ -112,7 +112,7 @@
 				<div>
 					<Stack.Root class="inline-block w-fit">
 					<Stack.Item base={Button} variant="primary">Messages</Stack.Item>
-					<Stack.Item class="flex justify-end -mt-2 -mr-2">
+					<Stack.Item class="flex justify-end -mt-2 -mr-2 pointer-events-none">
 						<span class="bg-destructive text-destructive-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
 							5
 						</span>
