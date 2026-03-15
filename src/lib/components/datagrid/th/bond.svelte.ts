@@ -1,7 +1,7 @@
-import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
+import { createAttachmentKey } from 'svelte/attachments';
 import type { Direction, SortableType } from '$svelte-atoms/core/types';
-import { DataGridBond, DataGridBondState } from '../bond.svelte';
+import { DataGridBond, type DataGridBondState } from '../bond.svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 export type DataGridThBondProps = BondStateProps & {
@@ -17,34 +17,35 @@ export type DataGridThElements = {
 	root: HTMLElement;
 };
 
-export class DataGridThBond<T> extends Bond<
+export class DataGridThBond<T = unknown> extends Bond<
 	DataGridThBondProps,
 	DataGridThBondState<T>,
 	DataGridThElements
 > {
 	static CONTEXT_KEY = '@atoms/context/datagrid/th';
 
-	#datagrid: DataGridBond<T>;
+	readonly #datagrid: DataGridBond<T>;
 
 	constructor(s: DataGridThBondState<T>) {
 		super(s);
 		this.#datagrid = DataGridBond.get() as DataGridBond<T>;
 	}
 
-	get isHidden() {
-		return this.elements.root.hidden || getComputedStyle(this.elements.root)?.display === 'none';
+	get isHidden(): boolean {
+		const el = this.elements.root;
+		return el.hidden || getComputedStyle(el).display === 'none';
 	}
 
-	get index() {
-		const parent = this.elements.root?.parentElement;
-		return Array.from(parent?.children ?? []).indexOf(this.elements.root);
+	get index(): number {
+		const el = this.elements.root;
+		return el ? Array.from(el.parentElement?.children ?? []).indexOf(el) : -1;
 	}
 
-	get text() {
-		return this.elements.root.innerText;
+	get text(): string {
+		return this.elements.root?.innerText ?? '';
 	}
 
-	get datagrid() {
+	get datagrid(): DataGridBond<T> {
 		return this.#datagrid;
 	}
 
@@ -52,15 +53,11 @@ export class DataGridThBond<T> extends Bond<
 		return DataGridThBond.set(this) as this;
 	}
 
-	mount() {
+	mount(): () => void {
 		return this.#datagrid.state.mountColumn(this.state.id, this);
 	}
 
-	unmount() {
-		return this.#datagrid.state.unmountColumn(this.state.id);
-	}
-
-	props() {
+	attachment() {
 		return {
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				this.elements.root = node;
@@ -68,37 +65,37 @@ export class DataGridThBond<T> extends Bond<
 		};
 	}
 
-	static get(): DataGridThBond | undefined {
+	static get<T = unknown>(): DataGridThBond<T> | undefined {
 		return getContext(DataGridThBond.CONTEXT_KEY);
 	}
 
-	static set(bond: DataGridThBond): DataGridThBond {
+	static set<T = unknown>(bond: DataGridThBond<T>): DataGridThBond<T> {
 		return setContext(DataGridThBond.CONTEXT_KEY, bond);
 	}
 }
 
-export class DataGridThBondState<T> extends BondState<DataGridThBondProps> {
-	#datagrid: DataGridBondState<T>;
+export class DataGridThBondState<T = unknown> extends BondState<DataGridThBondProps> {
+	readonly #datagrid: DataGridBondState<T>;
 
 	constructor(props: () => DataGridThBondProps) {
 		super(props);
 
-		this.#datagrid = DataGridBond.get().state as DataGridBondState<T>;
-
-		if (!this.#datagrid) {
+		const datagrid = DataGridBond.get<T>();
+		if (!datagrid) {
 			throw new Error('DataGridThBond must be used within a DataGridBond context.');
 		}
+		this.#datagrid = datagrid.state;
 	}
 
-	get isSortable() {
+	get isSortable(): boolean | SortableType | undefined {
 		return this.props.sortable;
 	}
 
-	asc() {
+	asc(): void {
 		this.props.direction = 'asc';
 	}
 
-	desc() {
+	desc(): void {
 		this.props.direction = 'desc';
 	}
 }
