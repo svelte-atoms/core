@@ -1,14 +1,10 @@
-<script lang="ts" generics="T, E extends HtmlElementTagName, B extends Base = Base">
+<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { untrack } from 'svelte';
 	import { nanoid } from 'nanoid';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { DataGridTrBond, DataGridTrBondState, type DataGridTrBondProps } from './bond.svelte';
 	import type { DatagridTrProps } from '../types';
-	import { type DatagridContext } from '../context';
-
-	import './datagrid-tr.css';
 
 	let {
 		class: klass = '',
@@ -18,50 +14,33 @@
 		header = false,
 		factory = _factory,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		onclick = undefined,
 		...restProps
 	}: DatagridTrProps<T, E, B> = $props();
 
-	const bondProps = defineState<DataGridTrBondProps>([
+	const bondProps = defineState<DataGridTrBondProps<T>>([
 		defineProperty('data', () => data),
 		defineProperty('value', () => value),
 		defineProperty('header', () => header)
 	]);
-	const bond = factory(bondProps).share();
 
-	const isHeader = $derived(bond?.state.isHeader ?? false);
+	const bond = untrack(() => factory(bondProps)).share();
+
+	const isHeader = $derived(bond.state.isHeader);
 	const isSelected = $derived(bond.state.isSelected);
 
-	const headerProps = $derived({
-		...bond.root(),
-		...restProps
-	});
+	const trProps = $derived({ ...bond.root(), ...restProps });
 
-	const unmount = untrack(() => {
-		if (!isHeader) {
-			return bond.mount();
-		}
-	});
-
+	const unmount = untrack(() => (isHeader ? undefined : bond.mount()));
 	$effect(() => unmount);
 
 	function _factory(props: typeof bondProps) {
-		const datagridTrState = new DataGridTrBondState(() => props);
-		return new DataGridTrBond(datagridTrState);
+		const state = new DataGridTrBondState<T>(() => props);
+		return new DataGridTrBond<T>(state);
 	}
 
-	function onclick_(ev: Event) {
-		onclick?.(ev, { tr: bond as unknown as DatagridContext<T> });
-
-		if (!ev.defaultPrevented) {
-			//
-		}
+	function handleClick(ev: Event) {
+		onclick?.(ev, { tr: bond });
 	}
 </script>
 
@@ -77,14 +56,8 @@
 		klass
 	]}
 	style="--rows:{rows}"
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	onclick={onclick_}
-	{...headerProps}
+	onclick={handleClick}
+	{...trProps}
 >
-	{@render children?.({ tr: bond as unknown as DatagridContext<T> })}
+	{@render children?.({ tr: bond })}
 </HtmlAtom>

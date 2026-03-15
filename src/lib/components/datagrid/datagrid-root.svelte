@@ -1,10 +1,10 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
+<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DataGridBond, DataGridBondState, type DataGridStateProps } from './bond.svelte';
 	import type { DatagridRootProps } from './types';
-
 	import './datagrid.css';
+	import { untrack } from 'svelte';
 
 	let {
 		class: klass = '',
@@ -13,14 +13,8 @@
 		fallbackTemplate = 'auto',
 		factory = _factory,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
-	}: DatagridRootProps<T> = $props();
+	}: DatagridRootProps<T, E, B> = $props();
 
 	const bondProps = defineState<DataGridStateProps<T>>([
 		defineProperty('template', () => template),
@@ -30,11 +24,12 @@
 			(v) => (values = v)
 		)
 	]);
-	const bond = factory(bondProps).share();
+
+	const bond = untrack(() => factory(bondProps)).share();
 
 	function _factory(props: typeof bondProps) {
-		const dataGridState = new DataGridBondState(() => props);
-		return new DataGridBond(dataGridState);
+		const state = new DataGridBondState<T>(() => props);
+		return new DataGridBond<T>(state);
 	}
 
 	export function getBond() {
@@ -45,14 +40,8 @@
 <HtmlAtom
 	{bond}
 	preset="datagrid"
-	class={['border-border', 'datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
-	style="--template-columns:{bond.state.template ?? fallbackTemplate}"
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	class={['border-border datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
+	style="--template-columns:{bond.state.template || fallbackTemplate}"
 	{...restProps}
 >
 	{@render children?.({ datagrid: bond })}

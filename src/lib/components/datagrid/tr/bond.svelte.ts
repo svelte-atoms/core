@@ -14,47 +14,38 @@ export type DataGridTrBondElements = {
 	root: HTMLElement;
 };
 
-const DATAGRID_TR_ELEMENTS_KIND = {
-	root: 'datagrid-tr'
-};
-
 export class DataGridTrBond<
-	T,
+	T = unknown,
 	Props extends DataGridTrBondProps<T> = DataGridTrBondProps<T>,
 	State extends DataGridTrBondState<T, Props> = DataGridTrBondState<T, Props>,
 	Elements extends DataGridTrBondElements = DataGridTrBondElements
 > extends Bond<Props, State, Elements> {
 	static CONTEXT_KEY = '@atoms/context/datagrid/tr';
 
-	constructor(s: DataGridTrBondState<T, Props>) {
+	readonly #datagrid: DataGridBond<T>;
+
+	constructor(s: State) {
 		super(s);
+		const datagrid = DataGridBond.get<T>();
+		if (!datagrid) throw new Error('DataGridTrBond must be used within a DataGridBond context.');
+		this.#datagrid = datagrid;
 	}
 
-	get datagrid() {
-		const bond = DataGridBond.get();
-
-		if (!bond) {
-			throw new Error('DataGridTrBond must be used within a DataGridBond context.');
-		}
-
-		return bond;
+	get datagrid(): DataGridBond<T> {
+		return this.#datagrid;
 	}
 
 	share(): this {
 		return DataGridTrBond.set(this) as this;
 	}
 
-	mount() {
-		return this.datagrid.state.mountRow(this.state.id, this);
-	}
-
-	unmount() {
-		return this.datagrid.state.unmountRow(this.state.id);
+	mount(): () => void {
+		return this.#datagrid.state.mountRow(this.state.id, this);
 	}
 
 	root() {
 		return {
-			'data-kind': DATAGRID_TR_ELEMENTS_KIND.root,
+			'data-kind': 'datagrid-tr',
 			'data-header': this.state.isHeader ? 'true' : undefined,
 			'data-selected': this.state.isSelected ? 'true' : undefined,
 			[createAttachmentKey()]: (node: HTMLElement) => {
@@ -63,37 +54,35 @@ export class DataGridTrBond<
 		};
 	}
 
-	static get(): DataGridTrBond | undefined {
+	static get<T = unknown>(): DataGridTrBond<T> | undefined {
 		return getContext(DataGridTrBond.CONTEXT_KEY);
 	}
 
-	static set(bond: DataGridTrBond): DataGridTrBond {
+	static set<T = unknown>(bond: DataGridTrBond<T>): DataGridTrBond<T> {
 		return setContext(DataGridTrBond.CONTEXT_KEY, bond);
 	}
 }
 
 export class DataGridTrBondState<
-	T,
+	T = unknown,
 	Props extends DataGridTrBondProps<T> = DataGridTrBondProps<T>
 > extends BondState<Props> {
-	static CONTEXT_KEY = '@atoms/context/datagrid/tr';
-
-	#datagrid = DataGridBond.get();
-	#isHeader: boolean = $state(!!getDatagridHeaderContext());
+	readonly #datagrid = DataGridBond.get<T>();
+	readonly #isHeader: boolean = !!getDatagridHeaderContext();
 
 	constructor(props: () => Props) {
 		super(props);
 	}
 
-	get id() {
-		return this.props.value || super.id;
+	get id(): string {
+		return this.props.value ?? super.id;
 	}
 
-	get isSelected() {
-		return this.datagrid?.props.values?.some((id) => id === this.id);
+	get isSelected(): boolean {
+		return this.#datagrid?.state.props.values?.includes(this.id) ?? false;
 	}
 
-	get isHeader() {
+	get isHeader(): boolean {
 		return this.#isHeader;
 	}
 
@@ -101,11 +90,11 @@ export class DataGridTrBondState<
 		return this.#datagrid?.state;
 	}
 
-	select() {
-		this.datagrid?.select([this.id]);
+	select(): void {
+		this.#datagrid?.state.select([this.id]);
 	}
 
-	unselect() {
-		this.datagrid?.unselect([this.id]);
+	unselect(): void {
+		this.#datagrid?.state.unselect([this.id]);
 	}
 }

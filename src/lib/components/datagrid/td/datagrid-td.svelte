@@ -1,66 +1,49 @@
-<script lang="ts" generics="D,E extends HtmlElementTagName, B extends Base = Base">
+<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { DataGridBond } from '../bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
-	import type { DataGridTdBond } from './bond.svelte';
-	export type { DatagridTdProps } from '../types';
+	import type { DatagridTdProps } from '../types';
 
-	const bond = DataGridBond.get();
+	const bond = DataGridBond.get<T>();
 
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		onclick = undefined,
 		...restProps
-	}: DatagridTdProps<D, E, B> = $props();
+	}: DatagridTdProps<T, E, B> = $props();
 
-	let element = $state<HTMLElement>();
+	let element = $state<HTMLElement | undefined>();
 
-	const elementIndex = $derived.by(() => {
-		if (element) {
-			const children = [...(element?.parentElement?.children ?? [])];
-			return children.indexOf(element);
+	// Find the matching column by this cell's DOM index
+	const column = $derived.by(() => {
+		if (!element || !bond) return undefined;
+
+		const index = Array.from(element.parentElement?.children ?? []).indexOf(element);
+		if (index === -1) return undefined;
+
+		for (const col of bond.state.columns.values()) {
+			if (col.index === index) return col;
 		}
 
-		return -1;
+		return undefined;
 	});
-
-	const column = $derived(bond.state.columns.values().find((col) => col.index === elementIndex));
 
 	const isHidden = $derived(column?.state.props.hidden ?? false);
 
-	function onclick_(ev: Event) {
-		onclick?.(ev, { td: bond as unknown as DataGridTdBond<D> });
-
-		if (!ev.defaultPrevented) {
-			//
-		}
+	function handleClick(ev: Event) {
+		onclick?.(ev, { td: bond });
 	}
 </script>
 
 {#if !isHidden}
 	<HtmlAtom
-		{@attach (node) => {
-			element = node;
-		}}
+		{@attach (node) => { element = node; }}
 		{bond}
 		preset="datagrid.td"
 		class={['border-border flex h-full items-center py-2 text-left', '$preset', klass]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
-		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
-		onclick={onclick_}
+		onclick={handleClick}
 		{...restProps}
 	>
-		{@render children?.({ td: bond as unknown as DataGridTdBond<D> })}
+		{@render children?.({ td: bond })}
 	</HtmlAtom>
 {/if}

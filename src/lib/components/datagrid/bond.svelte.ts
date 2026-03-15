@@ -38,27 +38,36 @@ export class DataGridBond<T = unknown> extends Bond<
 		return DataGridBond.set(this) as this;
 	}
 
-	static get(): DataGridBond | undefined {
+	static get<T = unknown>(): DataGridBond<T> | undefined {
 		return getContext(DataGridBond.CONTEXT_KEY);
 	}
 
-	static set(bond: DataGridBond): DataGridBond {
+	static set<T = unknown>(bond: DataGridBond<T>): DataGridBond<T> {
 		return setContext(DataGridBond.CONTEXT_KEY, bond);
 	}
 }
 
 export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
-	#id: string = nanoid();
+	readonly #id: string = nanoid();
 
-	#rows: Map<string, DataGridTrBond<T>> = new SvelteMap();
-	#columns: Map<string, DataGridThBond<T>> = new SvelteMap();
-
-	#sortableColumns = $derived(this.#columns.values().filter((d) => d.state.props.sortable));
+	#rows: SvelteMap<string, DataGridTrBond<T>> = new SvelteMap();
+	#columns: SvelteMap<string, DataGridThBond<T>> = new SvelteMap();
 
 	#selectedRows = $derived(
 		(this.props.values ?? [])
 			.map((value) => this.#rows.get(value))
-			.filter(Boolean) as DataGridTrBond<T>[]
+			.filter((r): r is DataGridTrBond<T> => r !== undefined)
+	);
+
+	#sortableColumns = $derived(
+		[...this.#columns.values()].filter((col) => col.state.props.sortable)
+	);
+
+	#template = $derived(
+		this.props.template ||
+		[...this.#columns.values()]
+			.map((col) => col.state.props.width ?? '1fr')
+			.join(' ')
 	);
 
 	constructor(props: () => DataGridStateProps<T>) {
@@ -69,74 +78,45 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 		return this.#id;
 	}
 
-	get rows() {
-		return new Map(this.#rows);
+	get rows(): ReadonlyMap<string, DataGridTrBond<T>> {
+		return this.#rows;
 	}
 
-	get columns() {
-		return new Map(this.#columns);
+	get columns(): ReadonlyMap<string, DataGridThBond<T>> {
+		return this.#columns;
 	}
 
-	get selectedRows() {
+	get selectedRows(): readonly DataGridTrBond<T>[] {
 		return this.#selectedRows;
 	}
 
-	get sortableColumns() {
+	get sortableColumns(): readonly DataGridThBond<T>[] {
 		return this.#sortableColumns;
 	}
 
-	get template() {
-		return (
-			this.props.template ||
-			this.#columns
-				.values()
-				.map((col) => col.state.props.width)
-				.toArray()
-				.join(' ')
-		);
+	get template(): string {
+		return this.#template;
 	}
 
-	mountColumn(id: string, item: DataGridThBond<T>) {
+	mountColumn(id: string, item: DataGridThBond<T>): () => void {
 		this.#columns.set(id, item);
-
-		return () => this.unmountColumn(id);
+		return () => this.#columns.delete(id);
 	}
 
-	unmountColumn(id: string) {
-		this.#columns.delete(id);
-	}
-
-	mountRow(id: string, item: DataGridTrBond<T>) {
-		if (this.#rows.size && !this.props.value) {
-			this.props.value = item.state.props.value;
-		}
-
+	mountRow(id: string, item: DataGridTrBond<T>): () => void {
 		this.#rows.set(id, item);
-
-		return () => this.unmountRow(id);
+		return () => this.#rows.delete(id);
 	}
 
-	unmountRow(id: string) {
-		this.#rows.delete(id);
+	select(ids: string[]): void {
+		const next = new Set(this.props.values ?? []);
+		for (const id of ids) next.add(id);
+		this.props.values = [...next];
 	}
 
-	select(ids: string[]) {
-		const sequence = new Set(this.props.values ?? []);
-
-		for (const id of ids) {
-			sequence.add(id);
-		}
-
-		this.props.values = sequence.values().toArray();
-	}
-
-	unselect(ids: string[]) {
-		const sequence = new Set(this.props.values ?? []);
-
-		for (const id of ids) {
-			sequence.delete(id);
-		}
-
-		this.props.values = sequence.values().toArray();
+	unselect(ids: string[]): void {
+		const next = new Set(this.props.values ?? []);
+		for (const id of ids) next.delete(id);
+		this.props.values = [...next];
 	}
 }
