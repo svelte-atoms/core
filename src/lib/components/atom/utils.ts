@@ -313,8 +313,10 @@ export function extractRestProps(
 }
 
 /**
- * Pure function to check if a base is a snippet
+ * Pure function to check if a base is a snippet.
+ * Svelte 5 snippets compile to arrow functions (no prototype),
+ * while components compile to named functions (with prototype).
  */
 export function isSnippetBase(base: unknown): boolean {
-	return typeof base === 'function' && base.length === 1 && !base.prototype;
+	return typeof base === 'function' && !base.prototype;
 }
