@@ -122,6 +122,18 @@ ${propsTable(datagridTrProps)}
 ${metadata.examples.basic}
 \`\`\`
 
+### Row Selection
+
+\`\`\`svelte
+${metadata.examples.selectable}
+\`\`\`
+
+### Sortable Columns
+
+\`\`\`svelte
+${metadata.examples.sortable}
+\`\`\`
+
 ### Preset Configuration
 
 \`\`\`typescript

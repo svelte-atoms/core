@@ -8,233 +8,245 @@ export interface PropDefinition {
 export const datagridRootProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string | undefined',
+		type: 'string',
 		default: "''",
-		description: 'Additional CSS classes to apply to the table element.'
+		description: 'Additional CSS classes applied to the root grid element.'
 	},
 	{
 		name: 'template',
 		type: 'string | undefined',
-		default: "''",
-		description: 'CSS grid-template-columns value used to size table columns.'
+		default: 'undefined',
+		description: 'Explicit CSS grid-template-columns value. When omitted, auto-computed from Th widths.'
 	},
 	{
 		name: 'fallbackTemplate',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Fallback column template used when the primary template cannot be applied.'
+		type: 'string',
+		default: "'auto'",
+		description: 'Fallback column template used when no template and no Th columns are mounted yet.'
 	},
 	{
 		name: 'values',
-		type: 'string[] | undefined',
-		default: 'undefined',
-		description: 'Array of selected row values for controlled row selection.'
+		type: 'string[]',
+		default: '[]',
+		description: 'Bindable array of selected row IDs. Use bind:values for two-way binding.'
 	},
 	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
+		name: 'factory',
+		type: 'Factory<DataGridBond<T>> | undefined',
 		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
+		description: 'Custom factory to create the DataGridBond instance. Useful for extending or pre-configuring the bond.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
+		type: 'Snippet<[{ datagrid: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
-		description: 'Slot for the table header, body, and footer sections. Receives the datagrid context.'
-	},
+		description: 'Slot for Header, Body, and Footer sections. Receives the datagrid bond.'
+	}
 ];
 
 export const datagridHeaderProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string | undefined',
+		type: 'string',
 		default: "''",
-		description: 'Additional CSS classes for the <thead> element.'
-	},
-	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
-		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
+		description: 'Additional CSS classes for the header container.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
+		type: 'Snippet<[{ datagrid: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
-		description: 'Header row content. Receives the datagrid context.'
-	},
+		description: 'Header row content. Receives the datagrid bond.'
+	}
 ];
 
 export const datagridBodyProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string | undefined',
+		type: 'string',
 		default: "''",
-		description: 'Additional CSS classes for the <tbody> element.'
-	},
-	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
-		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
+		description: 'Additional CSS classes for the body container.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
+		type: 'Snippet<[{ datagrid: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
-		description: 'Body row content. Receives the datagrid context.'
-	},
+		description: 'Data row content. Receives the datagrid bond.'
+	}
 ];
 
 export const datagridFooterProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string | undefined',
+		type: 'string',
 		default: "''",
-		description: 'Additional CSS classes for the <tfoot> element.'
-	},
-	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
-		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
+		description: 'Additional CSS classes for the footer container.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
+		type: 'Snippet<[{ datagrid: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
-		description: 'Footer row content. Receives the datagrid context.'
-	},
-];
-
-export const datagridThProps: PropDefinition[] = [
-	{
-		name: 'id',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Unique identifier for the column. Used to associate header with body cells.'
-	},
-	{
-		name: 'class',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Additional CSS classes for the <th> element.'
-	},
-	{
-		name: 'width',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Column width value (e.g. "200px", "1fr"). Applied to the grid template.'
-	},
-	{
-		name: 'direction',
-		type: 'Direction | undefined',
-		default: 'undefined',
-		description: 'Current sort direction for the column ("asc" | "desc" | undefined).'
-	},
-	{
-		name: 'screen',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Responsive breakpoint at which this column becomes visible (e.g. "md").'
-	},
-	{
-		name: 'sortable',
-		type: 'boolean | SortableType | undefined',
-		default: 'false',
-		description: 'When true or a SortableType value, makes the column header clickable for sorting.'
-	},
-	{
-		name: 'hidden',
-		type: 'boolean | undefined',
-		default: 'false',
-		description: 'Hides the column from the table layout when set to true.'
-	},
-	{
-		name: 'factory',
-		type: '(() => DataGridThBond<T>) | undefined',
-		default: 'undefined',
-		description: 'Custom factory function to create a DataGridThBond instance for this column.'
-	},
-];
-
-export const datagridTdProps: PropDefinition[] = [
-	{
-		name: 'class',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Additional CSS classes for the <td> element.'
-	},
-	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
-		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
-	},
-	{
-		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<T>; }]> | undefined',
-		default: 'undefined',
-		description: 'Cell content. Receives the datagrid context with row data.'
-	},
-	{
-		name: 'onclick',
-		type: '((ev: Event, options: { context?: DatagridContext<T>; }) => void) | undefined',
-		default: 'undefined',
-		description: 'Click event handler for the cell. Receives the event and datagrid context.'
-	},
-];
-
-export const datagridCheckboxProps: PropDefinition[] = [
-	{
-		name: 'element',
-		type: 'HTMLElement | undefined',
-		default: 'undefined',
-		description: 'Bindable reference to the underlying DOM element.'
-	},
-	{
-		name: 'children',
-		type: 'Snippet<[{ context: DatagridContext<unknown>; }]> | undefined',
-		default: 'undefined',
-		description: 'Custom checkbox content. Receives the datagrid context.'
-	},
+		description: 'Footer content. Receives the datagrid bond.'
+	}
 ];
 
 export const datagridTrProps: PropDefinition[] = [
 	{
 		name: 'class',
-		type: 'string | undefined',
+		type: 'string',
 		default: "''",
-		description: 'Additional CSS classes for the <tr> element.'
+		description: 'Additional CSS classes for the row element.'
 	},
 	{
 		name: 'value',
-		type: 'string | undefined',
-		default: "''",
-		description: 'The selection value for this row. Used when tracking selected rows.'
+		type: 'string',
+		default: 'nanoid()',
+		description: 'Row identifier used for selection tracking. Auto-generated if omitted.'
 	},
 	{
 		name: 'rows',
-		type: 'string | undefined',
-		default: "''",
-		description: 'Number of rows this row spans (for subgrid layouts).'
+		type: 'string',
+		default: "'auto'",
+		description: 'CSS grid-template-rows value for subgrid row height control.'
+	},
+	{
+		name: 'header',
+		type: 'boolean',
+		default: 'false',
+		description: 'Marks this row as a header row. Header rows are not registered in the selection map and receive header styling.'
 	},
 	{
 		name: 'data',
 		type: 'T | undefined',
 		default: 'undefined',
-		description: 'The data object associated with this row, passed into the datagrid context.'
+		description: 'The data object associated with this row, available via the bond.'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<DataGridTrBond<T, ...>> | undefined',
+		type: 'Factory<DataGridTrBond<T>> | undefined',
 		default: 'undefined',
-		description: 'Custom factory function to create a DataGridTrBond instance for this row.'
+		description: 'Custom factory to create the DataGridTrBond instance for this row.'
 	},
 	{
 		name: 'onclick',
-		type: '((ev: Event, options: { tr?: DatagridContext<T>; }) => void) | undefined',
+		type: '((ev: Event, options: { tr?: DataGridTrBond<T> }) => void) | undefined',
 		default: 'undefined',
-		description: 'Click event handler for the row. Receives the event and row context.'
+		description: 'Click handler for the row. Receives the event and the row bond.'
 	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ tr: DataGridTrBond<T> }]> | undefined',
+		default: 'undefined',
+		description: 'Row cell content. Receives the row bond.'
+	}
+];
+
+export const datagridThProps: PropDefinition[] = [
+	{
+		name: 'id',
+		type: 'string',
+		default: 'nanoid()',
+		description: 'Unique column identifier. Auto-generated if omitted. Used to associate Td cells with their column.'
+	},
+	{
+		name: 'class',
+		type: 'string',
+		default: "''",
+		description: 'Additional CSS classes for the column header element.'
+	},
+	{
+		name: 'width',
+		type: 'string',
+		default: "'1fr'",
+		description: 'Column width token used in the auto-computed grid-template-columns (e.g. "200px", "auto", "1fr").'
+	},
+	{
+		name: 'direction',
+		type: "'asc' | 'desc'",
+		default: "'asc'",
+		description: 'Bindable current sort direction. Toggles on click when sortable is set.'
+	},
+	{
+		name: 'screen',
+		type: 'string | undefined',
+		default: 'undefined',
+		description: 'Reserved for responsive breakpoint control.'
+	},
+	{
+		name: 'sortable',
+		type: 'boolean | SortableType | undefined',
+		default: 'undefined',
+		description: 'Enables click-to-sort on this column. Pass a string to identify the sort field in onsort.'
+	},
+	{
+		name: 'hidden',
+		type: 'boolean',
+		default: 'false',
+		description: 'Hides this column and its corresponding Td cells from the grid layout.'
+	},
+	{
+		name: 'factory',
+		type: '(() => DataGridThBond<T>) | undefined',
+		default: 'undefined',
+		description: 'Custom factory to create the DataGridThBond instance for this column.'
+	},
+	{
+		name: 'onsort',
+		type: '((event: CustomEvent, options: { field?: SortableType; direction: Direction }) => void) | undefined',
+		default: 'undefined',
+		description: 'Callback fired after sort direction changes. Receives the new direction and field identifier.'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ th: DataGridThBond<T> }]> | undefined',
+		default: 'undefined',
+		description: 'Column header content. Receives the column bond.'
+	}
+];
+
+export const datagridTdProps: PropDefinition[] = [
+	{
+		name: 'class',
+		type: 'string',
+		default: "''",
+		description: 'Additional CSS classes for the cell element.'
+	},
+	{
+		name: 'onclick',
+		type: '((ev: Event, options: { td?: DataGridBond<T> }) => void) | undefined',
+		default: 'undefined',
+		description: 'Click handler for the cell. Receives the event and the datagrid bond.'
+	},
+	{
+		name: 'children',
+		type: 'Snippet<[{ td: DataGridBond<T> | undefined }]> | undefined',
+		default: 'undefined',
+		description: 'Cell content. Receives the datagrid bond. Also accepts a component via the base prop.'
+	}
+];
+
+export const datagridCheckboxProps: PropDefinition[] = [
+	{
+		name: 'class',
+		type: 'string',
+		default: "''",
+		description: 'Additional CSS classes for the checkbox element.'
+	},
+	{
+		name: 'value',
+		type: 'string | undefined',
+		default: 'undefined',
+		description: 'Value attribute forwarded to the underlying Checkbox.'
+	},
+	{
+		name: 'checked',
+		type: 'boolean',
+		default: 'false',
+		description: 'Bindable checked state. Automatically derived from selection state unless overridden.'
+	},
+	{
+		name: 'onchange',
+		type: '((ev: Event, options: { checked?: boolean }) => void) | undefined',
+		default: 'undefined',
+		description: 'Change handler. In header rows, triggers select/deselect all. In body rows, toggles the row.'
+	}
 ];
