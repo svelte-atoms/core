@@ -96,37 +96,34 @@
 				title="Row Selection"
 				description="Multi-row selection via bind:values and DataGrid.Checkbox."
 				code={selectableCode}
-				
 			>
-				<div class="flex flex-col">
-					<DataGrid.Root bind:values={selectedIds}>
-						<DataGrid.Header>
-							<DataGrid.Tr header>
-								<DataGrid.Th width="auto">
+				<p class="text-muted-foreground mb-3 text-sm">
+					Selected: {selectedIds.length ? selectedIds.join(', ') : 'none'}
+				</p>
+				<DataGrid.Root bind:values={selectedIds}>
+					<DataGrid.Header>
+						<DataGrid.Tr header>
+							<DataGrid.Th width="auto">
+								<DataGrid.Checkbox />
+							</DataGrid.Th>
+							<DataGrid.Th>Name</DataGrid.Th>
+							<DataGrid.Th>Email</DataGrid.Th>
+							<DataGrid.Th>Role</DataGrid.Th>
+						</DataGrid.Tr>
+					</DataGrid.Header>
+					<DataGrid.Body>
+						{#each users as user (user.id)}
+							<DataGrid.Tr value={user.id}>
+								<DataGrid.Td>
 									<DataGrid.Checkbox />
-								</DataGrid.Th>
-								<DataGrid.Th>Name</DataGrid.Th>
-								<DataGrid.Th>Email</DataGrid.Th>
-								<DataGrid.Th>Role</DataGrid.Th>
+								</DataGrid.Td>
+								<DataGrid.Td>{user.name}</DataGrid.Td>
+								<DataGrid.Td>{user.email}</DataGrid.Td>
+								<DataGrid.Td>{user.role}</DataGrid.Td>
 							</DataGrid.Tr>
-						</DataGrid.Header>
-						<DataGrid.Body>
-							{#each users as user (user.id)}
-								<DataGrid.Tr value={user.id}>
-									<DataGrid.Td>
-										<DataGrid.Checkbox />
-									</DataGrid.Td>
-									<DataGrid.Td>{user.name}</DataGrid.Td>
-									<DataGrid.Td>{user.email}</DataGrid.Td>
-									<DataGrid.Td>{user.role}</DataGrid.Td>
-								</DataGrid.Tr>
-							{/each}
-						</DataGrid.Body>
-					</DataGrid.Root>
-					<p class="text-muted-foreground mb-3 text-sm">
-						Selected: {selectedIds.length ? selectedIds.join(', ') : 'none'}
-					</p>
-				</div>
+						{/each}
+					</DataGrid.Body>
+				</DataGrid.Root>
 			</DemoExample>
 		</div>
 	</Section.Root>
