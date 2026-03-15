@@ -12,6 +12,8 @@
 
 	let { class: klass = '', animate = defaultAnimate, ...restProps } = $props();
 
+	const content = $derived(isSortable ? icon : undefined);
+
 	function defaultAnimate(node: HTMLElement) {
 		motion(
 			node,
@@ -21,7 +23,7 @@
 	}
 </script>
 
-{#if isSortable}
+{#snippet icon()}
 	<HtmlAtom
 		{bond}
 		preset="datagrid.sort-icon"
@@ -33,4 +35,6 @@
 			<IconArrowDown />
 		</Icon>
 	</HtmlAtom>
-{/if}
+{/snippet}
+
+{@render content?.()}

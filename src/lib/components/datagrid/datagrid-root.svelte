@@ -1,10 +1,10 @@
 <script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { untrack } from 'svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DataGridBond, DataGridBondState, type DataGridStateProps } from './bond.svelte';
 	import type { DatagridRootProps } from './types';
 	import './datagrid.css';
-	import { untrack } from 'svelte';
 
 	let {
 		class: klass = '',

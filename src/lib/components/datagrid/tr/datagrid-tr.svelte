@@ -5,6 +5,7 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DataGridTrBond, DataGridTrBondState, type DataGridTrBondProps } from './bond.svelte';
 	import type { DatagridTrProps } from '../types';
+	import './datagrid-tr.css';
 
 	let {
 		class: klass = '',

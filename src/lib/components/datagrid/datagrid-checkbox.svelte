@@ -29,23 +29,34 @@
 
 	const classNames = $derived(['datagrid-td-checkbox', '$preset', klass]);
 
+	const activeCheckbox = $derived(isHeader ? headerCheckbox : rowCheckbox);
+
 	function handleHeaderChange(ev: Event, { checked = false }: { checked?: boolean }) {
 		onchange?.(ev, { checked });
 		if (ev.defaultPrevented) return;
 
 		const allIds = [...(datagridBond?.state.rows.keys() ?? [])];
-		checked ? datagridBond?.state.select(allIds) : datagridBond?.state.unselect(allIds);
+
+		if(checked){
+			datagridBond?.state.select(allIds);
+		} else {
+			datagridBond?.state.unselect(allIds);
+		}
 	}
 
 	function handleRowChange(ev: Event, { checked = false }: { checked?: boolean }) {
 		onchange?.(ev, { checked });
 		if (ev.defaultPrevented || !rowId) return;
 
-		checked ? datagridBond?.state.select([rowId]) : datagridBond?.state.unselect([rowId]);
+		if(checked){
+			datagridTrBond?.state.select();
+		} else {
+			datagridTrBond?.state.unselect();
+		}
 	}
 </script>
 
-{#if isHeader}
+{#snippet headerCheckbox()}
 	<Checkbox
 		{value}
 		{onclick}
@@ -56,7 +67,9 @@
 		oninput={handleHeaderChange}
 		{...restProps}
 	/>
-{:else}
+{/snippet}
+
+{#snippet rowCheckbox()}
 	<Checkbox
 		{value}
 		{onclick}
@@ -67,4 +80,6 @@
 		oninput={handleRowChange}
 		{...restProps}
 	/>
-{/if}
+{/snippet}
+
+{@render activeCheckbox()}
