@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { codeToHtml } from 'shiki';
+	import { createHighlighter, type BundledLanguage, type BundledTheme } from 'shiki';
 	import { Theme } from '../../routes/theme.svelte';
 
 	type Props = {
@@ -28,16 +28,32 @@
 	let highlightedCode = $state('');
 	let isLoading = $state(true);
 
+	// Languages to always pre-load so they're available in the browser bundle
+	const BASE_LANGS: BundledLanguage[] = ['typescript', 'svelte', 'bash', 'json', 'html', 'css'];
+
 	$effect(() => {
-		const resolvedTheme = theme ?? (isDark ? 'github-dark' : 'vitesse-light');
+		const resolvedTheme = (theme ?? (isDark ? 'github-dark' : 'vitesse-light')) as BundledTheme;
+		const resolvedLang = lang as BundledLanguage;
 		isLoading = true;
-		codeToHtml(code, {
-			lang,
-			theme: resolvedTheme,
-			transformers: showLineNumbers
-				? [{ name: 'line-numbers', line(node, line) { node.properties['data-line'] = line; } }]
-				: []
+
+		// Merge requested lang into pre-loaded set
+		const langs = BASE_LANGS.includes(resolvedLang)
+			? BASE_LANGS
+			: ([...BASE_LANGS, resolvedLang] as BundledLanguage[]);
+
+		createHighlighter({
+			themes: [resolvedTheme],
+			langs
 		})
+			.then((highlighter) =>
+				highlighter.codeToHtml(code, {
+					lang: resolvedLang,
+					theme: resolvedTheme,
+					transformers: showLineNumbers
+						? [{ name: 'line-numbers', line(node, line) { node.properties['data-line'] = line; } }]
+						: []
+				})
+			)
 			.then((html) => {
 				highlightedCode = html;
 				isLoading = false;
