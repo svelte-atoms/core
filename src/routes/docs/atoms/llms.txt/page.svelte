@@ -85,9 +85,9 @@ Here's how an atom works with a simple example:
 
 ### 1. Import an Atom
 
-```typescript
+<CodeBlock lang="typescript">{`
 import { HtmlAtom } from '@svelte-atoms/core';
-```
+`}</CodeBlock>
 
 ### 2. Define Variants (Optional)
 

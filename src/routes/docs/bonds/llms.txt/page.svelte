@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FrontMatter, List } from '$docs/md/components';
+	import { CodeBlock, FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -38,7 +38,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 
 ### Step 1: Define Props Type
 
-```typescript
+<CodeBlock lang="typescript">{`
 import { BondStateProps } from '@svelte-atoms/core';
 
 // Define the props type for your bond state
@@ -47,11 +47,11 @@ export type MyComponentStateProps = BondStateProps & {
   disabled: boolean;
   // Add your component-specific props
 };
-```
+`}</CodeBlock>
 
 ### Step 2: Define DOM Elements
 
-```typescript
+<CodeBlock lang="typescript">{`
 // Define the HTML elements your bond will manage
 export type MyComponentDomElements = {
   root: HTMLElement;
@@ -59,11 +59,11 @@ export type MyComponentDomElements = {
   content: HTMLElement;
   // Add your component-specific elements
 };
-```
+`}</CodeBlock>
 
 ### Step 3: Create BondState Class
 
-```typescript
+<CodeBlock lang="typescript">{`
 import { BondState } from '@svelte-atoms/core';
 
 // Create the BondState class to manage reactive state
@@ -92,11 +92,11 @@ export class MyComponentState<
     this.props.open = !this.props.open;
   }
 }
-```
+`}</CodeBlock>
 
 ### Step 4: Create Bond Class
 
-```typescript
+<CodeBlock lang="typescript">{`
 import { Bond } from '@svelte-atoms/core';
 import { getContext, setContext } from 'svelte';
 
@@ -154,11 +154,11 @@ export class MyComponentBond<
     return setContext(MyComponentBond.CONTEXT_KEY, bond);
   }
 }
-```
+`}</CodeBlock>
 
 ### Step 5: Use in Component
 
-```svelte
+<CodeBlock lang="svelte">{`
 <script lang="ts">
   import { MyComponentBond, MyComponentState } from './bond.svelte';
   
@@ -184,7 +184,7 @@ export class MyComponentBond<
     Content goes here
   </div>
 </div>
-```
+`}</CodeBlock>
 
 ## Bond Patterns
 
@@ -201,7 +201,7 @@ export class MyComponentBond<
 
 ### Reactive Props with defineState
 
-```typescript
+<CodeBlock lang="typescript">{`
 import { defineState, defineProperty } from '@svelte-atoms/core/utils';
 
 let open = $bindable(false);
@@ -219,11 +219,11 @@ const bondProps = defineState<DialogBondProps>([
 
 // Pass as function
 const state = new DialogBondState(() => bondProps);
-```
+`}</CodeBlock>
 
 ### Element Props with Spread
 
-```svelte
+<CodeBlock lang="svelte">{`
 <script lang="ts">
   const bond = new DialogBond(state).share();
 </script>
@@ -233,11 +233,11 @@ const state = new DialogBondState(() => bondProps);
   <h2 {...bond.title()}>Dialog Title</h2>
   <div {...bond.body()}>Content</div>
 </div>
-```
+`}</CodeBlock>
 
 ### Accessing Bond from Children
 
-```svelte
+<CodeBlock lang="svelte">{`
 <script lang="ts">
   // In child component, retrieve parent bond
   const bond = DialogBond.get();
@@ -250,11 +250,11 @@ const state = new DialogBondState(() => bondProps);
 <button onclick={handleClick}>
   {bond?.state.props.open ? 'Close' : 'Open'}
 </button>
-```
+`}</CodeBlock>
 
 ### Bond Factories
 
-```svelte
+<CodeBlock lang="svelte">{`
 <script lang="ts">
   import { createTreeBond } from './factory';
   
@@ -273,11 +273,11 @@ const state = new DialogBondState(() => bondProps);
     return new TreeBond(state);
   }
 </script>
-```
+`}</CodeBlock>
 
 ### Imperative Bond Access
 
-```svelte
+<CodeBlock lang="svelte">{`
 <script lang="ts">
   import { TreeRoot } from './components';
   
@@ -291,13 +291,13 @@ const state = new DialogBondState(() => bondProps);
 
 <TreeRoot bind:this={treeRef} />
 <button onclick={handleClick}>Toggle Tree</button>
-```
+`}</CodeBlock>
 
 ## Type Safety
 
 Bonds are fully type-safe with TypeScript:
 
-```typescript
+<CodeBlock lang="typescript">{`
 // Props are strongly typed
 type MyProps = BondStateProps & {
   value: string;
@@ -322,7 +322,7 @@ class MyBond extends Bond<MyProps, MyState, MyElements> {
     };
   }
 }
-```
+`}</CodeBlock>
 
 ## Performance Considerations
 
@@ -338,7 +338,7 @@ Bonds are designed for optimal performance:
 
 ### Dialog/Modal Bond
 
-```typescript
+<CodeBlock lang="typescript">{`
 class DialogState extends BondState<DialogProps> {
   get isOpen() { return this.props.open; }
   open() { this.props.open = true; }
@@ -360,11 +360,11 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
     };
   }
 }
-```
+`}</CodeBlock>
 
 ### Tabs Bond
 
-```typescript
+<CodeBlock lang="typescript">{`
 class TabsState extends BondState<TabsProps> {
   #items = new SvelteMap<string, TabBond>();
   #selectedItem = $derived(this.#items.get(this.props.value));
@@ -379,11 +379,11 @@ class TabsState extends BondState<TabsProps> {
     this.#items.set(id, bond);
   }
 }
-```
+`}</CodeBlock>
 
 ### Accordion Bond
 
-```typescript
+<CodeBlock lang="typescript">{`
 class AccordionState extends BondState<AccordionProps> {
   #openItems = $state<Set<string>>(new Set());
   
@@ -402,7 +402,7 @@ class AccordionState extends BondState<AccordionProps> {
     }
   }
 }
-```
+`}</CodeBlock>
 
 ## Best Practices
 
@@ -417,7 +417,7 @@ class AccordionState extends BondState<AccordionProps> {
 
 ## Debugging Bonds
 
-```typescript
+<CodeBlock lang="typescript">{`
 class MyBond extends Bond<Props, State, Elements> {
   // Add debug helpers
   debug() {
@@ -433,13 +433,13 @@ class MyBond extends Bond<Props, State, Elements> {
     return props;
   }
 }
-```
+`}</CodeBlock>
 
 ## Migration from Other Patterns
 
 ### From Props Drilling
 
-```svelte
+<CodeBlock lang="svelte">{`
 <!-- Before: Props drilling -->
 <Parent>
   <Child {parentState} {onUpdate} />
@@ -451,11 +451,11 @@ class MyBond extends Bond<Props, State, Elements> {
   <Child />  <!-- Accesses bond via context -->
   <Grandchild />  <!-- No prop drilling -->
 </Parent>
-```
+`}</CodeBlock>
 
 ### From Global Stores
 
-```svelte
+<CodeBlock lang="svelte">{`
 <!-- Before: Global store -->
 <script>
   import { dialogStore } from './stores';
@@ -465,7 +465,7 @@ class MyBond extends Bond<Props, State, Elements> {
 <script>
   const bond = new DialogBond(state);
 </script>
-```
+`}</CodeBlock>
 
 ## Next Steps
 

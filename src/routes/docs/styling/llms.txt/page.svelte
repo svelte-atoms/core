@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FrontMatter, List } from '$docs/md/components';
+	import { CodeBlock, FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -105,9 +105,9 @@ Svelte Atoms uses CSS variables for theming. All color tokens are available as T
 
 **Usage:** {token.usage}
 
-```svelte
+<CodeBlock lang="svelte">{`
 <div class="bg-{token.token} text-{token.token}">Content</div>
-```
+`}</CodeBlock>
 
 {/each}
 
