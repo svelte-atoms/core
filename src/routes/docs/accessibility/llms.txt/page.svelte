@@ -1,22 +1,11 @@
 <script lang="ts">
-	import { List } from '$docs/md/components';
+	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: accessibility
-title: Accessibility Features
-category: fundamentals
-depth: intermediate
-prerequisites:
-  - philosophy
-  - atoms
-related:
-  - crafting
-  - components
----
+<FrontMatter {frontmatter} />
 
 # {metadata.pageTitle}
 

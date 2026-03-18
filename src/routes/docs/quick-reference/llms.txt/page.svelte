@@ -1,18 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: quick-reference
-title: Quick Reference
-category: reference
-depth: foundational
-prerequisites: []
-related:
-  - overview
-  - usage
----
+<FrontMatter {frontmatter} />
 
 # Quick Reference Guide
 

@@ -1,23 +1,11 @@
 <script lang="ts">
-	import { PropsTable } from '$docs/md/components';
+	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: tabs
-title: Tabs Component
-category: components
-subcategory: navigation
-depth: beginner
-prerequisites:
-  - atoms
-  - styling
-related:
-  - variants
-  - preset
----
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 

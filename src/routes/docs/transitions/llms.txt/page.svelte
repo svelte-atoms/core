@@ -1,19 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: transitions
-title: Transitions & Animations
-category: advanced
-depth: intermediate
-prerequisites:
-  - motion
-related:
-  - motion
-  - atoms
----
+<FrontMatter {frontmatter} />
 
 # Transitions & Animations
 

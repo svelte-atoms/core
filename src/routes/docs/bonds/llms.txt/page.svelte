@@ -1,22 +1,11 @@
 <script lang="ts">
-	import { List } from '$docs/md/components';
+	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: bonds
-title: Bonds Concept
-category: fundamentals
-depth: beginner
-prerequisites:
-  - philosophy
-  - atoms
-related:
-  - crafting
-  - composition
----
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}

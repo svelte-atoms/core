@@ -1,20 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: preset-variant-integration
-title: Preset-Variant Integration
-category: styling
-depth: detailed
-prerequisites:
-  - preset
-  - variants
-related:
-  - styling
-  - crafting
----
+<FrontMatter {frontmatter} />
 
 # Preset-Variant Integration
 

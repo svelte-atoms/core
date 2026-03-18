@@ -1,24 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: crafting
-title: Crafting Components from Scratch
-category: architecture
-depth: detailed
-prerequisites:
-  - philosophy
-  - imports
-related:
-  - motion
-  - styling
-  - variants
-  - preset
-  - naming-convention
-  - composition
----
+<FrontMatter {frontmatter} />
 
 # Crafting Components from Scratch in @svelte-atoms/core
 

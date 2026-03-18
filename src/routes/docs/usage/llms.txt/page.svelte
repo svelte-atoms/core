@@ -1,17 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: usage
-title: Component Usage Patterns
-category: fundamentals
-depth: foundational
-prerequisites: []
-related:
-  - quick-reference
----
+<FrontMatter {frontmatter} />
 
 # Component Usage Patterns
 

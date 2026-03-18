@@ -1,21 +1,11 @@
 <script lang="ts">
-	import { CodeBlock, List } from '$docs/md/components';
+	import { FrontMatter, CodeBlock, List } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: atoms
-title: Atoms Concept
-category: fundamentals
-depth: beginner
-prerequisites:
-  - philosophy
-related:
-  - bonds
-  - crafting
----
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}

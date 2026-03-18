@@ -1,21 +1,11 @@
 <script lang="ts">
-	import { List } from '$docs/md/components';
+	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: preset
-title: Preset System
-category: styling
-depth: intermediate
-prerequisites:
-  - styling
-related:
-  - variants
-  - preset-variant-integration
----
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}

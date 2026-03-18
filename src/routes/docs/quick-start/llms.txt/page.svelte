@@ -1,20 +1,11 @@
 <script lang="ts">
-	import { List } from '$docs/md/components';
+	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: quick-start
-title: Quick Start Guide
-category: getting-started
-depth: beginner
-related:
-  - philosophy
-  - atoms
-  - imports
----
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}

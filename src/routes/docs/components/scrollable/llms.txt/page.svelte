@@ -1,23 +1,11 @@
 <script lang="ts">
-	import { PropsTable } from '$docs/md/components';
+	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: scrollable
-title: Scrollable Component
-category: components
-subcategory: layout
-depth: beginner
-prerequisites:
-  - atoms
-  - styling
-related:
-  - variants
-  - preset
----
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 

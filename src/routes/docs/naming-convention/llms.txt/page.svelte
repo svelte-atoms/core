@@ -1,16 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: naming-convention
-title: Naming Conventions
-category: fundamentals
-depth: foundational
-prerequisites: []
-related: []
----
+<FrontMatter {frontmatter} />
 
 # Naming Conventions
 

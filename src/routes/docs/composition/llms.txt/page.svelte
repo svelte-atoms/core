@@ -1,20 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: composition
-title: Component Composition
-category: architecture
-depth: detailed
-prerequisites:
-  - philosophy
-  - crafting
-related:
-  - motion
-  - variants
----
+<FrontMatter {frontmatter} />
 
 # Component Composition in @svelte-atoms/core
 

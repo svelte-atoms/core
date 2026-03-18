@@ -1,17 +1,10 @@
 <script lang="ts">
+	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
-	const { metadata } = $derived(data);
+	const { metadata, frontmatter } = $derived(data);
 </script>
 
----
-id: imports
-title: Import Guide
-category: fundamentals
-depth: foundational
-prerequisites: []
-related:
-  - overview
----
+<FrontMatter {frontmatter} />
 
 # Import Guide for @svelte-atoms/core
 
