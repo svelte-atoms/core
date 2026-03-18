@@ -9,8 +9,21 @@ import {
 	listDividerProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'list',
+	title: 'List Component',
+	category: 'components',
+	subcategory: 'layout',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, listRootProps, listGroupProps, listItemProps, listTitleProps, listDividerProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, listRootProps, listGroupProps, listItemProps, listTitleProps, listDividerProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

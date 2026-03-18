@@ -9,8 +9,21 @@ import {
 	popoverIndicatorProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'popover',
+	title: 'Popover Component',
+	category: 'components',
+	subcategory: 'overlay',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, popoverRootProps, popoverTriggerProps, popoverContentProps, popoverArrowProps, popoverIndicatorProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, popoverRootProps, popoverTriggerProps, popoverContentProps, popoverArrowProps, popoverIndicatorProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

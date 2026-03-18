@@ -12,8 +12,21 @@ import {
 	slideoverBackdropProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'drawer',
+	title: 'Drawer Component',
+	category: 'components',
+	subcategory: 'overlay',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, slideoverRootProps, slideoverContentProps, slideoverHeaderProps, drawerBodyProps, slideoverFooterProps, slideoverTitleProps, slideoverDescriptionProps, slideoverBackdropProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, slideoverRootProps, slideoverContentProps, slideoverHeaderProps, drawerBodyProps, slideoverFooterProps, slideoverTitleProps, slideoverDescriptionProps, slideoverBackdropProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

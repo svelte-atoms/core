@@ -1,8 +1,21 @@
 import { render } from 'svelte/server';
 import Page from './page.svelte';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'preset-variant-integration',
+	title: 'Preset-Variant Integration',
+	category: 'styling',
+	depth: 'detailed',
+	prerequisites: ['preset', 'variants'],
+	related: ['styling', 'crafting'],
+};
+
+
+
 export function GET() {
-	const { body } = render(Page, { props: {} });
+	const { body } = render(Page, { props: { data: { frontmatter } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

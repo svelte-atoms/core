@@ -9,8 +9,21 @@ import {
 	accordionItemIndicatorProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'accordion',
+	title: 'Accordion Component',
+	category: 'components',
+	subcategory: 'interactive',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, accordionRootProps, accordionItemRootProps, accordionItemHeaderProps, accordionItemBodyProps, accordionItemIndicatorProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, accordionRootProps, accordionItemRootProps, accordionItemHeaderProps, accordionItemBodyProps, accordionItemIndicatorProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

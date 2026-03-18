@@ -6,8 +6,21 @@ import {
 	radioGroupProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'radio',
+	title: 'Radio Component',
+	category: 'components',
+	subcategory: 'form',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, radioProps, radioGroupProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, radioProps, radioGroupProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

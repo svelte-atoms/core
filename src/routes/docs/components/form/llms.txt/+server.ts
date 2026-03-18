@@ -9,8 +9,21 @@ import {
 	fieldErrorsProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'form',
+	title: 'Form Component',
+	category: 'components',
+	subcategory: 'form',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, formRootProps, fieldRootProps, fieldLabelProps, fieldControlProps, fieldErrorsProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, formRootProps, fieldRootProps, fieldLabelProps, fieldControlProps, fieldErrorsProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

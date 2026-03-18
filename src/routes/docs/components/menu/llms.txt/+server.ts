@@ -6,8 +6,21 @@ import {
 	menuListProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'menu',
+	title: 'Menu Component',
+	category: 'components',
+	subcategory: 'navigation',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, menuItemProps, menuListProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, menuItemProps, menuListProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

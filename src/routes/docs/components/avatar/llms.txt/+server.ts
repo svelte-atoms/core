@@ -3,8 +3,22 @@ import Page from './page.svelte';
 import { metadata } from '../shared';
 import { avatarProps } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'avatar',
+	title: 'Avatar Component',
+	category: 'components',
+	subcategory: 'display',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, avatarProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, avatarProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

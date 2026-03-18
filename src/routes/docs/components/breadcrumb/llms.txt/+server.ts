@@ -3,8 +3,22 @@ import Page from './page.svelte';
 import { metadata } from '../shared';
 import breadcrumbProps from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'breadcrumb',
+	title: 'Breadcrumb Component',
+	category: 'components',
+	subcategory: 'navigation',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, breadcrumbProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, breadcrumbProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')

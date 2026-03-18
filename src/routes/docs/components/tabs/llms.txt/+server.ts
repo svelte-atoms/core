@@ -11,8 +11,21 @@ import {
 	tabsContentProps
 } from '../props';
 
+import type { Frontmatter } from '$docs/md/frontmatter';
+
+export const frontmatter: Frontmatter = {
+	id: 'tabs',
+	title: 'Tabs Component',
+	category: 'components',
+	subcategory: 'navigation',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 export function GET() {
-	const { body } = render(Page, { props: { data: { metadata, tabsRootProps, tabHeaderProps, tabBodyProps, tabDescriptionProps, tabsHeaderProps, tabsBodyProps, tabsContentProps } } });
+	const { body } = render(Page, { props: { data: { frontmatter, metadata, tabsRootProps, tabHeaderProps, tabBodyProps, tabDescriptionProps, tabsHeaderProps, tabsBodyProps, tabsContentProps } } });
 	const text = body
 		.replace(/<!--[\s\S]*?-->/g, '')
 		.replace(/&lt;/g, '<')
