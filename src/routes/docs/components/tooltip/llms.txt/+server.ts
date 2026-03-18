@@ -1,80 +1,17 @@
-import { propsTable } from '$docs/md/page';
-import { md } from '$docs/md/template';
-import { tooltipTriggerProps } from '../props';
+import { render } from 'svelte/server';
+import Page from './page.svelte';
 import { metadata } from '../shared';
+import { tooltipTriggerProps } from '../props';
 
 export function GET() {
-	return new Response(build(), {
-		headers: {
-			'Content-Type': 'text/plain; charset=utf-8'
-		}
+	const { body } = render(Page, { props: { data: { metadata, tooltipTriggerProps } } });
+	const text = body
+		.replace(/<!--[\s\S]*?-->/g, '')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&amp;/g, '&');
+
+	return new Response(text, {
+		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 	});
-}
-
-function build(): string {
-	return md`
----
-id: tooltip
-title: Tooltip Component
-category: components
-subcategory: overlay
-depth: beginner
-prerequisites:
-  - atoms
-  - styling
-related:
-  - variants
-  - preset
----
-
-# ${metadata.componentTitle} Module
-
-${metadata.componentDescription}
-
-**Type**: ${metadata.componentType === 'compound' ? 'Compound Component' : 'Simple Component'}
-
-## Use Cases
-
-${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
-
-## Components
-
-The Tooltip module consists of the following components:
-
-${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-
-### Tooltip.Trigger
-
-**Preset Key:** \`tooltip\`
-
-${propsTable(tooltipTriggerProps)}
-
-## Examples
-
-### Basic Example
-
-\`\`\`svelte
-${metadata.examples.basic}
-\`\`\`
-
-### Placement Options
-
-\`\`\`svelte
-${metadata.examples.placement}
-\`\`\`
-
-### Preset Configuration
-
-\`\`\`typescript
-${metadata.examples.preset}
-\`\`\`
-
-## Accessibility
-
-${metadata.accessibility.map((feature) => `- ${feature}`).join('\n')}
-
-## License
-
-This module is licensed under the MIT License.
-`.trim();
 }
