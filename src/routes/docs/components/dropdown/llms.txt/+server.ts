@@ -1,5 +1,5 @@
 import { render } from 'svelte/server';
-import Page from './page.svelte';
+import Page from './template.svelte';
 import { metadata } from '../shared';
 import {
 	dropdownRootProps,
