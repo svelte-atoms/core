@@ -5,7 +5,7 @@ import { buttonProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'button',
 	title: 'Button Component',
 	category: 'components',

@@ -8,7 +8,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'dropdown-menu',
 	title: 'Dropdown Menu Component',
 	category: 'components',

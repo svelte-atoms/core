@@ -5,7 +5,7 @@ import { collapsibleRootProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'collapsible',
 	title: 'Collapsible Component',
 	category: 'components',

@@ -4,7 +4,7 @@ import { metadata } from '../shared';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'atoms',
 	title: 'Atoms Concept',
 	category: 'fundamentals',

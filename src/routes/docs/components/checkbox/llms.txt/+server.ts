@@ -5,7 +5,7 @@ import { checkboxProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'checkbox',
 	title: 'Checkbox Component',
 	category: 'components',

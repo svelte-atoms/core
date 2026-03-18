@@ -3,7 +3,7 @@ import Page from './page.svelte';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'quick-reference',
 	title: 'Quick Reference',
 	category: 'reference',

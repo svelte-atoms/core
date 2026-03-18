@@ -5,7 +5,7 @@ import { dividerProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'divider',
 	title: 'Divider Component',
 	category: 'components',

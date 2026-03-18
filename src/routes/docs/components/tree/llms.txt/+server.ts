@@ -9,7 +9,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'tree',
 	title: 'Tree Component',
 	category: 'components',

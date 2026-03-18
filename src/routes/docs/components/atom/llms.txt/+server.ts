@@ -5,7 +5,7 @@ import { htmlAtomProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'atom',
 	title: 'Atom Component',
 	category: 'components',

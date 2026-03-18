@@ -12,7 +12,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'select',
 	title: 'Select Component',
 	category: 'components',

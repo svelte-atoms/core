@@ -5,7 +5,7 @@ import { tooltipTriggerProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'tooltip',
 	title: 'Tooltip Component',
 	category: 'components',

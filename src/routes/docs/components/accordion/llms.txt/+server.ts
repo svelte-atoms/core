@@ -11,7 +11,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'accordion',
 	title: 'Accordion Component',
 	category: 'components',

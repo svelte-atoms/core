@@ -10,7 +10,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'combobox',
 	title: 'Combobox Component',
 	category: 'components',

@@ -11,7 +11,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'popover',
 	title: 'Popover Component',
 	category: 'components',

@@ -3,7 +3,7 @@ import Page from './page.svelte';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'composition',
 	title: 'Component Composition',
 	category: 'architecture',

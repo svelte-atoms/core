@@ -5,7 +5,7 @@ import { linkProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'link',
 	title: 'Link Component',
 	category: 'components',

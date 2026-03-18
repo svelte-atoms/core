@@ -5,7 +5,7 @@ import { labelProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'label',
 	title: 'Label Component',
 	category: 'components',

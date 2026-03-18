@@ -5,7 +5,7 @@ import breadcrumbProps from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'breadcrumb',
 	title: 'Breadcrumb Component',
 	category: 'components',

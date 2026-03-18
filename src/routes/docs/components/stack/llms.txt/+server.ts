@@ -8,7 +8,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'stack',
 	title: 'Stack Component',
 	category: 'components',

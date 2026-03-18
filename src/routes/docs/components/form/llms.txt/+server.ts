@@ -11,7 +11,7 @@ import {
 
 import type { Frontmatter } from '$docs/md/frontmatter';
 
-export const frontmatter: Frontmatter = {
+const frontmatter: Frontmatter = {
 	id: 'form',
 	title: 'Form Component',
 	category: 'components',
