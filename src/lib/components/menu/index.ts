@@ -1,8 +1,8 @@
+
+// Namespace — DropdownMenu is the canonical export; Menu remains for backward compat
 /**
  * @deprecated Import from `dropdown-menu` instead. This module will be removed in a future version.
  */
-
-// Namespace — DropdownMenu is the canonical export; Menu remains for backward compat
 export {
 	/**
 	 * @deprecated Use `DropdownMenu` instead.

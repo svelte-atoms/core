@@ -22,7 +22,7 @@
 
 <Story name="DropdownMenu" args={{}}>
 	<ADropdownMenu.Root bind:open>
-		<ADropdownMenu.Trigger base={Button}>Select a language</ADropdownMenu.Trigger>
+		<ADropdownMenu.Trigger base={Button} >Select a language</ADropdownMenu.Trigger>
 		<ADropdownMenu.List>
 			<ADropdownMenu.Item onclick={() => console.log('Arabic')}>Arabic</ADropdownMenu.Item>
 			<ADropdownMenu.Item onclick={() => console.log('English')}>English</ADropdownMenu.Item>

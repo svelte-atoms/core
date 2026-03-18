@@ -117,8 +117,6 @@ export class SelectBondState<
 			const value = ids[0];
 			this.props.values = value ? [value] : [];
 		}
-
-		this.updateLabels();
 	}
 
 	unselect(ids: string[]) {
@@ -130,13 +128,5 @@ export class SelectBondState<
 		}
 
 		this.props.values = [...sequence];
-
-		this.updateLabels();
-	}
-
-	protected updateLabels() {
-		const labels = this.#selections.map((s) => s.label);
-		this.props.labels = labels;
-		this.props.label = labels[0] ?? '';
 	}
 }

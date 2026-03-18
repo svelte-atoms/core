@@ -37,8 +37,8 @@
 	});
 </script>
 
-{#snippet body(props: Record<string, unknown> = {})}
-	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps} {...props}>
+{#snippet body({class: klass, ...restProps}: Record<string, unknown> = {})}
+	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps} {...restProps}>
 		{@render children?.({ ...(tabBond ? { tab: tabBond } : {}), ...(tabsBond ? { tabs: tabsBond } : {}) })}
 	</Stack.Item>
 {/snippet}

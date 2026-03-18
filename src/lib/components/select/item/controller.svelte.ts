@@ -11,9 +11,9 @@ export type SelectItemProps<T = unknown> = {
 	readonly data?: T;
 };
 
-export class SelectItemController<T = unknown>
-	implements DropdownMenuItemControllerInterface<SelectItemProps<T>>
-{
+export class SelectItemController<T = unknown> implements DropdownMenuItemControllerInterface<
+	SelectItemProps<T>
+> {
 	static CONTEXT_KEY = '@atoms/context/select/item';
 
 	#id: string;
@@ -84,7 +84,7 @@ export class SelectItemController<T = unknown>
 	}
 
 	mount() {
-		this.#unmount = this.#select?.state?.mountItem?.(this.#id, this) ?? undefined;
+		this.#unmount = this.#select?.state?.mountItem?.(this.value ?? this.id, this) ?? undefined;
 
 		return this.unmount;
 	}

@@ -8,6 +8,7 @@
 	import { DropdownMenuBond } from '../bond.svelte';
 	import { List } from '../../list';
 	import type { DropdownMenuItemProps } from './types';
+	import { untrack } from 'svelte';
 
 	const menu = DropdownMenuBond.get();
 
@@ -32,9 +33,9 @@
 		initial = undefined,
 		factory = _factory,
 		...restProps
-	}: DropdownMenuItemProps = $props();
+	}: DropdownMenuItemProps<E, B> = $props();
 
-	const controller = factory().share();
+	const controller = untrack(()=> factory()).share();
 
 	const itemProps = $derived({
 		...menu?.item?.(),

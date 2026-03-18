@@ -7,37 +7,7 @@ import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { PortalBond } from '../portal';
 
-/**
- * Extend this interface to add custom popover root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverRootExtendProps {}
-
-/**
- * Extend this interface to add custom popover content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverContentExtendProps {}
-
-/**
- * Extend this interface to add custom popover indicator properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverIndicatorExtendProps {}
-
-/**
- * Extend this interface to add custom popover arrow properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverArrowExtendProps {}
-
-/**
- * Extend this interface to add custom popover trigger properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverTriggerExtendProps {}
-
-export interface PopoverRootProps extends PopoverRootExtendProps {
+export interface PopoverRootProps {
 	open?: boolean;
 	disabled?: boolean;
 	placements?: Placement[];
@@ -57,22 +27,24 @@ export interface AnimateParams {
 	open: boolean;
 }
 
-export interface PopoverContentProps<T extends HtmlElementTagName, B extends Base = Base>
-	extends HtmlAtomProps<T, B>, PopoverContentExtendProps {}
+export interface PopoverContentProps<
+	T extends HtmlElementTagName,
+	B extends Base = Base
+> extends HtmlAtomProps<T, B> {}
 
 export interface PopoverIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, PopoverIndicatorExtendProps {}
+> extends HtmlAtomProps<E, B> {}
 
 export interface PopoverArrowProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, PopoverArrowExtendProps {}
+> extends HtmlAtomProps<E, B> {}
 
-export interface PopoverTriggerProps<T extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends HtmlAtomProps<T, B>, PopoverTriggerExtendProps {
+export interface PopoverTriggerProps<
+	T extends keyof HTMLElementTagNameMap,
+	B extends Base = Base
+> extends HtmlAtomProps<T, B> {
 	children?: Snippet<[{ popover?: PopoverBond }]>;
 }

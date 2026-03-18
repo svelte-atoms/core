@@ -3,7 +3,7 @@ import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
 import type { ClassValue } from '$svelte-atoms/core/utils';
 
-export interface ElementProps<T extends ElementTagName> extends Record<string, unknown> {
+export interface ElementProps<T extends ElementTagName> {
 	class?: ClassValue | ClassValue[];
 	as?: T | (string & {});
 	global?: boolean;
@@ -13,7 +13,7 @@ export interface ElementProps<T extends ElementTagName> extends Record<string, u
 	animate?: NodeFunction<T>;
 	onmount?: NodeFunction<T>;
 	ondestroy?: NodeFunction<T>;
-	children?: Snippet<unknown[]>;
+	// children?: Children;
 
 	[key: string]: unknown;
 }
@@ -23,13 +23,11 @@ export type SvgElementTagName = keyof SVGElementTagNameMap;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {
-	children?: Snippet<[]>;
 	onintroend?: (ev: TransitionEvent) => void;
 	onexitend?: (ev: TransitionEvent) => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {
-	children?: Snippet<[]>;
 }
 
 export type ElementTagName = HtmlElementTagName | SvgElementTagName;

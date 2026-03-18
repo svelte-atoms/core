@@ -210,6 +210,7 @@ export class DrawerBond<
 			role: 'presentation',
 			'aria-hidden': true,
 			'data-kind': DRAWER_ELEMENTS_KIND.backdrop,
+			'data-open': this.state?.props?.open ?? false,
 			onclick: (ev: MouseEvent) => {
 				// Close drawer on backdrop click
 				if (!isDisabled) {

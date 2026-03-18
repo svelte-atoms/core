@@ -1,4 +1,4 @@
-import type { Component, Snippet } from 'svelte';
+import type { Component, ComponentProps, Snippet } from 'svelte';
 import { type HtmlElementTagName } from '$svelte-atoms/core/components/element';
 import type { HtmlElementProps, ElementType } from '../element/types';
 import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
@@ -12,11 +12,14 @@ export type Base<Args = any> =
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	Args extends Record<string, any> ? ComponentBase : Args extends unknown[] ? SnippetBase : never;
 
-/**
- * Extend this interface to add custom HTML atom properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface HtmlAtomExtendProps {}
+export type SnippetProps<B extends SnippetBase> = B extends Snippet<infer Args> ? Args : never;
+export type BaseProps<B extends Base> = B extends ComponentBase
+	? ComponentProps<B>
+	: B extends SnippetBase
+		? SnippetProps<B>
+		: never;
+
+type BaseChildren<B extends Base> = BaseProps<B> extends { children: infer C } ? C : Snippet;
 
 type Variants =
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,8 +31,7 @@ export interface HtmlAtomProps<
 	E extends HtmlElementTagName = HtmlElementTagName,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	B extends Base<any> = Base
->
-	extends HtmlElementProps<E>, HtmlAtomExtendProps {
+> extends HtmlElementProps<E> {
 	bond?: Bond;
 	base?: B | undefined;
 	preset?: PresetModuleName | (string & {});
@@ -39,6 +41,13 @@ export interface HtmlAtomProps<
 	 * - Function: Dynamic function that receives bond and props, returns props (legacy)
 	 */
 	variants?: Variants;
+
+	/**
+	 * Render prop for children (overridable in sub-interfaces)
+	 */
+	// children?: Snippet | BaseChildren<B>;
+
+	[key: string]: BaseProps<B>[keyof BaseProps<B>] | unknown;
 }
 
 export type { ElementType };
