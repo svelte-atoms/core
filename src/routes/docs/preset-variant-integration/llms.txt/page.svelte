@@ -1,3 +1,8 @@
+<script lang="ts">
+	let { data } = $props();
+	const { metadata } = $derived(data);
+</script>
+
 ---
 id: preset-variant-integration
 title: Preset-Variant Integration

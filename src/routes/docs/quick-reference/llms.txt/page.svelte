@@ -1,3 +1,8 @@
+<script lang="ts">
+	let { data } = $props();
+	const { metadata } = $derived(data);
+</script>
+
 ---
 id: quick-reference
 title: Quick Reference
