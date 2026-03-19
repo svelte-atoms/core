@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
+	import { inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
@@ -51,7 +51,6 @@ Define your base theme in the root layout file:
 {codeBlock(`// src/routes/+layout.svelte
 <script>
   import { setPreset } from '@svelte-atoms/core/context';
-  import { Root } from '@svelte-atoms/core/components/root';
 
   const theme = {
     button: () => ({
@@ -70,9 +69,7 @@ Define your base theme in the root layout file:
   setPreset(theme);
 </script>
 
-<Root>
-  <slot />
-</Root>`, 'svelte')}
+<slot />`, 'svelte')}
 
 ### Route-Level Preset
 
@@ -103,7 +100,6 @@ Override presets for specific component subtrees:
 {codeBlock(`// components/Settings.svelte
 <script>
   import { setPreset } from '@svelte-atoms/core/context';
-  import { Card } from '@svelte-atoms/core/components/card';
 
   // Component-level preset for this subtree
   setPreset({
@@ -190,18 +186,12 @@ setPreset({
 Control where preset classes are inserted:
 
 {codeBlock(`<script>
-  import { HtmlAtom } from '@svelte-atoms/core';
-
-  let { class: klass = '' } = $props();
+  // HtmlAtom component with preset support
 </script>
 
 <HtmlAtom
   preset="button"
-  class={[
-    'my-custom-class',  // First
-    '$preset',          // Preset inserted here
-    klass               // User classes override everything
-  ]}
+  class="my-custom-class $preset user-class"
 />
 
 <!-- Result: 'my-custom-class rounded-lg px-4 py-2 font-semibold user-class' -->`, 'svelte')}
@@ -518,10 +508,8 @@ export {};`, 'typescript')}
 ### Usage with Full Type Safety
 
 {codeBlock(`<script lang="ts">
-  import { Button } from '@svelte-atoms/core/components/button';
-  
   // TypeScript now knows about your custom variants
-  let variant: ButtonProps['variant'] = 'primary';
+  // Example of variant type from ButtonProps
 </script>
 
 <!-- Autocomplete works for variant prop -->
