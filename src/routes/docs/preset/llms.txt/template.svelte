@@ -68,8 +68,7 @@ Define your base theme in the root layout file:
 
   setPreset(theme);
 </script>
-
-<slot />`, 'svelte')}
+`, 'svelte')}
 
 ### Route-Level Preset
 
@@ -90,8 +89,7 @@ Override presets for specific routes:
     })
   });
 </script>
-
-<slot />`, 'svelte')}
+`, 'svelte')}
 
 ### Component-Level Preset
 
