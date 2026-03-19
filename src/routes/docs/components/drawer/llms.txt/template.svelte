@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Root
 
-**Preset Key:** \`drawer\`
+**Preset Key:** {inlineCode('drawer')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Content
 
-**Preset Key:** \`drawer.content\`
+**Preset Key:** {inlineCode('drawer.content')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Header
 
-**Preset Key:** \`drawer.header\`
+**Preset Key:** {inlineCode('drawer.header')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Body
 
-**Preset Key:** \`drawer.body\`
+**Preset Key:** {inlineCode('drawer.body')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Footer
 
-**Preset Key:** \`drawer.footer\`
+**Preset Key:** {inlineCode('drawer.footer')}
 
 **Props:**
 
@@ -70,7 +70,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Title
 
-**Preset Key:** \`drawer.title\`
+**Preset Key:** {inlineCode('drawer.title')}
 
 **Props:**
 
@@ -78,7 +78,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Description
 
-**Preset Key:** \`drawer.description\`
+**Preset Key:** {inlineCode('drawer.description')}
 
 **Props:**
 
@@ -86,7 +86,7 @@ The Drawer module consists of the following components:
 
 ### Drawer.Backdrop
 
-**Preset Key:** \`drawer.backdrop\`
+**Preset Key:** {inlineCode('drawer.backdrop')}
 
 **Props:**
 
@@ -96,21 +96,15 @@ The Drawer module consists of the following components:
 
 ### Basic Drawer
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Drawer Sides
 
-\`\`\`svelte
-{metadata.examples.sides}
-\`\`\`
+{codeBlock(metadata.examples.sides, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

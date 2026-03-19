@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -22,7 +22,7 @@
 
 ## Props
 
-**Preset Key:** \`button\`
+**Preset Key:** {inlineCode('button')}
 
 <PropsTable props={data.buttonProps} />
 
@@ -30,33 +30,23 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.button}
-\`\`\`
+{codeBlock(metadata.examples.button, 'svelte')}
 
 ### Variants
 
-\`\`\`svelte
-{metadata.examples.variants}
-\`\`\`
+{codeBlock(metadata.examples.variants, 'svelte')}
 
 ### Sizes
 
-\`\`\`svelte
-{metadata.examples.sizes}
-\`\`\`
+{codeBlock(metadata.examples.sizes, 'svelte')}
 
 ### States
 
-\`\`\`svelte
-{metadata.examples.states}
-\`\`\`
+{codeBlock(metadata.examples.states, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

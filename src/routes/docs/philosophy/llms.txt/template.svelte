@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
-	import { FrontMatter, CodeBlock, List } from '$docs/md/components';
+
+	import { FrontMatter, List } from '$docs/md/components';
+	import { codeBlock } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.pageTitle}
 
@@ -37,8 +38,8 @@ Svelte Atoms is built on three fundamental principles that guide every design de
 
 **Example:**
 
-<CodeBlock lang="typescript">
-{`// Creating a Bond
+{codeBlock(`
+// Creating a Bond
 const accordion = createAccordionBond({
   multiple: false,
   defaultValue: 'item-1'
@@ -48,8 +49,8 @@ const accordion = createAccordionBond({
 <Accordion bond={accordion}>
   <AccordionItem value="item-1">...</AccordionItem>
   <AccordionItem value="item-2">...</AccordionItem>
-</Accordion>`}
-</CodeBlock>
+</Accordion>
+`, 'typescript')}
 
 ### Bond Features
 
@@ -112,8 +113,8 @@ It's important to understand what Svelte Atoms is NOT trying to be:
 
 Instead of a monolithic component with 50 props:
 
-<CodeBlock lang="svelte">
-{`<!-- Other libraries -->
+{codeBlock(`
+<!-- Other libraries -->
 <DataTable
   data={data}
   columns={columns}
@@ -126,13 +127,13 @@ Instead of a monolithic component with 50 props:
   renderHeader={CustomHeader}
   renderRow={CustomRow}
   /* 40 more props... */
-/>`}
-</CodeBlock>
+/>
+`, 'svelte')}
 
 Svelte Atoms uses composition:
 
-<CodeBlock lang="svelte">
-{`<!-- Svelte Atoms -->
+{codeBlock(`
+<!-- Svelte Atoms -->
 <DataGrid.Root>
   <DataGrid.Header>
     {#each columns as column}
@@ -153,22 +154,22 @@ Svelte Atoms uses composition:
       </DataGrid.Row>
     {/each}
   </DataGrid.Body>
-</DataGrid.Root>`}
-</CodeBlock>
+</DataGrid.Root>
+`, 'svelte')}
 
 ### Styling Example
 
 Full control over styling at every level:
 
-<CodeBlock lang="svelte">
-{`<!-- Global preset -->
+{codeBlock(`
+<!-- Global preset -->
 <script>
   setPreset({
     button: () => ({
       class: 'rounded-md font-semibold transition-colors'
     })
   });
-<` + `/script>
+</script>
 
 <!-- Component props -->
 <Button 
@@ -179,18 +180,18 @@ Full control over styling at every level:
   Click me
 </Button>
 
-<!-- Result: preset + variant + size + custom classes merged intelligently -->`}
-</CodeBlock>
+<!-- Result: preset + variant + size + custom classes merged intelligently -->
+`, 'svelte')}
 
 ### Bond Example
 
 State management without prop drilling:
 
-<CodeBlock lang="svelte">
-{`<!-- Root component creates and shares bond -->
+{codeBlock(`
+<!-- Root component creates and shares bond -->
 <script>
   const tabsBond = createTabsBond({ value: 'tab1' });
-<` + `/script>
+</script>
 
 <Tabs.Root bond={tabsBond}>
   <Tabs.Header>
@@ -203,8 +204,8 @@ State management without prop drilling:
     <!-- Panel also accesses bond via context -->
     Content 1
   </Tabs.Panel>
-</Tabs.Root>`}
-</CodeBlock>
+</Tabs.Root>
+`, 'svelte')}
 
 ## Comparison with Other Approaches
 

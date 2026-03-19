@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { codeBlock, inlineCode } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Component Usage Patterns
 
@@ -12,24 +13,21 @@
 
 Components follow a hierarchical naming pattern using dot notation:
 
-\`\`\`svelte
-<Form.Root>
+{codeBlock(`<Form.Root>
 	<Form.Field>
 		<Form.Label />
 		<Form.Control />
 	</Form.Field>
-</Form.Root>
-\`\`\`
+</Form.Root>`, 'svelte')}
 
 ## Naming Convention
 
-- **Namespace** = Component family (e.g., \`Form\`, \`Button\`, \`Dropdown\`)
-- **Atom** = Specific component within the family (e.g., \`Root\`, \`Field\`, \`Label\`)
+- **Namespace** = Component family (e.g., {inlineCode('Form')}, {inlineCode('Button')}, {inlineCode('Dropdown')})
+- **Atom** = Specific component within the family (e.g., {inlineCode('Root')}, {inlineCode('Field')}, {inlineCode('Label')})
 
 ## Import Pattern
 
-\`\`\`javascript
-import { newLine, md } from '$docs/md/template';
+{codeBlock(`import { newLine, md, inlineCode, codeBlock } from '$docs/md/template';
 import { Form } from '$lib/components/form';
 
 // Usage
@@ -38,8 +36,7 @@ import { Form } from '$lib/components/form';
 		<Form.Label>Username</Form.Label>
 		<Form.Control type="text" />
 	</Form.Field>
-</Form.Root>;
-\`\`\`
+</Form.Root>;`, 'javascript')}
 
 ## Benefits
 
@@ -50,6 +47,6 @@ import { Form } from '$lib/components/form';
 
 ## Examples
 
-- \`Button.Root\`, \`Button.Icon\`, \`Button.Text\`
-- \`Dropdown.Root\`, \`Dropdown.Trigger\`, \`Dropdown.Content\`
-- \`Form.Root\`, \`Form.Field\`, \`Form.Label\`, \`Form.Control\`
+- {inlineCode('Button.Root')}, {inlineCode('Button.Icon')}, {inlineCode('Button.Text')}
+- {inlineCode('Dropdown.Root')}, {inlineCode('Dropdown.Trigger')}, {inlineCode('Dropdown.Content')}
+- {inlineCode('Form.Root')}, {inlineCode('Form.Field')}, {inlineCode('Form.Label')}, {inlineCode('Form.Control')}

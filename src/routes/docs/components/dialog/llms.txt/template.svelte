@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Root
 
-**Preset Key:** \`dialog\`
+**Preset Key:** {inlineCode('dialog')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Content
 
-**Preset Key:** \`dialog.content\`
+**Preset Key:** {inlineCode('dialog.content')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Header
 
-**Preset Key:** \`dialog.header\`
+**Preset Key:** {inlineCode('dialog.header')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Body
 
-**Preset Key:** \`dialog.body\`
+**Preset Key:** {inlineCode('dialog.body')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Footer
 
-**Preset Key:** \`dialog.footer\`
+**Preset Key:** {inlineCode('dialog.footer')}
 
 **Props:**
 
@@ -70,7 +70,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Title
 
-**Preset Key:** \`dialog.title\`
+**Preset Key:** {inlineCode('dialog.title')}
 
 **Props:**
 
@@ -78,7 +78,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.Description
 
-**Preset Key:** \`dialog.description\`
+**Preset Key:** {inlineCode('dialog.description')}
 
 **Props:**
 
@@ -86,7 +86,7 @@ The Dialog module consists of the following components:
 
 ### Dialog.CloseButton
 
-**Preset Key:** \`dialog.closeButton\`
+**Preset Key:** {inlineCode('dialog.closeButton')}
 
 **Props:**
 
@@ -96,35 +96,25 @@ The Dialog module consists of the following components:
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Alert Dialog
 
-\`\`\`svelte
-{metadata.examples.alert}
-\`\`\`
+{codeBlock(metadata.examples.alert, 'svelte')}
 
 ### Controlled Dialog
 
-\`\`\`svelte
-{metadata.examples.controlled}
-\`\`\`
+{codeBlock(metadata.examples.controlled, 'svelte')}
 
 ### Animated Dialog
 
-\`\`\`svelte
-{metadata.examples.animated}
-\`\`\`
+{codeBlock(metadata.examples.animated, 'svelte')}
 
 ### Preset Configuration
 
 You can customize the default styles for Dialog components by defining presets in your configuration:
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 
@@ -145,8 +135,8 @@ The module ensures accessibility by providing ARIA attributes and keyboard navig
 
 ## Dependencies
 
-- \`motion\` (for animations)
-- \`es-toolkit\` (for utilities)
+- {inlineCode('motion')} (for animations)
+- {inlineCode('es-toolkit')} (for utilities)
 
 ## License
 

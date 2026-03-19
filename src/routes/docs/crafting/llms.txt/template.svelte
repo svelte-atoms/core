@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { codeBlock, inlineCode } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
+	
 	let { data } = $props();
-	const { metadata, frontmatter } = $derived(data);
+	const { frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Crafting Components from Scratch in @svelte-atoms/core
 
@@ -16,9 +18,9 @@ Components in @svelte-atoms/core follow a **Bond-based architecture** where stat
 
 Every component consists of three layers:
 
-1. **Bond Layer** (\`bond.svelte.ts\`) - State management and DOM coordination
-2. **Root Component** (\`component-root.svelte\`) - Parent container that creates and shares the bond
-3. **Child Components** (\`component-title.svelte\`, etc.) - Access shared bond via context
+1. **Bond Layer** ({inlineCode('bond.svelte.ts')}) - State management and DOM coordination
+2. **Root Component** ({inlineCode('component-root.svelte')}) - Parent container that creates and shares the bond
+3. **Child Components** ({inlineCode('component-title.svelte')}, etc.) - Access shared bond via context
 
 ## File Structure
 
@@ -28,36 +30,29 @@ Components in @svelte-atoms/core follow consistent file organization patterns. T
 
 ### Simple Components
 
-Simple components like \`Button\` consist of a single component file without a bond.
+Simple components like {inlineCode('Button')} consist of a single component file without a bond.
 
-\`\`\`
-button/
+{codeBlock(`button/
 ├── button.svelte        # Main component file
-└── index.ts             # Exports
-\`\`\`
+└── index.ts             # Exports`, 'text')}
 
 **Example structure for Button:**
 
-\`\`\`
-button/
+{codeBlock(`button/
 ├── button.svelte
 │   └── Default export: Button component (self-contained)
 └── index.ts
-    └── export { default as Button } from './button.svelte'
-\`\`\`
+    └── export { default as Button } from './button.svelte'`, 'text')}
 
 **index.ts for simple components:**
 
-\`\`\`typescript
-export { default as Button } from './button.svelte';
-\`\`\`
+{codeBlock(`export { default as Button } from './button.svelte';`, 'typescript')}
 
 ### Compound Components
 
-Compound components like \`Popover\` consist of multiple sub-components that work together, sharing state through a bond. Bonds are **required** for compound components to enable context sharing between atoms.
+Compound components like {inlineCode('Popover')} consist of multiple sub-components that work together, sharing state through a bond. Bonds are **required** for compound components to enable context sharing between atoms.
 
-\`\`\`
-popover/
+{codeBlock(`popover/
 ├── bond.svelte.ts           # Shared bond for all sub-components
 ├── popover-root.svelte      # Root component (creates & shares bond)
 ├── popover-trigger.svelte   # Trigger sub-component
@@ -65,13 +60,11 @@ popover/
 ├── popover-arrow.svelte     # Arrow sub-component
 ├── popover-close.svelte     # Close button sub-component
 ├── atoms.ts                 # Sub-component exports
-└── index.ts                 # Main exports
-\`\`\`
+└── index.ts                 # Main exports`, 'text')}
 
 **Example structure for Popover:**
 
-\`\`\`
-popover/
+{codeBlock(`popover/
 ├── bond.svelte.ts
 │   ├── PopoverBondProps
 │   ├── PopoverBondElements { root, trigger, content, arrow, close }
@@ -95,49 +88,41 @@ popover/
 │   └── export { default as Close } from './popover-close.svelte'
 └── index.ts
     ├── export * as Popover from './atoms'
-    └── export { PopoverBond, PopoverBondState, ... } from './bond.svelte'
-\`\`\`
+    └── export { PopoverBond, PopoverBondState, ... } from './bond.svelte'`, 'text')}
 
 **atoms.ts for compound components:**
 
-\`\`\`typescript
-export { default as Root } from './popover-root.svelte';
+{codeBlock(`export { default as Root } from './popover-root.svelte';
 export { default as Trigger } from './popover-trigger.svelte';
 export { default as Content } from './popover-content.svelte';
 export { default as Arrow } from './popover-arrow.svelte';
-export { default as Close } from './popover-close.svelte';
-\`\`\`
+export { default as Close } from './popover-close.svelte';`, 'typescript')}
 
 **index.ts for compound components:**
 
-\`\`\`typescript
-export * as Popover from './atoms';
+{codeBlock(`export * as Popover from './atoms';
 export {
 	PopoverBond,
 	PopoverBondState,
 	type PopoverBondProps,
 	type PopoverBondElements
-} from './bond.svelte';
-\`\`\`
+} from './bond.svelte';`, 'typescript')}
 
 ### Usage Comparison
 
 **Simple Component (Button):**
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { Button } from '@svelte-atoms/core/components/button';
 </script>
 
 <Button variant="primary" onclick={() => console.log('clicked')}>
 	Click me
-</Button>
-\`\`\`
+</Button>`, 'svelte')}
 
 **Compound Component (Popover):**
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { Popover } from '@svelte-atoms/core/components/popover';
 </script>
 
@@ -147,32 +132,30 @@ export {
 		<p>Popover content goes here</p>
 		<Popover.Close>Close</Popover.Close>
 	</Popover.Content>
-</Popover.Root>
-\`\`\`
+</Popover.Root>`, 'svelte')}
 
 ### File Naming Conventions
 
 - **Component files**: Use kebab-case with component name prefix
-  - Simple: \`button.svelte\`
-  - Compound root: \`popover-root.svelte\`
-  - Compound parts: \`popover-trigger.svelte\`, \`popover-content.svelte\`
+  - Simple: {inlineCode('button.svelte')}
+  - Compound root: {inlineCode('popover-root.svelte')}
+  - Compound parts: {inlineCode('popover-trigger.svelte')}, {inlineCode('popover-content.svelte')}
 
-- **Bond files**: Always named \`bond.svelte.ts\`
+- **Bond files**: Always named {inlineCode('bond.svelte.ts')}
 
 - **Export files**:
-  - \`atoms.ts\` - Sub-component exports (compound only)
-  - \`index.ts\` - Main entry point
+  - {inlineCode('atoms.ts')} - Sub-component exports (compound only)
+  - {inlineCode('index.ts')} - Main entry point
 
 - **Type naming**: PascalCase with component name prefix
-  - \`ButtonBondProps\`, \`ButtonBondState\`
-  - \`PopoverBondProps\`, \`PopoverBondElements\`
+  - {inlineCode('ButtonBondProps')}, {inlineCode('ButtonBondState')}
+  - {inlineCode('PopoverBondProps')}, {inlineCode('PopoverBondElements')}
 
 ## Core Building Blocks
 
 ### 1. Base Classes
 
-\`\`\`typescript
-import { newLine, md } from '$docs/md/template';
+{codeBlock(`import { newLine, md, inlineCode, codeBlock } from '$docs/md/template';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 // BondStateProps: Base props type with optional id
@@ -197,13 +180,11 @@ export abstract class Bond<
 	abstract share(): this;
 	static get(): unknown | undefined;
 	static set(bond: unknown): unknown;
-}
-\`\`\`
+}`, 'typescript')}
 
 ### 2. Utility Functions
 
-\`\`\`typescript
-import { defineState, defineProperty } from '$svelte-atoms/core/utils';
+{codeBlock(`import { defineState, defineProperty } from '$svelte-atoms/core/utils';
 
 // defineState: Create reactive props object
 const bondProps = defineState<MyBondProps>(
@@ -219,17 +200,15 @@ defineProperty<T, R>(
   property: keyof T,
   get: () => R,
   set?: (value: R) => void
-)
-\`\`\`
+)`, 'typescript')}
 
 ## Step-by-Step: Building a Component
 
 ### Step 1: Define Bond Types and Classes
 
-Create \`my-component/bond.svelte.ts\`:
+Create {inlineCode('my-component/bond.svelte.ts')}:
 
-\`\`\`typescript
-import { createAttachmentKey } from 'svelte/attachments';
+{codeBlock(`import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
@@ -378,15 +357,13 @@ export class MyComponentBond<
 	static set(bond: MyComponentBond): MyComponentBond {
 		return setContext(MyComponentBond.CONTEXT_KEY, bond);
 	}
-}
-\`\`\`
+}`, 'typescript')}
 
 ### Step 2: Create Root Component
 
-Create \`my-component/my-component-root.svelte\`:
+Create {inlineCode('my-component/my-component-root.svelte')}:
 
-\`\`\`svelte
-<script module lang="ts">
+{codeBlock(`<script module lang="ts">
 	import type { Factory } from '$svelte-atoms/core/types';
 
 	export type MyComponentRootProps<
@@ -494,15 +471,13 @@ Create \`my-component/my-component-root.svelte\`:
 	{...rootProps}
 >
 	{@render children?.({ myComponent: bond })}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
 ### Step 3: Create Child Components
 
-Create \`my-component/my-component-title.svelte\`:
+Create {inlineCode('my-component/my-component-title.svelte')}:
 
-\`\`\`svelte
-<script module lang="ts">
+{codeBlock(`<script module lang="ts">
 	export type MyComponentTitleProps<
 		E extends keyof HTMLElementTagNameMap = 'h3',
 		B extends Base = Base
@@ -551,13 +526,11 @@ Create \`my-component/my-component-title.svelte\`:
 	{...titleProps}
 >
 	{@render children?.()}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
-Create \`my-component/my-component-content.svelte\`:
+Create {inlineCode('my-component/my-component-content.svelte')}:
 
-\`\`\`svelte
-<script module lang="ts">
+{codeBlock(`<script module lang="ts">
 	export type MyComponentContentProps<
 		E extends keyof HTMLElementTagNameMap = 'div',
 		B extends Base = Base
@@ -608,37 +581,31 @@ Create \`my-component/my-component-content.svelte\`:
 	{...contentProps}
 >
 	{@render children?.({ myComponent: bond })}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
 ### Step 4: Create Index Exports
 
-Create \`my-component/atoms.ts\`:
+Create {inlineCode('my-component/atoms.ts')}:
 
-\`\`\`typescript
-export { default as Root } from './my-component-root.svelte';
+{codeBlock(`export { default as Root } from './my-component-root.svelte';
 export { default as Header } from './my-component-header.svelte';
 export { default as Title } from './my-component-title.svelte';
 export { default as Content } from './my-component-content.svelte';
-export { default as Footer } from './my-component-footer.svelte';
-\`\`\`
+export { default as Footer } from './my-component-footer.svelte';`, 'typescript')}
 
-Create \`my-component/index.ts\`:
+Create {inlineCode('my-component/index.ts')}:
 
-\`\`\`typescript
-export * as MyComponent from './atoms';
+{codeBlock(`export * as MyComponent from './atoms';
 export {
 	MyComponentBond,
 	MyComponentBondState,
 	type MyComponentBondProps,
 	type MyComponentBondElements
-} from './bond.svelte';
-\`\`\`
+} from './bond.svelte';`, 'typescript')}
 
 ### Step 5: Usage
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { MyComponent } from '@svelte-atoms/core/components/my-component';
 	import { Button } from '@svelte-atoms/core/components/button';
 
@@ -665,17 +632,15 @@ export {
 			<Button>Action</Button>
 		</MyComponent.Footer>
 	{/snippet}
-</MyComponent.Root>
-\`\`\`
+</MyComponent.Root>`, 'svelte')}
 
 ## Key Patterns
 
 ### 1. Reactive Props with defineState
 
-Use \`defineState\` and \`defineProperty\` to create reactive props that sync with component props:
+Use {inlineCode('defineState')} and {inlineCode('defineProperty')} to create reactive props that sync with component props:
 
-\`\`\`typescript
-const bondProps = defineState<MyBondProps>(
+{codeBlock(`const bondProps = defineState<MyBondProps>(
 	[
 		// Two-way binding: changes in component prop update bond, vice versa
 		defineProperty(
@@ -693,20 +658,18 @@ const bondProps = defineState<MyBondProps>(
 		defineProperty('isActive', () => open && !disabled)
 	],
 	() => ({ extend: {} }) // Base props
-);
-\`\`\`
+);`, 'typescript')}
 
 ### 2. Element Prop Generators
 
 Each Bond method returns props object with:
 
-- **Unique ID**: \`getElementId(this.id, kind)\`
+- **Unique ID**: {inlineCode('getElementId(this.id, kind)')}
 - **ARIA attributes**: Accessibility attributes based on state
-- **Data attributes**: \`data-kind\`, \`data-variant\`, etc.
+- **Data attributes**: {inlineCode('data-kind')}, {inlineCode('data-variant')}, etc.
 - **Attachment key**: Captures DOM element reference
 
-\`\`\`typescript
-content(props: Record<string, unknown> = {}) {
+{codeBlock(`content(props: Record<string, unknown> = {}) {
   const id = getElementId(this.id, ELEMENT_KIND.content);
   const isOpen = this.state.props.open ?? false;
 
@@ -720,15 +683,13 @@ content(props: Record<string, unknown> = {}) {
       this.elements.content = node; // Capture element
     }
   };
-}
-\`\`\`
+}`, 'typescript')}
 
 ### 3. Context Sharing
 
 Bond is shared via Svelte context:
 
-\`\`\`typescript
-// Root component: Create and share
+{codeBlock(`// Root component: Create and share
 const bond = factory(bondProps).share();
 
 // Bond.share() implementation
@@ -745,15 +706,13 @@ const bond = MyComponentBond.get();
 
 static get(): MyComponentBond | undefined {
   return getContext(MyComponentBond.CONTEXT_KEY);
-}
-\`\`\`
+}`, 'typescript')}
 
 ### 4. State Methods
 
 Add component-specific methods to BondState:
 
-\`\`\`typescript
-export class MyComponentBondState extends BondState<MyComponentBondProps> {
+{codeBlock(`export class MyComponentBondState extends BondState<MyComponentBondProps> {
 	open() {
 		this.props.open = true;
 	}
@@ -776,15 +735,13 @@ export class MyComponentBondState extends BondState<MyComponentBondProps> {
 	isValid() {
 		return this.props.value !== undefined;
 	}
-}
-\`\`\`
+}`, 'typescript')}
 
 ### 5. Binding Lifecycle Hooks
 
 Bind animation/lifecycle hooks to bond.state to pass state to callbacks:
 
-\`\`\`svelte
-<HtmlAtom
+{codeBlock(`<HtmlAtom
   {bond}
   enter={enter?.bind(bond.state)}
   exit={exit?.bind(bond.state)}
@@ -793,27 +750,23 @@ Bind animation/lifecycle hooks to bond.state to pass state to callbacks:
   onmount={onmount?.bind(bond.state)}
   ondestroy={ondestroy?.bind(bond.state)}
   {...props}
->
-\`\`\`
+>`, 'svelte')}
 
-This allows hooks to receive bond state as \`this\`:
+This allows hooks to receive bond state as {inlineCode('this')}:
 
-\`\`\`svelte
-<MyComponent.Root
+{codeBlock(`<MyComponent.Root
   enter={function(node) {
-    // \`this\` is MyComponentBondState
+    // {inlineCode('this')} is MyComponentBondState
     console.log('Opening:', this.props.open);
     return animate(node, { opacity: [0, 1] });
   }}
->
-\`\`\`
+>`, 'svelte')}
 
 ### 6. Factory Pattern
 
 Allow custom bond creation via factory prop:
 
-\`\`\`typescript
-type MyComponentRootProps = {
+{codeBlock(`type MyComponentRootProps = {
   factory?: Factory<MyComponentBond>;
 };
 
@@ -828,15 +781,13 @@ function _factory(props: typeof bondProps) {
     const state = new CustomBondState(() => props);
     return new CustomBond(state);
   }}
->
-\`\`\`
+>`, 'typescript')}
 
 ### 7. Attachment Key Pattern
 
-Use \`createAttachmentKey()\` to capture DOM elements in bond:
+Use {inlineCode('createAttachmentKey()')} to capture DOM elements in bond:
 
-\`\`\`typescript
-[createAttachmentKey()]: (node: HTMLElement) => {
+{codeBlock(`[createAttachmentKey()]: (node: HTMLElement) => {
   this.elements.content = node;
 
   // Optional: Do setup
@@ -846,8 +797,7 @@ Use \`createAttachmentKey()\` to capture DOM elements in bond:
   return () => {
     node.removeEventListener('scroll', handleScroll);
   };
-}
-\`\`\`
+}`, 'typescript')}
 
 ## Advanced Patterns
 
@@ -855,8 +805,7 @@ Use \`createAttachmentKey()\` to capture DOM elements in bond:
 
 Create component that extends another:
 
-\`\`\`typescript
-// Dropdown extends Popover
+{codeBlock(`// Dropdown extends Popover
 export class DropdownBond<
 	Props extends DropdownBondProps = DropdownBondProps,
 	State extends DropdownBondState<Props> = DropdownBondState<Props>,
@@ -874,15 +823,13 @@ export class DropdownBondState<
 > extends PopoverState<Props> {
 	// Inherit open/close/toggle from PopoverState
 	// Add dropdown-specific state
-}
-\`\`\`
+}`, 'typescript')}
 
 ### Multiple Element References
 
 Track multiple instances of same element type:
 
-\`\`\`typescript
-export type ListBondElements = {
+{codeBlock(`export type ListBondElements = {
 	root: HTMLElement;
 	items: HTMLElement[]; // Array of items
 };
@@ -903,15 +850,13 @@ export class ListBond extends Bond<ListBondProps, ListBondState, ListBondElement
 			}
 		};
 	}
-}
-\`\`\`
+}`, 'typescript')}
 
 ### Validation Integration
 
 Add validation to component state:
 
-\`\`\`typescript
-export class FieldBondState extends BondState<FieldBondProps> {
+{codeBlock(`export class FieldBondState extends BondState<FieldBondProps> {
 	#errors = $state<ValidationError[]>([]);
 
 	get errors() {
@@ -947,33 +892,32 @@ export class FieldBondState extends BondState<FieldBondProps> {
 
 		return result;
 	}
-}
-\`\`\`
+}`, 'typescript')}
 
 ## Component Checklist
 
 When creating a new component:
 
-- [ ] Define \`MyComponentBondProps\` type with all component props
-- [ ] Define \`MyComponentBondElements\` type with all managed DOM elements
-- [ ] Create element kinds object for consistent \`data-kind\` attributes
-- [ ] Create \`MyComponentBondState\` class extending \`BondState\`
+- [ ] Define {inlineCode('MyComponentBondProps')} type with all component props
+- [ ] Define {inlineCode('MyComponentBondElements')} type with all managed DOM elements
+- [ ] Create element kinds object for consistent {inlineCode('data-kind')} attributes
+- [ ] Create {inlineCode('MyComponentBondState')} class extending {inlineCode('BondState')}
 - [ ] Add state methods (open, close, validate, etc.)
-- [ ] Create \`MyComponentBond\` class extending \`Bond\`
+- [ ] Create {inlineCode('MyComponentBond')} class extending {inlineCode('Bond')}
 - [ ] Implement element prop generators (root, title, content, etc.)
-- [ ] Implement \`share()\` method
-- [ ] Implement static \`get()\` and \`set()\` methods with unique \`CONTEXT_KEY\`
-- [ ] Create root component with \`defineState\`/\`defineProperty\` for reactive props
+- [ ] Implement {inlineCode('share()')} method
+- [ ] Implement static {inlineCode('get()')} and {inlineCode('set()')} methods with unique {inlineCode('CONTEXT_KEY')}
+- [ ] Create root component with {inlineCode('defineState')}/{inlineCode('defineProperty')} for reactive props
 - [ ] Create factory function to instantiate bond
-- [ ] Call \`bond.share()\` to set in context
-- [ ] Create child components that access bond via \`MyComponentBond.get()\`
-- [ ] Merge bond props with user props using \`$derived\`
-- [ ] Bind lifecycle hooks to \`bond.state\`
-- [ ] Export all components in \`atoms.ts\`
-- [ ] Export bond classes and types in \`index.ts\`
+- [ ] Call {inlineCode('bond.share()')} to set in context
+- [ ] Create child components that access bond via {inlineCode('MyComponentBond.get()')}
+- [ ] Merge bond props with user props using {inlineCode('$derived')}
+- [ ] Bind lifecycle hooks to {inlineCode('bond.state')}
+- [ ] Export all components in {inlineCode('atoms.ts')}
+- [ ] Export bond classes and types in {inlineCode('index.ts')}
 - [ ] Add ARIA attributes for accessibility
-- [ ] Add \`data-kind\` attributes for styling hooks
-- [ ] Generate unique IDs using \`getElementId()\`
+- [ ] Add {inlineCode('data-kind')} attributes for styling hooks
+- [ ] Generate unique IDs using {inlineCode('getElementId()')}
 
 ## Summary
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Tabs module consists of the following components:
 
 ### Tabs.Root
 
-**Preset Key:** \`tabs\`
+**Preset Key:** {inlineCode('tabs')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Tabs module consists of the following components:
 
 ### Tabs.Header
 
-**Preset Key:** \`tabs.header\`
+**Preset Key:** {inlineCode('tabs.header')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Tabs module consists of the following components:
 
 ### Tabs.Body
 
-**Preset Key:** \`tabs.body\`
+**Preset Key:** {inlineCode('tabs.body')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Tabs module consists of the following components:
 
 ### Tabs.Content
 
-**Preset Key:** \`tabs.content\`
+**Preset Key:** {inlineCode('tabs.content')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Tabs module consists of the following components:
 
 ### Tab.Header
 
-**Preset Key:** \`tab.header\`
+**Preset Key:** {inlineCode('tab.header')}
 
 **Props:**
 
@@ -70,7 +70,7 @@ The Tabs module consists of the following components:
 
 ### Tab.Body
 
-**Preset Key:** \`tab.body\`
+**Preset Key:** {inlineCode('tab.body')}
 
 **Props:**
 
@@ -78,7 +78,7 @@ The Tabs module consists of the following components:
 
 ### Tab.Description
 
-**Preset Key:** \`tab.description\`
+**Preset Key:** {inlineCode('tab.description')}
 
 **Props:**
 
@@ -88,15 +88,11 @@ The Tabs module consists of the following components:
 
 ### Basic Usage
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

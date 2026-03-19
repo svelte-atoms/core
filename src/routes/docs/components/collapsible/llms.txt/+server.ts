@@ -1,9 +1,10 @@
-import { render } from 'svelte/server';
+
 import Page from './template.svelte';
 import { metadata } from '../shared';
 import { collapsibleRootProps } from '../props';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
+import { renderLlmContent } from '$docs/utils/render-llm';
 
 const frontmatter: Frontmatter = {
 	id: 'collapsible',
@@ -18,12 +19,7 @@ const frontmatter: Frontmatter = {
 
 
 export function GET() {
-	const { body } = render(Page, { props: { data: { frontmatter, metadata, collapsibleRootProps } } });
-	const text = body
-		.replace(/<!--[\s\S]*?-->/g, '')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&amp;/g, '&');
+	const text = renderLlmContent(Page, { frontmatter, metadata, collapsibleRootProps });
 
 	return new Response(text, {
 		headers: { 'Content-Type': 'text/plain; charset=utf-8' }

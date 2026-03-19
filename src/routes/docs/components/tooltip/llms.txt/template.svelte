@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Tooltip module consists of the following components:
 
 ### Tooltip.Trigger
 
-**Preset Key:** \`tooltip\`
+**Preset Key:** {inlineCode('tooltip')}
 
 <PropsTable props={data.tooltipTriggerProps} />
 
@@ -38,21 +38,15 @@ The Tooltip module consists of the following components:
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Placement Options
 
-\`\`\`svelte
-{metadata.examples.placement}
-\`\`\`
+{codeBlock(metadata.examples.placement, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,13 +30,13 @@ The Input module consists of the following components:
 
 ### Input.Root
 
-**Preset Key:** \`input\`
+**Preset Key:** {inlineCode('input')}
 
 <PropsTable props={data.inputRootProps} />
 
 ### Input.Control
 
-**Preset Key:** \`input.control\`
+**Preset Key:** {inlineCode('input.control')}
 
 <PropsTable props={data.inputControlProps} />
 
@@ -44,33 +44,23 @@ The Input module consists of the following components:
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Input Types
 
-\`\`\`svelte
-{metadata.examples.types}
-\`\`\`
+{codeBlock(metadata.examples.types, 'svelte')}
 
 ### With Icon
 
-\`\`\`svelte
-{metadata.examples.withIcon}
-\`\`\`
+{codeBlock(metadata.examples.withIcon, 'svelte')}
 
 ### With Placeholder
 
-\`\`\`svelte
-{metadata.examples.withPlaceholder}
-\`\`\`
+{codeBlock(metadata.examples.withPlaceholder, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

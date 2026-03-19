@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}
@@ -28,10 +28,9 @@ Before getting started, make sure your project meets the following requirements:
 
 ## Installation
 
-Install \`@svelte-atoms/core\` using your preferred package manager:
+Install {inlineCode('@svelte-atoms/core')} using your preferred package manager:
 
-\`\`\`bash
-# npm
+{codeBlock(`# npm
 npm install @svelte-atoms/core
 
 # pnpm
@@ -41,8 +40,7 @@ pnpm add @svelte-atoms/core
 yarn add @svelte-atoms/core
 
 # bun
-bun add @svelte-atoms/core
-\`\`\`
+bun add @svelte-atoms/core`, 'bash')}
 
 ## Configuration
 
@@ -57,14 +55,12 @@ bun add @svelte-atoms/core
 
 Import the internal style file in your root layout file:
 
-\`\`\`svelte
-<!-- src/routes/+layout.svelte -->
+{codeBlock(`<!-- src/routes/+layout.svelte -->
 <script>
   import '@svelte-atoms/core/styles/internal.css';
 </script>
 
-<slot />
-\`\`\`
+<slot />`, 'svelte')}
 
 **Important:** The internal styles are minimal and only include necessary component styles. They don't include any opinionated styling or themes.
 
@@ -72,8 +68,7 @@ Import the internal style file in your root layout file:
 
 Configure Tailwind CSS and CSS variables for theming:
 
-\`\`\`css
-/* src/app.css */
+{codeBlock(`/* src/app.css */
 @import 'tailwindcss';
 
 @layer base {
@@ -120,8 +115,7 @@ Configure Tailwind CSS and CSS variables for theming:
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-}
-\`\`\`
+}`, 'css')}
 
 **Note:** These are example color tokens. Customize them to match your brand and design system.
 
@@ -129,8 +123,7 @@ Configure Tailwind CSS and CSS variables for theming:
 
 Set up global component presets for consistent styling:
 
-\`\`\`typescript
-// src/preset.ts
+{codeBlock(`// src/preset.ts
 import { setPreset } from '@svelte-atoms/core/context';
 
 setPreset({
@@ -149,27 +142,23 @@ setPreset({
   'card.body': () => ({
     class: 'p-6 pt-0'
   })
-});
-\`\`\`
+});`, 'typescript')}
 
 Then import this preset in your root layout:
 
-\`\`\`svelte
-<!-- src/routes/+layout.svelte -->
+{codeBlock(`<!-- src/routes/+layout.svelte -->
 <script>
   import '@svelte-atoms/core/styles/internal.css';
   import '../preset';
 </script>
 
-<slot />
-\`\`\`
+<slot />`, 'svelte')}
 
 ## Your First Component
 
 Now you're ready to use Svelte Atoms components! Here's a simple example:
 
-\`\`\`svelte
-<!-- src/routes/+page.svelte -->
+{codeBlock(`<!-- src/routes/+page.svelte -->
 <script>
   import { Button } from '@svelte-atoms/core/components/button';
   import { Card } from '@svelte-atoms/core/components/card';
@@ -193,8 +182,7 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
       </Button>
     </div>
   </Card.Body>
-</Card.Root>
-\`\`\`
+</Card.Root>`, 'svelte')}
 
 **Success!** You now have a working Svelte Atoms setup. The button and card will use the presets you configured.
 
@@ -216,9 +204,9 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 **Problem:** Components render but have no styles.
 
 **Solution:** 
-- Ensure you imported \`@svelte-atoms/core/styles/internal.css\` in your root layout
+- Ensure you imported {inlineCode('@svelte-atoms/core/styles/internal.css')} in your root layout
 - Verify Tailwind CSS is configured correctly
-- Check that CSS variables are defined in your \`app.css\`
+- Check that CSS variables are defined in your {inlineCode('app.css')}
 
 ### Type Errors
 
@@ -226,16 +214,16 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 
 **Solution:**
 - Make sure you're using TypeScript 5.0 or higher
-- Verify Svelte 5 is installed (\`^5.0.0\`)
-- Check that your \`svelte.config.js\` is configured for TypeScript
+- Verify Svelte 5 is installed ({inlineCode('^5.0.0')})
+- Check that your {inlineCode('svelte.config.js')} is configured for TypeScript
 
 ### Import Errors
 
 **Problem:** Can't import components or utilities.
 
 **Solution:**
-- Ensure \`@svelte-atoms/core\` is installed correctly
-- Try deleting \`node_modules\` and reinstalling
+- Ensure {inlineCode('@svelte-atoms/core')} is installed correctly
+- Try deleting {inlineCode('node_modules')} and reinstalling
 - Check your package manager version
 
 ### Preset Not Working
@@ -244,8 +232,8 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 
 **Solution:**
 - Verify you're importing your preset file in the root layout
-- Check that \`setPreset\` is called before components are rendered
-- Ensure components have the correct \`preset\` prop value
+- Check that {inlineCode('setPreset')} is called before components are rendered
+- Ensure components have the correct {inlineCode('preset')} prop value
 
 ## Additional Setup
 
@@ -253,8 +241,7 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 
 To support dark mode, add a class toggle to your root component:
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
   let darkMode = $state(false);
 </script>
 
@@ -264,30 +251,26 @@ To support dark mode, add a class toggle to your root component:
 
 <button onclick={() => darkMode = !darkMode}>
   Toggle Dark Mode
-</button>
-\`\`\`
+</button>`, 'svelte')}
 
 ### Custom Fonts
 
-Add custom fonts to your \`app.css\`:
+Add custom fonts to your {inlineCode('app.css')}:
 
-\`\`\`css
-@import 'tailwindcss';
+{codeBlock(`@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
   }
-}
-\`\`\`
+}`, 'css')}
 
 ### Tailwind Configuration
 
 Extend Tailwind to include additional utilities:
 
-\`\`\`javascript
-// tailwind.config.js
+{codeBlock(`// tailwind.config.js
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
@@ -300,15 +283,13 @@ export default {
       }
     }
   }
-};
-\`\`\`
+};`, 'javascript')}
 
 ## Examples
 
 ### Button Variants
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
   import { Button } from '@svelte-atoms/core/components/button';
 </script>
 
@@ -317,13 +298,11 @@ export default {
   <Button variant="secondary">Secondary</Button>
   <Button variant="outline">Outline</Button>
   <Button variant="ghost">Ghost</Button>
-</div>
-\`\`\`
+</div>`, 'svelte')}
 
 ### Form Example
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
   import { Form } from '@svelte-atoms/core/components/form';
   import { Input } from '@svelte-atoms/core/components/input';
   import { Label } from '@svelte-atoms/core/components/label';
@@ -346,13 +325,11 @@ export default {
   </Form.Field>
   
   <Button type="submit">Submit</Button>
-</Form.Root>
-\`\`\`
+</Form.Root>`, 'svelte')}
 
 ### Dialog Example
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
   import { Dialog } from '@svelte-atoms/core/components/dialog';
   import { Button } from '@svelte-atoms/core/components/button';
   
@@ -381,8 +358,7 @@ export default {
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
-</Dialog.Root>
-\`\`\`
+</Dialog.Root>`, 'svelte')}
 
 ## Tips for Success
 

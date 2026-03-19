@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Menu module consists of the following components:
 
 ### Menu.List (Root)
 
-**Preset Key:** \`menu\`
+**Preset Key:** {inlineCode('menu')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Menu module consists of the following components:
 
 ### Menu.Item
 
-**Preset Key:** \`menu.item\`
+**Preset Key:** {inlineCode('menu.item')}
 
 **Props:**
 
@@ -48,21 +48,15 @@ The Menu module consists of the following components:
 
 ### Basic Menu
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Interactive Menu
 
-\`\`\`svelte
-{metadata.examples.interactive}
-\`\`\`
+{codeBlock(metadata.examples.interactive, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 
@@ -81,7 +75,7 @@ The Menu module consists of the following components:
 ## Dependencies
 
 - Built on top of Popover module for positioning
-- Uses \`@floating-ui/dom\` for positioning calculations
+- Uses {inlineCode('@floating-ui/dom')} for positioning calculations
 
 ## License
 

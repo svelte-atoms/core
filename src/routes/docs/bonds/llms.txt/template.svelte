@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
-	import { CodeBlock, FrontMatter, List } from '$docs/md/components';
+  import { FrontMatter, List } from '$docs/md/components';
+  import { codeBlock } from '$docs/md/template';
 
-	let { data } = $props();
-	const { metadata, frontmatter } = $derived(data);
+  let { data } = $props();
+  const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}
@@ -39,7 +39,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 
 ### Step 1: Define Props Type
 
-<CodeBlock lang="typescript">{`
+{codeBlock(`
 import { BondStateProps } from '@svelte-atoms/core';
 
 // Define the props type for your bond state
@@ -48,24 +48,21 @@ export type MyComponentStateProps = BondStateProps & {
   disabled: boolean;
   // Add your component-specific props
 };
-`}</CodeBlock>
+`, 'typescript')}
 
 ### Step 2: Define DOM Elements
 
-<CodeBlock lang="typescript">{`
-// Define the HTML elements your bond will manage
+{codeBlock(`// Define the HTML elements your bond will manage
 export type MyComponentDomElements = {
   root: HTMLElement;
   trigger: HTMLElement;
   content: HTMLElement;
   // Add your component-specific elements
-};
-`}</CodeBlock>
+};`, 'typescript')}
 
 ### Step 3: Create BondState Class
 
-<CodeBlock lang="typescript">{`
-import { BondState } from '@svelte-atoms/core';
+{codeBlock(`import { BondState } from '@svelte-atoms/core';
 
 // Create the BondState class to manage reactive state
 export class MyComponentState<
@@ -92,13 +89,11 @@ export class MyComponentState<
   toggle() {
     this.props.open = !this.props.open;
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ### Step 4: Create Bond Class
 
-<CodeBlock lang="typescript">{`
-import { Bond } from '@svelte-atoms/core';
+{codeBlock(`import { Bond } from '@svelte-atoms/core';
 import { getContext, setContext } from 'svelte';
 
 // Create the Bond class to manage elements and props
@@ -154,13 +149,11 @@ export class MyComponentBond<
   static override set(bond: MyComponentBond) {
     return setContext(MyComponentBond.CONTEXT_KEY, bond);
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ### Step 5: Use in Component
 
-<CodeBlock lang="svelte">{`
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   import { MyComponentBond, MyComponentState } from './bond.svelte';
   
   let { open = $bindable(false), disabled = false } = $props();
@@ -184,8 +177,7 @@ export class MyComponentBond<
   <div {...bond.content()}>
     Content goes here
   </div>
-</div>
-`}</CodeBlock>
+</div>`, 'svelte')}
 
 ## Bond Patterns
 
@@ -202,8 +194,7 @@ export class MyComponentBond<
 
 ### Reactive Props with defineState
 
-<CodeBlock lang="typescript">{`
-import { defineState, defineProperty } from '@svelte-atoms/core/utils';
+{codeBlock(`import { defineState, defineProperty } from '@svelte-atoms/core/utils';
 
 let open = $bindable(false);
 
@@ -219,13 +210,11 @@ const bondProps = defineState<DialogBondProps>([
 }));
 
 // Pass as function
-const state = new DialogBondState(() => bondProps);
-`}</CodeBlock>
+const state = new DialogBondState(() => bondProps);`, 'typescript')}
 
 ### Element Props with Spread
 
-<CodeBlock lang="svelte">{`
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   const bond = new DialogBond(state).share();
 </script>
 
@@ -233,13 +222,11 @@ const state = new DialogBondState(() => bondProps);
 <div {...bond.root()}>
   <h2 {...bond.title()}>Dialog Title</h2>
   <div {...bond.body()}>Content</div>
-</div>
-`}</CodeBlock>
+</div>`, 'svelte')}
 
 ### Accessing Bond from Children
 
-<CodeBlock lang="svelte">{`
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   // In child component, retrieve parent bond
   const bond = DialogBond.get();
   
@@ -250,13 +237,11 @@ const state = new DialogBondState(() => bondProps);
 
 <button onclick={handleClick}>
   {bond?.state.props.open ? 'Close' : 'Open'}
-</button>
-`}</CodeBlock>
+</button>`, 'svelte')}
 
 ### Bond Factories
 
-<CodeBlock lang="svelte">{`
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   import { createTreeBond } from './factory';
   
   let { 
@@ -273,13 +258,11 @@ const state = new DialogBondState(() => bondProps);
     const state = new TreeState(() => props);
     return new TreeBond(state);
   }
-</script>
-`}</CodeBlock>
+</script>`, 'svelte')}
 
 ### Imperative Bond Access
 
-<CodeBlock lang="svelte">{`
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   import { TreeRoot } from './components';
   
   let treeRef: TreeRoot;
@@ -291,15 +274,13 @@ const state = new DialogBondState(() => bondProps);
 </script>
 
 <TreeRoot bind:this={treeRef} />
-<button onclick={handleClick}>Toggle Tree</button>
-`}</CodeBlock>
+<button onclick={handleClick}>Toggle Tree</button>`, 'svelte')}
 
 ## Type Safety
 
 Bonds are fully type-safe with TypeScript:
 
-<CodeBlock lang="typescript">{`
-// Props are strongly typed
+{codeBlock(`// Props are strongly typed
 type MyProps = BondStateProps & {
   value: string;
   onChange: (value: string) => void;
@@ -322,8 +303,7 @@ class MyBond extends Bond<MyProps, MyState, MyElements> {
       }
     };
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ## Performance Considerations
 
@@ -339,8 +319,7 @@ Bonds are designed for optimal performance:
 
 ### Dialog/Modal Bond
 
-<CodeBlock lang="typescript">{`
-class DialogState extends BondState<DialogProps> {
+{codeBlock(`class DialogState extends BondState<DialogProps> {
   get isOpen() { return this.props.open; }
   open() { this.props.open = true; }
   close() { this.props.open = false; }
@@ -360,13 +339,11 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
       onclick: () => this.state.close()
     };
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ### Tabs Bond
 
-<CodeBlock lang="typescript">{`
-class TabsState extends BondState<TabsProps> {
+{codeBlock(`class TabsState extends BondState<TabsProps> {
   #items = new SvelteMap<string, TabBond>();
   #selectedItem = $derived(this.#items.get(this.props.value));
   
@@ -379,13 +356,11 @@ class TabsState extends BondState<TabsProps> {
   registerTab(id: string, bond: TabBond) {
     this.#items.set(id, bond);
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ### Accordion Bond
 
-<CodeBlock lang="typescript">{`
-class AccordionState extends BondState<AccordionProps> {
+{codeBlock(`class AccordionState extends BondState<AccordionProps> {
   #openItems = $state<Set<string>>(new Set());
   
   isOpen(id: string) {
@@ -402,8 +377,7 @@ class AccordionState extends BondState<AccordionProps> {
       this.#openItems.add(id);
     }
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ## Best Practices
 
@@ -418,8 +392,7 @@ class AccordionState extends BondState<AccordionProps> {
 
 ## Debugging Bonds
 
-<CodeBlock lang="typescript">{`
-class MyBond extends Bond<Props, State, Elements> {
+{codeBlock(`class MyBond extends Bond<Props, State, Elements> {
   // Add debug helpers
   debug() {
     console.log('Bond State:', this.state.props);
@@ -433,15 +406,13 @@ class MyBond extends Bond<Props, State, Elements> {
     console.log('Root props:', props);
     return props;
   }
-}
-`}</CodeBlock>
+}`, 'typescript')}
 
 ## Migration from Other Patterns
 
 ### From Props Drilling
 
-<CodeBlock lang="svelte">{`
-<!-- Before: Props drilling -->
+{codeBlock(`<!-- Before: Props drilling -->
 <Parent>
   <Child {parentState} {onUpdate} />
   <Grandchild {parentState} {onUpdate} />
@@ -451,13 +422,11 @@ class MyBond extends Bond<Props, State, Elements> {
 <Parent>
   <Child />  <!-- Accesses bond via context -->
   <Grandchild />  <!-- No prop drilling -->
-</Parent>
-`}</CodeBlock>
+</Parent>`, 'svelte')}
 
 ### From Global Stores
 
-<CodeBlock lang="svelte">{`
-<!-- Before: Global store -->
+{codeBlock(`<!-- Before: Global store -->
 <script>
   import { dialogStore } from './stores';
 </script>
@@ -465,8 +434,7 @@ class MyBond extends Bond<Props, State, Elements> {
 <!-- After: Scoped bond -->
 <script>
   const bond = new DialogBond(state);
-</script>
-`}</CodeBlock>
+</script>`, 'svelte')}
 
 ## Next Steps
 

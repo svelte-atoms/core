@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Root
 
-**Preset Key:** \`dropdown\`
+**Preset Key:** {inlineCode('dropdown')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Trigger
 
-**Preset Key:** \`dropdown.trigger\`
+**Preset Key:** {inlineCode('dropdown.trigger')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Item
 
-**Preset Key:** \`dropdown.item\`
+**Preset Key:** {inlineCode('dropdown.item')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Query
 
-**Preset Key:** \`dropdown.query\`
+**Preset Key:** {inlineCode('dropdown.query')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Selections
 
-**Preset Key:** \`dropdown.selections\`
+**Preset Key:** {inlineCode('dropdown.selections')}
 
 **Props:**
 
@@ -70,7 +70,7 @@ The Dropdown module consists of the following components:
 
 ### Dropdown.Selection
 
-**Preset Key:** \`dropdown.selection\`
+**Preset Key:** {inlineCode('dropdown.selection')}
 
 **Props:**
 
@@ -80,34 +80,26 @@ The Dropdown module consists of the following components:
 
 ### Basic Dropdown
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Multiple Selection with Search
 
-\`\`\`svelte
-{metadata.examples.multiple}
-\`\`\`
+{codeBlock(metadata.examples.multiple, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Utilities
 
-### \`filterDropdownData\`
+### {inlineCode('filterDropdownData')}
 
 Helper function for filtering dropdown items based on a query string.
 
-\`\`\`typescript
-const filteredItems = filterDropdownData(
+{codeBlock(`const filteredItems = filterDropdownData(
   () => items,
   (query, item) => item.label.toLowerCase().includes(query.toLowerCase())
-);
-\`\`\`
+);`, 'typescript')}
 
 ## Accessibility
 
@@ -117,8 +109,8 @@ const filteredItems = filterDropdownData(
 
 ## Dependencies
 
-- \`@floating-ui/dom\` (for positioning)
-- \`motion\` (for animations)
+- {inlineCode('@floating-ui/dom')} (for positioning)
+- {inlineCode('motion')} (for animations)
 
 ## License
 

@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
+
 	let { data } = $props();
-	const { metadata, frontmatter } = $derived(data);
+	const { frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Import Guide for @svelte-atoms/core
 
@@ -13,40 +14,29 @@
 
 All components and utilities are exported from the main package:
 
-\`\`\`typescript
-import { ComponentName, utilityName } from '@svelte-atoms/core';
-\`\`\`
+{codeBlock(`import { ComponentName, utilityName } from '@svelte-atoms/core';`, 'typescript')}
 
 ## Common Import Patterns
 
 ### Atoms (Base Components)
 
-\`\`\`svelte
-import { Button, Input, Select, Checkbox } from '@svelte-atoms/core';
-\`\`\`
+{codeBlock(`import { Button, Input, Select, Checkbox } from '@svelte-atoms/core';`, 'svelte')}
 
 ### Bonds (Composite Components)
 
-\`\`\`svelte
-import { Dropdown, Dialog, Accordion, Tabs } from '@svelte-atoms/core';
-\`\`\`
+{codeBlock(`import { Dropdown, Dialog, Accordion, Tabs } from '@svelte-atoms/core';`, 'svelte')}
 
 ### Utilities
 
-\`\`\`svelte
-import { clickOutside, portal, focusTrap } from '@svelte-atoms/core';
-\`\`\`
+{codeBlock(`import { clickOutside, portal, focusTrap } from '@svelte-atoms/core';`, 'svelte')}
 
 ### Types
 
-\`\`\`typescript
-import type { ButtonProps, InputProps } from '@svelte-atoms/core';
-\`\`\`
+{codeBlock(`import type { ButtonProps, InputProps } from '@svelte-atoms/core';`, 'typescript')}
 
 ## Complete Example
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
   import { Button, Input, Dialog } from '@svelte-atoms/core';
 
   let showDialog = $state(false);
@@ -59,8 +49,7 @@ import type { ButtonProps, InputProps } from '@svelte-atoms/core';
   <Dialog onclose={() => showDialog = false}>
     <Input bind:value={inputValue} placeholder="Enter text..." />
   </Dialog>
-{/if}
-\`\`\`
+{/if}`, 'svelte')}
 
 ## Important Rules
 
@@ -74,15 +63,11 @@ import type { ButtonProps, InputProps } from '@svelte-atoms/core';
 
 ❌ **WRONG:**
 
-\`\`\`svelte
-import Button from '@svelte-atoms/core'; // default import
+{codeBlock(`import Button from '@svelte-atoms/core'; // default import
 import { Button } from '@svelte-atoms/core/components/button'; // subpath
-import { button } from '@svelte-atoms/core'; // wrong case
-\`\`\`
+import { button } from '@svelte-atoms/core'; // wrong case`, 'svelte')}
 
 ✅ **CORRECT:**
 
-\`\`\`svelte
-import { Button } from '@svelte-atoms/core';
-import { Button } from '@svelte-atoms/core/button';
-\`\`\`
+{codeBlock(`import { Button } from '@svelte-atoms/core';
+import { Button } from '@svelte-atoms/core/button';`, 'svelte')}

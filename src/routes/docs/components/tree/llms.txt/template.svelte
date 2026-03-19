@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Tree.Root
 
-**Preset Key:** \`tree\`
+**Preset Key:** {inlineCode('tree')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Tree.Header
 
-**Preset Key:** \`tree.header\`
+**Preset Key:** {inlineCode('tree.header')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Tree.Body
 
-**Preset Key:** \`tree.body\`
+**Preset Key:** {inlineCode('tree.body')}
 
 **Props:**
 
@@ -54,15 +54,11 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

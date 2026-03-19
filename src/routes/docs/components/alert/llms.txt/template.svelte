@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Alert module consists of the following components:
 
 ### Alert.Root
 
-**Preset Key:** \`alert\`
+**Preset Key:** {inlineCode('alert')}
 
 <PropsTable props={data.alertRootProps} />
 
@@ -42,33 +42,23 @@ The Alert module consists of the following components:
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Variants
 
-\`\`\`svelte
-{metadata.examples.variants}
-\`\`\`
+{codeBlock(metadata.examples.variants, 'svelte')}
 
 ### Dismissible Alert
 
-\`\`\`svelte
-{metadata.examples.dismissible}
-\`\`\`
+{codeBlock(metadata.examples.dismissible, 'svelte')}
 
 ### Alert with Actions
 
-\`\`\`svelte
-{metadata.examples.actions}
-\`\`\`
+{codeBlock(metadata.examples.actions, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

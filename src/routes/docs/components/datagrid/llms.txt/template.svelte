@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Datagrid.Root
 
-**Preset Key:** \`datagrid\`
+**Preset Key:** {inlineCode('datagrid')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Datagrid.Header
 
-**Preset Key:** \`datagrid.header\`
+**Preset Key:** {inlineCode('datagrid.header')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Datagrid.Body
 
-**Preset Key:** \`datagrid.body\`
+**Preset Key:** {inlineCode('datagrid.body')}
 
 **Props:**
 
@@ -52,7 +52,7 @@
 
 ### Datagrid.Footer
 
-**Preset Key:** \`datagrid.footer\`
+**Preset Key:** {inlineCode('datagrid.footer')}
 
 **Props:**
 
@@ -60,7 +60,7 @@
 
 ### Datagrid.Th
 
-**Preset Key:** \`datagrid.th\`
+**Preset Key:** {inlineCode('datagrid.th')}
 
 **Props:**
 
@@ -68,7 +68,7 @@
 
 ### Datagrid.Td
 
-**Preset Key:** \`datagrid.td\`
+**Preset Key:** {inlineCode('datagrid.td')}
 
 **Props:**
 
@@ -76,7 +76,7 @@
 
 ### Datagrid.Checkbox
 
-**Preset Key:** \`datagrid.checkbox\`
+**Preset Key:** {inlineCode('datagrid.checkbox')}
 
 **Props:**
 
@@ -84,7 +84,7 @@
 
 ### Datagrid.Tr
 
-**Preset Key:** \`datagrid.tr\`
+**Preset Key:** {inlineCode('datagrid.tr')}
 
 **Props:**
 
@@ -94,27 +94,19 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Row Selection
 
-\`\`\`svelte
-{metadata.examples.selectable}
-\`\`\`
+{codeBlock(metadata.examples.selectable, 'svelte')}
 
 ### Sortable Columns
 
-\`\`\`svelte
-{metadata.examples.sortable}
-\`\`\`
+{codeBlock(metadata.examples.sortable, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

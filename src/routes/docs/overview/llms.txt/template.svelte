@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { inlineCode } from '$docs/md/template';
+	import { codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
+	
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # @svelte-atoms/core
 
@@ -12,7 +15,7 @@
 
 ## Introduction
 
-\`@svelte-atoms/core\` is a comprehensive collection of unstyled, accessible UI components designed for Svelte 5 applications. The library embraces an atomic design philosophy where components ("atoms") are small, reusable building blocks that can be composed into complex user interfaces.
+{inlineCode('@svelte-atoms/core')} is a comprehensive collection of unstyled, accessible UI components designed for Svelte 5 applications. The library embraces an atomic design philosophy where components ("atoms") are small, reusable building blocks that can be composed into complex user interfaces.
 
 ## Philosophy
 
@@ -30,13 +33,13 @@ The library is built around two fundamental concepts inspired by chemistry:
 
 - **State Management**: Bonds maintain internal state accessible to all bonded atoms
 - **Scope**: Bond state is available to bonded atoms and their descendant components
-- **Pattern**: Bonds are typically created in \`*-root.svelte\` components and shared via context
+- **Pattern**: Bonds are typically created in {inlineCode('*-root.svelte')} components and shared via context
 
 ## Key Features
 
 ### 🎯 **Svelte 5 Native**
 
-Built from the ground up for Svelte 5, leveraging modern runes (\`$state\`, \`$derived\`, \`$effect\`) for optimal reactivity and performance.
+Built from the ground up for Svelte 5, leveraging modern runes ({inlineCode('$state')}, {inlineCode('$derived')}, {inlineCode('$effect')}) for optimal reactivity and performance.
 
 ### ♿ **Accessibility First**
 
@@ -54,28 +57,28 @@ Components are headless by default, giving you complete control over styling:
 - No CSS shipped by default
 - Full TailwindCSS compatibility
 - Custom styling through standard props
-- Dynamic element rendering via \`as\` prop
+- Dynamic element rendering via {inlineCode('as')} prop
 
 ### 🔗 **Composable Architecture**
 
 Components follow a consistent compositional pattern:
 
-\`\`\`svelte
+{codeBlock(`
 <Component.Root>
 	<Component.Header />
 	<Component.Body />
 	<Component.Footer />
 </Component.Root>
-\`\`\`
+`, 'svelte')}
 
 ### 🎬 **Animation Ready**
 
 Built-in lifecycle hooks for seamless integration with animation libraries:
 
-- **\`initial\`**: Set initial style state
-- **\`enter\`**: Define enter animations
-- **\`exit\`**: Define exit animations
-- **\`animate\`**: Respond to data changes
+- **{inlineCode('initial')}**: Set initial style state
+- **{inlineCode('enter')}**: Define enter animations
+- **{inlineCode('exit')}**: Define exit animations
+- **{inlineCode('animate')}**: Respond to data changes
 
 Compatible with GSAP, Motion One, anime.js, and more.
 
@@ -163,7 +166,7 @@ Core utility components:
 
 ## Installation
 
-\`\`\`bash
+{codeBlock(`
 # npm
 npm install @svelte-atoms/core
 
@@ -175,23 +178,23 @@ yarn add @svelte-atoms/core
 
 # bun
 bun add @svelte-atoms/core
-\`\`\`
+`, 'bash')}
 
 ## Quick Start
 
 ### Basic Usage
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Button } from '@svelte-atoms/core/components/button';
 </script>
 
 <Button.Root onclick={() => console.log('clicked')}>Click me</Button.Root>
-\`\`\`
+`, 'svelte')}
 
 ### Composable Components
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Accordion } from '@svelte-atoms/core/components/accordion';
 
@@ -209,11 +212,11 @@ bun add @svelte-atoms/core
 		<Accordion.Item.Body>Content for section 2</Accordion.Item.Body>
 	</Accordion.Item>
 </Accordion.Root>
-\`\`\`
+`, 'svelte')}
 
 ### With State Management
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Tabs } from '@svelte-atoms/core/components/tabs';
 
@@ -239,13 +242,13 @@ bun add @svelte-atoms/core
 		</Tabs.Tab>
 	</Tabs.Body>
 </Tabs.Root>
-\`\`\`
+`, 'svelte')}
 
 ### Custom Styling
 
-Components accept standard HTML attributes including \`class\`:
+Components accept standard HTML attributes including {inlineCode('class')}:
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Card } from '@svelte-atoms/core/components/card';
 </script>
@@ -258,7 +261,7 @@ Components accept standard HTML attributes including \`class\`:
 		<button>Confirm</button>
 	</Card.Footer>
 </Card.Root>
-\`\`\`
+`, 'svelte')}
 
 ## Architecture
 
@@ -266,7 +269,7 @@ Components accept standard HTML attributes including \`class\`:
 
 Each component follows a consistent structure:
 
-\`\`\`
+{codeBlock(`
 component/
 ├── atoms.ts              # Component exports (Root, Header, Body, etc.)
 ├── bond.svelte.ts        # State management (XBond, XState classes)
@@ -274,15 +277,15 @@ component/
 ├── component-header.svelte
 ├── component-body.svelte
 └── ...
-\`\`\`
+`, 'plaintext')}
 
 ### Import Patterns
 
 Components can be imported in multiple ways:
 
-\`\`\`typescript
+{codeBlock(`
 // Named import (recommended)
-import { newLine, md } from '$docs/md/template';
+import { newLine, md, inlineCode, codeBlock } from '$docs/md/template';
 import { Button } from '@svelte-atoms/core/components/button';
 
 // Direct import
@@ -290,25 +293,25 @@ import Button from '@svelte-atoms/core/components/button/atoms';
 
 // Subcomponent import
 import { Root, Header, Body } from '@svelte-atoms/core/components/card/atoms';
-\`\`\`
+`, 'typescript')}
 
 ## Rendering System
 
-All atoms are rendered using the base \`atom.svelte\` component, which provides three rendering variants:
+All atoms are rendered using the base {inlineCode('atom.svelte')} component, which provides three rendering variants:
 
-- **\`Html\`** - Standard HTML elements
-- **\`Svg\`** - SVG elements
-- **\`Mathml\`** - MathML elements
+- **{inlineCode('Html')}** - Standard HTML elements
+- **{inlineCode('Svg')}** - SVG elements
+- **{inlineCode('Mathml')}** - MathML elements
 
 ### Dynamic Element Rendering
 
-Use the \`as\` prop to change the underlying HTML element:
+Use the {inlineCode('as')} prop to change the underlying HTML element:
 
-\`\`\`svelte
+{codeBlock(`
 <Button.Root as="a" href="/home">Link Button</Button.Root>
 
 <Button.Root as="div" role="button">Div Button</Button.Root>
-\`\`\`
+`, 'svelte')}
 
 ## Lifecycle Hooks
 
@@ -316,7 +319,7 @@ All components expose lifecycle hooks with access to the host element:
 
 ### Mount & Destroy
 
-\`\`\`svelte
+{codeBlock(`
 <Component.Root
 	onmount={(element) => {
 		console.log('Mounted:', element);
@@ -327,11 +330,11 @@ All components expose lifecycle hooks with access to the host element:
 >
 	Content
 </Component.Root>
-\`\`\`
+`, 'svelte')}
 
 ### Animation Hooks
 
-\`\`\`svelte
+{codeBlock(`
 <script>
 	import { animate } from 'motion';
 
@@ -356,7 +359,7 @@ All components expose lifecycle hooks with access to the host element:
 		<!-- Dialog content -->
 	</Dialog.Content>
 </Dialog.Root>
-\`\`\`
+`, 'svelte')}
 
 ## Accessibility
 
@@ -376,11 +379,11 @@ Components support standard keyboard interactions:
 
 Components automatically apply appropriate ARIA attributes:
 
-- \`role\` attributes for semantic meaning
-- \`aria-label\` for accessible names
-- \`aria-expanded\` for collapsible content
-- \`aria-selected\` for selection states
-- \`aria-disabled\` for disabled states
+- {inlineCode('role')} attributes for semantic meaning
+- {inlineCode('aria-label')} for accessible names
+- {inlineCode('aria-expanded')} for collapsible content
+- {inlineCode('aria-selected')} for selection states
+- {inlineCode('aria-disabled')} for disabled states
 
 ### Focus Management
 
@@ -395,7 +398,7 @@ Components automatically apply appropriate ARIA attributes:
 
 Use Svelte 5 runes for local state:
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
@@ -415,13 +418,13 @@ Use Svelte 5 runes for local state:
 		<Dropdown.Item value="2">Option 2</Dropdown.Item>
 	</Dropdown.List>
 </Dropdown.Root>
-\`\`\`
+`, 'svelte')}
 
 ### Composition Patterns
 
 Build reusable composed components:
 
-\`\`\`svelte
+{codeBlock(`
 <!-- UserCard.svelte -->
 <script lang="ts">
 	import { Card } from '@svelte-atoms/core/components/card';
@@ -443,13 +446,13 @@ Build reusable composed components:
 		{user.bio}
 	</Card.Body>
 </Card.Root>
-\`\`\`
+`, 'svelte')}
 
 ### Styling Approach
 
 Use utility-first CSS or custom classes:
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
 	import { Button } from '@svelte-atoms/core/components/button';
 
@@ -465,13 +468,13 @@ Use utility-first CSS or custom classes:
 <Button.Root class="{variants[variant]} rounded px-4 py-2">
 	<slot />
 </Button.Root>
-\`\`\`
+`, 'svelte')}
 
 ## TypeScript Support
 
 The library is fully typed with comprehensive TypeScript definitions:
 
-\`\`\`typescript
+{codeBlock(`
 import type { ComponentProps } from 'svelte';
 import type { Button } from '@svelte-atoms/core/components/button';
 
@@ -481,7 +484,7 @@ interface CustomButtonProps extends ButtonProps {
 	variant?: 'primary' | 'secondary' | 'danger';
 	size?: 'sm' | 'md' | 'lg';
 }
-\`\`\`
+`, 'typescript')}
 
 ## Browser Support
 
@@ -507,7 +510,7 @@ MIT © [ryu-man](https://github.com/ryu-man)
 
 ## Related Packages
 
-- \`@svelte-atoms/alchimist\` - Data visualization and charting built on top of \`@svelte-atoms/core\`
+- {inlineCode('@svelte-atoms/alchimist')} - Data visualization and charting built on top of {inlineCode('@svelte-atoms/core')}
 
 ---
 

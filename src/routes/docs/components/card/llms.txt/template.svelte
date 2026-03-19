@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Card module consists of the following components:
 
 ### Card.Root
 
-**Preset Key:** \`card\`
+**Preset Key:** {inlineCode('card')}
 
 <PropsTable props={data.cardRootProps} />
 
@@ -42,33 +42,23 @@ The Card module consists of the following components:
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Variants
 
-\`\`\`svelte
-{metadata.examples.variants}
-\`\`\`
+{codeBlock(metadata.examples.variants, 'svelte')}
 
 ### Clickable Card
 
-\`\`\`svelte
-{metadata.examples.clickable}
-\`\`\`
+{codeBlock(metadata.examples.clickable, 'svelte')}
 
 ### Card with Actions
 
-\`\`\`svelte
-{metadata.examples.actions}
-\`\`\`
+{codeBlock(metadata.examples.actions, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

@@ -1,7 +1,8 @@
-import { render } from 'svelte/server';
+
 import Page from './template.svelte';
 
 import type { Frontmatter } from '$docs/md/frontmatter';
+import { renderLlmContent } from '$docs/utils/render-llm';
 
 const frontmatter: Frontmatter = {
 	id: 'crafting',
@@ -12,15 +13,8 @@ const frontmatter: Frontmatter = {
 	related: ['motion', 'styling', 'variants', 'preset', 'naming-convention', 'composition'],
 };
 
-
-
 export function GET() {
-	const { body } = render(Page, { props: { data: { frontmatter } } });
-	const text = body
-		.replace(/<!--[\s\S]*?-->/g, '')
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(/&amp;/g, '&');
+	const text = renderLlmContent(Page, { frontmatter });
 
 	return new Response(text, {
 		headers: { 'Content-Type': 'text/plain; charset=utf-8',

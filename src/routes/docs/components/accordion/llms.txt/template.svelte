@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Accordion module consists of the following components:
 
 ### Accordion (Root)
 
-**Preset Key:** \`accordion\`
+**Preset Key:** {inlineCode('accordion')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Accordion module consists of the following components:
 
 ### AccordionItem.Root
 
-**Preset Key:** \`accordion.item\`
+**Preset Key:** {inlineCode('accordion.item')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Accordion module consists of the following components:
 
 ### AccordionItem.Header
 
-**Preset Key:** \`accordion.item.header\`
+**Preset Key:** {inlineCode('accordion.item.header')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Accordion module consists of the following components:
 
 ### AccordionItem.Body
 
-**Preset Key:** \`accordion.item.body\`
+**Preset Key:** {inlineCode('accordion.item.body')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Accordion module consists of the following components:
 
 ### AccordionItem.Indicator
 
-**Preset Key:** \`accordion.item.indicator\`
+**Preset Key:** {inlineCode('accordion.item.indicator')}
 
 **Props:**
 
@@ -72,27 +72,19 @@ The Accordion module consists of the following components:
 
 ### Basic Accordion
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Collapsible Items
 
-\`\`\`svelte
-{metadata.examples.collapsible}
-\`\`\`
+{codeBlock(metadata.examples.collapsible, 'svelte')}
 
 ### Multiple Open Items
 
-\`\`\`svelte
-{metadata.examples.multiple}
-\`\`\`
+{codeBlock(metadata.examples.multiple, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

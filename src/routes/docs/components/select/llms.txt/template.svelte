@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Select module consists of the following components:
 
 ### Select.Root
 
-**Preset Key:** \`select\`
+**Preset Key:** {inlineCode('select')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Select module consists of the following components:
 
 ### Select.Trigger
 
-**Preset Key:** \`select.trigger\`
+**Preset Key:** {inlineCode('select.trigger')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Select module consists of the following components:
 
 ### Select.Item
 
-**Preset Key:** \`select.item\`
+**Preset Key:** {inlineCode('select.item')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Select module consists of the following components:
 
 ### Select.Query
 
-**Preset Key:** \`select.query\`
+**Preset Key:** {inlineCode('select.query')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Select module consists of the following components:
 
 ### Select.Selections
 
-**Preset Key:** \`select.selections\`
+**Preset Key:** {inlineCode('select.selections')}
 
 **Props:**
 
@@ -70,7 +70,7 @@ The Select module consists of the following components:
 
 ### Select.Selection
 
-**Preset Key:** \`select.selection\`
+**Preset Key:** {inlineCode('select.selection')}
 
 **Props:**
 
@@ -80,34 +80,26 @@ The Select module consists of the following components:
 
 ### Basic Select
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Multiple Selection with Search
 
-\`\`\`svelte
-{metadata.examples.multiple}
-\`\`\`
+{codeBlock(metadata.examples.multiple, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Utilities
 
-### \`filterSelectData\`
+### {inlineCode('filterSelectData')}
 
 Helper function for filtering select items based on a query string.
 
-\`\`\`typescript
-const filteredItems = filterSelectData(
+{codeBlock(`const filteredItems = filterSelectData(
   () => items,
   (query, item) => item.label.toLowerCase().includes(query.toLowerCase())
-);
-\`\`\`
+);`, 'typescript')}
 
 ## Accessibility
 
@@ -117,8 +109,8 @@ const filteredItems = filterSelectData(
 
 ## Dependencies
 
-- \`@floating-ui/dom\` (for positioning)
-- \`motion\` (for animations)
+- {inlineCode('@floating-ui/dom')} (for positioning)
+- {inlineCode('motion')} (for animations)
 
 ## License
 

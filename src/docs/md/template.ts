@@ -51,3 +51,11 @@ export type MarkdownString = string & { readonly __brand: 'markdown' };
 export function newLine(): string {
 	return '\n';
 }
+
+export function codeBlock(code: string, language: string = ''): string {
+	return `\`\`\`${language}\n${code}\n\`\`\``;
+}
+
+export function inlineCode(code: string): string {
+	return `\`${code}\``;
+}

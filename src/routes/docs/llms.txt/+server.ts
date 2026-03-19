@@ -1,5 +1,6 @@
 import { md } from '$docs/md/template';
 import type { RequestHandler } from './$types';
+import { renderLlmContent } from '$docs/utils/render-llm';
 
 export const GET: RequestHandler = async ({ request }) => {
 	const baseUrl = new URL(request.url).origin;

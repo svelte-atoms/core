@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Combobox.Root
 
-**Preset Key:** \`combobox\`
+**Preset Key:** {inlineCode('combobox')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Combobox.Selections
 
-**Preset Key:** \`combobox.selections\`
+**Preset Key:** {inlineCode('combobox.selections')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Combobox.Selection
 
-**Preset Key:** \`combobox.selection\`
+**Preset Key:** {inlineCode('combobox.selection')}
 
 **Props:**
 
@@ -52,7 +52,7 @@
 
 ### Combobox.Control
 
-**Preset Key:** \`combobox.control\`
+**Preset Key:** {inlineCode('combobox.control')}
 
 **Props:**
 
@@ -62,15 +62,11 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

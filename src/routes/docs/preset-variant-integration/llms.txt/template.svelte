@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Preset-Variant Integration
 
@@ -19,8 +19,7 @@ The variant system is deeply integrated with the preset system in @svelte-atoms/
 
 ## Architecture
 
-\`\`\`
-┌─────────────────────────────────────────────────────┐
+{codeBlock(`┌─────────────────────────────────────────────────────┐
 │ Theme Layer (Preset System)                         │
 │                                                      │
 │ setPreset({                                          │
@@ -57,8 +56,7 @@ The variant system is deeply integrated with the preset system in @svelte-atoms/
 │                                                      │
 │ class: merged classes from preset + local + props   │
 │ attributes: aria-*, data-*, role, etc.              │
-└─────────────────────────────────────────────────────┘
-\`\`\`
+└─────────────────────────────────────────────────────┘`)}
 
 ## Merge Strategy
 
@@ -66,8 +64,7 @@ The variant system is deeply integrated with the preset system in @svelte-atoms/
 
 When both preset and component define variants, they merge as follows:
 
-\`\`\`typescript
-{
+{codeBlock(`{
   base: localVariants.base ?? presetVariants.base,
 
   variants: merge(
@@ -84,38 +81,32 @@ When both preset and component define variants, they merge as follows:
     presetVariants.defaultVariants ?? {},
     localVariants.defaultVariants ?? {}
   )
-}
-\`\`\`
+}`, 'typescript')}
 
 **Rules:**
 
-- Local \`base\` overrides preset \`base\`
+- Local {inlineCode('base')} overrides preset {inlineCode('base')}
 - Local variants **merge** with preset variants (not replace)
 - Compound variants from both are **concatenated**
 - Default variants **merge** (local overrides preset)
 
 ### 2. Class Resolution Order
 
-\`\`\`
-Final Class = [
+{codeBlock(`Final Class = [
   preset.class,              // 1. Preset base class
   preset.variants.base,      // 2. Preset variant base
   mergedVariants.base,       // 3. Merged variant base (local overrides)
   variantClasses,            // 4. Resolved variant classes
   compoundClasses,           // 5. Compound variant classes
   component.class            // 6. Component class prop (highest priority)
-]
-\`\`\`
+]`)}
 
 ### 3. Props Merging
 
-\`\`\`typescript
-{
-  ...preset (excluding: class, base, as, variants),
+{codeBlock(`  ...preset (excluding: class, base, as, variants),
   ...variantAttributes (aria-*, data-*, role, etc.),
   ...componentProps (user-provided props - highest priority)
-}
-\`\`\`
+`, 'typescript')}
 
 ## Usage Patterns
 
@@ -123,8 +114,7 @@ Final Class = [
 
 **Best for:** Consistent components that don't need customization
 
-\`\`\`typescript
-// Theme.svelte
+{codeBlock(`// Theme.svelte
 setPreset({
 	badge: () => ({
 		variants: {
@@ -142,15 +132,12 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<!-- Badge.svelte -->
+{codeBlock(`<!-- Badge.svelte -->
 <HtmlAtom preset="badge" {variant} {...props}>
 	{@render children?.()}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
 **Result:** Uses 100% preset variants, no local customization
 
@@ -160,8 +147,7 @@ setPreset({
 
 **Best for:** Components that need additional variants beyond theme
 
-\`\`\`typescript
-// Theme.svelte
+{codeBlock(`// Theme.svelte
 setPreset({
 	button: () => ({
 		variants: {
@@ -183,11 +169,9 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<!-- IconButton.svelte -->
+{codeBlock(`<!-- IconButton.svelte -->
 <script>
 	import { defineVariants } from '@svelte-atoms/core/utils';
 
@@ -210,10 +194,9 @@ setPreset({
 
 <HtmlAtom preset="button" variants={iconVariants} {variant} {size} {iconPosition} {...props}>
 	{@render children?.()}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
-**Result:** Gets \`variant\` and \`size\` from preset, adds \`iconPosition\` locally
+**Result:** Gets {inlineCode('variant')} and {inlineCode('size')} from preset, adds {inlineCode('iconPosition')} locally
 
 ---
 
@@ -221,8 +204,7 @@ setPreset({
 
 **Best for:** Special cases that need to completely override preset variants
 
-\`\`\`typescript
-// Theme.svelte
+{codeBlock(`// Theme.svelte
 setPreset({
 	button: () => ({
 		variants: {
@@ -235,11 +217,9 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<!-- GradientButton.svelte -->
+{codeBlock(`<!-- GradientButton.svelte -->
 <script>
 	import { defineVariants } from '@svelte-atoms/core/utils';
 
@@ -262,8 +242,7 @@ setPreset({
 
 <HtmlAtom preset="button" variants={gradientVariants} {variant} {...props}>
 	{@render children?.()}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
 **Result:** Local variants completely replace preset variants for matching keys
 
@@ -273,8 +252,7 @@ setPreset({
 
 **Best for:** One-off components that don't need global theming
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { defineVariants } from '@svelte-atoms/core/utils';
 
 	const customVariants = defineVariants({
@@ -290,8 +268,7 @@ setPreset({
 
 <HtmlAtom variants={customVariants} custom="a" {...props}>
 	{@render children?.()}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
 **Result:** No preset used, 100% local variant definition
 
@@ -301,8 +278,7 @@ setPreset({
 
 **Best for:** Reactive variants that change based on component state
 
-\`\`\`typescript
-// Theme.svelte
+{codeBlock(`// Theme.svelte
 setPreset({
 	accordion: () => ({
 		variants: {
@@ -319,11 +295,9 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<!-- Accordion.svelte -->
+{codeBlock(`<!-- Accordion.svelte -->
 <script>
 	import { AccordionBond } from './bond.svelte';
 
@@ -332,10 +306,9 @@ setPreset({
 
 <HtmlAtom preset="accordion" {bond} state="open" {...props}>
 	{@render children?.({ accordion: bond })}
-</HtmlAtom>
-\`\`\`
+</HtmlAtom>`, 'svelte')}
 
-**Result:** Variants reactively update when \`bond.state.isOpen\` changes
+**Result:** Variants reactively update when {inlineCode('bond.state.isOpen')} changes
 
 ## Advanced Features
 
@@ -343,8 +316,7 @@ setPreset({
 
 Organize related components with dot notation:
 
-\`\`\`typescript
-setPreset({
+{codeBlock(`setPreset({
 	card: () => ({
 		/* ... */
 	}),
@@ -357,19 +329,15 @@ setPreset({
 	'card.footer': () => ({
 		/* ... */
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<HtmlAtom preset="card.header" />
-\`\`\`
+{codeBlock(`<HtmlAtom preset="card.header" />`, 'svelte')}
 
 ### 2. Compound Variants
 
 Apply classes when multiple conditions match:
 
-\`\`\`typescript
-setPreset({
+{codeBlock(`setPreset({
 	button: () => ({
 		variants: {
 			variants: {
@@ -386,15 +354,13 @@ setPreset({
 			]
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
 ### 3. Variant Attributes
 
 Variants can return more than just classes:
 
-\`\`\`typescript
-variants: {
+{codeBlock(`variants: {
   variant: {
     destructive: {
       class: 'bg-destructive text-destructive-foreground',
@@ -403,15 +369,13 @@ variants: {
       'data-variant': 'destructive'
     }
   }
-}
-\`\`\`
+}`, 'typescript')}
 
 ### 4. Preset Class + Variant Base
 
 Use both for layered styling:
 
-\`\`\`typescript
-setPreset({
+{codeBlock(`setPreset({
 	button: () => ({
 		class: 'inline-flex items-center justify-center', // Always applied
 		variants: {
@@ -421,13 +385,12 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
 **Final class order:**
 
-1. \`preset.class\`
-2. \`preset.variants.base\`
+1. {inlineCode('preset.class')}
+2. {inlineCode('preset.variants.base')}
 3. Local variant base (if overriding)
 4. Variant classes
 5. Component class prop
@@ -436,8 +399,7 @@ setPreset({
 
 ### Before (Old Function-based)
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	const variants = (bond, props) => {
 		const { variant, size } = props;
 		const classes = [];
@@ -449,13 +411,11 @@ setPreset({
 	};
 </script>
 
-<HtmlAtom {variants} {variant} {size} />
-\`\`\`
+<HtmlAtom {variants} {variant} {size} />`, 'svelte')}
 
 ### After (New Variant System)
 
-\`\`\`typescript
-// In preset (recommended)
+{codeBlock(`// In preset (recommended)
 setPreset({
 	button: () => ({
 		variants: {
@@ -469,17 +429,13 @@ setPreset({
 			}
 		}
 	})
-});
-\`\`\`
+});`, 'typescript')}
 
-\`\`\`svelte
-<HtmlAtom preset="button" {variant} {size} />
-\`\`\`
+{codeBlock(`<HtmlAtom preset="button" {variant} {size} />`, 'svelte')}
 
 **OR** local only:
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { defineVariants } from '@svelte-atoms/core/utils';
 
 	const buttonVariants = defineVariants({
@@ -490,8 +446,7 @@ setPreset({
 	});
 </script>
 
-<HtmlAtom variants={buttonVariants} {variant} {size} />
-\`\`\`
+<HtmlAtom variants={buttonVariants} {variant} {size} />`, 'svelte')}
 
 ## Best Practices
 
@@ -499,14 +454,14 @@ setPreset({
 
 1. **Use presets for global variants** that should be consistent across the app
 2. **Use local variants** to extend or override for special cases
-3. **Use \`class\` prop in preset** for base styling that always applies
-4. **Use \`variants.base\`** for styling that can be overridden locally
+3. **Use {inlineCode('class')} prop in preset** for base styling that always applies
+4. **Use {inlineCode('variants.base')}** for styling that can be overridden locally
 5. **Return attributes from variants** (aria-_, data-_, role) for accessibility
 
 ### ❌ DON'T
 
 1. **Don't duplicate variants** in both preset and local unless overriding
-2. **Don't use \`base\` prop for CSS classes** (conflicts with component/snippet prop)
+2. **Don't use {inlineCode('base')} prop for CSS classes** (conflicts with component/snippet prop)
 3. **Don't over-nest presets** - keep hierarchy shallow
 4. **Don't forget default variants** - they make components easier to use
 

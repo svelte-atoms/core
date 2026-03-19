@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Scrollable.Root
 
-**Preset Key:** \`scrollable\`
+**Preset Key:** {inlineCode('scrollable')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Scrollable.Container
 
-**Preset Key:** \`scrollable.container\`
+**Preset Key:** {inlineCode('scrollable.container')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Scrollable.Content
 
-**Preset Key:** \`scrollable.content\`
+**Preset Key:** {inlineCode('scrollable.content')}
 
 **Props:**
 
@@ -52,7 +52,7 @@
 
 ### Scrollable.Track
 
-**Preset Key:** \`scrollable.track\`
+**Preset Key:** {inlineCode('scrollable.track')}
 
 **Props:**
 
@@ -60,7 +60,7 @@
 
 ### Scrollable.Thumb
 
-**Preset Key:** \`scrollable.thumb\`
+**Preset Key:** {inlineCode('scrollable.thumb')}
 
 **Props:**
 
@@ -70,15 +70,11 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

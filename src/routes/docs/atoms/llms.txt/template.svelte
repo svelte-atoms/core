@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
-	import { FrontMatter, CodeBlock, List } from '$docs/md/components';
+	import { FrontMatter, List } from '$docs/md/components';
+	import { codeBlock } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
+
 # {metadata.pageTitle}
 
 {metadata.pageDescription}
@@ -34,7 +35,7 @@ Unlike traditional component libraries that provide fully-featured components, a
 
 Here's how an atom works with a simple example:
 
-<CodeBlock lang="svelte">{metadata.examples.anatomy}</CodeBlock>
+{codeBlock(metadata.examples.anatomy, 'svelte')}
 
 ## When to Use Atoms
 
@@ -84,14 +85,13 @@ Here's how an atom works with a simple example:
 
 ### 1. Import an Atom
 
-<CodeBlock lang="typescript">{`
+{codeBlock(`
 import { HtmlAtom } from '@svelte-atoms/core';
-`}</CodeBlock>
+`, 'typescript')}
 
 ### 2. Define Variants (Optional)
 
-<CodeBlock lang="typescript">
-{`
+{codeBlock(`
 import { defineVariants } from '@svelte-atoms/core/utils';
 
 const buttonVariants = defineVariants({
@@ -111,13 +111,11 @@ const buttonVariants = defineVariants({
     size: 'md'
   }
 });
-`}
-</CodeBlock>
+`, 'typescript')}
 
 ### 3. Use the Atom
 
-<CodeBlock lang="svelte">
-{`
+{codeBlock(`
 <HtmlAtom
   as="button"
   variants={buttonVariants}
@@ -127,19 +125,18 @@ const buttonVariants = defineVariants({
 >
   Click me
 </HtmlAtom>
-`}
-</CodeBlock>
+`, 'svelte')}
 
 ## Examples
 
 ### Custom Button Component
 
-<CodeBlock lang="svelte">{metadata.examples.customButton}</CodeBlock>
+{codeBlock(metadata.examples.customButton, 'svelte')}
 
 ### Custom Card Component
 
-<CodeBlock lang="svelte">{metadata.examples.customCard}</CodeBlock>
+{codeBlock(metadata.examples.customCard, 'svelte')}
 
 ### Using with Presets
 
-<CodeBlock lang="svelte">{metadata.examples.presetUsage}</CodeBlock>
+{codeBlock(metadata.examples.presetUsage, 'svelte')}

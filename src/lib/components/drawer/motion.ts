@@ -7,10 +7,6 @@ export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
 
 type EasingOption = Easing | Easing[] | Spring;
 
-export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
-
-type EasingOption = Easing | Easing[] | Spring;
-
 type AnimateDrawerContentParams = {
 	duration?: number;
 	delay?: number;
@@ -71,28 +67,50 @@ export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
 	const position = getSidePosition(side);
 	const hidden = getHiddenTransform(side);
 
+	let animated = false;
+
 	return (node: HTMLElement) => {
 		const isOpen = bond?.state.props.open ?? false;
 		const resolvedEase = ease ?? (isOpen ? easeOpen : easeClose);
 
 		node.inert = true;
 
-		const controller = animate(
-			node,
-			{
-				x: isOpen ? '0%' : hidden.x,
-				y: isOpen ? '0%' : hidden.y,
-				...position
-			},
-			{
-				duration,
-				ease: resolvedEase,
-				delay,
-				onComplete: () => {
-					node.inert = inert;
+		let controller: ReturnType<typeof animate>;
+
+		if (!animated && !isOpen) {
+			controller = animate(
+				node,
+				{
+					x: isOpen ? '0%' : hidden.x,
+					y: isOpen ? '0%' : hidden.y,
+					...position
+				},
+				{
+					duration: 0,
+					onComplete: () => {
+						node.inert = inert;
+					}
 				}
-			}
-		);
+			);
+			animated = true;
+		} else {
+			controller = animate(
+				node,
+				{
+					x: isOpen ? '0%' : hidden.x,
+					y: isOpen ? '0%' : hidden.y,
+					...position
+				},
+				{
+					duration,
+					ease: resolvedEase,
+					delay,
+					onComplete: () => {
+						node.inert = inert;
+					}
+				}
+			);
+		}
 
 		return () => {
 			controller.stop();

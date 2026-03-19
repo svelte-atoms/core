@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
-	import { CodeBlock, FrontMatter, List } from '$docs/md/components';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
+	import { FrontMatter, List } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 
 # {metadata.pageTitle}
@@ -40,7 +40,7 @@
 
 Svelte Atoms works perfectly with Tailwind CSS. Use utility classes directly on components:
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Layout & spacing -->
 <Card.Root class="max-w-sm p-4">
   <Card.Header>
@@ -58,13 +58,13 @@ Svelte Atoms works perfectly with Tailwind CSS. Use utility classes directly on 
 
 <!-- With opacity -->
 <div class="bg-foreground/10">Subtle background</div>
-\`\`\`
+`, 'svelte')}
 
 ## Class Organization
 
 Organize classes in a predictable order for better readability:
 
-\`\`\`svelte
+{codeBlock(`
 <HtmlAtom
   class={[
     'base-layout-classes',    // flex, grid, etc.
@@ -75,13 +75,13 @@ Organize classes in a predictable order for better readability:
     klass                     // User overrides (highest priority)
   ]}
 />
-\`\`\`
+`, 'svelte')}
 
 ## cn() Utility
 
-The \`cn()\` utility intelligently merges class names and resolves conflicts:
+The {inlineCode('cn()')} utility intelligently merges class names and resolves conflicts:
 
-\`\`\`typescript
+{codeBlock(`
 import { cn } from '@svelte-atoms/core/utils';
 
 // Resolves conflicts automatically
@@ -95,7 +95,7 @@ cn('base', isActive && 'active', false && 'ignored');
 // Merges arrays
 cn(['text-sm', 'font-medium'], 'text-lg');
 // Result: 'font-medium text-lg'
-\`\`\`
+`, 'typescript')}
 
 ## Color Tokens
 
@@ -106,15 +106,15 @@ Svelte Atoms uses CSS variables for theming. All color tokens are available as T
 
 **Usage:** {token.usage}
 
-<CodeBlock lang="svelte">{`
-<div class="bg-{token.token} text-{token.token}">Content</div>
-`}</CodeBlock>
+{codeBlock(`
+<div class="bg-${token.token} text-${token.token}">Content</div>
+`, 'svelte')}
 
 {/each}
 
 ### Using Color Tokens
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Color tokens -->
 <div class="bg-background text-foreground">Background color</div>
 <Button class="bg-primary text-primary-foreground">Primary button</Button>
@@ -124,13 +124,13 @@ Svelte Atoms uses CSS variables for theming. All color tokens are available as T
 
 <!-- Borders and shadows -->
 <Card.Root class="border-border border shadow-lg">Card</Card.Root>
-\`\`\`
+`, 'svelte')}
 
 ## Conditional Classes
 
 Apply classes conditionally based on component state:
 
-\`\`\`svelte
+{codeBlock(`
 <script>
   let isOpen = $state(false);
   let isActive = $state(true);
@@ -162,13 +162,13 @@ Apply classes conditionally based on component state:
 >
   Button
 </Button>
-\`\`\`
+`, 'svelte')}
 
 ## Variant System
 
 Define reusable style variants at the component level:
 
-\`\`\`typescript
+{codeBlock(`
 <script lang="ts">
   import { defineVariants } from '@svelte-atoms/core/utils';
   import { HtmlAtom } from '@svelte-atoms/core';
@@ -199,13 +199,13 @@ Define reusable style variants at the component level:
 <HtmlAtom variants={buttonVariants} {variant} {size} {...props}>
   {@render children?.()}
 </HtmlAtom>
-\`\`\`
+`, 'typescript')}
 
 ## Compound Variants
 
 Combine multiple variant conditions:
 
-\`\`\`typescript
+{codeBlock(`
 const alertVariants = defineVariants({
   class: 'rounded-lg p-4 border',
   variants: {
@@ -226,13 +226,13 @@ const alertVariants = defineVariants({
     }
   ]
 });
-\`\`\`
+`, 'typescript')}
 
 ## Reactive Variants
 
 Create variants that respond to component state:
 
-\`\`\`typescript
+{codeBlock(`
 const accordionVariants = defineVariants((bond) => ({
   class: 'border rounded-md transition-all',
   variants: {
@@ -242,13 +242,13 @@ const accordionVariants = defineVariants((bond) => ({
     }
   }
 }));
-\`\`\`
+`, 'typescript')}
 
 ## Preset Placeholder
 
 Control where preset classes are inserted:
 
-\`\`\`svelte
+{codeBlock(`
 <!-- In your component -->
 <HtmlAtom
   preset="button"
@@ -266,13 +266,13 @@ Control where preset classes are inserted:
 />
 
 <!-- Result: preset-classes component-classes user-classes -->
-\`\`\`
+`, 'svelte')}
 
 ## Inline Styles
 
-Use the \`style\` attribute for dynamic values:
+Use the {inlineCode('style')} attribute for dynamic values:
 
-\`\`\`svelte
+{codeBlock(`
 <script>
   let width = $state(240);
   let opacity = $state(1);
@@ -292,7 +292,7 @@ Use the \`style\` attribute for dynamic values:
 <div style="padding: 16px; background: blue;">
   Use Tailwind instead
 </div>
-\`\`\`
+`, 'svelte')}
 
 ## Best Practices
 
@@ -307,7 +307,7 @@ Use the \`style\` attribute for dynamic values:
 
 ### Button Component
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
   import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
   
@@ -343,11 +343,11 @@ Use the \`style\` attribute for dynamic values:
   class={klass}
   {...props}
 />
-\`\`\`
+`, 'svelte')}
 
 ### Card Component
 
-\`\`\`svelte
+{codeBlock(`
 <script lang="ts">
   import { HtmlAtom } from '@svelte-atoms/core';
   
@@ -360,11 +360,11 @@ Use the \`style\` attribute for dynamic values:
   class={['rounded-lg border bg-card text-card-foreground shadow-sm', klass]}
   {...props}
 />
-\`\`\`
+`, 'svelte')}
 
 ### Responsive Styling
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Mobile-first responsive design -->
 <div class="
   text-sm md:text-base lg:text-lg
@@ -373,11 +373,11 @@ Use the \`style\` attribute for dynamic values:
 ">
   Responsive content
 </div>
-\`\`\`
+`, 'svelte')}
 
 ### Dark Mode
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Using color tokens (automatic dark mode) -->
 <div class="bg-background text-foreground">
   Automatically adapts to dark mode
@@ -387,11 +387,11 @@ Use the \`style\` attribute for dynamic values:
 <div class="bg-white dark:bg-gray-900 text-black dark:text-white">
   Manual dark mode
 </div>
-\`\`\`
+`, 'svelte')}
 
 ### Hover and Focus States
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Interactive states -->
 <button class="
   bg-primary text-primary-foreground
@@ -402,13 +402,13 @@ Use the \`style\` attribute for dynamic values:
 ">
   Interactive Button
 </button>
-\`\`\`
+`, 'svelte')}
 
 ## Advanced Techniques
 
 ### Dynamic Class Generation
 
-\`\`\`typescript
+{codeBlock(`
 function getButtonClasses(variant: string, size: string) {
   const base = 'inline-flex items-center justify-center';
   const variants = {
@@ -423,11 +423,11 @@ function getButtonClasses(variant: string, size: string) {
   
   return cn(base, variants[variant], sizes[size]);
 }
-\`\`\`
+`, 'typescript')}
 
 ### Custom Utility Classes
 
-\`\`\`css
+{codeBlock(`
 /* app.css */
 @layer utilities {
   .text-balance {
@@ -443,11 +443,11 @@ function getButtonClasses(variant: string, size: string) {
     display: none;
   }
 }
-\`\`\`
+`, 'css')}
 
 ### CSS Variables
 
-\`\`\`css
+{codeBlock(`
 /* Define custom properties */
 :root {
   --spacing-sm: 0.5rem;
@@ -459,24 +459,24 @@ function getButtonClasses(variant: string, size: string) {
 .custom-component {
   padding: var(--spacing-md);
 }
-\`\`\`
+`, 'css')}
 
 ## Debugging Styles
 
 ### Inspect Applied Classes
 
-\`\`\`svelte
+{codeBlock(`
 <script>
   import { cn } from '@svelte-atoms/core/utils';
   
   $inspect(cn('base', isActive && 'active'));
   // See what classes are actually applied
 </script>
-\`\`\`
+`, 'svelte')}
 
 ### Visual Debugging
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Add visible borders to debug layout -->
 <div class="border-2 border-red-500">
   Debug me
@@ -486,7 +486,7 @@ function getButtonClasses(variant: string, size: string) {
 <div class="bg-red-100">
   Debug container
 </div>
-\`\`\`
+`, 'svelte')}
 
 ## Performance Tips
 
@@ -500,27 +500,27 @@ function getButtonClasses(variant: string, size: string) {
 
 ### From CSS Modules
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Before -->
 <div class={styles.button}>Click</div>
 
 <!-- After -->
 <Button class="custom-button-styles">Click</Button>
-\`\`\`
+`, 'svelte')}
 
 ### From Styled Components
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Before -->
 <Styled.Button>Click</Styled.Button>
 
 <!-- After -->
 <Button class="inline-flex items-center ...">Click</Button>
-\`\`\`
+`, 'svelte')}
 
 ### From Plain CSS
 
-\`\`\`svelte
+{codeBlock(`
 <!-- Before -->
 <style>
   .my-button {
@@ -532,7 +532,7 @@ function getButtonClasses(variant: string, size: string) {
 
 <!-- After -->
 <Button class="px-8 py-4 bg-blue-500">Click</Button>
-\`\`\`
+`, 'svelte')}
 
 ## Resources
 

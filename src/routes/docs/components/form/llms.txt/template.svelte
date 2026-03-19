@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Form.Root
 
-**Preset Key:** \`form\`
+**Preset Key:** {inlineCode('form')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Field.Root
 
-**Preset Key:** \`field\`
+**Preset Key:** {inlineCode('field')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Field.Label
 
-**Preset Key:** \`field.label\`
+**Preset Key:** {inlineCode('field.label')}
 
 **Props:**
 
@@ -52,7 +52,7 @@
 
 ### Field.Control
 
-**Preset Key:** \`field.control\`
+**Preset Key:** {inlineCode('field.control')}
 
 **Props:**
 
@@ -60,7 +60,7 @@
 
 ### Field.Errors
 
-**Preset Key:** \`field.errors\`
+**Preset Key:** {inlineCode('field.errors')}
 
 **Props:**
 
@@ -70,15 +70,11 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

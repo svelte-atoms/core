@@ -1,34 +1,17 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
+	
 	let { data } = $props();
-	const { metadata, frontmatter } = $derived(data);
-</script>
+	const { frontmatter } = $derived(data);
 
-<FrontMatter {frontmatter} />{newLine()}
+	const open = '<' + 'script>';
+	const close = '</' + 'script>';
 
-# Transitions & Animations
-
-Most components in \`@svelte-atoms/core\` support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using Motion, Svelte transitions, or custom animation libraries.
-
-## Animation Hooks
-
-Components that support transitions typically provide these props:
-
-- \`initial\` - Set the initial state before the element is mounted
-- \`enter\` - Define the enter animation when element appears
-- \`exit\` - Define the exit animation when element disappears
-- \`animate\` - Define animations that run when the element's state changes
-
-## Using Motion (Recommended)
-
-The recommended approach is to use the \`motion\` library with the \`toTransitionConfig\` helper:
-
-\`\`\`svelte
-<script>
+	const motionExample = `${open}
 	import { Component, toTransitionConfig } from '@svelte-atoms/core';
 	import { animate } from 'motion';
-</script>
+${close}
 
 <Component
 	initial={(node) => {
@@ -49,36 +32,24 @@ The recommended approach is to use the \`motion\` library with the \`toTransitio
 	}}
 >
 	<!-- Content -->
-</Component>
-\`\`\`
+</Component>`;
 
-## Using Svelte Transitions
-
-You can also use Svelte's built-in transitions:
-
-\`\`\`svelte
-<script>
+	const svelteTransitionsExample = `${open}
 	import { Component } from '@svelte-atoms/core';
 	import { slide, fade } from 'svelte/transition';
-</script>
+${close}
 
 <Component
 	enter={(node) => slide(node, { duration: 300 })}
 	exit={(node) => fade(node, { duration: 200 })}
 >
 	<!-- Content -->
-</Component>
-\`\`\`
+</Component>`;
 
-## Using the Animate Hook
-
-The \`animate\` hook is used for state-driven animations that respond to prop or state changes, rather than mount/unmount transitions:
-
-\`\`\`svelte
-<script>
+	const accordionExample = `${open}
 	import { Accordion, AccordionItem, toTransitionConfig } from '@svelte-atoms/core';
 	import { animate } from 'motion';
-</script>
+${close}
 
 <Accordion>
 	{#snippet children({ accordion })}
@@ -97,21 +68,67 @@ The \`animate\` hook is used for state-driven animations that respond to prop or
 			</AccordionItem.Body>
 		</AccordionItem.Root>
 	{/snippet}
-</Accordion>
-\`\`\`
+</Accordion>`;
 
-The \`animate\` function receives the node and current state, allowing you to create reactive animations.
-
-## Custom Animation Libraries
-
-Any animation library that returns a transition config object can be used:
-
-\`\`\`svelte
-<script>
+	const customAnimationExample = `${open}
 	import { Component } from '@svelte-atoms/core';
 
 	function customEnter(node) {
 		// Your custom animation logic
 		return {
 			duration: 300,
-			css: (t) => \`opacity: \${t}; transform: scale(\${t});\
+			css: (t) => \`opacity: \${t}; transform: scale(\${t});\`,
+			tick: (t) => {
+				// Optional: perform non-CSS animations
+			}
+		};
+	}
+${close}
+
+<Component
+	enter={(node) => customEnter(node)}
+>
+	<!-- Content -->
+</Component>`;
+</script>
+
+<FrontMatter {frontmatter} />
+
+# Transitions & Animations
+
+Most components in {inlineCode('@svelte-atoms/core')} support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using Motion, Svelte transitions, or custom animation libraries.
+
+## Animation Hooks
+
+Components that support transitions typically provide these props:
+
+- {inlineCode('initial')} - Set the initial state before the element is mounted
+- {inlineCode('enter')} - Define the enter animation when element appears
+- {inlineCode('exit')} - Define the exit animation when element disappears
+- {inlineCode('animate')} - Define animations that run when the element's state changes
+
+## Using Motion (Recommended)
+
+The recommended approach is to use the {inlineCode('motion')} library with the {inlineCode('toTransitionConfig')} helper:
+
+{codeBlock(motionExample, 'svelte')}
+
+## Using Svelte Transitions
+
+You can also use Svelte's built-in transitions:
+
+{codeBlock(svelteTransitionsExample, 'svelte')}
+
+## Using the Animate Hook
+
+The {inlineCode('animate')} hook is used for state-driven animations that respond to prop or state changes, rather than mount/unmount transitions:
+
+{codeBlock(accordionExample, 'svelte')}
+
+The {inlineCode('animate')} function receives the node and current state, allowing you to create reactive animations.
+
+## Custom Animation Libraries
+
+Any animation library that returns a transition config object can be used:
+
+{codeBlock(customAnimationExample, 'svelte')}

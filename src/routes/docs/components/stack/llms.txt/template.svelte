@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Stack.Root
 
-**Preset Key:** \`stack.root\`
+**Preset Key:** {inlineCode('stack.root')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Stack.Item
 
-**Preset Key:** \`stack.item\`
+**Preset Key:** {inlineCode('stack.item')}
 
 **Props:**
 
@@ -56,21 +56,15 @@
 
 ### Image with Overlay
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### App Shell Navigation
 
-\`\`\`svelte
-{metadata.examples.zOrder}
-\`\`\`
+{codeBlock(metadata.examples.zOrder, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 

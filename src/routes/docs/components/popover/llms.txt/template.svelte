@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -30,7 +30,7 @@ The Popover module consists of the following components:
 
 ### Popover.Root
 
-**Preset Key:** \`popover\`
+**Preset Key:** {inlineCode('popover')}
 
 **Props:**
 
@@ -38,7 +38,7 @@ The Popover module consists of the following components:
 
 ### Popover.Trigger
 
-**Preset Key:** \`popover.trigger\`
+**Preset Key:** {inlineCode('popover.trigger')}
 
 **Props:**
 
@@ -46,7 +46,7 @@ The Popover module consists of the following components:
 
 ### Popover.Content
 
-**Preset Key:** \`popover.content\`
+**Preset Key:** {inlineCode('popover.content')}
 
 **Props:**
 
@@ -54,7 +54,7 @@ The Popover module consists of the following components:
 
 ### Popover.Indicator
 
-**Preset Key:** \`popover.indicator\`
+**Preset Key:** {inlineCode('popover.indicator')}
 
 **Props:**
 
@@ -62,7 +62,7 @@ The Popover module consists of the following components:
 
 ### Popover.Arrow
 
-**Preset Key:** \`popover.arrow\`
+**Preset Key:** {inlineCode('popover.arrow')}
 
 **Props:**
 
@@ -70,56 +70,56 @@ The Popover module consists of the following components:
 
 ## Classes
 
-### \`PopoverBond\`
+### {inlineCode('PopoverBond')}
 
 The main class for managing the popover's state and elements.
 
 #### Properties
 
-- \`position\`: Tracks the computed position of the popover.
+- {inlineCode('position')}: Tracks the computed position of the popover.
 
 #### Methods
 
-- \`trigger(props)\`: Returns attributes and event handlers for the trigger element.
-- \`overlay(props)\`: Returns attributes and event handlers for the overlay element.
-- \`indicator(props)\`: Returns attributes and event handlers for the indicator element.
-- \`arrow(props)\`: Returns attributes and event handlers for the arrow element.
-- \`share()\`: Shares the popover context.
+- {inlineCode('trigger(props)')}: Returns attributes and event handlers for the trigger element.
+- {inlineCode('overlay(props)')}: Returns attributes and event handlers for the overlay element.
+- {inlineCode('indicator(props)')}: Returns attributes and event handlers for the indicator element.
+- {inlineCode('arrow(props)')}: Returns attributes and event handlers for the arrow element.
+- {inlineCode('share()')}: Shares the popover context.
 
 #### Static Methods
 
-- \`PopoverBond.get\`: Retrieves the popover context.
-- \`PopoverBond.set\`: Sets the popover context.
+- {inlineCode('PopoverBond.get')}: Retrieves the popover context.
+- {inlineCode('PopoverBond.set')}: Sets the popover context.
 
-### \`PopoverState\`
+### {inlineCode('PopoverState')}
 
 Manages the state of the popover bond.
 
 #### Properties
 
-- \`isOpen\`: Indicates whether the popover is open.
+- {inlineCode('isOpen')}: Indicates whether the popover is open.
 
 #### Methods
 
-- \`open()\`: Opens the popover.
-- \`close()\`: Closes the popover.
-- \`toggle()\`: Toggles the popover's open state.
+- {inlineCode('open()')}: Opens the popover.
+- {inlineCode('close()')}: Closes the popover.
+- {inlineCode('toggle()')}: Toggles the popover's open state.
 
 ## Types
 
-### \`PopoverParams\`
+### {inlineCode('PopoverParams')}
 
 Defines parameters for customizing the popover's behavior.
 
-### \`PopoverStateProps\`
+### {inlineCode('PopoverStateProps')}
 
-Extends \`StateProps\` to include popover-specific properties.
+Extends {inlineCode('StateProps')} to include popover-specific properties.
 
-### \`TriggerParams\`
+### {inlineCode('TriggerParams')}
 
 Defines parameters for the trigger element.
 
-### \`PopoverDomElements\`
+### {inlineCode('PopoverDomElements')}
 
 Defines the DOM elements used in the popover.
 
@@ -127,29 +127,21 @@ Defines the DOM elements used in the popover.
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Popover Positions
 
-\`\`\`svelte
-{metadata.examples.positions}
-\`\`\`
+{codeBlock(metadata.examples.positions, 'svelte')}
 
 ### Controlled Popover (User Account Menu)
 
-\`\`\`svelte
-{metadata.examples.controlled}
-\`\`\`
+{codeBlock(metadata.examples.controlled, 'svelte')}
 
 ### Preset Configuration
 
 You can customize the default styles for Popover components by defining presets in your configuration:
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 
@@ -161,9 +153,9 @@ The module ensures accessibility by providing ARIA attributes and keyboard navig
 
 ## Dependencies
 
-- \`@floating-ui/dom\`
-- \`motion\`
-- \`es-toolkit\`
+- {inlineCode('@floating-ui/dom')}
+- {inlineCode('motion')}
+- {inlineCode('es-toolkit')}
 
 ## License
 

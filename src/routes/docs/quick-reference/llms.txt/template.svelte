@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Quick Reference Guide
 
@@ -15,20 +15,17 @@
 
 ### Basic Component Usage
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Component } from '@svelte-atoms/core/components/component';
 </script>
 
 <Component.Root>
 	<Component.SubComponent />
-</Component.Root>
-\`\`\`
+</Component.Root>`, 'svelte')}
 
 ### With State Binding
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
 	let value = $state<string[]>([]);
@@ -36,14 +33,11 @@
 
 <Dropdown.Root bind:value>
 	<!-- children -->
-</Dropdown.Root>
-\`\`\`
+</Dropdown.Root>`, 'svelte')}
 
 ### With Custom Styling
 
-\`\`\`svelte
-<Button.Root class="rounded bg-blue-500 px-4 py-2 text-white">Click me</Button.Root>
-\`\`\`
+{codeBlock(`<Button.Root class="rounded bg-blue-500 px-4 py-2 text-white">Click me</Button.Root>`, 'svelte')}
 
 ## 📦 Component Quick Lookup
 
@@ -51,110 +45,103 @@
 
 | Component    | Import                                                              | Basic Usage                                    | Props                          |
 | ------------ | ------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------ |
-| **Input**    | \`import { Input } from '@svelte-atoms/core/components/input'\`       | \`<Input.Root type="text" placeholder="..." />\` | \`type\`, \`value\`, \`placeholder\` |
-| **Textarea** | \`import { Textarea } from '@svelte-atoms/core/components/textarea'\` | \`<Textarea.Root placeholder="..." />\`          | \`value\`, \`placeholder\`, \`rows\` |
-| **Checkbox** | \`import { Checkbox } from '@svelte-atoms/core/components/checkbox'\` | \`<Checkbox.Root bind:checked />\`               | \`checked\`, \`disabled\`          |
-| **Radio**    | \`import { Radio } from '@svelte-atoms/core/components/radio'\`       | \`<Radio.Root value="..." bind:group />\`        | \`value\`, \`group\`               |
-| **Form**     | \`import { Form } from '@svelte-atoms/core/components/form'\`         | \`<Form.Root><Form.Field /></Form.Root>\`        | \`onsubmit\`                     |
+| **Input**    | {inlineCode("import { Input } from '@svelte-atoms/core/components/input'")}       | {inlineCode('<Input.Root type="text" placeholder="..." />')} | {inlineCode('type')}, {inlineCode('value')}, {inlineCode('placeholder')} |
+| **Textarea** | {inlineCode("import { Textarea } from '@svelte-atoms/core/components/textarea'")} | {inlineCode('<Textarea.Root placeholder="..." />')}          | {inlineCode('value')}, {inlineCode('placeholder')}, {inlineCode('rows')} |
+| **Checkbox** | {inlineCode("import { Checkbox } from '@svelte-atoms/core/components/checkbox'")} | {inlineCode('<Checkbox.Root bind:checked />')}               | {inlineCode('checked')}, {inlineCode('disabled')}          |
+| **Radio**    | {inlineCode("import { Radio } from '@svelte-atoms/core/components/radio'")}       | {inlineCode('<Radio.Root value="..." bind:group />')}        | {inlineCode('value')}, {inlineCode('group')}               |
+| **Form**     | {inlineCode("import { Form } from '@svelte-atoms/core/components/form'")}         | {inlineCode('<Form.Root><Form.Field /></Form.Root>')}        | {inlineCode('onsubmit')}                     |
 
 ### Interactive Components
 
 | Component     | Import                                                                | Basic Usage                                                                       | State Binding              |
 | ------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------- |
-| **Button**    | \`import { Button } from '@svelte-atoms/core/components/button'\`       | \`<Button.Root onclick={...}>Text</Button.Root>\`                                   | -                          |
-| **Dropdown**  | \`import { Dropdown } from '@svelte-atoms/core/components/dropdown'\`   | \`<Dropdown.Root><Dropdown.List><Dropdown.Item /></Dropdown.List></Dropdown.Root>\` | \`bind:value\`               |
-| **Combobox**  | \`import { Combobox } from '@svelte-atoms/core/components/combobox'\`   | \`<Combobox.Root><Combobox.Input /><Combobox.List /></Combobox.Root>\`              | \`bind:value\`, \`bind:query\` |
-| **Accordion** | \`import { Accordion } from '@svelte-atoms/core/components/accordion'\` | \`<Accordion.Root><Accordion.Item /></Accordion.Root>\`                             | \`bind:value\`               |
-| **Tabs**      | \`import { Tabs } from '@svelte-atoms/core/components/tabs'\`           | \`<Tabs.Root><Tabs.Header /><Tabs.Body /></Tabs.Root>\`                             | \`bind:value\`               |
-| **Tree**      | \`import { Tree } from '@svelte-atoms/core/components/tree'\`           | \`<Tree.Root><Tree.Header /><Tree.Body /></Tree.Root>\`                             | \`bind:open\`                |
+| **Button**    | {inlineCode("import { Button } from '@svelte-atoms/core/components/button'")}       | {inlineCode('<Button.Root onclick={...}>Text</Button.Root>')}                                   | -                          |
+| **Dropdown**  | {inlineCode("import { Dropdown } from '@svelte-atoms/core/components/dropdown'")}   | {inlineCode('<Dropdown.Root><Dropdown.List><Dropdown.Item /></Dropdown.List></Dropdown.Root>')} | {inlineCode('bind:value')}               |
+| **Combobox**  | {inlineCode("import { Combobox } from '@svelte-atoms/core/components/combobox'")}   | {inlineCode('<Combobox.Root><Combobox.Input /><Combobox.List /></Combobox.Root>')}              | {inlineCode('bind:value')}, {inlineCode('bind:query')} |
+| **Accordion** | {inlineCode("import { Accordion } from '@svelte-atoms/core/components/accordion'")} | {inlineCode('<Accordion.Root><Accordion.Item /></Accordion.Root>')}                             | {inlineCode('bind:value')}               |
+| **Tabs**      | {inlineCode("import { Tabs } from '@svelte-atoms/core/components/tabs'")}           | {inlineCode('<Tabs.Root><Tabs.Header /><Tabs.Body /></Tabs.Root>')}                             | {inlineCode('bind:value')}               |
+| **Tree**      | {inlineCode("import { Tree } from '@svelte-atoms/core/components/tree'")}           | {inlineCode('<Tree.Root><Tree.Header /><Tree.Body /></Tree.Root>')}                             | {inlineCode('bind:open')}                |
 
 ### Overlay Components
 
 | Component   | Import                                                            | Basic Usage                                                           | State Binding |
 | ----------- | ----------------------------------------------------------------- | --------------------------------------------------------------------- | ------------- |
-| **Dialog**  | \`import { Dialog } from '@svelte-atoms/core/components/dialog'\`   | \`<Dialog.Root><Dialog.Content /></Dialog.Root>\`                       | \`bind:open\`   |
-| **Drawer**  | \`import { Drawer } from '@svelte-atoms/core/components/drawer'\`   | \`<Drawer.Root><Drawer.Content /></Drawer.Root>\`                       | \`bind:open\`   |
-| **Popover** | \`import { Popover } from '@svelte-atoms/core/components/popover'\` | \`<Popover.Root><Popover.Trigger /><Popover.Content /></Popover.Root>\` | \`bind:open\`   |
-| **Tooltip** | \`import { Tooltip } from '@svelte-atoms/core/components/tooltip'\` | \`<Tooltip.Root><Tooltip.Trigger /><Tooltip.Content /></Tooltip.Root>\` | -             |
-| **Toast**   | \`import { Toast } from '@svelte-atoms/core/components/toast'\`     | \`<Toast.Root><Toast.Title /><Toast.Description /></Toast.Root>\`       | -             |
+| **Dialog**  | {inlineCode("import { Dialog } from '@svelte-atoms/core/components/dialog'")}   | {inlineCode('<Dialog.Root><Dialog.Content /></Dialog.Root>')}                       | {inlineCode('bind:open')}   |
+| **Drawer**  | {inlineCode("import { Drawer } from '@svelte-atoms/core/components/drawer'")}   | {inlineCode('<Drawer.Root><Drawer.Content /></Drawer.Root>')}                       | {inlineCode('bind:open')}   |
+| **Popover** | {inlineCode("import { Popover } from '@svelte-atoms/core/components/popover'")} | {inlineCode('<Popover.Root><Popover.Trigger /><Popover.Content /></Popover.Root>')} | {inlineCode('bind:open')}   |
+| **Tooltip** | {inlineCode("import { Tooltip } from '@svelte-atoms/core/components/tooltip'")} | {inlineCode('<Tooltip.Root><Tooltip.Trigger /><Tooltip.Content /></Tooltip.Root>')} | -             |
+| **Toast**   | {inlineCode("import { Toast } from '@svelte-atoms/core/components/toast'")}     | {inlineCode('<Toast.Root><Toast.Title /><Toast.Description /></Toast.Root>')}       | -             |
 
 ### Layout Components
 
 | Component   | Import                                                            | Basic Usage                                                          | Props              |
 | ----------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------ |
-| **Card**    | \`import { Card } from '@svelte-atoms/core/components/card'\`       | \`<Card.Root><Card.Header /><Card.Body /><Card.Footer /></Card.Root>\` | -                  |
-| **Stack**   | \`import { Stack } from '@svelte-atoms/core/components/stack'\`     | \`<Stack.Root direction="vertical" gap={4}>...</Stack.Root>\`          | \`direction\`, \`gap\` |
-| **List**    | \`import { List } from '@svelte-atoms/core/components/list'\`       | \`<List.Root><List.Item /></List.Root>\`                               | \`type\`             |
-| **Divider** | \`import { Divider } from '@svelte-atoms/core/components/divider'\` | \`<Divider.Root />\`                                                   | \`orientation\`      |
+| **Card**    | {inlineCode("import { Card } from '@svelte-atoms/core/components/card'")}       | {inlineCode('<Card.Root><Card.Header /><Card.Body /><Card.Footer /></Card.Root>')} | -                  |
+| **Stack**   | {inlineCode("import { Stack } from '@svelte-atoms/core/components/stack'")}     | {inlineCode('<Stack.Root direction="vertical" gap={4}>...</Stack.Root>')}          | {inlineCode('direction')}, {inlineCode('gap')} |
+| **List**    | {inlineCode("import { List } from '@svelte-atoms/core/components/list'")}       | {inlineCode('<List.Root><List.Item /></List.Root>')}                               | {inlineCode('type')}             |
+| **Divider** | {inlineCode("import { Divider } from '@svelte-atoms/core/components/divider'")} | {inlineCode('<Divider.Root />')}                                                   | {inlineCode('orientation')}      |
 
 ### Display Components
 
 | Component  | Import                                                          | Basic Usage                           | Props        |
 | ---------- | --------------------------------------------------------------- | ------------------------------------- | ------------ |
-| **Avatar** | \`import { Avatar } from '@svelte-atoms/core/components/avatar'\` | \`<Avatar.Root src="..." alt="..." />\` | \`src\`, \`alt\` |
-| **Badge**  | \`import { Badge } from '@svelte-atoms/core/components/badge'\`   | \`<Badge.Root>Text</Badge.Root>\`       | \`variant\`    |
-| **Icon**   | \`import { Icon } from '@svelte-atoms/core/components/icon'\`     | \`<Icon src={IconComponent} />\`        | \`src\`        |
+| **Avatar** | {inlineCode("import { Avatar } from '@svelte-atoms/core/components/avatar'")} | {inlineCode('<Avatar.Root src="..." alt="..." />')} | {inlineCode('src')}, {inlineCode('alt')} |
+| **Badge**  | {inlineCode("import { Badge } from '@svelte-atoms/core/components/badge'")}   | {inlineCode('<Badge.Root>Text</Badge.Root>')}       | {inlineCode('variant')}    |
+| **Icon**   | {inlineCode("import { Icon } from '@svelte-atoms/core/components/icon'")}     | {inlineCode('<Icon src={IconComponent} />')}        | {inlineCode('src')}        |
 
 ## 🔧 Common Props
 
 ### All Components Accept
 
-- \`class\` - CSS classes (string or array)
-- \`style\` - Inline styles
-- \`id\` - Element ID
-- \`as\` - Change underlying HTML element
+- {inlineCode('class')} - CSS classes (string or array)
+- {inlineCode('style')} - Inline styles
+- {inlineCode('id')} - Element ID
+- {inlineCode('as')} - Change underlying HTML element
 
 ### State Management Props
 
-- \`bind:value\` - Two-way binding for value
-- \`bind:open\` - Two-way binding for open/closed state
-- \`bind:checked\` - Two-way binding for checked state
-- \`bind:selected\` - Two-way binding for selected items
+- {inlineCode('bind:value')} - Two-way binding for value
+- {inlineCode('bind:open')} - Two-way binding for open/closed state
+- {inlineCode('bind:checked')} - Two-way binding for checked state
+- {inlineCode('bind:selected')} - Two-way binding for selected items
 
 ### Animation Props
 
-- \`initial\` - Set initial state before enter
-- \`enter\` - Enter animation
-- \`exit\` - Exit animation
-- \`animate\` - Animate on data changes
+- {inlineCode('initial')} - Set initial state before enter
+- {inlineCode('enter')} - Enter animation
+- {inlineCode('exit')} - Exit animation
+- {inlineCode('animate')} - Animate on data changes
 
 ### Lifecycle Props
 
-- \`onmount\` - Called when component mounts
-- \`ondestroy\` - Called when component unmounts
+- {inlineCode('onmount')} - Called when component mounts
+- {inlineCode('ondestroy')} - Called when component unmounts
 
 ## 🎨 Styling Patterns
 
 ### TailwindCSS Classes
 
-\`\`\`svelte
-<Button.Root class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">
+{codeBlock(`<Button.Root class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">
 	Button
-</Button.Root>
-\`\`\`
+</Button.Root>`, 'svelte')}
 
 ### Conditional Classes
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	let active = $state(false);
 </script>
 
-<Button.Root class={active ? 'bg-blue-500' : 'bg-gray-500'}>Toggle</Button.Root>
-\`\`\`
+<Button.Root class={active ? 'bg-blue-500' : 'bg-gray-500'}>Toggle</Button.Root>`, 'svelte')}
 
 ### Multiple Classes
 
-\`\`\`svelte
-<Card.Root class="rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">Content</Card.Root>
-\`\`\`
+{codeBlock(`<Card.Root class="rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">Content</Card.Root>`, 'svelte')}
 
 ## 🎭 Animation Examples
 
 ### With Motion One
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import { animate } from 'motion';
 
 	function handleEnter(el) {
@@ -164,13 +151,11 @@
 
 <Dialog.Root bind:open enter={handleEnter}>
 	<Dialog.Content>...</Dialog.Content>
-</Dialog.Root>
-\`\`\`
+</Dialog.Root>`, 'svelte')}
 
 ### With GSAP
 
-\`\`\`svelte
-<script>
+{codeBlock(`<script>
 	import gsap from 'gsap';
 
 	function handleEnter(el) {
@@ -180,15 +165,13 @@
 
 <Popover.Root enter={handleEnter}>
 	<Popover.Content>...</Popover.Content>
-</Popover.Root>
-\`\`\`
+</Popover.Root>`, 'svelte')}
 
 ## 🔍 Common Use Cases
 
 ### Building a Form
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Form } from '@svelte-atoms/core/components/form';
 	import { Input } from '@svelte-atoms/core/components/input';
 	import { Button } from '@svelte-atoms/core/components/button';
@@ -212,13 +195,11 @@
 	</Form.Field>
 
 	<Button.Root type="submit">Submit</Button.Root>
-</Form.Root>
-\`\`\`
+</Form.Root>`, 'svelte')}
 
 ### Creating a Modal Dialog
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Dialog } from '@svelte-atoms/core/components/dialog';
 	import { Button } from '@svelte-atoms/core/components/button';
 
@@ -240,13 +221,11 @@
 			<Button.Root onclick={() => (open = false)}>Close</Button.Root>
 		</Dialog.Footer>
 	</Dialog.Content>
-</Dialog.Root>
-\`\`\`
+</Dialog.Root>`, 'svelte')}
 
 ### Building a Dropdown Menu
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
 	let selected = $state<string[]>([]);
@@ -262,13 +241,11 @@
 		<Dropdown.Item value="option2">Option 2</Dropdown.Item>
 		<Dropdown.Item value="option3">Option 3</Dropdown.Item>
 	</Dropdown.List>
-</Dropdown.Root>
-\`\`\`
+</Dropdown.Root>`, 'svelte')}
 
 ### Creating Tabs
 
-\`\`\`svelte
-<script lang="ts">
+{codeBlock(`<script lang="ts">
 	import { Tabs } from '@svelte-atoms/core/components/tabs';
 
 	let activeTab = $state('tab1');
@@ -292,25 +269,21 @@
 			<Tabs.Tab.Body>Content 2</Tabs.Tab.Body>
 		</Tabs.Tab>
 	</Tabs.Body>
-</Tabs.Root>
-\`\`\`
+</Tabs.Root>`, 'svelte')}
 
 ## 🚫 Common Mistakes to Avoid
 
 ### ❌ Don't Use Low-Level API
 
-\`\`\`svelte
-<!-- WRONG -->
+{codeBlock(`<!-- WRONG -->
 <script>
   const state = new DropdownState(() => ({ ... }));
   const dropdown = new DropdownBond(state);
-</script>
-\`\`\`
+</script>`, 'svelte')}
 
 ### ✅ Use High-Level Components
 
-\`\`\`svelte
-<!-- CORRECT -->
+{codeBlock(`<!-- CORRECT -->
 <script>
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 	let selected = $state([]);
@@ -318,27 +291,22 @@
 
 <Dropdown.Root bind:value={selected}>
 	<!-- ... -->
-</Dropdown.Root>
-\`\`\`
+</Dropdown.Root>`, 'svelte')}
 
 ### ❌ Don't Use Legacy Stores
 
-\`\`\`svelte
-<!-- WRONG -->
+{codeBlock(`<!-- WRONG -->
 <script>
 	import { writable } from 'svelte/store';
 	const value = writable('');
-</script>
-\`\`\`
+</script>`, 'svelte')}
 
 ### ✅ Use Svelte 5 Runes
 
-\`\`\`svelte
-<!-- CORRECT -->
+{codeBlock(`<!-- CORRECT -->
 <script>
 	let value = $state('');
-</script>
-\`\`\`
+</script>`, 'svelte')}
 
 ## 📚 Documentation Links
 

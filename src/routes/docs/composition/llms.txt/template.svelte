@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # Component Composition in @svelte-atoms/core
 
@@ -19,25 +19,22 @@
 
 ## 1. Base Prop Composition
 
-The \`base=\` prop allows you to replace a component's root element with another component, **inheriting all the base component's behavior** while adding new functionality.
+The {inlineCode('base=')} prop allows you to replace a component's root element with another component, **inheriting all the base component's behavior** while adding new functionality.
 
 ### Basic Pattern
 
-\`\`\`svelte
-<Tooltip.Trigger base={Button}>Open Tooltip</Tooltip.Trigger>
-\`\`\`
+{codeBlock(`<Tooltip.Trigger base={Button}>Open Tooltip</Tooltip.Trigger>`, 'svelte')}
 
-The \`Tooltip.Trigger\` now **behaves as both** a Tooltip trigger AND a Button:
+The {inlineCode('Tooltip.Trigger')} now **behaves as both** a Tooltip trigger AND a Button:
 
 - Gets Button's styling, hover states, click handling
-- Gets Tooltip.Trigger's \`aria-*\` attributes, open/close logic, positioning
+- Gets Tooltip.Trigger's {inlineCode('aria-*')} attributes, open/close logic, positioning
 
 ### Form Field Composition
 
-The most powerful example is \`Field.Control\`, which adapts to any input component:
+The most powerful example is {inlineCode('Field.Control')}, which adapts to any input component:
 
-\`\`\`svelte
-<!-- Text Input -->
+{codeBlock(`<!-- Text Input -->
 <Field.Control base={Input.Value} placeholder="Enter name" />
 
 <!-- Checkbox -->
@@ -47,22 +44,20 @@ The most powerful example is \`Field.Control\`, which adapts to any input compon
 <Field.Control base={RadioGroup}>
 	<Radio value="yes" />
 	<Radio value="no" />
-</Field.Control>
-\`\`\`
+</Field.Control>`, 'svelte')}
 
-\`Field.Control\` automatically:
+{inlineCode('Field.Control')} automatically:
 
 - Connects the base component to form validation
 - Syncs the input value with field state
 - Handles validation on blur/change
-- Links labels via \`aria-labelledby\`
+- Links labels via {inlineCode('aria-labelledby')}
 
 ### DataGrid Cell Composition
 
 Compose table cells with interactive components:
 
-\`\`\`svelte
-<DataGrid.Td base={Dropdown.Root} placement="bottom-end">
+{codeBlock(`<DataGrid.Td base={Dropdown.Root} placement="bottom-end">
 	<Dropdown.Trigger>
 		<Icon src={MoreVerticalIcon} />
 	</Dropdown.Trigger>
@@ -70,10 +65,9 @@ Compose table cells with interactive components:
 		<Dropdown.Item value="edit">Edit</Dropdown.Item>
 		<Dropdown.Item value="delete">Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>
-\`\`\`
+</DataGrid.Td>`, 'svelte')}
 
-The \`DataGrid.Td\` now:
+The {inlineCode('DataGrid.Td')} now:
 
 - Maintains table cell semantics and styling
 - Adds Dropdown positioning, open/close state
@@ -81,50 +75,43 @@ The \`DataGrid.Td\` now:
 
 ### Menu & Dropdown Triggers
 
-\`\`\`svelte
-<Menu.Root>
+{codeBlock(`<Menu.Root>
 	<Menu.Trigger base={Button}>Select Language</Menu.Trigger>
 	<Menu.List>
 		<Menu.Item>English</Menu.Item>
 		<Menu.Item>Spanish</Menu.Item>
 	</Menu.List>
-</Menu.Root>
-\`\`\`
+</Menu.Root>`, 'svelte')}
 
-\`Menu.Trigger\` with \`base={Button}\`:
+{inlineCode('Menu.Trigger')} with {inlineCode('base={Button}')}:
 
 - Button appearance and interaction
-- Menu trigger accessibility (\`aria-haspopup\`, \`aria-expanded\`)
+- Menu trigger accessibility ({inlineCode('aria-haspopup')}, {inlineCode('aria-expanded')})
 - Menu open/close toggle on click
 
 ### How Base Prop Works
 
 When you write:
 
-\`\`\`svelte
-<Component base={BaseComponent} {...props}>
+{codeBlock(`<Component base={BaseComponent} {...props}>
 	{children}
-</Component>
-\`\`\`
+</Component>`, 'svelte')}
 
 Internally, the component renders:
 
-\`\`\`svelte
-<BaseComponent {...props} {...componentSpecificProps}>
+{codeBlock(`<BaseComponent {...props} {...componentSpecificProps}>
 	{children}
-</BaseComponent>
-\`\`\`
+</BaseComponent>`, 'svelte')}
 
 All props are forwarded, and the component adds its own behavior (event handlers, ARIA attributes, state bindings) to the base component.
 
 ## 2. Bond Pattern (State Sharing)
 
-Components expose their internal state via a **bond** object through the \`{#snippet children({ bond })}\` pattern. This allows parent components to access and control child component state.
+Components expose their internal state via a **bond** object through the {inlineCode('{#snippet children({ bond })}')} pattern. This allows parent components to access and control child component state.
 
 ### Accessing Component State
 
-\`\`\`svelte
-<Popover.Root>
+{codeBlock(`<Popover.Root>
 	{#snippet children({ popover })}
 		<Popover.Trigger base={Button}>
 			<div>Open Popover</div>
@@ -136,19 +123,17 @@ Components expose their internal state via a **bond** object through the \`{#sni
 			<!-- Can access popover.state.isOpen, popover.state.close(), etc. -->
 		</Popover.Content>
 	{/snippet}
-</Popover.Root>
-\`\`\`
+</Popover.Root>`, 'svelte')}
 
-The \`popover\` bond provides:
+The {inlineCode('popover')} bond provides:
 
-- \`popover.state.isOpen\` - Current open state
-- \`popover.state.close()\` - Close the popover programmatically
-- \`popover.state.toggle()\` - Toggle open/close state
+- {inlineCode('popover.state.isOpen')} - Current open state
+- {inlineCode('popover.state.close()')} - Close the popover programmatically
+- {inlineCode('popover.state.toggle()')} - Toggle open/close state
 
 ### Field Validation Access
 
-\`\`\`svelte
-<Field.Root name="firstName" schema={nameSchema}>
+{codeBlock(`<Field.Root name="firstName" schema={nameSchema}>
 	{#snippet children({ field })}
 		<Field.Label>First Name</Field.Label>
 
@@ -171,19 +156,17 @@ The \`popover\` bond provides:
 			</div>
 		{/if}
 	{/snippet}
-</Field.Root>
-\`\`\`
+</Field.Root>`, 'svelte')}
 
-The \`field\` bond provides:
+The {inlineCode('field')} bond provides:
 
-- \`field.state.validate()\` - Trigger validation manually
-- \`field.state.errors\` - Array of validation errors
-- \`field.state.value\` - Current field value
+- {inlineCode('field.state.validate()')} - Trigger validation manually
+- {inlineCode('field.state.errors')} - Array of validation errors
+- {inlineCode('field.state.value')} - Current field value
 
 ### Collapsible State Control
 
-\`\`\`svelte
-<Collapsible.Root>
+{codeBlock(`<Collapsible.Root>
 	{#snippet children({ collapsible })}
 		<Collapsible.Trigger base={Button}>Toggle Content</Collapsible.Trigger>
 
@@ -194,13 +177,11 @@ The \`field\` bond provides:
 			<Button onclick={() => collapsible.state.close()}>Close from inside</Button>
 		</Collapsible.Content>
 	{/snippet}
-</Collapsible.Root>
-\`\`\`
+</Collapsible.Root>`, 'svelte')}
 
 ### Dropdown State Inspection
 
-\`\`\`svelte
-<Dropdown.Root>
+{codeBlock(`<Dropdown.Root>
 	{#snippet children({ dropdown })}
 		<Dropdown.Trigger base={Button}>Select Option</Dropdown.Trigger>
 
@@ -212,21 +193,18 @@ The \`field\` bond provides:
 		<!-- Display selected value outside dropdown -->
 		<div>Selected: {dropdown.state.value || 'None'}</div>
 	{/snippet}
-</Dropdown.Root>
-\`\`\`
+</Dropdown.Root>`, 'svelte')}
 
 ### How Bond Pattern Works
 
 Components create a **Bond** instance that holds state and methods:
 
-\`\`\`typescript
-// Inside component implementation
+{codeBlock(`// Inside component implementation
 const bond = new PopoverBond();
 bond.state.isOpen = $state(false);
 bond.state.close = () => {
 	bond.state.isOpen = false;
-};
-\`\`\`
+};`, 'typescript')}
 
 The bond is passed to children via snippet props, allowing descendants to access and modify component state.
 
@@ -236,8 +214,7 @@ Components can be nested as siblings or parent-child to create complex interacti
 
 ### Dialog with Nested Dropdown
 
-\`\`\`svelte
-<Dialog.Root>
+{codeBlock(`<Dialog.Root>
 	{#snippet children({ dialog })}
 		<Dialog.Trigger base={Button}>Open Dialog</Dialog.Trigger>
 
@@ -262,15 +239,13 @@ Components can be nested as siblings or parent-child to create complex interacti
 			</Dialog.Footer>
 		</Dialog.Content>
 	{/snippet}
-</Dialog.Root>
-\`\`\`
+</Dialog.Root>`, 'svelte')}
 
 Each component manages its own state independently, but both bonds are accessible for coordination.
 
 ### Scrollable with Nested Content
 
-\`\`\`svelte
-<Scrollable.Root>
+{codeBlock(`<Scrollable.Root>
 	{#snippet children({ scrollable })}
 		<Scrollable.Content>
 			<!-- Access scroll position -->
@@ -285,13 +260,11 @@ Each component manages its own state independently, but both bonds are accessibl
 			</Accordion.Root>
 		</Scrollable.Content>
 	{/snippet}
-</Scrollable.Root>
-\`\`\`
+</Scrollable.Root>`, 'svelte')}
 
 ### Combobox with Custom Trigger
 
-\`\`\`svelte
-<Combobox.Root>
+{codeBlock(`<Combobox.Root>
 	{#snippet children({ combobox })}
 		<Combobox.Trigger base={Input.Root}>
 			<Input.Value placeholder="Search..." />
@@ -303,43 +276,39 @@ Each component manages its own state independently, but both bonds are accessibl
 			<Combobox.Item value="option2">Option 2</Combobox.Item>
 		</Combobox.List>
 	{/snippet}
-</Combobox.Root>
-\`\`\`
+</Combobox.Root>`, 'svelte')}
 
-The \`Input.Root\` is composed into the trigger, bringing input styling and icon support to the combobox.
+The {inlineCode('Input.Root')} is composed into the trigger, bringing input styling and icon support to the combobox.
 
 ## Key Principles
 
-1. **Base Prop = Behavior Inheritance**: Use \`base=\` to layer component behaviors (Button + Menu.Trigger = clickable menu opener)
+1. **Base Prop = Behavior Inheritance**: Use {inlineCode('base=')} to layer component behaviors (Button + Menu.Trigger = clickable menu opener)
 
-2. **Bond = State Access**: Use \`{#snippet children({ bond })}\` to access component state and methods for coordination
+2. **Bond = State Access**: Use {inlineCode('{#snippet children({ bond })}')} to access component state and methods for coordination
 
 3. **Nesting = UI Composition**: Nest components as needed; each maintains independent state while bonds allow communication
 
 4. **Forward Everything**: Components forward all props and classes to their base, enabling full customization
 
-5. **Type Safety**: TypeScript infers correct props when using \`base=\`, providing autocompletion for both the component and the base
+5. **Type Safety**: TypeScript infers correct props when using {inlineCode('base=')}, providing autocompletion for both the component and the base
 
 ## Common Patterns
 
 ### Interactive Table Cell
 
-\`\`\`svelte
-<DataGrid.Td base={Dropdown.Root}>
+{codeBlock(`<DataGrid.Td base={Dropdown.Root}>
 	<Dropdown.Trigger base={Button} variant="ghost" size="sm">Actions</Dropdown.Trigger>
 	<Dropdown.List>
 		<Dropdown.Item>Edit</Dropdown.Item>
 		<Dropdown.Item>Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>
-\`\`\`
+</DataGrid.Td>`, 'svelte')}
 
 **Combines**: Table cell + Dropdown + Button
 
 ### Validated Form Field
 
-\`\`\`svelte
-<Field.Root name="email" schema={emailSchema}>
+{codeBlock(`<Field.Root name="email" schema={emailSchema}>
 	{#snippet children({ field })}
 		<Field.Label>Email</Field.Label>
 		<Field.Control
@@ -352,26 +321,22 @@ The \`Input.Root\` is composed into the trigger, bringing input styling and icon
 			<Field.Error />
 		{/if}
 	{/snippet}
-</Field.Root>
-\`\`\`
+</Field.Root>`, 'svelte')}
 
 **Combines**: Form validation + Input + Label + Error display
 
 ### Tooltip Button
 
-\`\`\`svelte
-<Tooltip.Root>
+{codeBlock(`<Tooltip.Root>
 	<Tooltip.Trigger base={Button} variant="outline">Delete</Tooltip.Trigger>
 	<Tooltip.Content>This action cannot be undone</Tooltip.Content>
-</Tooltip.Root>
-\`\`\`
+</Tooltip.Root>`, 'svelte')}
 
 **Combines**: Tooltip positioning + Button interaction
 
 ### Controlled Popover with Custom Content
 
-\`\`\`svelte
-<Popover.Root bind:open>
+{codeBlock(`<Popover.Root bind:open>
 	{#snippet children({ popover })}
 		<Popover.Trigger base={Button}>
 			Open {popover.state.isOpen ? '(Open)' : '(Closed)'}
@@ -391,14 +356,13 @@ The \`Input.Root\` is composed into the trigger, bringing input styling and icon
 			</Card>
 		</Popover.Content>
 	{/snippet}
-</Popover.Root>
-\`\`\`
+</Popover.Root>`, 'svelte')}
 
 **Combines**: Popover positioning + Button trigger + Card layout + Form
 
 ## Summary
 
-- **\`base=\` prop**: Inherit behavior from another component (Trigger + Button = clickable trigger)
-- **\`{#snippet children({ bond })}\`**: Access component state for coordination
+- **{inlineCode('base=')} prop**: Inherit behavior from another component (Trigger + Button = clickable trigger)
+- **{inlineCode('{#snippet children({ bond })}')}**: Access component state for coordination
 - **Nesting**: Compose complex UIs by nesting components as needed
 - **Composition > Configuration**: Combine simple components instead of creating complex ones with many props

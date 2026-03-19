@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { newLine } from '$docs/md/template';
+	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />{newLine()}
+<FrontMatter {frontmatter} />
 
 # {metadata.componentTitle} Module
 
@@ -28,7 +28,7 @@
 
 ### Stepper.Root
 
-**Preset Key:** \`stepper\`
+**Preset Key:** {inlineCode('stepper')}
 
 **Props:**
 
@@ -36,7 +36,7 @@
 
 ### Stepper.Header
 
-**Preset Key:** \`stepper.header\`
+**Preset Key:** {inlineCode('stepper.header')}
 
 **Props:**
 
@@ -44,7 +44,7 @@
 
 ### Stepper.Body
 
-**Preset Key:** \`stepper.body\`
+**Preset Key:** {inlineCode('stepper.body')}
 
 **Props:**
 
@@ -52,7 +52,7 @@
 
 ### Stepper.Content
 
-**Preset Key:** \`stepper.content\`
+**Preset Key:** {inlineCode('stepper.content')}
 
 **Props:**
 
@@ -60,7 +60,7 @@
 
 ### Stepper.Footer
 
-**Preset Key:** \`stepper.footer\`
+**Preset Key:** {inlineCode('stepper.footer')}
 
 **Props:**
 
@@ -68,7 +68,7 @@
 
 ### Step.Root
 
-**Preset Key:** \`step\`
+**Preset Key:** {inlineCode('step')}
 
 **Props:**
 
@@ -76,7 +76,7 @@
 
 ### Step.Header
 
-**Preset Key:** \`step.header\`
+**Preset Key:** {inlineCode('step.header')}
 
 **Props:**
 
@@ -84,7 +84,7 @@
 
 ### Step.Indicator
 
-**Preset Key:** \`step.indicator\`
+**Preset Key:** {inlineCode('step.indicator')}
 
 **Props:**
 
@@ -92,7 +92,7 @@
 
 ### Step.Title
 
-**Preset Key:** \`step.title\`
+**Preset Key:** {inlineCode('step.title')}
 
 **Props:**
 
@@ -100,7 +100,7 @@
 
 ### Step.Description
 
-**Preset Key:** \`step.description\`
+**Preset Key:** {inlineCode('step.description')}
 
 **Props:**
 
@@ -108,7 +108,7 @@
 
 ### Step.Separator
 
-**Preset Key:** \`step.separator\`
+**Preset Key:** {inlineCode('step.separator')}
 
 **Props:**
 
@@ -116,7 +116,7 @@
 
 ### Step.Body
 
-**Preset Key:** \`step.body\`
+**Preset Key:** {inlineCode('step.body')}
 
 **Props:**
 
@@ -126,15 +126,11 @@
 
 ### Basic Example
 
-\`\`\`svelte
-{metadata.examples.basic}
-\`\`\`
+{codeBlock(metadata.examples.basic, 'svelte')}
 
 ### Preset Configuration
 
-\`\`\`typescript
-{metadata.examples.preset}
-\`\`\`
+{codeBlock(metadata.examples.preset, 'typescript')}
 
 ## Accessibility
 
