@@ -1,13 +1,12 @@
 <script lang="ts">
+	import { newLine } from '$docs/md/template';
 	import { FrontMatter, CodeBlock, List } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
-
-
+<FrontMatter {frontmatter} />{newLine()}
 # {metadata.pageTitle}
 
 {metadata.pageDescription}

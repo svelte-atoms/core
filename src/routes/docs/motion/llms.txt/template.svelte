@@ -4,7 +4,7 @@
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
+<FrontMatter {frontmatter} />{newLine()}
 
 # Motion & Animation System
 
@@ -820,7 +820,7 @@ Use generics for element-specific types:
 ### Svelte Transitions
 
 \`\`\`typescript
-import { md } from '$docs/md/template';
+import { newLine, md } from '$docs/md/template';
 import { fade, slide, scale, fly, blur } from 'svelte/transition';
 \`\`\`
 

@@ -1,21 +1,28 @@
 <script lang="ts">
-	import type { Frontmatter } from '$docs/md/frontmatter';
+import type { Frontmatter } from '$docs/md/frontmatter';
 
-	let { frontmatter }: { frontmatter: Frontmatter } = $props();
+let { frontmatter }: { frontmatter: Frontmatter } = $props();
+
+const yaml = $derived(buildYaml(frontmatter));
+
+function buildYaml(fm: Frontmatter): string {
+const lines = ['---'];
+lines.push(`id: ${fm.id}`);
+lines.push(`title: ${fm.title}`);
+lines.push(`category: ${fm.category}`);
+if (fm.subcategory) lines.push(`subcategory: ${fm.subcategory}`);
+lines.push(`depth: ${fm.depth}`);
+if (fm.prerequisites?.length) {
+lines.push('prerequisites:');
+fm.prerequisites.forEach((p) => lines.push(`  - ${p}`));
+}
+if (fm.related?.length) {
+lines.push('related:');
+fm.related.forEach((r) => lines.push(`  - ${r}`));
+}
+lines.push('---');
+return lines.join('\n');
+}
 </script>
 
----
-id: {frontmatter.id}
-title: {frontmatter.title}
-category: {frontmatter.category}{#if frontmatter.subcategory}
-subcategory: {frontmatter.subcategory}{/if}
-depth: {frontmatter.depth}
-prerequisites:{#if frontmatter.prerequisites.length === 0} []{:else}
-{#each frontmatter.prerequisites as p (p)}
-  - {p}
-{/each}{/if}
-related:{#if frontmatter.related.length === 0} []{:else}
-{#each frontmatter.related as r (r)}
-  - {r}
-{/each}{/if}
----
+{yaml}

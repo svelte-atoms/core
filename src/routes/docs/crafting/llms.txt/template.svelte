@@ -4,7 +4,7 @@
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
+<FrontMatter {frontmatter} />{newLine()}
 
 # Crafting Components from Scratch in @svelte-atoms/core
 
@@ -172,7 +172,7 @@ export {
 ### 1. Base Classes
 
 \`\`\`typescript
-import { md } from '$docs/md/template';
+import { newLine, md } from '$docs/md/template';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 // BondStateProps: Base props type with optional id

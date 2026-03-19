@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { newLine } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
+<FrontMatter {frontmatter} />{newLine()}
 
 # {metadata.componentTitle} Module
 

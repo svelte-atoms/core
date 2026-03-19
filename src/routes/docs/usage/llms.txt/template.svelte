@@ -4,7 +4,7 @@
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
+<FrontMatter {frontmatter} />{newLine()}
 
 # Component Usage Patterns
 
@@ -29,7 +29,7 @@ Components follow a hierarchical naming pattern using dot notation:
 ## Import Pattern
 
 \`\`\`javascript
-import { md } from '$docs/md/template';
+import { newLine, md } from '$docs/md/template';
 import { Form } from '$lib/components/form';
 
 // Usage

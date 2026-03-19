@@ -4,7 +4,7 @@
 	const { metadata, frontmatter } = $derived(data);
 </script>
 
-<FrontMatter {frontmatter} />
+<FrontMatter {frontmatter} />{newLine()}
 
 # @svelte-atoms/core
 
@@ -282,7 +282,7 @@ Components can be imported in multiple ways:
 
 \`\`\`typescript
 // Named import (recommended)
-import { md } from '$docs/md/template';
+import { newLine, md } from '$docs/md/template';
 import { Button } from '@svelte-atoms/core/components/button';
 
 // Direct import
