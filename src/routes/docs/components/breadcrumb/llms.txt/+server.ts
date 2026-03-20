@@ -1,90 +1,27 @@
-import { propsTable } from '$docs/md/page';
-import { md } from '$docs/md/template';
-import breadcrumbProps from '../props';
+
+import Page from './template.svelte';
 import { metadata } from '../shared';
+import breadcrumbProps from '../props';
+
+import type { Frontmatter } from '$docs/md/frontmatter';
+import { renderLlmContent } from '$docs/utils/render-llm';
+
+const frontmatter: Frontmatter = {
+	id: 'breadcrumb',
+	title: 'Breadcrumb Component',
+	category: 'components',
+	subcategory: 'navigation',
+	depth: 'beginner',
+	prerequisites: ['atoms', 'styling'],
+	related: ['variants', 'preset'],
+};
+
+
 
 export function GET() {
-	return new Response(build(), {
-		headers: {
-			'Content-Type': 'text/plain; charset=utf-8'
-		}
+	const text = renderLlmContent(Page, { frontmatter, metadata, breadcrumbProps });
+
+	return new Response(text, {
+		headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
 	});
-}
-
-function build(): string {
-	return md`
----
-id: breadcrumb
-title: Breadcrumb Component
-category: components
-subcategory: navigation
-depth: beginner
-prerequisites:
-  - atoms
-  - styling
-related:
-  - variants
-  - preset
----
-
-# ${metadata.componentTitle} Module
-
-${metadata.componentDescription}
-
-**Type**: ${metadata.componentType === 'compound' ? 'Compound Component' : 'Simple Component'}
-
-## Use Cases
-
-${metadata.useCases.map((uc) => `- **${uc.title}**: ${uc.description}`).join('\n')}
-
-## Components
-
-${metadata.componentsSummary.map((comp) => `- **${comp.name}**: ${comp.description}`).join('\n')}
-
-### Breadcrumb.Root
-
-**Preset Key:** \`breadcrumb\`
-
-**Props:**
-
-${propsTable(breadcrumbProps.root)}
-
-### Breadcrumb.Item
-
-**Preset Key:** \`breadcrumb.item\`
-
-**Props:**
-
-${propsTable(breadcrumbProps.item)}
-
-### Breadcrumb.Separator
-
-**Preset Key:** \`breadcrumb.separator\`
-
-**Props:**
-
-${propsTable(breadcrumbProps.separator)}
-
-## Examples
-
-### Basic Example
-
-\`\`\`svelte
-${metadata.examples.basic}
-\`\`\`
-
-### Preset Configuration
-
-\`\`\`typescript
-${metadata.examples.preset}
-\`\`\`
-
-## Accessibility
-
-${metadata.accessibility.map((feature) => `- ${feature}`).join('\n')}
-
-## License
-
-This module is licensed under the MIT License.
-`.trim();
 }

@@ -47,3 +47,35 @@ export function mdRaw(strings: TemplateStringsArray, ...values: any[]): string {
 
 // Optional: Export type for markdown strings
 export type MarkdownString = string & { readonly __brand: 'markdown' };
+
+export function newLine(): string {
+	return '\n';
+}
+
+export function codeBlock(code: string, language: string = ''): string {
+	return `\`\`\`${language}\n${code}\n\`\`\``;
+}
+
+export function inlineCode(code: string): string {
+	return `\`${code}\``;
+}
+
+export function list(items: string[], ordered: boolean = false): string {
+	if (ordered) {
+		return items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+	} else {
+		return items.map((item) => `- ${item}`).join('\n');
+	}
+}
+
+export function link(text: string, url: string): string {
+	return `[${text}](${url})`;
+}
+
+export function image(alt: string, url: string): string {
+	return `![${alt}](${url})`;
+}
+
+export function content(text: string): string {
+	return text.trim();
+}

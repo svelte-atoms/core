@@ -1,0 +1,99 @@
+<script lang="ts">
+	import {  codeBlock ,  inlineCode, list} from '$docs/md/template';
+	import { FrontMatter, PropsTable } from '$docs/md/components';
+
+	let { data } = $props();
+	const { metadata, frontmatter } = $derived(data);
+</script>
+
+<FrontMatter {frontmatter} />
+
+# {metadata.componentTitle} Module
+
+{metadata.componentDescription}
+
+**Type**: {metadata.componentType === 'compound' ? 'Compound Component' : 'Simple Component'}
+
+## Use Cases
+
+{list(metadata.useCases.map((uc) => `**${uc.title}**: ${uc.description}`))}
+
+## Components
+
+The Accordion module consists of the following components:
+
+{list(metadata.componentsSummary.map((comp) => `**${comp.name}**: ${comp.description}`))}
+
+### Accordion (Root)
+
+**Preset Key:** {inlineCode('accordion')}
+
+**Props:**
+
+<PropsTable props={data.accordionRootProps} />
+
+### AccordionItem.Root
+
+**Preset Key:** {inlineCode('accordion.item')}
+
+**Props:**
+
+<PropsTable props={data.accordionItemRootProps} />
+
+### AccordionItem.Header
+
+**Preset Key:** {inlineCode('accordion.item.header')}
+
+**Props:**
+
+<PropsTable props={data.accordionItemHeaderProps} />
+
+### AccordionItem.Body
+
+**Preset Key:** {inlineCode('accordion.item.body')}
+
+**Props:**
+
+<PropsTable props={data.accordionItemBodyProps} />
+
+### AccordionItem.Indicator
+
+**Preset Key:** {inlineCode('accordion.item.indicator')}
+
+**Props:**
+
+<PropsTable props={data.accordionItemIndicatorProps} />
+
+## Examples
+
+### Basic Accordion
+
+{codeBlock(metadata.examples.basic, 'svelte')}
+
+### Collapsible Items
+
+{codeBlock(metadata.examples.collapsible, 'svelte')}
+
+### Multiple Open Items
+
+{codeBlock(metadata.examples.multiple, 'svelte')}
+
+### Preset Configuration
+
+{codeBlock(metadata.examples.preset, 'typescript')}
+
+## Accessibility
+
+{list(metadata.accessibility)}
+
+## Best Practices
+
+1. **Clear Headers**: Use descriptive header text that clearly indicates the content
+2. **Consistent Styling**: Maintain visual consistency across accordion items
+3. **Loading States**: Show loading indicators for dynamic content
+4. **Default States**: Consider which items should be open by default
+5. **Mobile Friendly**: Ensure touch targets are large enough on mobile devices
+
+## License
+
+This module is licensed under the MIT License.
