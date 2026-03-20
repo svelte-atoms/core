@@ -12,6 +12,7 @@
 	let {
 		class: klass = '',
 		value = $bindable(''),
+		date = $bindable<Date | null>(null),
 		hourFormat = 24,
 		withSeconds = false,
 		min = undefined,
@@ -100,7 +101,7 @@
 	}
 
 	// ── Effects ────────────────────────────────────────────────────────────
-	/** Parse external value changes */
+	/** Parse external value changes (priority: value string takes precedence) */
 	$effect(() => {
 		if (value === lastEmitted) return; // skip internal emissions
 		untrack(() => parseTimeString(value));
@@ -115,6 +116,15 @@
 		// If clamped, sync segments to reflect boundary
 		if (clamped !== raw) {
 			untrack(() => parseTimeString(clamped));
+		}
+
+		// Always update date when time changes (even if value string unchanged)
+		if (date && hours !== null && minutes !== null) {
+			const newDate = new Date(date);
+			newDate.setHours(hours, minutes, withSeconds ? (seconds ?? 0) : 0, 0);
+			if (newDate.getTime() !== date.getTime()) {
+				date = newDate;
+			}
 		}
 
 		if (clamped === value) return;

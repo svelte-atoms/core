@@ -88,6 +88,8 @@ export interface InputTimeControlExtendProps {}
 export interface InputTimeControlProps extends InputTimeControlExtendProps {
 	/** HH:MM or HH:MM:SS string (always 24h format internally) */
 	value?: string;
+	/** Optional Date object to sync time with (bindable) */
+	date?: Date | null;
 	/**
 	 * Hour display format
 	 * @default 24
