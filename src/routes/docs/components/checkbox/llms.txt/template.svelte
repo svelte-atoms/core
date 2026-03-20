@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {  codeBlock , list, newLine } from '$docs/md/template';
+	import {  codeBlock , list} from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
