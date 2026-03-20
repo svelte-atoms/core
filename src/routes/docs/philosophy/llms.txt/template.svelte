@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 
 	import { FrontMatter } from '$docs/md/components';
 	import { list, codeBlock } from '$docs/md/template';
@@ -6,6 +7,7 @@
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 
 <FrontMatter {frontmatter} />

@@ -1,9 +1,11 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { codeBlock, inlineCode, list } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 
@@ -16,6 +18,7 @@
 ### Basic Component Usage
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Component } from '@svelte-atoms/core/components/component';
 </script>
 
@@ -26,6 +29,7 @@
 ### With State Binding
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
 	let value = $state<string[]>([]);
@@ -128,6 +132,7 @@
 ### Conditional Classes
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	let active = $state(false);
 </script>
 
@@ -172,6 +177,7 @@
 ### Building a Form
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Form } from '@svelte-atoms/core/components/form';
 	import { Input } from '@svelte-atoms/core/components/input';
 	import { Button } from '@svelte-atoms/core/components/button';
@@ -200,6 +206,7 @@
 ### Creating a Modal Dialog
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Dialog } from '@svelte-atoms/core/components/dialog';
 	import { Button } from '@svelte-atoms/core/components/button';
 
@@ -226,6 +233,7 @@
 ### Building a Dropdown Menu
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
 	let selected = $state<string[]>([]);
@@ -246,6 +254,7 @@
 ### Creating Tabs
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Tabs } from '@svelte-atoms/core/components/tabs';
 
 	let activeTab = $state('tab1');

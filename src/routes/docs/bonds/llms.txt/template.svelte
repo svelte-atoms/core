@@ -1,10 +1,12 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { FrontMatter } from '$docs/md/components';
   import { codeBlock, list } from '$docs/md/template';
 
   let { data } = $props();
   const { metadata, frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 
@@ -154,6 +156,7 @@ export class MyComponentBond<
 ### Step 5: Use in Component
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { MyComponentBond, MyComponentState } from './bond.svelte';
   
   let { open = $bindable(false), disabled = false } = $props();
@@ -215,6 +218,7 @@ const state = new DialogBondState(() => bondProps);`, 'typescript')}
 ### Element Props with Spread
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   const bond = new DialogBond(state).share();
 </script>
 
@@ -227,6 +231,7 @@ const state = new DialogBondState(() => bondProps);`, 'typescript')}
 ### Accessing Bond from Children
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   // In child component, retrieve parent bond
   const bond = DialogBond.get();
   
@@ -242,6 +247,7 @@ const state = new DialogBondState(() => bondProps);`, 'typescript')}
 ### Bond Factories
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { createTreeBond } from './factory';
   
   let { 
@@ -263,6 +269,7 @@ const state = new DialogBondState(() => bondProps);`, 'typescript')}
 ### Imperative Bond Access
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { TreeRoot } from './components';
   
   let treeRef: TreeRoot;

@@ -1,10 +1,12 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { codeBlock, inlineCode, list } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	
 	let { data } = $props();
 	const { frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 

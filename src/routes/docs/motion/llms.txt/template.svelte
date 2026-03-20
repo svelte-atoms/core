@@ -1,10 +1,12 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { FrontMatter } from '$docs/md/components';
 	import { codeBlock, inlineCode } from '$docs/md/template';
 	
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 
@@ -714,6 +716,7 @@ Use generics for element-specific types:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { HtmlAtom, type HtmlAtomProps } from '@svelte-atoms/core';
 
   type Props = HtmlAtomProps<'button'> & {

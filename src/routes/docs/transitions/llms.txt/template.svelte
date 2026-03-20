@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { inlineCode, codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 	
@@ -6,6 +7,7 @@
 	const { frontmatter } = $derived(data);
 
 	const open = '<' + 'script>';
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const close = '</' + 'script>';
 
 	const motionExample = `${open}

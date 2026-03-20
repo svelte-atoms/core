@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { inlineCode } from '$docs/md/template';
 	import { codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
@@ -6,6 +7,7 @@
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 
@@ -186,6 +188,7 @@ bun add @svelte-atoms/core
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Button } from '@svelte-atoms/core/components/button';
 </script>
 
@@ -196,6 +199,7 @@ bun add @svelte-atoms/core
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Accordion } from '@svelte-atoms/core/components/accordion';
 
 	let selected = $state<string[]>([]);
@@ -218,6 +222,7 @@ bun add @svelte-atoms/core
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Tabs } from '@svelte-atoms/core/components/tabs';
 
 	let activeTab = $state('home');
@@ -250,6 +255,7 @@ Components accept standard HTML attributes including {inlineCode('class')}:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Card } from '@svelte-atoms/core/components/card';
 </script>
 
@@ -400,6 +406,7 @@ Use Svelte 5 runes for local state:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
 
 	let selected = $state<string[]>([]);
@@ -427,6 +434,7 @@ Build reusable composed components:
 {codeBlock(`
 <!-- UserCard.svelte -->
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Card } from '@svelte-atoms/core/components/card';
 	import { Avatar } from '@svelte-atoms/core/components/avatar';
 	import { Badge } from '@svelte-atoms/core/components/badge';
@@ -454,6 +462,7 @@ Use utility-first CSS or custom classes:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { Button } from '@svelte-atoms/core/components/button';
 
 	const variants = {

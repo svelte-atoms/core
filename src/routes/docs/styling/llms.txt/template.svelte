@@ -1,4 +1,5 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { codeBlock, inlineCode, list } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 
@@ -170,6 +171,7 @@ Define reusable style variants at the component level:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { defineVariants } from '@svelte-atoms/core/utils';
   import { HtmlAtom } from '@svelte-atoms/core';
 
@@ -309,6 +311,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
   
   const variants = defineVariants({
@@ -349,6 +352,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 
 {codeBlock(`
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { HtmlAtom } from '@svelte-atoms/core';
   
   let { class: klass, ...props } = $props();

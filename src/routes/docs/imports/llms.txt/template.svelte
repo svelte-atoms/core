@@ -1,10 +1,12 @@
 <script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { codeBlock } from '$docs/md/template';
 	import { FrontMatter } from '$docs/md/components';
 
 	let { data } = $props();
 	const { frontmatter } = $derived(data);
 </script>
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
 
@@ -37,6 +39,7 @@ All components and utilities are exported from the main package:
 ## Complete Example
 
 {codeBlock(`<script lang="ts">
+	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { Button, Input, Dialog } from '@svelte-atoms/core';
 
   let showDialog = $state(false);
