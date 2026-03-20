@@ -1,10 +1,9 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
+
 	/**
-	 * InputTimeSegment — a single editable time/date part (HH, MM, SS, YYYY, etc.)
+	 * InputTimeSegment — a single editable time/date part (HH, MM, SS, etc.)
 	 * Fully controlled: value is driven by parent, segment calls onchange to request updates.
-	 *
-	 * Text content + aria attrs updated imperatively via $effect to avoid
-	 * any class/attribute churn on the span that could drop browser focus.
 	 */
 
 	interface SegmentProps {
@@ -35,6 +34,7 @@
 
 	let el = $state<HTMLSpanElement>();
 	let buffer = $state<string>('');
+	let isFocused = $state(false);
 
 	const displayPlaceholder = placeholder ?? '—'.repeat(digits);
 
@@ -48,19 +48,26 @@
 		return (value === null || value === undefined) && buffer === '';
 	}
 
-	// Update DOM imperatively — never let Svelte patch class/textContent
-	// mid-focus, as attribute/class mutations can cause browsers to drop
-	// focus from non-form elements.
+	// Update DOM imperatively to avoid focus loss
+	// Using contenteditable + requestAnimationFrame for safe textContent updates
 	$effect(() => {
 		if (!el) return;
 		const text = getDisplay();
-		// Track reactive deps (buffer, value) before any DOM write
-		void buffer; void value;
-		if (el.textContent !== text) el.textContent = text;
+		void buffer; void value; // Track reactive dependencies
+
+		untrack(() => {
+			requestAnimationFrame(() => {
+				if (el && el.textContent !== text) {
+					el.textContent = text;
+				}
+			});
+		});
+
 		el.setAttribute('aria-valuetext', text);
 		el.setAttribute('aria-valuenow', value != null ? String(value) : '');
 		el.setAttribute('data-empty', String(isEmpty()));
-		// Color update — only swap the color class, not the whole class attr
+
+		// Update color classes
 		if (isEmpty()) {
 			el.classList.remove('text-foreground');
 			el.classList.add('text-muted-foreground');
@@ -87,12 +94,24 @@
 		if (ev.key >= '0' && ev.key <= '9') {
 			ev.preventDefault();
 			const next = buffer + ev.key;
+			const nextNum = parseInt(next, 10);
+
+			// Reject single digit if it exceeds max
+			if (next.length === 1 && nextNum > max) return;
+
+			// Buffer complete - commit (clamp to max if invalid)
 			if (next.length === digits) {
+				commitBuffer(nextNum <= max ? next : String(max), true);
+				return;
+			}
+
+			// Add digit to buffer
+			buffer = next;
+
+			// Auto-advance if minimum possible completion exceeds max
+			const minCompletion = parseInt(next + '0'.repeat(digits - next.length), 10);
+			if (minCompletion > max) {
 				commitBuffer(next, true);
-			} else {
-				buffer = next;
-				const wouldMin = parseInt(next + '0'.repeat(digits - next.length), 10);
-				if (wouldMin > max) commitBuffer(next, true);
 			}
 		} else if (ev.key === 'ArrowUp') {
 			ev.preventDefault();
@@ -106,7 +125,8 @@
 			onchange?.(cur <= min ? max : cur - 1);
 		} else if (ev.key === 'ArrowLeft') {
 			ev.preventDefault();
-			if (buffer) buffer = ''; else onfocusmove?.(-1);
+			if (buffer) buffer = '';
+			else onfocusmove?.(-1);
 		} else if (ev.key === 'ArrowRight') {
 			ev.preventDefault();
 			onfocusmove?.(1);
@@ -130,6 +150,7 @@
 	bind:this={el}
 	role="spinbutton"
 	tabindex={disabled ? -1 : 0}
+	contenteditable={!disabled && !readonly}
 	aria-valuemin={min}
 	aria-valuemax={max}
 	aria-label={placeholder}
@@ -143,5 +164,9 @@
 	].filter(Boolean).join(' ')}
 	onkeydown={handleKeydown}
 	onpaste={(ev) => ev.preventDefault()}
-	onblur={() => { if (buffer) commitBuffer(buffer, false); }}
+	onfocus={() => (isFocused = true)}
+	onblur={() => {
+		isFocused = false;
+		if (buffer) commitBuffer(buffer, false);
+	}}
 >{displayPlaceholder}</span>
