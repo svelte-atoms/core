@@ -27,6 +27,6 @@ export function GET() {
 	const text = renderLlmContent(Page, { frontmatter, metadata, accordionRootProps, accordionItemRootProps, accordionItemHeaderProps, accordionItemBodyProps, accordionItemIndicatorProps });
 
 	return new Response(text, {
-		headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+		headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
 	});
 }
