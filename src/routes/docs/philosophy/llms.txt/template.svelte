@@ -1,7 +1,7 @@
 <script lang="ts">
 
-	import { FrontMatter, List } from '$docs/md/components';
-	import { codeBlock } from '$docs/md/template';
+	import { FrontMatter } from '$docs/md/components';
+	import { list, codeBlock } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -24,7 +24,9 @@ Svelte Atoms is built on three fundamental principles that guide every design de
 {principle.description}
 
 **Benefits:**
-<List items={principle.benefits} />
+{
+list(principle.benefits)
+}
 
 {/each}
 
@@ -212,123 +214,123 @@ State management without prop drilling:
 ### Traditional Component Libraries
 
 **Pros:**
-<List items={[
+{list([
 	'Fast to get started',
 	'Pre-designed components',
 	'Consistent look out of the box'
-]} />
+])}
 
 **Cons:**
-<List items={[
+{list([
 	'Limited customization',
 	'Fighting default styles',
 	'Vendor lock-in',
 	'Large bundle sizes'
-]} />
+])}
 
 ### Headless UI Libraries
 
 **Pros:**
-<List items={[
+{list([
 	'Behavior without styling',
 	'Good flexibility',
 	'Accessible by default'
-]} />
+])}
 
 **Cons:**
-<List items={[
+{list([
 	'Still opinionated structure',
 	'Limited composition',
 	'Complex API for customization'
-]} />
+])}
 
 ### Svelte Atoms
 
 **Pros:**
-<List items={[
+{list([
 	'Maximum flexibility',
 	'Composition-first',
 	'Minimal abstractions',
 	'Full control over everything',
 	'Type-safe',
 	'Optimized for Svelte 5'
-]} />
+])}
 
 **Considerations:**
-<List items={[
+{list([
 	'More initial setup for basic components',
 	'Need to handle styling yourself',
 	'Requires understanding of composition patterns'
-]} />
+])}
 
 ## Guiding Questions
 
 When making design decisions, we ask:
 
-<List ordered items={[
+{list([
 	'**Does it enable or constrain?** - Prefer enabling building blocks over constraining configurations',
 	'**Is it composable?** - Can it combine with other primitives to create new patterns?',
 	'**Is it accessible by default?** - Does it handle ARIA, keyboard nav, and focus management automatically?',
 	'**Is it type-safe?** - Does TypeScript provide helpful autocomplete and catch errors?',
 	"**Is it performant?** - Does it leverage Svelte 5's reactivity optimally?",
 	'**Is it understandable?** - Can developers debug and reason about the implementation?'
-]} />
+], true)}
 
 ## Future Direction
 
 Svelte Atoms will continue to:
 
-<List items={[
+{list([
 	'**Expand primitives**: Add more building blocks for common patterns',
 	'**Improve DX**: Better error messages, debugging tools, and documentation',
 	'**Enhance types**: More precise TypeScript types and better inference',
 	'**Optimize performance**: Leverage new Svelte features for better performance',
 	'**Maintain flexibility**: Never sacrifice flexibility for convenience'
-]} />
+])}
 
 What we won't do:
 
-<List items={[
+{list([
 	'Become opinionated about styling',
 	'Add framework-specific dependencies',
 	'Compromise accessibility',
 	'Lock you into patterns',
 	'Bloat the bundle size'
-]} />
+])}
 
 ## Learning Path
 
-<List ordered items={[
+{list([
 	'**Start with Atoms**: Understand the basic building blocks',
 	'**Learn Composition**: Practice combining primitives',
 	'**Master Bonds**: Understand state management patterns',
 	'**Explore Presets**: Set up global theming',
 	'**Build Real Components**: Apply knowledge to real projects',
 	'**Contribute Back**: Share patterns and improvements'
-]} />
+], true)}
 
 ## Community Principles
 
-<List items={[
+{list([
 	'**Transparency**: Open source, open development, open discussions',
 	'**Inclusivity**: Welcome contributors of all skill levels',
 	'**Quality**: Maintain high standards for code, docs, and accessibility',
 	'**Pragmatism**: Balance idealism with practical needs',
 	'**Education**: Help developers understand, not just use'
-]} />
+])}
 
 ## Conclusion
 
 Svelte Atoms is about giving you the building blocks to create exactly what you need, without compromise. It's built on the beliefs that:
 
-<List items={[
+{list([
 	'Composition is more flexible than configuration',
 	'Developers should control their code completely',
 	"Accessibility shouldn't be optional",
 	'Type safety improves developer experience',
 	'Performance matters',
 	'Simplicity and transparency build trust'
-]} />
+])}
 
 If these principles resonate with you, Svelte Atoms will feel natural and powerful. If you prefer batteries-included solutions with opinionated defaults, you might prefer a traditional component library.
 

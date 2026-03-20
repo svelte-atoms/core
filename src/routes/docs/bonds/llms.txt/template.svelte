@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { FrontMatter, List } from '$docs/md/components';
-  import { codeBlock } from '$docs/md/template';
+  import { FrontMatter } from '$docs/md/components';
+  import { codeBlock, list } from '$docs/md/template';
 
   let { data } = $props();
   const { metadata, frontmatter } = $derived(data);
@@ -21,7 +21,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 
 ## Key Features
 
-<List items={metadata.keyFeatures} />
+{list(metadata.keyFeatures)}
 
 ## Bond Architecture
 
@@ -31,7 +31,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 {arch.description}
 
 **Responsibilities:**
-<List items={arch.responsibilities} />
+{list(arch.responsibilities)}
 
 {/each}
 

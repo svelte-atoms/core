@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { inlineCode, codeBlock } from '$docs/md/template';
-	import { FrontMatter, List } from '$docs/md/components';
+	import { codeBlock, list, inlineCode } from '$docs/md/template';
+	import { FrontMatter } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -26,7 +26,7 @@ The preset system is a powerful theming mechanism that allows you to:
 
 ## Key Features
 
-<List items={metadata.keyFeatures} />
+{list(metadata.keyFeatures)}
 
 ## Preset Levels
 

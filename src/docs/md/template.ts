@@ -59,3 +59,23 @@ export function codeBlock(code: string, language: string = ''): string {
 export function inlineCode(code: string): string {
 	return `\`${code}\``;
 }
+
+export function list(items: string[], ordered: boolean = false): string {
+	if (ordered) {
+		return items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+	} else {
+		return items.map((item) => `- ${item}`).join('\n');
+	}
+}
+
+export function link(text: string, url: string): string {
+	return `[${text}](${url})`;
+}
+
+export function image(alt: string, url: string): string {
+	return `![${alt}](${url})`;
+}
+
+export function content(text: string): string {
+	return text.trim();
+}

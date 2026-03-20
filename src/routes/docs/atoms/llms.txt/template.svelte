@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { FrontMatter, List } from '$docs/md/components';
-	import { codeBlock } from '$docs/md/template';
+	import { FrontMatter } from '$docs/md/components';
+	import { codeBlock, list } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -29,7 +29,7 @@ Unlike traditional component libraries that provide fully-featured components, a
 
 ### Key Features
 
-<List items={metadata.anatomyExample.features.map((f) => `**${f.label}**: ${f.description}`)} />
+{list(metadata.anatomyExample.features.map((f) => `**${f.label}**: ${f.description}`))}
 
 ## Anatomy of an Atom
 
@@ -45,7 +45,7 @@ Here's how an atom works with a simple example:
 {use.description}
 
 **Examples:**
-<List items={use.examples} />
+{list(use.examples)}
 
 {/each}
 
@@ -53,7 +53,7 @@ Here's how an atom works with a simple example:
 
 ### Atoms
 
-<List items={metadata.atomsVsComponents.atoms.features.map((f) => `**${f.positive}**: ${f.text}`)} />
+{list(metadata.atomsVsComponents.atoms.features.map((f) => `**${f.positive}**: ${f.text}`))}
 
 **Use atoms when:**
 - You need maximum flexibility
@@ -64,7 +64,7 @@ Here's how an atom works with a simple example:
 
 ### Full Components
 
-<List items={metadata.atomsVsComponents.components.features.map((f) => `**${f.positive}**: ${f.text}`)} />
+{list(metadata.atomsVsComponents.components.features.map((f) => `**${f.positive}**: ${f.text}`))}
 
 **Use full components when:**
 - You want to move quickly

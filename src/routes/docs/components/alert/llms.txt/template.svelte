@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
+	import {  codeBlock ,  inlineCode, list, newLine } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
@@ -16,17 +16,13 @@
 
 ## Use Cases
 
-{#each metadata.useCases as uc (uc.title)}
-- **{uc.title}**: {uc.description}
-{/each}
+{list(metadata.useCases.map((uc) => `**${uc.title}**: ${uc.description}`))}
 
 ## Components
 
 The Alert module consists of the following components:
 
-{#each metadata.componentsSummary as comp (comp.name)}
-- **{comp.name}**: {comp.description}
-{/each}
+{list(metadata.componentsSummary.map((comp) => `**${comp.name}**: ${comp.description}`))}
 
 ### Alert.Root
 
@@ -62,9 +58,7 @@ The Alert module consists of the following components:
 
 ## Accessibility
 
-{#each metadata.accessibility as feature (feature)}
-- {feature}
-{/each}
+{list(metadata.accessibility)}
 
 ## License
 

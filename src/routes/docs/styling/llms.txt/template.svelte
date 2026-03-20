@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
-	import { FrontMatter, List } from '$docs/md/components';
+	import { codeBlock, inlineCode, list } from '$docs/md/template';
+	import { FrontMatter } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -19,7 +19,7 @@
 
 ## Key Features
 
-<List items={metadata.keyFeatures} />
+{list(metadata.keyFeatures)}
 
 ## Styling Approaches
 
@@ -29,10 +29,10 @@
 {approach.description}
 
 **Pros:**
-<List items={approach.pros || []} />
+{list(approach.pros || [])}
 
 **Cons:**
-<List items={approach.cons || []} />
+{list(approach.cons || [])}
 
 {/each}
 
@@ -299,7 +299,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 {#each metadata.bestPractices as category (category.category)}
 ### {category.category}
 
-<List items={category.practices} />
+{list(category.practices)}
 
 {/each}
 

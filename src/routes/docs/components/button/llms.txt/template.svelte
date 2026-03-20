@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { newLine, inlineCode, codeBlock } from '$docs/md/template';
+	import {  codeBlock ,  inlineCode, list, newLine } from '$docs/md/template';
 	import { FrontMatter, PropsTable } from '$docs/md/components';
 
 	let { data } = $props();
@@ -16,9 +16,7 @@
 
 ## Use Cases
 
-{#each metadata.useCases as uc (uc.title)}
-- **{uc.title}**: {uc.description}
-{/each}
+{list(metadata.useCases.map((uc) => `**${uc.title}**: ${uc.description}`))}
 
 ## Props
 
@@ -50,9 +48,7 @@
 
 ## Accessibility
 
-{#each metadata.accessibility as feature (feature)}
-- {feature}
-{/each}
+{list(metadata.accessibility)}
 
 ## License
 

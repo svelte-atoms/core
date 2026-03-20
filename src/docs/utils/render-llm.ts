@@ -21,6 +21,6 @@ export function cleanLlmText(html: string): string {
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
 		.replace(/&amp;/g, '&')
-		.replace(/---\n[ \t]+(?=#)/g, '---\n') // Remove spaces/tabs after --- and before markdown headers
+		.replace(/---\s+[ \t]+(?=#)/g, '---\n\n') // Remove spaces/tabs after --- and before markdown headers
 		.trim();
 }

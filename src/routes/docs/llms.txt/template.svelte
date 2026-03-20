@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { FrontMatter } from '$docs/md/components';
-	import { codeBlock } from '$docs/md/template';
+	import { codeBlock, list } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
+
+	// Helper to format list items with proper newlines
+	function formatList(items: Array<{title: string; href: string; description: string}>): string {
+		return list(items.map((item) => `[${item.title}](${item.href}) — ${item.description}`));
+	}
 </script>
 
 <FrontMatter {frontmatter} />
@@ -29,77 +34,55 @@ Svelte Atoms is built on the philosophy that great UI libraries should give you 
 
 Start here to understand the basics and get your first component running.
 
-{#each metadata.documentation.gettingStarted as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.gettingStarted)}
 
 ### Fundamentals
 
 Learn core concepts: atoms, bonds, and how everything fits together.
 
-{#each metadata.documentation.fundamentals as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.fundamentals)}
 
 ### Styling & Theming
 
 Master the powerful variants and preset systems for flexible component styling.
 
-{#each metadata.documentation.styling as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.styling)}
 
 ### Advanced Topics
 
 Dive deeper into composition patterns, animations, and building custom components.
 
-{#each metadata.documentation.advanced as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.advanced)}
 
 ## Component Library
 
 ### Layout & Structure
 
-{#each metadata.documentation.layout as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.layout)}
 
 ### Navigation
 
-{#each metadata.documentation.navigation as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.navigation)}
 
 ### Form Controls
 
-{#each metadata.documentation.forms as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.forms)}
 
 ### Data Display
 
-{#each metadata.documentation.display as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.display)}
 
 ### Overlays & Modals
 
-{#each metadata.documentation.overlays as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.overlays)}
 
 ### Interactive Components
 
-{#each metadata.documentation.interactive as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.interactive)}
 
 ### Core Components
 
-{#each metadata.documentation.core as item (item.title)}
-- [{item.title}]({item.href}) — {item.description}
-{/each}
+{formatList(metadata.documentation.core)}
 
 ## Key Features
 
