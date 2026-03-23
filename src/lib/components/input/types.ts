@@ -167,6 +167,45 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
+// ── Location Control ──────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputLocationControlExtendProps {}
+
+export interface InputLocationControlProps extends InputLocationControlExtendProps {
+	/**
+	 * Raw string representation of the coordinate pair (e.g. "40.7128, -74.0060").
+	 * Bindable — the component normalises pasted / typed input into this form.
+	 */
+	value?: string;
+	/** Latitude in decimal degrees (bindable, derived from value) */
+	lat?: number;
+	/** Longitude in decimal degrees (bindable, derived from value) */
+	lng?: number;
+	/**
+	 * Display / overlay format.
+	 * - `"dd"`  — decimal degrees (default): `40.712800°, -74.006000°`
+	 * - `"dms"` — degrees, minutes, seconds: `40°42'46.08"N, 74°00'21.60"W`
+	 */
+	format?: 'dd' | 'dms';
+	/**
+	 * Number of decimal places shown in `"dd"` mode.
+	 * @default 6
+	 */
+	precision?: number;
+	/**
+	 * Show the crosshair "locate me" button (uses `navigator.geolocation`).
+	 * @default true
+	 */
+	locate?: boolean;
+	placeholder?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { lat: number | undefined; lng: number | undefined; value: string }) => void;
+	oninput?: (ev: Event, options: { lat: number | undefined; lng: number | undefined; value: string }) => void;
+}
+
 // ── Phone Control ─────────────────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface InputPhoneControlExtendProps {}

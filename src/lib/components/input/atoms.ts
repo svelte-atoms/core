@@ -10,5 +10,6 @@ export { default as DateTimeControl } from './input-datetime-control.svelte';
 export { default as FileControl } from './input-file-control.svelte';
 export { default as UrlControl } from './input-url-control.svelte';
 export { default as PhoneControl } from './input-phone-control.svelte';
+export { default as LocationControl } from './input-location.svelte';
 export { default as Icon } from './input-icon.svelte';
 export { default as Placeholder } from './input-placeholder.svelte';
