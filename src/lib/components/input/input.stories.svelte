@@ -23,6 +23,11 @@
 	let files = $state<File[]>([]);
 	let urlValue = $state('');
 	let phoneValue = $state('');
+	let locationValue = $state('');
+	let locationLat = $state<number | undefined>(undefined);
+	let locationLng = $state<number | undefined>(undefined);
+
+	let today = $state(new Date());	
 </script>
 
 <Story name="Input" args={{}}>
@@ -91,9 +96,10 @@
 <Story name="Time Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.TimeControl bind:value={timeValue} hourFormat={12} />
+			<MyInput.TimeControl bind:value={timeValue} bind:date={today} hourFormat={12} />
 		</MyInput.Root>
 		<p class="text-muted-foreground text-sm">Value: {timeValue || '(none)'}</p>
+		<p class="text-muted-foreground text-sm">Date: {today.toLocaleString()}</p>
 	</div>
 </Story>
 
@@ -190,5 +196,160 @@
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
 			<MyInput.PhoneControl bind:value={phoneValue} format="+44 #### ######" placeholder="7700 900000" />
 		</MyInput.Root>
+	</div>
+</Story>
+
+<!-- ─── LocationControl ──────────────────────────────────────────────────── -->
+<Story name="Location Control">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>Decimal degrees (default)</Label>
+			<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dd"
+					placeholder="lat, lng"
+				/>
+			</MyInput.Root>
+		</div>
+
+		<div class="text-muted-foreground grid grid-cols-3 gap-x-4 text-sm">
+			<span>value: <span class="text-foreground font-mono">{locationValue || '(none)'}</span></span>
+			<span>lat: <span class="text-emerald-600 dark:text-emerald-400 font-mono">{locationLat ?? '—'}</span></span>
+			<span>lng: <span class="text-sky-600 dark:text-sky-400 font-mono">{locationLng ?? '—'}</span></span>
+		</div>
+	</div>
+</Story>
+
+<Story name="Location Control (DMS)">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>Degrees, minutes, seconds overlay</Label>
+			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dms"
+				/>
+			</MyInput.Root>
+		</div>
+		<div class="text-muted-foreground text-sm">
+			value: <span class="text-foreground font-mono">{locationValue || '(none)'}</span>
+		</div>
+	</div>
+</Story>
+
+<Story name="Location Control (Precision)">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>2 decimal places</Label>
+			<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dd"
+					precision={2}
+				/>
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>4 decimal places</Label>
+			<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dd"
+					precision={4}
+				/>
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>8 decimal places (max GPS precision)</Label>
+			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dd"
+					precision={8}
+				/>
+			</MyInput.Root>
+		</div>
+	</div>
+</Story>
+
+<Story name="Location Control (NoLocate)">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>Without geolocation button</Label>
+			<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border">
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					locate={false}
+					placeholder="Enter coordinates manually"
+				/>
+			</MyInput.Root>
+		</div>
+	</div>
+</Story>
+
+<Story name="Location Control (States)">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>Disabled</Label>
+			<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
+				<MyInput.LocationControl value="40.712800, -74.006000" disabled />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Readonly</Label>
+			<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
+				<MyInput.LocationControl value="51.507351, -0.127758" readonly />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Prefilled (New York)</Label>
+			<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
+				<MyInput.LocationControl value="40.712800, -74.006000" />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Prefilled DMS (Paris)</Label>
+			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
+				<MyInput.LocationControl value="48.8566, 2.3522" format="dms" />
+			</MyInput.Root>
+		</div>
+	</div>
+</Story>
+
+<Story name="Location Control (WithIcon)">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>With leading icon</Label>
+			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
+				<MyInput.Icon>
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+						<circle cx="12" cy="10" r="3"/>
+					</svg>
+				</MyInput.Icon>
+				<MyInput.LocationControl
+					bind:value={locationValue}
+					bind:lat={locationLat}
+					bind:lng={locationLng}
+					format="dd"
+				/>
+			</MyInput.Root>
+		</div>
 	</div>
 </Story>
