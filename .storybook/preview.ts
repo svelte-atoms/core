@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/svelte';
 import StoryRoot from '../src/stories/StoryRoot.svelte';
 import './global.css';
-import '../src/lib/components/root/root.css';
+import '../src/app.css';
 
 const preview: Preview = {
 	parameters: {

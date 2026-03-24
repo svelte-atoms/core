@@ -168,8 +168,8 @@
 	setPreset(preset);
 </script>
 
-<Root class={[scheme.current]}>
-	<div class="flex h-full w-full flex-col items-center justify-center">
+<Root class="dark">
+	<div class="flex min-h-full w-full flex-col items-center justify-center overflow-y-auto p-4">
 		{@render children?.()}
 	</div>
 </Root>
