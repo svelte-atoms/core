@@ -20,11 +20,17 @@
 	let timeValue = $state('');
 	let dateTimeValue = $state('');
 	let dateTimeDate = $state<Date | null>(null);
+	let dateValue = $state('');
+	let dateDate = $state<Date | null>(null);
 	let files = $state<File[]>([]);
 	let urlValue = $state('');
 	let phoneValue = $state('');
 	let locationValue = $state('');
-	let locationLat = $state<number | undefined>(undefined);
+	let otpValue = $state('');
+	let otpCompleted = $state(false);
+	let currencyValue = $state('');
+	let currencyAmount = $state<number | undefined>(undefined);
+	let colorValue = $state('');	let locationLat = $state<number | undefined>(undefined);
 	let locationLng = $state<number | undefined>(undefined);
 
 	let today = $state(new Date());	
@@ -122,6 +128,51 @@
 			String: {dateTimeValue || '(none)'}<br />
 			Date: {dateTimeDate?.toLocaleString() ?? '(none)'}
 		</p>
+	</div>
+</Story>
+
+<!-- ─── DateControl ───────────────────────────────────────────────────────── -->
+<Story name="Date Control">
+	<div class="flex flex-col gap-4 p-4">
+		<div class="flex flex-col gap-1">
+			<Label>Date only</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.DateControl mode="date" bind:value={dateValue} bind:date={dateDate} />
+			</MyInput.Root>
+			<p class="text-muted-foreground text-sm">
+				String: {dateValue || '(none)'}<br />
+				Date: {dateDate?.toLocaleDateString() ?? '(none)'}
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Disabled</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.DateControl mode="date" value="2025-06-15" disabled />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Readonly</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.DateControl mode="date" value="2025-06-15" readonly />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-1">
+			<Label>Pre-filled</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.DateControl mode="date" bind:value={dateValue} bind:date={dateDate} />
+			</MyInput.Root>
+			<button
+				class="text-muted-foreground hover:text-foreground w-fit text-sm underline"
+				onclick={() => { dateValue = '2000-01-01'; }}
+			>Set Jan 1, 2000</button>
+			<button
+				class="text-muted-foreground hover:text-foreground w-fit text-sm underline"
+				onclick={() => { dateValue = ''; }}
+			>Clear</button>
+		</div>
 	</div>
 </Story>
 
@@ -337,8 +388,8 @@
 		<div class="flex flex-col gap-1">
 			<Label>With leading icon</Label>
 			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
-				<MyInput.Icon>
-					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<MyInput.Icon class="py-2.5 text-muted-foreground">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
 						<circle cx="12" cy="10" r="3"/>
 					</svg>
@@ -350,6 +401,180 @@
 					format="dd"
 				/>
 			</MyInput.Root>
+		</div>
+	</div>
+</Story>
+<!-- ─── OTP Control ───────────────────────────────────────────────────────── -->
+<Story name="OTP Control">
+	<div class="flex flex-col gap-6 p-4">
+
+		<div class="flex flex-col gap-2">
+			<Label>Inside Input.Root (integrated)</Label>
+			<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border overflow-hidden">
+				<MyInput.OtpControl
+					bind:value={otpValue}
+					oncomplete={(v) => { otpCompleted = true; }}
+				/>
+			</MyInput.Root>
+			<p class="text-muted-foreground text-sm">
+				Value: <span class="text-foreground font-mono">{otpValue || '(none)'}</span>
+				{#if otpCompleted} <span class="text-emerald-600 font-medium ml-2">✓ Complete</span>{/if}
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Inside Input.Root — grouped (3+3)</Label>
+			<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border overflow-hidden">
+				<MyInput.OtpControl length={6} groupSize={3} />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Standalone — individual boxes (default)</Label>
+			<MyInput.OtpControl length={6} oncomplete={(v) => { otpCompleted = true; }} />
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Standalone — 4-digit PIN</Label>
+			<MyInput.OtpControl length={4} placeholder="○" />
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Standalone — 8-char alphanumeric grouped (4+4)</Label>
+			<MyInput.OtpControl length={8} type="alphanumeric" groupSize={4} />
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Disabled</Label>
+			<MyInput.OtpControl length={6} value="123456" disabled />
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Readonly</Label>
+			<MyInput.OtpControl length={6} value="123456" readonly />
+		</div>
+	</div>
+</Story>
+
+<!-- ─── Currency Control ──────────────────────────────────────────────────── -->
+<Story name="Currency Control">
+	<div class="flex flex-col gap-6 p-4">
+		<div class="flex flex-col gap-2">
+			<Label>USD (default)</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl bind:value={currencyValue} bind:amount={currencyAmount} />
+			</MyInput.Root>
+			<p class="text-muted-foreground text-sm">
+				Value: <span class="text-foreground font-mono">{currencyValue || '(none)'}</span> ·
+				Amount: <span class="text-foreground font-mono">{currencyAmount ?? '(none)'}</span>
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>EUR</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl currency="EUR" locale="de-DE" amount={1234.56} />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>JPY (no decimals)</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl currency="JPY" locale="ja-JP" precision={0} amount={12500} />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Pre-filled</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl bind:amount={currencyAmount} currency="USD" />
+			</MyInput.Root>
+			<div class="flex gap-2">
+				<button
+					class="text-muted-foreground hover:text-foreground text-sm underline"
+					onclick={() => { currencyAmount = 9999.99; }}
+				>Set $9,999.99</button>
+				<button
+					class="text-muted-foreground hover:text-foreground text-sm underline"
+					onclick={() => { currencyAmount = undefined; currencyValue = ''; }}
+				>Clear</button>
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Disabled</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl amount={42.50} disabled />
+			</MyInput.Root>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<Label>Readonly</Label>
+			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
+				<MyInput.CurrencyControl amount={42.50} readonly />
+			</MyInput.Root>
+		</div>
+	</div>
+</Story>
+
+<!-- ─── Color Control ────────────────────────────────────────────────────── -->
+<Story name="Color Control">
+	<div class="flex flex-col gap-4 p-4">
+		<!-- Format grid -->
+		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			{#each [
+				{ label: 'Hex 6',                   value: '#1a2b3c' },
+				{ label: 'Hex 8 (alpha)',            value: '#1a2b3cff' },
+				{ label: 'RGB',                      value: 'rgb(26, 43, 60)' },
+				{ label: 'RGBA',                     value: 'rgba(26, 43, 60, 0.5)' },
+				{ label: 'HSL',                      value: 'hsl(210deg 40% 17%)' },
+				{ label: 'HSLA',                     value: 'hsla(210, 40%, 17%, 0.8)' },
+				{ label: 'HWB',                      value: 'hwb(210 10% 76%)' },
+				{ label: 'Lab',                      value: 'lab(17 -3.5 -12)' },
+				{ label: 'LCH',                      value: 'lch(17 12.5 253deg)' },
+				{ label: 'OKLab',                    value: 'oklab(0.27 -0.02 -0.06)' },
+				{ label: 'OKLCH',                    value: 'oklch(0.27 0.06 253deg)' },
+				{ label: 'display-p3',               value: 'color(display-p3 0.1 0.17 0.24)' },
+				{ label: 'Named — cornflowerblue',   value: 'cornflowerblue' },
+				{ label: 'Named — rebeccapurple',    value: 'rebeccapurple' },
+				{ label: 'Named — transparent',      value: 'transparent' },
+			] as item (item.label)}
+				<div class="flex flex-col gap-1">
+					<Label>{item.label}</Label>
+					<MyInput.Root class="border-border flex h-9 items-center gap-2 rounded-md border px-2">
+						<MyInput.ColorSwatch />
+						<MyInput.ColorControl value={item.value} />
+					</MyInput.Root>
+				</div>
+			{/each}
+		</div>
+
+		<!-- Editable / special cases -->
+		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="flex flex-col gap-1">
+				<Label>Editable</Label>
+				<MyInput.Root class="border-border flex h-9 items-center gap-2 rounded-md border px-2">
+					<MyInput.ColorSwatch />
+					<MyInput.ColorControl bind:value={colorValue} placeholder="#rrggbb or oklch(…)" />
+				</MyInput.Root>
+				<p class="text-muted-foreground font-mono text-xs">{colorValue || '(empty)'}</p>
+			</div>
+
+			<div class="flex flex-col gap-1">
+				<Label>Editable — Named</Label>
+				<MyInput.Root class="border-border flex h-9 items-center gap-2 rounded-md border px-2">
+					<MyInput.ColorSwatch />
+					<MyInput.ColorControl format="named" placeholder="e.g. red, cornflowerblue" />
+				</MyInput.Root>
+			</div>
+
+			<div class="flex flex-col gap-1">
+				<Label>Disabled</Label>
+				<MyInput.Root class="border-border flex h-9 items-center gap-2 rounded-md border px-2">
+					<MyInput.ColorSwatch />
+					<MyInput.ColorControl value="oklch(0.27 0.06 253deg)" disabled />
+				</MyInput.Root>
+			</div>
 		</div>
 	</div>
 </Story>

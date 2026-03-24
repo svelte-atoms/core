@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getPreset } from '$svelte-atoms/core/context';
+	import { resolvePreset } from '$svelte-atoms/core/components/atom';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { untrack } from 'svelte';
@@ -25,12 +26,13 @@
 		...restProps
 	}: InputLocationControlProps = $props();
 
-	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
+	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
 	let locating = $state(false);
 	let locationError = $state<string | undefined>(undefined);
+	let isFocused = $state(false);
 
 	// ── Coord parsing ──────────────────────────────────────────────────────
 	type ParsedCoords = { lat: number; lng: number } | null;
@@ -72,18 +74,18 @@
 
 	type Segment = { text: string; kind: SegmentKind };
 
-	const kindClass: Record<SegmentKind, string> = {
-		'lat-val': 'text-emerald-600 dark:text-emerald-400 font-medium',
-		'lat-min': 'text-emerald-500 dark:text-emerald-300',
-		'lat-sec': 'text-emerald-400 dark:text-emerald-200',
-		'lat-dir': 'text-emerald-700 dark:text-emerald-300 font-semibold',
-		'lng-val': 'text-sky-600 dark:text-sky-400 font-medium',
-		'lng-min': 'text-sky-500 dark:text-sky-300',
-		'lng-sec': 'text-sky-400 dark:text-sky-200',
-		'lng-dir': 'text-sky-700 dark:text-sky-300 font-semibold',
-		'sep':     'text-muted-foreground',
-		'symbol':  'text-muted-foreground/60',
-		'error':   'text-destructive',
+	const kindStyle: Record<SegmentKind, string> = {
+		'lat-val': 'color: var(--input-hl-positive, var(--foreground)); font-weight: 500',
+		'lat-min': 'color: var(--input-hl-positive, var(--foreground))',
+		'lat-sec': 'color: var(--input-hl-dim, var(--foreground))',
+		'lat-dir': 'color: var(--input-hl-positive, var(--foreground)); font-weight: 600',
+		'lng-val': 'color: var(--input-hl-primary, var(--foreground)); font-weight: 500',
+		'lng-min': 'color: var(--input-hl-primary, var(--foreground))',
+		'lng-sec': 'color: var(--input-hl-dim, var(--foreground))',
+		'lng-dir': 'color: var(--input-hl-primary, var(--foreground)); font-weight: 600',
+		'sep':     'color: var(--input-hl-muted, var(--foreground))',
+		'symbol':  'color: var(--input-hl-muted, var(--foreground)); opacity: 0.6',
+		'error':   'color: var(--input-hl-error, var(--destructive))',
 	};
 
 	// ── DMS helpers ────────────────────────────────────────────────────────
@@ -216,6 +218,14 @@
 		scrollLeft = inputEl?.scrollLeft ?? 0;
 	}
 
+	function handleFocus() {
+		isFocused = true;
+	}
+
+	function handleBlur() {
+		isFocused = false;
+	}
+
 	// ── Paste: normalise common coordinate formats ─────────────────────────
 	function handlePaste(ev: ClipboardEvent) {
 		ev.preventDefault();
@@ -235,27 +245,29 @@
 
 <span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
-	<!-- Coloured overlay (pointer-events: none — real input is on top) -->
-	<span
-		aria-hidden="true"
-		class={cn(
-			'pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre px-2 font-mono text-sm',
-			preset?.class,
-			toClassValue(klass, bond)
-		)}
-	>
-		<span style="transform: translateX(-{scrollLeft}px)">
-			{#if segments.length}
-				{#each segments as seg}
-					<span class={kindClass[seg.kind]}>{seg.text}</span>
-				{/each}
-			{:else}
-				<span class="text-muted-foreground">{placeholder}</span>
-			{/if}
+	<!-- Display mode overlay (hidden while focused) -->
+	{#if !isFocused}
+		<span
+			aria-hidden="true"
+			class={cn(
+				'pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre px-2 font-mono text-sm',
+				preset?.class,
+				toClassValue(klass, bond)
+			)}
+		>
+			<span style="transform: translateX(-{scrollLeft}px)">
+				{#if segments.length}
+					{#each segments as seg}
+						<span style={kindStyle[seg.kind]}>{seg.text}</span>
+					{/each}
+				{:else}
+					<span class="text-muted-foreground">{placeholder}</span>
+				{/if}
+			</span>
 		</span>
-	</span>
+	{/if}
 
-	<!-- Real <input> — transparent text so only the overlay is visible; caret stays visible -->
+	<!-- Real <input> — transparent text in display mode, visible in input mode -->
 	<input
 		bind:this={inputEl}
 		type="text"
@@ -267,8 +279,8 @@
 		{disabled}
 		{readonly}
 		class={cn(
-			'relative h-full w-full flex-1 bg-transparent px-2 font-mono text-sm text-transparent caret-foreground outline-none',
-			'placeholder:text-transparent',
+			'relative h-full w-full flex-1 bg-transparent px-2 font-mono text-sm caret-foreground outline-none',
+			isFocused ? 'text-foreground placeholder:text-muted-foreground' : 'text-transparent placeholder:text-transparent',
 			disabled && 'cursor-not-allowed opacity-50',
 			preset?.class,
 			toClassValue(klass, bond)
@@ -277,6 +289,8 @@
 		onchange={handleChange}
 		onscroll={syncScroll}
 		onpaste={handlePaste}
+		onfocus={handleFocus}
+		onblur={handleBlur}
 		{...restProps}
 	/>
 

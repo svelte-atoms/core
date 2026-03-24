@@ -70,4 +70,3 @@ export const inputControlProps: PropDefinition[] = [
 		description: 'All HTML input element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	},
 ];
-

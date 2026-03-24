@@ -89,7 +89,7 @@ export interface InputTimeControlProps extends InputTimeControlExtendProps {
 	/** HH:MM or HH:MM:SS string (always 24h format internally) */
 	value?: string;
 	/** Optional Date object to sync time with (bindable) */
-	date?: Date | null;
+	date?: Date | undefined;
 	/**
 	 * Hour display format
 	 * @default 24
@@ -120,9 +120,34 @@ export interface InputDateTimeControlProps extends InputDateTimeControlExtendPro
 	value?: string;
 	/** Parsed Date object (bindable, derived from value) */
 	date?: Date | null;
+	/** Render mode: 'datetime' shows date + time segments, 'date' shows date segments only
+	 * @default 'datetime'
+	 */
+	mode?: 'datetime';
 	/** Show the seconds segment
 	 * @default false
 	 */
+	withSeconds?: boolean;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { value: string; date: Date | null }) => void;
+	oninput?: (ev: Event, options: { value: string; date: Date | null }) => void;
+}
+
+// ── Date Control ──────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputDateControlExtendProps {}
+
+export interface InputDateControlProps extends InputDateControlExtendProps {
+	/** date string value (YYYY-MM-DD) */
+	value?: string;
+	/** Parsed Date object (bindable, derived from value) */
+	date?: Date | null;
+	/** Always 'date' — set this to use date-only mode */
+	mode: 'date';
+	/** Ignored in date mode, kept for API compatibility */
 	withSeconds?: boolean;
 	disabled?: boolean;
 	readonly?: boolean;
@@ -157,6 +182,38 @@ export interface InputUrlControlExtendProps {}
 
 export interface InputUrlControlProps extends InputUrlControlExtendProps {
 	/** Full URL string */
+	value?: string;
+	placeholder?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { value: string }) => void;
+	oninput?: (ev: Event, options: { value: string }) => void;
+}
+
+// ── Email Control ─────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputEmailControlExtendProps {}
+
+export interface InputEmailControlProps extends InputEmailControlExtendProps {
+	/** Email address string */
+	value?: string;
+	placeholder?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { value: string }) => void;
+	oninput?: (ev: Event, options: { value: string }) => void;
+}
+
+// ── Text Control ──────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputTextControlExtendProps {}
+
+export interface InputTextControlProps extends InputTextControlExtendProps {
+	/** Text value */
 	value?: string;
 	placeholder?: string;
 	disabled?: boolean;
@@ -202,8 +259,14 @@ export interface InputLocationControlProps extends InputLocationControlExtendPro
 	readonly?: boolean;
 	class?: string;
 	preset?: string;
-	onchange?: (ev: Event, options: { lat: number | undefined; lng: number | undefined; value: string }) => void;
-	oninput?: (ev: Event, options: { lat: number | undefined; lng: number | undefined; value: string }) => void;
+	onchange?: (
+		ev: Event,
+		options: { lat: number | undefined; lng: number | undefined; value: string }
+	) => void;
+	oninput?: (
+		ev: Event,
+		options: { lat: number | undefined; lng: number | undefined; value: string }
+	) => void;
 }
 
 // ── Phone Control ─────────────────────────────────────────────────────────
@@ -211,7 +274,7 @@ export interface InputLocationControlProps extends InputLocationControlExtendPro
 export interface InputPhoneControlExtendProps {}
 
 export type PhoneSpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
-export type PhoneSpan = { text: string; class: string; type: PhoneSpanType };
+export type PhoneSpan = { text: string; class: string; style?: string; type: PhoneSpanType };
 
 export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	/** Clean digits only (no format chars). In free mode: full string. */
@@ -256,4 +319,74 @@ export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	 * ```
 	 */
 	span?: Snippet<[PhoneSpan]>;
+}
+
+// ── Currency Control ──────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputCurrencyControlExtendProps {}
+
+export interface InputCurrencyControlProps extends InputCurrencyControlExtendProps {
+	/** Raw decimal string value (bindable) e.g. "1234.50" */
+	value?: string;
+	/** Parsed number amount (bindable) */
+	amount?: number | undefined;
+	/** ISO 4217 currency code
+	 * @default 'USD'
+	 */
+	currency?: string;
+	/** BCP 47 locale for formatting
+	 * @default 'en-US'
+	 */
+	locale?: string;
+	/** Decimal precision
+	 * @default 2
+	 */
+	precision?: number;
+	/** Minimum allowed amount */
+	min?: number;
+	/** Maximum allowed amount */
+	max?: number;
+	/** Step size for arrow up/down. Defaults to 10^(-precision) */
+	step?: number;
+	placeholder?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { value: string; amount: number | undefined }) => void;
+	oninput?: (ev: Event, options: { value: string; amount: number | undefined }) => void;
+}
+
+// ── Color Control — types live in ./color/types.ts ────────────────────────
+export type { InputColorControlExtendProps, InputColorControlProps } from './color/types';
+
+// ── OTP Control ───────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputOtpControlExtendProps {}
+
+export interface InputOtpControlProps extends InputOtpControlExtendProps {
+	/** Current OTP value — a string of entered characters (bindable) */
+	value?: string;
+	/** Number of slots
+	 * @default 6
+	 */
+	length?: number;
+	/** Character type constraint
+	 * @default 'numeric'
+	 */
+	type?: 'numeric' | 'alpha' | 'alphanumeric';
+	/** Group slots visually with a separator every N slots (e.g. 3 for "123—456") */
+	groupSize?: number;
+	/** Placeholder character shown in empty slots
+	 * @default '·'
+	 */
+	placeholder?: string;
+	disabled?: boolean;
+	readonly?: boolean;
+	class?: string;
+	preset?: string;
+	onchange?: (ev: Event, options: { value: string }) => void;
+	oninput?: (ev: Event, options: { value: string }) => void;
+	/** Fired when all slots are filled */
+	oncomplete?: (value: string) => void;
 }

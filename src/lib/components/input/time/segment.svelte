@@ -1,26 +1,9 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-
-	/**
-	 * InputTimeSegment — a single editable time/date part (HH, MM, SS, etc.)
-	 * Fully controlled: value is driven by parent, segment calls onchange to request updates.
-	 */
-
-	interface SegmentProps {
-		value?: number | null;
-		min: number;
-		max: number;
-		digits?: number;
-		placeholder?: string;
-		disabled?: boolean;
-		readonly?: boolean;
-		class?: string;
-		onchange?: (value: number | null) => void;
-		onfocusmove?: (dir: -1 | 1) => void;
-	}
+	import type { SegmentProps } from './shared';
 
 	let {
-		value = null,
+		value = undefined,
 		min,
 		max,
 		digits = 2,
@@ -29,45 +12,41 @@
 		readonly = false,
 		class: klass = '',
 		onchange,
-		onfocusmove
+		onfocusmove,
+		onrollover,
 	}: SegmentProps = $props();
 
 	let el = $state<HTMLSpanElement>();
-	let buffer = $state<string>('');
-	let isFocused = $state(false);
+	let buffer = $state('');
 
 	const displayPlaceholder = placeholder ?? '—'.repeat(digits);
 
 	function getDisplay(): string {
 		if (buffer !== '') return buffer.padStart(digits, '_');
-		if (value !== null && value !== undefined) return String(value).padStart(digits, '0');
+		if (value !== undefined) return String(value).padStart(digits, '0');
 		return displayPlaceholder;
 	}
 
 	function isEmpty(): boolean {
-		return (value === null || value === undefined) && buffer === '';
+		return value === undefined && buffer === '';
 	}
 
 	// Update DOM imperatively to avoid focus loss
-	// Using contenteditable + requestAnimationFrame for safe textContent updates
 	$effect(() => {
 		if (!el) return;
 		const text = getDisplay();
-		void buffer; void value; // Track reactive dependencies
+		void buffer; void value; // reactive deps
 
 		untrack(() => {
 			requestAnimationFrame(() => {
-				if (el && el.textContent !== text) {
-					el.textContent = text;
-				}
+				if (el && el.textContent !== text) el.textContent = text;
 			});
 		});
 
 		el.setAttribute('aria-valuetext', text);
-		el.setAttribute('aria-valuenow', value != null ? String(value) : '');
+		el.setAttribute('aria-valuenow', value !== undefined ? String(value) : '');
 		el.setAttribute('data-empty', String(isEmpty()));
 
-		// Update color classes
 		if (isEmpty()) {
 			el.classList.remove('text-foreground');
 			el.classList.add('text-muted-foreground');
@@ -77,7 +56,7 @@
 		}
 	});
 
-	function clamp(v: number): number {
+	function clamp(v: number) {
 		return Math.max(min, Math.min(max, v));
 	}
 
@@ -96,33 +75,29 @@
 			const next = buffer + ev.key;
 			const nextNum = parseInt(next, 10);
 
-			// Reject single digit if it exceeds max
 			if (next.length === 1 && nextNum > max) return;
 
-			// Buffer complete - commit (clamp to max if invalid)
 			if (next.length === digits) {
 				commitBuffer(nextNum <= max ? next : String(max), true);
 				return;
 			}
 
-			// Add digit to buffer
 			buffer = next;
 
-			// Auto-advance if minimum possible completion exceeds max
 			const minCompletion = parseInt(next + '0'.repeat(digits - next.length), 10);
-			if (minCompletion > max) {
-				commitBuffer(next, true);
-			}
+			if (minCompletion > max) commitBuffer(next, true);
 		} else if (ev.key === 'ArrowUp') {
 			ev.preventDefault();
 			buffer = '';
 			const cur = value ?? min;
-			onchange?.(cur >= max ? min : cur + 1);
+			if (cur >= max) { onchange?.(min); onrollover?.(1); }
+			else onchange?.(cur + 1);
 		} else if (ev.key === 'ArrowDown') {
 			ev.preventDefault();
 			buffer = '';
 			const cur = value ?? max;
-			onchange?.(cur <= min ? max : cur - 1);
+			if (cur <= min) { onchange?.(max); onrollover?.(-1); }
+			else onchange?.(cur - 1);
 		} else if (ev.key === 'ArrowLeft') {
 			ev.preventDefault();
 			if (buffer) buffer = '';
@@ -133,7 +108,7 @@
 		} else if (ev.key === 'Backspace' || ev.key === 'Delete') {
 			ev.preventDefault();
 			if (buffer) buffer = buffer.slice(0, -1);
-			else onchange?.(null);
+			else onchange?.(undefined);
 		} else if (ev.key === 'Tab') {
 			buffer = '';
 		} else if (!ev.ctrlKey && !ev.metaKey && !ev.altKey) {
@@ -160,13 +135,9 @@
 		'focus:bg-foreground/10 focus:outline-none',
 		'text-muted-foreground',
 		disabled && 'cursor-not-allowed opacity-50',
-		klass
+		klass,
 	].filter(Boolean).join(' ')}
 	onkeydown={handleKeydown}
 	onpaste={(ev) => ev.preventDefault()}
-	onfocus={() => (isFocused = true)}
-	onblur={() => {
-		isFocused = false;
-		if (buffer) commitBuffer(buffer, false);
-	}}
+	onblur={() => { if (buffer) commitBuffer(buffer, false); }}
 >{displayPlaceholder}</span>

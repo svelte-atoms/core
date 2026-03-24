@@ -1,44 +1,16 @@
 @import 'tailwindcss';
-@import './lib/components/root/root.css';
+/* @import './lib/components/root/root.css'; */
 @source '../src/**/*.{html,js,svelte,ts,md,mdx}';
 @source '../stories/**/*.{html,js,svelte,ts,mdx}';
 
 :root {
-	--palette-black: oklch(0.15 0 0);
-	--palette-carbon: oklch(0.22 0 0);
-	--palette-graphite: oklch(0.32 0 0);
-	--palette-steel: oklch(0.45 0 0);
-	--palette-slate: oklch(0.58 0.015 250);
-	--palette-concrete: oklch(0.72 0.014 250);
-
-	--palette-fusion: oklch(0.82 0.3 15);
-	--palette-plasma: oklch(0.76 0.25 20);
-	--palette-critical: oklch(0.68 0.22 22);
-	--palette-radiation: oklch(0.75 0.2 35);
-	--palette-ember: oklch(0.62 0.18 25);
-	--palette-decay: oklch(0.52 0.15 28);
-
-	--palette-photon: oklch(0.88 0.25 90);
-	--palette-solar: oklch(0.85 0.22 95);
-	--palette-energy: oklch(0.78 0.2 85);
-	--palette-quantum: oklch(0.75 0.18 88);
-	--palette-beta: oklch(0.68 0.16 92);
-	--palette-isotope: oklch(0.58 0.14 95);
-
-	--palette-atomic: oklch(0.85 0.28 166);
-	--palette-nucleus: oklch(0.78 0.2 142);
-	--palette-electron: oklch(0.7 0.18 142);
-	--palette-ion: oklch(0.74 0.15 162);
-	--palette-proton: oklch(0.64 0.14 162);
-	--palette-neutron: oklch(0.54 0.12 162);
-
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
-	--primary: var(--palette-proton);
+	--primary: oklch(0.205 0 0);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.97 0 0);
 	--secondary-foreground: oklch(0.205 0 0);
@@ -46,9 +18,10 @@
 	--muted-foreground: oklch(0.556 0 0);
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: oklch(0.205 0 0);
-	--destructive: var(--palette-critical);
+	--destructive: oklch(0.577 0.245 27.325);
+	--destructive-foreground: oklch(1 0 0);
 	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
+	--input: oklch(0.99 0 0);
 	--ring: oklch(0.708 0 0);
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
@@ -64,14 +37,6 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
-	--font-sans:
-		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-		'Segoe UI Symbol', 'Noto Color Emoji';
-	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-	--font-mono:
-		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-		monospace;
 	--radius: 0.625rem;
 	--shadow-x: 0px;
 	--shadow-y: 1px;
@@ -81,6 +46,29 @@
 	--shadow-color: hsl(0 0% 0%);
 	--tracking-normal: 0em;
 	--spacing: 0.25rem;
+
+	/* ── Input highlight tokens ── */
+	/* Used by URL, Email, Phone, Location controls for segment coloring. */
+	/* Override these to customise the highlight palette. */
+	/* Fallbacks chain to existing chart/semantic vars so they work without redefinition. */
+	--input-hl-primary: oklch(0.42 0.16 253);
+	/* host, local-part, lat-val  — blue-ish */
+	--input-hl-secondary: oklch(0.5 0.1 253);
+	/* pathname, domain, lng-val  — softer blue */
+	--input-hl-accent: oklch(0.52 0.18 300);
+	/* hash, TLD, country code    — violet */
+	--input-hl-warning: oklch(0.6 0.16 55);
+	/* port                       — amber */
+	--input-hl-info: oklch(0.52 0.15 220);
+	/* search params              — cyan-blue */
+	--input-hl-positive: oklch(0.52 0.14 160);
+	/* lat coords                 — teal */
+	--input-hl-dim: oklch(0.65 0.06 253);
+	/* lat-min/sec, lng-min/sec   — faded */
+	--input-hl-muted: var(--muted-foreground);
+	/* protocol, @, separators   */
+	--input-hl-error: var(--destructive);
+	/* parse errors               */
 }
 
 .dark {
@@ -90,7 +78,7 @@
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: var(--palette-ion);
+	--primary: oklch(0.922 0 0);
 	--primary-foreground: oklch(0.205 0 0);
 	--secondary: oklch(0.269 0 0);
 	--secondary-foreground: oklch(0.985 0 0);
@@ -99,8 +87,9 @@
 	--accent: oklch(0.269 0 0);
 	--accent-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
+	--destructive-foreground: oklch(0.985 0 0);
 	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
+	--input: oklch(1 0 0 / 5%);
 	--ring: oklch(0.556 0 0);
 	--chart-1: oklch(0.488 0.243 264.376);
 	--chart-2: oklch(0.696 0.17 162.48);
@@ -115,15 +104,16 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
-	--font-sans:
-		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-		'Segoe UI Symbol', 'Noto Color Emoji';
-	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
-	--font-mono:
-		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-		monospace;
 	--shadow-color: hsl(0, 0%, 100%);
+
+	/* ── Input highlight tokens (dark) ── */
+	--input-hl-primary: oklch(0.72 0.16 253);
+	--input-hl-secondary: oklch(0.65 0.1 253);
+	--input-hl-accent: oklch(0.74 0.18 300);
+	--input-hl-warning: oklch(0.78 0.16 75);
+	--input-hl-info: oklch(0.72 0.15 220);
+	--input-hl-positive: oklch(0.72 0.14 160);
+	--input-hl-dim: oklch(0.6 0.06 253);
 }
 
 @theme inline {
@@ -154,8 +144,42 @@
 	--color-palette-quantum: var(--palette-quantum);
 	--color-palette-beta: var(--palette-beta);
 	--color-palette-isotope: var(--palette-isotope);
-}
 
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	--radius-inherit: inherit;
+}
 
 @layer utilities {
 	.bg-dot-grid {
@@ -210,13 +234,20 @@
 
 /* ─── Scroll offset for sticky bars ─────────────────────────────── */
 /* Desktop: just the header (3.5rem) + a little breathing room */
-h1[id], h2[id], h3[id], h4[id] {
+h1[id],
+h2[id],
+h3[id],
+h4[id] {
 	scroll-margin-top: 5rem;
 }
 
 /* Mobile: header (3.5rem) + sticky nav bar (~2.5rem) + breathing room */
 @media (max-width: 1023px) {
-	h1[id], h2[id], h3[id], h4[id] {
+
+	h1[id],
+	h2[id],
+	h3[id],
+	h4[id] {
 		scroll-margin-top: 7.5rem;
 	}
 }

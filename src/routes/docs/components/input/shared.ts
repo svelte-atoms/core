@@ -64,13 +64,11 @@ const useCases = [
 	},
 	{
 		title: 'Authentication',
-		description:
-			'Capture credentials like email, username, and password in login and signup flows.'
+		description: 'Capture credentials like email, username, and password in login and signup flows.'
 	},
 	{
 		title: 'Settings and Configuration',
-		description:
-			'Allow users to customize application settings, preferences, and account details.'
+		description: 'Allow users to customize application settings, preferences, and account details.'
 	},
 	{
 		title: 'Numeric Input',
@@ -79,8 +77,7 @@ const useCases = [
 	},
 	{
 		title: 'File Uploads',
-		description:
-			'Enable file selection and upload functionality with the file input type variant.'
+		description: 'Enable file selection and upload functionality with the file input type variant.'
 	}
 ];
 
@@ -92,18 +89,79 @@ const componentsSummary = [
 	},
 	{
 		name: 'Input.Control',
-		description:
-			'The actual input element that accepts user text entry with various type options.'
+		description: 'The actual input element that accepts user text entry with various type options.'
 	},
 	{
 		name: 'Input.Icon',
-		description:
-			'Optional icon or prefix/suffix element displayed alongside the input control.'
+		description: 'Optional icon or prefix/suffix element displayed alongside the input control.'
 	},
 	{
 		name: 'Input.Placeholder',
+		description: 'Animated placeholder label that floats above the input when focused or filled.'
+	},
+	{
+		name: 'Input.TextControl',
 		description:
-			'Animated placeholder label that floats above the input when focused or filled.'
+			'Plain text input, type="text" specific — the dedicated counterpart of Input.Control for text routing.'
+	},
+	{
+		name: 'Input.FileControl',
+		description:
+			'File picker with customisable trigger content, accept filter, and multiple selection support.'
+	},
+	{
+		name: 'Input.NumberControl',
+		description: 'Numeric input with increment/decrement buttons and step control.'
+	},
+	{
+		name: 'Input.UrlControl',
+		description: 'URL input with protocol prefix display and focus/blur overlay.'
+	},
+	{
+		name: 'Input.EmailControl',
+		description: 'Email input with local/domain/TLD segment coloring.'
+	},
+	{
+		name: 'Input.LocationControl',
+		description:
+			'Coordinate input (lat, lng) in decimal degrees or DMS format with optional geolocation button.'
+	},
+	{
+		name: 'Input.PhoneControl',
+		description:
+			'Phone number input with mask format, optional digit slots, and segment color mapping.'
+	},
+	{
+		name: 'Input.TimeControl',
+		description: 'Segment-based time picker with 12/24h format and optional seconds.'
+	},
+	{
+		name: 'Input.DateTimeControl',
+		description: 'Segment-based date + time picker (datetime-local), optional seconds.'
+	},
+	{
+		name: 'Input.DateControl',
+		description: 'Segment-based date-only picker (YYYY-MM-DD).'
+	},
+	{
+		name: 'Input.OtpControl',
+		description:
+			'One-time password slots with keyboard navigation, paste support, and oncomplete callback.'
+	},
+	{
+		name: 'Input.ColorControl',
+		description:
+			'Segmented CSS color editor with auto-detection across 17 formats including named colors.'
+	},
+	{
+		name: 'Input.ColorSwatch',
+		description:
+			'Color swatch preview inside an Input.Root, reads the current color value from bond state.'
+	},
+	{
+		name: 'Input.CurrencyControl',
+		description:
+			'Locale-aware currency input with Intl.NumberFormat overlay, min/max/step, and arrow key increment.'
 	}
 ];
 

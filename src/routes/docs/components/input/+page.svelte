@@ -6,4 +6,5 @@
   <title>{metadata.title}</title>
   <meta name="description" content={metadata.description} />
 </svelte:head>
+
 <Content contentType="html" />

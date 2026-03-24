@@ -1,6 +1,7 @@
 <script lang="ts" generics="B extends Base = Base">
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 	import { getPreset } from '$svelte-atoms/core/context';
+	import { resolvePreset } from '$svelte-atoms/core/components/atom';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
@@ -24,7 +25,7 @@
 		...restProps
 	}: InputControlProps<B> = $props();
 
-	const preset = getPreset(untrack(()=> presetKey) as PresetModuleName)?.apply(bond, [bond]);
+	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
 	const valueProps = $derived({
 		...(bond?.input?.() ?? {}),

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getPreset } from '$svelte-atoms/core/context';
+	import { resolvePreset } from '$svelte-atoms/core/components/atom';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { untrack } from 'svelte';
@@ -20,7 +21,7 @@
 		...restProps
 	}: InputUrlControlProps = $props();
 
-	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
+	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
@@ -135,15 +136,14 @@
 
 	const segments = $derived(parseSegments(value));
 
-	// Color per segment kind
-	const kindClass: Record<Segment['kind'], string> = {
-		protocol:  'text-muted-foreground',
-		host:      'text-foreground font-medium',
-		port:      'text-orange-500 dark:text-orange-400',
-		pathname:  'text-foreground/70',
-		search:    'text-blue-500 dark:text-blue-400',
-		hash:      'text-purple-500 dark:text-purple-400',
-		plain:     'text-muted-foreground',
+	const kindStyle: Record<Segment['kind'], string> = {
+		protocol:  'color: var(--input-hl-muted, var(--foreground))',
+		host:      'color: var(--input-hl-primary, var(--foreground)); font-weight: 500',
+		port:      'color: var(--input-hl-warning, var(--foreground))',
+		pathname:  'color: var(--input-hl-secondary, var(--foreground))',
+		search:    'color: var(--input-hl-info, var(--foreground))',
+		hash:      'color: var(--input-hl-accent, var(--foreground))',
+		plain:     'color: var(--input-hl-muted, var(--foreground))',
 	};
 
 	// ── Keep overlay scroll in sync with the real input ──────────────────
@@ -187,7 +187,7 @@
 		<span style="transform: translateX(-{scrollLeft}px)">
 			{#if segments.length}
 				{#each segments as seg}
-					<span class={kindClass[seg.kind]}>{seg.text}</span>
+					<span style={kindStyle[seg.kind]}>{seg.text}</span>
 				{/each}
 			{:else}
 				<span class="text-muted-foreground">{placeholder}</span>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getPreset } from '$svelte-atoms/core/context';
+	import { resolvePreset } from '$svelte-atoms/core/components/atom';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { untrack } from 'svelte';
@@ -23,7 +24,7 @@
 		...restProps
 	}: InputPhoneControlProps = $props();
 
-	const preset = getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]);
+	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
@@ -138,11 +139,11 @@
 
 	// ── Segment color map ─────────────────────────────────────────────────
 	const segmentColors: Record<string, string> = {
-		country: 'text-blue-500 dark:text-blue-400',
-		area:    'text-foreground font-medium',
-		prefix:  'text-foreground/80',
-		line:    'text-foreground',
-		other:   'text-foreground',
+		country: 'var(--input-hl-accent, var(--foreground))',
+		area:    'var(--foreground)',
+		prefix:  'var(--input-hl-secondary, var(--foreground))',
+		line:    'var(--foreground)',
+		other:   'var(--foreground)',
 	};
 
 	const digitSlotKind = $derived.by<string[]>(() => {
@@ -171,10 +172,10 @@
 				const ch = filled ? value[t.slotIndex]! : '_';
 				const kind = (digitSlotKind[t.slotIndex] ?? 'other') as SpanType;
 				const spanType: SpanType = filled ? kind : 'empty';
-				const cls = filled
-					? (segmentMap ? (segmentColors[kind] ?? segmentColors['other']!) : 'text-foreground')
-					: 'text-muted-foreground/40';
-				spans.push({ text: ch, class: cls, type: spanType });
+				const spanStyle = filled
+					? (segmentMap ? `color: ${segmentColors[kind] ?? segmentColors['other']}` : 'color: var(--foreground)')
+					: 'color: color-mix(in oklch, var(--muted-foreground) 40%, transparent)';
+				spans.push({ text: ch, class: '', style: spanStyle, type: spanType });
 			} else {
 				if (t.optional) {
 					const anyOptFilled = tokens.some(
@@ -276,6 +277,33 @@
 		onchange?.(ev, { value });
 	}
 
+	// ── Paste handler ──────────────────────────────────────────────────────
+	function handlePaste(ev: ClipboardEvent) {
+		ev.preventDefault();
+		const pasted = ev.clipboardData?.getData('text') ?? '';
+
+		if (!format) {
+			// Free mode: insert pasted text at caret position
+			const input = ev.currentTarget as HTMLInputElement;
+			const start = input.selectionStart ?? value.length;
+			const end   = input.selectionEnd   ?? value.length;
+			value = value.slice(0, start) + pasted + value.slice(end);
+			if (bond) bond.state.props.value = value;
+			oninput?.(ev, { value });
+			onchange?.(ev, { value });
+			return;
+		}
+
+		// Mask mode: strip all non-digits from pasted text, clamp to maxDigits
+		const digits = pasted.replace(/\D/g, '').slice(0, maxDigits);
+		if (!digits) return;
+		value = digits;
+		if (inputEl) inputEl.value = buildMasked(digits);
+		if (bond) bond.state.props.value = value;
+		oninput?.(ev, { value });
+		onchange?.(ev, { value });
+	}
+
 	function handleFocus() {
 		if (!format || !inputEl) return;
 		isFocused = true;
@@ -295,7 +323,7 @@
 </script>
 
 {#snippet defaultSpan(span: Span, index: number)}
-	<span class={span.class}>{span.text}</span>
+	<span style={span.style}>{span.text}</span>
 {/snippet}
 
 {#if format}
@@ -334,6 +362,7 @@
 			oninput={handleInput}
 			onkeydown={handleKeydown}
 			onchange={handleChange}
+			onpaste={handlePaste}
 			onscroll={syncScroll}
 			onfocus={handleFocus}
 			onblur={handleBlur}
@@ -359,6 +388,7 @@
 		)}
 		oninput={handleInput}
 		onchange={handleChange}
+		onpaste={handlePaste}
 		{...restProps}
 	/>
 {/if}
