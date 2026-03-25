@@ -17,7 +17,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		date = $bindable<Date | null>(null),
 		mode = 'datetime',
 		withSeconds = false,

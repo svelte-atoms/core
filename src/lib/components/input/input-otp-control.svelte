@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		length = 6,
 		type = 'numeric',
 		groupSize = undefined,
@@ -31,7 +31,7 @@
 	let slotEls = $state<Array<HTMLInputElement | undefined>>([]);
 
 	// ── Derived slots ─────────────────────────────────────────────────────
-	const slots  = $derived(Array.from({ length }, (_, i) => value[i] ?? ''));
+	const slots  = $derived(Array.from({ length }, (_, i) => value?.[i] ?? ''));
 	const isFull = $derived(slots.every(s => s !== ''));
 
 	// ── Track previous full state so oncomplete only fires once per fill ──

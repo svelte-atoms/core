@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		lat = $bindable<number | undefined>(undefined),
 		lng = $bindable<number | undefined>(undefined),
 		format = 'dd',

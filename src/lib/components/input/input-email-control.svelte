@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		placeholder = 'you@example.com',
 		disabled = false,
 		readonly = false,

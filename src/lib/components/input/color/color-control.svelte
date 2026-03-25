@@ -14,7 +14,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		format: formatProp = undefined,
 		alpha: showAlpha = false,
 		placeholder = 'oklch(0.5 0.2 250deg)',

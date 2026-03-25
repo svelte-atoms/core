@@ -2,6 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Input as MyInput } from '.';
 	import { Label } from '../label';
+	import { OtpControl } from './atoms';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -41,12 +42,12 @@
 		<Label for="price-input">Price</Label>
 		<MyInput.Root>
 			<MyInput.Icon class="text-foreground box-content px-0">$</MyInput.Icon>
-			<MyInput.Control id="price-input" class="border-border box-content border-x px-2 py-2">
-				<!--  -->
-			</MyInput.Control>
+			<div class="flex-1 relative">
+				<MyInput.Control id="price-input" class="border-border box-content border-x px-2 py-2" type="currency"  />
+				<MyInput.Placeholder class="text-foreground/20 pl-2">Hello World</MyInput.Placeholder>
+			</div>
 			<MyInput.Icon class="text-foreground box-content px-2">.00</MyInput.Icon>
 
-			<MyInput.Placeholder class="text-foreground/20 pl-2">Hello World</MyInput.Placeholder>
 		</MyInput.Root>
 	</div>
 </Story>
@@ -431,27 +432,27 @@
 
 		<div class="flex flex-col gap-2">
 			<Label>Standalone — individual boxes (default)</Label>
-			<MyInput.OtpControl length={6} oncomplete={(v) => { otpCompleted = true; }} />
+			<OtpControl length={6} oncomplete={(v) => { otpCompleted = true; }} />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Standalone — 4-digit PIN</Label>
-			<MyInput.OtpControl length={4} placeholder="○" />
+			<OtpControl length={4} placeholder="○" />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Standalone — 8-char alphanumeric grouped (4+4)</Label>
-			<MyInput.OtpControl length={8} type="alphanumeric" groupSize={4} />
+			<OtpControl length={8} type="alphanumeric" groupSize={4} />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Disabled</Label>
-			<MyInput.OtpControl length={6} value="123456" disabled />
+			<OtpControl length={6} value="123456" disabled />
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Readonly</Label>
-			<MyInput.OtpControl length={6} value="123456" readonly />
+			<OtpControl length={6} value="123456" readonly />
 		</div>
 	</div>
 </Story>

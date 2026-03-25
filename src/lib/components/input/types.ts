@@ -1,4 +1,3 @@
-import type { HTMLInputTypeAttribute } from 'svelte/elements';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
@@ -10,6 +9,22 @@ export type SecondDigits = MinuteDigits;
 
 export type Time = `${HourAmPmDigits}:${MinuteDigits}`;
 export type TimeFull = `${HourDigits}:${MinuteDigits}`;
+
+export type InputControlType =
+	| 'text'
+	| 'number'
+	| 'email'
+	| 'url'
+	| 'tel'
+	| 'file'
+	| 'time'
+	| 'datetime-local'
+	| 'date'
+	| 'color'
+	| 'otp'
+	| 'currency'
+	| 'location'
+	| null;
 /**
  * Extend this interface to add custom input root properties in your application.
  */
@@ -41,7 +56,7 @@ interface InputControlBaseProps {
 	number?: number;
 	checked?: boolean;
 	class?: string;
-	type?: HTMLInputTypeAttribute | null;
+	type?: InputControlType | null;
 	children?: Snippet<[]>;
 }
 

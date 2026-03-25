@@ -10,7 +10,7 @@
 	const bond = InputBond.get();
 
 	let {
-		value = $bindable(''),
+		value = $bindable(),
 		class: klass = '',
 		placeholder = '',
 		disabled = false,

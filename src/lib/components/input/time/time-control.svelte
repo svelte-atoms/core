@@ -17,7 +17,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		date = $bindable<Date | undefined>(undefined),
 		hourFormat = 24,
 		withSeconds = false,

@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		placeholder = 'example.com/path',
 		disabled = false,
 		readonly = false,

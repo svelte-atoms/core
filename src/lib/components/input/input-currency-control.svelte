@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		amount = $bindable<number | undefined>(undefined),
 		currency = 'USD',
 		locale = 'en-US',

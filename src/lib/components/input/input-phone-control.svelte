@@ -11,7 +11,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(''),
+		value = $bindable(),
 		format = undefined,
 		segments: segmentMap = undefined,
 		placeholder = '+_ (___) ___-____',

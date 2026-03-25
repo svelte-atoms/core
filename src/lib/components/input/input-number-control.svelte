@@ -8,7 +8,7 @@
 
 	let {
 		class: klass = '',
-		number = $bindable(0),
+		number = $bindable(),
 		min = undefined,
 		max = undefined,
 		step = 1,

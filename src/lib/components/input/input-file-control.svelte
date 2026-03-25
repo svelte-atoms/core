@@ -8,7 +8,7 @@
 
 	let {
 		class: klass = '',
-		files = $bindable<File[]>([]),
+		files = $bindable<File[]>(),
 		accept = undefined,
 		multiple = false,
 		disabled = false,
