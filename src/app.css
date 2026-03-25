@@ -4,13 +4,41 @@
 @source '../stories/**/*.{html,js,svelte,ts,mdx}';
 
 :root {
+	--palette-black: oklch(0.15 0 0);
+	--palette-carbon: oklch(0.22 0 0);
+	--palette-graphite: oklch(0.32 0 0);
+	--palette-steel: oklch(0.45 0 0);
+	--palette-slate: oklch(0.58 0.015 250);
+	--palette-concrete: oklch(0.72 0.014 250);
+
+	--palette-fusion: oklch(0.82 0.3 15);
+	--palette-plasma: oklch(0.76 0.25 20);
+	--palette-critical: oklch(0.68 0.22 22);
+	--palette-radiation: oklch(0.75 0.2 35);
+	--palette-ember: oklch(0.62 0.18 25);
+	--palette-decay: oklch(0.52 0.15 28);
+
+	--palette-photon: oklch(0.88 0.25 90);
+	--palette-solar: oklch(0.85 0.22 95);
+	--palette-energy: oklch(0.78 0.2 85);
+	--palette-quantum: oklch(0.75 0.18 88);
+	--palette-beta: oklch(0.68 0.16 92);
+	--palette-isotope: oklch(0.58 0.14 95);
+
+	--palette-atomic: oklch(0.85 0.28 166);
+	--palette-nucleus: oklch(0.78 0.2 142);
+	--palette-electron: oklch(0.7 0.18 142);
+	--palette-ion: oklch(0.74 0.15 162);
+	--palette-proton: oklch(0.64 0.14 162);
+	--palette-neutron: oklch(0.54 0.12 162);
+
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
+	--primary: var(--palette-proton);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.97 0 0);
 	--secondary-foreground: oklch(0.205 0 0);
@@ -18,10 +46,9 @@
 	--muted-foreground: oklch(0.556 0 0);
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: oklch(0.205 0 0);
-	--destructive: oklch(0.577 0.245 27.325);
-	--destructive-foreground: oklch(1 0 0);
+	--destructive: var(--palette-critical);
 	--border: oklch(0.922 0 0);
-	--input: oklch(0.99 0 0);
+	--input: oklch(0.922 0 0);
 	--ring: oklch(0.708 0 0);
 	--chart-1: oklch(0.646 0.222 41.116);
 	--chart-2: oklch(0.6 0.118 184.704);
@@ -37,6 +64,14 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+	--font-mono:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+		monospace;
 	--radius: 0.625rem;
 	--shadow-x: 0px;
 	--shadow-y: 1px;
@@ -46,7 +81,6 @@
 	--shadow-color: hsl(0 0% 0%);
 	--tracking-normal: 0em;
 	--spacing: 0.25rem;
-
 	/* ── Input highlight tokens ── */
 	/* Used by URL, Email, Phone, Location controls for segment coloring. */
 	/* Override these to customise the highlight palette. */
@@ -78,7 +112,7 @@
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.922 0 0);
+	--primary: var(--palette-ion);
 	--primary-foreground: oklch(0.205 0 0);
 	--secondary: oklch(0.269 0 0);
 	--secondary-foreground: oklch(0.985 0 0);
@@ -87,9 +121,8 @@
 	--accent: oklch(0.269 0 0);
 	--accent-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
-	--destructive-foreground: oklch(0.985 0 0);
 	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 5%);
+	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
 	--chart-1: oklch(0.488 0.243 264.376);
 	--chart-2: oklch(0.696 0.17 162.48);
@@ -104,6 +137,14 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+		'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+	--font-mono:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+		monospace;
 	--shadow-color: hsl(0, 0%, 100%);
 
 	/* ── Input highlight tokens (dark) ── */
