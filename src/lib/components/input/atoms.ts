@@ -14,6 +14,8 @@ export { default as DateControl } from './time/datetime-control.svelte';
 export { default as FileControl } from './input-file-control.svelte';
 export { default as UrlControl } from './input-url-control.svelte';
 export { default as EmailControl } from './input-email-control.svelte';
+export { default as NativeControl } from './input-native-control.svelte';
+export { default as PasswordControl } from './input-password-control.svelte';
 export { default as TextControl } from './input-text-control.svelte';
 export { default as PhoneControl } from './input-phone-control.svelte';
 export { default as LocationControl } from './input-location.svelte';
