@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Swatch } from '$lib/components/swatch';
+	import { Input } from '$lib/components/input';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -8,8 +9,11 @@
 		PageNavigation,
 		DemoExample,
 		Props,
-		CodeBlock
+		CodeBlock,
+		DocCallout
 	} from '$docs/components';
+
+	let colorValue = $state('oklch(0.65 0.18 253)');
 </script>
 
 <svelte:head>
@@ -34,6 +38,12 @@
 			packageName="@svelte-atoms/core"
 			importCode="import &#123; Swatch &#125; from '@svelte-atoms/core/swatch';"
 		/>
+
+		<DocCallout variant="info" title="Used inside Input.ColorControl">
+			<a href="/docs/components/input" class="text-foreground underline underline-offset-4 hover:no-underline">Input.ColorSwatch</a> is a bond-connected wrapper around this standalone <code class="bg-muted rounded px-1.5 py-0.5 text-xs">Swatch</code>.
+			When placed inside <code class="bg-muted rounded px-1.5 py-0.5 text-xs">Input.Root</code> next to
+			<code class="bg-muted rounded px-1.5 py-0.5 text-xs">Input.ColorControl</code>, it reads the current color from the bond automatically — no <code class="bg-muted rounded px-1.5 py-0.5 text-xs">color</code> prop needed.
+		</DocCallout>
 	</Section.Root>
 
 	<Section.Root>
@@ -98,27 +108,29 @@
 	</Section.Root>
 
 	<Section.Root>
-		<Section.Header>
-			<Section.Title>Inside an Input</Section.Title>
-			<Section.Subtitle>Use Input.ColorSwatch for bond-connected swatch inside Input.Root</Section.Subtitle>
-		</Section.Header>
-		<CodeBlock
-			lang="svelte"
+		<DemoExample
+			title="With ColorControl"
+			description="Input.ColorSwatch sits inside Input.Root and reads the color value from the bond — no prop needed."
 			code={`<script>
   import { Input } from '@svelte-atoms/core/input';
-
   let color = $state('oklch(0.65 0.18 253)');
 <\/script>
 
-<!-- Input.ColorSwatch reads the color from the Input bond automatically -->
 <Input.Root>
   <Input.ColorSwatch />
   <Input.ColorControl bind:value={color} />
-</Input.Root>
+</Input.Root>`}
+		>
+			<Input.Root class="w-fit gap-2 px-2">
+				<Input.ColorSwatch />
+				<Input.ColorControl bind:value={colorValue} />
+			</Input.Root>
+		</DemoExample>
 
-<!-- Standalone Swatch — you manage the color prop yourself -->
-<Swatch {color} class="h-6 w-6 rounded" />`}
-		/>
+		<p class="text-muted-foreground mt-4 text-sm">
+			Use this standalone component when you need a color preview outside of an Input — for example in a palette, a settings panel, or a custom picker.
+			For use inside a color input, see <a href="/docs/components/input" class="text-foreground underline underline-offset-4 hover:no-underline"><code class="bg-muted rounded px-1.5 py-0.5 text-xs">Input.ColorSwatch</code></a>.
+		</p>
 	</Section.Root>
 
 	<Section.Root>
