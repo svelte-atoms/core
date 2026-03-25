@@ -12,6 +12,7 @@
 		min = undefined,
 		max = undefined,
 		step = 1,
+		showControls = true,
 		disabled = false,
 		placeholder = undefined,
 		preset = 'input.number',
@@ -21,9 +22,14 @@
 		...restProps
 	}: InputNumberControlProps & HTMLAttributes<HTMLDivElement> = $props();
 
-	const canDecrement = $derived(!disabled && (min === undefined || number - step >= min));
-	const canIncrement = $derived(!disabled && (max === undefined || number + step <= max));
+	const numberValue = $derived(number ?? 0);
 
+	const canDecrement = $derived(!disabled && (min === undefined || numberValue - step >= min));
+	const canIncrement = $derived(!disabled && (max === undefined || numberValue + step <= max));
+
+	const decrementSnippet = $derived(showControls ? (decrementContent ?? defaultDecrement) : undefined);
+	const incrementSnippet = $derived(showControls ? (incrementContent ?? defaultIncrement) : undefined);
+	
 	function decrement() {
 		if (!canDecrement) return;
 		number = parseFloat((number - step).toPrecision(10));
@@ -87,7 +93,7 @@
 	class={['input-number-root flex h-full w-full items-center', '$preset', klass]}
 	{...restProps}
 >
-	{@render (decrementContent ?? defaultDecrement)({ decrement, disabled: !canDecrement })}
+	{@render decrementSnippet?.({ decrement, disabled: !canDecrement })}
 
 	<input
 		type="number"
@@ -104,5 +110,5 @@
 		aria-valuenow={number}
 	/>
 
-	{@render (incrementContent ?? defaultIncrement)({ increment, disabled: !canIncrement })}
+	{@render incrementSnippet?.({ increment, disabled: !canIncrement })}
 </HtmlAtom>

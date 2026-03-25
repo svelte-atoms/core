@@ -89,6 +89,7 @@ export interface InputNumberControlProps extends InputNumberControlExtendProps {
 	step?: number;
 	disabled?: boolean;
 	placeholder?: string;
+	showControls?: boolean;
 	/** Custom decrement button snippet */
 	decrementContent?: Snippet<[{ decrement: () => void; disabled: boolean }]>;
 	/** Custom increment button snippet */
