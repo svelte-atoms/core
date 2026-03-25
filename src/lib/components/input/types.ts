@@ -231,6 +231,12 @@ export interface InputTextControlExtendProps {}
 export interface InputTextControlProps extends InputTextControlExtendProps {
 	/** Text value */
 	value?: string;
+	/**
+	 * Input type. Supports `text`, `search`, and `password`.
+	 * For a dedicated password control with a show/hide toggle, use `Input.PasswordControl`.
+	 * @default 'text'
+	 */
+	type?: 'text' | 'search' | 'password';
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;

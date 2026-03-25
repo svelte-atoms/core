@@ -11,6 +11,7 @@
 
 	let {
 		value = $bindable(),
+		type = 'text',
 		class: klass = '',
 		placeholder = '',
 		disabled = false,
@@ -43,7 +44,7 @@
 			if (bond) bond.state.props.value = v;
 		}
 	}
-	type="text"
+	type={type}
 	{placeholder}
 	{disabled}
 	{readonly}
