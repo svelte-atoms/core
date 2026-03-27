@@ -92,6 +92,7 @@ export interface PresetModuleMap {
 	'icon': PresetEntry;
 	'input': PresetEntry;
 	'input.control': PresetEntry;
+	'input.password': PresetEntry;
 	'input.placeholder': PresetEntry;
 	'label': PresetEntry;
 	'layer.inner': PresetEntry;

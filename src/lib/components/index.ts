@@ -41,6 +41,7 @@ export * from './container';
 export * from './calendar';
 export * from './date-picker';
 export * from './qr-code';
+export * from './swatch';
 export * from './lazy';
 export * from './chip';
 export * from './toast';

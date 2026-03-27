@@ -411,6 +411,11 @@
 			"svelte": "./dist/components/stepper/step/atoms.js",
 			"default": "./dist/components/stepper/step/atoms.js"
 		},
+		"./swatch": {
+			"types": "./dist/components/swatch/index.d.ts",
+			"svelte": "./dist/components/swatch/index.js",
+			"default": "./dist/components/swatch/index.js"
+		},
 		"./tabs": {
 			"types": "./dist/components/tabs/index.d.ts",
 			"svelte": "./dist/components/tabs/index.js",

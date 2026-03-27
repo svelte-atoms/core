@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import './lib/components/root/root.css';
+/* @import './lib/components/root/root.css'; */
 @source '../src/**/*.{html,js,svelte,ts,md,mdx}';
 @source '../stories/**/*.{html,js,svelte,ts,mdx}';
 
@@ -81,6 +81,28 @@
 	--shadow-color: hsl(0 0% 0%);
 	--tracking-normal: 0em;
 	--spacing: 0.25rem;
+	/* ── Input highlight tokens ── */
+	/* Used by URL, Email, Phone, Location controls for segment coloring. */
+	/* Override these to customise the highlight palette. */
+	/* Fallbacks chain to existing chart/semantic vars so they work without redefinition. */
+	--input-hl-primary: oklch(0.42 0.16 253);
+	/* host, local-part, lat-val  — blue-ish */
+	--input-hl-secondary: oklch(0.5 0.1 253);
+	/* pathname, domain, lng-val  — softer blue */
+	--input-hl-accent: oklch(0.52 0.18 300);
+	/* hash, TLD, country code    — violet */
+	--input-hl-warning: oklch(0.6 0.16 55);
+	/* port                       — amber */
+	--input-hl-info: oklch(0.52 0.15 220);
+	/* search params              — cyan-blue */
+	--input-hl-positive: oklch(0.52 0.14 160);
+	/* lat coords                 — teal */
+	--input-hl-dim: oklch(0.65 0.06 253);
+	/* lat-min/sec, lng-min/sec   — faded */
+	--input-hl-muted: var(--muted-foreground);
+	/* protocol, @, separators   */
+	--input-hl-error: var(--destructive);
+	/* parse errors               */
 }
 
 .dark {
@@ -124,6 +146,15 @@
 		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
 		monospace;
 	--shadow-color: hsl(0, 0%, 100%);
+
+	/* ── Input highlight tokens (dark) ── */
+	--input-hl-primary: oklch(0.72 0.16 253);
+	--input-hl-secondary: oklch(0.65 0.1 253);
+	--input-hl-accent: oklch(0.74 0.18 300);
+	--input-hl-warning: oklch(0.78 0.16 75);
+	--input-hl-info: oklch(0.72 0.15 220);
+	--input-hl-positive: oklch(0.72 0.14 160);
+	--input-hl-dim: oklch(0.6 0.06 253);
 }
 
 @theme inline {
@@ -154,8 +185,42 @@
 	--color-palette-quantum: var(--palette-quantum);
 	--color-palette-beta: var(--palette-beta);
 	--color-palette-isotope: var(--palette-isotope);
-}
 
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	--radius-inherit: inherit;
+}
 
 @layer utilities {
 	.bg-dot-grid {
@@ -210,13 +275,20 @@
 
 /* ─── Scroll offset for sticky bars ─────────────────────────────── */
 /* Desktop: just the header (3.5rem) + a little breathing room */
-h1[id], h2[id], h3[id], h4[id] {
+h1[id],
+h2[id],
+h3[id],
+h4[id] {
 	scroll-margin-top: 5rem;
 }
 
 /* Mobile: header (3.5rem) + sticky nav bar (~2.5rem) + breathing room */
 @media (max-width: 1023px) {
-	h1[id], h2[id], h3[id], h4[id] {
+
+	h1[id],
+	h2[id],
+	h3[id],
+	h4[id] {
 		scroll-margin-top: 7.5rem;
 	}
 }
