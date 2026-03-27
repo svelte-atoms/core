@@ -21,7 +21,7 @@
 	}: SlideoverHeaderProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const headerProps = $derived({
-		...bond?.header(),
+		...bond?.header().spread,
 		...restProps
 	});
 </script>

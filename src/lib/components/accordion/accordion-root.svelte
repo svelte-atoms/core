@@ -41,7 +41,7 @@
 	const bond = factory(bondProps).share();
 
 	const rootProps = $derived({
-		...bond.root(),
+		...bond.root().spread,
 		...restProps
 	});
 
@@ -57,6 +57,7 @@
 </script>
 
 <HtmlAtom
+	{@attach bond.root().onmount()}
 	{preset}
 	{bond}
 	class={['bg-card border-border flex list-none flex-col', '$preset', klass]}

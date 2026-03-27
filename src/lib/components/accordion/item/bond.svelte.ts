@@ -1,7 +1,6 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
+import { getContext, setContext, untrack } from 'svelte';
 import { AccordionBond, AccordionState } from '../bond.svelte.js';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
 
 export type AccordionItemBondProps = BondStateProps & {
@@ -18,100 +17,135 @@ export type AccordionItemBondElements = {
 	indicator: HTMLElement;
 };
 
+export class AccordionItemRootAtom extends Atom<AccordionItemBond> {
+	constructor(bond: AccordionItemBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+		};
+	}
+}
+
+export class AccordionItemHeaderAtom extends Atom<AccordionItemBond> {
+	constructor(bond: AccordionItemBond) {
+		super(bond, 'header');
+	}
+
+	override get attrs() {
+		const isButtonElement = isBrowser()
+			? this.element instanceof HTMLButtonElement
+			: false;
+
+		const props = untrack(() => this.bond.state?.props);
+		const isDisabled = props?.disabled ?? false;
+		const isOpen = this.bond.state?.isOpen ?? false;
+		const isActive = this.bond.state?.isActive ?? false;
+
+		return {
+			...super.attrs,
+			'aria-controls': `accordion-body-${this.bond.id}`,
+			'data-kind': 'accordion-header',
+			'aria-disabled': isDisabled,
+			'aria-expanded': isOpen,
+			'aria-selected': isActive,
+			role: isButtonElement ? undefined : 'button',
+			tabindex: isActive ? 0 : -1,
+			disabled: isButtonElement ? isDisabled : undefined
+		};
+	}
+
+	override get handlers() {
+		const props = untrack(() => this.bond.state?.props);
+		const isDisabled = props?.disabled ?? false;
+		const isMultiple = props?.multiple ?? false;
+		const isCollapsible = props?.collapsible ?? false;
+
+		return {
+			onpointerdown: (ev: PointerEvent) => {
+				if (isDisabled) return;
+				if (ev.defaultPrevented) return;
+
+				if (isMultiple) {
+					this.bond.state.toggle();
+				} else {
+					if (isCollapsible) {
+						const values = untrack(() => this.bond.state.accordion?.props)?.values ?? [];
+						const isActive = this.bond.state.isActive;
+						this.bond.state.accordion?.close(values);
+						if (!isActive) {
+							this.bond.state.open();
+						}
+					} else {
+						this.bond.state.open();
+					}
+				}
+			}
+		};
+	}
+}
+
+export class AccordionItemBodyAtom extends Atom<AccordionItemBond> {
+	constructor(bond: AccordionItemBond) {
+		super(bond, 'body');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'aria-labelledby': `accordion-header-${this.bond.id}`,
+			'aria-hidden': !this.bond.state?.isOpen,
+			role: 'region'
+		};
+	}
+}
+
+export class AccordionItemIndicatorAtom extends Atom<AccordionItemBond> {
+	constructor(bond: AccordionItemBond) {
+		super(bond, 'indicator');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'data-controled-by': this.bond.state?.accordionId ?? '',
+		};
+	}
+}
+
 export class AccordionItemBond extends Bond<
 	AccordionItemBondProps,
 	AccordionItemBondState,
 	AccordionItemBondElements
 > {
 	constructor(state: AccordionItemBondState) {
-		super(state);
+		super(state, 'accordion-item');
 	}
 
 	share() {
 		return AccordionItemBond.set(this) as this;
 	}
 
-	root(props: Record<string, unknown> = {}) {
-		return {
-			'data-accordion': this.state?.accordionId ?? '',
-			'data-atom': this.id ?? '',
-			'data-kind': 'accordion-item',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+	/** Handle for granular access to root attrs and attachment */
+	root() {
+		return this.atom('root', () => new AccordionItemRootAtom(this));
 	}
 
-	header(props: Record<string, unknown> = {}) {
-		const isButtonElement = isBrowser() ? this.elements.header instanceof HTMLButtonElement : false;
-
-		return {
-			'aria-controls': `accordion-body-${this.id}`,
-			'data-kind': 'accordion-header',
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'aria-expanded': this.state?.isOpen ?? false,
-			'aria-selected': this.state?.isActive ?? false,
-			role: isButtonElement ? undefined : 'button',
-			tabindex: this.state?.isActive ? 0 : -1, // Make focusable if active
-			id: `accordion-header-${this.id}`,
-			'data-atom': this.id ?? '',
-			disabled: isButtonElement ? this.state?.props.disabled : undefined,
-			onpointerdown: (ev: PointerEvent) => {
-				if (this.state.props.disabled) return;
-
-				props?.onpointerdown?.(ev, { accordionItem: this });
-
-				if (ev.defaultPrevented) {
-					return;
-				}
-
-				if (this.state.accordion?.props.multiple) {
-					this?.state.toggle();
-				} else {
-					if (this.state.accordion?.props.collapsible) {
-						const isActive = this.state.isActive;
-						// accordionAtom?.state.close(accordionAtom.state.props.values);
-						this.state.accordion.close(this.state.accordion.props.values ?? []);
-						if (!isActive) {
-							this?.state.open();
-						}
-					} else {
-						this?.state.open();
-					}
-				}
-			},
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		};
+	/** Handle for granular access to header attrs, handlers, and attachment */
+	header() {
+		return this.atom('header', () => new AccordionItemHeaderAtom(this));
 	}
 
-	body(props: Record<string, unknown> = {}) {
-		return {
-			'aria-labelledby': `accordion-header-${this.id}`,
-			'aria-hidden': !this.state?.isOpen, // Hide when closed
-			role: 'region', // Announce as a region
-			'data-atom': this.id ?? '',
-			'data-kind': 'accordion-body',
-			id: `accordion-body-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+	/** Handle for granular access to body attrs and attachment */
+	body() {
+		return this.atom('body', () => new AccordionItemBodyAtom(this));
 	}
 
-	indicator(props: Record<string, unknown> = {}) {
-		return {
-			'data-controled-by': this.state?.accordionId ?? '',
-			'data-kind': 'accordion-indicator',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.indicator = node;
-			}
-		};
+	/** Handle for granular access to indicator attrs and attachment */
+	indicator() {
+		return this.atom('indicator', () => new AccordionItemIndicatorAtom(this));
 	}
 
 	static get(): AccordionItemBond | undefined {

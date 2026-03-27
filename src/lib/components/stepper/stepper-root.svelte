@@ -37,7 +37,7 @@
 	const bond = factory(bondProps).share();
 
 	const rootProps = $derived({
-		...bond.root(),
+		...bond.root().spread,
 		...restProps
 	});
 

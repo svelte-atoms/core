@@ -1,9 +1,8 @@
-import { getContext, setContext } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
+import { getContext, setContext, untrack } from 'svelte';
 import { TabsBond, TabsBondState } from '../bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { portal } from '$svelte-atoms/core/attachments/portal.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 export type TabBondProps<
 	T,
@@ -21,11 +20,79 @@ export type TabBondElement = {
 	description: HTMLElement;
 };
 
-const TAB_ELEMENTS_KIND: Record<keyof TabBondElement, string> = {
-	header: 'tab-header',
-	body: 'tab-body',
-	description: 'tab-description'
-};
+class TabHeaderAtom extends Atom<TabBond, HTMLElement> {
+	constructor(bond: TabBond) {
+		super(bond, 'header');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const state = untrack(() => bond.state);
+		const props = untrack(() => state.props);
+
+		const tabBodyId = getElementId(bond.id, 'tab-body');
+		return {
+			...super.attrs,
+			role: 'tab' as const,
+			'aria-controls': tabBodyId,
+			'aria-disabled': props.disabled ?? false,
+			'data-controler-id': bond.tabs?.id,
+			'data-active': state.isActive
+		};
+	}
+
+	override get handlers() {
+		const isDisabled = untrack(() => this.bond.state?.props).disabled ?? false;
+
+		return {
+			onclick: ()=> {
+				if (isDisabled) return;
+				this.bond.state.select();
+			}
+		}
+	}
+
+
+	override onmount(node: HTMLElement): void | (() => void) {
+		const headerElement = this.bond.tabs?.element<HTMLElement>('header');
+
+		if (!headerElement) {
+			node.hidden = true;
+			return;
+		}
+
+		portal(headerElement)(node);
+	}
+}
+
+class TabBodyAtom extends Atom<TabBond, HTMLElement> {
+	constructor(bond: TabBond) {
+		super(bond, 'body');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const tabHeaderId = getElementId(bond.id, 'tab-header');
+		const descriptionId = getElementId(bond.id, 'tab-description');
+		return {
+			...super.attrs,
+			role: 'tabpanel' as const,
+			'aria-labeledby': tabHeaderId,
+			'aria-describedby': descriptionId,
+			'aria-controledby': tabHeaderId,
+			'data-active': bond.state.isActive
+		};
+	}
+}
+
+class TabDescriptionAtom extends Atom<TabBond, HTMLElement> {
+	constructor(bond: TabBond) {
+		super(bond, 'description');
+	}
+	override get attrs() {
+		return {
+			...super.attrs
+		};
+	}
+}
 
 export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>, TabBondElement> {
 	static CONTEXT_KEY = '@atoms/bonds/tabs/tab';
@@ -33,8 +100,12 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 	#tabs?: TabsBond<T>;
 
 	constructor(state: TabBondState<T>) {
-		super(state);
+		super(state, 'tab');
 		this.#tabs = TabsBond.get() as TabsBond<T>;
+	}
+
+	get tabs() {
+		return this.#tabs;
 	}
 
 	get value() {
@@ -57,64 +128,15 @@ export class TabBond<T = unknown> extends Bond<TabBondProps<T>, TabBondState<T>,
 	}
 
 	header() {
-		const id = getElementId(this.id, TAB_ELEMENTS_KIND.header);
-		const tabBodyId = getElementId(this.id, TAB_ELEMENTS_KIND.body);
-
-		return {
-			id,
-			role: 'tab',
-			'aria-controls': tabBodyId,
-			'aria-disabled': this.state.props.disabled ?? false,
-			'data-controler-id': this.#tabs?.id,
-			'data-active': this.state.isActive,
-			'data-kind': 'tab-header',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-
-				if (!this.#tabs?.elements.header) {
-					node.hidden = true;
-
-					return;
-				}
-
-				const unport = portal(this.#tabs.elements.header)(node);
-
-				return unport;
-			}
-		};
+		return this.atom('header', () => new TabHeaderAtom(this));
 	}
 
 	body() {
-		const id = getElementId(this.id, TAB_ELEMENTS_KIND.body);
-		const tabHeaderId = getElementId(this.id, TAB_ELEMENTS_KIND.header);
-		const descriptionId = getElementId(this.id, TAB_ELEMENTS_KIND.description);
-
-		const isActive = this.state.isActive;
-
-		return {
-			id,
-			role: 'tabpanel',
-			'aria-labeledby': tabHeaderId,
-			'aria-describedby': descriptionId,
-			'aria-controledby': tabHeaderId,
-			'data-active': isActive,
-			'data-kind': 'tab-body',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+		return this.atom('body', () => new TabBodyAtom(this));
 	}
 
 	description() {
-		const id = getElementId(this.id, TAB_ELEMENTS_KIND.description);
-
-		return {
-			id,
-			'data-kind': 'tab-description',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		};
+		return this.atom('description', () => new TabDescriptionAtom(this));
 	}
 
 	static get(): TabBond | undefined {

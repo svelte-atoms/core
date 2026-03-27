@@ -32,7 +32,7 @@
 	const isMultiselect = untrack(() => bond.state.props.multiple);
 
 	$effect(() => {
-		bond.state.allSelections;
+		void bond.state.selections;
 
 		if (isMultiselect) {
 			value = '';
@@ -42,7 +42,7 @@
 	});
 
 	const comboboxProps = $derived({
-		...bond.control(),
+		...bond.control().spread,
 		...restProps
 	});
 </script>

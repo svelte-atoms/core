@@ -1,6 +1,5 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import { getContext, setContext, untrack } from 'svelte';
+import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -16,6 +15,23 @@ export type SidebarElements = {
 	content: HTMLElement;
 };
 
+class SidebarContentAtom extends Atom<SidebarBond, HTMLElement> {
+	constructor(bond: SidebarBond) {
+		super(bond, 'content');
+	}
+	override get attrs() {
+		const props = untrack(() => this.bond.state.props);
+		const isOpen = props?.open ?? false;
+		const isDisabled = props?.disabled ?? false;
+		
+		return {
+			...super.attrs,
+			'aria-expanded': isOpen,
+			'aria-disabled': isDisabled,
+		};
+	}
+}
+
 export class SidebarBond<
 	Props extends SidebarBondProps = SidebarBondProps,
 	State extends SidebarBondState<Props> = SidebarBondState<Props>
@@ -23,20 +39,11 @@ export class SidebarBond<
 	static CONTEXT_KEY = '@atomic-sv/bonds/sidebar';
 
 	constructor(state: State) {
-		super(state);
+		super(state, 'sidebar');
 	}
 
-	content(props: Record<string, unknown> = {}) {
-		return {
-			'aria-expanded': this.state?.props?.open ?? false,
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'data-atom': this.id,
-			'data-kind': 'sidebar-content',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
-		};
+	content() {
+		return this.atom('content', () => new SidebarContentAtom(this));
 	}
 
 	share(): this {

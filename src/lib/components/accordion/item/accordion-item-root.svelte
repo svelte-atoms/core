@@ -36,7 +36,7 @@
 	bond.state.mount();
 
 	const rootProps = $derived({
-		...bond.root(),
+		...bond.root().spread,
 		...restProps
 	});
 

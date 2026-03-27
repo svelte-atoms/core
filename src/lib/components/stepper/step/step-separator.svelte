@@ -25,7 +25,7 @@
 
 
 	const separatorProps = $derived({
-		...bond?.separator(),
+		...bond?.separator().spread,
 		...restProps
 	});
 

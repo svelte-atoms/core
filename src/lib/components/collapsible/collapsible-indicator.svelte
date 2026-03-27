@@ -21,7 +21,7 @@
 		...restProps
 	}: CollapsibleIndicatorProps<E, B> = $props();
 	const indicatorProps = $derived({
-		...bond?.indicator(),
+		...bond?.indicator().spread,
 		...restProps
 	});
 

@@ -9,13 +9,7 @@
 
 	let {
 		class: klass = '',
-		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined
+		children = undefined
 	} = $props();
 
 	const isOpen = $derived(bond?.state.props.open ?? false);
@@ -25,12 +19,7 @@
 	{bond}
 	preset="popover.indicator"
 	class={['border-border flex h-5 items-center justify-center', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
+	{...bond.indicator().spread}
 >
 	{#if children}
 		{@render children?.({ popover: bond })}

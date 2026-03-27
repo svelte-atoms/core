@@ -12,7 +12,7 @@ export class PortalsBond extends Bond<PortalsStateProps, PortalsState> {
 	static CONTEXT_KEY = '@atoms/context/portals';
 
 	constructor(bond: PortalsState) {
-		super(bond);
+		super(bond, 'portals');
 	}
 
 	share() {

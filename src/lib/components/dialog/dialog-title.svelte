@@ -19,7 +19,7 @@
 	const bond = DialogBond.get();
 
 	const titleProps = $derived({
-		...bond?.title({}),
+		...bond?.title().spread,
 		...restProps
 	});
 </script>

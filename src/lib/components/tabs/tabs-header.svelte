@@ -17,7 +17,7 @@
 	}: TabsHeaderProps<E, B> = $props();
 
 	const headerProps = $derived({
-		...bond?.header(),
+		...bond?.header().spread,
 		...restProps
 	});
 </script>

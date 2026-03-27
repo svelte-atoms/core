@@ -26,7 +26,7 @@
 	<div class="flex flex-col justify-center items-start">
 		<ADialog.Root class="bg-neutral-900/20" z-index={10} bind:open={isDialogOpen}>
 			{#snippet trigger({dialog})}
-				<Button variant="primary" {...dialog.trigger()}>Open Dialog</Button>
+				<Button variant="primary" {...dialog.trigger().spread}>Open Dialog</Button>
 			{/snippet}
 			<ADialog.Content>
 				<ADialog.Header>

@@ -19,7 +19,7 @@
 	const hasValue = $derived(!!bond?.state.props.values?.length);
 
 	const placeholderProps = $derived({
-		...bond?.placeholder(),
+		...bond?.placeholder().spread,
 		...restProps
 	});
 </script>

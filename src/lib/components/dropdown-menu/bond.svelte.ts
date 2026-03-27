@@ -2,14 +2,129 @@ import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 import {
 	PopoverBond,
 	PopoverState,
+	PopoverContentAtom,
+	PopoverTriggerAtom,
 	type PopoverDomElements,
 	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
+import { Atom } from '$svelte-atoms/core/shared/bond.svelte';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
 
 export type DropdownMenuBondProps = PopoverStateProps;
 
 export type DropdownMenuBondElements = PopoverDomElements;
+
+export class DropdownMenuContentAtom extends PopoverContentAtom {
+	constructor(bond: DropdownMenuBond) {
+		super(bond);
+	}
+	declare protected bond: DropdownMenuBond;
+
+	override get attrs() {
+		const highlightedId = this.bond.state.highlightedId;
+		return {
+			...super.attrs,
+			role: 'menu' as const,
+			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
+			'aria-orientation': 'vertical' as const
+		};
+	}
+
+	override get handlers() {
+		const superHandlers = super.handlers;
+		return {
+			...superHandlers,
+			onkeydown: (ev: KeyboardEvent) => {
+				superHandlers.onkeydown?.(ev);
+
+				if (ev.defaultPrevented) return;
+
+				if (ev.key === 'ArrowDown') {
+					this.bond.state.navigation.next();
+				}
+
+				if (ev.key === 'ArrowUp') {
+					this.bond.state.navigation.previous();
+				}
+			}
+		};
+	}
+}
+
+export class DropdownMenuTriggerAtom extends PopoverTriggerAtom {
+	constructor(bond: DropdownMenuBond) {
+		super(bond);
+	}
+	declare protected bond: DropdownMenuBond;
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'aria-haspopup': 'menu' as const
+		};
+	}
+
+	override get handlers() {
+		const superHandlers = super.handlers;
+		
+		return {
+			...superHandlers,
+			onkeydown: (ev: KeyboardEvent) => {
+				if (ev.key === 'ArrowDown') {
+					this.bond.state.navigation.next();
+				}
+
+				if (ev.key === 'ArrowUp') {
+					this.bond.state.navigation.previous();
+				}
+
+				if (
+					(ev.key === 'Enter' || ev.key === ' ') &&
+					this.bond.state.props.open &&
+					this.bond.state.highlightedItem
+				) {
+					if (ev.key === ' ') {
+						ev.preventDefault();
+					}
+
+					this.bond.state.highlightedItem?.element?.click();
+				}
+
+				superHandlers.onkeydown?.(ev);
+			}
+		};
+	}
+}
+
+export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond> extends Atom<B> {
+	constructor(bond: B) {
+		super(bond, 'item');
+	}
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'menuitem' as const
+		};
+	}
+
+	override get handlers() {
+		return {
+			onkeyup: (ev: KeyboardEvent) => {
+				const currentTarget = ev.currentTarget as HTMLElement;
+				const disabled =
+					currentTarget.getAttribute('disabled') ||
+					currentTarget.getAttribute('aria-disabled') === 'true';
+
+				if (disabled) return;
+
+				if (ev.key === 'Enter' || ev.key === ' ') {
+					ev.preventDefault();
+					this.bond?.state.close();
+				}
+			}
+		};
+	}
+}
 
 export class DropdownMenuBond<
 	Props extends DropdownMenuBondProps = DropdownMenuBondProps,
@@ -20,85 +135,16 @@ export class DropdownMenuBond<
 		super(state);
 	}
 
-	content() {
-		const superProps = super.content();
-		const onkeydown = superProps.onkeydown;
-		const highlightedId = this.state.highlightedId;
-
-		return {
-			...superProps,
-			role: 'menu',
-			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
-			'aria-orientation': 'vertical' as const,
-			onkeydown: (ev: KeyboardEvent) => {
-				// Call any additional onkeydown handler
-				onkeydown?.(ev);
-
-				if (ev.defaultPrevented) return;
-
-				// Handle arrow key navigation
-				if (ev.key === 'ArrowDown') {
-					this.state.navigation.next();
-				}
-
-				if (ev.key === 'ArrowUp') {
-					this.state.navigation.previous();
-				}
-			}
-		};
+	override content() {
+		return this.atom('content', () => new DropdownMenuContentAtom(this)) as DropdownMenuContentAtom;
 	}
 
-	trigger() {
-		const superProps = super.trigger();
-
-		return {
-			...superProps,
-			'aria-haspopup': 'menu' as const,
-			onkeydown: (ev: KeyboardEvent) => {
-				if (ev.key === 'ArrowDown') {
-					this.state.navigation.next();
-				}
-
-				if (ev.key === 'ArrowUp') {
-					this.state.navigation.previous();
-				}
-
-				if (
-					(ev.key === 'Enter' || ev.key === ' ') &&
-					this.state.props.open &&
-					this.state.highlightedItem
-				) {
-					if (ev.key === ' ') {
-						ev.preventDefault();
-					}
-
-					this.state.highlightedItem?.element?.click();
-				}
-
-				// Call any additional onkeydown handler
-				superProps.onkeydown?.(ev);
-			}
-		};
+	override trigger() {
+		return this.atom('trigger', () => new DropdownMenuTriggerAtom(this)) as DropdownMenuTriggerAtom;
 	}
 
 	item() {
-		return {
-			role: 'menuitem',
-			onkeyup: (ev: KeyboardEvent) => {
-				const currentTarget = ev.currentTarget as HTMLElement;
-				const disabled =
-					currentTarget.getAttribute('disabled') ||
-					currentTarget.getAttribute('aria-disabled') === 'true';
-
-				if (disabled) return;
-
-				// Activate on Enter or Space
-				if (ev.key === 'Enter' || ev.key === ' ') {
-					ev.preventDefault();
-					this?.state.close();
-				}
-			}
-		};
+		return this.atom('item', () => new DropdownMenuItemAtom(this));
 	}
 
 	static get<

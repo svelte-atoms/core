@@ -16,9 +16,9 @@
 		children = undefined,
 		...restProps
 	}: PopoverTriggerProps<E, B> = $props();
-
+ 
 	const triggerProps = $derived({
-		...bond.trigger(),
+		...bond.trigger().spread,
 		...restProps
 	});
 </script>

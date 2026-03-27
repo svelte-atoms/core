@@ -18,8 +18,6 @@
 
 <script lang="ts">
 	let open = $state(false);
-
-	console.log('Popover story open state:', open);
 </script>
 
 <Story name="Popover" args={{}}>

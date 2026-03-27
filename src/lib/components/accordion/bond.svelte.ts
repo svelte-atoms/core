@@ -1,8 +1,7 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { createAttachmentKey } from 'svelte/attachments';
 import type { AccordionItemBond } from './item/bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-import { getContext, setContext } from 'svelte';
+import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { getContext, setContext, untrack } from 'svelte';
 
 export type AccordionStateProps = BondStateProps & {
 	open: boolean;
@@ -19,30 +18,42 @@ export type AccordionElements = {
 	indicator: HTMLElement;
 };
 
+export class AccordionRootAtom extends Atom<AccordionBond> {
+	constructor(bond: AccordionBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		const props = untrack(() => this.bond.state?.props);
+		const isOpen = props?.open ?? false;
+		const isDisabled = props?.disabled ?? false;
+		const isMultiple = props?.multiple ?? false;
+
+		return {
+			...super.attrs,
+			'aria-expand': isOpen,
+			'aria-disabled': isDisabled,
+			'aria-multiselectable': isMultiple,
+		};
+	}
+}
+
 export class AccordionBond extends Bond<AccordionStateProps, AccordionState, AccordionElements> {
 	static CONTEXT_KEY = '@atomic-sv/context/accordion';
 
 	constructor(s: AccordionState) {
-		super(s);
+		super(s, 'accordion');
 	}
 
 	share(): this {
 		return AccordionBond.set(this) as this;
 	}
 
+	/** Handle for granular access to root attrs and attachment */
 	root() {
-		return {
-			'aria-expand': this.state?.props?.open ?? false,
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'aria-multiselectable': this.state?.props?.multiple ?? false,
-			'data-atom': this.id ?? '',
-			'data-kind': 'accordion',
-			id: `accordion-${this.id}`,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new AccordionRootAtom(this));
 	}
+
 	static get(): AccordionBond | undefined {
 		return getContext(AccordionBond.CONTEXT_KEY);
 	}

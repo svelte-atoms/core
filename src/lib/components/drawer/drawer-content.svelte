@@ -24,7 +24,7 @@
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();
 
 	const contentProps = $derived({
-		...bond?.content(),
+		...bond?.content().spread,
 		...restProps
 	});
 </script>

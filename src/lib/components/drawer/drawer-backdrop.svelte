@@ -20,6 +20,7 @@
 	}: SlideoverBackdropProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const backdropProps = $derived({
+		...bond?.backdrop().spread,
 		...restProps
 	});
 </script>

@@ -1,18 +1,9 @@
-import { getContext, setContext } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
-import {
-	autoUpdate,
-	computePosition,
-	arrow,
-	flip,
-	shift,
-	offset,
-	type ComputePositionConfig,
-	type ComputePositionReturn,
-	type Placement
-} from '@floating-ui/dom';
-import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
+import { getContext, setContext, untrack } from 'svelte';
+import { autoUpdate, type ComputePositionReturn, type Placement } from '@floating-ui/dom';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import { Atom } from '$svelte-atoms/core/shared';
+import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+import { popoverPositioning } from './behaviors/positioning';
 import type { PortalBond } from '../portal';
 
 export type PopoverParams = {
@@ -58,13 +49,6 @@ export type PopoverDomElements = {
 	arrow: HTMLElement;
 };
 
-const POPOVER_ELEMENTS_KIND: Record<keyof PopoverDomElements, string> = {
-	trigger: 'popover-trigger',
-	content: 'popover-content',
-	indicator: 'popover-indicator',
-	arrow: 'popover-arrow'
-};
-
 export class PopoverBond<
 	Props extends PopoverStateProps = PopoverStateProps,
 	State extends PopoverState<Props> = PopoverState<Props>,
@@ -73,172 +57,27 @@ export class PopoverBond<
 	static CONTEXT_KEY = '@atomic-sv/bonds/popover';
 
 	constructor(state: State) {
-		super(state);
+		super(state, 'popover');
 	}
 
+	/** Handle for granular access to trigger attrs, handlers, and attachment */
 	trigger() {
-		const isButtonElement = isBrowser()
-			? this.elements.trigger instanceof HTMLButtonElement
-			: false;
-
-		const isDisabled = this.state?.props?.disabled ?? false;
-		const isOpen = this.state?.props?.open ?? false;
-
-		const kind = POPOVER_ELEMENTS_KIND.trigger;
-		const id = getElementId(this.id, kind);
-		const overlayId = getElementId(this.id, POPOVER_ELEMENTS_KIND.content);
-
-		return {
-			id,
-			role: isButtonElement ? '' : 'button',
-			disabled: isButtonElement ? isDisabled : undefined,
-			tabindex: isDisabled ? -1 : 0,
-			'aria-expanded': isOpen,
-			'aria-disabled': isDisabled,
-			'aria-controls': overlayId,
-			'aria-haspopup': 'dialog',
-			'data-kind': kind,
-			onclick: (ev: PointerEvent) => {
-				if (ev.button === 2) {
-					return; // Ignore right-clicks
-				}
-
-				if (ev.defaultPrevented) {
-					return;
-				}
-
-				this.state.toggle();
-			},
-			onkeydown: (ev: KeyboardEvent) => {
-				if (isDisabled) return;
-
-				// Toggle on Enter or Space
-				if (ev.key === 'Enter' || ev.key === ' ') {
-					this.state.toggle();
-					return;
-				}
-
-				if (ev.key === 'Tab') {
-					this.elements.content?.focus();
-					return;
-				}
-
-				if (ev.key === 'Escape') {
-					this.state.close();
-				}
-			},
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.trigger = node;
-			}
-		};
+		return this.atom('trigger', () => new PopoverTriggerAtom(this));
 	}
 
-	content(params: PopoverContentPropsParams = { engine: 'internal' }) {
-		const kind = POPOVER_ELEMENTS_KIND.content;
-		const id = getElementId(this.id, kind);
-		const triggerId = getElementId(this.id, POPOVER_ELEMENTS_KIND.trigger);
-		const isOpen = this.state?.props?.open ?? false;
-		const isDisabled = this.state?.props?.disabled ?? false;
-		const isActive = isOpen && !isDisabled;
-
-		// Focus management
-		const focusManager = (ev: KeyboardEvent) => {
-			if (ev.key === 'Escape') {
-				this.state.close();
-				this.elements.trigger?.focus();
-				return;
-			}
-
-			focusTrap(ev);
-		};
-
-		return {
-			id,
-			role: 'dialog',
-			'aria-modal': false,
-			'aria-labelledby': triggerId,
-			inert: !isActive ? true : undefined,
-			tabindex: -1,
-			'data-atom': this.id,
-			'data-kind': POPOVER_ELEMENTS_KIND.content,
-			'data-active': isActive,
-			onkeydown: isOpen ? focusManager : undefined,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-
-				const triggerElement = this.elements.trigger;
-
-				if (!triggerElement) {
-					return;
-				}
-
-				if (!this.state.isOpen) {
-					return;
-				}
-
-				// check if trigger contains a focusable element and the focus is already inside
-				// check if the in-focus element is an input, textarea or select to avoid stealing focus
-				const activeElement = document.activeElement as HTMLElement;
-
-				const triggerContainsFocus =
-					['input', 'textarea'].includes(activeElement.tagName.toLowerCase()) &&
-					triggerElement.contains(activeElement);
-
-				// Move focus to popover when opened
-				if (!triggerContainsFocus) {
-					setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
-				}
-
-				if (params?.engine === undefined) {
-					return;
-				}
-
-				if (params?.engine && typeof params.engine === 'function') {
-					const cleanup = params.engine(this)({});
-
-					return () => {
-						cleanup?.();
-					};
-				}
-
-				const cleanup = popover(this)({}, autoUpdate);
-
-				return () => {
-					cleanup?.();
-				};
-			}
-		};
+	/** Handle for granular access to content attrs, handlers, and attachment */
+	content(params?: PopoverContentPropsParams) {
+		return this.atom('content', () => new PopoverContentAtom(this, params?.engine));
 	}
 
-	indicator() {
-		const kind = POPOVER_ELEMENTS_KIND.indicator;
-		const id = getElementId(this.id, kind);
-		const isOpen = this.state?.props?.open ?? false;
-
-		return {
-			id,
-			'aria-hidden': true,
-			'aria-live': isOpen ? 'polite' : 'off',
-			'data-kind': kind,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.indicator = node;
-			}
-		};
-	}
-
+	/** Handle for granular access to arrow attrs and attachment */
 	arrow() {
-		const kind = POPOVER_ELEMENTS_KIND.arrow;
-		const id = getElementId(this.id, kind);
+		return this.atom('arrow', () => new PopoverArrowAtom(this));
+	}
 
-		return {
-			id: id,
-			role: 'presentation',
-			'aria-hidden': true,
-			'data-kind': kind,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.arrow = node;
-			}
-		};
+	/** Handle for granular access to indicator attrs and attachment */
+	indicator() {
+		return this.atom('indicator', () => new PopoverIndicatorAtom(this));
 	}
 
 	share(): this {
@@ -280,86 +119,158 @@ export class PopoverState<
 	}
 }
 
-function popover(bond: PopoverBond) {
-	return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
-		const { offset: ofs, placements, placement } = bond.state.props;
+export class PopoverArrowAtom extends Atom<PopoverBond, HTMLElement> {
+	constructor(bond: PopoverBond) {
+		super(bond, 'arrow');
+	}
 
-		// Guard: ensure required elements exist
-		if (!bond.elements.content || !bond.elements.trigger) {
-			return;
-		}
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'presentation',
+			'aria-hidden': true
+		};
+	}
+}
 
-		const { content, trigger, arrow: arrowElement } = bond.elements;
+export class PopoverContentAtom extends Atom<PopoverBond, HTMLElement> {
+	#engine: PopoverContentPropsParams['engine'];
 
-		// Build middleware stack
-		const middleware: ComputePositionConfig['middleware'] = [
-			offset(ofs),
-			flip({
-				fallbackPlacements: placements,
-				padding: 8,
-				crossAxis: true,
-				fallbackStrategy: 'bestFit'
-			}),
-			shift({
-				padding: 8,
-				limiter: {
-					fn: (state) => {
-						const { x, y } = state;
-						return {
-							x,
-							y
-						};
-					}
-				}
-			})
-		];
+	constructor(bond: PopoverBond, engine: PopoverContentPropsParams['engine'] = 'internal') {
+		super(bond, 'content');
+		this.#engine = engine;
+	}
 
-		// Add arrow middleware if element exists
-		if (arrowElement) {
-			middleware.push(arrow({ element: arrowElement }));
-		}
+	override get attrs() {
+		const triggerId = getElementId(this.bond.id, `${this.bond.name}-trigger`);
+		const isOpen = this.bond.state?.props?.open ?? false;
+		const isDisabled = this.bond.state?.props?.disabled ?? false;
+		const isActive = isOpen && !isDisabled;
 
-		// Debounce position change callback
-		const onchangeCallback = props.onchange as PopoverParams['onchange'];
+		return {
+			...super.attrs,
+			role: 'dialog',
+			'aria-modal': false,
+			'aria-labelledby': triggerId,
+			inert: !isActive ? true : undefined,
+			tabindex: -1,
+			'data-active': isActive
+		};
+	}
 
-		// Compute position and notify listeners
-		const compute = async () => {
-			// Wait for next frame to ensure DOM has settled and styles are applied
-			// Double requestAnimationFrame - This ensures the browser has completed both layout calculation AND painting, giving us accurate final dimensions
-			await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+	override get handlers() {
+		const isOpen = this.bond.state?.props?.open ?? false;
 
-			const position = await computePosition(trigger, content, {
-				placement: placement ?? 'bottom',
-				middleware,
-				strategy: bond.state.props.positionStrategy
-			});
+		const focusManager = (ev: KeyboardEvent) => {
+			if (ev.key === 'Escape') {
+				this.bond.state.close();
+				this.bond.element<HTMLElement>('trigger')?.focus();
+				return;
+			}
 
-			// Round to 0.001 precision to avoid excessive updates from sub-pixel changes
-			const x = Math.round((position.x ?? 0) * 100) / 100;
-			const y = Math.round((position.y ?? 0) * 100) / 100;
-
-			bond.state.position = {
-				middlewareData: position.middlewareData,
-				placement: position.placement,
-				strategy: position.strategy,
-				x,
-				y
-			};
-			onchangeCallback?.(content, position);
-
-			// Set minimum width to match trigger
-			requestAnimationFrame(() => {
-				content.style.minWidth = `${trigger.clientWidth}px`;
-			});
+			focusTrap(ev);
 		};
 
-		// Use auto-update if provided, otherwise compute once
-		if (updater) {
-			return updater(trigger, content, compute, {
-				ancestorScroll: false
-			});
+		return {
+			onkeydown: isOpen ? focusManager : undefined
+		};
+	}
+
+	override onmount(node: HTMLElement) {
+		const triggerElement = this.bond.element('trigger');
+
+		if (!triggerElement) return;
+
+		const isOpen = untrack(() => this.bond.state?.props)?.open ?? false;
+		if (!isOpen) return;
+
+		// Avoid stealing focus from inputs/textareas inside trigger
+		const activeElement = document.activeElement as HTMLElement;
+		const triggerContainsFocus =
+			['input', 'textarea'].includes(activeElement.tagName.toLowerCase()) &&
+			triggerElement.contains(activeElement);
+
+		if (!triggerContainsFocus) {
+			setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
 		}
 
-		compute();
-	};
+		const engine = this.#engine ?? 'internal';
+
+		if (typeof engine === 'function') {
+			const cleanup = (engine as PopoverEngine)(this.bond)({});
+			return () => cleanup?.();
+		}
+
+		const cleanup = popoverPositioning(this.bond)({}, autoUpdate);
+
+		return () => cleanup?.();
+	}
+}
+
+export class PopoverIndicatorAtom extends Atom<PopoverBond, HTMLElement> {
+	constructor(bond: PopoverBond) {
+		super(bond, 'indicator');
+	}
+
+	override get attrs() {
+		const isOpen = this.bond.state?.props?.open ?? false;
+
+		return {
+			...super.attrs,
+			'aria-hidden': true,
+			'aria-live': isOpen ? ('polite' as const) : ('off' as const)
+		};
+	}
+}
+
+export class PopoverTriggerAtom extends Atom<PopoverBond, HTMLElement> {
+	constructor(bond: PopoverBond) {
+		super(bond, 'trigger');
+	}
+
+	override get attrs() {
+		const isButtonElement = isBrowser() ? this.element instanceof HTMLButtonElement : false;
+
+		const isDisabled = this.bond.state?.props?.disabled ?? false;
+		const isOpen = this.bond.state?.props?.open ?? false;
+		const overlayId = getElementId(this.bond.id, `${this.bond.name}-content`);
+
+		return {
+			...super.attrs,
+			role: isButtonElement ? '' : 'button',
+			disabled: isButtonElement ? isDisabled : undefined,
+			tabindex: isDisabled ? -1 : 0,
+			'aria-expanded': isOpen,
+			'aria-disabled': isDisabled,
+			'aria-controls': overlayId,
+			'aria-haspopup': 'dialog'
+		};
+	}
+
+	override get handlers() {
+		return {
+			onclick: (ev: PointerEvent) => {
+				if (ev.button === 2) return;
+				if (ev.defaultPrevented) return;
+				this.bond.state.toggle();
+			},
+			onkeydown: (ev: KeyboardEvent) => {
+				if (this.bond.state?.props?.disabled) return;
+
+				if (ev.key === 'Enter' || ev.key === ' ') {
+					this.bond.state.toggle();
+					return;
+				}
+
+				if (ev.key === 'Tab') {
+					this.bond.element<HTMLElement>('content')?.focus();
+					return;
+				}
+
+				if (ev.key === 'Escape') {
+					this.bond.state.close();
+				}
+			}
+		};
+	}
 }

@@ -1,11 +1,13 @@
 import { untrack } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
 import {
 	DropdownMenuBond,
 	DropdownMenuBondState,
+	DropdownMenuContentAtom,
+	DropdownMenuItemAtom,
 	type DropdownMenuBondElements,
 	type DropdownMenuBondProps
 } from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
+import { Atom } from '$svelte-atoms/core/shared/bond.svelte';
 import type { SelectItemController } from './item/controller.svelte';
 
 export type SelectStateProps = DropdownMenuBondProps & {
@@ -30,6 +32,52 @@ const SELECT_ELEMENTS_KIND: Record<keyof SelectBondElements, string> = {
 	indicator: 'popover-indicator'
 };
 
+class SelectContentAtom extends DropdownMenuContentAtom {
+	constructor(bond: SelectBond) {
+		super(bond);
+	}
+	declare protected bond: SelectBond;
+
+	override get attrs() {
+		const isMultiselect = untrack(() => this.bond.state.props).multiple ?? false;
+		const highlightedId = this.bond.state.highlightedItem?.id;
+
+		return {
+			...super.attrs,
+			role: 'listbox' as const,
+			'aria-multiselectable': isMultiselect,
+			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
+			'aria-orientation': 'vertical' as const
+		};
+	}
+}
+
+class SelectItemAtom extends DropdownMenuItemAtom<SelectBond> {
+	constructor(bond: SelectBond) {
+		super(bond);
+	}
+	declare protected bond: SelectBond;
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'option' as const
+		};
+	}
+}
+
+class SelectPlaceholderAtom extends Atom<SelectBond, HTMLElement> {
+	constructor(bond: SelectBond) {
+		super(bond, 'placeholder');
+	}
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'group' as const
+		};
+	}
+}
+
 export class SelectBond<
 	Props extends SelectStateProps = SelectStateProps,
 	State extends SelectBondState<Props> = SelectBondState<Props>,
@@ -39,38 +87,16 @@ export class SelectBond<
 		super(state);
 	}
 
-	content() {
-		const isMultiselect = this.state.props.multiple ?? false;
-		const highlightedId = this.state.highlightedItem?.id;
-
-		return {
-			...super.content(),
-			role: 'listbox',
-			'aria-multiselectable': isMultiselect,
-			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
-			'aria-orientation': 'vertical' as const
-		};
+	override content() {
+		return this.atom('content', () => new SelectContentAtom(this));
 	}
 
-	item() {
-		return {
-			...super.item(),
-			role: 'option'
-		};
+	override item() {
+		return this.atom('item', () => new SelectItemAtom(this));
 	}
 
 	placeholder() {
-		const id = [SELECT_ELEMENTS_KIND.placeholder, this.id].join('-');
-
-		return {
-			id,
-			role: 'group',
-			'data-atom': 'select',
-			'data-kind': 'placeholder',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.placeholder = node;
-			}
-		};
+		return this.atom('placeholder', () => new SelectPlaceholderAtom(this));
 	}
 
 	static get<

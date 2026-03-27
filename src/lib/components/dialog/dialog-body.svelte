@@ -18,7 +18,7 @@
 	const bond = DialogBond.get();
 
 	const bodyProps = $derived({
-		...bond?.body({}),
+		...bond?.body().spread,
 		...restProps
 	});
 </script>

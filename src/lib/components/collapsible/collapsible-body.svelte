@@ -19,7 +19,7 @@
 	}: CollapsibleBodyProps<E, B> = $props();
 
 	const bodyProps = $derived({
-		...bond?.body(),
+		...bond?.body().spread,
 		...restProps
 	});
 </script>

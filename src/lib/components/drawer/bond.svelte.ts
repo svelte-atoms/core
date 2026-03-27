@@ -1,7 +1,11 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
+import { getContext, setContext, untrack } from 'svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte.js';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import {
+	Bond,
+	BondState,
+	Atom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte.js';
 
 export type DrawerBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -23,52 +27,50 @@ export type DrawerBondElements = {
 	backdrop: HTMLElement;
 };
 
-const DRAWER_ELEMENTS_KIND = {
-	root: 'drawer-root',
-	content: 'drawer-content',
-	header: 'drawer-header',
-	body: 'drawer-body',
-	footer: 'drawer-footer',
-	title: 'drawer-title',
-	description: 'drawer-description',
-	backdrop: 'drawer-backdrop'
-};
+export class DrawerRootAtom extends Atom<DrawerBond> {
+	#previousActiveElement: Element | null = null;
 
-export class DrawerBond<
-	Props extends DrawerBondProps = DrawerBondProps,
-	State extends DrawerBondState<Props> = DrawerBondState<Props>
-> extends Bond<Props, State, DrawerBondElements> {
-	static CONTEXT_KEY = '@atoms/context/drawer';
-
-	constructor(state: State) {
-		super(state);
+	constructor(bond: DrawerBond) {
+		super(bond, 'root');
 	}
 
-	root() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.root);
-		const drawerTitleId = getElementId(this.id, DRAWER_ELEMENTS_KIND.title);
-		const drawerDescriptionId = getElementId(this.id, DRAWER_ELEMENTS_KIND.description);
+	override get attrs() {
+		const drawerTitleId = getElementId(this.bond.id, 'drawer-title');
+		const drawerDescriptionId = getElementId(this.bond.id, 'drawer-description');
 
-		const haveDescriptionElement = !!this.elements.description;
-		const haveTitleElement = !!this.elements.title;
+		const haveDescriptionElement = !!this.bond.elements.description;
+		const haveTitleElement = !!this.bond.elements.title;
 
-		const isOpen = this.state?.props?.open ?? false;
-		const isDisabled = this.state?.props?.disabled ?? false;
+		const isOpen = untrack(() => this.bond.state?.props)?.open ?? false;
+		const isDisabled = untrack(() => this.bond.state?.props)?.disabled ?? false;
 		const isActive = isOpen && !isDisabled;
 
-		// Focus trap handler
+		return {
+			...super.attrs,
+			role: 'dialog',
+			'aria-modal': true,
+			'aria-labelledby': haveTitleElement ? drawerTitleId : undefined,
+			'aria-describedby': haveDescriptionElement ? drawerDescriptionId : undefined,
+			'aria-hidden': !isActive,
+			inert: !isActive ? '' : undefined,
+			tabindex: -1,
+			'data-active': isActive,
+			'data-open': isOpen
+		};
+	}
+
+	override get handlers() {
+		const isDisabled = this.bond.state?.props?.disabled ?? false;
+
 		const focusTrap = (ev: KeyboardEvent) => {
 			const node = ev.currentTarget as HTMLElement;
-
 			if (ev.key === 'Tab') {
 				const focusableElements = node.querySelectorAll<HTMLElement>(
 					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 				);
 				const firstElement = focusableElements[0];
 				const lastElement = focusableElements[focusableElements.length - 1];
-
 				if (focusableElements.length === 0) return;
-
 				if (ev.shiftKey && document.activeElement === firstElement) {
 					ev.preventDefault();
 					lastElement?.focus();
@@ -79,147 +81,191 @@ export class DrawerBond<
 			}
 		};
 
-		let previousActiveElement: Element | null = null;
-
 		return {
-			id: id,
-			role: 'dialog',
-			'aria-modal': true,
-			'aria-labelledby': haveTitleElement ? drawerTitleId : undefined,
-			'aria-describedby': haveDescriptionElement ? drawerDescriptionId : undefined,
-			'aria-hidden': !isActive,
-			inert: !isActive ? '' : undefined,
-			tabindex: -1,
-			'data-active': isActive,
-			'data-open': isOpen,
-			'data-kind': DRAWER_ELEMENTS_KIND.root,
 			onkeydown: (ev: KeyboardEvent) => {
 				focusTrap(ev);
-
-				// Close on Escape key
 				if (ev.key === 'Escape' && !isDisabled) {
 					ev.preventDefault();
-					this.state.close();
+					this.bond.state.close();
 				}
-			},
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
+			}
+		};
+	}
 
-				if (this.state.props.open) {
-					// Store current focus
-					previousActiveElement = document.activeElement;
+	override onmount(node: HTMLElement) {
+		const isOpen = untrack(() => this.bond.state.props)?.open ?? false;
 
-					// Focus first focusable element or drawer itself
-					setTimeout(() => {
-						const firstFocusable = node.querySelector<HTMLElement>(
-							'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-						);
-						if (firstFocusable) {
-							firstFocusable.focus();
-						} else {
-							node.focus();
-						}
-					}, 0);
+		if (isOpen) {
+			this.#previousActiveElement = document.activeElement;
+			setTimeout(() => {
+				const firstFocusable = node.querySelector<HTMLElement>(
+					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+				);
+
+				if (firstFocusable) {
+					firstFocusable.focus();
 				} else {
-					// Restore focus to previous element
-					if (previousActiveElement instanceof HTMLElement) {
-						previousActiveElement.focus();
-					}
+					node.focus();
 				}
+			}, 0);
+		} else {
+			if (this.#previousActiveElement instanceof HTMLElement) {
+				this.#previousActiveElement.focus();
 			}
-		};
+		}
+	}
+}
+
+export class DrawerContentAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'content');
 	}
 
-	content() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.content);
+	override get attrs() {
 		return {
-			id: id,
-			role: 'document',
-			'data-kind': DRAWER_ELEMENTS_KIND.content,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
+			...super.attrs,
+			role: 'document'
 		};
 	}
+}
 
-	body() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.body);
-
-		return {
-			id: id,
-			role: 'region',
-			'data-kind': DRAWER_ELEMENTS_KIND.body,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+export class DrawerBodyAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'body');
 	}
 
-	header() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.header);
+	override get attrs() {
 		return {
-			id: id,
-			role: 'banner',
-			'data-kind': DRAWER_ELEMENTS_KIND.header,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
+			...super.attrs,
+			role: 'region'
 		};
 	}
+}
 
-	title() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.title);
+export class DrawerHeaderAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'header');
+	}
+
+	override get attrs() {
 		return {
-			id: id,
+			...super.attrs,
+			role: 'banner'
+		};
+	}
+}
+
+export class DrawerTitleAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'title');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
 			role: 'heading',
-			'aria-level': 2,
-			'data-kind': DRAWER_ELEMENTS_KIND.title,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.title = node;
-			}
+			'aria-level': 2
 		};
 	}
+}
 
-	description() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.description);
-		return {
-			id: id,
-			'data-kind': DRAWER_ELEMENTS_KIND.description,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		};
+export class DrawerDescriptionAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'description');
 	}
 
-	footer() {
-		const id = getElementId(this.id, DRAWER_ELEMENTS_KIND.footer);
+	override get attrs() {
 		return {
-			id: id,
-			role: 'contentinfo',
-			'data-kind': DRAWER_ELEMENTS_KIND.footer,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.footer = node;
-			}
+			...super.attrs
 		};
 	}
+}
 
-	backdrop() {
-		const isDisabled = this.state?.props?.disabled ?? false;
+export class DrawerFooterAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'footer');
+	}
 
+	override get attrs() {
 		return {
+			...super.attrs,
+			role: 'contentinfo'
+		};
+	}
+}
+
+export class DrawerBackdropAtom extends Atom<DrawerBond> {
+	constructor(bond: DrawerBond) {
+		super(bond, 'backdrop');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
 			role: 'presentation',
-			'aria-hidden': true,
-			'data-kind': DRAWER_ELEMENTS_KIND.backdrop,
-			onclick: (ev: MouseEvent) => {
-				// Close drawer on backdrop click
-				if (!isDisabled) {
-					this.state.close();
+			'aria-hidden': true
+		};
+	}
+
+	override get handlers() {
+		return {
+			onclick: () => {
+				if (!(this.bond.state?.props?.disabled ?? false)) {
+					this.bond.state.close();
 				}
-			},
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.backdrop = node;
 			}
 		};
+	}
+}
+
+export class DrawerBond<
+	Props extends DrawerBondProps = DrawerBondProps,
+	State extends DrawerBondState<Props> = DrawerBondState<Props>
+> extends Bond<Props, State, DrawerBondElements> {
+	static CONTEXT_KEY = '@atoms/context/drawer';
+
+	constructor(state: State) {
+		super(state, 'drawer');
+	}
+
+	/** Handle for granular access to root attrs, handlers, and attachment */
+	root() {
+		return this.atom('root', () => new DrawerRootAtom(this));
+	}
+
+	/** Handle for granular access to content attrs and attachment */
+	content() {
+		return this.atom('content', () => new DrawerContentAtom(this));
+	}
+
+	/** Handle for granular access to body attrs and attachment */
+	body() {
+		return this.atom('body', () => new DrawerBodyAtom(this));
+	}
+
+	/** Handle for granular access to header attrs and attachment */
+	header() {
+		return this.atom('header', () => new DrawerHeaderAtom(this));
+	}
+
+	/** Handle for granular access to title attrs and attachment */
+	title() {
+		return this.atom('title', () => new DrawerTitleAtom(this));
+	}
+
+	/** Handle for granular access to description attrs and attachment */
+	description() {
+		return this.atom('description', () => new DrawerDescriptionAtom(this));
+	}
+
+	/** Handle for granular access to footer attrs and attachment */
+	footer() {
+		return this.atom('footer', () => new DrawerFooterAtom(this));
+	}
+
+	/** Handle for granular access to backdrop attrs, handlers, and attachment */
+	backdrop() {
+		return this.atom('backdrop', () => new DrawerBackdropAtom(this));
 	}
 
 	share(): this {
