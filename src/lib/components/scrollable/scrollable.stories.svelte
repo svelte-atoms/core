@@ -40,7 +40,7 @@
 							<div class="mx-auto w-[600px] p-4">
 								<h3 class="mb-4 text-lg font-semibold">Scrollable Content (New API)</h3>
 								<div class="grid grid-cols-3 gap-4">
-									{#each Array(99) as _, i}
+									{#each Array(99) as _, i (i)}
 										<div class="rounded border p-4 shadow">
 											<h4 class="font-medium">Card {i + 1}</h4>
 											<p class="mt-2 text-sm">

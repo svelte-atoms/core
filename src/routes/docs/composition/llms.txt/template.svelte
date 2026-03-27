@@ -152,7 +152,7 @@ The {inlineCode('popover')} bond provides:
 		<!-- Access validation errors -->
 		{#if field?.state?.errors?.length > 0}
 			<div class="text-xs text-red-600">
-				{#each field.state.errors as error}
+				{#each field.state.errors as error, i (i)}
 					<div>{error.message}</div>
 				{/each}
 			</div>

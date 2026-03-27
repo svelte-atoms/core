@@ -1,70 +1,50 @@
 const basicCode = `
 <script lang="ts">
-  import { Dialog, Button } from '@svelte-atoms/core';
+  import { Dialog } from '@svelte-atoms/core/dialog';
+  import { Button } from '@svelte-atoms/core/button';
+<\/script>
 
-  let open = $state(false);
-</script>
-
-<Dialog.Root bind:open={open}>
-  {#snippet trigger({dialog})}
+<Dialog.Root>
+  {#snippet trigger({ dialog })}
     <Button {...dialog.trigger()}>Open Dialog</Button>
   {/snippet}
-
-  <Dialog.Content>
-    <Dialog.Header class="mb-4">
-      <h2 class="text-foreground text-xl font-semibold">Dialog Title</h2>
-    </Dialog.Header>
-    <Dialog.Body>
-      <p>
-        This is a modal dialog. It captures focus and requires user interaction before
-        returning to the main content.
-      </p>
-    </Dialog.Body>
-    <Dialog.Footer class="flex justify-end gap-2">
-      <Button variant="secondary" onclick={() => (open = false)}>
-        Cancel
-      </Button>
-      <Button
-        variant="primary"
-        onclick={() => (open = false)}
-      >
-        Confirm
-      </Button>
-    </Dialog.Footer>
-  </Dialog.Content>
+  {#snippet children({ dialog })}
+    <Dialog.Content>
+      <Dialog.Header>
+        <h2 class="text-foreground text-lg font-semibold">Edit Profile</h2>
+        <Dialog.CloseButton class="ml-auto" />
+      </Dialog.Header>
+      <Dialog.Body class="text-muted-foreground text-sm">
+        <p>Make changes to your profile here. Click save when you're done.</p>
+      </Dialog.Body>
+      <Dialog.Footer class="flex justify-end gap-2">
+        <Button variant="outline" onclick={() => dialog.state.close()}>Cancel</Button>
+        <Button onclick={() => dialog.state.close()}>Save changes</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  {/snippet}
 </Dialog.Root>`.trim();
 
 const alertCode = `
-<script lang="ts">
-  import { Dialog, Button } from '@svelte-atoms/core';
-
-  let open = $state(false);
-</script>
-
-<Dialog.Root bind:open={open}>
-  {#snippet trigger({dialog})}
-    <Button variant="destructive" {...dialog.trigger()}>Delete Item</Button>
+<Dialog.Root>
+  {#snippet trigger({ dialog })}
+    <Button variant="destructive" {...dialog.trigger()}>Delete Account</Button>
   {/snippet}
-
-  <Dialog.Content class="bg-background max-w-md rounded-lg p-6 shadow-lg">
-    <Dialog.Header class="mb-4">
-      <h2 class="text-foreground text-xl font-semibold">Are you sure?</h2>
-    </Dialog.Header>
-    <Dialog.Body class="text-muted-foreground mb-6">
-      <p>This action cannot be undone. This will permanently delete the item.</p>
-    </Dialog.Body>
-    <Dialog.Footer class="flex justify-end gap-2">
-      <Button variant="secondary" onclick={() => (open = false)}>
-        Cancel
-      </Button>
-      <Button
-        variant="destructive"
-        onclick={() => (open = false)}
-      >
-        Confirm Delete
-      </Button>
-    </Dialog.Footer>
-  </Dialog.Content>
+  {#snippet children({ dialog })}
+    <Dialog.Content>
+      <Dialog.Header>
+        <h2 class="text-foreground text-lg font-semibold">Are you absolutely sure?</h2>
+        <Dialog.CloseButton class="ml-auto" />
+      </Dialog.Header>
+      <Dialog.Body class="text-muted-foreground text-sm">
+        <p>This action cannot be undone. This will permanently delete your account and remove all associated data.</p>
+      </Dialog.Body>
+      <Dialog.Footer class="flex justify-end gap-2">
+        <Button variant="outline" onclick={() => dialog.state.close()}>Cancel</Button>
+        <Button variant="destructive" onclick={() => dialog.state.close()}>Delete account</Button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  {/snippet}
 </Dialog.Root>`.trim();
 
 const controlledCode = `

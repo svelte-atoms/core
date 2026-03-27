@@ -10,3 +10,15 @@ export { default as Props } from '../props-datagrid.svelte';
 export { default as LLMAccess } from './llm-access.svelte';
 export { default as CodeBlock } from './code-block.svelte';
 export { default as DocCallout } from './callout.svelte';
+// ── Dual-mode doc primitives ──────────────────────────────────────────────
+export { default as DocPage } from './doc-page.svelte';
+export { default as DocSection } from './doc-section.svelte';
+export { default as DocExample } from './doc-example.svelte';
+export { default as DocProps } from './doc-props.svelte';
+export { default as DocCalloutBlock } from './doc-callout.svelte';
+export { default as DocOnly } from './doc-only.svelte';
+export { default as DocInstallation } from './doc-installation.svelte';
+export { default as DocAccessibility } from './doc-accessibility.svelte';
+export { default as DocCode } from './doc-code.svelte';
+export { getDocMode, setDocMode } from '../context/doc-mode.svelte';
+

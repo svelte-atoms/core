@@ -21,7 +21,7 @@
 				>{item.title}</Tree.Header
 			>
 			<Tree.Body class="text-muted-foreground flex flex-col gap-1 pr-4 text-sm text-right">
-				{#each item.children as child (child)}
+				{#each item.children as child, i (i)}
 					{@render tree(child)}
 				{/each}
 			</Tree.Body>
@@ -51,7 +51,7 @@
 >
 	<Scrollable.Container>
 		<Scrollable.Content class={["text-foreground flex flex-col gap-2 px-4 items-end", mobile ? '' : 'py-6']}>
-			{#each data as item (item)}
+			{#each data as item, i (i)}
 				{@render tree(item)}
 			{/each}
 		</Scrollable.Content>

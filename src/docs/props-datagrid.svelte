@@ -13,7 +13,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each data as item (item)}
+			{#each data as item, i (i)}
 				<tr class="border-border/50 border-b">
 					<td class="text-foreground px-4 py-3 font-mono text-sm">{item.name}</td>
 					<td class="text-muted-foreground px-4 py-3 font-mono text-xs">{item.type}</td>

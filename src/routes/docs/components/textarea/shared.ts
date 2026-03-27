@@ -81,7 +81,8 @@ export const metadata = {
 	componentsSummary,
 	examples: {
 		basic: basicCode,
-		rows: rowsCode
+		rows: rowsCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

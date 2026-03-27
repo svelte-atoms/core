@@ -7,7 +7,7 @@
 </script>
 
 <nav class="text-muted-foreground mb-4 flex items-center space-x-2 text-sm">
-	{#each items as item, index}
+	{#each items as item, index (index)}
 		{#if index > 0}
 			<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
 				<path

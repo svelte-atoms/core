@@ -27,7 +27,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 
 ## Bond Architecture
 
-{#each metadata.architecture as arch (arch.component)}
+{#each metadata.architecture as arch, i (i)}
 ### {arch.component}
 
 {arch.description}
@@ -184,7 +184,7 @@ export class MyComponentBond<
 
 ## Bond Patterns
 
-{#each metadata.bondPatterns as pattern (pattern.title)}
+{#each metadata.bondPatterns as pattern, i (i)}
 ### {pattern.title}
 
 {pattern.description}

@@ -1,39 +1,45 @@
 const basicCode = `
 <script lang="ts">
   import { Sidebar, animateSidebarContent } from '@svelte-atoms/core/sidebar';
-  import { Button } from '@svelte-atoms/core/button';
-  
-  let leftOpen = $state(false);
+  import { LayoutDashboard, BarChart2, Settings } from 'lucide-svelte';
+
+  let sidebarOpen = $state(true);
+
+  const navItems = [
+    { icon: LayoutDashboard, label: 'Dashboard' },
+    { icon: BarChart2,       label: 'Analytics' },
+    { icon: Settings,        label: 'Settings'  },
+  ];
 <\/script>
 
-<Sidebar.Root bind:open={leftOpen}>
-  <div class="flex min-h-96 w-full">
-    <Sidebar.Content
-      animate={animateSidebarContent({ '0': '96px', '1': '320px' })}
-      class="overflow-hidden border-r p-4"
-    >
-      <h3 class="mb-4 font-semibold">Details</h3>
-      <div class="space-y-3">
-        <p class="text-muted-foreground w-40 text-sm">
-          Additional information and details can be displayed here.
-        </p>
-        <Button 
-          size="sm" 
-          variant="outline" 
-          onclick={() => (leftOpen = false)}
+<div class="flex h-64 overflow-hidden rounded-lg border border-border">
+  <Sidebar.Root bind:open={sidebarOpen}>
+    {#snippet children({ sidebar })}
+      <div class="flex size-full">
+        <Sidebar.Content
+          animate={animateSidebarContent({ '0': '2.75rem', '1': '160px' })}
+          class="overflow-hidden border-r border-border p-2"
         >
-          Close
-        </Button>
+          <nav class="flex flex-col gap-1">
+            {#each navItems as item}
+              {@const Icon = item.icon}
+              <button class="flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm hover:bg-muted whitespace-nowrap">
+                <Icon size={16} class="shrink-0" />
+                {#if sidebarOpen}<span>{item.label}</span>{/if}
+              </button>
+            {/each}
+          </nav>
+        </Sidebar.Content>
+        <main class="flex flex-1 flex-col gap-3 p-4">
+          <p class="text-muted-foreground text-sm">Main content area</p>
+          <button onclick={() => sidebar?.state.toggle?.()} class="text-sm underline">
+            {sidebarOpen ? 'Collapse' : 'Expand'} sidebar
+          </button>
+        </main>
       </div>
-    </Sidebar.Content>
-
-    <main class="flex-1 p-4">
-      <Button onclick={() => (leftOpen = true)}>
-        Open Left Sidebar
-      </Button>
-    </main>
-  </div>
-</Sidebar.Root>`.trim();
+    {/snippet}
+  </Sidebar.Root>
+</div>`.trim();
 
 const rightCode = `
 <script lang="ts">
@@ -139,7 +145,8 @@ export const metadata = {
 	componentsSummary,
 	examples: {
 		basic: basicCode,
-		right: rightCode
+		right: rightCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

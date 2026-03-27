@@ -2,63 +2,53 @@ const basicCode = `
 <script lang="ts">
   import { Form, Field } from '@svelte-atoms/core/form';
   import { Input } from '@svelte-atoms/core/input';
-  import Button from '@svelte-atoms/core/button';
+  import { Button } from '@svelte-atoms/core/button';
+
+  let name = $state('');
+  let email = $state('');
 <\/script>
 
-<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Name</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control bind:value={formData.name} class="" />
-    </Field.Control>
+<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
+  <Field.Root name="name">
+    <Field.Label>Name</Field.Label>
+    <Input.Root>
+      <Field.Control base={Input.Control} bind:value={name} placeholder="Enter your name" />
+    </Input.Root>
   </Field.Root>
-  
-  <Field.Root>
-    <Field.Label class="">Email</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        class="" 
-      />
-    </Field.Control>
+
+  <Field.Root name="email">
+    <Field.Label>Email</Field.Label>
+    <Input.Root>
+      <Field.Control base={Input.Control} bind:value={email} type="email" placeholder="Enter your email" />
+    </Input.Root>
   </Field.Root>
-  
-  <Button class="w-full">Submit</Button>
+
+  <Button type="submit">Submit</Button>
 </Form>`.trim();
 
 const validatedCode = `
-<Form class="w-full max-w-md space-y-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root>
-    <Field.Label class="">Email Address</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="email" 
-        bind:value={formData.email} 
-        placeholder="Enter your email" 
-        required 
-        class="" 
-      />
-    </Field.Control>
+<script lang="ts">
+  import { Form, Field } from '@svelte-atoms/core/form';
+  import { Input } from '@svelte-atoms/core/input';
+  import { Button } from '@svelte-atoms/core/button';
+<\/script>
+
+<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
+  <Field.Root name="email">
+    <Field.Label>Email</Field.Label>
+    <Input.Root>
+      <Field.Control base={Input.Control} type="email" placeholder="Enter your email" />
+    </Input.Root>
+    <Field.Errors>
+      {#snippet children({ errors })}
+        {#each errors as error}
+          <p class="text-destructive mt-1 text-xs">{error}</p>
+        {/each}
+      {/snippet}
+    </Field.Errors>
   </Field.Root>
-  
-  <Field.Root>
-    <Field.Label class="">Password</Field.Label>
-    <Field.Control base={Input.Root}>
-      <Input.Control 
-        type="password" 
-        bind:value={formData.password} 
-        placeholder="Enter your password" 
-        required 
-        minlength="8" 
-        class="" 
-      />
-    </Field.Control>
-    <p class="text-muted-foreground mt-1 text-xs">Password must be at least 8 characters</p>
-  </Field.Root>
-  
-  <Button class="w-full">Create Account</Button>
+
+  <Button type="submit">Submit</Button>
 </Form>`.trim();
 
 const presetCode = `
@@ -66,7 +56,16 @@ import { setPreset } from '@svelte-atoms/core';
 
 const preset = setPreset({
   form: () => ({
-    class: 'REPLACE_WITH_PRESET_CLASSES'
+    class: 'flex flex-col gap-4'
+  }),
+  'field.root': () => ({
+    class: 'flex flex-col gap-1'
+  }),
+  'field.label': () => ({
+    class: 'text-sm font-medium'
+  }),
+  'field.control': () => ({
+    class: 'w-full'
   })
 });
 `.trim();
@@ -145,7 +144,8 @@ export const metadata = {
 	componentsSummary, // TODO: Remove if simple component
 	examples: {
 		basic: basicCode,
-		validated: validatedCode
+		validated: validatedCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

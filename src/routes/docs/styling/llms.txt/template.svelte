@@ -24,7 +24,7 @@
 
 ## Styling Approaches
 
-{#each metadata.stylingApproaches as approach (approach.approach)}
+{#each metadata.stylingApproaches as approach, i (i)}
 ### {approach.approach}
 
 {approach.description}
@@ -102,7 +102,7 @@ cn(['text-sm', 'font-medium'], 'text-lg');
 
 Svelte Atoms uses CSS variables for theming. All color tokens are available as Tailwind utilities:
 
-{#each metadata.colorTokens as token (token.token)}
+{#each metadata.colorTokens as token, i (i)}
 ### {token.token}
 
 **Usage:** {token.usage}
@@ -298,7 +298,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 
 ## Best Practices
 
-{#each metadata.bestPractices as category (category.category)}
+{#each metadata.bestPractices as category, i (i)}
 ### {category.category}
 
 {list(category.practices)}

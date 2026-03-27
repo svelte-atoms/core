@@ -1,39 +1,56 @@
 const basicCode = `
 <script lang="ts">
   import { Tree } from '@svelte-atoms/core/tree';
+
+  let rootOpen = $state(true);
+  let srcOpen = $state(true);
+  let libOpen = $state(false);
 <\/script>
 
-<Tree.Root open>
-  <Tree.Header>Documents</Tree.Header>
-  <Tree.Body>
-    <div>Resume.pdf</div>
-    <div>CoverLetter.docx</div>
+<Tree.Root bind:open={rootOpen}>
+  <Tree.Header class="px-2 py-1">📁 project</Tree.Header>
+  <Tree.Body class="ml-4 border-l pl-2">
+    <Tree.Root bind:open={srcOpen}>
+      <Tree.Header class="px-2 py-1">📁 src</Tree.Header>
+      <Tree.Body class="ml-4 border-l pl-2">
+        <Tree.Root bind:open={libOpen}>
+          <Tree.Header class="px-2 py-1">📁 lib</Tree.Header>
+          <Tree.Body class="ml-4 border-l pl-2">
+            <div class="px-2 py-1">📄 index.ts</div>
+          </Tree.Body>
+        </Tree.Root>
+        <div class="px-2 py-1">📄 +page.svelte</div>
+      </Tree.Body>
+    </Tree.Root>
+    <div class="px-2 py-1">📄 package.json</div>
   </Tree.Body>
 </Tree.Root>`.trim();
 
 const nestedCode = `
 <script lang="ts">
   import { Tree } from '@svelte-atoms/core/tree';
+
+  let componentsOpen = $state(true);
+  let utilsOpen = $state(false);
 <\/script>
 
 <Tree.Root open>
-  <Tree.Header>src</Tree.Header>
-  <Tree.Body>
-    <Tree.Root open>
-      <Tree.Header>components</Tree.Header>
-      <Tree.Body>
-        <div>Button.svelte</div>
-        <div>Input.svelte</div>
+  <Tree.Header class="px-2 py-1">📁 src</Tree.Header>
+  <Tree.Body class="ml-4 border-l pl-2">
+    <Tree.Root bind:open={componentsOpen}>
+      <Tree.Header class="px-2 py-1">📁 components</Tree.Header>
+      <Tree.Body class="ml-4 border-l pl-2">
+        <div class="px-2 py-1">📄 Button.svelte</div>
+        <div class="px-2 py-1">📄 Input.svelte</div>
       </Tree.Body>
     </Tree.Root>
-    <Tree.Root open>
-      <Tree.Header>utils</Tree.Header>
-      <Tree.Body>
-        <div>helpers.ts</div>
-        <div>validators.ts</div>
+    <Tree.Root bind:open={utilsOpen}>
+      <Tree.Header class="px-2 py-1">📁 utils</Tree.Header>
+      <Tree.Body class="ml-4 border-l pl-2">
+        <div class="px-2 py-1">📄 helpers.ts</div>
       </Tree.Body>
     </Tree.Root>
-    <div>app.ts</div>
+    <div class="px-2 py-1">📄 app.ts</div>
   </Tree.Body>
 </Tree.Root>`.trim();
 

@@ -460,7 +460,7 @@ Animate lists with sequential delays.
 </script>
 
 <HtmlAtom as="div" class="grid gap-4">
-  {#each items as item, i (item.id)}
+  {#each items as item, i (i)}
     <HtmlAtom
       as="article"
       enter={(node) => slide(node, { delay: i * 100, duration: 300 })}

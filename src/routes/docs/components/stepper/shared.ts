@@ -156,7 +156,8 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		linear: linearCode,
-		vertical: verticalCode
+		vertical: verticalCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

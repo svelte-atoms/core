@@ -24,7 +24,7 @@
 		</Section.Header>
 
 		<Section.Content>
-			{#each metadata.whatAreAtoms as paragraph}
+			{#each metadata.whatAreAtoms as paragraph, i (i)}
 				<p class="text-muted-foreground leading-relaxed">
 					{paragraph}
 				</p>
@@ -42,7 +42,7 @@
 		</Section.Header>
 
 		<div class="space-y-6">
-			{#each metadata.concepts as concept}
+			{#each metadata.concepts as concept, i (i)}
 				<div class="flex items-start gap-4">
 					<div class="text-primary mt-1 flex-shrink-0">
 						{#if concept.icon === 'circle'}
@@ -116,7 +116,7 @@
 		<div class="mt-6">
 			<h3 class="mb-4 text-lg font-semibold">Key Features</h3>
 			<ul class="space-y-3">
-				{#each metadata.anatomyExample.features as feature}
+				{#each metadata.anatomyExample.features as feature, i (i)}
 					<li class="flex gap-3">
 						<Icon class="text-primary mt-1 shrink-0 size-4">
 							<svg
@@ -154,7 +154,7 @@
 		</Section.Header>
 
 		<Section.Content>
-			{#each metadata.whenToUse as useCase}
+			{#each metadata.whenToUse as useCase, i (i)}
 				<div class="mb-6">
 					<div class="mb-2 flex items-center gap-2">
 						<Icon class="text-primary size-4">
@@ -178,7 +178,7 @@
 					</p>
 					{#if useCase.features}
 						<ul class="text-muted-foreground space-y-1.5 text-sm">
-							{#each useCase.features as feature}
+							{#each useCase.features as feature, i (i)}
 								<li class="flex gap-2">
 									<span class="text-primary">•</span>
 									<span>{@html feature}</span>
@@ -201,13 +201,13 @@
 		</Section.Header>
 
 		<div class="grid gap-5 sm:grid-cols-2">
-			{#each [metadata.atomsVsComponents.atoms, metadata.atomsVsComponents.components] as comparison}
+			{#each [metadata.atomsVsComponents.atoms, metadata.atomsVsComponents.components] as comparison, i (i)}
 				<div class="border-border/50 rounded-lg border p-6">
 					<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold">
 						<span class="text-primary">{comparison.title}</span>
 					</h3>
 					<ul class="space-y-2 text-sm">
-						{#each comparison.features as feature}
+						{#each comparison.features as feature, i (i)}
 							<li class="text-muted-foreground flex gap-2">
 								<span class="text-primary">{feature.positive ? '+' : '-'}</span>
 								<span>{feature.text}</span>
@@ -227,7 +227,7 @@
 		</Section.Header>
 
 		<div class="grid gap-5 sm:grid-cols-2">
-			{#each metadata.gettingStartedLinks as link}
+			{#each metadata.gettingStartedLinks as link, i (i)}
 				<LinkCard
 					title={link.title}
 					description={link.description}

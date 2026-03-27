@@ -70,7 +70,8 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		orientation: orientationCode,
-		label: labelCode
+		label: labelCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

@@ -310,7 +310,7 @@
 
 		<!-- Category Filter -->
 		<div class="flex flex-wrap gap-2">
-			{#each categories as category}
+			{#each categories as category, i (i)}
 				<button
 					class="rounded-lg px-4 py-2 text-sm font-medium transition-colors {selectedCategory ===
 					category
@@ -351,7 +351,7 @@
 	<!-- Components Grid -->
 	{#if filteredComponents.length > 0}
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{#each filteredComponents as component}
+			{#each filteredComponents as component, i (i)}
 				<a
 					href={component.href}
 					class="group border-border bg-background hover:border-border/60 block rounded-lg border p-6 transition-all duration-200"

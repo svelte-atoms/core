@@ -19,7 +19,7 @@
 
 Before getting started, make sure your project meets the following requirements:
 
-{#each metadata.requirements as req (req.requirement)}
+{#each metadata.requirements as req, i (i)}
 ### {req.requirement}
 
 **Version:** {req.version}
@@ -46,7 +46,7 @@ bun add @svelte-atoms/core`, 'bash')}
 
 ## Configuration
 
-{#each metadata.installationSteps as step (step.step)}
+{#each metadata.installationSteps as step, i (i)}
 ### Step {step.step}: {step.title}
 
 {step.description}
@@ -190,7 +190,7 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 
 ## Next Steps
 
-{#each metadata.nextSteps as step (step.title)}
+{#each metadata.nextSteps as step, i (i)}
 ### {step.title}
 
 {step.description}

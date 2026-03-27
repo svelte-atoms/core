@@ -110,9 +110,16 @@ export const preset: Partial<Preset> = {
 		class: 'px-6 py-4'
 	}),
 	'drawer.content': () => ({
+		class: 'z-20',
 		[createAttachmentKey()]: clickoutDrawer((_, bond) => {
 			bond?.state.close?.();
 		})
+	}),
+	'drawer.backdrop': () => ({
+		class: 'z-20'
+	}),
+	drawer: () => ({
+		class: 'z-20'
 	}),
 	collapsible: () => ({
 		class: 'max-w-md rounded-md border border-border p-2'

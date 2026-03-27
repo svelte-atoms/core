@@ -40,7 +40,7 @@
 <Story name="Tabs" args={{}}>
 	<ATabs.Root bind:value>
 		<ATabs.Header class="border-b">
-			{#each array as item (item.value)}
+			{#each array as item, i (i)}
 				<Tab.Root value={item.value}>
 					<Tab.Header>{item.label}</Tab.Header>
 					<Tab.Body class="p-4">

@@ -20,7 +20,7 @@
 
 Svelte Atoms is built on three fundamental principles that guide every design decision:
 
-{#each metadata.corePrinciples as principle (principle.title)}
+{#each metadata.corePrinciples as principle, i (i)}
 ### {principle.title}
 
 {principle.description}
@@ -58,7 +58,7 @@ const accordion = createAccordionBond({
 
 ### Bond Features
 
-{#each metadata.bondArchitecture.features as feature (feature.title)}
+{#each metadata.bondArchitecture.features as feature, i (i)}
 #### {feature.title}
 
 {feature.description}
@@ -69,7 +69,7 @@ const accordion = createAccordionBond({
 
 Svelte 5's Runes API enables patterns that weren't possible before:
 
-{#each metadata.whySvelte5 as item (item.feature)}
+{#each metadata.whySvelte5 as item, i (i)}
 ### {item.feature}
 
 {item.description}
@@ -82,7 +82,7 @@ Svelte 5's Runes API enables patterns that weren't possible before:
 
 {metadata.customizationPhilosophy.description}
 
-{#each metadata.customizationPhilosophy.approaches as approach (approach.title)}
+{#each metadata.customizationPhilosophy.approaches as approach, i (i)}
 ### {approach.title}
 
 {approach.description}
@@ -93,7 +93,7 @@ Svelte 5's Runes API enables patterns that weren't possible before:
 
 What we optimize for when building Svelte Atoms:
 
-{#each metadata.designGoals as goal (goal.goal)}
+{#each metadata.designGoals as goal, i (i)}
 ### {goal.goal} (Priority: {goal.priority})
 
 {goal.description}
@@ -104,7 +104,7 @@ What we optimize for when building Svelte Atoms:
 
 It's important to understand what Svelte Atoms is NOT trying to be:
 
-{#each metadata.whatWeAreNot as item (item.title)}
+{#each metadata.whatWeAreNot as item, i (i)}
 ### {item.title}
 
 {item.description}
@@ -140,7 +140,7 @@ Svelte Atoms uses composition:
 <!-- Svelte Atoms -->
 <DataGrid.Root>
   <DataGrid.Header>
-    {#each columns as column}
+    {#each columns as column, i (i)}
       <DataGrid.HeaderCell sortable>
         {column.label}
       </DataGrid.HeaderCell>
@@ -148,9 +148,9 @@ Svelte Atoms uses composition:
   </DataGrid.Header>
   
   <DataGrid.Body>
-    {#each data as row}
+    {#each data as row, i (i)}
       <DataGrid.Row>
-        {#each columns as column}
+        {#each columns as column, i (i)}
           <DataGrid.Cell>
             {row[column.key]}
           </DataGrid.Cell>

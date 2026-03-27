@@ -67,7 +67,8 @@ export const metadata = {
 	useCases,
 	examples: {
 		basic: basicCode,
-		required: requiredCode
+		required: requiredCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

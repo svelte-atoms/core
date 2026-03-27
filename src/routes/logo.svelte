@@ -88,7 +88,7 @@
 	/>
 
 	<!-- Small triangles in the gaps - reinforcing the building block concept -->
-	{#each smallTriangles as triangle}
+	{#each smallTriangles as triangle, i (i)}
 		<path d={triangle.path} fill="currentColor" class="opacity-60" />
 	{/each}
 

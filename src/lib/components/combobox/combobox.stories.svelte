@@ -55,7 +55,7 @@
 				class="border-border border-b px-4 py-3"
 				placeholder="Type to filter..."
 			/>
-			{#each filteredItems.current as item (item.value)}
+			{#each filteredItems.current as item, i (i)}
 				<ACombobox.Item value={item.value}>{item.label}</ACombobox.Item>
 			{/each}
 		</ACombobox.Content>

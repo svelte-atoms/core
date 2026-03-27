@@ -65,7 +65,7 @@
 		{#snippet children({ stepper })}
 			<!-- Header: Step indicators -->
 			<Stepper.Header class="flex justify-between">
-					{#each steps as stepData, i}
+					{#each steps as stepData, i (i)}
 						<Step.Root index={i} header={stepData.header} body={stepData.body}>
 							{#snippet children({ step })}
 								{@const isActive = step?.state?.isActive}
@@ -158,7 +158,7 @@
 			{#snippet children({ stepper })}
 				<div class="flex gap-4">
 					<Stepper.Header class="">
-						{#each steps as stepData, i}
+						{#each steps as stepData, i (i)}
 							<Step.Root
 								index={i}
 								header={stepData.header}

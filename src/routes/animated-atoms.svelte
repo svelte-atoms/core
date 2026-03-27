@@ -383,7 +383,7 @@
 	{/each}
 
 	<!-- Circle connections -->
-	{#each circleConnections as connection (`${connection.atom.id}-${connection.circle.id}`)}
+	{#each circleConnections as connection, i (i)}
 		<line
 			x1={connection.atom.x}
 			y1={connection.atom.y}
@@ -399,7 +399,7 @@
 	{/each}
 
 	<!-- Connections -->
-	{#each connections as connection (connection.atom1.id + '-' + connection.atom2.id)}
+	{#each connections as connection, i (i)}
 		<line
 			x1={connection.atom1.x}
 			y1={connection.atom1.y}

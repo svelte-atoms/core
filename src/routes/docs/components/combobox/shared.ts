@@ -199,7 +199,8 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		multiple: multipleCode,
-		filter: filterCode
+		filter: filterCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };

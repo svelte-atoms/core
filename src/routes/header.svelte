@@ -12,7 +12,7 @@
 	];
 </script>
 
-<header class="bg-background/80 border-border sticky top-0 z-50 border-b backdrop-blur-md">
+<header class="bg-background/80 border-border sticky top-0 z-5 border-b backdrop-blur-md">
 	<div class="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4 sm:px-6 lg:px-8">
 
 		<!-- Logo / Brand -->
@@ -23,7 +23,7 @@
 
 		<!-- Nav -->
 		<nav class="hidden items-center gap-1 sm:flex">
-			{#each navLinks as link}
+			{#each navLinks as link, i (i)}
 				<a
 					href={link.href}
 					class="text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-3 py-1.5 text-sm font-medium transition-colors"
