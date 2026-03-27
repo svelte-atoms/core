@@ -88,7 +88,7 @@
 		<!-- current order indicator -->
 		<div class="flex items-center gap-2 text-sm text-muted-foreground">
 			<span class="font-medium text-foreground">Back → Front:</span>
-			{#each (bond?.state.items ?? []).map(item => label(item.id)) as name, i (name)}
+			{#each (bond?.state.items ?? []).map(item => label(item.id)) as name, i (i)}
 				<span
 					class={[
 						'px-2 py-0.5 rounded text-xs font-medium',

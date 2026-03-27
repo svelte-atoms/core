@@ -20,7 +20,7 @@ Unlike traditional component libraries that provide fully-featured components, a
 
 ## Core Concepts
 
-{#each metadata.concepts as concept (concept.title)}
+{#each metadata.concepts as concept, i (i)}
 ### {concept.title}
 
 {concept.description}
@@ -39,7 +39,7 @@ Here's how an atom works with a simple example:
 
 ## When to Use Atoms
 
-{#each metadata.whenToUse as use (use.category)}
+{#each metadata.whenToUse as use, i (i)}
 ### {use.category}
 
 {use.description}
@@ -74,7 +74,7 @@ Here's how an atom works with a simple example:
 
 ## Available Atoms
 
-{#each metadata.availableAtoms as atom (atom.name)}
+{#each metadata.availableAtoms as atom, i (i)}
 ### {atom.name}
 
 {atom.description}

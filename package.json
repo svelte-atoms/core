@@ -572,6 +572,7 @@
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.37.2",
+		"lucide-svelte": "^1.0.1",
 		"mcp-handler": "^1.0.6",
 		"motion": "^12.23.22",
 		"nanoid": "^5.1.5",

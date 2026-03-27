@@ -1,3 +1,4 @@
+import type { Snippet } from 'svelte';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { SidebarBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
@@ -14,16 +15,17 @@ export interface SidebarRootExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SidebarContentExtendProps {}
 
-export interface SidebarRootProps<
+export type SidebarRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, SidebarRootExtendProps {
-	open?: boolean;
-	disabled?: boolean;
-	width?: string | number;
-	factory?: Factory<SidebarBond>;
-}
+> = Omit<HtmlAtomProps<E, B>, 'children'> &
+	SidebarRootExtendProps & {
+		open?: boolean;
+		disabled?: boolean;
+		width?: string | number;
+		factory?: Factory<SidebarBond>;
+		children?: Snippet<[{ sidebar: SidebarBond }]>;
+	};
 
 export interface SidebarContentProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
 	extends HtmlAtomProps<E, B>, SidebarContentExtendProps {}

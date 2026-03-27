@@ -121,7 +121,7 @@
 
 			<!-- Months Grid -->
 			<div class="grid flex-1 grid-cols-3 gap-1 px-2 pb-2">
-				{#each monthsGrid as month, index}
+				{#each monthsGrid as month, index (index)}
 					{@const isSelected = index === currentMonth}
 					<button
 						type="button"

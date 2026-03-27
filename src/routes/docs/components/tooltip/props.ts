@@ -5,35 +5,83 @@ export interface PropDefinition {
 	description: string;
 }
 
-export const tooltipTriggerProps: PropDefinition[] = [
+export const tooltipRootProps: PropDefinition[] = [
 	{
-		name: 'content',
-		type: 'string | Snippet<[]> | undefined',
-		default: 'undefined',
-		description: 'The tooltip content to display. Can be a plain string or a Snippet for rich content.'
+		name: 'open',
+		type: 'boolean',
+		default: 'false',
+		description: 'Controls the open/closed state of the tooltip. Bindable.'
 	},
 	{
 		name: 'placement',
-		type: '"top" | "bottom" | "left" | "right" | undefined',
+		type: '"top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | ...',
 		default: '"top"',
 		description: 'Where the tooltip appears relative to the trigger element.'
 	},
 	{
-		name: 'delay',
-		type: 'number | undefined',
+		name: 'offset',
+		type: 'number',
 		default: '0',
-		description: 'Delay in milliseconds before the tooltip appears after hover.'
+		description: 'Distance in pixels between the trigger and the tooltip content.'
+	},
+	{
+		name: 'disabled',
+		type: 'boolean',
+		default: 'false',
+		description: 'Disables the tooltip.'
+	},
+	{
+		name: 'placements',
+		type: 'Placement[]',
+		default: 'undefined',
+		description: 'Fallback placements used by floating-ui when the primary placement overflows.'
+	},
+];
+
+export const tooltipTriggerProps: PropDefinition[] = [
+	{
+		name: 'base',
+		type: 'Component | keyof HTMLElementTagNameMap',
+		default: '"button"',
+		description: 'The underlying element or component used as the trigger.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[]> | undefined',
+		type: 'Snippet',
 		default: 'undefined',
-		description: 'The trigger element that the tooltip is attached to.'
+		description: 'Content rendered inside the trigger element.'
 	},
 	{
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+		description: 'All HTML element props are forwarded to the trigger element.'
+	},
+];
+
+export const tooltipContentProps: PropDefinition[] = [
+	{
+		name: 'children',
+		type: 'Snippet',
+		default: 'undefined',
+		description: 'Content rendered inside the tooltip popup.'
+	},
+	{
+		name: 'enter',
+		type: '(node: Element) => { duration: number }',
+		default: 'undefined',
+		description: 'Motion animation callback when the tooltip enters.'
+	},
+	{
+		name: 'exit',
+		type: '(node: Element) => { duration: number }',
+		default: 'undefined',
+		description: 'Motion animation callback when the tooltip exits.'
+	},
+	{
+		name: '...atomProps',
+		type: 'HtmlAtomProps',
+		default: '-',
+		description: 'All HTML element props are forwarded to the content element.'
 	},
 ];

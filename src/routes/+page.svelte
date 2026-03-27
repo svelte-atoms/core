@@ -99,7 +99,7 @@
 
 		<!-- Traits -->
 		<div class="text-muted-foreground mt-12 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-			{#each ['Headless by default', 'Fully typed', 'WAI-ARIA compliant', 'Svelte 5 Runes', 'TailwindCSS ready'] as trait}
+			{#each ['Headless by default', 'Fully typed', 'WAI-ARIA compliant', 'Svelte 5 Runes', 'TailwindCSS ready'] as trait, i (i)}
 				<span class="flex items-center gap-1.5">
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
 						<path d="M20 6 9 17l-5-5"/>
@@ -308,7 +308,7 @@
 						<Select.Indicator class="ml-auto" />
 					</Select.Trigger>
 					<Select.Content>
-						{#each fruits as fruit (fruit)}
+						{#each fruits as fruit, i (i)}
 							<Select.Item value={fruit} class="capitalize">{fruit}</Select.Item>
 						{/each}
 					</Select.Content>
@@ -463,7 +463,7 @@
 			<div class="space-y-4">
 				<!-- Package manager picker -->
 				<div class="bg-muted flex gap-1 rounded-lg p-1">
-					{#each (['npm', 'pnpm', 'yarn', 'bun'] as const) as pm}
+					{#each (['npm', 'pnpm', 'yarn', 'bun'] as const) as pm, i (i)}
 						<button
 							onclick={() => (packageManager = pm)}
 							class="flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors {packageManager === pm

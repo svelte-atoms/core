@@ -32,7 +32,7 @@ The preset system is a powerful theming mechanism that allows you to:
 
 The preset system works hierarchically with three levels:
 
-{#each metadata.presetLevels as level (level.level)}
+{#each metadata.presetLevels as level, i (i)}
 ### {level.level}
 
 **Location:** {level.location}
@@ -237,7 +237,7 @@ setPreset({
 
 ## Advanced Features
 
-{#each metadata.advancedFeatures as feature (feature.feature)}
+{#each metadata.advancedFeatures as feature, i (i)}
 ### {feature.feature}
 
 {feature.description}

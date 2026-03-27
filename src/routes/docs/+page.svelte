@@ -85,7 +85,7 @@
 			<Section.Title>Quick Links</Section.Title>
 		</Section.Header>
 		<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-			{#each quickLinks as link}
+			{#each quickLinks as link, i (i)}
 				<a href={link.href} class="group block">
 					<Card.Root class="hover:border-primary transition-all hover:shadow-md">
 						<Card.Header>
@@ -107,7 +107,7 @@
 			<Section.Subtitle>Everything you need to build modern web applications</Section.Subtitle>
 		</Section.Header>
 		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{#each features as feature}
+			{#each features as feature, i (i)}
 				<a href={feature.href} class="group block">
 					<Card.Root class="hover:border-primary h-full transition-all hover:shadow-md">
 						<Card.Header>

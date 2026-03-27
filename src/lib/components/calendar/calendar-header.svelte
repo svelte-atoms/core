@@ -23,7 +23,7 @@
 	)}
 	{...headerProps}
 >
-	{#each (currentMonth?.days ?? []).filter((d) => d.week == 1) as day}
+	{#each (currentMonth?.days ?? []).filter((d) => d.week == 1) as day, i (i)}
 		<CalendarWeekDay isWeekend={day.weekend}>{day.name}</CalendarWeekDay>
 	{/each}
 </HtmlAtom>

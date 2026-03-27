@@ -182,7 +182,7 @@
 
 			<!-- Years Grid -->
 			<div class="grid flex-1 grid-cols-4 gap-1 px-2 py-2">
-				{#each yearsGrid as year}
+				{#each yearsGrid as year, i (i)}
 					{@const isSelected = year === pivote.getFullYear()}
 					{@const isCurrent = year === currentYear}
 					<button

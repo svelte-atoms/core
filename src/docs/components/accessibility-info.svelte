@@ -12,7 +12,7 @@
 		<p class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wide">{title}</p>
 	{/if}
 	<ul class="space-y-1.5">
-		{#each features as feature}
+		{#each features as feature, i (i)}
 			<li class="flex items-start gap-2">
 				<svg
 					class="text-primary/60 mt-0.5 h-3.5 w-3.5 flex-shrink-0"

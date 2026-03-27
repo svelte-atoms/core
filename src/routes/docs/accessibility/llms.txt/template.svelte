@@ -22,7 +22,7 @@
 
 ## Accessibility Features
 
-{#each metadata.sections as section (section.title)}
+{#each metadata.sections as section, i (i)}
 ### {section.title}
 
 {section.description}

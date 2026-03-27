@@ -48,8 +48,8 @@ export function mdRaw(strings: TemplateStringsArray, ...values: any[]): string {
 // Optional: Export type for markdown strings
 export type MarkdownString = string & { readonly __brand: 'markdown' };
 
-export function newLine(): string {
-	return '\n';
+export function newLine(lines: number = 1): string {
+	return '\n'.repeat(lines);
 }
 
 export function codeBlock(code: string, language: string = ''): string {

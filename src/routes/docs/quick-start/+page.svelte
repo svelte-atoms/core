@@ -115,7 +115,7 @@
 		<div class="overflow-hidden rounded-lg">
 			<!-- Package Manager Tabs -->
 			<div class="border-border/30 flex border-b">
-				{#each ['npm', 'pnpm', 'yarn', 'bun'] as pm}
+				{#each ['npm', 'pnpm', 'yarn', 'bun'] as pm, i (i)}
 					<button
 						onclick={() => (packageManager = pm as typeof packageManager)}
 						class="-mb-px cursor-pointer border-b-2 px-4 py-3 text-sm font-medium transition-colors {packageManager ===

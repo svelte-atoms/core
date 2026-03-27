@@ -60,7 +60,7 @@
 					<div>
 						<p class="text-foreground mb-3 text-xs font-semibold tracking-wider uppercase">{group}</p>
 						<ul class="space-y-2">
-							{#each links as link}
+							{#each links as link, i (i)}
 								<li>
 									<a
 										href={link.href}

@@ -171,7 +171,7 @@
 						bind:value={selectedVariant}
 						class="border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
-						{#each variants as variant}
+						{#each variants as variant, i (i)}
 							<option value={variant.value}>{variant.label}</option>
 						{/each}
 					</select>
@@ -184,7 +184,7 @@
 						bind:value={selectedSize}
 						class="border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
-						{#each sizes as size}
+						{#each sizes as size, i (i)}
 							<option value={size.value}>{size.label}</option>
 						{/each}
 					</select>

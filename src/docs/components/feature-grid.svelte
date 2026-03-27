@@ -52,7 +52,7 @@
 </script>
 
 <div class="grid {gridCols[columns]} gap-6">
-	{#each features as feature}
+	{#each features as feature, i (i)}
 		<div
 			class="border-border rounded-lg border bg-gradient-to-br {colorClasses[feature.color]
 				.gradient} p-6 transition-transform hover:scale-[1.02]"

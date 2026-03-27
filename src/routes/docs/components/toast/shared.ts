@@ -77,7 +77,9 @@ export const metadata = {
 
 <!-- Then anywhere in your app -->
 <script lang="ts">
-  import { Toast } from '@svelte-atoms/core';
+  import { Toast,
+		preset: presetCode
+	} from '@svelte-atoms/core';
 <\/script>
 
 <Toast.Root>

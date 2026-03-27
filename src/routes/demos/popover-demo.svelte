@@ -32,7 +32,7 @@
 	<Popover.Content class="bg-popover border-border w-52 rounded-lg border p-3 shadow-lg">
 		<p class="text-muted-foreground mb-2 px-1 text-xs font-semibold tracking-wide uppercase">Labels</p>
 		<div class="space-y-0.5">
-			{#each filters as label (label)}
+			{#each filters as label, i (i)}
 				<button
 					onclick={() => toggle(label)}
 					class="hover:bg-muted flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors"

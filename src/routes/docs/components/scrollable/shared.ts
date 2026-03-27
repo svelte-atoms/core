@@ -118,7 +118,8 @@ export const metadata = {
 	examples: {
 		basic: basicCode,
 		horizontal: horizontalCode,
-		both: bothCode
+		both: bothCode,
+		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
 };
