@@ -76,6 +76,7 @@ export class AccordionState extends BondState<AccordionStateProps> {
 
 	open(vals: string[]) {
 		if (this.props.multiple) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const sequence = new Set(this.props.values ?? []);
 
 			for (const val of vals) {
@@ -84,12 +85,13 @@ export class AccordionState extends BondState<AccordionStateProps> {
 
 			this.props.values = [...sequence];
 		} else {
-			this.props.values = [vals[0]];
+			this.props.values = [vals[0]].filter(Boolean) as string[];
 		}
 	}
 
 	close(vals: string[]) {
 		if (this.props.multiple) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const sequence = new Set(this.props.values ?? []);
 
 			for (const val of vals) {
@@ -103,6 +105,7 @@ export class AccordionState extends BondState<AccordionStateProps> {
 	}
 
 	toggle(id: string) {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sequence = new Set(this.props.values);
 
 		if (sequence.has(id)) {
