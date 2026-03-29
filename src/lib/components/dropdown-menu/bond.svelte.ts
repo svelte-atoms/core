@@ -7,8 +7,9 @@ import {
 	type PopoverDomElements,
 	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
+import type { DropdownMenuItemAtom } from './item/bond.svelte';
 
 export type DropdownMenuBondProps = PopoverStateProps;
 
@@ -66,7 +67,7 @@ export class DropdownMenuTriggerAtom extends PopoverTriggerAtom {
 
 	override get handlers() {
 		const superHandlers = super.handlers;
-		
+
 		return {
 			...superHandlers,
 			onkeydown: (ev: KeyboardEvent) => {
@@ -96,7 +97,9 @@ export class DropdownMenuTriggerAtom extends PopoverTriggerAtom {
 	}
 }
 
-export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond> extends Atom<B> {
+export class DropdownMenuItemAtom<
+	B extends DropdownMenuBond = DropdownMenuBond
+> extends BondAtom<B> {
 	constructor(bond: B) {
 		super(bond, 'item');
 	}
@@ -168,20 +171,22 @@ export class DropdownMenuBondState<
 	Props extends DropdownMenuBondProps = DropdownMenuBondProps
 > extends PopoverState<Props> {
 	#keys = new SvelteSet<string>();
-	#items: Map<string, DropdownMenuItemControllerInterface<Record<string, any>>> = new SvelteMap();
-	#itemsAsArray = $derived(
-		Array.from(this.#items.values())
-	) as DropdownMenuItemControllerInterface<Record<string, any>>[];
+	#items: Map<
+		string,
+		DropdownMenuItemControllerInterface<Record<string, any>> | DropdownMenuItemAtom
+	> = new SvelteMap();
+	#itemsAsArray = $derived(Array.from(this.#items.values())) as (
+		| DropdownMenuItemControllerInterface<Record<string, any>>
+		| DropdownMenuItemAtom
+	)[];
 
 	#index = $state(-1);
 
-	#highlightedId = $derived(
-		Array.from(this.#items.keys())[this.#index] ?? null
-	) as string | null;
+	#highlightedId = $derived(Array.from(this.#items.keys())[this.#index] ?? null) as string | null;
 
-	#highlightedItem = $derived(
-		this.#itemsAsArray[this.#index] ?? null
-	) as DropdownMenuItemControllerInterface<Record<string, any>> | null;
+	#highlightedItem = $derived(this.#itemsAsArray[this.#index] ?? null) as
+		| (DropdownMenuItemControllerInterface<Record<string, any>> | DropdownMenuItemAtom)
+		| null;
 
 	constructor(props: () => Props) {
 		super(props);
@@ -225,7 +230,10 @@ export class DropdownMenuBondState<
 		};
 	}
 
-	mountItem(id: string, item: DropdownMenuItemControllerInterface<Record<string, any>>) {
+	mountItem(
+		id: string,
+		item: DropdownMenuItemControllerInterface<Record<string, any>> | DropdownMenuItemAtom
+	) {
 		this.#items.set(id, item);
 
 		return () => this.unmountItem(id);
@@ -239,5 +247,13 @@ export class DropdownMenuBondState<
 
 	item(id: string) {
 		return this.#items.get(id);
+	}
+
+	registerItem(id: string, atom: DropdownMenuItemAtom) {
+		this.#items.set(id, atom);
+	}
+
+	unregisterItem(id: string) {
+		this.#items.delete(id);
 	}
 }

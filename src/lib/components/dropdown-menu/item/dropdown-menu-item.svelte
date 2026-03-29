@@ -1,13 +1,12 @@
 <script
 	lang="ts"
-	generics="D, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
+	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { DropdownMenuItemController, type DropdownMenuItemControllerProps } from './controller.svelte';
+	import { DropdownMenuItemAtom, type DropdownMenuItemAtomProps } from './bond.svelte';
 	import { DropdownMenuBond } from '../bond.svelte';
-	import { List } from '../../list';
 	import type { DropdownMenuItemProps } from './types';
+	import { List } from '../../list';
 
 	const menu = DropdownMenuBond.get();
 
@@ -15,55 +14,33 @@
 		throw new Error('<DropdownMenuItem> must be used within a <DropdownMenu>.');
 	}
 
-	const ID = $props.id();
-
 	let {
 		class: klass = '',
-		id = ID,
+		id,
 		preset: presetKey = 'dropdown-menu.item',
+		disabled = undefined,
 		children = undefined,
 		onclick = undefined,
-		disabled = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
-		factory = _factory,
 		...restProps
 	}: DropdownMenuItemProps = $props();
 
-	const controller = factory().share();
+	// Create reactive props object for the atom
+	const itemProps = $derived<DropdownMenuItemAtomProps>({
+		id: id ?? '',
+		disabled
+	});
 
-	const itemProps = $derived({
-		...menu?.item?.(),
-		...controller?.elementProps(),
+	// Create the atom instance
+	const atom = new DropdownMenuItemAtom<typeof menu>(() => itemProps, menu);
+
+	// Derived reactive properties
+	const isHighlighted = $derived(atom.isHighlighted);
+
+	// Merge atom attrs with custom props
+	const itemAttrs = $derived({
+		...atom.attrs,
 		...restProps
 	});
-
-	$effect(() => {
-		return () => {
-			controller.destroy();
-		};
-	});
-
-	function _factory() {
-		const item = menu?.state?.item?.(id);
-
-		if (item) {
-			return item as DropdownMenuItemController;
-		}
-
-		const bondProps = defineState<DropdownMenuItemControllerProps>([
-			defineProperty('id', () => id)
-		]);
-		const controller = new DropdownMenuItemController(() => bondProps);
-
-		controller.mount();
-
-		return controller;
-	}
 
 	function handleClick(ev: MouseEvent) {
 		onclick?.(ev);
@@ -74,32 +51,25 @@
 
 		ev.preventDefault();
 
-		controller?.menu?.state.close();
+		atom.close();
 	}
 
 	export function getController() {
-		return controller;
+		return atom;
 	}
 </script>
 
 <List.Item
-	bond={controller}
 	preset={presetKey}
 	class={[
 		'border-border last:border-b-0 hover:bg-foreground/5 active:bg-foreground/10 outline-primary cursor-pointer border-b',
 		'$preset',
 		klass
-	]}
-	onmount={onmount?.bind(controller) as any}
-	ondestroy={ondestroy?.bind(controller) as any}
-	enter={enter?.bind(controller) as any}
-	exit={exit?.bind(controller) as any}
-	initial={initial?.bind(controller) as any}
-	animate={animate?.bind(controller) as any}
-	aria-disabled={disabled ? true : undefined}
-	tabIndex={disabled ? -1 : 0}
+	]
+		.filter(Boolean)
+		.join(' ')}
+	{...itemAttrs}
 	onclick={handleClick}
-	{...itemProps}
 >
-	{@render children?.({ menuItem: controller })}
+	{@render children?.({ menuItem: atom })}
 </List.Item>
