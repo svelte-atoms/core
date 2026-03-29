@@ -1,7 +1,11 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
-import { StepperBond, StepperState } from '../bond.svelte.js';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import { getContext, setContext, untrack } from 'svelte';
+import { StepperBond, StepperState } from '../bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type StepBondProps = BondStateProps & {
 	index: number;
@@ -20,11 +24,137 @@ export type StepBondElements = {
 	separator?: HTMLElement;
 };
 
+class StepRootAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'root');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const state = bond.state;
+
+		const props = untrack(() => bond.state.props);
+
+		return {
+			...super.attrs,
+			'data-stepper': state?.stepper?.id ?? '',
+			'data-index': props.index ?? 0,
+			'data-active': state?.isActive,
+			'data-completed': state?.isCompleted,
+			'data-disabled': state?.isDisabled,
+			'data-error': props.error,
+			'aria-disabled': state?.isDisabled,
+			'aria-describedby': `step-description-${bond.id}`,
+			'aria-labelledby': `step-title-${bond.id}`,
+			role: 'group' as const
+		};
+	}
+}
+
+class StepIndicatorAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'indicator');
+	}
+	override get attrs() {
+		const state = untrack(() => this.bond.state);
+		const props = untrack(() => this.bond.state.props);
+
+		return {
+			...super.attrs,
+			'aria-current': state?.isActive ? ('step' as const) : undefined,
+			'data-active': state?.isActive,
+			'data-completed': state?.isCompleted,
+			'data-disabled': state?.isDisabled,
+			'data-error': props.error,
+			role: 'presentation' as const
+		};
+	}
+}
+
+class StepHeaderAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'header');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const state = untrack(() => bond.state);
+		const props = untrack(() => bond.state.props);
+
+		return {
+			...super.attrs,
+			'data-active': state?.isActive,
+			'data-completed': state?.isCompleted,
+			'data-disabled': state?.isDisabled,
+			'data-error': props.error
+		};
+	}
+}
+
+class StepTitleAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'title');
+	}
+	override get attrs() {
+		return {
+			...super.attrs
+		};
+	}
+}
+
+class StepDescriptionAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'description');
+	}
+	override get attrs() {
+		return {
+			...super.attrs
+		};
+	}
+}
+
+class StepBodyAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'body');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const state = untrack(() => bond.state);
+		const props = untrack(() => bond.state.props);
+
+		return {
+			...super.attrs,
+			'data-active': state?.isActive,
+			'data-completed': state?.isCompleted,
+			'data-disabled': state?.isDisabled,
+			'data-error': props.error
+		};
+	}
+}
+
+class StepSeparatorAtom extends BondAtom<StepBond, HTMLElement> {
+	constructor(bond: StepBond) {
+		super(bond, 'separator');
+	}
+	override get attrs() {
+		const state = untrack(() => this.bond.state);
+		const props = untrack(() => this.bond.state.props);
+
+		return {
+			...super.attrs,
+			'aria-hidden': 'true',
+			role: 'presentation' as const,
+			'data-active': state?.isActive,
+			'data-completed': state?.isCompleted,
+			'data-disabled': state?.isDisabled,
+			'data-error': props.error
+		};
+	}
+}
+
 export class StepBond extends Bond<StepBondProps, StepBondState, StepBondElements> {
 	static CONTEXT_KEY = '@atoms/context/stepper/step';
 
 	constructor(state: StepBondState) {
-		super(state);
+		super(state, 'step');
 	}
 
 	share() {
@@ -32,112 +162,31 @@ export class StepBond extends Bond<StepBondProps, StepBondState, StepBondElement
 	}
 
 	root() {
-		const state = this.state;
-
-		return {
-			'data-stepper': state?.stepper?.id ?? '',
-			'data-atom': this.id ?? '',
-			'data-kind': 'step',
-			'data-index': state?.props.index ?? 0,
-			'data-active': state?.isActive,
-			'data-completed': state?.isCompleted,
-			'data-disabled': state?.isDisabled,
-			'data-error': state?.props.error,
-			'aria-disabled': state?.isDisabled,
-			'aria-describedby': `step-description-${this.id}`,
-			'aria-labelledby': `step-title-${this.id}`,
-			id: `step-${this.id}`,
-			role: 'group',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		} as const;
+		return this.atom('root', () => new StepRootAtom(this));
 	}
 
 	indicator() {
-		const state = this.state;
-
-		return {
-			'data-kind': 'step-indicator',
-			'aria-current': state?.isActive ? 'step' : undefined,
-			'data-active': state?.isActive,
-			'data-completed': state?.isCompleted,
-			'data-disabled': state?.isDisabled,
-			'data-error': state?.props.error,
-			role: 'presentation',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.indicator = node;
-			}
-		} as const;
+		return this.atom('indicator', () => new StepIndicatorAtom(this));
 	}
 
 	header() {
-		const state = this.state;
-
-		return {
-			'data-kind': 'step-header',
-			id: `step-header-${this.id}`,
-			'data-active': state?.isActive,
-			'data-completed': state?.isCompleted,
-			'data-disabled': state?.isDisabled,
-			'data-error': state?.props.error,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		} as const;
+		return this.atom('header', () => new StepHeaderAtom(this));
 	}
 
 	title() {
-		return {
-			'data-kind': 'step-title',
-			id: `step-title-${this.id}`,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.title = node;
-			}
-		} as const;
+		return this.atom('title', () => new StepTitleAtom(this));
 	}
 
 	description() {
-		return {
-			'data-kind': 'step-description',
-			id: `step-description-${this.id}`,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		} as const;
+		return this.atom('description', () => new StepDescriptionAtom(this));
 	}
 
 	body() {
-		const state = this.state;
-
-		return {
-			'data-kind': 'step-body',
-			id: `step-body-${this.id}`,
-			'data-active': state?.isActive,
-			'data-completed': state?.isCompleted,
-			'data-disabled': state?.isDisabled,
-			'data-error': state?.props.error,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		} as const;
+		return this.atom('body', () => new StepBodyAtom(this));
 	}
 
 	separator() {
-		const state = this.state;
-
-		return {
-			'data-kind': 'step-separator',
-			'aria-hidden': 'true',
-			role: 'presentation',
-			'data-active': state?.isActive,
-			'data-completed': state?.isCompleted,
-			'data-disabled': state?.isDisabled,
-			'data-error': state?.props.error,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.separator = node;
-			}
-		} as const;
+		return this.atom('separator', () => new StepSeparatorAtom(this));
 	}
 
 	static get(): StepBond | undefined {
@@ -167,7 +216,9 @@ export class StepBondState extends BondState<StepBondProps> {
 
 	get isCompleted() {
 		const stepperStep = this.#stepper?.props.step;
-		return this.props.completed || (typeof stepperStep === 'number' && stepperStep > this.props.index);
+		return (
+			this.props.completed || (typeof stepperStep === 'number' && stepperStep > this.props.index)
+		);
 	}
 
 	get isDisabled() {

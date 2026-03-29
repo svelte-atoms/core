@@ -98,7 +98,6 @@
 			<CalendarDay
 				{day}
 				onclick={() => {
-					console.log('day clicked', day.date);
 					calendarBond?.state.selectStart(new Date(day.date));
 				}}
 			/>

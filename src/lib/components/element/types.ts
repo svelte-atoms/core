@@ -23,13 +23,13 @@ export type SvgElementTagName = keyof SVGElementTagNameMap;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface HtmlElementProps<T extends HtmlElementTagName = 'div'> extends ElementProps<T> {
-	children?: Snippet<[]>;
+	children?: Snippet<unknown[]>;
 	onintroend?: (ev: TransitionEvent) => void;
 	onexitend?: (ev: TransitionEvent) => void;
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SvgElementProps<T extends SvgElementTagName = 'g'> extends ElementProps<T> {
-	children?: Snippet<[]>;
+	children?: Snippet<unknown[]>;
 }
 
 export type ElementTagName = HtmlElementTagName | SvgElementTagName;

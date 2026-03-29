@@ -1,15 +1,13 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { PopoverState, PopoverBond } from './bond.svelte';
+	import type { PopoverStateProps } from './bond.svelte';
+	import { type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { PopoverRootProps } from './types';
 	import { DialogBond } from '../dialog/bond.svelte';
 	import { DrawerBond } from '../drawer';
 	import { SidebarBond } from '../sidebar';
-
-	interface PopoverStateProps {
-		readonly open: boolean;
-		readonly positionStrategy: 'fixed' | 'absolute';
-	}
 
 	interface PopoverOwnerState {
 		readonly props: PopoverStateProps;
@@ -26,8 +24,8 @@
 		const potentialOwners = [DialogBond, DrawerBond, SidebarBond];
 		for (const potentialOwner of potentialOwners) {
 			try {
-				return potentialOwner.get() as PopoverOwner;
-			} catch (_err) {
+				return potentialOwner.get() as unknown as PopoverOwner;
+			} catch {
 				continue;
 			}
 		}
@@ -43,8 +41,6 @@
 		return 'absolute';
 	})
 
-	console.log('Popover owner:', owner);
-
 	let {
 		open = $bindable(false),
 		disabled = false,
@@ -52,7 +48,6 @@
 		placement = 'bottom',
 		offset = 1,
 		portal = undefined,
-		extend = {},
 		factory = _factory,
 		children = undefined,
 		...restProps
@@ -75,10 +70,10 @@
 		defineProperty('rest', () => restProps)
 	]);
 
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps as unknown as BondStateProps)).share();
 
-	function _factory(props: typeof bondProps) {
-		const popoverState = new PopoverState(() => props);
+	function _factory() {
+		const popoverState = new PopoverState(() => bondProps);
 		const popoverBond = new PopoverBond(popoverState);
 
 		return popoverBond;

@@ -21,7 +21,7 @@
 	}: SlideoverFooterProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const footerProps = $derived({
-		...bond?.footer(),
+		...bond?.footer().spread,
 		...restProps
 	});
 </script>

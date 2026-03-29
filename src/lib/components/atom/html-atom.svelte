@@ -20,7 +20,7 @@
 
 	type Element = HTMLElementTagNameMap[E];
 
-	type Props =  Omit<HTMLAttributes<Element>, 'children'> & HtmlAtomProps<E, B>;
+	type Props = Omit<HTMLAttributes<Element>, 'children' | 'onintroend' | 'onexitend'> & HtmlAtomProps<E, B>;
 
 	const rootBond = RootBond.get();
 

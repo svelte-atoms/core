@@ -18,7 +18,7 @@
 
 
 	const headerProps = $derived({
-		...bond?.header(),
+		...bond?.header().spread,
 		...restProps
 	});
 </script>

@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { type Base } from '$svelte-atoms/core/components/atom';
-	import type { TabBodyProps } from '../types';
 	import { TabBond } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
+	import type { TabBodyProps } from '../types';
 	import { Stack } from '../../stack';
 
 	const tabBond = TabBond.get();
@@ -21,24 +21,38 @@
 
 	const contentProps = $derived({
 		preset,
+		...tabBond?.body().spread,
 		...restProps
 	});
 
+	const value = $derived(tabBond?.state.props.value);
+
 	// Register content snippet with props and children with tabs on mount
 	$effect.pre(() => {
-		if (tabBond && tabsBond && children) {
-			const id = tabBond.state.props.value;
-			tabsBond.state.registerTabContent(id, body);
+		if(!value) return;
+		if(!tabBond) return;
+		if(!tabsBond) return;
 
-			return () => {
-				tabsBond.state.unregisterTabContent(id);
-			};
-		}
+		tabsBond.state.registerTabContent(value, {
+			render: body,
+			props: {
+				children
+			}
+		});
+
+		return () => {
+			tabsBond.state.unregisterTabContent(value);
+		};
 	});
 </script>
 
-{#snippet body(props: Record<string, unknown> = {})}
-	<Stack.Item class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} {...contentProps} {...props}>
+{#snippet body({children = undefined, ...props}: Record<string, unknown> = {})}
+	<Stack.Item 
+		class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} 
+		value={value} 
+		{...contentProps} 
+		{...props}
+	>
 		{@render children?.({ ...(tabBond ? { tab: tabBond } : {}), ...(tabsBond ? { tabs: tabsBond } : {}) })}
 	</Stack.Item>
 {/snippet}

@@ -25,7 +25,7 @@
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const bondProps = $derived({
-		...bond?.inner(),
+		...bond?.inner().spread,
 		...restProps
 	});
 </script>

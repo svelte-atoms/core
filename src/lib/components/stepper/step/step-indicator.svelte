@@ -18,7 +18,7 @@
 
 
 	const indicatorProps = $derived({
-		...bond?.indicator(),
+		...bond?.indicator().spread,
 		...restProps
 	});
 

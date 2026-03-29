@@ -1,8 +1,12 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { createAttachmentKey } from 'svelte/attachments';
 import type { AccordionItemBond } from './item/bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-import { getContext, setContext } from 'svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
+import { getContext, setContext, untrack } from 'svelte';
 
 export type AccordionStateProps = BondStateProps & {
 	open: boolean;
@@ -19,30 +23,42 @@ export type AccordionElements = {
 	indicator: HTMLElement;
 };
 
+export class AccordionRootAtom extends BondAtom<AccordionBond> {
+	constructor(bond: AccordionBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		const props = untrack(() => this.bond.state?.props);
+		const isOpen = props?.open ?? false;
+		const isDisabled = props?.disabled ?? false;
+		const isMultiple = props?.multiple ?? false;
+
+		return {
+			...super.attrs,
+			'aria-expand': isOpen,
+			'aria-disabled': isDisabled,
+			'aria-multiselectable': isMultiple
+		};
+	}
+}
+
 export class AccordionBond extends Bond<AccordionStateProps, AccordionState, AccordionElements> {
 	static CONTEXT_KEY = '@atomic-sv/context/accordion';
 
 	constructor(s: AccordionState) {
-		super(s);
+		super(s, 'accordion');
 	}
 
 	share(): this {
 		return AccordionBond.set(this) as this;
 	}
 
+	/** Handle for granular access to root attrs and attachment */
 	root() {
-		return {
-			'aria-expand': this.state?.props?.open ?? false,
-			'aria-disabled': this.state?.props?.disabled ?? false,
-			'aria-multiselectable': this.state?.props?.multiple ?? false,
-			'data-atom': this.id ?? '',
-			'data-kind': 'accordion',
-			id: `accordion-${this.id}`,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new AccordionRootAtom(this));
 	}
+
 	static get(): AccordionBond | undefined {
 		return getContext(AccordionBond.CONTEXT_KEY);
 	}
@@ -65,6 +81,7 @@ export class AccordionState extends BondState<AccordionStateProps> {
 
 	open(vals: string[]) {
 		if (this.props.multiple) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const sequence = new Set(this.props.values ?? []);
 
 			for (const val of vals) {
@@ -73,12 +90,13 @@ export class AccordionState extends BondState<AccordionStateProps> {
 
 			this.props.values = [...sequence];
 		} else {
-			this.props.values = [vals[0]];
+			this.props.values = [vals[0]].filter(Boolean) as string[];
 		}
 	}
 
 	close(vals: string[]) {
 		if (this.props.multiple) {
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			const sequence = new Set(this.props.values ?? []);
 
 			for (const val of vals) {
@@ -92,6 +110,7 @@ export class AccordionState extends BondState<AccordionStateProps> {
 	}
 
 	toggle(id: string) {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
 		const sequence = new Set(this.props.values);
 
 		if (sequence.has(id)) {

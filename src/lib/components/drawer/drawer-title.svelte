@@ -22,7 +22,7 @@
 	}: SlideoverTitleProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const titleProps = $derived({
-		...bond?.title(),
+		...bond?.title().spread,
 		...restProps
 	});
 </script>

@@ -1,12 +1,11 @@
 <script
 	lang="ts"
-	generics="D, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
+	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { MenuItemController, type MenuItemControllerProps } from './controller.svelte';
+	import { MenuItemAtom, type MenuItemAtomProps } from './bond.svelte';
 	import { MenuBond } from '../bond.svelte';
-	import { List } from '../../list';
+	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { MenuItemProps } from './types';
 
 	const menu = MenuBond.get();
@@ -15,53 +14,45 @@
 		throw new Error('<MenuItem> must be used within a <Menu>.');
 	}
 
-	const ID = $props.id();
-
 	let {
 		class: klass = '',
-		id = ID,
+		id,
 		preset: presetKey = 'menu.item',
+		disabled = undefined,
 		children = undefined,
 		onclick = undefined,
-		disabled = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
-		factory = _factory,
 		...restProps
 	}: MenuItemProps = $props();
 
-	const controller = factory().share();
+	// Create reactive props object for the atom
+	const itemProps = $derived<MenuItemAtomProps>({
+		id: id ?? '',
+		disabled
+	});
 
-	const itemProps = $derived({
-		...menu?.item?.(),
-		...controller?.elementProps(),
+	// Create the atom instance
+	const atom = new MenuItemAtom<typeof menu>(() => itemProps, menu);
+
+	// Derived reactive properties
+	const isHighlighted = $derived(atom.isHighlighted);
+
+	// Merge atom attrs with custom props
+	const itemAttrs = $derived({
+		...atom.attrs,
 		...restProps
 	});
 
-	$effect(() => {
+	// Register item with menu state and handle mounting
+	$effect.pre(() => {
+		menu.state.registerItem(id ?? '', atom as any);
+
+		const unmount = atom.mount();
 		return () => {
-			controller.destroy();
+			unmount?.();
+			atom.unmount();
+			menu.state.unregisterItem(id ?? '');
 		};
 	});
-
-	function _factory() {
-		const item = menu?.state?.item?.(id);
-
-		if (item) {
-			return item as MenuItemController;
-		}
-
-		const bondProps = defineState<MenuItemControllerProps>([defineProperty('id', () => id)]);
-		const controller = new MenuItemController(() => bondProps);
-
-		controller.mount();
-
-		return controller;
-	}
 
 	function handleClick(ev: MouseEvent) {
 		onclick?.(ev);
@@ -72,32 +63,25 @@
 
 		ev.preventDefault();
 
-		controller?.menu?.state.close();
+		atom.close();
 	}
 
 	export function getController() {
-		return controller;
+		return atom;
 	}
 </script>
 
-<List.Item
-	bond={controller}
+<HtmlAtom
 	preset={presetKey}
 	class={[
 		'border-border last:border-b-none hover:bg-foreground/5 active:bg-foreground/10 outline-primary cursor-pointer border-b',
 		'$preset',
 		klass
-	]}
-	onmount={onmount?.bind(controller) as any}
-	ondestroy={ondestroy?.bind(controller) as any}
-	enter={enter?.bind(controller) as any}
-	exit={exit?.bind(controller) as any}
-	initial={initial?.bind(controller) as any}
-	animate={animate?.bind(controller) as any}
-	aria-disabled={disabled ? true : undefined}
-	tabIndex={disabled ? -1 : 0}
+	]
+		.filter(Boolean)
+		.join(' ')}
+	{...itemAttrs}
 	onclick={handleClick}
-	{...itemProps}
 >
-	{@render children?.({ menuItem: controller })}
-</List.Item>
+	{@render children?.({ menuItem: atom })}
+</HtmlAtom>

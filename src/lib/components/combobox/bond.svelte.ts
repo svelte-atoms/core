@@ -4,7 +4,7 @@ import {
 	DropdownBondState,
 	type DropdownStateProps
 } from '$svelte-atoms/core/components/dropdown/bond.svelte';
-import { createAttachmentKey } from 'svelte/attachments';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
@@ -17,6 +17,50 @@ export type ComboboxBondElements = PopoverDomElements & {
 	input: HTMLInputElement;
 };
 
+class ComboboxControlAtom extends BondAtom<ComboboxBond, HTMLInputElement> {
+	constructor(bond: ComboboxBond) {
+		super(bond, 'input');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		return {
+			...super.attrs,
+			role: 'combobox' as const,
+			'aria-autocomplete': 'list' as const,
+			'aria-expanded': bond.state.props.open ?? false,
+			'aria-controls': `overlay-${bond.id}`,
+			'aria-activedescendant': bond.state.selections.at(0)?.id
+				? `item-${bond.state.selections.at(0)?.id}`
+				: undefined,
+			'aria-disabled': bond.state.props.disabled ?? false,
+			tabindex: bond.state.props.disabled ? -1 : 0
+		};
+	}
+
+	override get handlers() {
+		const bond = this.bond;
+		const isMultiselect = bond.state.props.multiple ?? false;
+		return {
+			oninput: () => {
+				if (!isMultiselect) {
+					bond.state.props.values = [];
+				}
+			},
+			onkeydown: (ev: KeyboardEvent) => {
+				if (bond.state.props.disabled) return;
+
+				if (ev.key === 'Enter' && isMultiselect) {
+					const currentTarget = ev.currentTarget as HTMLInputElement;
+					const value = currentTarget.value.trim();
+					if (value !== '') {
+						bond.state.addSelection(value);
+					}
+				}
+			}
+		};
+	}
+}
+
 export class ComboboxBond extends DropdownBond<
 	ComboboxBondProps,
 	ComboboxBondState,
@@ -27,40 +71,7 @@ export class ComboboxBond extends DropdownBond<
 	}
 
 	control() {
-		const isMultiselect = this.state.props.multiple ?? false;
-
-		return {
-			'data-atom': `trigger-${this.id}`,
-			'data-kind': 'combobox-input',
-			role: 'combobox',
-			'aria-autocomplete': 'list',
-			'aria-expanded': this.state.props.open ?? false,
-			'aria-controls': `overlay-${this.id}`,
-			'aria-activedescendant': this.state.selections.at(0)?.id
-				? `item-${this.state.selections.at(0)?.id}`
-				: undefined,
-			'aria-disabled': this.state.props.disabled ?? false,
-			tabindex: this.state.props.disabled ? -1 : 0,
-			oninput: () => {
-				if (!isMultiselect) {
-					this.state.props.values = [];
-				}
-			},
-			onkeydown: (ev: KeyboardEvent) => {
-				if (this.state.props.disabled) return;
-
-				if (ev.key === 'Enter' && isMultiselect) {
-					const currentTarget = ev.currentTarget as HTMLInputElement;
-					const value = currentTarget.value.trim();
-					if (value !== '') {
-						this.state.addSelection(value);
-					}
-				}
-			},
-			[createAttachmentKey()]: (node: HTMLInputElement) => {
-				this.elements.input = node;
-			}
-		};
+		return this.atom('input', () => new ComboboxControlAtom(this));
 	}
 
 	static get(): ComboboxBond | undefined {

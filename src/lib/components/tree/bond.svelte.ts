@@ -1,6 +1,10 @@
-import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { untrack } from 'svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
@@ -17,6 +21,63 @@ export type TreeBondElements = {
 	indicator: HTMLElement;
 };
 
+class TreeRootAtom extends BondAtom<TreeBond, HTMLElement> {
+	constructor(bond: TreeBond) {
+		super(bond, 'root');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const props = untrack(() => bond.state?.props);
+		const isOpen = props?.open ?? false;
+		const isDisabled = props?.disabled ?? false;
+
+		return {
+			...super.attrs,
+			'aria-labelledby': `tree-header-${bond.id}`,
+			'aria-expanded': isOpen,
+			'aria-disabled': isDisabled
+		};
+	}
+}
+
+class TreeHeaderAtom extends BondAtom<TreeBond, HTMLElement> {
+	constructor(bond: TreeBond) {
+		super(bond, 'header');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		const isButtonElement = isBrowser() ? bond.elements.header instanceof HTMLButtonElement : false;
+		const role = untrack(() => (isButtonElement ? '' : 'button'));
+		const tabindex = !isButtonElement || bond.state.props.disabled ? -1 : 0;
+		return {
+			...super.attrs,
+			'aria-controls': `tree-body-${bond.id}`,
+			role,
+			tabindex
+		};
+	}
+}
+
+class TreeBodyAtom extends BondAtom<TreeBond, HTMLElement> {
+	constructor(bond: TreeBond) {
+		super(bond, 'body');
+	}
+	override get attrs() {
+		const bond = this.bond;
+		return {
+			...super.attrs,
+			role: 'group' as const,
+			'aria-controlled-by': `tree-header-${bond.id}`
+		};
+	}
+}
+
+class TreeIndicatorAtom extends BondAtom<TreeBond, HTMLElement> {
+	constructor(bond: TreeBond) {
+		super(bond, 'indicator');
+	}
+}
+
 export class TreeBond<
 	Props extends TreeBondProps = TreeBondProps,
 	State extends TreeBondState<Props> = TreeBondState<Props>,
@@ -24,12 +85,12 @@ export class TreeBond<
 > extends Bond<TreeBondProps, State, Elements> {
 	static CONTEXT_KEY = '@atoms/context/tree';
 
-	#parent?: typeof this;
+	#parent?: typeof this | undefined;
 
 	constructor(s: State) {
-		super(s);
+		super(s, 'tree');
 
-		this.#parent = TreeBond.get();
+		this.#parent = TreeBond.get() as typeof this | undefined;
 	}
 
 	get parent() {
@@ -40,64 +101,20 @@ export class TreeBond<
 		return TreeBond.set(this) as this;
 	}
 
-	root(props: Record<string, unknown> = {}) {
-		const isOpen = this.state.props.open ?? false;
-		const isDisabled = this.state.props.disabled ?? false;
-
-		return {
-			id: `tree-${this.id}`,
-			'aria-labelledby': `tree-header-${this.id}`,
-			'aria-expanded': isOpen,
-			'aria-disabled': isDisabled,
-			'aria-label': props['aria-label'],
-			'data-kind': 'tree',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+	root() {
+		return this.atom('root', () => new TreeRootAtom(this));
 	}
 
-	header(props: Record<string, unknown> = {}) {
-		const isButtonElement = isBrowser() ? this.elements.header instanceof HTMLButtonElement : false;
-		const role = untrack(() => {
-			return isButtonElement ? '' : 'button';
-		});
-		const tabindex = !isButtonElement || this.state.props.disabled ? -1 : 0;
-
-		return {
-			id: `tree-header-${this.id}`,
-			'aria-controls': `tree-body-${this.id}`,
-			'data-kind': 'tree-header',
-			role: role,
-			tabindex: tabindex,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		};
+	header() {
+		return this.atom('header', () => new TreeHeaderAtom(this));
 	}
 
-	body(props: Record<string, unknown> = {}) {
-		return {
-			id: `tree-body-${this.id}`,
-			'data-kind': 'tree-body',
-			role: 'group',
-			'aria-controlled-by': `tree-header-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+	body() {
+		return this.atom('body', () => new TreeBodyAtom(this));
 	}
 
-	indicator(props: Record<string, unknown> = {}) {
-		return {
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.indicator = node;
-			}
-		};
+	indicator() {
+		return this.atom('indicator', () => new TreeIndicatorAtom(this));
 	}
 
 	static get(): TreeBond | undefined {

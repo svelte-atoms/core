@@ -19,7 +19,7 @@
 	}: DialogContentProps<E, B> = $props();
 
 	const dialogProps = $derived({
-		...bond?.content({}),
+		...bond?.content().spread,
 		...restProps
 	});
 </script>

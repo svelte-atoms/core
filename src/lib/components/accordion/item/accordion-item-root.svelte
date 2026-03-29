@@ -8,6 +8,7 @@
 		type AccordionItemBondProps
 	} from './bond.svelte';
 	import type { AccordionItemRootProps } from './types';
+	import { untrack } from 'svelte';
 
 	let {
 		class: klass = '',
@@ -31,12 +32,12 @@
 		defineProperty('disabled', () => disabled),
 		defineProperty('value', () => value)
 	]);
-	const bond = factory(accordionItemProps).share();
+	const bond = untrack(()=> factory(accordionItemProps)).share();
 
 	bond.state.mount();
 
 	const rootProps = $derived({
-		...bond.root(),
+		...bond.root().spread,
 		...restProps
 	});
 

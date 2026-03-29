@@ -18,7 +18,7 @@
 	}: CollapsibleHeaderProps<E, B> = $props();
 
 	const collapsibleProps = $derived({
-		...bond?.header(),
+		...bond?.header().spread,
 		...restProps
 	});
 </script>

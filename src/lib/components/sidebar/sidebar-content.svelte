@@ -19,7 +19,7 @@
 	}: SidebarRootProps<E, B> = $props();
 
 	const contentProps = $derived({
-		...bond?.content(),
+		...bond?.content().spread,
 		...restProps
 	});
 </script>

@@ -19,6 +19,9 @@ export { dropdownMenu } from './attachments.svelte';
 export {
 	DropdownMenuBond,
 	DropdownMenuBondState,
+	DropdownMenuContentAtom,
+	DropdownMenuTriggerAtom,
+	DropdownMenuItemAtom,
 	type DropdownMenuBondProps,
 	type DropdownMenuBondElements
 } from './bond.svelte';

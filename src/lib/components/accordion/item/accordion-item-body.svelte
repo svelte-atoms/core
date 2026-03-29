@@ -21,11 +21,13 @@
 	}: AccordionItemBodyProps<E, B> = $props();
 
 	const bodyProps = $derived({
-		...bond?.body(),
+		...bond?.body().spread,
 		...restProps
 	});
 </script>
 
+<!-- TODO: refactor conditional rendering using snippet based -->
+ 
 {#if isOpen}
 	<HtmlAtom
 		{preset}

@@ -18,7 +18,7 @@
 	const bond = DialogBond.get();
 
 	const footerProps = $derived({
-		...bond?.footer({}),
+		...bond?.footer().spread,
 		...restProps
 	});
 </script>

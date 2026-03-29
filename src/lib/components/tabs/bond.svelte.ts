@@ -1,10 +1,13 @@
-import { SvelteMap } from 'svelte/reactivity';
-import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import type { TabBond } from './tab/bond.svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import type { Snippet } from 'svelte';
+import { SvelteMap } from 'svelte/reactivity';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
+import type { TabBond } from './tab/bond.svelte';
 
 export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -25,64 +28,69 @@ export type TabContentSnippet = {
 	children: Snippet<[{ tab?: TabBond }]>;
 };
 
-const TABS_ELEMENTS_KIND = {
-	root: 'tabs-root',
-	content: 'tabs-content',
-	header: 'tabs-header',
-	body: 'tabs-body'
-};
+export class TabsRootAtom extends BondAtom<TabsBond> {
+	constructor(bond: TabsBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'aria-orientation': 'horizontal' as const
+		};
+	}
+}
+
+export class TabsHeaderAtom extends BondAtom<TabsBond> {
+	constructor(bond: TabsBond) {
+		super(bond, 'header');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'tablist'
+		};
+	}
+}
+
+export class TabsBodyAtom extends BondAtom<TabsBond> {
+	constructor(bond: TabsBond) {
+		super(bond, 'body');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'group'
+		};
+	}
+}
 
 export class TabsBond<T = unknown> extends Bond<TabsBondProps, TabsBondState<T>, TabElements> {
 	static CONTEXT_KEY = '@atoms/bonds/tabs';
 
 	constructor(s: TabsBondState<T>) {
-		super(s);
+		super(s, 'tabs');
 	}
 
 	share(): this {
 		return TabsBond.set(this) as this;
 	}
 
-	root(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, TABS_ELEMENTS_KIND.root);
-
-		return {
-			id,
-			'aria-orientation': 'horizontal' as const,
-			'data-kind': TABS_ELEMENTS_KIND.root,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+	/** Handle for granular access to root attrs and attachment */
+	root() {
+		return this.atom('root', () => new TabsRootAtom(this));
 	}
 
-	header(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, TABS_ELEMENTS_KIND.header);
-
-		return {
-			id,
-			role: 'tablist',
-			'data-kind': TABS_ELEMENTS_KIND.header,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		};
+	/** Handle for granular access to header attrs and attachment */
+	header() {
+		return this.atom('header', () => new TabsHeaderAtom(this));
 	}
 
-	body(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, TABS_ELEMENTS_KIND.body);
-
-		return {
-			id,
-			role: 'group',
-			'data-kind': TABS_ELEMENTS_KIND.body,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+	/** Handle for granular access to body attrs and attachment */
+	body() {
+		return this.atom('body', () => new TabsBodyAtom(this));
 	}
 
 	static get(): TabsBond | undefined {
@@ -96,7 +104,10 @@ export class TabsBond<T = unknown> extends Bond<TabsBondProps, TabsBondState<T>,
 
 export class TabsBondState<T> extends BondState<TabsBondProps> {
 	#items: Map<string, TabBond<T>> = new SvelteMap();
-	#tabContents: SvelteMap<string, Snippet<[Record<string, unknown>]>> = new SvelteMap();
+	#tabContents: SvelteMap<
+		string,
+		{ value: string; render: Snippet<[Record<string, unknown>]>; props: Record<string, unknown> }
+	> = new SvelteMap();
 	#selectedItem = $derived(
 		this.props?.value ? this.#items.get(this.props?.value) : undefined
 	) as TabBond<T>;
@@ -107,6 +118,10 @@ export class TabsBondState<T> extends BondState<TabsBondProps> {
 
 	get selectedItem() {
 		return this.#selectedItem;
+	}
+
+	get tabContents() {
+		return this.#tabContents.values();
 	}
 
 	get activeTabContent() {
@@ -135,8 +150,14 @@ export class TabsBondState<T> extends BondState<TabsBondProps> {
 		this.props.value = undefined;
 	}
 
-	registerTabContent(id: string, content: Snippet<[Record<string, unknown>]>) {
-		this.#tabContents.set(id, content);
+	registerTabContent(
+		id: string,
+		content: { render: Snippet<[Record<string, unknown>]>; props: Record<string, unknown> }
+	) {
+		this.#tabContents.set(id, {
+			value: id,
+			...content
+		});
 	}
 
 	unregisterTabContent(id: string) {

@@ -3,7 +3,7 @@
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
-	import type { Snippet } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 
 	const tabsBond = TabsBond.get();
 
@@ -31,7 +31,7 @@
 		defineProperty('data', () => data)
 	]);
 
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps)).share();
 
 	const unmount = bond.mount();
 	$effect.pre(() => unmount);

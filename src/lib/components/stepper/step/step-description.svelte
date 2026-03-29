@@ -18,7 +18,7 @@
 	}: StepDescriptionProps<E, B> = $props();
 
 	const descriptionProps = $derived({
-		...bond?.description(),
+		...bond?.description().spread,
 		...restProps
 	});
 </script>

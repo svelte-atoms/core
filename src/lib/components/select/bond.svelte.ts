@@ -1,12 +1,15 @@
 import { untrack } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
+import { SvelteMap } from 'svelte/reactivity';
 import {
 	DropdownMenuBond,
 	DropdownMenuBondState,
+	DropdownMenuContentAtom,
+	// DropdownMenuItemAtom,
 	type DropdownMenuBondElements,
 	type DropdownMenuBondProps
 } from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import type { SelectItemController } from './item/controller.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import type { SelectItemAtom } from './item/bond.svelte';
 
 export type SelectStateProps = DropdownMenuBondProps & {
 	values?: string[];
@@ -30,74 +33,106 @@ const SELECT_ELEMENTS_KIND: Record<keyof SelectBondElements, string> = {
 	indicator: 'popover-indicator'
 };
 
-export class SelectBond<
-	Props extends SelectStateProps = SelectStateProps,
-	State extends SelectBondState<Props> = SelectBondState<Props>,
-	Elements extends SelectBondElements = SelectBondElements
-> extends DropdownMenuBond<Props, State, Elements> {
-	constructor(state: State) {
-		super(state);
+class SelectContentAtom extends DropdownMenuContentAtom {
+	constructor(bond: SelectBond) {
+		super(bond);
 	}
+	declare protected bond: SelectBond;
 
-	content() {
-		const isMultiselect = this.state.props.multiple ?? false;
-		const highlightedId = this.state.highlightedItem?.id;
+	override get attrs() {
+		const isMultiselect = untrack(() => this.bond.state.props).multiple ?? false;
+		const highlightedId = this.bond.state.highlightedItem?.id;
 
 		return {
-			...super.content(),
-			role: 'listbox',
+			...super.attrs,
+			role: 'listbox' as const,
 			'aria-multiselectable': isMultiselect,
 			'aria-activedescendant': highlightedId ? `item-${highlightedId}` : undefined,
 			'aria-orientation': 'vertical' as const
 		};
 	}
+}
 
-	item() {
+// class SelectItemAtom extends DropdownMenuItemAtom<SelectBond> {
+// 	constructor(bond: SelectBond) {
+// 		super(bond);
+// 	}
+// 	declare protected bond: SelectBond;
+
+// 	override get attrs() {
+// 		return {
+// 			...super.attrs,
+// 			role: 'option' as const
+// 		};
+// 	}
+// }
+
+class SelectPlaceholderAtom extends BondAtom<SelectBond, HTMLElement> {
+	constructor(bond: SelectBond) {
+		super(bond, 'placeholder');
+	}
+	override get attrs() {
 		return {
-			...super.item(),
-			role: 'option'
+			...super.attrs,
+			role: 'group' as const
 		};
+	}
+}
+
+export class SelectBond<
+	Props extends SelectStateProps = SelectStateProps,
+	State extends SelectBondState<Props, any> = SelectBondState<Props, any>,
+	Elements extends SelectBondElements = SelectBondElements,
+	ItemData = unknown
+> extends DropdownMenuBond<Props, State, Elements> {
+	declare state: State & SelectBondState<Props, ItemData>;
+
+	constructor(state: State) {
+		super(state);
+	}
+
+	override content() {
+		return this.atom('content', () => new SelectContentAtom(this));
+	}
+
+	override item() {
+		return this.atom('item', () => new SelectItemAtom(this));
 	}
 
 	placeholder() {
-		const id = [SELECT_ELEMENTS_KIND.placeholder, this.id].join('-');
-
-		return {
-			id,
-			role: 'group',
-			'data-atom': 'select',
-			'data-kind': 'placeholder',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.placeholder = node;
-			}
-		};
+		return this.atom('placeholder', () => new SelectPlaceholderAtom(this));
 	}
 
 	static get<
 		Props extends SelectStateProps = SelectStateProps,
-		State extends SelectBondState<Props> = SelectBondState<Props>,
-		Elements extends SelectBondElements = SelectBondElements
-	>(): SelectBond<Props, State, Elements> | undefined {
-		return DropdownMenuBond.get() as SelectBond<Props, State, Elements> | undefined;
+		State extends SelectBondState<Props, any> = SelectBondState<Props, any>,
+		Elements extends SelectBondElements = SelectBondElements,
+		ItemData = unknown
+	>(): SelectBond<Props, State, Elements, ItemData> | undefined {
+		return DropdownMenuBond.get() as SelectBond<Props, State, Elements, ItemData> | undefined;
 	}
 
 	static set<
 		Props extends SelectStateProps = SelectStateProps,
-		State extends SelectBondState<Props> = SelectBondState<Props>,
-		Elements extends SelectBondElements = SelectBondElements
-	>(context: SelectBond<Props, State, Elements>): SelectBond<Props, State, Elements> {
-		return DropdownMenuBond.set(context) as SelectBond<Props, State, Elements>;
+		State extends SelectBondState<Props, any> = SelectBondState<Props, any>,
+		Elements extends SelectBondElements = SelectBondElements,
+		ItemData = unknown
+	>(
+		context: SelectBond<Props, State, Elements, ItemData>
+	): SelectBond<Props, State, Elements, ItemData> {
+		return DropdownMenuBond.set(context) as SelectBond<Props, State, Elements, ItemData>;
 	}
 }
 
 export class SelectBondState<
-	Props extends SelectStateProps = SelectStateProps
+	Props extends SelectStateProps = SelectStateProps,
+	ItemData = unknown
 > extends DropdownMenuBondState<Props> {
+	#selectItems: Map<string, SelectItemAtom<ItemData>> = new SvelteMap();
+
 	#selections = $derived(
-		this.props.values
-			?.map((value) => this.items.get(value) as unknown as SelectItemController<unknown>)
-			.filter(Boolean) ?? []
-	) as SelectItemController<unknown>[];
+		this.props.values?.map((value) => this.#selectItems.get(value)).filter(Boolean) ?? []
+	) as SelectItemAtom<ItemData>[];
 
 	constructor(props: () => Props) {
 		super(props);
@@ -105,6 +140,14 @@ export class SelectBondState<
 
 	get selections() {
 		return this.#selections;
+	}
+
+	registerItem(value: string, atom: SelectItemAtom<ItemData>) {
+		this.#selectItems.set(value, atom);
+	}
+
+	unregisterItem(value: string) {
+		this.#selectItems.delete(value);
 	}
 
 	select(ids: string[]) {

@@ -1,11 +1,11 @@
-import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
 import {
 	Bond,
 	BondState,
+	BondAtom,
 	type BondElements,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte.js';
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type PortalStateProps = BondStateProps & {
 	id: string;
@@ -17,51 +17,52 @@ export type PortalElements = BondElements & {
 	inner?: HTMLElement;
 };
 
-const PORTAL_ELEMENTS_KIND = {
-	root: 'portal-root',
-	inner: 'portal-inner'
-};
+export class PortalRootAtom extends BondAtom<PortalBond, HTMLElement> {
+	constructor(bond: PortalBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			id: this.bond.id
+		};
+	}
+}
+
+export class PortalInnerAtom extends BondAtom<PortalBond, HTMLElement> {
+	constructor(bond: PortalBond) {
+		super(bond, 'inner');
+	}
+}
 
 export class PortalBond extends Bond<PortalStateProps, PortalState, PortalElements> {
 	static CONTEXT_KEY = '@atoms/context/portal';
 
 	constructor(atom: PortalState) {
-		super(atom);
+		super(atom, 'portal');
 	}
 
 	get targetElement() {
-		return this.elements.inner ?? this.elements.root;
+		return this.element<HTMLElement>('inner') ?? this.element<HTMLElement>('root');
 	}
 
-	root(props: Record<string, unknown> = {}) {
-		return {
-			id: this.id,
-			'data-kind': PORTAL_ELEMENTS_KIND.root,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+	root() {
+		return this.atom('root', () => new PortalRootAtom(this));
 	}
 
-	inner(props: Record<string, unknown> = {}) {
-		return {
-			'data-kind': PORTAL_ELEMENTS_KIND.inner,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.inner = node;
-			}
-		};
+	inner() {
+		return this.atom('inner', () => new PortalInnerAtom(this));
 	}
 
 	share(): this {
 		return PortalBond.set(this) as this;
 	}
 
-	destroy(): void {
+	override destroy(): void {
 		super.destroy();
-		this.elements.inner?.remove();
-		this.elements.root?.remove();
+		this.element<HTMLElement>('inner')?.remove();
+		this.element<HTMLElement>('root')?.remove();
 	}
 
 	static get(): PortalBond | undefined {

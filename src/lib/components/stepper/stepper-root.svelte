@@ -12,12 +12,6 @@
 		class: klass = '',
 		children = undefined,
 		factory = _factory as Factory<StepperBond>,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		preset = 'stepper' as const,
 		...restProps
 	}: StepperRootProps<E, B> = $props();
@@ -37,7 +31,7 @@
 	const bond = factory(bondProps).share();
 
 	const rootProps = $derived({
-		...bond.root(),
+		...bond.root().spread,
 		...restProps
 	});
 

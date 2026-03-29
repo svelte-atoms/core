@@ -1,7 +1,11 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { createAttachmentKey } from 'svelte/attachments';
 import type { StepBond } from './step/bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { getContext, setContext } from 'svelte';
 import type { Snippet } from 'svelte';
 
@@ -20,11 +24,23 @@ export type StepContentSnippet = {
 	children: Snippet<[{ step?: StepBond }]>;
 };
 
+export class StepperRootAtom extends BondAtom<StepperBond> {
+	constructor(bond: StepperBond) {
+		super(bond, 'root');
+	}
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'group' as const
+		};
+	}
+}
+
 export class StepperBond extends Bond<StepperStateProps, StepperState, StepperElements> {
 	static CONTEXT_KEY = '@atoms/context/stepper';
 
 	constructor(s: StepperState) {
-		super(s);
+		super(s, 'stepper');
 	}
 
 	share(): this {
@@ -32,14 +48,7 @@ export class StepperBond extends Bond<StepperStateProps, StepperState, StepperEl
 	}
 
 	root() {
-		return {
-			'data-atom': this.id ?? '',
-			id: `stepper-${this.id}`,
-			role: 'group',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new StepperRootAtom(this));
 	}
 
 	static get(): StepperBond | undefined {
@@ -53,7 +62,10 @@ export class StepperBond extends Bond<StepperStateProps, StepperState, StepperEl
 
 export class StepperState extends BondState<StepperStateProps> {
 	#steps: SvelteMap<number, StepBond> = new SvelteMap();
-	#stepContents: SvelteMap<number, { props: Record<string, unknown>, children: Snippet<[{ step?: StepBond }]> }> = new SvelteMap();
+	#stepContents: SvelteMap<
+		number,
+		{ props: Record<string, unknown>; children: Snippet<[{ step?: StepBond }]> }
+	> = new SvelteMap();
 	#totalSteps = $state(0);
 
 	constructor(props: () => StepperStateProps) {
@@ -107,7 +119,7 @@ export class StepperState extends BondState<StepperStateProps> {
 					}
 				}
 			}
-		}
+		};
 	}
 
 	mountStep(index: number, step: StepBond) {
@@ -124,7 +136,11 @@ export class StepperState extends BondState<StepperStateProps> {
 		return this.#steps.get(index);
 	}
 
-	registerStepContent(index: number, props: Record<string, unknown>, children: Snippet<[{ step?: StepBond }]>) {
+	registerStepContent(
+		index: number,
+		props: Record<string, unknown>,
+		children: Snippet<[{ step?: StepBond }]>
+	) {
 		this.#stepContents.set(index, { props, children });
 	}
 

@@ -6,6 +6,11 @@ export {
 	type PopoverParams,
 	PopoverState,
 	type PopoverStateProps,
-	type TriggerParams
+	type TriggerParams,
+	PopoverTriggerAtom,
+	PopoverContentAtom,
+	PopoverArrowAtom,
+	PopoverIndicatorAtom
 } from './bond.svelte';
+export { popoverPositioning } from './behaviors/positioning';
 export * from './types';

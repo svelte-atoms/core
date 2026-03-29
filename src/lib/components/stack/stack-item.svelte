@@ -3,27 +3,34 @@
 	import { StackBond } from './bond.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { ElementType } from '$svelte-atoms/core/components/atom';
-	import { untrack } from 'svelte';
 
 	type Element = ElementType<E>;
 
 	const bond = StackBond.get();
 
-	const ID = $props.id();
+	if (!bond) {
+		throw new Error('Stack.Item must be used within a Stack.Root component.');
+	}
+
 	let {
 		class: klass = '',
-		id = ID,
+		value,
 		children,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { id?: string } = $props();
+	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { value: string } = $props();
 
 	$effect.pre(() => {
-		untrack(()=> bond?.state.register(id));
-		return () => bond?.state.unregister(id);
+		if(!bond) return;
+
+		bond.state.register(value)
+
+		return () => {
+			bond.state.unregister(value)
+		};
 	});
 
 	const itemProps = $derived({
-		...bond?.item(id),
+		...bond?.item(value).spread,
 		...restProps
 	});
 </script>

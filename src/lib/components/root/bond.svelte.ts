@@ -1,7 +1,7 @@
 import { SvelteMap } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
-import type { PortalBond } from '../portal/bond.svelte.js';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import type { PortalBond } from '../portal/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import type { Component } from 'svelte';
 
 export type RootStateProps<T extends Record<string, unknown> = Record<string, unknown>> =

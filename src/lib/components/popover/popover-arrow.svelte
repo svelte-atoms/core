@@ -1,11 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { HTMLAttributes } from 'svelte/elements';
 	import { animate as motion } from 'motion';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from './bond.svelte';
 	import type { PopoverArrowProps } from './types';
-
-	type Element = HTMLElementTagNameMap[E];
 
 	const bond = PopoverBond.get();
 
@@ -16,23 +13,18 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
 		animate = _animate,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
-	}: PopoverArrowProps<E, B> & HTMLAttributes<Element> = $props();
+	}: PopoverArrowProps<E, B> = $props();
 
 	const position = $derived(bond.state.position);
 	const middlewareArrowData = $derived(position?.middlewareData?.arrow);
 	const side = $derived(position?.placement?.split('-')[0] ?? 'top');
 
 	const arrowProps = $derived({
-		...bond.arrow(),
+		...bond.arrow().spread,
 		...restProps
-	});
+	} as Record<string, unknown>);
 
 	// Rotation based on placement side
 	const rotation = $derived.by(() => {
@@ -84,12 +76,7 @@
 	{bond}
 	preset="popover.arrow"
 	class={['text-border border-border pointer-events-none absolute opacity-0', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	style="{side}: 100%;"
 	{...arrowProps}
 >

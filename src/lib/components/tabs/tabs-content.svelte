@@ -10,20 +10,22 @@
 		...restProps
 	}: TabsContentProps<E, B> = $props();
 	
-	const activeTabBody = $derived(bond?.state?.activeTabContent);
+	const value = $derived(bond?.state?.props.value);
+	const items = $derived(Array.from(bond?.state?.tabContents ?? []));
 
-	const content = $derived(activeTabBody && bond ? item : undefined)
 	const contentProps = $derived({
 		preset,
 		...restProps
 	});
 </script>
 
-{#snippet item()}
-	<!-- Render teleported tab content -->
-	{@render activeTabBody?.(contentProps)}
-{/snippet}
+{#each items as item (item.value)}
+   {@render item.render({
+		...(item.props ?? {}),
+		...(value === item.value ? {} : {children: undefined}),
+		...contentProps
+   })}
+{/each}
 
-{@render content?.()}
 
 

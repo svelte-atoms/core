@@ -1,7 +1,7 @@
 import { SvelteMap } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
-import type { PortalBond } from '../bond.svelte.js';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import type { PortalBond } from '../bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 export type PortalsStateProps = BondStateProps & {
 	id: string;
@@ -12,7 +12,7 @@ export class PortalsBond extends Bond<PortalsStateProps, PortalsState> {
 	static CONTEXT_KEY = '@atoms/context/portals';
 
 	constructor(bond: PortalsState) {
-		super(bond);
+		super(bond, 'portals');
 	}
 
 	share() {

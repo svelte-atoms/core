@@ -26,7 +26,7 @@
 	});
 
 	const selections = $derived.by(() => {
-		isMounted; // ensure re-computation after mount
+		void isMounted; // ensure re-computation after mount
 
 		if (getSelections) {
 			return getSelections(bond);
@@ -39,7 +39,7 @@
 				return controller.label;
 			},
 			unselect() {
-				controller.unselectValue();
+				controller.unselect();
 			},
 			get createdAt() {
 				return controller.createdAt;

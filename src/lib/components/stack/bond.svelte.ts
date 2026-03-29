@@ -1,6 +1,10 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-import { getContext, setContext } from 'svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
+import { getContext, setContext, tick, untrack } from 'svelte';
 
 export type StackStateProps = BondStateProps & {
 	value?: string;
@@ -10,6 +14,39 @@ export type StackStateProps = BondStateProps & {
 export type StackElements = {
 	root?: HTMLElement;
 };
+
+export class StackRootAtom extends BondAtom<StackBond> {
+	constructor(bond: StackBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'data-atom': this.bond.id ?? '',
+			'data-kind': 'stack-root'
+		};
+	}
+}
+
+export class StackItemAtom extends BondAtom<StackBond> {
+	#value: string;
+
+	constructor(bond: StackBond, value: string) {
+		super(bond, `item-${value}`);
+		this.#value = value;
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'data-atom': this.bond.id ?? '',
+			'data-kind': 'stack-item',
+			'data-stack-item': this.#value,
+			style: `z-index: ${this.bond.state.getZIndex(this.#value)}`
+		};
+	}
+}
 
 export class StackBond extends Bond<StackStateProps, StackState, StackElements> {
 	static CONTEXT_KEY = '@atoms/context/stack';
@@ -23,27 +60,11 @@ export class StackBond extends Bond<StackStateProps, StackState, StackElements> 
 	}
 
 	root() {
-		return {
-			'data-atom': this.id ?? '',
-			'data-kind': 'stack-root',
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new StackRootAtom(this));
 	}
 
-	item(id: string) {
-		const state = this.state;
-
-		return {
-			'data-atom': this.id ?? '',
-			'data-kind': 'stack-item',
-			'data-stack-item': id,
-			get style() {
-				return `z-index: ${state.getZIndex(id)}`;
-			},
-			[createAttachmentKey()]: () => {}
-		};
+	item(value: string) {
+		return this.atom(`item-${value}`, () => new StackItemAtom(this, value));
 	}
 
 	static get(): StackBond | undefined {
@@ -62,86 +83,111 @@ export class StackState extends BondState<StackStateProps> {
 		super(props);
 	}
 
-	register(id: string) {
-		if (!this.#order.find((item) => item.id === id)) {
+	register(value: string) {
+		const order = untrack(() => this.#order);
+		if (!order.find((item) => item.id === value)) {
 			// Start z-index at 1 so items are always above the stacking context baseline
-			this.#order = [...this.#order, { id, index: this.#order.length + 1 }];
+			this.#order = [...order, { id: value, index: order.length + 1 }];
 		}
 	}
 
-	unregister(id: string) {
-		this.#order = this.#order.filter((i) => i.id !== id);
+	unregister(value: string) {
+		const order = untrack(() => this.#order);
+		tick().then(() => {
+			this.#order = order.filter((i) => i.id !== value);
+		});
 	}
 
-	raise(id: string) {
-		this.bringToFront(id);
+	raise(value: string) {
+		this.bringToFront(value);
 	}
 
-	bringToFront(id: string) {
-		const item = this.#order.find((item) => item.id === id);
+	bringToFront(value: string) {
+		const order = untrack(() => this.#order);
+		const item = order.find((item) => item.id === value);
+
 		if (!item) return;
 
-		this.#order = [...this.#order]
+		this.#order = [...order]
 			.sort((a, b) => {
-				if (a.id === id) return 1;
-				if (b.id === id) return -1;
+				if (a.id === value) return 1;
+				if (b.id === value) return -1;
 				return a.index - b.index;
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
+
+		const topValue = order.at(-1)?.id;
+		if (topValue) {
+			this.props.value = topValue;
+		}
 	}
 
-	sendToBack(id: string) {
-		const item = this.#order.find((item) => item.id === id);
+	sendToBack(value: string) {
+		const order = untrack(() => this.#order);
+		const item = order.find((item) => item.id === value);
 		if (!item) return;
 
-		this.#order = [...this.#order]
+		this.#order = [...order]
 			.sort((a, b) => {
-				if (a.id === id) return -1;
-				if (b.id === id) return 1;
+				if (a.id === value) return -1;
+				if (b.id === value) return 1;
 				return a.index - b.index;
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
+
+		const topValue = order.at(-1)?.id;
+		if (topValue) {
+			this.props.value = topValue;
+		}
 	}
 
-	bringForward(id: string) {
-		const item = this.#order.find((i) => i.id === id);
+	bringForward(value: string) {
+		const order = untrack(() => this.#order);
+		const item = order.find((i) => i.id === value);
 		if (!item) return;
 
-		const neighbor = [...this.#order]
-			.sort((a, b) => a.index - b.index)
-			.find((i) => i.index > item.index);
+		const neighbor = [...order].sort((a, b) => a.index - b.index).find((i) => i.index > item.index);
 		if (!neighbor) return;
 
-		this.#order = [...this.#order]
+		this.#order = [...order]
 			.sort((a, b) => {
-				if (a.id === id && b.id === neighbor.id) return 1;
-				if (a.id === neighbor.id && b.id === id) return -1;
+				if (a.id === value && b.id === neighbor.id) return 1;
+				if (a.id === neighbor.id && b.id === value) return -1;
 				return a.index - b.index;
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
+
+		const topValue = order.at(-1)?.id;
+		if (topValue) {
+			this.props.value = topValue;
+		}
 	}
 
-	sendBackward(id: string) {
-		const item = this.#order.find((i) => i.id === id);
+	sendBackward(value: string) {
+		const order = untrack(() => this.#order);
+		const item = order.find((i) => i.id === value);
 		if (!item) return;
 
-		const neighbor = [...this.#order]
-			.sort((a, b) => b.index - a.index)
-			.find((i) => i.index < item.index);
+		const neighbor = [...order].sort((a, b) => b.index - a.index).find((i) => i.index < item.index);
 		if (!neighbor) return;
 
-		this.#order = [...this.#order]
+		this.#order = [...order]
 			.sort((a, b) => {
-				if (a.id === id && b.id === neighbor.id) return -1;
-				if (a.id === neighbor.id && b.id === id) return 1;
+				if (a.id === value && b.id === neighbor.id) return -1;
+				if (a.id === neighbor.id && b.id === value) return 1;
 				return a.index - b.index;
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
+
+		const topValue = order.at(-1)?.id;
+		if (topValue) {
+			this.props.value = topValue;
+		}
 	}
 
-	getZIndex(id: string): number {
-		const item = this.#order.find((item) => item.id === id);
-		return item ? item.index : -1;
+	getZIndex(value: string): number {
+		const item = this.#order.find((item) => item.id === value);
+		return item ? item.index : 0;
 	}
 
 	get items() {

@@ -1,7 +1,3 @@
-<script module lang="ts">
-	export type { TeleportProps } from './types';
-</script>
-
 <script lang="ts" generics="E extends HtmlElementTagName = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { TeleportProps } from './types';
@@ -21,7 +17,10 @@
 
 	const portalBond = $derived.by(() => {
 		if (typeof portal === 'string') {
-			return portalsBond?.state?.get(portal!) ?? rootBond?.state?.getPortal(portal!);
+			const p = portalsBond?.state.get(portal);
+			if(p) return p;
+
+			return rootBond?.state?.getPortal(portal!);
 		}
 
 		return portal;
@@ -29,7 +28,9 @@
 
 	const targetElement = $derived(portalBond?.targetElement);
 
-	function _port(node: HTMLElement) {
+	const ui = $derived(targetElement ? content : undefined);
+
+	function teleport(node: HTMLElement) {
 
 		const unport = port(node, targetElement);
 
@@ -37,8 +38,10 @@
 	}
 </script>
 
-{#if targetElement && portal}
-	<HtmlAtom {@attach _port} as={as as E} {base} {...restProps}>
+{#snippet content()}
+	<HtmlAtom {@attach teleport} as={as as E} {base} {...restProps}>
 		{@render children?.({ portal: portalBond })}
 	</HtmlAtom>
-{/if}
+{/snippet}
+
+{@render ui?.()}

@@ -1,21 +1,24 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
 	import { PortalBond, PortalsBond, Teleport } from '$svelte-atoms/core/components/portal';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion';
-	import type { AnimateParams, PopoverContentProps } from './types';
 	import { ZIndex } from '../portal/zindex';
-
-	type Element = HtmlElementType<E>;
+	import type { PopoverContentProps } from './types';
 
 	const bond = PopoverBond.get();
+
+	if (!bond) {
+		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
+	}
+
 	const positionStrategy = $derived(bond?.state.props.positionStrategy ?? 'absolute');
 
 	const zIndex = (()=> {
 		try {
 			return ZIndex.get();
-		} catch (err){
+		} catch {
 			return undefined;
 		}
 	})();
@@ -35,10 +38,6 @@
 
 		return portal ?? PortalBond.get();
 	})();
-
-	if (!bond) {
-		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
-	}
 
 	let {
 		class: klass = '',
@@ -83,7 +82,7 @@
 		};
 	}
 
-	function containerInitial(this: typeof bond.state, node: Element) {
+	function containerInitial(this: typeof bond.state, node: HTMLElement) {
 		const styles = calculatePosition();
 		
 		// Hide content until position is calculated to avoid ghosting
@@ -96,7 +95,7 @@
 		node.style.opacity = styles.opacity;
 	}
 
-	function containerAnimate(this: typeof bond.state, node: Element, _?: AnimateParams) {
+	function containerAnimate(this: typeof bond.state, node: HTMLElement) {
 		const styles = calculatePosition();
 		
 		if (!styles) {
@@ -115,7 +114,7 @@
 	style={`z-index: ${zIndex?.get?.() ?? 1}; position: ${positionStrategy};`}
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
-	{...bond.content({ engine: 'internal' })}
+	{...bond.content({ engine: 'internal' }).spread}
 >
 	<HtmlAtom
 		{bond}

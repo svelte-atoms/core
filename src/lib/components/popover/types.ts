@@ -1,43 +1,12 @@
 import type { Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
 import type { Factory } from '$svelte-atoms/core/types';
-import type { Override } from '$svelte-atoms/core/types';
 import type { PopoverBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { PortalBond } from '../portal';
 
-/**
- * Extend this interface to add custom popover root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverRootExtendProps {}
-
-/**
- * Extend this interface to add custom popover content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverContentExtendProps {}
-
-/**
- * Extend this interface to add custom popover indicator properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverIndicatorExtendProps {}
-
-/**
- * Extend this interface to add custom popover arrow properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverArrowExtendProps {}
-
-/**
- * Extend this interface to add custom popover trigger properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverTriggerExtendProps {}
-
-export interface PopoverRootProps extends PopoverRootExtendProps {
+export interface PopoverRootProps {
 	open?: boolean;
 	disabled?: boolean;
 	placements?: Placement[];
@@ -57,22 +26,30 @@ export interface AnimateParams {
 	open: boolean;
 }
 
-export interface PopoverContentProps<T extends HtmlElementTagName, B extends Base = Base>
-	extends HtmlAtomProps<T, B>, PopoverContentExtendProps {}
+export interface PopoverContentProps<
+	T extends HtmlElementTagName,
+	B extends Base = Base
+> extends HtmlAtomProps<T, B> {
+	children?: Snippet<[{ popover: PopoverBond }]>;
+}
 
 export interface PopoverIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, PopoverIndicatorExtendProps {}
+> extends HtmlAtomProps<E, B> {
+		children?: Snippet<[{ popover: PopoverBond }]>;
+}
 
 export interface PopoverArrowProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, PopoverArrowExtendProps {}
+> extends HtmlAtomProps<E, B> {
+	children?: Snippet<[{ popover: PopoverBond }]>;
+}
 
-export interface PopoverTriggerProps<T extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends HtmlAtomProps<T, B>, PopoverTriggerExtendProps {
+export interface PopoverTriggerProps<
+	T extends keyof HTMLElementTagNameMap,
+	B extends Base = Base
+> extends HtmlAtomProps<T, B> {
 	children?: Snippet<[{ popover?: PopoverBond }]>;
 }

@@ -1,7 +1,11 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
+import { getContext, setContext, untrack } from 'svelte';
 import { focusTrap, getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type DialogBondProps = BondStateProps & {
 	open: boolean;
@@ -25,184 +29,208 @@ export type DialogBondElements = {
 	trigger?: HTMLElement;
 };
 
-const DIALOG_ELEMENTS_KIND = {
-	root: 'dialog-root',
-	content: 'dialog-content',
-	header: 'dialog-header',
-	title: 'dialog-title',
-	description: 'dialog-description',
-	body: 'dialog-body',
-	footer: 'dialog-footer',
-	trigger: 'dialog-trigger'
-};
+export class DialogRootAtom extends BondAtom<DialogBond, HTMLDialogElement> {
+	#activeElement: Element | null = null;
+
+	constructor(bond: DialogBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		const titleId = getElementId(this.bond.id, 'dialog-title');
+		const descriptionId = getElementId(this.bond.id, 'dialog-description');
+		const isOpen = untrack(() => this.bond.state.props).open ?? false;
+
+		return {
+			...super.attrs,
+			role: 'dialog',
+			'aria-modal': true,
+			'aria-labelledby': titleId,
+			'aria-describedby': descriptionId,
+			inert: !isOpen ? '' : undefined,
+			'data-open': isOpen
+		};
+	}
+
+	override get handlers() {
+		return {
+			onkeydown: (ev: KeyboardEvent) => {
+				if (ev.key === 'Escape') {
+					ev.preventDefault();
+					this.bond.state.close();
+				}
+				focusTrap(ev);
+			}
+		};
+	}
+
+	override onmount(node: HTMLDialogElement) {
+		if (this.bond.state.props.open) {
+			this.#activeElement = document.activeElement;
+			requestAnimationFrame(() => {
+				const contentElement = this.bond.elements.content;
+				if (!contentElement) return;
+
+				const firstFocusable = contentElement.querySelector<HTMLElement>(
+					'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+				);
+
+				if (firstFocusable) {
+					firstFocusable.focus();
+				} else {
+					node.focus();
+				}
+			});
+		} else {
+			if (this.#activeElement instanceof HTMLElement) {
+				this.#activeElement.focus();
+			}
+		}
+	}
+}
+
+export class DialogContentAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'content');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'document'
+		};
+	}
+}
+
+export class DialogHeaderAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'header');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'banner'
+		};
+	}
+}
+
+export class DialogTitleAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'title');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'heading',
+			'aria-level': 2
+		};
+	}
+}
+
+export class DialogDescriptionAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'description');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs
+		};
+	}
+}
+
+export class DialogBodyAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'body');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'region',
+			'aria-live': 'polite'
+		};
+	}
+}
+
+export class DialogFooterAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'footer');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			role: 'contentinfo'
+		};
+	}
+}
+
+export class DialogTriggerAtom extends BondAtom<DialogBond> {
+	constructor(bond: DialogBond) {
+		super(bond, 'trigger');
+	}
+
+	override get handlers() {
+		return {
+			onclick: () => this.bond.state.toggle()
+		};
+	}
+}
 
 export class DialogBond<
 	State extends DialogBondState<DialogBondProps> = DialogBondState<DialogBondProps>
 > extends Bond<DialogBondProps, State, DialogBondElements> {
 	static CONTEXT_KEY = '@atoms/context/dialog';
 
-	#activeElement: Element | null = null;
-
 	constructor(s: State) {
-		super(s);
+		super(s, 'dialog');
 	}
 
 	share(): this {
 		return DialogBond.set(this) as this;
 	}
 
+	/** Handle for granular access to root attrs, handlers, and attachment */
 	root() {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.root);
-		const titleId = getElementId(this.id, DIALOG_ELEMENTS_KIND.title);
-		const descriptionId = getElementId(this.id, DIALOG_ELEMENTS_KIND.description);
-
-		const isOpen = this.state.props.open ?? false;
-		const isDisabled = this.state.props.disabled ?? false;
-
-		// Focus trap handler
-		const focusManager = (ev: KeyboardEvent) => {
-			focusTrap(ev);
-		};
-
-		return {
-			id,
-			role: 'dialog',
-			'aria-modal': true,
-			'aria-labelledby': titleId,
-			'aria-describedby': descriptionId,
-			inert: !isOpen ? '' : undefined,
-			'data-kind': DIALOG_ELEMENTS_KIND.root,
-			'data-open': isOpen,
-			onkeydown: (ev: KeyboardEvent) => {
-				// Close on Escape key
-				if (ev.key === 'Escape') {
-					ev.preventDefault();
-					this.state.close();
-				}
-
-				focusManager(ev);
-			},
-			[createAttachmentKey()]: (node: HTMLDialogElement) => {
-				this.elements.root = node;
-
-				if (this.state.props.open) {
-					// Store current focus
-					this.#activeElement = document.activeElement;
-
-					// Focus first focusable element or dialog itself
-					requestAnimationFrame(() => {
-						const contentElement = this.elements.content;
-						if (!contentElement) {
-							return;
-						}
-
-						const firstFocusable = contentElement.querySelector<HTMLElement>(
-							'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-						);
-
-						if (firstFocusable) {
-							firstFocusable.focus();
-						} else {
-							node.focus();
-						}
-					});
-				} else {
-					// Restore focus to previous element
-					if (this.#activeElement instanceof HTMLElement) {
-						this.#activeElement.focus();
-					}
-				}
-			}
-		};
+		return this.atom('root', () => new DialogRootAtom(this));
 	}
 
-	content(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.content);
-		return {
-			id,
-			role: 'document',
-			'data-kind': DIALOG_ELEMENTS_KIND.content,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
-		};
+	/** Handle for granular access to content attrs and attachment */
+	content() {
+		return this.atom('content', () => new DialogContentAtom(this));
 	}
 
-	header(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.header);
-		return {
-			id,
-			role: 'banner',
-			'data-kind': DIALOG_ELEMENTS_KIND.header,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		};
+	/** Handle for granular access to header attrs and attachment */
+	header() {
+		return this.atom('header', () => new DialogHeaderAtom(this));
 	}
 
-	title(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.title);
-		return {
-			id,
-			role: 'heading',
-			'aria-level': 2,
-			'data-kind': DIALOG_ELEMENTS_KIND.title,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.title = node;
-			}
-		};
+	/** Handle for granular access to title attrs and attachment */
+	title() {
+		return this.atom('title', () => new DialogTitleAtom(this));
 	}
 
-	description(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.description);
-		return {
-			id,
-			'data-kind': DIALOG_ELEMENTS_KIND.description,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		};
+	/** Handle for granular access to description attrs and attachment */
+	description() {
+		return this.atom('description', () => new DialogDescriptionAtom(this));
 	}
 
-	body(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.body);
-		return {
-			id,
-			role: 'region',
-			'aria-live': 'polite',
-			'data-kind': DIALOG_ELEMENTS_KIND.body,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.body = node;
-			}
-		};
+	/** Handle for granular access to body attrs and attachment */
+	body() {
+		return this.atom('body', () => new DialogBodyAtom(this));
 	}
 
-	footer(props: Record<string, unknown>) {
-		const id = getElementId(this.id, DIALOG_ELEMENTS_KIND.footer);
-		return {
-			id,
-			role: 'contentinfo',
-			'data-kind': DIALOG_ELEMENTS_KIND.footer,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.footer = node;
-			}
-		};
+	/** Handle for granular access to footer attrs and attachment */
+	footer() {
+		return this.atom('footer', () => new DialogFooterAtom(this));
 	}
 
+	/** Handle for granular access to trigger attrs, handlers, and attachment */
 	trigger() {
-		return {
-			'data-kind': DIALOG_ELEMENTS_KIND.trigger,
-			onclick: () => this.state.toggle(),
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.trigger = node;
-			}
-		};
+		return this.atom('trigger', () => new DialogTriggerAtom(this));
 	}
 
 	static get(): DialogBond | undefined {

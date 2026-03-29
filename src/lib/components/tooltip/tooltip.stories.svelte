@@ -1,7 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Tooltip as Tooltip_ } from '.';
-	import { Root as TooltipRoot } from './atoms';
 	import { Button } from '$svelte-atoms/core/components/button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
