@@ -9,14 +9,17 @@ export interface StackExtendProps {}
 export interface StackRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>, StackExtendProps {
-	/** The id of the topmost (front) item — bindable, updates reactively */
+>
+	extends HtmlAtomProps<E, B>, StackExtendProps {
+	/** The value of the topmost (front) item — bindable, updates reactively */
 	value?: string;
 }
 
 export interface StackItemProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B>, StackExtendProps {
-	id?: string;
+>
+	extends HtmlAtomProps<E, B>, StackExtendProps {
+	/** Unique identifier for this stack item */
+	value: string;
 }

@@ -2,7 +2,12 @@ import { getContext, setContext, untrack } from 'svelte';
 import { TabsBond, TabsBondState } from '../bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { portal } from '$svelte-atoms/core/attachments/portal.svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type TabBondProps<
 	T,
@@ -20,7 +25,7 @@ export type TabBondElement = {
 	description: HTMLElement;
 };
 
-class TabHeaderAtom extends Atom<TabBond, HTMLElement> {
+class TabHeaderAtom extends BondAtom<TabBond, HTMLElement> {
 	constructor(bond: TabBond) {
 		super(bond, 'header');
 	}
@@ -44,13 +49,12 @@ class TabHeaderAtom extends Atom<TabBond, HTMLElement> {
 		const isDisabled = untrack(() => this.bond.state?.props).disabled ?? false;
 
 		return {
-			onclick: ()=> {
+			onclick: () => {
 				if (isDisabled) return;
 				this.bond.state.select();
 			}
-		}
+		};
 	}
-
 
 	override onmount(node: HTMLElement): void | (() => void) {
 		const headerElement = this.bond.tabs?.element<HTMLElement>('header');
@@ -64,7 +68,7 @@ class TabHeaderAtom extends Atom<TabBond, HTMLElement> {
 	}
 }
 
-class TabBodyAtom extends Atom<TabBond, HTMLElement> {
+class TabBodyAtom extends BondAtom<TabBond, HTMLElement> {
 	constructor(bond: TabBond) {
 		super(bond, 'body');
 	}
@@ -83,7 +87,7 @@ class TabBodyAtom extends Atom<TabBond, HTMLElement> {
 	}
 }
 
-class TabDescriptionAtom extends Atom<TabBond, HTMLElement> {
+class TabDescriptionAtom extends BondAtom<TabBond, HTMLElement> {
 	constructor(bond: TabBond) {
 		super(bond, 'description');
 	}
