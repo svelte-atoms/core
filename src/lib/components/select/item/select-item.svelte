@@ -1,13 +1,9 @@
 <script lang="ts" generics="D">
 	import { nanoid } from 'nanoid';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import {
-		SelectItemController,
-		type SelectItemProps as ControllerProps
-	} from './controller.svelte';
+	import { SelectItemAtom, type SelectItemAtomProps } from './bond.svelte';
 	import type { SelectItemProps } from './types';
 	import { SelectBond } from '../bond.svelte';
-	import Item from '../../dropdown-menu/item/dropdown-menu-item.svelte';
+	import { List } from '../../list';
 
 	const select = SelectBond.get();
 
@@ -20,46 +16,39 @@
 		preset = 'select.item',
 		value = nanoid(),
 		data = undefined,
-		factory = _factory,
 		children = undefined,
 		onclick = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: SelectItemProps<D> = $props();
 
-	let item: typeof Item = $state(undefined);
-	const controller = $derived(item?.getController());
-	const isHighlighted = $derived(controller?.isHighlighted ?? false);
-	const isSelected = $derived(controller?.isSelected ?? false);
+	// Create reactive props object for the atom
+	const itemProps = $derived<SelectItemAtomProps<D>>({
+		value,
+		data,
+		label: undefined
+	});
 
-	const rootProps = $derived({
-		...controller?.elementProps(),
+	// Create the atom instance
+	const atom = new SelectItemAtom<D>(() => itemProps, select);
+
+	// Derived reactive properties
+	const isHighlighted = $derived(atom.isHighlighted);
+	const isSelected = $derived(atom.isSelected);
+
+	// Merge atom attrs with custom props
+	const itemAttrs = $derived({
+		...atom.spread,
 		...restProps
 	});
 
-	function _factory() {
-		const existing = (select?.state as any)?.item?.(value);
+	// Register item with select state and handle mounting
+	$effect.pre(() => {
+		select.state.registerItem(value, atom);
 
-		if (existing) {
-			return existing as SelectItemController<D>;
-		}
-
-		const itemProps = defineState<ControllerProps<D>>([
-			defineProperty('value', () => value),
-			defineProperty('data', () => data),
-			defineProperty('id', () => value)
-		]);
-		const controller = new SelectItemController<D>(() => itemProps);
-
-		controller.mount();
-
-		return controller;
-	}
+		return () => {
+			select.state.unregisterItem(value);
+		};
+	});
 
 	function handleClick(ev: MouseEvent) {
 		onclick?.(ev);
@@ -70,20 +59,15 @@
 
 		ev.preventDefault();
 
-		controller.toggle();
-
-		if (controller.select?.state) {
-			(controller.select.state as any).query = '';
-		}
-
-		controller.close();
+		atom.select();
+		select?.state?.close();
 	}
 </script>
 
-<Item
-	bind:this={item}
+<List.Item
 	{preset}
 	class={[
+		'cursor-pointer',
 		isHighlighted && 'bg-foreground/5',
 		isSelected && 'bg-primary/5 hover:bg-primary/10 active:bg-primary/15',
 		'$preset',
@@ -91,15 +75,8 @@
 	]
 		.filter(Boolean)
 		.join(' ')}
-	enter={enter?.bind(controller)}
-	exit={exit?.bind(controller)}
-	initial={initial?.bind(controller)}
-	animate={animate?.bind(controller)}
-	onmount={onmount?.bind(controller)}
-	ondestroy={ondestroy?.bind(controller)}
+	{...itemAttrs}
 	onclick={handleClick}
-	{factory}
-	{...rootProps}
 >
-	{@render children?.({ selectItem: controller })}
-</Item>
+	{@render children?.({ selectItem: atom })}
+</List.Item>
