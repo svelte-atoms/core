@@ -1,11 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { StepperBond, StepperState } from '../bond.svelte.js';
+import { StepperBond, StepperState } from '../bond.svelte';
 import {
 	Bond,
 	BondState,
-	Atom,
+	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte.js';
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type StepBondProps = BondStateProps & {
 	index: number;
@@ -24,7 +24,7 @@ export type StepBondElements = {
 	separator?: HTMLElement;
 };
 
-class StepRootAtom extends Atom<StepBond, HTMLElement> {
+class StepRootAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'root');
 	}
@@ -50,7 +50,7 @@ class StepRootAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepIndicatorAtom extends Atom<StepBond, HTMLElement> {
+class StepIndicatorAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'indicator');
 	}
@@ -70,7 +70,7 @@ class StepIndicatorAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepHeaderAtom extends Atom<StepBond, HTMLElement> {
+class StepHeaderAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'header');
 	}
@@ -89,7 +89,7 @@ class StepHeaderAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepTitleAtom extends Atom<StepBond, HTMLElement> {
+class StepTitleAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'title');
 	}
@@ -100,7 +100,7 @@ class StepTitleAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepDescriptionAtom extends Atom<StepBond, HTMLElement> {
+class StepDescriptionAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'description');
 	}
@@ -111,7 +111,7 @@ class StepDescriptionAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepBodyAtom extends Atom<StepBond, HTMLElement> {
+class StepBodyAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'body');
 	}
@@ -119,7 +119,7 @@ class StepBodyAtom extends Atom<StepBond, HTMLElement> {
 		const bond = this.bond;
 		const state = untrack(() => bond.state);
 		const props = untrack(() => bond.state.props);
-		
+
 		return {
 			...super.attrs,
 			'data-active': state?.isActive,
@@ -130,14 +130,14 @@ class StepBodyAtom extends Atom<StepBond, HTMLElement> {
 	}
 }
 
-class StepSeparatorAtom extends Atom<StepBond, HTMLElement> {
+class StepSeparatorAtom extends BondAtom<StepBond, HTMLElement> {
 	constructor(bond: StepBond) {
 		super(bond, 'separator');
 	}
 	override get attrs() {
 		const state = untrack(() => this.bond.state);
 		const props = untrack(() => this.bond.state.props);
-		
+
 		return {
 			...super.attrs,
 			'aria-hidden': 'true',

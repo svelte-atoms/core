@@ -1,6 +1,11 @@
 import { SvelteMap } from 'svelte/reactivity';
 import type { StepBond } from './step/bond.svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { getContext, setContext } from 'svelte';
 import type { Snippet } from 'svelte';
 
@@ -19,7 +24,7 @@ export type StepContentSnippet = {
 	children: Snippet<[{ step?: StepBond }]>;
 };
 
-class StepperRootAtom extends Atom<StepperBond> {
+export class StepperRootAtom extends BondAtom<StepperBond> {
 	constructor(bond: StepperBond) {
 		super(bond, 'root');
 	}
@@ -57,7 +62,10 @@ export class StepperBond extends Bond<StepperStateProps, StepperState, StepperEl
 
 export class StepperState extends BondState<StepperStateProps> {
 	#steps: SvelteMap<number, StepBond> = new SvelteMap();
-	#stepContents: SvelteMap<number, { props: Record<string, unknown>, children: Snippet<[{ step?: StepBond }]> }> = new SvelteMap();
+	#stepContents: SvelteMap<
+		number,
+		{ props: Record<string, unknown>; children: Snippet<[{ step?: StepBond }]> }
+	> = new SvelteMap();
 	#totalSteps = $state(0);
 
 	constructor(props: () => StepperStateProps) {
@@ -111,7 +119,7 @@ export class StepperState extends BondState<StepperStateProps> {
 					}
 				}
 			}
-		}
+		};
 	}
 
 	mountStep(index: number, step: StepBond) {
@@ -128,7 +136,11 @@ export class StepperState extends BondState<StepperStateProps> {
 		return this.#steps.get(index);
 	}
 
-	registerStepContent(index: number, props: Record<string, unknown>, children: Snippet<[{ step?: StepBond }]>) {
+	registerStepContent(
+		index: number,
+		props: Record<string, unknown>,
+		children: Snippet<[{ step?: StepBond }]>
+	) {
 		this.#stepContents.set(index, { props, children });
 	}
 

@@ -10,12 +10,6 @@
 		class: klass = '',
 		base=Stack.Root,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		preset = 'stepper.body' as const,
 		...restProps
 	}: StepperBodyProps<E, B> = $props();
@@ -30,12 +24,6 @@
 	{bond}
 	{base}
 	class={['stepper-body w-full', '$preset', klass]}
-	onmount={onmount?.bind(bond?.state)}
-	ondestroy={ondestroy?.bind(bond?.state)}
-	enter={enter?.bind(bond?.state)}
-	exit={exit?.bind(bond?.state)}
-	initial={initial?.bind(bond?.state)}
-	animate={animate?.bind(bond?.state)}
 	{...bodyProps}
 >
 	<!-- Custom body content -->
