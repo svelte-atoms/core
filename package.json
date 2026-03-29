@@ -27,7 +27,8 @@
 		"test:e2e": "playwright test",
 		"storybook:dev": "storybook dev -p 6006 --no-open",
 		"storybook:build": "storybook build",
-		"storybook:serve": "bunx http-server ./storybook-static"
+		"storybook:serve": "bunx http-server ./storybook-static",
+		"mcp:inspect": "bunx @modelcontextprotocol/inspector http://localhost:5173/api/sse"
 	},
 	"files": [
 		"dist",

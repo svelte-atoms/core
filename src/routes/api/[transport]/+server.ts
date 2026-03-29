@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { readdirSync, existsSync } from 'fs';
+import { readdirSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 import { createMcpHandler } from 'mcp-handler';
 import { z } from 'zod';
@@ -8,14 +8,10 @@ import { dev } from '$app/environment';
 // MCP Server Implementation for @svelte-atoms/core
 // Using @modelcontextprotocol/sdk with HTTP transport
 
-let origin: string | null = null;
-
-// Logging utility - only log in development
+let baseUrl: string | null = null;
 const log = {
 	error: (message: string, error?: unknown) => {
-		if (dev) {
-			console.error(`[MCP Error] ${message}`, error);
-		}
+		console.error(`[MCP Error] ${message}`, error);
 	},
 	info: (message: string) => {
 		if (dev) {
@@ -49,11 +45,15 @@ async function readDocFromEndpoint(path: string, baseUrl: string): Promise<strin
 // Helper to list component docs
 function listComponentDocs(): string[] {
 	try {
-		const componentsPath = join(process.cwd(), 'docs', 'components');
+		const componentsPath = join(process.cwd(), 'src', 'routes', 'docs', 'components');
 		if (existsSync(componentsPath)) {
 			return readdirSync(componentsPath)
-				.filter((file) => file.endsWith('.md') && file !== 'README.MD')
-				.map((file) => file.replace('.md', ''));
+				.filter((file) => {
+					const filePath = join(componentsPath, file);
+					const stat = statSync(filePath);
+					return stat.isDirectory();
+				})
+				.map((dir) => dir);
 		}
 		log.error(`Components path not found: ${componentsPath}`);
 		return [];
@@ -71,10 +71,18 @@ function listComponentDocs(): string[] {
 // 	websiteUrl: 'https://sacore.netlify.app',
 // });
 
+const getOrInitBaseUrl = (url: string): string => {
+	if (!baseUrl) {
+		baseUrl = getBaseUrl(url);
+		log.info(`Base URL initialized: ${baseUrl}`);
+	}
+	return baseUrl;
+};
+
 const handler = createMcpHandler(
 	(server) => {
-		// Get base URL from request context
-		const baseUrl = origin || 'http://localhost:5173'; // Fallback for development
+		// Get base URL from request context (will be set by handlers)
+		const currentBaseUrl = baseUrl || 'http://localhost:5173'; // Fallback for development
 
 		// Register Tools
 		server.registerTool(
@@ -97,7 +105,7 @@ const handler = createMcpHandler(
 
 				const content = await readDocFromEndpoint(
 					`/docs/components/${lowercaseName}/llms.txt`,
-					baseUrl
+					currentBaseUrl
 				);
 
 				if (!content) {
@@ -150,8 +158,8 @@ const handler = createMcpHandler(
 				inputSchema: {}
 			},
 			async () => {
-				const overview = await readDocFromEndpoint('/docs/overview/llms.txt', baseUrl);
-				const quickRef = await readDocFromEndpoint('/docs/quick-reference/llms.txt', baseUrl);
+				const overview = await readDocFromEndpoint('/docs/overview/llms.txt', currentBaseUrl);
+				const quickRef = await readDocFromEndpoint('/docs/quick-reference/llms.txt', currentBaseUrl);
 
 				return {
 					content: [
@@ -171,7 +179,7 @@ const handler = createMcpHandler(
 				inputSchema: {}
 			},
 			async () => {
-				const presetDoc = await readDocFromEndpoint('/docs/preset/llms.txt', baseUrl);
+				const presetDoc = await readDocFromEndpoint('/docs/preset/llms.txt', currentBaseUrl);
 
 				return {
 					content: [
@@ -191,7 +199,7 @@ const handler = createMcpHandler(
 				inputSchema: {}
 			},
 			async () => {
-				const variantsDoc = await readDocFromEndpoint('/docs/variants/llms.txt', baseUrl);
+				const variantsDoc = await readDocFromEndpoint('/docs/variants/llms.txt', currentBaseUrl);
 
 				return {
 					content: [
@@ -218,7 +226,7 @@ const handler = createMcpHandler(
 				}
 			},
 			async ({ action }) => {
-				const craftingDoc = await readDocFromEndpoint('/docs/crafting/llms.txt', baseUrl);
+				const craftingDoc = await readDocFromEndpoint('/docs/crafting/llms.txt', currentBaseUrl);
 
 				if (!craftingDoc) {
 					throw new Error('Crafting documentation not found');
@@ -340,7 +348,7 @@ const handler = createMcpHandler(
 					mimeType: 'text/plain'
 				},
 				async () => {
-					const content = await readDocFromEndpoint(`/docs/${name}/llms.txt`, baseUrl);
+					const content = await readDocFromEndpoint(`/docs/${name}/llms.txt`, currentBaseUrl);
 					log.info(`Loading resource doc: ${name}`);
 
 					if (!content) {
@@ -376,7 +384,7 @@ const handler = createMcpHandler(
 					log.info(`Loading component resource: ${component}`);
 					const content = await readDocFromEndpoint(
 						`/docs/components/${component}/llms.txt`,
-						baseUrl
+						currentBaseUrl
 					);
 
 					if (!content) {
@@ -489,36 +497,59 @@ const handler = createMcpHandler(
 // SvelteKit handlers that bridge HTTP to MCP
 
 export const POST: RequestHandler = async ({ request }) => {
-	return handler(request);
+	try {
+		getOrInitBaseUrl(request.url);
+		return await handler(request);
+	} catch (error) {
+		log.error('POST handler error', error);
+		return new Response(
+			JSON.stringify({
+				error: 'Internal server error',
+				message: error instanceof Error ? error.message : 'Unknown error'
+			}),
+			{
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
+	}
 };
 
 // SvelteKit GET handler - returns server info
-// export const GET: RequestHandler = async () => {
-// 	return json({
-// 		name: SERVER_NAME,
-// 		version: SERVER_VERSION,
-// 		protocol: 'MCP/1.0',
-// 		description: 'Model Context Protocol server for @svelte-atoms/core component library',
-// 		sdk: '@modelcontextprotocol/sdk',
-// 		endpoints: {
-// 			mcp: '/mcp (POST)'
-// 		},
-// 		capabilities: [
-// 			'resources (documentation)',
-// 			'tools (component info, search)',
-// 			'prompts (code generation)'
-// 		]
-// 	});
-// };
-
 export const GET: RequestHandler = async ({ request }) => {
-	if (!origin) {
-		origin = getBaseUrl(request.url);
-		log.info(`Origin set to: ${origin}`);
+	try {
+		getOrInitBaseUrl(request.url);
+		return await handler(request);
+	} catch (error) {
+		log.error('GET handler error', error);
+		return new Response(
+			JSON.stringify({
+				error: 'Internal server error',
+				message: error instanceof Error ? error.message : 'Unknown error'
+			}),
+			{
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
 	}
-	return handler(request);
 };
 
 export const DELETE: RequestHandler = async ({ request }) => {
-	return handler(request);
+	try {
+		getOrInitBaseUrl(request.url);
+		return await handler(request);
+	} catch (error) {
+		log.error('DELETE handler error', error);
+		return new Response(
+			JSON.stringify({
+				error: 'Internal server error',
+				message: error instanceof Error ? error.message : 'Unknown error'
+			}),
+			{
+				status: 500,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
+	}
 };
