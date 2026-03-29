@@ -7,7 +7,7 @@ import {
 	offset,
 	type ComputePositionConfig
 } from '@floating-ui/dom';
-import type { PopoverBond, PopoverParams } from '../bond.svelte.js';
+import type { PopoverBond, PopoverParams } from '../bond.svelte';
 
 export function popoverPositioning(bond: PopoverBond) {
 	return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {

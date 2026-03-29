@@ -1,5 +1,10 @@
 import { getContext, setContext } from 'svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { untrack } from 'svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
@@ -16,7 +21,7 @@ export type TreeBondElements = {
 	indicator: HTMLElement;
 };
 
-class TreeRootAtom extends Atom<TreeBond, HTMLElement> {
+class TreeRootAtom extends BondAtom<TreeBond, HTMLElement> {
 	constructor(bond: TreeBond) {
 		super(bond, 'root');
 	}
@@ -30,12 +35,12 @@ class TreeRootAtom extends Atom<TreeBond, HTMLElement> {
 			...super.attrs,
 			'aria-labelledby': `tree-header-${bond.id}`,
 			'aria-expanded': isOpen,
-			'aria-disabled': isDisabled,
+			'aria-disabled': isDisabled
 		};
 	}
 }
 
-class TreeHeaderAtom extends Atom<TreeBond, HTMLElement> {
+class TreeHeaderAtom extends BondAtom<TreeBond, HTMLElement> {
 	constructor(bond: TreeBond) {
 		super(bond, 'header');
 	}
@@ -53,7 +58,7 @@ class TreeHeaderAtom extends Atom<TreeBond, HTMLElement> {
 	}
 }
 
-class TreeBodyAtom extends Atom<TreeBond, HTMLElement> {
+class TreeBodyAtom extends BondAtom<TreeBond, HTMLElement> {
 	constructor(bond: TreeBond) {
 		super(bond, 'body');
 	}
@@ -67,7 +72,7 @@ class TreeBodyAtom extends Atom<TreeBond, HTMLElement> {
 	}
 }
 
-class TreeIndicatorAtom extends Atom<TreeBond, HTMLElement> {
+class TreeIndicatorAtom extends BondAtom<TreeBond, HTMLElement> {
 	constructor(bond: TreeBond) {
 		super(bond, 'indicator');
 	}

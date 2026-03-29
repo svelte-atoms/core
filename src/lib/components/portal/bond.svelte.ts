@@ -2,10 +2,10 @@ import { getContext, setContext } from 'svelte';
 import {
 	Bond,
 	BondState,
-	Atom,
+	BondAtom,
 	type BondElements,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte.js';
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type PortalStateProps = BondStateProps & {
 	id: string;
@@ -17,7 +17,7 @@ export type PortalElements = BondElements & {
 	inner?: HTMLElement;
 };
 
-export class PortalRootAtom extends Atom<PortalBond, HTMLElement> {
+export class PortalRootAtom extends BondAtom<PortalBond, HTMLElement> {
 	constructor(bond: PortalBond) {
 		super(bond, 'root');
 	}
@@ -30,7 +30,7 @@ export class PortalRootAtom extends Atom<PortalBond, HTMLElement> {
 	}
 }
 
-export class PortalInnerAtom extends Atom<PortalBond, HTMLElement> {
+export class PortalInnerAtom extends BondAtom<PortalBond, HTMLElement> {
 	constructor(bond: PortalBond) {
 		super(bond, 'inner');
 	}

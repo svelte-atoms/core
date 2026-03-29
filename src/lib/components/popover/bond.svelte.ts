@@ -1,7 +1,7 @@
 import { getContext, setContext, untrack } from 'svelte';
 import { autoUpdate, type ComputePositionReturn, type Placement } from '@floating-ui/dom';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
-import { Atom } from '$svelte-atoms/core/shared';
+import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared';
 import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 import { popoverPositioning } from './behaviors/positioning';
 import type { PortalBond } from '../portal';
@@ -119,7 +119,7 @@ export class PopoverState<
 	}
 }
 
-export class PopoverArrowAtom extends Atom<PopoverBond, HTMLElement> {
+export class PopoverArrowAtom extends BondAtom<PopoverBond, HTMLElement> {
 	constructor(bond: PopoverBond) {
 		super(bond, 'arrow');
 	}
@@ -133,7 +133,7 @@ export class PopoverArrowAtom extends Atom<PopoverBond, HTMLElement> {
 	}
 }
 
-export class PopoverContentAtom extends Atom<PopoverBond, HTMLElement> {
+export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
 	#engine: PopoverContentPropsParams['engine'];
 
 	constructor(bond: PopoverBond, engine: PopoverContentPropsParams['engine'] = 'internal') {
@@ -207,7 +207,7 @@ export class PopoverContentAtom extends Atom<PopoverBond, HTMLElement> {
 	}
 }
 
-export class PopoverIndicatorAtom extends Atom<PopoverBond, HTMLElement> {
+export class PopoverIndicatorAtom extends BondAtom<PopoverBond, HTMLElement> {
 	constructor(bond: PopoverBond) {
 		super(bond, 'indicator');
 	}
@@ -223,7 +223,7 @@ export class PopoverIndicatorAtom extends Atom<PopoverBond, HTMLElement> {
 	}
 }
 
-export class PopoverTriggerAtom extends Atom<PopoverBond, HTMLElement> {
+export class PopoverTriggerAtom extends BondAtom<PopoverBond, HTMLElement> {
 	constructor(bond: PopoverBond) {
 		super(bond, 'trigger');
 	}

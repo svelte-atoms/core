@@ -10,33 +10,29 @@ export type AnimatePopoverContentParams = {
 };
 
 export function animatePopoverContent(params: AnimatePopoverContentParams = {}) {
-	let prevX: number | undefined;
-	let prevY: number | undefined;
 	let prevOpen: boolean | undefined;
 
-	return (node: HTMLElement) => {
-		const bond = PopoverBond.get();
+	const bond = PopoverBond.get();
 
+	return (node: HTMLElement) => {
 		const { duration = DURATION.quick / 1000, delay = 0, ease = easeInOut } = params;
 
 		const isOpen = bond?.state.props.open ?? false;
 
-		const posX = bond.state.position?.x ?? 0;
-		const posY = bond.state.position?.y ?? 0;
-		const position = untrack(() => bond.state.position);
+		// Read position reactively so the $effect re-runs once position is first computed,
+		// but only use open-state change as the gate for triggering the animation.
+		const position = bond.state.position;
 		const offset = untrack(() => bond.state.props.offset);
 
 		if (!position) {
 			return;
 		}
 
-		// Skip animation if neither open state nor x/y position actually changed
-		if (posX === prevX && posY === prevY && isOpen === prevOpen) {
+		// Skip animation if open state hasn't changed
+		if (isOpen === prevOpen) {
 			return;
 		}
 
-		prevX = posX;
-		prevY = posY;
 		prevOpen = isOpen;
 
 		const triggerElement = bond.elements.trigger;

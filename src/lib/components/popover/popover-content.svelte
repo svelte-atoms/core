@@ -4,10 +4,15 @@
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion';
-	import type { PopoverContentProps } from './types';
 	import { ZIndex } from '../portal/zindex';
+	import type { PopoverContentProps } from './types';
 
 	const bond = PopoverBond.get();
+
+	if (!bond) {
+		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
+	}
+
 	const positionStrategy = $derived(bond?.state.props.positionStrategy ?? 'absolute');
 
 	const zIndex = (()=> {
@@ -33,10 +38,6 @@
 
 		return portal ?? PortalBond.get();
 	})();
-
-	if (!bond) {
-		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
-	}
 
 	let {
 		class: klass = '',

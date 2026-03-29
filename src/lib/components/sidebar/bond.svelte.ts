@@ -1,5 +1,10 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -15,7 +20,7 @@ export type SidebarElements = {
 	content: HTMLElement;
 };
 
-class SidebarContentAtom extends Atom<SidebarBond, HTMLElement> {
+class SidebarContentAtom extends BondAtom<SidebarBond, HTMLElement> {
 	constructor(bond: SidebarBond) {
 		super(bond, 'content');
 	}
@@ -23,11 +28,11 @@ class SidebarContentAtom extends Atom<SidebarBond, HTMLElement> {
 		const props = untrack(() => this.bond.state.props);
 		const isOpen = props?.open ?? false;
 		const isDisabled = props?.disabled ?? false;
-		
+
 		return {
 			...super.attrs,
 			'aria-expanded': isOpen,
-			'aria-disabled': isDisabled,
+			'aria-disabled': isDisabled
 		};
 	}
 }
