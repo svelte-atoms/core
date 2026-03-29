@@ -1,6 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
 import { focusTrap, getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type DialogBondProps = BondStateProps & {
 	open: boolean;
@@ -24,7 +29,7 @@ export type DialogBondElements = {
 	trigger?: HTMLElement;
 };
 
-export class DialogRootAtom extends Atom<DialogBond, HTMLDialogElement> {
+export class DialogRootAtom extends BondAtom<DialogBond, HTMLDialogElement> {
 	#activeElement: Element | null = null;
 
 	constructor(bond: DialogBond) {
@@ -84,7 +89,7 @@ export class DialogRootAtom extends Atom<DialogBond, HTMLDialogElement> {
 	}
 }
 
-export class DialogContentAtom extends Atom<DialogBond> {
+export class DialogContentAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'content');
 	}
@@ -97,7 +102,7 @@ export class DialogContentAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogHeaderAtom extends Atom<DialogBond> {
+export class DialogHeaderAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'header');
 	}
@@ -110,7 +115,7 @@ export class DialogHeaderAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogTitleAtom extends Atom<DialogBond> {
+export class DialogTitleAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'title');
 	}
@@ -124,7 +129,7 @@ export class DialogTitleAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogDescriptionAtom extends Atom<DialogBond> {
+export class DialogDescriptionAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'description');
 	}
@@ -136,7 +141,7 @@ export class DialogDescriptionAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogBodyAtom extends Atom<DialogBond> {
+export class DialogBodyAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'body');
 	}
@@ -150,7 +155,7 @@ export class DialogBodyAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogFooterAtom extends Atom<DialogBond> {
+export class DialogFooterAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'footer');
 	}
@@ -163,7 +168,7 @@ export class DialogFooterAtom extends Atom<DialogBond> {
 	}
 }
 
-export class DialogTriggerAtom extends Atom<DialogBond> {
+export class DialogTriggerAtom extends BondAtom<DialogBond> {
 	constructor(bond: DialogBond) {
 		super(bond, 'trigger');
 	}

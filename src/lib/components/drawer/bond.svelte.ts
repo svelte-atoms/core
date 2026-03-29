@@ -1,11 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte.js';
+import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import {
 	Bond,
 	BondState,
-	Atom,
+	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte.js';
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export type DrawerBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -27,7 +27,7 @@ export type DrawerBondElements = {
 	backdrop: HTMLElement;
 };
 
-export class DrawerRootAtom extends Atom<DrawerBond> {
+export class DrawerRootAtom extends BondAtom<DrawerBond> {
 	#previousActiveElement: Element | null = null;
 
 	constructor(bond: DrawerBond) {
@@ -116,7 +116,7 @@ export class DrawerRootAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerContentAtom extends Atom<DrawerBond> {
+export class DrawerContentAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'content');
 	}
@@ -129,7 +129,7 @@ export class DrawerContentAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerBodyAtom extends Atom<DrawerBond> {
+export class DrawerBodyAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'body');
 	}
@@ -142,7 +142,7 @@ export class DrawerBodyAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerHeaderAtom extends Atom<DrawerBond> {
+export class DrawerHeaderAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'header');
 	}
@@ -155,7 +155,7 @@ export class DrawerHeaderAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerTitleAtom extends Atom<DrawerBond> {
+export class DrawerTitleAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'title');
 	}
@@ -169,7 +169,7 @@ export class DrawerTitleAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerDescriptionAtom extends Atom<DrawerBond> {
+export class DrawerDescriptionAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'description');
 	}
@@ -181,7 +181,7 @@ export class DrawerDescriptionAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerFooterAtom extends Atom<DrawerBond> {
+export class DrawerFooterAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'footer');
 	}
@@ -194,7 +194,7 @@ export class DrawerFooterAtom extends Atom<DrawerBond> {
 	}
 }
 
-export class DrawerBackdropAtom extends Atom<DrawerBond> {
+export class DrawerBackdropAtom extends BondAtom<DrawerBond> {
 	constructor(bond: DrawerBond) {
 		super(bond, 'backdrop');
 	}

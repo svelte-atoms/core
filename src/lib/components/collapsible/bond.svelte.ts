@@ -1,6 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
+import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
 export type CollapsibleStateProps = BondStateProps & {
 	open: boolean;
@@ -15,20 +20,20 @@ export type CollapsibleDomElements = {
 	indicator: HTMLElement;
 };
 
-export class CollapsibleRootAtom extends Atom<CollapsibleBond> {
+export class CollapsibleRootAtom extends BondAtom<CollapsibleBond> {
 	constructor(bond: CollapsibleBond) {
 		super(bond, 'root');
 	}
 }
 
-export class CollapsibleHeaderAtom extends Atom<CollapsibleBond> {
+export class CollapsibleHeaderAtom extends BondAtom<CollapsibleBond> {
 	constructor(bond: CollapsibleBond) {
 		super(bond, 'header');
 	}
 
 	override get attrs() {
-		const isDisabled = untrack(()=> this.bond.state?.props)?.disabled ?? false;
-		const isOpen = untrack(()=> this.bond.state?.props)?.open ?? false;
+		const isDisabled = untrack(() => this.bond.state?.props)?.disabled ?? false;
+		const isOpen = untrack(() => this.bond.state?.props)?.open ?? false;
 		const isButton = isBrowser() && this.element instanceof HTMLButtonElement;
 
 		return {
@@ -43,7 +48,7 @@ export class CollapsibleHeaderAtom extends Atom<CollapsibleBond> {
 	}
 
 	override get handlers() {
-		const isDisabled = untrack(()=> this.bond.state?.props)?.disabled ?? false;
+		const isDisabled = untrack(() => this.bond.state?.props)?.disabled ?? false;
 
 		return {
 			onclick: () => {
@@ -61,13 +66,13 @@ export class CollapsibleHeaderAtom extends Atom<CollapsibleBond> {
 	}
 }
 
-export class CollapsibleBodyAtom extends Atom<CollapsibleBond> {
+export class CollapsibleBodyAtom extends BondAtom<CollapsibleBond> {
 	constructor(bond: CollapsibleBond) {
 		super(bond, 'body');
 	}
 
 	override get attrs() {
-		const isOpen = untrack(()=> this.bond.state?.props)?.open ?? false;
+		const isOpen = untrack(() => this.bond.state?.props)?.open ?? false;
 
 		return {
 			...super.attrs,
@@ -79,7 +84,7 @@ export class CollapsibleBodyAtom extends Atom<CollapsibleBond> {
 	}
 }
 
-export class CollapsibleIndicatorAtom extends Atom<CollapsibleBond> {
+export class CollapsibleIndicatorAtom extends BondAtom<CollapsibleBond> {
 	constructor(bond: CollapsibleBond) {
 		super(bond, 'indicator');
 	}

@@ -26,6 +26,8 @@
 	});
 </script>
 
+<!-- TODO: refactor conditional rendering using snippet based -->
+ 
 {#if isOpen}
 	<HtmlAtom
 		{preset}

@@ -4,7 +4,7 @@ import {
 	DropdownBondState,
 	type DropdownStateProps
 } from '$svelte-atoms/core/components/dropdown/bond.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
@@ -17,7 +17,7 @@ export type ComboboxBondElements = PopoverDomElements & {
 	input: HTMLInputElement;
 };
 
-class ComboboxControlAtom extends Atom<ComboboxBond, HTMLInputElement> {
+class ComboboxControlAtom extends BondAtom<ComboboxBond, HTMLInputElement> {
 	constructor(bond: ComboboxBond) {
 		super(bond, 'input');
 	}

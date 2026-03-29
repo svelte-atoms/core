@@ -1,6 +1,11 @@
 import { SvelteMap } from 'svelte/reactivity';
 import type { AccordionItemBond } from './item/bond.svelte';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { getContext, setContext, untrack } from 'svelte';
 
 export type AccordionStateProps = BondStateProps & {
@@ -18,7 +23,7 @@ export type AccordionElements = {
 	indicator: HTMLElement;
 };
 
-export class AccordionRootAtom extends Atom<AccordionBond> {
+export class AccordionRootAtom extends BondAtom<AccordionBond> {
 	constructor(bond: AccordionBond) {
 		super(bond, 'root');
 	}
@@ -33,7 +38,7 @@ export class AccordionRootAtom extends Atom<AccordionBond> {
 			...super.attrs,
 			'aria-expand': isOpen,
 			'aria-disabled': isDisabled,
-			'aria-multiselectable': isMultiple,
+			'aria-multiselectable': isMultiple
 		};
 	}
 }

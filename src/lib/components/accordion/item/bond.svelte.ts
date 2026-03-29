@@ -1,7 +1,12 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { AccordionBond, AccordionState } from '../bond.svelte.js';
-import { Bond, BondState, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte.js';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte.js';
+import { AccordionBond, AccordionState } from '../bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
+import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
 export type AccordionItemBondProps = BondStateProps & {
 	value: string;
@@ -17,27 +22,25 @@ export type AccordionItemBondElements = {
 	indicator: HTMLElement;
 };
 
-export class AccordionItemRootAtom extends Atom<AccordionItemBond> {
+export class AccordionItemRootAtom extends BondAtom<AccordionItemBond> {
 	constructor(bond: AccordionItemBond) {
 		super(bond, 'root');
 	}
 
 	override get attrs() {
 		return {
-			...super.attrs,
+			...super.attrs
 		};
 	}
 }
 
-export class AccordionItemHeaderAtom extends Atom<AccordionItemBond> {
+export class AccordionItemHeaderAtom extends BondAtom<AccordionItemBond> {
 	constructor(bond: AccordionItemBond) {
 		super(bond, 'header');
 	}
 
 	override get attrs() {
-		const isButtonElement = isBrowser()
-			? this.element instanceof HTMLButtonElement
-			: false;
+		const isButtonElement = isBrowser() ? this.element instanceof HTMLButtonElement : false;
 
 		const props = untrack(() => this.bond.state?.props);
 		const isDisabled = props?.disabled ?? false;
@@ -87,7 +90,7 @@ export class AccordionItemHeaderAtom extends Atom<AccordionItemBond> {
 	}
 }
 
-export class AccordionItemBodyAtom extends Atom<AccordionItemBond> {
+export class AccordionItemBodyAtom extends BondAtom<AccordionItemBond> {
 	constructor(bond: AccordionItemBond) {
 		super(bond, 'body');
 	}
@@ -102,7 +105,7 @@ export class AccordionItemBodyAtom extends Atom<AccordionItemBond> {
 	}
 }
 
-export class AccordionItemIndicatorAtom extends Atom<AccordionItemBond> {
+export class AccordionItemIndicatorAtom extends BondAtom<AccordionItemBond> {
 	constructor(bond: AccordionItemBond) {
 		super(bond, 'indicator');
 	}
@@ -110,7 +113,7 @@ export class AccordionItemIndicatorAtom extends Atom<AccordionItemBond> {
 	override get attrs() {
 		return {
 			...super.attrs,
-			'data-controled-by': this.bond.state?.accordionId ?? '',
+			'data-controled-by': this.bond.state?.accordionId ?? ''
 		};
 	}
 }
