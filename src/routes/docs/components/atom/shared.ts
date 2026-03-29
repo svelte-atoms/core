@@ -117,11 +117,13 @@ const accessibilityFeatures = [
 const useCases = [
 	{
 		title: 'Custom Elements',
-		description: 'Render any HTML element type via the `as` prop while retaining all atom capabilities.'
+		description:
+			'Render any HTML element type via the `as` prop while retaining all atom capabilities.'
 	},
 	{
 		title: 'Animation Hooks',
-		description: 'Attach enter/exit/animate functions directly to elements without wrapper components.'
+		description:
+			'Attach enter/exit/animate functions directly to elements without wrapper components.'
 	},
 	{
 		title: 'Preset Styling',
@@ -133,7 +135,8 @@ const useCases = [
 	},
 	{
 		title: 'Polymorphic Components',
-		description: 'Build higher-level components that delegate the underlying element type to consumers.'
+		description:
+			'Build higher-level components that delegate the underlying element type to consumers.'
 	}
 ];
 
@@ -146,7 +149,7 @@ export const metadata = {
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
-	importCode: "import { Atom } from '@svelte-atoms/core';",
+	importCode: "import { BondAtom } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Atom' }],
 	useCases,
 	examples: {

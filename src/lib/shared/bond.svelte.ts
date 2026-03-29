@@ -1,9 +1,54 @@
 import { nanoid } from 'nanoid';
 import { getElementId } from '../utils/dom.svelte';
 import { createAttachmentKey } from 'svelte/attachments';
+import { SvelteMap } from 'svelte/reactivity';
 
 export type BondStateProps = { id?: string };
 export type BondElements = Record<string, Element | undefined>;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class AtomsQueue<T extends BondAtom<any, any>> {
+	#pending = new Map<string, T>();
+	#atoms = new SvelteMap<string, T>();
+	#flushScheduled = false;
+
+	/**
+	 * Schedules a microtask to flush pending atoms into the reactive SvelteMap.
+	 * Defers reactive writes outside `$derived` to avoid `state_unsafe_mutation`.
+	 */
+	#scheduleFlush() {
+		if (this.#flushScheduled) return;
+		this.#flushScheduled = true;
+		queueMicrotask(() => {
+			this.#flushScheduled = false;
+			for (const [key, atom] of this.#pending) this.#atoms.set(key, atom);
+			this.#pending.clear();
+		});
+	}
+
+	get(key: string): T | undefined {
+		// Always read from #atoms first to register a reactive dependency.
+		// Without this, a $derived that finds the value in #pending never tracks
+		// #atoms — so the microtask flush into #atoms won't re-trigger it.
+		const committed = this.#atoms.get(key);
+		return this.#pending.get(key) ?? committed;
+	}
+
+	stage(key: string, atom: T): void {
+		this.#pending.set(key, atom);
+		this.#scheduleFlush();
+	}
+
+	clear(): void {
+		this.#pending.clear();
+		this.#atoms.clear();
+	}
+
+	forEach(cb: (key: string, atom: T) => void): void {
+		for (const [key, atom] of this.#atoms) cb(key, atom);
+		for (const [key, atom] of this.#pending) cb(key, atom);
+	}
+}
 
 export abstract class Bond<
 	Props extends BondStateProps = BondStateProps,
@@ -18,8 +63,7 @@ export abstract class Bond<
 		Promise<{ duration?: number; delay?: number; controller?: any }>
 	> = {};
 	#state: State;
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	#atoms = new Map<string, Atom>();
+	#queue = new AtomsQueue<BondAtom>();
 	#name: string;
 
 	constructor(state: State, name?: string) {
@@ -29,11 +73,7 @@ export abstract class Bond<
 
 	get elements() {
 		const obj: Record<string, Element | undefined> = {};
-
-		for (const [key, atom] of this.#atoms) {
-			obj[key] = atom.element;
-		}
-
+		this.#queue.forEach((key, atom) => (obj[key] = atom.element));
 		return obj;
 	}
 
@@ -54,27 +94,27 @@ export abstract class Bond<
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	protected atom<T extends Atom<any, any>>(
+	protected atom<T extends BondAtom<any, any>>(
 		key: keyof Elements | (string & {}),
 		factory: () => T
 	): T {
-		const atom = this.#atoms.get(key as string);
-
-		if (atom) return atom as T;
+		const existing = this.#queue.get(key as string);
+		if (existing) return existing as T;
 
 		const newAtom = factory();
-		this.#atoms.set(key as string, newAtom);
-
+		this.#queue.stage(key as string, newAtom);
 		return newAtom;
 	}
 
 	abstract share(): this;
 
 	element<T extends Element = Element>(key: keyof Elements): T | undefined {
-		return this.#atoms.get(key as string)?.element as T | undefined;
+		return this.#queue.get(key as string)?.element as T | undefined;
 	}
 
-	destroy() {}
+	destroy() {
+		this.#queue.clear();
+	}
 
 	static get(): unknown | undefined {
 		throw new Error('Method not implemented! Use derived class');
@@ -104,7 +144,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 	}
 }
 
-export abstract class Atom<
+export abstract class BondAtom<
 	B extends Bond<BondStateProps, BondState<BondStateProps>, BondElements> = Bond,
 	E extends Element = Element
 > {
@@ -147,7 +187,7 @@ export abstract class Atom<
 				this.#element = node as E;
 
 				const cleanup = this.onmount(node);
-				
+
 				return () => {
 					cleanup?.();
 					this.ondestroy?.();
@@ -161,6 +201,8 @@ export abstract class Atom<
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	onmount(_node: E): void | (() => void){ return; }
-	ondestroy?(): void{}
+	onmount(_node: E): void | (() => void) {
+		return;
+	}
+	ondestroy?(): void {}
 }

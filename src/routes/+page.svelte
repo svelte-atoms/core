@@ -2,7 +2,6 @@
 	import { Button } from '$svelte-atoms/core/components/button';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Badge } from '$svelte-atoms/core/components/badge';
-	import { Card } from '$svelte-atoms/core/components/card';
 	import { Alert } from '$svelte-atoms/core/components/alert';
 	import { Tabs, Tab } from '$svelte-atoms/core/components/tabs';
 	import { Select } from '$svelte-atoms/core/components/select';
@@ -99,7 +98,7 @@
 
 		<!-- Traits -->
 		<div class="text-muted-foreground mt-12 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-			{#each ['Headless by default', 'Fully typed', 'WAI-ARIA compliant', 'Svelte 5 Runes', 'TailwindCSS ready'] as trait, i (i)}
+			{#each ['Headless by default', 'Fully typed', 'WAI-ARIA compliant', 'Svelte 5 Runes', 'TailwindCSS ready'] as trait (trait)}
 				<span class="flex items-center gap-1.5">
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
 						<path d="M20 6 9 17l-5-5"/>
@@ -291,7 +290,10 @@
 							</Tab.Body>
 						</Tab.Root>
 					</Tabs.Header>
-					<Tabs.Body><Tabs.Content /></Tabs.Body>
+					
+					<Tabs.Body>
+						<Tabs.Content />
+					</Tabs.Body>
 				</Tabs.Root>
 			</div>
 
@@ -302,7 +304,7 @@
 					<a href="/docs/components/select" class="text-muted-foreground hover:text-primary text-xs">docs →</a>
 				</div>
 				<Select.Root bind:open={selectOpen} keys={fruits} offset={2}>
-					<Select.Trigger base={Input.Root} class="w-full">
+					<Select.Trigger base={Input.Root} class="w-full h-12">
 						<Select.Placeholder>Pick a fruit</Select.Placeholder>
 						<Select.Selections />
 						<Select.Indicator class="ml-auto" />
@@ -441,7 +443,7 @@
 						{ n: '2', title: 'Import styles', body: 'Import root.css in your layout for base resets.' },
 						{ n: '3', title: 'Configure preset', body: 'Call setPreset() once in +layout.svelte to define your design tokens and component styles.' },
 						{ n: '4', title: 'Use components', body: 'Import any component and start building. All styles come from your preset.' }
-					] as step}
+					] as step (step.n)}
 						<li class="flex gap-4">
 							<span class="bg-primary/10 text-primary flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold">{step.n}</span>
 							<div>
@@ -463,7 +465,7 @@
 			<div class="space-y-4">
 				<!-- Package manager picker -->
 				<div class="bg-muted flex gap-1 rounded-lg p-1">
-					{#each (['npm', 'pnpm', 'yarn', 'bun'] as const) as pm, i (i)}
+					{#each (['npm', 'pnpm', 'yarn', 'bun'] as const) as pm (pm)}
 						<button
 							onclick={() => (packageManager = pm)}
 							class="flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors {packageManager === pm
