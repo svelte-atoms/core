@@ -6,6 +6,7 @@ import {
 	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
 import type { MenuItemControllerInterface } from './item/controller.svelte';
+import type { MenuItemAtom } from './item/bond.svelte';
 
 export type MenuBondProps = PopoverStateProps;
 
@@ -125,18 +126,20 @@ export class MenuBondState<
 	Props extends MenuBondProps = MenuBondProps
 > extends PopoverState<Props> {
 	#keys = new SvelteSet<string>();
-	#items: Map<string, MenuItemControllerInterface<Record<string, any>>> = new SvelteMap();
-	#itemsAsArray = $derived(Array.from(this.#items.values())) as MenuItemControllerInterface<
-		Record<string, any>
-	>[];
+	#items: Map<string, MenuItemControllerInterface<Record<string, any>> | MenuItemAtom> =
+		new SvelteMap();
+	#itemsAsArray = $derived(Array.from(this.#items.values())) as (
+		| MenuItemControllerInterface<Record<string, any>>
+		| MenuItemAtom
+	)[];
 
 	#index = $state(-1);
 
 	#highlightedId = $derived(Array.from(this.#items.keys())[this.#index] ?? null) as string | null;
 
-	#highlightedItem = $derived(
-		this.#itemsAsArray[this.#index] ?? null
-	) as MenuItemControllerInterface<Record<string, any>> | null;
+	#highlightedItem = $derived(this.#itemsAsArray[this.#index] ?? null) as
+		| (MenuItemControllerInterface<Record<string, any>> | MenuItemAtom)
+		| null;
 
 	constructor(props: () => Props) {
 		super(props);
@@ -180,7 +183,7 @@ export class MenuBondState<
 		};
 	}
 
-	mountItem(id: string, item: MenuItemControllerInterface<Record<string, any>>) {
+	mountItem(id: string, item: MenuItemControllerInterface<Record<string, any>> | MenuItemAtom) {
 		this.#items.set(id, item);
 
 		return () => this.unmountItem(id);
@@ -194,5 +197,13 @@ export class MenuBondState<
 
 	item(id: string) {
 		return this.#items.get(id);
+	}
+
+	registerItem(id: string, atom: MenuItemAtom) {
+		this.#items.set(id, atom);
+	}
+
+	unregisterItem(id: string) {
+		this.#items.delete(id);
 	}
 }

@@ -1,13 +1,9 @@
 <script lang="ts" generics="D">
 	import { nanoid } from 'nanoid';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import {
-		DropdownItemController,
-		type DropdownItemProps as ControllerProps
-	} from './controller.svelte';
+	import { DropdownItemAtom, type DropdownItemAtomProps } from './bond.svelte';
 	import type { DropdownItemProps } from './types';
 	import { DropdownBond } from '../bond.svelte';
-	import Item from '../../menu/item/menu-item.svelte';
+	import { HtmlAtom } from '../../atom';
 
 	const dropdown = DropdownBond.get();
 
@@ -20,48 +16,40 @@
 		preset = 'dropdown.item',
 		value = nanoid(),
 		data = undefined,
-		factory = _factory,
 		children = undefined,
 		onclick = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: DropdownItemProps<D> = $props();
 
-	let item: typeof Item = $state(undefined);
-	const controller = $derived(item?.getController());
-	const isHighlighted = $derived(controller?.isHighlighted ?? false);
-	const isSelected = $derived(controller?.isSelected ?? false);
+	// Create reactive props object for the atom
+	const itemProps = $derived<DropdownItemAtomProps<D>>({
+		id: value,
+		value,
+		data,
+		label: undefined
+	});
 
-	// const item = factory().share();
+	// Create the atom instance
+	const atom = new DropdownItemAtom<D>(() => itemProps, dropdown);
 
-	const rootProps = $derived({
-		...controller?.elementProps(),
+	// Derived reactive properties
+	const isHighlighted = $derived(atom.isHighlighted);
+	const isSelected = $derived(atom.isSelected);
+
+	// Merge atom attrs with custom props
+	const itemAttrs = $derived({
+		...atom.attrs,
 		...restProps
 	});
 
-	function _factory() {
-		const existing = (dropdown?.state as any)?.item?.(value);
+	// Register item with dropdown state and handle mounting
+	$effect.pre(() => {
+		dropdown.state.registerItem(value, atom as any);
 
-		if (existing) {
-			return existing as DropdownItemController<D>;
-		}
-
-		const itemProps = defineState<ControllerProps<D>>([
-			defineProperty('value', () => value),
-			defineProperty('data', () => data),
-			defineProperty('id', () => value)
-		]);
-		const controller = new DropdownItemController<D>(() => itemProps);
-
-		controller.mount();
-
-		return controller;
-	}
+		return () => {
+			dropdown.state.unregisterItem(value);
+		};
+	});
 
 	function handleClick(ev: MouseEvent) {
 		onclick?.(ev);
@@ -72,18 +60,11 @@
 
 		ev.preventDefault();
 
-		controller.toggle();
-
-		if (controller.dropdown?.state) {
-			controller.dropdown.state.query = '';
-		}
-
-		controller.close();
+		atom.toggle();
 	}
 </script>
 
-<Item
-	bind:this={item}
+<HtmlAtom
 	{preset}
 	class={[
 		isHighlighted && 'bg-foreground/5',
@@ -93,15 +74,8 @@
 	]
 		.filter(Boolean)
 		.join(' ')}
-	enter={enter?.bind(controller)}
-	exit={exit?.bind(controller)}
-	initial={initial?.bind(controller)}
-	animate={animate?.bind(controller)}
-	onmount={onmount?.bind(controller)}
-	ondestroy={ondestroy?.bind(controller)}
+	{...itemAttrs}
 	onclick={handleClick}
-	{factory}
-	{...rootProps}
 >
-	{@render children?.({ dropdownItem: controller })}
-</Item>
+	{@render children?.({ dropdownItem: atom })}
+</HtmlAtom>
