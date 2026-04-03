@@ -12,12 +12,6 @@ export type Base<Args = any> =
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	Args extends Record<string, any> ? ComponentBase : Args extends unknown[] ? SnippetBase : never;
 
-/**
- * Extend this interface to add custom HTML atom properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface HtmlAtomExtendProps {}
-
 type Variants =
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	| VariantDefinition<any>
@@ -29,7 +23,7 @@ export interface HtmlAtomProps<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	B extends Base<any> = Base
 >
-	extends HtmlElementProps<E>, HtmlAtomExtendProps {
+	extends HtmlElementProps<E> {
 	bond?: Bond;
 	base?: B | undefined;
 	preset?: PresetModuleName | (string & {});

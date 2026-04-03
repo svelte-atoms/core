@@ -1,19 +1,7 @@
 import { type Component, type Snippet } from 'svelte';
 import { type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
-/**
- * Extend this interface to add custom radio properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface RadioExtendProps {}
-
-/**
- * Extend this interface to add custom radio group properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface RadioGroupExtendProps {}
-
-export interface RadioProps<T = string> extends HtmlAtomProps<'label'>, RadioExtendProps {
+export interface RadioProps<T = string> extends HtmlAtomProps<'label'> {
 	/**
 	 * The value of the radio button
 	 */
@@ -60,7 +48,7 @@ export interface RadioProps<T = string> extends HtmlAtomProps<'label'>, RadioExt
 	oninput?: (ev: Event, options?: { checked: boolean; value: boolean; type: 'boolean' }) => void;
 }
 
-export interface RadioGroupProps<T = string> extends HtmlAtomProps<'div'>, RadioGroupExtendProps {
+export interface RadioGroupProps<T = string> extends HtmlAtomProps<'div'> {
 	/**
 	 * The currently selected value
 	 */

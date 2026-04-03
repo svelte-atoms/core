@@ -5,17 +5,11 @@ import type { ComboboxBond } from './bond.svelte';
 import type { SelectSelectionProps as DropdownSelectionProps, SelectSelectionsProps as DropdownSelectionsProps } from '../select';
 import type { InputControlProps } from '../input';
 
-/**
- * Extend this interface to add custom combobox properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ComboboxExtendProps {}
-
 export interface ComboboxRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
-	extends HtmlAtomProps<E, B>, ComboboxExtendProps {
+	extends HtmlAtomProps<E, B> {
 	open?: boolean;
 	value?: unknown;
 	values?: unknown[];

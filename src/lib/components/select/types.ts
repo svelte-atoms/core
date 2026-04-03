@@ -6,22 +6,10 @@ import type { PopoverTriggerProps } from '$svelte-atoms/core/components/popover'
 import type { ClassValue } from 'svelte/elements';
 import type { SelectItemController } from './item';
 
-/**
- * Extend this interface to add custom select properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SelectExtendProps {}
-
-/**
- * Extend this interface to add custom select trigger properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SelectTriggerExtendProps {}
-
 export interface SelectRootProps<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	T = any
-> extends SelectExtendProps {
+> {
 	open?: boolean;
 	value?: T;
 	values?: T[];
@@ -43,8 +31,7 @@ export interface SelectTriggerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
-	extends Override<PopoverTriggerProps<E, B>, { children?: Snippet<[{ select?: SelectBond; /** @deprecated Use `select` */ dropdown?: SelectBond }]> }>,
-		SelectTriggerExtendProps {}
+	extends Override<PopoverTriggerProps<E, B>, { children?: Snippet<[{ select?: SelectBond; /** @deprecated Use `select` */ dropdown?: SelectBond }]> }> {}
 
 export interface SelectSelectionsProps {
 	class?: ClassValue;

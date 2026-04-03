@@ -1,12 +1,6 @@
 import type { Snippet } from 'svelte';
 
-/**
- * Extend this interface to add custom virtual list properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface VirtualListViewportExtendProps {}
-
-export interface VirtualListViewportProps<T> extends VirtualListViewportExtendProps {
+export interface VirtualListViewportProps<T> {
 	class?: string;
 	data: T[];
 	itemHeight?: number; // Optional for dynamic heights

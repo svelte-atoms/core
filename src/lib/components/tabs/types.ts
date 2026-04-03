@@ -58,7 +58,4 @@ export interface TabsContentProps<
 	children?: Snippet<[{ tabs?: TabsBond }]>;
 }
 
-/**
- * @deprecated Use TabsRootExtendProps instead
- */
-export type TabsExtendProps = TabsRootProps;
+

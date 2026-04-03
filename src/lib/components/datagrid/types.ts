@@ -8,25 +8,7 @@ import type { HtmlAtomProps, Base } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
 
-// ── Augmentation extension points ──────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridRootExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridHeaderExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridBodyExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridFooterExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridThExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridTdExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridCheckboxExtendProps {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DatagridTrExtendProps {}
-
-// ── Shared types ───────────────────────────────────────────────────────────
+// ── Shared types ────────────────────────────────────────────────────────────
 
 export type { Direction, SortableType };
 
@@ -36,13 +18,13 @@ export interface SortBy {
 	by?: SortableType;
 }
 
-// ── Component prop types ───────────────────────────────────────────────────
+// ── Component prop types ────────────────────────────────────────────────────
 
 export interface DatagridRootProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>, DatagridRootExtendProps {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	template?: string;
 	fallbackTemplate?: string;
 	values?: string[];
@@ -54,7 +36,7 @@ export interface DatagridHeaderProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>, DatagridHeaderExtendProps {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ datagrid: DataGridBond<T> | undefined }]>;
 }
 
@@ -62,7 +44,7 @@ export interface DatagridBodyProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>, DatagridBodyExtendProps {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ datagrid: DataGridBond<T> | undefined }]>;
 }
 
@@ -70,7 +52,7 @@ export interface DatagridFooterProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'>, DatagridFooterExtendProps {
+> extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ datagrid: DataGridBond<T> | undefined }]>;
 }
 
@@ -82,8 +64,7 @@ export interface DatagridThProps<
 	extends Override<
 			HtmlAtomProps<E, B>,
 			{ children?: Snippet<[{ th: DataGridThBond<T> }]> }
-		>,
-		DatagridThExtendProps {
+		> {
 	id?: string;
 	width?: string;
 	direction?: Direction;
@@ -99,15 +80,13 @@ export interface DatagridTdProps<
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 >
-	extends Omit<HtmlAtomProps<E, B>, 'children'>,
-		DatagridTdExtendProps {
+	extends Omit<HtmlAtomProps<E, B>, 'children'> {
 	children?: Snippet<[{ td: DataGridBond<T> | undefined }]>;
 	onclick?: (ev: Event, options: { td?: DataGridBond<T> }) => void;
 }
 
 export interface DatagridCheckboxProps
-	extends Omit<CheckboxProps, 'children'>,
-		DatagridCheckboxExtendProps {
+	extends Omit<CheckboxProps, 'children'> {
 	children?: Snippet<[{ datagrid?: DataGridBond }]>;
 }
 
@@ -119,8 +98,7 @@ export interface DatagridTrProps<
 	extends Override<
 			HtmlAtomProps<E, B>,
 			{ children?: Snippet<[{ tr: DataGridTrBond<T> }]> }
-		>,
-		DatagridTrExtendProps {
+		> {
 	value?: string;
 	rows?: string;
 	header?: boolean;

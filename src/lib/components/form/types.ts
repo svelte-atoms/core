@@ -6,31 +6,7 @@ import type { FieldBond } from './field/bond.svelte';
 import type { LabelProps } from '$svelte-atoms/core/components/label';
 import type { Schema } from './validation-adapters';
 
-/**
- * Extend this interface to add custom form root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface FormRootExtendProps {}
-
-/**
- * Extend this interface to add custom field root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface FieldRootExtendProps {}
-
-/**
- * Extend this interface to add custom field label properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface FieldLabelExtendProps {}
-
-/**
- * Extend this interface to add custom field control properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface FieldControlExtendProps {}
-
-interface CommonProps extends FormRootExtendProps {
+interface CommonProps {
 	factory?: Factory<FormBond>;
 }
 
@@ -67,13 +43,12 @@ export type FieldRootProps<
 		factory?: Factory<FieldBond>;
 		children?: Snippet<[{ field?: FieldBond }]>;
 	}
-> &
-	FieldRootExtendProps;
+>;
 
 export type FieldLabelProps<
 	E extends keyof HTMLElementTagNameMap = 'label',
 	B extends Base = Base
-> = Omit<LabelProps<E, B>, 'for'> & FieldLabelExtendProps;
+> = Omit<LabelProps<E, B>, 'for'>;
 
 export type FieldControlProps<B extends Base<{ value?: unknown }>> = Override<
 	HtmlAtomProps<any, B>,
@@ -86,10 +61,6 @@ export type FieldControlProps<B extends Base<{ value?: unknown }>> = Override<
 		oninput?: (ev: CustomEvent, detail?: { value: any }) => void;
 		children?: Snippet;
 	}
-> &
-	FieldControlExtendProps;
+>;
 
-/**
- * @deprecated Use FormRootExtendProps instead
- */
-export type FormExtendProps = FormRootExtendProps;
+

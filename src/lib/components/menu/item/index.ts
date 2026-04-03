@@ -8,6 +8,5 @@ export {
 } from '../../dropdown-menu/item/controller.svelte';
 
 export type {
-	DropdownMenuItemExtendProps as MenuItemExtendProps,
 	DropdownMenuItemProps as MenuItemProps
 } from '../../dropdown-menu/item/types';

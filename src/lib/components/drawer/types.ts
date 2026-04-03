@@ -76,46 +76,43 @@ export interface SlideoverContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
-	extends HtmlAtomProps<E, B>, DrawerContentExtendProps {}
+	extends HtmlAtomProps<E, B> {}
 
 export interface SlideoverHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
 	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerHeaderExtendProps {}
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }> {}
 
 export interface DrawerBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
 	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerBodyExtendProps {}
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }> {}
 
 export interface SlideoverFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
 	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerFooterExtendProps {}
+		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }> {}
 
 export interface SlideoverTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'h2',
 	B extends Base = Base
 >
-	extends HtmlAtomProps<E, B>, DrawerTitleExtendProps {}
+	extends HtmlAtomProps<E, B> {}
 
 export interface SlideoverDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
 >
-	extends HtmlAtomProps<E, B>, DrawerDescriptionExtendProps {}
+	extends HtmlAtomProps<E, B> {}
 
 export interface SlideoverBackdropProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 >
-	extends HtmlAtomProps<E, B>, DrawerBackdropExtendProps {}
+	extends HtmlAtomProps<E, B> {}

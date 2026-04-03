@@ -5,29 +5,10 @@ import type { PortalBond } from './bond.svelte';
 import type { RootPortals } from '$svelte-atoms/core/components/root/root.svelte';
 import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 
-/**
- * Extend this interface to add custom portal root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PortalRootExtendProps {}
-
-/**
- * Extend this interface to add custom portal outer properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PortalOuterExtendProps {}
-
-/**
- * Extend this interface to add custom teleport properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TeleportExtendProps {}
-
 export type PortalRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Omit<HtmlAtomProps<E, B>, 'children'> &
-	PortalRootExtendProps & {
+> = Omit<HtmlAtomProps<E, B>, 'children'> & {
 		name?: string;
 		factory?: Factory<PortalBond>;
 		children?: Snippet<[{ portal: PortalBond }]>;
@@ -36,8 +17,7 @@ export type PortalRootProps<
 export type PortalOuterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	PortalOuterExtendProps & {
+> = HtmlAtomProps<E, B> & {
 		id: RootPortals | (string & {});
 		children?: Snippet;
 	};
@@ -45,12 +25,8 @@ export type PortalOuterProps<
 export type TeleportProps<
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TeleportExtendProps & {
+> = HtmlAtomProps<E, B> & {
 		portal?: string | PortalBond;
 	};
 
-/**
- * @deprecated Use PortalRootExtendProps instead
- */
-export type PortalExtendProps = PortalRootExtendProps;
+
