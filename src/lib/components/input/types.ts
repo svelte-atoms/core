@@ -1,6 +1,15 @@
-import type { Base, HtmlAtomProps } from '../atom';
+import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
+
+// ============================================================================
+// Input Snippet Props (Extensible)
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputSnippetProps extends SnippetProps {}
+
+export type InputChildren = Snippet<[InputSnippetProps]>;
 
 export type HourAmPmDigits = `0${number}` | `1${0 | 1 | 2}`;
 export type HourDigits = `${0 | 1}${number}` | `2${0 | 1 | 2 | 3}`;
@@ -29,12 +38,10 @@ export type InputControlType =
 export interface InputRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, InputChildren> {
 	value?: string | number | string[] | null;
 	checked?: boolean;
 	files?: File[] | null;
-	children?: Snippet<[]>;
 }
 
 interface InputControlBaseProps {
@@ -46,11 +53,14 @@ interface InputControlBaseProps {
 	checked?: boolean;
 	class?: string;
 	type?: InputControlType | null;
-	children?: Snippet<[]>;
+	children?: InputChildren;
 }
 
-export interface InputControlProps<B extends Base = Base>
-	extends Override<HtmlAtomProps<'input', B>, InputControlBaseProps> {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputControlProps<B extends Base = Base> extends Override<
+	HtmlAtomProps<'input', B>,
+	InputControlBaseProps
+> {}
 
 // ── Number Control ────────────────────────────────────────────────────────
 
