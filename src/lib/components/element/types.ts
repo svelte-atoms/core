@@ -1,7 +1,7 @@
-import type { Snippet } from 'svelte';
 import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
 import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { Snippet } from 'svelte';
 
 // ============================================================================
 // Element Type Definitions
@@ -44,21 +44,13 @@ export interface NodeFunction<T extends ElementTagName = ElementTagName> {
 }
 
 // ============================================================================
-// Snippet & Children Types (Extensible)
-// ============================================================================
-
-export interface SnippetProps {
-	// Base interface for snippet properties - extend in component types
-}
-
-export type ElementChildren<T extends SnippetProps = SnippetProps> = Snippet<[T] | []> | undefined;
-
-// ============================================================================
 // Base Element Props (Core, Extensible)
 // ============================================================================
 
-export interface ElementProps<T extends ElementTagName = ElementTagName>
-	extends Record<string, unknown> {
+export interface ElementProps<T extends ElementTagName = ElementTagName> extends Record<
+	string,
+	unknown
+> {
 	/** CSS class binding (string, array, or computed) */
 	class?: ClassValue | ClassValue[];
 
@@ -86,9 +78,6 @@ export interface ElementProps<T extends ElementTagName = ElementTagName>
 	/** Lifecycle: on destroy */
 	ondestroy?: NodeFunction<T>;
 
-	/** Render children/content - override in subinterfaces for typed snippets */
-	children?: ElementChildren;
-
 	[key: string]: unknown;
 }
 
@@ -104,19 +93,16 @@ export interface HtmlElementEventProps {
 	onexitend?: (ev: TransitionEvent) => void;
 }
 
-export interface HtmlElementProps<T extends HtmlElementTagName = 'div'>
-	extends ElementProps<T>,
-		HtmlElementEventProps {
-	/** Override children snippet type - extend in component types */
-	children?: ElementChildren;
+export interface HtmlElementProps<
+	T extends HtmlElementTagName = 'div',
+	Children extends Snippet<unknown[]> = Snippet
+>
+	extends ElementProps<T>, HtmlElementEventProps {
+	children?: Children;
 }
 
 // ============================================================================
 // SVG Element Props
 // ============================================================================
 
-export interface SvgElementProps<T extends SvgElementTagName = 'g'>
-	extends ElementProps<T> {
-	/** Override children snippet type for SVG - extend in component types */
-	children?: ElementChildren;
-}
+export type SvgElementProps<T extends SvgElementTagName = 'g'> = ElementProps<T>;

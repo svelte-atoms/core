@@ -1,6 +1,6 @@
 import type { Component, Snippet } from 'svelte';
 import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
-import type { HtmlElementProps, ElementType, ElementChildren, SnippetProps } from '../element/types';
+import type { HtmlElementProps, ElementType } from '../element/types';
 import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 import type { Bond } from '$svelte-atoms/core/shared';
 import type { VariantDefinition } from '$svelte-atoms/core/utils';
@@ -20,14 +20,16 @@ export type SnippetBase = Snippet;
  * - Allows components to work with both rendering patterns
  * - Provides type safety for generic component props
  */
-export type Base<Args extends unknown[] = unknown[]> =
-	Args extends [infer First extends Record<string, any>, ...unknown[]]
-		? ComponentBase // Treat as component if args is an object
-		: Args extends []
-			? SnippetBase | ComponentBase // Empty args or void
-			: Args extends unknown[]
-				? SnippetBase // Array of args
-				: never;
+export type Base<Args extends unknown[] = unknown[]> = Args extends [
+	infer First extends Record<string, any>,
+	...unknown[]
+]
+	? ComponentBase // Treat as component if args is an object
+	: Args extends []
+		? SnippetBase | ComponentBase // Empty args or void
+		: Args extends unknown[]
+			? SnippetBase // Array of args
+			: never;
 
 // ============================================================================
 // Variants (Support both static and dynamic)
@@ -63,9 +65,9 @@ export type Variants =
 export interface HtmlAtomProps<
 	E extends HtmlElementTagName = HtmlElementTagName,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	B extends Base<any> = Base
->
-	extends HtmlElementProps<E> {
+	B extends Base<any> = Base,
+	Children extends Snippet<unknown[]> = Snippet
+> extends HtmlElementProps<E, Children> {
 	/** Optional Bond for state management & context */
 	bond?: Bond;
 
@@ -94,4 +96,4 @@ export interface HtmlAtomProps<
 	variants?: Variants;
 }
 
-export type { ElementType, ElementChildren, SnippetProps };
+export type { ElementType };
