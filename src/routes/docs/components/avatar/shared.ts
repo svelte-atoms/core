@@ -85,7 +85,7 @@ export const metadata = {
 	description: 'Display user profile images with automatic initials fallback.',
 	componentTitle: 'Avatar',
 	componentDescription:
-		'A simple avatar component that displays a user profile image with automatic fallback to generated initials. Supports various sizes and custom Svelte component icons. Ideal for any UI that needs to visually identify users.',
+		'User profile image with automatic fallback to generated initials and customizable sizes.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

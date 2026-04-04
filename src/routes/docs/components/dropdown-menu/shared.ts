@@ -100,7 +100,8 @@ export const metadata = {
 	title: 'Dropdown Menu - Svelte Atoms',
 	description: 'Navigation dropdown menu component.',
 	componentTitle: 'Dropdown Menu',
-	componentDescription: 'Display a list of navigation items or actions in a dropdown menu format.',
+	componentDescription:
+		'Contextual menu triggered by user interaction with support for nested items and keyboard navigation.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

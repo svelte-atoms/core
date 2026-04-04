@@ -98,7 +98,7 @@ export const metadata = {
 	description: 'Accessible checkbox input for boolean and multi-select form controls.',
 	componentTitle: 'Checkbox',
 	componentDescription:
-		'A custom checkbox component built on a native hidden input for full form compatibility. Supports checked, unchecked, and indeterminate states, group binding, custom checkmark icons, and smooth transitions. Use it for any boolean or multi-select form control.',
+		'Custom checkbox with checked, unchecked, and indeterminate states, group binding, and form compatibility.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

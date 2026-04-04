@@ -196,7 +196,7 @@ export const metadata = {
 	description: 'Flexible CSS subgrid-based data grid for displaying tabular data with sorting, selection, and custom cell rendering.',
 	componentTitle: 'DataGrid',
 	componentDescription:
-		'A compound grid component for displaying and managing structured data. Uses CSS subgrid for pixel-perfect column alignment. Supports sortable columns, row selection via bind:values, custom cell rendering with the base prop, and responsive column visibility. Built on Bond-based reactive state management.',
+		'Grid component for structured data with sortable columns, row selection, custom cell rendering, and responsive columns.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

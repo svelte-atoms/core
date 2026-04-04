@@ -117,7 +117,7 @@ export const metadata = {
 	description: 'Expandable container for showing and hiding content on demand.',
 	componentTitle: 'Collapsible',
 	componentDescription:
-		'A compound component for toggling the visibility of content sections. Unlike Accordion, Collapsible manages a single independent open/closed state, making it ideal for standalone expandable sections, progressive disclosure patterns, and sidebar filters. Supports controlled state and animated transitions.',
+		'Toggle visibility of content sections with independent open/closed state and animated transitions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

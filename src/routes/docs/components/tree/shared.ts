@@ -125,7 +125,7 @@ export const metadata = {
 	description: 'Hierarchical tree view component for displaying expandable nested data structures.',
 	componentTitle: 'Tree',
 	componentDescription:
-		'A recursive, compound tree component for rendering hierarchical data with expandable and collapsible nodes. Supports nested Tree instances for unlimited depth, bindable open state, and fully customizable header and body content.',
+		'Recursive tree component for hierarchical data with expandable nodes and unlimited depth.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

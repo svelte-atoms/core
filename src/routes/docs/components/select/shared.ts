@@ -153,7 +153,7 @@ export const metadata = {
 	description: 'Select component for actions and options.',
 	componentTitle: 'Select',
 	componentDescription:
-		'Flexible select component with single/multiple selection support, search functionality, and advanced composition. Built on top of Dropdown Menu and Popover modules.',
+		'Flexible select with single/multiple selection, search, and advanced composition via Dropdown and Popover.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

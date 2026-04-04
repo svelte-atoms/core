@@ -152,7 +152,7 @@ export const metadata = {
 	description: 'Floating content panel triggered by user interaction.',
 	componentTitle: 'Popover',
 	componentDescription:
-		'Floating panel that displays rich content near a trigger element. Use for contextual information or actions.',
+		'Floating panel displaying rich content near a trigger element for contextual information or actions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

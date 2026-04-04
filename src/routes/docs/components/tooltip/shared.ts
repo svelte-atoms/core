@@ -105,7 +105,7 @@ export const metadata = {
 	description: 'Display contextual information on hover or focus.',
 	componentTitle: 'Tooltip',
 	componentDescription:
-		'A floating label that appears when hovering over or focusing on an element, providing additional context.',
+		'Floating label providing additional context when hovering or focusing on an element.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onMount } from 'svelte';
 
 	type Props = {
 		title: string;
@@ -10,21 +11,63 @@
 	};
 
 	let { title, description, status = 'stable', llms = false, children }: Props = $props();
+
+	let titleSize = $state(1.875);
+	let descSize = $state(1.125);
+	let descLineHeight = $state(1.75);
+	let paddingY = $state(2);
+
+	onMount(() => {
+		const handleScroll = () => {
+			const scrollY = window.scrollY;
+			const maxScroll = 200; // Shrink over first 200px of scroll
+			
+			const progress = Math.min(1, scrollY / maxScroll);
+			
+			// Title: 1.875rem -> 1.125rem
+			titleSize = 1.875 - (0.75 * progress);
+			
+			// Description: 1.125rem -> 0.875rem
+			descSize = 1.125 - (0.25 * progress);
+			
+			// Line height: 1.75rem -> 1.25rem
+			descLineHeight = 1.75 - (0.5 * progress);
+			
+			// Padding: 2rem -> 0.75rem
+			paddingY = 2 - (1.25 * progress);
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		handleScroll();
+
+		return () => window.removeEventListener('scroll', handleScroll);
+	});
 </script>
 
-<div class="doc-header">
-	<div class="mb-3 flex flex-wrap items-center gap-2">
-		<h1 class="doc-title text-foreground font-bold">{title}</h1>
-		<span class="border-border text-muted-foreground rounded-full border px-2 py-0.5 text-xs capitalize">
+<div 
+	class="doc-header border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+	style="padding-top: {paddingY}rem; padding-bottom: {paddingY}rem; transition: padding 0.15s ease-out;"
+>
+	<div class="mb-2 flex flex-wrap items-center gap-2">
+		<h1 
+			class="doc-title font-bold text-foreground"
+			style="font-size: {titleSize}rem; transition: font-size 0.15s ease-out;"
+		>
+			{title}
+		</h1>
+		<span class="rounded-full border border-border/60 bg-muted/50 px-2.5 py-0.5 text-xs font-medium text-muted-foreground capitalize">
 			{status}
 		</span>
 		{#if llms}
-			<span class="bg-primary/10 border-primary/20 text-primary rounded-full border px-2 py-0.5 text-xs font-medium">
+			<span class="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
 				llms.txt
 			</span>
 		{/if}
 	</div>
-	<p class="page-description text-foreground max-w-3xl leading-relaxed font-medium">
+	<p 
+		class="page-description font-normal text-muted-foreground max-w-3xl"
+		style="font-size: {descSize}rem; line-height: {descLineHeight}rem; transition: font-size 0.15s ease-out, line-height 0.15s ease-out;"
+	>
 		{description}
 	</p>
 	{#if children}
@@ -33,66 +76,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	@supports (animation-timeline: view()) {
-		@keyframes shrink-title {
-			0% {
-				font-size: 1.875rem;
-			}
-			100% {
-				font-size: 1.25rem;
-			}
-		}
-
-		@keyframes hide-description {
-			0% {
-				opacity: 1;
-				margin-bottom: 1rem;
-				font-size: var(--text-lg);
-				max-height: 200px;
-			}
-			100% {
-				opacity: 0;
-				margin-bottom: 0;
-				font-size: var(--text-xs);
-				max-height: 0;
-			}
-		}
-
-		h1.doc-title {
-			animation: shrink-title linear;
-			animation-timeline: view();
-			animation-range: entry 0% cover 100%;
-			animation-duration: 1ms;
-			animation-fill-mode: forwards;
-		}
-
-		.page-description {
-			animation: hide-description linear;
-			animation-timeline: view();
-			animation-range: entry 0% cover 50%;
-			animation-duration: 1ms;
-			animation-fill-mode: both;
-		}
-
-		.page-children {
-			animation: hide-description linear;
-			animation-timeline: view();
-			animation-range: entry 30% cover 70%;
-			animation-fill-mode: both;
-		}
-	}
-
-	@supports not (animation-timeline: view()) {
-		h1.doc-title {
-			font-size: 1.875rem;
-			opacity: 1;
-		}
-
-		.page-description {
-			opacity: 1;
-			font-size: var(--text-lg)
-		}
-	}
-</style>

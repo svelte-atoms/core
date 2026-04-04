@@ -150,7 +150,7 @@ export const metadata = {
 	description: 'Collapsible content sections for organizing information in a space-efficient way.',
 	componentTitle: 'Accordion',
 	componentDescription:
-		'A compound accordion component for collapsing and expanding content sections. Use it to organize related information, FAQs, or settings into a compact vertical list. Supports single or multiple open items, optional collapse-all behavior, and keyboard navigation.',
+		'Collapsible content sections for FAQs and settings with single/multiple open items and keyboard navigation.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

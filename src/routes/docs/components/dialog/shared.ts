@@ -215,7 +215,7 @@ export const metadata = {
 	description: 'Modal dialog for important user interactions.',
 	componentTitle: 'Dialog',
 	componentDescription:
-		'Modal dialog for important user interactions. Captures focus and requires user action.',
+		'Modal dialog for important user interactions that captures focus and requires user action.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

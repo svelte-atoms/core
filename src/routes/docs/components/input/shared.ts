@@ -264,7 +264,7 @@ export const metadata = {
 	description: 'Compound input component for forms and data entry, supporting icons, placeholder, and all HTML input types.',
 	componentTitle: 'Input',
 	componentDescription:
-		'A compound input component built from composable parts: Root (the styled container), Control (the native input element), Icon (prefix/suffix icons), and Placeholder (animated custom placeholders). Supports all standard HTML input types and integrates with Form.Field for accessible, validated form fields. Input.Root is intentionally reusable — other components can use it as a styled wrapper.',
+		'Flexible input component with icons, placeholders, and all HTML input types.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

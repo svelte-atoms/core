@@ -107,7 +107,7 @@ export const metadata = {
 	description: 'Custom scrollbar container component for vertical and horizontal scrollable content areas.',
 	componentTitle: 'Scrollable',
 	componentDescription:
-		'A compound scrollable container with custom-styled scrollbars. Provides full control over scroll position, scrollbar appearance, and supports both vertical and horizontal scroll directions with an accessible, themeable design.',
+		'Custom-styled scrollable container with full control over scroll position and appearance.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

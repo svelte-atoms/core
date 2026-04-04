@@ -60,7 +60,7 @@ export const metadata = {
 	description: 'Visual separator for structuring content sections, supporting horizontal, vertical, and labeled variants.',
 	componentTitle: 'Divider',
 	componentDescription:
-		'A simple but versatile separator component for creating visual boundaries between content sections. Supports horizontal and vertical orientations, optional label content, and transparent mode. Uses a single element for both orientations via the vertical prop.',
+		'Visual separator for content sections with horizontal/vertical orientation and optional labels.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

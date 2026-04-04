@@ -72,7 +72,7 @@ export const metadata = {
 	description: 'Accessible anchor component for internal and external navigation links.',
 	componentTitle: 'Link',
 	componentDescription:
-		'A styled anchor element built on top of HtmlAtom that provides consistent link styling with hover and active states. Supports preset-based customization for variants like muted, underline, and destructive.',
+		'Styled anchor element with consistent hover/active states and preset-based variants.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

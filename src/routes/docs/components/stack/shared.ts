@@ -186,7 +186,7 @@ export const metadata = {
 	description: 'Layout component for layering elements in the same visual space using CSS Grid. Keeps elements in document flow so the parent sizes to its largest child.',
 	componentTitle: 'Stack',
 	componentDescription:
-		'A compound component that layers multiple elements in the same visual space using CSS Grid. Unlike absolute positioning, Stack keeps elements in the document flow so the parent container sizes naturally to its largest child. Provides programmatic z-order control via StackState (bond.state.bringToFront, sendToBack, bringForward, sendBackward).',
+		'Layers multiple elements in the same visual space using CSS Grid with natural parent sizing and z-order control.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -169,7 +169,7 @@ export const metadata = {
 	description: 'Flexible list component for displaying collections of items with grouping, titles, and dividers.',
 	componentTitle: 'List',
 	componentDescription:
-		'A compound list component for displaying structured collections of items. Supports grouping with titles and dividers, ordered and unordered variants, icon-enriched items, and clickable interactions.',
+		'Structured list component with grouping, ordered/unordered variants, and interactive items.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -224,7 +224,7 @@ export const metadata = {
 	description: 'Side panel that slides in from screen edge.',
 	componentTitle: 'Drawer',
 	componentDescription:
-		'Side panel that slides in from the edge of the screen. Perfect for navigation menus and additional content.',
+		'Side panel that slides in from screen edge, perfect for navigation menus and contextual content.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
