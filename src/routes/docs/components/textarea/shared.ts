@@ -71,7 +71,7 @@ export const metadata = {
 	description: 'Multi-line text input component for capturing longer text content in forms.',
 	componentTitle: 'Textarea',
 	componentDescription:
-		'A multi-line text input component for capturing longer user input. Supports configurable rows and columns, character limits, placeholder text, readonly and disabled states, and full form validation attributes.',
+		'Multi-line text input with character limits, validation, and configurable dimensions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

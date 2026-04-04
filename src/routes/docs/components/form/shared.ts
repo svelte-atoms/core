@@ -134,7 +134,7 @@ export const metadata = {
 	description: 'Composable form and field components for building accessible, validated forms with Bond-based state management.',
 	componentTitle: 'Form & Field',
 	componentDescription:
-		'Composable form and field components for building accessible, validated forms. Form.Root manages form-level state and validator context, while Field.Root, Label, Control, and Errors handle individual fields. Supports custom validation adapters, schema-based validation, and renderless mode for headless integration.',
+		'Composable form components with validation, schema support, and field-level state management.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

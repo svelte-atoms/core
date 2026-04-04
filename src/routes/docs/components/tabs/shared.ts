@@ -141,7 +141,8 @@ export const metadata = {
 	title: 'Tabs - Svelte Atoms',
 	description: 'Organize content into multiple panels.',
 	componentTitle: 'Tabs',
-	componentDescription: 'Accessible tabbed navigation built on the Bond architecture. Tab headers are portaled into the tablist and content is teleported to Tabs.Content, keeping markup co-located while the DOM stays semantic.',
+	componentDescription:
+		'Tabbed interface for organizing content into separate views with keyboard navigation and active state management.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

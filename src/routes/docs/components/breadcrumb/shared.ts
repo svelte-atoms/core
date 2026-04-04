@@ -95,7 +95,7 @@ export const metadata = {
 	description: 'Navigation component showing the user\'s location within a site hierarchy.',
 	componentTitle: 'Breadcrumb',
 	componentDescription:
-		'A compound breadcrumb component for displaying the navigational path within a site or application. Use it to help users understand their current location and quickly jump back to parent sections. Fully customizable separators and styling via presets.',
+		'Navigational breadcrumb showing current location with customizable separators and styling.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

@@ -135,7 +135,7 @@ export const metadata = {
 	description: 'Collapsible side panel component for navigation drawers, detail views, and filter panels.',
 	componentTitle: 'Sidebar',
 	componentDescription:
-		'A compound sidebar component that provides an animated, collapsible side panel. Supports both left and right placement with configurable widths, smooth enter/exit animations, and open/closed state binding.',
+		'Collapsible side panel with left/right placement, smooth animations, and state binding.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

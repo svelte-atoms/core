@@ -188,7 +188,7 @@ export const metadata = {
 	description: 'Accessible combobox with single/multiple selection, search filtering, and keyboard navigation. Built on Dropdown and Popover.',
 	componentTitle: 'Combobox',
 	componentDescription:
-		'A flexible combobox combining a text input with a dropdown list, supporting single and multiple selection, real-time filtering, and full keyboard navigation. Built on top of the Dropdown and Popover modules, it can be composed with Input.Root for consistent styling across your UI.',
+		'Flexible combobox with text input, dropdown list, single/multiple selection, filtering, and keyboard navigation.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

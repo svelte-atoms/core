@@ -66,7 +66,7 @@ export const metadata = {
 	description: 'Radio button component for selecting a single option from a group of mutually exclusive choices.',
 	componentTitle: 'Radio',
 	componentDescription:
-		'A radio button component for making single selections from a group of options. Supports standalone usage or grouped via RadioGroup for synchronized state management, with full support for disabled, readonly, and required states.',
+		'Radio button for single selections with group support and full accessibility states.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

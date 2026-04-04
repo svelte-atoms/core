@@ -63,7 +63,7 @@ export const metadata = {
 	description: 'Display brief, temporary notifications to users.',
 	componentTitle: 'Toast',
 	componentDescription:
-		'A lightweight notification component that appears temporarily at the edge of the screen for non-intrusive feedback.',
+		'Temporary notification that appears at screen edge for non-intrusive feedback and system messages.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

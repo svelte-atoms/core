@@ -155,7 +155,7 @@ export const metadata = {
 	description: 'Flexible container component for grouped content with headers, body, and footers.',
 	componentTitle: 'Card',
 	componentDescription:
-		'A modular card component for organizing content into distinct sections. Supports headers with title/subtitle/description, a body for main content, a media section for images, and a footer for actions. Cards can optionally be made interactive/clickable.',
+		'Modular card for organizing content into distinct sections with header, body, media, and footer.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

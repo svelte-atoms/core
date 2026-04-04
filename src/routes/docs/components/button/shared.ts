@@ -83,7 +83,7 @@ export const metadata = {
 	description: 'Interactive button component for triggering actions and events.',
 	componentTitle: 'Button',
 	componentDescription:
-		'A versatile button component built on a native `<button>` element with full HTML attribute support. Style it through presets with any variant, size, or color scheme. Supports disabled states, loading indicators, and icon content out of the box.',
+		'Versatile button with full HTML support, preset styling, disabled states, and icon content.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

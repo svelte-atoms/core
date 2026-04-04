@@ -145,7 +145,7 @@ export const metadata = {
 	description: 'Multi-step wizard component for guided workflows, forms, and onboarding processes.',
 	componentTitle: 'Stepper',
 	componentDescription:
-		'A compound stepper component for building multi-step workflows, wizards, and guided processes. Supports linear and free navigation, horizontal and vertical orientations, optional steps, and animated content transitions.',
+		'Multi-step workflow component with linear/free navigation and animated transitions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

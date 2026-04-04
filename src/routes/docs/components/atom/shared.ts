@@ -145,7 +145,7 @@ export const metadata = {
 	description: 'The foundational building block for all svelte-atoms components.',
 	componentTitle: 'Atom',
 	componentDescription:
-		'The foundational building block for all svelte-atoms components. HtmlAtom provides a polymorphic HTML element with preset styling, Bond integration, and animation lifecycle hooks.',
+		'Foundational building block providing polymorphic HTML with preset styling and Bond integration.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',

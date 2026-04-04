@@ -347,6 +347,11 @@
 			"svelte": "./dist/components/radio/index.js",
 			"default": "./dist/components/radio/index.js"
 		},
+		"./root": {
+			"types": "./dist/components/root/index.d.ts",
+			"svelte": "./dist/components/root/index.js",
+			"default": "./dist/components/root/index.js"
+		},
 		"./scrollable": {
 			"types": "./dist/components/scrollable/index.d.ts",
 			"svelte": "./dist/components/scrollable/index.js",

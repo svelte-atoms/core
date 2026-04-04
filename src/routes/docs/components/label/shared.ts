@@ -58,7 +58,7 @@ export const metadata = {
 	description: 'Accessible label element for associating descriptive text with form controls.',
 	componentTitle: 'Label',
 	componentDescription:
-		'A semantic HTML label component for associating descriptive text with form inputs. It improves accessibility by providing meaningful names for form controls and increases the interactive hit area for checkboxes and radio buttons.',
+		'Semantic label component for form inputs with enhanced accessibility and interactive hit area.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@svelte-atoms/core',
