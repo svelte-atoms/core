@@ -1,16 +1,19 @@
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
+import type { Snippet } from 'svelte';
 
-/**
- * Extend this interface to add custom stack properties in your application.
- */
+// ============================================================================
+// Stack Snippet Props (Extensible)
+// ============================================================================
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface StackExtendProps {}
+export interface StackSnippetProps extends SnippetProps {}
+
+export type StackChildren = Snippet<[StackSnippetProps]>;
 
 export interface StackRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, StackExtendProps {
+> extends HtmlAtomProps<E, B, StackChildren> {
 	/** The value of the topmost (front) item — bindable, updates reactively */
 	value?: string;
 }
@@ -18,8 +21,7 @@ export interface StackRootProps<
 export interface StackItemProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, StackExtendProps {
+> extends HtmlAtomProps<E, B, StackChildren> {
 	/** Unique identifier for this stack item */
 	value: string;
 }

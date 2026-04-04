@@ -1,4 +1,5 @@
 import type { Snippet } from 'svelte';
+import type { SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { CalendarBond } from './bond.svelte';
 
@@ -28,6 +29,16 @@ export type Month = {
 };
 export type CalendarRange = [Date | undefined, Date | undefined];
 
+// ============================================================================
+// Calendar Snippet Props (Extensible)
+// ============================================================================
+
+export interface CalendarSnippetProps extends SnippetProps {
+	calendar: CalendarBond;
+}
+
+export type CalendarChildren = Snippet<[CalendarSnippetProps]>;
+
 export interface CalendarRootProps {
 	class?: string;
 	preset?: string;
@@ -51,13 +62,7 @@ export interface CalendarRootProps {
 
 	onchange?: (ev: CustomEvent, params: { range: CalendarRange; pivote: Date }) => void;
 
-	children?: Snippet<
-		[
-			{
-				calendar: CalendarBond;
-			}
-		]
-	>;
+	children?: CalendarChildren;
 }
 
 export interface CalendarDayProps {
@@ -67,11 +72,5 @@ export interface CalendarDayProps {
 	as?: string;
 	onclick?: () => void;
 	readonly element?: HTMLElement;
-	children?: Snippet<
-		[
-			{
-				calendar: CalendarBond;
-			}
-		]
-	>;
+	children?: CalendarChildren;
 }

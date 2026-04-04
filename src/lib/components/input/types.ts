@@ -1,6 +1,15 @@
-import type { Base, HtmlAtomProps } from '../atom';
+import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
+
+// ============================================================================
+// Input Snippet Props (Extensible)
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputSnippetProps extends SnippetProps {}
+
+export type InputChildren = Snippet<[InputSnippetProps]>;
 
 export type HourAmPmDigits = `0${number}` | `1${0 | 1 | 2}`;
 export type HourDigits = `${0 | 1}${number}` | `2${0 | 1 | 2 | 3}`;
@@ -25,27 +34,14 @@ export type InputControlType =
 	| 'currency'
 	| 'location'
 	| null;
-/**
- * Extend this interface to add custom input root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputRootExtendProps {}
-
-/**
- * Extend this interface to add custom input control properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputControlExtendProps {}
 
 export interface InputRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, InputRootExtendProps {
+> extends HtmlAtomProps<E, B, InputChildren> {
 	value?: string | number | string[] | null;
 	checked?: boolean;
 	files?: File[] | null;
-	children?: Snippet<[]>;
 }
 
 interface InputControlBaseProps {
@@ -57,15 +53,16 @@ interface InputControlBaseProps {
 	checked?: boolean;
 	class?: string;
 	type?: InputControlType | null;
-	children?: Snippet<[]>;
+	children?: InputChildren;
 }
 
-export interface InputControlProps<B extends Base = Base>
-	extends Override<HtmlAtomProps<'input', B>, InputControlBaseProps>, InputControlExtendProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputControlProps<B extends Base = Base> extends Override<
+	HtmlAtomProps<'input', B>,
+	InputControlBaseProps
+> {}
 
 // ── Number Control ────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputNumberControlExtendProps {}
 
 export interface InputNumber12HourControlProps {
 	hourFormat: 12;
@@ -79,7 +76,7 @@ export interface InputNumber24HourControlProps {
 	max?: TimeFull;
 }
 
-export interface InputNumberControlProps extends InputNumberControlExtendProps {
+export interface InputNumberControlProps {
 	/** Current numeric value */
 	number?: number;
 	/**
@@ -98,10 +95,7 @@ export interface InputNumberControlProps extends InputNumberControlExtendProps {
 }
 
 // ── Time Control ──────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputTimeControlExtendProps {}
-
-export interface InputTimeControlProps extends InputTimeControlExtendProps {
+export interface InputNumberControlProps {
 	/** HH:MM or HH:MM:SS string (always 24h format internally) */
 	value?: string;
 	/** Optional Date object to sync time with (bindable) */
@@ -127,11 +121,7 @@ export interface InputTimeControlProps extends InputTimeControlExtendProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
-// ── DateTime Control ──────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputDateTimeControlExtendProps {}
-
-export interface InputDateTimeControlProps extends InputDateTimeControlExtendProps {
+export interface InputDateTimeControlProps {
 	/** datetime-local string value (YYYY-MM-DDTHH:MM or YYYY-MM-DDTHH:MM:SS) */
 	value?: string;
 	/** Parsed Date object (bindable, derived from value) */
@@ -152,11 +142,7 @@ export interface InputDateTimeControlProps extends InputDateTimeControlExtendPro
 	oninput?: (ev: Event, options: { value: string; date: Date | null }) => void;
 }
 
-// ── Date Control ──────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputDateControlExtendProps {}
-
-export interface InputDateControlProps extends InputDateControlExtendProps {
+export interface InputDateControlProps {
 	/** date string value (YYYY-MM-DD) */
 	value?: string;
 	/** Parsed Date object (bindable, derived from value) */
@@ -173,11 +159,7 @@ export interface InputDateControlProps extends InputDateControlExtendProps {
 	oninput?: (ev: Event, options: { value: string; date: Date | null }) => void;
 }
 
-// ── File Control ──────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputFileControlExtendProps {}
-
-export interface InputFileControlProps extends InputFileControlExtendProps {
+export interface InputFileControlProps {
 	/** Selected files (bindable) */
 	files?: File[];
 	/** Accepted MIME types / extensions (e.g. "image/*,.pdf") */
@@ -192,11 +174,7 @@ export interface InputFileControlProps extends InputFileControlExtendProps {
 	onchange?: (ev: Event, options: { files: File[] }) => void;
 }
 
-// ── URL Control ───────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputUrlControlExtendProps {}
-
-export interface InputUrlControlProps extends InputUrlControlExtendProps {
+export interface InputUrlControlProps {
 	/** Full URL string */
 	value?: string;
 	placeholder?: string;
@@ -208,11 +186,7 @@ export interface InputUrlControlProps extends InputUrlControlExtendProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
-// ── Email Control ─────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputEmailControlExtendProps {}
-
-export interface InputEmailControlProps extends InputEmailControlExtendProps {
+export interface InputEmailControlProps {
 	/** Email address string */
 	value?: string;
 	placeholder?: string;
@@ -224,11 +198,7 @@ export interface InputEmailControlProps extends InputEmailControlExtendProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
-// ── Text Control ──────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputTextControlExtendProps {}
-
-export interface InputTextControlProps extends InputTextControlExtendProps {
+export interface InputTextControlProps {
 	/** Text value */
 	value?: string;
 	/**
@@ -246,11 +216,7 @@ export interface InputTextControlProps extends InputTextControlExtendProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
-// ── Location Control ──────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputLocationControlExtendProps {}
-
-export interface InputLocationControlProps extends InputLocationControlExtendProps {
+export interface InputLocationControlProps {
 	/**
 	 * Raw string representation of the coordinate pair (e.g. "40.7128, -74.0060").
 	 * Bindable — the component normalises pasted / typed input into this form.
@@ -291,14 +257,7 @@ export interface InputLocationControlProps extends InputLocationControlExtendPro
 	) => void;
 }
 
-// ── Phone Control ─────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputPhoneControlExtendProps {}
-
-export type PhoneSpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
-export type PhoneSpan = { text: string; class: string; style?: string; type: PhoneSpanType };
-
-export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
+export interface InputPhoneControlProps {
 	/** Clean digits only (no format chars). In free mode: full string. */
 	value?: string;
 	/**
@@ -343,11 +302,7 @@ export interface InputPhoneControlProps extends InputPhoneControlExtendProps {
 	span?: Snippet<[PhoneSpan]>;
 }
 
-// ── Currency Control ──────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputCurrencyControlExtendProps {}
-
-export interface InputCurrencyControlProps extends InputCurrencyControlExtendProps {
+export interface InputCurrencyControlProps {
 	/** Raw decimal string value (bindable) e.g. "1234.50" */
 	value?: string;
 	/** Parsed number amount (bindable) */
@@ -382,11 +337,7 @@ export interface InputCurrencyControlProps extends InputCurrencyControlExtendPro
 // ── Color Control — types live in ./color/types.ts ────────────────────────
 export type { InputColorControlExtendProps, InputColorControlProps } from './color/types';
 
-// ── OTP Control ───────────────────────────────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputOtpControlExtendProps {}
-
-export interface InputOtpControlProps extends InputOtpControlExtendProps {
+export interface InputOtpControlProps {
 	/** Current OTP value — a string of entered characters (bindable) */
 	value?: string;
 	/** Number of slots

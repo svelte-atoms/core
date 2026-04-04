@@ -1,95 +1,69 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { AlertBond } from './bond.svelte';
 
-/**
- * Extend this interface to add custom alert root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertRootExtendProps {}
+// ============================================================================
+// Alert Snippet Props (Extensible)
+// ============================================================================
 
-/**
- * Extend this interface to add custom alert content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertContentExtendProps {}
+export interface AlertSnippetProps extends SnippetProps {
+	alert: AlertBond;
+}
 
-/**
- * Extend this interface to add custom alert title properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertTitleExtendProps {}
+export type AlertChildren = Snippet<[AlertSnippetProps]>;
 
-/**
- * Extend this interface to add custom alert description properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertDescriptionExtendProps {}
-
-/**
- * Extend this interface to add custom alert icon properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertIconExtendProps {}
-
-/**
- * Extend this interface to add custom alert actions properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertActionsExtendProps {}
-
-/**
- * Extend this interface to add custom alert close button properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface AlertCloseButtonExtendProps {}
+// ============================================================================
+// Alert Root Props
+// ============================================================================
 
 export interface AlertRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertRootExtendProps {
+> extends HtmlAtomProps<E, B, AlertChildren> {
 	dismissible?: boolean;
 	dismissed?: boolean;
 	disabled?: boolean;
 	extend?: Record<string, unknown>;
 	factory?: Factory<AlertBond>;
-	children?: Snippet<[{ alert: AlertBond }]>;
 }
 
+// ============================================================================
+// Alert Sub-component Props
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertContentExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertTitleExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertDescriptionExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertIconProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertIconExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertActionsProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertActionsExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, AlertCloseButtonExtendProps {}
+> extends HtmlAtomProps<E, B, AlertChildren> {}

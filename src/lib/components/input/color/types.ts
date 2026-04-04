@@ -59,10 +59,7 @@ export interface ColorSegmentProps {
 
 // ── Component props ────────────────────────────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface InputColorControlExtendProps {}
-
-export interface InputColorControlProps extends InputColorControlExtendProps {
+export interface InputColorControlProps {
 	/**
 	 * Raw CSS color string (bindable). Format is auto-detected from value.
 	 * Supports: hex, rgb/rgba, hsl/hsla, hwb, lab, lch, oklab, oklch,

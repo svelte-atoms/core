@@ -1,31 +1,30 @@
 import type { Snippet } from 'svelte';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { SidebarBond } from './bond.svelte';
-import type { Base, HtmlAtomProps } from '../atom';
+import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 
-/**
- * Extend this interface to add custom slideover root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SidebarRootExtendProps {}
+// ============================================================================
+// Sidebar Snippet Props (Extensible)
+// ============================================================================
 
-/**
- * Extend this interface to add custom slideover content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SidebarContentExtendProps {}
+export interface SidebarSnippetProps extends SnippetProps {
+	sidebar: SidebarBond;
+}
+
+export type SidebarChildren = Snippet<[SidebarSnippetProps]>;
 
 export type SidebarRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Omit<HtmlAtomProps<E, B>, 'children'> &
-	SidebarRootExtendProps & {
-		open?: boolean;
-		disabled?: boolean;
-		width?: string | number;
-		factory?: Factory<SidebarBond>;
-		children?: Snippet<[{ sidebar: SidebarBond }]>;
-	};
+> = HtmlAtomProps<E, B, SidebarChildren> & {
+	open?: boolean;
+	disabled?: boolean;
+	width?: string | number;
+	factory?: Factory<SidebarBond>;
+};
 
-export interface SidebarContentProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
-	extends HtmlAtomProps<E, B>, SidebarContentExtendProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SidebarContentProps<
+	E extends keyof HTMLElementTagNameMap,
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, SidebarChildren> {}

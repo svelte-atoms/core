@@ -1,10 +1,17 @@
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { Snippet } from 'svelte';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 
-/**
- * Extend this interface to add custom link properties in your application.
- */
+// ============================================================================
+// Link Snippet Props (Extensible)
+// ============================================================================
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface LinkExtendProps {}
+export interface LinkSnippetProps extends SnippetProps {}
 
-export interface LinkProps<E extends keyof HTMLElementTagNameMap = 'a', B extends Base = Base>
-	extends HtmlAtomProps<E, B>, LinkExtendProps {}
+export type LinkChildren = Snippet<[LinkSnippetProps]>;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LinkProps<
+	E extends keyof HTMLElementTagNameMap = 'a',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, LinkChildren> {}

@@ -1,13 +1,19 @@
 import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom/types';
-import type { Snippet } from 'svelte';
+
+// ============================================================================
+// Button Component Props (Extensible)
+// ============================================================================
 
 /**
- * Extend this interface to add custom button properties in your application.
+ * Button component props with extensible snippet type
+ *
+ * Override snippet children in custom implementations:
+ * ```ts
+ * interface CustomButtonProps extends ButtonProps {
+ *   children?: Snippet<[CustomButtonSnippetProps]>;
+ * }
+ * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ButtonExtendProps {}
-
-export interface ButtonProps extends HtmlAtomProps<'button'>, ButtonExtendProps {
+export interface ButtonProps extends HtmlAtomProps<'button'> {
 	type?: 'button' | 'submit' | 'reset';
-	children?: Snippet<[]>;
 }

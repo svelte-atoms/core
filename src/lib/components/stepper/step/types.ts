@@ -1,12 +1,22 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { StepBond } from './bond.svelte';
+
+// ============================================================================
+// Step Snippet Props (Extensible)
+// ============================================================================
+
+export interface StepSnippetProps extends SnippetProps {
+	step: StepBond;
+}
+
+export type StepChildren = Snippet<[StepSnippetProps]>;
 
 export interface StepRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Omit<HtmlAtomProps<E, B>, 'children'> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * The step index (0-based)
 	 */
@@ -38,75 +48,74 @@ export interface StepRootProps<
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepSeparatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step: StepBond }]>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface StepContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, StepChildren> {
 	/**
 	 * Child render function
 	 */
-	children?: Snippet<[{ step?: StepBond }]>;
 }

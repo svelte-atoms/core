@@ -1,100 +1,77 @@
 import type { Snippet } from 'svelte';
 import type { CardBond } from './bond.svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 
-/**
- * Extend this interface to add custom card root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardExtendProps {}
+// ============================================================================
+// Card Snippet Props (Extensible)
+// ============================================================================
 
-/**
- * Extend this interface to add custom card header properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardHeaderExtendProps {}
+export interface CardSnippetProps extends SnippetProps {
+	card: CardBond;
+}
 
-/**
- * Extend this interface to add custom card body/content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardBodyExtendProps {}
+export type CardChildren = Snippet<[CardSnippetProps]>;
 
-/**
- * Extend this interface to add custom card footer properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardFooterExtendProps {}
+// ============================================================================
+// Card Root Props
+// ============================================================================
 
-/**
- * Extend this interface to add custom card title properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardTitleExtendProps {}
-
-/**
- * Extend this interface to add custom card subtitle properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardSubtitleExtendProps {}
-
-/**
- * Extend this interface to add custom card description properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardDescriptionExtendProps {}
-
-/**
- * Extend this interface to add custom card media properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CardMediaExtendProps {}
-
-export interface CardRootProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends Omit<HtmlAtomProps<E, B>, 'children'>, CardExtendProps {
+export interface CardRootProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, CardChildren> {
 	disabled?: boolean;
 	factory?: Factory<CardBond>;
-	children?: Snippet<[{ card: CardBond }]>;
 	onclick?: (event: MouseEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
 }
 
+// ============================================================================
+// Card Sub-component Props
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, CardHeaderExtendProps {}
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
-export interface CardBodyProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B>, CardBodyExtendProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CardBodyProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, CardFooterExtendProps {}
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
-export interface CardTitleProps<E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base>
-	extends HtmlAtomProps<E, B>, CardTitleExtendProps {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CardTitleProps<
+	E extends keyof HTMLElementTagNameMap = 'h3',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardSubtitleProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, CardSubtitleExtendProps {}
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, CardDescriptionExtendProps {}
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardMediaProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, CardMediaExtendProps {}
+> extends HtmlAtomProps<E, B, CardChildren> {}
 
 // Alias for CardBodyProps (used in card-body.svelte)
 export type CardContentProps<

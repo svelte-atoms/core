@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory, Override } from '$svelte-atoms/core/types';
 import type { CollapsibleBond } from './bond.svelte';
 
@@ -27,15 +27,20 @@ export interface CollapsibleBodyExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CollapsibleIndicatorExtendProps {}
 
+// ============================================================================
+// Collapsible Snippet Props (Extensible)
+// ============================================================================
+
+export interface CollapsibleSnippetProps extends SnippetProps {
+	collapsible: CollapsibleBond;
+}
+
+export type CollapsibleChildren = Snippet<[CollapsibleSnippetProps]>;
+
 export type CollapsibleRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Override<
-	HtmlAtomProps<E, B>,
-	{
-		children?: Snippet<[{ collapsible: CollapsibleBond }]>;
-	}
-> &
+> = HtmlAtomProps<E, B, CollapsibleChildren> &
 	CollapsibleRootExtendProps & {
 		open?: boolean;
 		value?: string;
@@ -48,35 +53,17 @@ export type CollapsibleRootProps<
 export type CollapsibleHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Override<
-	HtmlAtomProps<E, B>,
-	{
-		children?: Snippet<[{ collapsible?: CollapsibleBond }]>;
-	}
-> &
-	CollapsibleHeaderExtendProps;
+> = HtmlAtomProps<E, B, CollapsibleChildren> & CollapsibleHeaderExtendProps;
 
 export type CollapsibleBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Override<
-	HtmlAtomProps<E, B>,
-	{
-		children?: Snippet<[{ collapsible?: CollapsibleBond }]>;
-	}
-> &
-	CollapsibleBodyExtendProps;
+> = HtmlAtomProps<E, B, CollapsibleChildren> & CollapsibleBodyExtendProps;
 
 export type CollapsibleIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Override<
-	HtmlAtomProps<E, B>,
-	{
-		children?: Snippet<[{ collapsible?: CollapsibleBond }]>;
-	}
-> &
-	CollapsibleIndicatorExtendProps;
+> = HtmlAtomProps<E, B, CollapsibleChildren> & CollapsibleIndicatorExtendProps;
 
 /**
  * @deprecated Use CollapsibleRootExtendProps instead

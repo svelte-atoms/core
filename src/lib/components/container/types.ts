@@ -1,24 +1,20 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps } from '../atom';
+import type { HtmlAtomProps, SnippetProps } from '../atom';
 
-/**
- * Extend this interface to add custom container properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ContainerExtendProps {}
+// ============================================================================
+// Container Snippet Props (Extensible)
+// ============================================================================
 
-export interface ContainerProps
-	extends Omit<HtmlAtomProps<'button'>, 'children'>, ContainerExtendProps {
+export interface ContainerSnippetProps extends SnippetProps {
+	clientWidth: number;
+	clientHeight: number;
+}
+
+export type ContainerChildren = Snippet<[ContainerSnippetProps]>;
+
+export interface ContainerProps extends HtmlAtomProps<'button', never, ContainerChildren> {
 	type?: 'inline-size' | 'size';
 	name?: string;
 	clientWidth?: number;
 	clientHeight?: number;
-	children?: Snippet<
-		[
-			{
-				clientWidth: number;
-				clientHeight: number;
-			}
-		]
-	>;
 }

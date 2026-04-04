@@ -1,30 +1,26 @@
-import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom/types';
+import type { HtmlAtomProps, SnippetProps } from '$svelte-atoms/core/components/atom/types';
 import type { Snippet } from 'svelte';
 
-/**
- * Extend this interface to add custom chip properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ChipExtendProps {}
+// ============================================================================
+// Chip Snippet Props (Extensible)
+// ============================================================================
 
-/**
- * Extend this interface to add custom chip close button properties in your application.
- */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ChipCloseButtonExtendProps {}
+export interface ChipSnippetProps extends SnippetProps {}
 
-export interface ChipProps extends HtmlAtomProps<'div'>, ChipExtendProps {
-	children?: Snippet<[]>;
+export type ChipChildren = Snippet<[ChipSnippetProps]>;
+
+export interface ChipProps extends HtmlAtomProps<'div', never, ChipChildren> {
 	/** Custom icon rendered inside the default close button */
-	icon?: Snippet<[]> | undefined;
+	icon?: Snippet<[ChipSnippetProps]> | undefined;
 	/** Fully replace the close button with a custom snippet */
-	closeButton?: Snippet<[]> | undefined;
+	closeButton?: Snippet<[ChipSnippetProps]> | undefined;
 	/** Called when the default close button is clicked */
 	onclose?: ((ev: MouseEvent) => void) | undefined;
 }
 
-export interface ChipCloseButtonProps extends HtmlAtomProps<'button'>, ChipCloseButtonExtendProps {
+export interface ChipCloseButtonProps extends HtmlAtomProps<'button', never, ChipChildren> {
 	/** Custom icon to render inside the close button */
-	icon?: Snippet<[]> | undefined;
+	icon?: Snippet<[ChipSnippetProps]> | undefined;
 	onclick?: ((ev: MouseEvent) => void) | undefined;
 }

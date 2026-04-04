@@ -1,14 +1,18 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 
-/**
- * Extend this interface to add custom label properties in your application.
- */
+// ============================================================================
+// Label Snippet Props (Extensible)
+// ============================================================================
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface LabelExtendProps {}
+export interface LabelSnippetProps extends SnippetProps {}
 
-export interface LabelProps<E extends keyof HTMLElementTagNameMap = 'label', B extends Base = Base>
-	extends HtmlAtomProps<E, B>, LabelExtendProps {
+export type LabelChildren = Snippet<[LabelSnippetProps]>;
+
+export interface LabelProps<
+	E extends keyof HTMLElementTagNameMap = 'label',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, LabelChildren> {
 	for?: string | null;
-	children?: Snippet<[]>;
 }

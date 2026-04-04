@@ -47,8 +47,6 @@ export { filterSelectData as filter } from '../select/runes.svelte';
 
 // Types
 export type {
-	DropdownExtendProps,
-	DropdownTriggerExtendProps,
 	DropdownRootProps,
 	DropdownTriggerProps,
 	DropdownSelectionsProps,

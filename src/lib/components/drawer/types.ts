@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Override, Factory } from '$svelte-atoms/core/types';
 import type { TransitionFunction } from '$svelte-atoms/core/components/element';
 import type { PortalBond } from '$svelte-atoms/core/components/portal';
@@ -53,12 +53,21 @@ export interface DrawerDescriptionExtendProps {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DrawerBackdropExtendProps {}
 
+// ============================================================================
+// Drawer Snippet Props (Extensible)
+// ============================================================================
+
+export interface DrawerSnippetProps extends SnippetProps {
+	drawer: DrawerBond;
+}
+
+export type DrawerChildren = Snippet<[DrawerSnippetProps]>;
+
 export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
 	extends
 		Override<
-			HtmlAtomProps<E, B>,
+			HtmlAtomProps<E, B, DrawerChildren>,
 			{
-				children?: Snippet<[{ drawer: DrawerBond }]>;
 				initial?: (node: HTMLElement, bond: DrawerBond) => void;
 				enter?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
 				exit?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
@@ -72,50 +81,44 @@ export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B ext
 	factory?: Factory<DrawerBond>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DrawerContentExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerHeaderExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DrawerBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerBodyExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends
-		Override<HtmlAtomProps<E, B>, { children?: Snippet<[{ drawer?: DrawerBond }]> }>,
-		DrawerFooterExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'h2',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DrawerTitleExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DrawerDescriptionExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SlideoverBackdropProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DrawerBackdropExtendProps {}
+> extends HtmlAtomProps<E, B, DrawerChildren> {}

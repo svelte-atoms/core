@@ -1,106 +1,69 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { PortalBond } from '$svelte-atoms/core/components/portal';
 import type { DialogBond, DialogBondProps } from './bond.svelte';
 
-/**
- * Extend this interface to add custom dialog root properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogExtendProps {}
+// ============================================================================
+// Dialog Snippet Props (Extensible)
+// ============================================================================
 
-/**
- * Extend this interface to add custom dialog content properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogContentExtendProps {}
+export interface DialogSnippetProps extends SnippetProps {
+	dialog: DialogBond;
+}
 
-/**
- * Extend this interface to add custom dialog header properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogHeaderExtendProps {}
+export type DialogChildren = Snippet<[DialogSnippetProps]>;
 
-/**
- * Extend this interface to add custom dialog body properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogBodyExtendProps {}
-
-/**
- * Extend this interface to add custom dialog footer properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogFooterExtendProps {}
-
-/**
- * Extend this interface to add custom dialog title properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogTitleExtendProps {}
-
-/**
- * Extend this interface to add custom dialog description properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogDescriptionExtendProps {}
-
-/**
- * Extend this interface to add custom dialog close button properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface DialogCloseButtonExtendProps {}
-
-export interface DialogProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends Omit<HtmlAtomProps<E, B>, 'children'>, DialogExtendProps {
+export interface DialogProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, DialogChildren> {
 	open?: boolean;
 	disabled?: boolean;
 	/** Controls backdrop click behaviour. 'modal' closes on backdrop click (default); 'non-modal' keeps it open. */
 	type?: 'modal' | 'non-modal' | undefined;
 	portal?: string | PortalBond;
 	factory?: (props: DialogBondProps) => DialogBond;
-	children?: Snippet<[{ dialog: DialogBond }]>;
-	trigger?: Snippet<[{ dialog: DialogBond }]>;
+	trigger?: DialogChildren;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogContentExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogHeaderExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogBodyProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogBodyExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogFooterProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogFooterExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogTitleProps<
 	E extends keyof HTMLElementTagNameMap = 'h2',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogTitleExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogDescriptionProps<
 	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogDescriptionExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B>, DialogCloseButtonExtendProps {}
+> extends HtmlAtomProps<E, B, DialogChildren> {}

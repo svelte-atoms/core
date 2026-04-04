@@ -49,10 +49,6 @@ export type {
 // List types
 export type {
 	/**
-	 * @deprecated Use `DropdownMenuListExtendProps` instead.
-	 */
-	DropdownMenuListExtendProps as MenuListExtendProps,
-	/**
 	 * @deprecated Use `DropdownMenuListProps` instead.
 	 */
 	DropdownMenuListProps as MenuListProps
