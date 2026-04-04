@@ -1,12 +1,21 @@
-import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Snippet } from 'svelte';
 
-/**
- * Extend this interface to add custom badge properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface BadgeExtendProps {}
+// ============================================================================
+// Badge Snippet Props (Extensible)
+// ============================================================================
 
-export interface BadgeProps extends HtmlAtomProps<'span'>, BadgeExtendProps {
-	children?: Snippet<[]>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface BadgeSnippetProps extends SnippetProps {
+	// Badge doesn't provide context to children, but can be extended
+}
+
+export type BadgeChildren = Snippet<[BadgeSnippetProps]>;
+
+// ============================================================================
+// Badge Props
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface BadgeProps extends HtmlAtomProps<'span', never, BadgeChildren> {
 }

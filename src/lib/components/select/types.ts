@@ -1,10 +1,25 @@
 import type { Component, Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory, Override } from '$svelte-atoms/core/types';
 import type { SelectBond } from './bond.svelte';
 import type { PopoverTriggerProps } from '$svelte-atoms/core/components/popover';
 import type { ClassValue } from 'svelte/elements';
 import type { SelectItemController } from './item';
+
+// ============================================================================
+// Select Snippet Props (Extensible)
+// ============================================================================
+
+export interface SelectSnippetProps extends SnippetProps {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	select: SelectBond<any>;
+	/** @deprecated Use `select` */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	dropdown: SelectBond<any>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SelectChildren = Snippet<[SelectSnippetProps]>;
 
 export interface SelectRootProps<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,16 +37,15 @@ export interface SelectRootProps<
 	offset?: number;
 	keys?: string[];
 	factory?: Factory<SelectBond>;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	children?: Snippet<[{ select: SelectBond<any>; /** @deprecated Use `select` */ dropdown: SelectBond<any> }]>;
+	children?: SelectChildren;
 	onquerychange?: (query: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SelectTriggerProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends Override<PopoverTriggerProps<E, B>, { children?: Snippet<[{ select?: SelectBond; /** @deprecated Use `select` */ dropdown?: SelectBond }]> }> {}
+> extends Override<PopoverTriggerProps<E, B>, { children?: SelectChildren }> {}
 
 export interface SelectSelectionsProps {
 	class?: ClassValue;

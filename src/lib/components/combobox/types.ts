@@ -1,15 +1,27 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { ComboboxBond } from './bond.svelte';
-import type { SelectSelectionProps as DropdownSelectionProps, SelectSelectionsProps as DropdownSelectionsProps } from '../select';
+import type {
+	SelectSelectionProps as DropdownSelectionProps,
+	SelectSelectionsProps as DropdownSelectionsProps
+} from '../select';
 import type { InputControlProps } from '../input';
+
+// ============================================================================
+// Combobox Snippet Props (Extensible)
+// ============================================================================
+
+export interface ComboboxSnippetProps extends SnippetProps {
+	combobox: ComboboxBond;
+}
+
+export type ComboboxChildren = Snippet<[ComboboxSnippetProps]>;
 
 export interface ComboboxRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
->
-	extends HtmlAtomProps<E, B> {
+> extends HtmlAtomProps<E, B, ComboboxChildren> {
 	open?: boolean;
 	value?: unknown;
 	values?: unknown[];
@@ -21,7 +33,6 @@ export interface ComboboxRootProps<
 	placement?: string;
 	offset?: number;
 	factory?: Factory<ComboboxBond>;
-	children?: Snippet<[{ combobox: ComboboxBond }]>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

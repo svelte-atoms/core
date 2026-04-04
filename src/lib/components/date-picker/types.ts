@@ -1,7 +1,18 @@
 import type { Component, Snippet } from 'svelte';
+import type { SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Day, CalendarRange } from '../calendar/types';
 import type { DatePickerBond } from './bond.svelte';
 import type { Factory } from '$svelte-atoms/core/types';
+
+// ============================================================================
+// DatePicker Snippet Props (Extensible)
+// ============================================================================
+
+export interface DatePickerSnippetProps extends SnippetProps {
+	datePicker: DatePickerBond;
+}
+
+export type DatePickerChildren = Snippet<[DatePickerSnippetProps]>;
 
 export interface DatePickerCalendarProps {
 	class?: string;
@@ -49,6 +60,6 @@ export interface DatePickerRootProps {
 	type?: 'range' | 'single';
 	offset?: number;
 	factory?: Factory<DatePickerBond>;
-	children?: Snippet<[{ datePicker: DatePickerBond }]>;
+	children?: DatePickerChildren;
 	[key: string]: unknown;
 }

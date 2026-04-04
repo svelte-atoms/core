@@ -1,20 +1,28 @@
 import { type Component, type Snippet } from 'svelte';
-import { type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+import { type HtmlAtomProps, type SnippetProps } from '$svelte-atoms/core/components/atom';
 
-/**
- * Extend this interface to add custom checkbox properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface CheckboxExtendProps {}
+// ============================================================================
+// Checkbox Snippet Props (Extensible)
+// ============================================================================
 
-export interface CheckboxProps extends HtmlAtomProps<'button'>, CheckboxExtendProps {
+export interface CheckboxSnippetProps extends SnippetProps {
+	checked?: boolean;
+	indeterminate?: boolean;
+}
+
+export type CheckboxChildren = Snippet<[CheckboxSnippetProps]>;
+
+// ============================================================================
+// Checkbox Props
+// ============================================================================
+
+export interface CheckboxProps extends HtmlAtomProps<'button', never, CheckboxChildren> {
 	value?: string;
 	group?: string[];
 	checked?: boolean;
 	indeterminate?: boolean;
 	checkedContent?: Component | Snippet;
 	indeterminateContent?: Component | Snippet;
-	children?: Snippet<[]>;
 	onclick?: (ev?: Event) => void;
 	onchange?: (ev?: Event, options?: { checked: boolean }) => void;
 }

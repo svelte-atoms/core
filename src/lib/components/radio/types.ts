@@ -1,7 +1,16 @@
 import { type Component, type Snippet } from 'svelte';
-import { type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+import { type HtmlAtomProps, type SnippetProps } from '$svelte-atoms/core/components/atom';
 
-export interface RadioProps<T = string> extends HtmlAtomProps<'label'> {
+// ============================================================================
+// Radio Snippet Props (Extensible)
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface RadioSnippetProps extends SnippetProps {}
+
+export type RadioChildren = Snippet<[RadioSnippetProps]>;
+
+export interface RadioProps<T = string> extends HtmlAtomProps<'label', never, RadioChildren> {
 	/**
 	 * The value of the radio button
 	 */
@@ -37,7 +46,6 @@ export interface RadioProps<T = string> extends HtmlAtomProps<'label'> {
 	/**
 	 * Child content (label text)
 	 */
-	children?: Snippet<[]>;
 	/**
 	 * Change event handler
 	 */
@@ -48,7 +56,7 @@ export interface RadioProps<T = string> extends HtmlAtomProps<'label'> {
 	oninput?: (ev: Event, options?: { checked: boolean; value: boolean; type: 'boolean' }) => void;
 }
 
-export interface RadioGroupProps<T = string> extends HtmlAtomProps<'div'> {
+export interface RadioGroupProps<T = string> extends HtmlAtomProps<'div', never, RadioChildren> {
 	/**
 	 * The currently selected value
 	 */
@@ -72,7 +80,6 @@ export interface RadioGroupProps<T = string> extends HtmlAtomProps<'div'> {
 	/**
 	 * Child content (radio buttons)
 	 */
-	children?: Snippet<[]>;
 	/**
 	 * Input event handler triggered when the selected value changes
 	 */

@@ -1,10 +1,22 @@
 import type { Snippet } from 'svelte';
 import type { MenuItemController } from './controller.svelte';
 import type { ClassValue } from '$svelte-atoms/core/utils';
-import type { Base, HtmlAtomProps } from '../../atom';
+import type { Base, HtmlAtomProps, SnippetProps } from '../../atom';
 
-export interface MenuItemProps<E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base>
-	extends HtmlAtomProps<E, B> {
+// ============================================================================
+// MenuItem Snippet Props (Extensible)
+// ============================================================================
+
+export interface MenuItemSnippetProps extends SnippetProps {
+	menuItem: MenuItemController;
+}
+
+export type MenuItemChildren = Snippet<[MenuItemSnippetProps]>;
+
+export interface MenuItemProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, MenuItemChildren> {
 	/**
 	 * Custom CSS class(es) to apply to the menu item
 	 */
@@ -64,5 +76,4 @@ export interface MenuItemProps<E extends keyof HTMLElementTagNameMap = 'div', B 
 	/**
 	 * Render prop for children
 	 */
-	children?: Snippet<[{ menuItem: MenuItemController }]>;
 }

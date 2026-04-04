@@ -1,9 +1,17 @@
 import type { Component, Snippet } from 'svelte';
-import type { HtmlAtomProps } from '../atom';
+import type { HtmlAtomProps, SnippetProps } from '../atom';
 
-export interface LazyProps extends HtmlAtomProps<'button'> {
+// ============================================================================
+// Lazy Snippet Props (Extensible)
+// ============================================================================
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface LazySnippetProps extends SnippetProps {}
+
+export type LazyChildren = Snippet<[LazySnippetProps]>;
+
+export interface LazyProps extends HtmlAtomProps<'button', never, LazyChildren> {
 	promise: Promise<Component>;
-	children?: Snippet;
 	error?: Snippet<[error: unknown]>;
 	loading?: Snippet;
 }
