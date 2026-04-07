@@ -20,7 +20,7 @@ export type SidebarRootProps<
 	open?: boolean;
 	disabled?: boolean;
 	width?: string | number;
-	factory?: Factory<SidebarBond>;
+	factory?: (props: any) => SidebarBond;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

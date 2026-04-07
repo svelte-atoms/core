@@ -17,16 +17,15 @@
 		value = nanoid(),
 		data = undefined,
 		children = undefined,
-		onclick = undefined,
+		onclick = undefined as ((ev: MouseEvent) => void) | undefined,
 		...restProps
 	}: SelectItemProps<D> = $props();
 
 	// Create reactive props object for the atom
-	const itemProps = $derived<SelectItemAtomProps<D>>({
+	const itemProps = $derived({
 		value,
-		data,
-		label: undefined
-	});
+		data
+	} as SelectItemAtomProps<D>);
 
 	// Create the atom instance
 	const atom = new SelectItemAtom<D>(() => itemProps, select);
@@ -51,7 +50,7 @@
 	});
 
 	function handleClick(ev: MouseEvent) {
-		onclick?.(ev);
+		(onclick as ((ev: MouseEvent) => void) | undefined)?.(ev);
 
 		if (ev.defaultPrevented) {
 			return;
@@ -78,5 +77,5 @@
 	{...itemAttrs}
 	onclick={handleClick}
 >
-	{@render children?.({ selectItem: atom })}
+	{@render children?.({ selectItem: atom as unknown as import('./controller.svelte').SelectItemController<D> })}
 </List.Item>

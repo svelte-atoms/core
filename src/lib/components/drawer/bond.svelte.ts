@@ -11,6 +11,7 @@ export type DrawerBondProps<T extends Record<string, unknown> = Record<string, u
 	BondStateProps & {
 		open: boolean;
 		disabled: boolean;
+		side?: 'left' | 'right' | 'top' | 'bottom';
 		extend: T;
 		readonly rest?: Record<string, unknown>;
 	};

@@ -46,10 +46,11 @@
 	});
 </script>
 
-{#snippet body({children = undefined, ...props}: Record<string, unknown> = {})}
+{#snippet body({children = undefined, selected = false, ...props}: Record<string, unknown> = {})}
 	<Stack.Item 
-		class={['tab-body border-border pointer-events-auto flex h-auto w-full min-w-full flex-1 flex-col', '$preset', klass]} 
-		value={value} 
+		class={['tab-body border-border pointer-events-none flex h-auto w-full min-w-full flex-1 flex-col', selected && 'pointer-events-auto', '$preset', klass]} 
+		value={value}
+		inert={selected ? undefined : true} 
 		{...contentProps} 
 		{...props}
 	>

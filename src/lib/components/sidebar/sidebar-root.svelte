@@ -3,18 +3,19 @@
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
-	import { ZIndex } from '../portal/zindex';
+	import { ZLayer } from '../portal/zlayer.svelte';
+	import { untrack } from 'svelte';
 
 	let {
 		open = $bindable(false),
 		disabled = false,
-		"z-index": zindex = 1,
+		"z-index": zindex = 0,
 		factory = _factory,
 		children = undefined,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
-	new ZIndex(() => zindex).share();
+	new ZLayer('sidebar', () => zindex as number).share();
 
 	const bondProps = defineState<SidebarBondProps>([
 		defineProperty(
@@ -28,7 +29,7 @@
 		defineProperty('rest', () => restProps)
 	]);
 
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps)).share();
 
 	function _factory(props: typeof bondProps) {
 		const bondState = new SidebarBondState(() => props);

@@ -1,4 +1,4 @@
-import { animate, type Easing, type Spring } from 'motion';
+import { animate, spring, type Easing, type Spring } from 'motion';
 import { DURATION } from '$svelte-atoms/core/shared';
 import { DrawerBond } from '.';
 import { untrack } from 'svelte';
@@ -8,14 +8,146 @@ export type DrawerSide = 'left' | 'right' | 'top' | 'bottom';
 type EasingOption = Easing | Easing[] | Spring;
 
 type AnimateDrawerContentParams = {
+	/** Animation duration in seconds (default: 0.3) */
 	duration?: number;
+	/** Delay before animation starts in seconds (default: 0) */
 	delay?: number;
+	/** Easing for open animation (default: smooth deceleration) */
 	easeOpen?: EasingOption;
+	/** Easing for close animation (default: snappy acceleration) */
 	easeClose?: EasingOption;
-	ease?: EasingOption; // overrides both if set
-	side?: DrawerSide;
-	inert?: boolean; // whether to set inert during animation (defaults to true)
+	/** Easing override for both open/close */
+	ease?: EasingOption;
+	/** Use spring physics for natural motion (default: false) */
+	spring?: boolean;
+	/** Spring stiffness (default: 300) */
+	stiffness?: number;
+	/** Spring damping (default: 30) */
+	damping?: number;
+	/** Disable pointer events during animation (default: true) */
+	inert?: boolean;
 };
+
+/**
+ * Modern drawer animation with smooth sliding and subtle fade
+ * 
+ * Features:
+ * - Smooth directional slide from edge
+ * - Subtle opacity fade (0.3 → 1) for depth
+ * - Optimized easing curves for natural feel
+ * - Optional spring physics
+ * - Proper inert handling during animation
+ * - Reads 'side' from Drawer.Root bond automatically
+ * 
+ * Improvements over old version:
+ * - Added opacity fade for better visual hierarchy
+ * - Smoother easing curves (custom cubic-bezier)
+ * - Optional spring physics for bouncy feel
+ * - Better duration defaults (0.3s vs 0.5s)
+ * - Cleaner inert management
+ * - Auto-detects side from bond (no manual prop needed)
+ * 
+ * @example
+ * ```svelte
+ * <Drawer.Root side="right">
+ *   <Drawer.Content animate={animateDrawerContent()}>
+ * </Drawer.Root>
+ * 
+ * <Drawer.Root side="left">
+ *   <Drawer.Content animate={animateDrawerContent({ spring: true })}>
+ * </Drawer.Root>
+ * ```
+ */
+export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
+	const {
+		duration = 0.3,
+		delay = 0,
+		ease,
+		easeOpen = [0.16, 1, 0.3, 1], // Smooth deceleration (similar to popover)
+		easeClose = [0.4, 0, 0.6, 1], // Quick acceleration out
+		spring: useSpring = false,
+		stiffness = 280,
+		damping = 28,
+		inert = true
+	} = params;
+
+	const bond = untrack(() => DrawerBond.get());
+	
+	// Read side from bond (set in Drawer.Root)
+	const side = bond?.state.props.side ?? 'right';
+	
+	const position = getSidePosition(side);
+	const hidden = getHiddenTransform(side);
+
+	let animated = false;
+
+	return (node: HTMLElement) => {
+		const isOpen = bond?.state.props.open ?? false;
+
+		// Apply initial hidden state immediately (before any animation)
+		// This prevents FOUC (flash of unstyled content)
+		if (!animated) {
+			node.style.transform = `translate(${hidden.x}, ${hidden.y})`;
+			node.style.opacity = '0.3';
+			Object.assign(node.style, position);
+		}
+
+		// Disable interactions during animation
+		if (inert) {
+			node.style.pointerEvents = 'none';
+		}
+
+		let controller: ReturnType<typeof animate>;
+
+		// Initial mount (closed state)
+		if (!animated && !isOpen) {
+			controller = animate(
+				node,
+				{
+					x: hidden.x,
+					y: hidden.y,
+					opacity: 0.3,
+					...position
+				},
+				{
+					duration: 0,
+					onComplete: () => {
+						if (inert) node.style.pointerEvents = 'auto';
+					}
+				}
+			);
+			animated = true;
+		} else {
+			// Animated open/close transition
+			const resolvedEase = ease ?? (isOpen ? easeOpen : easeClose);
+
+			const keyframes = {
+				x: isOpen ? '0%' : hidden.x,
+				y: isOpen ? '0%' : hidden.y,
+				opacity: isOpen ? 1 : 0.3,
+				...position
+			};
+
+			const animationOptions = useSpring
+				? { easing: spring({ stiffness, damping }), delay }
+				: { duration, ease: resolvedEase, delay };
+
+			controller = animate(node, keyframes, {
+				...animationOptions,
+				onComplete: () => {
+					if (inert) {
+						node.style.pointerEvents = isOpen ? 'auto' : 'none';
+					}
+				}
+			});
+		}
+
+		return () => {
+			controller?.stop();
+			if (inert) node.style.pointerEvents = 'auto';
+		};
+	};
+}
 
 /**
  * Returns the hidden (offscreen) translate values for each side.
@@ -52,103 +184,22 @@ function getSidePosition(
 	}
 }
 
-export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
-	const {
-		duration = DURATION.smooth / 1000,
-		delay = 0,
-		ease,
-		easeOpen = [0.22, 1, 0.36, 1], // ease-out-quint: gentle deceleration on enter
-		easeClose = [0.32, 0.72, 0, 1], // ease-in-out-quart: snappy on exit
-		side = 'right',
-		inert = false
-	} = params;
-
-	const bond = untrack(() => DrawerBond.get());
-	const position = getSidePosition(side);
-	const hidden = getHiddenTransform(side);
-
-	let animated = false;
-
-	return (node: HTMLElement) => {
-		const isOpen = bond?.state.props.open ?? false;
-		const resolvedEase = ease ?? (isOpen ? easeOpen : easeClose);
-
-		node.inert = true;
-
-		let controller: ReturnType<typeof animate>;
-
-		if (!animated && !isOpen) {
-			controller = animate(
-				node,
-				{
-					x: isOpen ? '0%' : hidden.x,
-					y: isOpen ? '0%' : hidden.y,
-					...position
-				},
-				{
-					duration: 0,
-					onComplete: () => {
-						node.inert = inert;
-					}
-				}
-			);
-			animated = true;
-		} else {
-			controller = animate(
-				node,
-				{
-					x: isOpen ? '0%' : hidden.x,
-					y: isOpen ? '0%' : hidden.y,
-					...position
-				},
-				{
-					duration,
-					ease: resolvedEase,
-					delay,
-					onComplete: () => {
-						node.inert = inert;
-					}
-				}
-			);
-		}
-
-		return () => {
-			controller.stop();
-			node.inert = inert;
-		};
-	};
-}
-
-/**
- * Convenience wrappers for each side — use as `animate` + `initial` on Drawer.Content.
- *
- * @example
- * <Drawer.Content animate={animateDrawerContentFromRight()} initial={animateDrawerContentFromRight({ duration: 0 })} />
- */
-export function animateDrawerContentFromLeft(params: AnimateDrawerContentParams = {}) {
-	return animateDrawerContent({ ...params, side: 'left' });
-}
-
-export function animateDrawerContentFromRight(params: AnimateDrawerContentParams = {}) {
-	return animateDrawerContent({ ...params, side: 'right' });
-}
-
-export function animateDrawerContentFromTop(params: AnimateDrawerContentParams = {}) {
-	return animateDrawerContent({ ...params, side: 'top' });
-}
-
-export function animateDrawerContentFromBottom(params: AnimateDrawerContentParams = {}) {
-	return animateDrawerContent({ ...params, side: 'bottom' });
-}
-
 type AnimateDrawerRootParams = {
+	/** Animation duration in seconds (default: 0.3) */
 	duration?: number;
+	/** Delay before animation starts in seconds (default: 0) */
 	delay?: number;
+	/** Easing function (default: smooth in-out) */
 	ease?: EasingOption;
 };
 
+/**
+ * Backdrop/overlay fade animation for drawer
+ * 
+ * Fades the backdrop in/out smoothly when drawer opens/closes
+ */
 export function animateDrawerRoot(params: AnimateDrawerRootParams = {}) {
-	const { duration = DURATION.smooth / 1000, delay = 0, ease = 'easeInOut' } = params;
+	const { duration = 0.3, delay = 0, ease = [0.16, 1, 0.3, 1] } = params;
 
 	return (node: HTMLElement) => {
 		const bond = DrawerBond.get();

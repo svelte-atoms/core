@@ -76,6 +76,7 @@ export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B ext
 		DrawerExtendProps {
 	open?: boolean;
 	disabled?: boolean;
+	side?: 'left' | 'right' | 'top' | 'bottom';
 	portal?: string | PortalBond;
 	onclose?: (event: Event, bond: DrawerBond) => void;
 	factory?: Factory<DrawerBond>;

@@ -4,7 +4,7 @@
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion';
-	import { ZIndex } from '../portal/zindex';
+	import { ZLayer } from '../portal/zlayer.svelte';
 	import type { PopoverContentProps } from './types';
 
 	const bond = PopoverBond.get();
@@ -15,13 +15,15 @@
 
 	const positionStrategy = $derived(bond?.state.props.positionStrategy ?? 'absolute');
 
-	const zIndex = (()=> {
+	const parentLayer = (() => {
 		try {
-			return ZIndex.get();
+			return ZLayer.get();
 		} catch {
 			return undefined;
 		}
 	})();
+
+	const layer = new ZLayer('popover', () => parentLayer?.get() ?? 0).share();
 	
 	const activePortalBond = (() => {
 		const key = bond.state.props.portal;
@@ -111,7 +113,7 @@
 	portal={portalId ?? 'root.l0'}
 	as="div"
 	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
-	style={`z-index: ${zIndex?.get?.() ?? 1}; position: ${positionStrategy};`}
+	style="z-index: {layer.get()}; position: {positionStrategy};"
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
 	{...bond.content({ engine: 'internal' }).spread}

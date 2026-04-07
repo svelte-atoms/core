@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { animateDrawerContentFromRight, Drawer } from '$lib/components/drawer';
+	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
 	import { DURATION } from '$svelte-atoms/core';
 
 	type TocEntry = { id: string; text: string };
@@ -57,10 +57,10 @@
 {/if}
 
 <!-- Mobile: Drawer from right -->
-<Drawer.Root bind:open {onclose} class="lg:hidden z-50">
+<Drawer.Root bind:open {onclose} side="right" class="lg:hidden z-50">
 	{#snippet children({ drawer })}
 		<Drawer.Backdrop class={['duration-75 bg-black/0 transition-[backdrop-filter]', drawer.state.props.open ? 'backdrop-grayscale-100' : '']} />
-		<Drawer.Content side="right" class="bg-background border-border w-80 border-l p-0 shadow-xl flex flex-col" animate={animateDrawerContentFromRight({duration: DURATION.smooth/1000})}>
+		<Drawer.Content class="bg-background border-border w-80 border-l p-0 shadow-xl flex flex-col" animate={animateDrawerContent({duration: DURATION.smooth/1000})}>
 			<Drawer.Header class="border-b border-border px-6 py-4 flex items-center justify-between">
 				<h4 class="text-foreground text-lg font-semibold">On this page</h4>
 				<button 

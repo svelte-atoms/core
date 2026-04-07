@@ -4,7 +4,8 @@
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
 	import type { DialogProps } from './types';
-	import { ZIndex } from '../portal/zindex';
+	import { ZLayer } from '../portal/zlayer.svelte';
+	import { untrack } from 'svelte';
 
 	let {
 		class: klass = '',
@@ -12,7 +13,7 @@
 		disabled = false,
 		type = 'modal' as 'modal' | 'non-modal',
 		as = 'dialog' as E,
-		"z-index": zindex = 20,
+		"z-index": zindex = 0,
 		portal = undefined,
 		factory = _factory,
 		children = undefined,
@@ -21,7 +22,7 @@
 		...restProps
 	}: DialogProps<E, B> = $props();
 
-	new ZIndex(() => zindex).share();
+	const layer = new ZLayer('dialog', () => zindex as number).share();
 
 	const bondProps = defineState<DialogBondProps>(
 		[
@@ -37,9 +38,9 @@
 		() => ({ disabled })
 	);
 
-	const bond = _factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps)).share();
 
-	const rootProps = $derived({
+	const rootProps: Record<string, unknown> = $derived({
 		...bond?.root().spread,
 		...restProps
 	});
@@ -84,7 +85,7 @@
 		'$preset',
 		klass
 	]}
-	style={`z-index: ${zindex};`}
+	style="z-index: {layer.get()};"
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();

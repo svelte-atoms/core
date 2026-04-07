@@ -34,8 +34,8 @@ export type ElementAttributes<T extends ElementTagName> = T extends HtmlElementT
 // Transition & Lifecycle Functions
 // ============================================================================
 
-export interface TransitionFunction<T extends ElementTagName = ElementTagName> {
-	(node: ElementType<T>): Partial<TransitionConfig> | void;
+export interface TransitionFunction<T extends Element = Element> {
+	(node: T): Partial<TransitionConfig> | void;
 }
 
 export interface NodeFunction<T extends ElementTagName = ElementTagName> {

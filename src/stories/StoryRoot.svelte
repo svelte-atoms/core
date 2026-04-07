@@ -168,7 +168,7 @@
 	setPreset(preset);
 </script>
 
-<Root class="dark">
+<Root class={['svelte-atoms-story-root', scheme.current === 'dark' ? 'dark' : 'light']}>
 	<div class="flex min-h-full w-full flex-col items-center justify-center overflow-y-auto p-4">
 		{@render children?.()}
 	</div>

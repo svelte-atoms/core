@@ -22,14 +22,4 @@ export interface RootProps<
 	 * Custom portal configuration snippet.
 	 */
 	portals?: Snippet;
-
-	/**
-	 * Custom L0 portal snippet (z-10 layer for popovers).
-	 */
-	l0portal?: Snippet;
-
-	/**
-	 * Custom L1 portal snippet (z-12 layer).
-	 */
-	l1portal?: Snippet;
 }
