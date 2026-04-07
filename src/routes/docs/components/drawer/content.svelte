@@ -172,7 +172,7 @@
 								<Drawer.Description class="text-muted-foreground mt-2 text-sm leading-relaxed">This action cannot be undone. The item will be permanently removed from your account.</Drawer.Description>
 							</div>
 						</Drawer.Header>
-						<Drawer.Footer class="flex gap-3 px-6 pb-8">
+						<Drawer.Footer class="flex gap-3 px-6 py-4">
 							<Button variant="destructive" class="flex-1 font-medium" onclick={() => (bottomOpen = false)}>Delete</Button>
 							<Button variant="outline" class="flex-1" onclick={() => (bottomOpen = false)}>Cancel</Button>
 						</Drawer.Footer>
@@ -188,10 +188,9 @@
 
 **Preset Key:** `drawer`
 
-</DocOnly>
-				<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Drawer.Root
+		</DocOnly>
 
-**Preset Key:** `drawer`</h3></DocOnly>
+		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Drawer.Root</h3></DocOnly>
 		<DocProps data={slideoverRootProps} />
 
 		<DocOnly for="markdown">
