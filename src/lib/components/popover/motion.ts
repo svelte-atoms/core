@@ -1,145 +1,172 @@
-import { animate, backInOut, circOut, easeInOut } from 'motion';
+import { animate, spring } from 'motion';
 import { untrack } from 'svelte';
 import { PopoverBond } from '.';
-import { DURATION } from '$svelte-atoms/core/shared';
 
 export type AnimatePopoverContentParams = {
+	/** Animation duration in seconds (default: 0.2) */
 	duration?: number;
+	/** Delay before animation starts in seconds (default: 0) */
 	delay?: number;
-	ease?: string;
+	/** Use spring physics for natural motion (default: false) */
+	spring?: boolean;
+	/** Spring stiffness (default: 300) */
+	stiffness?: number;
+	/** Spring damping (default: 30) */
+	damping?: number;
 };
 
+/**
+ * Modern popover animation inspired by Radix UI and Linear
+ * 
+ * Features:
+ * - Vertical scale only (0.96 → 1) for depth without width distortion
+ * - Smart directional slide (adapts to offset and arrow presence)
+ * - Smooth fade (0 → 1)
+ * - Optional spring physics for natural feel
+ * - Transform origin anchored to trigger side
+ * 
+ * Edge cases handled:
+ * - offset=0: Minimal slide (4px) for subtle effect
+ * - No arrow: Uses offset-based slide distance
+ * - With arrow: Enhanced slide for arrow reveal
+ * 
+ * @example
+ * ```svelte
+ * <Popover.Content animate={animatePopoverContent()}>
+ * <Popover.Content animate={animatePopoverContent({ spring: true })}>
+ * ```
+ */
 export function animatePopoverContent(params: AnimatePopoverContentParams = {}) {
 	let prevOpen: boolean | undefined;
 
 	const bond = PopoverBond.get();
 
 	return (node: HTMLElement) => {
-		const { duration = DURATION.quick / 1000, delay = 0, ease = easeInOut } = params;
+		const {
+			duration = .05,
+			delay = 0,
+			spring: useSpring = false,
+			stiffness = 300,
+			damping = 30
+		} = params;
 
 		const isOpen = bond?.state.props.open ?? false;
+		const position = bond?.state.position;
 
-		// Read position reactively so the $effect re-runs once position is first computed,
-		// but only use open-state change as the gate for triggering the animation.
-		const position = bond.state.position;
-		const offset = untrack(() => bond.state.props.offset);
-
-		if (!position) {
-			return;
-		}
+		if (!position) return;
 
 		// Skip animation if open state hasn't changed
-		if (isOpen === prevOpen) {
-			return;
-		}
-
+		if (isOpen === prevOpen) return;
 		prevOpen = isOpen;
 
-		const triggerElement = bond.elements.trigger;
-
-		if (!triggerElement) {
-			return;
-		}
-
 		requestAnimationFrame(() => {
-			const triggerRect = triggerElement.getBoundingClientRect();
-			const nodeRect = node.parentElement?.getBoundingClientRect();
-
-			if (!nodeRect) {
-				return;
-			}
-
-			const scaleX = triggerRect.width / nodeRect.width;
-			const scaleY = triggerRect.height / nodeRect.height;
-
 			const placement = untrack(() => position.placement);
-			const [side, alignment] = placement?.split('-') ?? [];
+			const [side, alignment] = placement?.split('-') ?? ['bottom', ''];
 
-			const dy =
-				(side === 'left' || side === 'right') && !alignment
-					? 0
-					: side === 'top'
-						? -1
-						: side === 'bottom'
-							? 1
-							: undefined;
-			const dx =
-				(side === 'top' || side === 'bottom') && !alignment
-					? 0
-					: side === 'left'
-						? -1
-						: side === 'right'
-							? 1
-							: undefined;
+			// Get offset and arrow configuration
+			const offset = untrack(() => bond?.state.props.offset ?? 0);
+			const hasArrow = untrack(() => bond?.state.props.arrow ?? false);
 
-			const tx = Math.sign(dx ?? 0);
-			const ty = Math.sign(dy ?? 0);
-
-			const getTransformOrigin = (side: string, alignment: string) => {
-				const calcXOrigin = (alignment: string, side: string) => {
-					if (!alignment) return 'center';
-
-					if (side === 'top' || side === 'bottom') {
-						if (alignment === 'start') return 'left';
-						return 'right';
-					}
-
-					if (side === 'left' || side === 'right') {
-						if (alignment === 'start') return 'top';
-						return 'bottom';
-					}
-
-					return 'center';
-				};
-				const x = calcXOrigin(alignment, side);
-
-				const calcYOrigin = (side: string) => {
-					switch (side) {
-						case 'top':
-							return 'bottom';
-						case 'bottom':
-							return 'top';
-						case 'left':
-							return 'right';
-						case 'right':
-							return 'left';
-						default:
-							return 'center';
-					}
-				};
-
-				const y = calcYOrigin(side);
-
-				return `${x} ${y}`;
-			};
-
+			// Calculate transform origin (anchor point relative to trigger)
 			const transformOrigin = getTransformOrigin(side, alignment);
+			
+			// Calculate smart directional offset based on offset and arrow
+			const slideDistance = getSmartSlideDistance(offset, hasArrow);
+			const { x: offsetX, y: offsetY } = getDirectionalOffset(side, slideDistance);
 
+			// Set initial styles
 			node.style.transformOrigin = transformOrigin;
 			node.style.pointerEvents = 'none';
 
-			const translateX = offset * -tx;
-			const translateY = offset * -ty;
+			// Modern animation values
+			const keyframes = {
+				scaleY: isOpen ? [0.96, 1] : [1, 0.96],
+				translateX: isOpen ? [`${offsetX}px`, '0px'] : ['0px', `${offsetX}px`],
+				translateY: isOpen ? [`${offsetY}px`, '0px'] : ['0px', `${offsetY}px`],
+				opacity: isOpen ? [0, 1] : [1, 0]
+			};
 
-			const c = animate(
+			// Animate with spring or standard easing
+			const animation = animate(
 				node,
-				{
-					scaleX: isOpen ? [0.8, 1] : [1, 0.8],
-					scaleY: isOpen ? [scaleY, 1] : [1, scaleY],
-					translateX: isOpen ? [`${translateX}px`, '0px'] : ['0px', `${translateX}px`],
-					translateY: isOpen ? [`${translateY}px`, '0px'] : ['0px', `${translateY}px`],
-					opacity: isOpen ? [0, 1] : [1, 0]
-				},
-				{
-					duration,
-					easing: ease,
-					delay
-				}
+				keyframes,
+				useSpring
+					? { easing: spring({ stiffness, damping }), delay }
+					: { duration, easing: [0.16, 1, 0.3, 1], delay } // Custom cubic-bezier for smooth motion
 			);
 
-			c.then(() => {
+			animation.finished.then(() => {
 				node.style.pointerEvents = 'auto';
 			});
 		});
 	};
+}
+
+/**
+ * Calculate transform origin based on popover placement
+ * Anchors the animation to the side closest to the trigger
+ */
+function getTransformOrigin(side: string, alignment: string): string {
+	const horizontal = (() => {
+		if (side === 'top' || side === 'bottom') {
+			if (alignment === 'start') return 'left';
+			if (alignment === 'end') return 'right';
+			return 'center';
+		}
+		return side === 'left' ? 'right' : side === 'right' ? 'left' : 'center';
+	})();
+
+	const vertical = (() => {
+		if (side === 'left' || side === 'right') {
+			if (alignment === 'start') return 'top';
+			if (alignment === 'end') return 'bottom';
+			return 'center';
+		}
+		return side === 'top' ? 'bottom' : side === 'bottom' ? 'top' : 'center';
+	})();
+
+	return `${horizontal} ${vertical}`;
+}
+
+/**
+ * Calculate smart slide distance based on offset and arrow configuration
+ * 
+ * Logic:
+ * - offset=0 & no arrow: 4px (minimal, subtle effect)
+ * - offset=0 & arrow: 6px (enough to show arrow animation)
+ * - offset>0 & no arrow: min(offset/2, 8px) (proportional to gap)
+ * - offset>0 & arrow: 8px (standard directional slide)
+ */
+function getSmartSlideDistance(offset: number, hasArrow: boolean): number {
+	if (offset === 0) {
+		// Flush against trigger - use minimal slide
+		return hasArrow ? 6 : 4;
+	}
+
+	if (hasArrow) {
+		// With arrow, use standard 8px slide for consistent arrow reveal
+		return 8;
+	}
+
+	// No arrow, offset > 0: Use proportional slide (max 8px)
+	// This creates a subtle effect that scales with the gap
+	return Math.min(offset / 2, 8);
+}
+
+/**
+ * Calculate directional offset based on placement side
+ */
+function getDirectionalOffset(side: string, distance: number): { x: number; y: number } {
+	switch (side) {
+		case 'top':
+			return { x: 0, y: distance };
+		case 'bottom':
+			return { x: 0, y: -distance };
+		case 'left':
+			return { x: distance, y: 0 };
+		case 'right':
+			return { x: -distance, y: 0 };
+		default:
+			return { x: 0, y: -distance };
+	}
 }
