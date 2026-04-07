@@ -25,12 +25,11 @@
 <Story name="Left" args={{}}>
 	<Drawer_.Root
 		bind:open={isOpen}
-		class=" border backdrop-blur-md backdrop-grayscale-100"
-		animate={animateDrawerRoot({})}
+		side="left"
 	>
 		<Drawer_.Content
 			class="border-border flex min-h-full w-md flex-col border-r p-8 whitespace-nowrap shadow-md"
-			animate={animateDrawerContent({ ease: 'easeOut', side: 'left' })}
+			animate={animateDrawerContent()}
 		>
 			<Drawer_.Header class="flex items-center justify-between">
 				<div class="flex flex-col">
@@ -59,12 +58,11 @@
 <Story name="Top" args={{}}>
 	<Drawer_.Root
 		bind:open={isOpen}
-		class=" border backdrop-blur-md backdrop-grayscale-100"
-		animate={animateDrawerRoot({})}
+		side="top"
 	>
 		<Drawer_.Content
 			class="border-border flex w-md min-w-full flex-col border-b p-8 whitespace-nowrap shadow-md"
-			animate={animateDrawerContent({ ease: 'easeOut', side: 'top' })}
+			animate={animateDrawerContent()}
 			{@attach clickoutDrawer((_, bond) => {
 				bond?.state?.close?.();
 			})}
@@ -86,12 +84,11 @@
 <Story name="Right" args={{}}>
 	<Drawer_.Root
 		bind:open={isOpen}
-		class=" border backdrop-blur-md backdrop-grayscale-100"
-		animate={animateDrawerRoot({})}
+		side="right"
 	>
 		<Drawer_.Content
-			class="border-border shadow-foreground/50 inset-y-0 flex w-md flex-col border-l p-8 whitespace-nowrap shadow-sm"
-			animate={animateDrawerContent({ ease: 'easeOut', side: 'right' })}
+			class="border-border shadow-foreground/5 inset-y-0 flex w-md flex-col border-l p-8 whitespace-nowrap shadow-sm"
+			animate={animateDrawerContent()}
 			{@attach clickoutDrawer((_, bond) => {
 				bond?.state?.close?.();
 			})}
@@ -113,15 +110,11 @@
 <Story name="Bottom" args={{}}>
 	<Drawer_.Root
 		bind:open={isOpen}
-		class=" border backdrop-blur-md backdrop-grayscale-100"
-		initial={(node) => {
-			animate(node, { opacity: +isOpen }, { duration: 0 });
-		}}
-		animate={animateDrawerRoot()}
+		side="bottom"
 	>
 		<Drawer_.Content
 			class="border-border flex w-md min-w-full flex-col border-t p-8 whitespace-nowrap shadow-md"
-			animate={animateDrawerContent({ ease: 'easeOut', side: 'bottom' })}
+			animate={animateDrawerContent()}
 			{@attach clickoutDrawer((_, bond) => {
 				bond?.state?.close?.();
 			})}

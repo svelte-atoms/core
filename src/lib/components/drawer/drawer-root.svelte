@@ -7,6 +7,7 @@
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal, ZLayer } from '../portal';
 	import { animateDrawerRoot } from './motion';
+	import { ZLayer } from '../portal/zlayer.svelte';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -18,8 +19,8 @@
 		as = 'div',
 		disabled = false,
 		portal = undefined,
-		"z-index": zindex = 1,
 		onclose = undefined,
+		"z-index": zindex = 0,
 		initial = animateDrawerRoot({ duration: 0 }),
 		animate = animateDrawerRoot({}),
 		factory = _factory,
