@@ -1,21 +1,20 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import type { ScrollableTrackProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 
 	let {
 		class: klass = '',
-
-		orientation = undefined,
-		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		orientation = 'vertical',
+		children,
+		onmount,
+		ondestroy,
+		animate,
+		enter,
+		exit,
+		initial,
 		...restProps
-	}: ScrollableTrackProps<T> = $props();
+	}: ScrollableTrackProps<E, B> = $props();
 
 	const bond = ScrollableBond.get();
 
@@ -25,19 +24,20 @@
 
 	const hasYScroll = $derived(bond.state.props.scrollHeight > bond.state.props.clientHeight);
 	const hasXScroll = $derived(bond.state.props.scrollWidth > bond.state.props.clientWidth);
-
 	const hasScroll = $derived(hasXScroll || hasYScroll);
-
 	const isOpen = $derived(bond?.state?.props?.open ?? true);
-
 	const isScrolling = $derived(bond?.state?.props?.isScrolling ?? false);
 
-	const trackProps = $derived(bond.track(orientation));
+	const trackProps = $derived({
+		...(orientation === 'horizontal' ? bond.trackX().spread : bond.trackY().spread),
+		...restProps
+	});
 </script>
 
 {#if (isOpen || isScrolling) && hasScroll}
 	<HtmlAtom
 		{bond}
+		as="div"
 		preset="scrollable.track"
 		class={[
 			'scrollable-track bg-foreground/10 hover:bg-foreground/15 border-border absolute z-10 rounded transition-opacity',
@@ -45,14 +45,13 @@
 			'$preset',
 			klass
 		]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
-		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
+		{enter}
+		{exit}
+		{initial}
+		{animate}
+		{onmount}
+		{ondestroy}
 		{...trackProps}
-		{...restProps}
 	>
 		{@render children?.()}
 	</HtmlAtom>

@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import type { ScrollableContentProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
@@ -7,33 +7,38 @@
 
 	let {
 		class: klass = '',
-		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		children,
+		onmount,
+		ondestroy,
+		animate,
+		enter,
+		exit,
+		initial,
 		...restProps
-	}: ScrollableContentProps<T> = $props();
+	}: ScrollableContentProps<E, B> = $props();
 
 	if (!bond) {
 		throw new Error('ScrollableContent must be used within a ScrollableRoot');
 	}
+
+	const contentProps = $derived({
+		...bond.content().spread,
+		...restProps
+	});
 </script>
 
 <HtmlAtom
 	{bond}
+	as="div"
 	preset="scrollable.content"
 	class={['scrollable-content border-border h-full max-h-full', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond.content()}
-	{...restProps}
+	{enter}
+	{exit}
+	{initial}
+	{animate}
+	{onmount}
+	{ondestroy}
+	{...contentProps}
 >
 	{#if children}
 		{@render children()}

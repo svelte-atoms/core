@@ -2,7 +2,7 @@
 	export type { ScrollableContainerProps } from './types';
 </script>
 
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import type { ScrollableContainerProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
@@ -11,21 +11,26 @@
 
 	let {
 		class: klass = '',
-		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		children,
+		onmount,
+		ondestroy,
+		animate,
+		enter,
+		exit,
+		initial,
 		...restProps
-	}: ScrollableContainerProps<T> = $props();
+	}: ScrollableContainerProps<E, B> = $props();
 
 	const bond = ScrollableBond.get();
 
 	if (!bond) {
 		throw new Error('ScrollableContainer must be used within a ScrollableRoot');
 	}
+
+	const containerProps = $derived({
+		...bond.container().spread,
+		...restProps
+	});
 </script>
 
 <HtmlAtom
@@ -40,20 +45,20 @@
 		})(node);
 	}}
 	{bond}
+	as="div"
 	preset="scrollable.container"
 	class={[
 		'scrollable-container border-border h-full max-h-full w-full overflow-auto',
 		'$preset',
 		klass
 	]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond.container()}
-	{...restProps}
+	{enter}
+	{exit}
+	{initial}
+	{animate}
+	{onmount}
+	{ondestroy}
+	{...containerProps}
 >
 	{#if children}
 		{@render children()}

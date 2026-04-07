@@ -1,20 +1,20 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { ScrollableBond } from './bond.svelte';
 	import type { ScrollableThumbProps } from './types';
 
 	let {
 		class: klass = '',
-		children = undefined,
-		orientation,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = _animate,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		children,
+		orientation = 'vertical',
+		onmount,
+		ondestroy,
+		animate,
+		enter,
+		exit,
+		initial,
 		...restProps
-	}: ScrollableThumbProps<T> = $props();
+	}: ScrollableThumbProps<E, B> = $props();
 
 	const bond = ScrollableBond.get();
 
@@ -22,38 +22,15 @@
 		throw new Error('ScrollableThumb must be used within a ScrollableRoot');
 	}
 
-	const scrollX = $derived(bond.state.props.scrollX);
-	const scrollY = $derived(bond.state.props.scrollY);
-
-	const clientWidth = $derived(bond.state.props.clientWidth);
-	const clientHeight = $derived(bond.state.props.clientHeight);
-
-	const scrollWidth = $derived(bond.state.props.scrollWidth);
-	const scrollHeight = $derived(bond.state.props.scrollHeight);
-
-	const thumbX = $derived((scrollX / scrollWidth) * 100);
-	const thumbY = $derived((scrollY / scrollHeight) * 100);
-
-	const thumbWidth = $derived((clientWidth / scrollWidth) * 100);
-	const thumbHeight = $derived((clientHeight / scrollHeight) * 100);
-
-	const thumbProps = $derived(bond.thumb(orientation));
-
-	function _animate(node: HTMLElement) {
-		if (orientation === 'horizontal') {
-			node.style.left = thumbX + '%';
-			node.style.transform = `translateZ(1px)`;
-			node.style.width = thumbWidth + '%';
-		} else {
-			node.style.top = thumbY + '%';
-			node.style.transform = `translateZ(1px)`;
-			node.style.height = thumbHeight + '%';
-		}
-	}
+	const thumbProps = $derived({
+		...(orientation === 'horizontal' ? bond.thumbX().spread : bond.thumbY().spread),
+		...restProps
+	});
 </script>
 
 <HtmlAtom
 	{bond}
+	as="div"
 	preset="scrollable.thumb"
 	class={[
 		'scrollable-thumb border-border bg-foreground/10 hover:bg-foreground/20 absolute cursor-grab rounded-md active:cursor-grabbing',
@@ -62,14 +39,13 @@
 		'$preset',
 		klass
 	]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	{enter}
+	{exit}
+	{initial}
+	{animate}
+	{onmount}
+	{ondestroy}
 	{...thumbProps}
-	{...restProps}
 >
 	{@render children?.()}
 </HtmlAtom>

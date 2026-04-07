@@ -15,92 +15,111 @@
 	import type { StackBond } from './bond.svelte';
 	import { Button } from '$lib/components/button';
 
-	const items = [
-		{ id: 'red',    label: 'Red',    bg: 'bg-red-400',    offset: 'top-0 left-0' },
-		{ id: 'blue',   label: 'Blue',   bg: 'bg-blue-400',   offset: 'top-8 left-8' },
-		{ id: 'green',  label: 'Green',  bg: 'bg-green-400',  offset: 'top-16 left-16' },
-		{ id: 'yellow', label: 'Yellow', bg: 'bg-yellow-400', offset: 'top-24 left-24' },
-		{ id: 'purple', label: 'Purple', bg: 'bg-purple-400', offset: 'top-32 left-32' }
+	// Photo editing layers scenario
+	const layers = [
+		{ id: 'background', label: 'Background', bg: 'bg-gradient-to-br from-sky-300 to-blue-500', emoji: '🌄' },
+		{ id: 'shapes', label: 'Shapes', bg: 'bg-gradient-to-br from-pink-400 to-rose-500', emoji: '🔷' },
+		{ id: 'text', label: 'Text Layer', bg: 'bg-gradient-to-br from-amber-300 to-orange-500', emoji: '✏️' },
+		{ id: 'overlay', label: 'Overlay', bg: 'bg-gradient-to-br from-emerald-400 to-green-600', emoji: '🎨' },
+		{ id: 'effects', label: 'Effects', bg: 'bg-gradient-to-br from-violet-400 to-purple-600', emoji: '✨' }
 	];
 
-	let selected = $state('red');
+	let selected = $state('background');
 	let root: { getBond: () => StackBond } | undefined = $state();
 	const bond = $derived(root?.getBond());
 
-	function label(id: string) {
-		return items.find((i) => i.id === id)?.label ?? id;
+	function getLabel(id: string) {
+		return layers.find((l) => l.id === id)?.label ?? id;
+	}
+
+	function getEmoji(id: string) {
+		return layers.find((l) => l.id === id)?.emoji ?? '';
 	}
 </script>
 
 <Story name="Stack">
-	<!-- controls panel -->
-	<div class="flex flex-col gap-6 p-6 w-160">
-		<!-- item selector -->
-		<div class="flex flex-wrap gap-2">
-			{#each items as item (item.id)}
-				<button
-					class={[
-						'px-3 py-1 rounded text-white text-sm font-medium transition-all',
-						item.bg,
-						selected === item.id ? 'ring-2 ring-offset-2 ring-black scale-105' : 'opacity-70'
-					]}
-					onclick={() => (selected = item.id)}
-				>
-					{item.label}
-				</button>
-			{/each}
-		</div>
+	<div class="flex gap-6 p-6" style="width: 820px;">
+		<!-- Layer panel (left) -->
+		<div class="border-border bg-card flex w-60 shrink-0 flex-col rounded-lg border">
+			<div class="border-border border-b px-4 py-3">
+				<h3 class="text-foreground text-sm font-semibold">Layers</h3>
+			</div>
 
-		<!-- action buttons -->
-		<div class="flex flex-wrap gap-2">
-			<Button variant="outline" size="sm" onclick={() => bond?.state.bringToFront(selected)}>
-				Bring to Front
-			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.state.bringForward(selected)}>
-				Bring Forward
-			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.state.sendBackward(selected)}>
-				Send Backward
-			</Button>
-			<Button variant="outline" size="sm" onclick={() => bond?.state.sendToBack(selected)}>
-				Send to Back
-			</Button>
-		</div>
-
-		<!-- stack canvas -->
-		<div class="relative border rounded-lg bg-muted overflow-hidden" style="height: 280px; width: 100%;">
-			<Stack.Root bind:this={root} class="w-full h-full">
-				{#each items as item (item.id)}
-					<Stack.Item
-						id={item.id}
-						class="rounded-xl flex items-center justify-center text-white font-bold text-lg cursor-pointer shadow-lg transition-all {item.bg} {item.offset} {selected === item.id ? 'ring-4 ring-white ring-offset-2' : ''}"
+			<!-- Layer list -->
+			<div class="flex flex-1 flex-col gap-1 p-2">
+				{#each [...(bond?.state.items ?? [])].reverse() as item (item.id)}
+					<button
+						class={[
+							'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-all',
+							selected === item.id
+								? 'bg-primary/10 text-primary ring-primary/30 ring-1'
+								: 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
+						]}
 						onclick={() => (selected = item.id)}
 					>
-						{item.label}
-						<span class="absolute bottom-1 right-2 text-xs opacity-70">
-							z: {bond?.state.getZIndex(item.id)}
-						</span>
-					</Stack.Item>
+						<span class="text-base">{getEmoji(item.id)}</span>
+						<span class="flex-1 font-medium">{getLabel(item.id)}</span>
+						<span class="text-muted-foreground tabular-nums text-xs">z{bond?.state.getZIndex(item.id)}</span>
+					</button>
 				{/each}
-			</Stack.Root>
+			</div>
+
+			<!-- Controls -->
+			<div class="border-border flex flex-wrap gap-1.5 border-t p-2">
+				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.bringToFront(selected)}>
+					⬆ Front
+				</Button>
+				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.bringForward(selected)}>
+					↑ Up
+				</Button>
+				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.sendBackward(selected)}>
+					↓ Down
+				</Button>
+				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.sendToBack(selected)}>
+					⬇ Back
+				</Button>
+			</div>
 		</div>
 
-		<!-- current order indicator -->
-		<div class="flex items-center gap-2 text-sm text-muted-foreground">
-			<span class="font-medium text-foreground">Back → Front:</span>
-			{#each (bond?.state.items ?? []).map(item => label(item.id)) as name, i (i)}
-				<span
-					class={[
-						'px-2 py-0.5 rounded text-xs font-medium',
-						name.toLowerCase() === selected ? 'bg-primary text-primary-foreground' : 'bg-muted-foreground/20'
-					]}
-				>
-					{name}
-				</span>
-				{#if i < (bond?.state.items.length ?? 0) - 1}
-					<span>›</span>
-				{/if}
-			{/each}
+		<!-- Canvas (right) -->
+		<div class="flex flex-1 flex-col gap-3">
+			<div class="border-border bg-muted relative overflow-hidden rounded-lg border" style="height: 400px;">
+				<Stack.Root bind:this={root} class="relative h-full w-full">
+					{#each layers as layer, i (layer.id)}
+						<Stack.Item
+							value={layer.id}
+							class={[
+								'absolute flex cursor-pointer flex-col items-center justify-center rounded-xl text-white shadow-lg transition-all',
+								layer.bg,
+								selected === layer.id ? 'ring-4 ring-white/80 ring-offset-2' : 'hover:brightness-110'
+							]}
+							style="width: 180px; height: 120px; top: {30 + i * 40}px; left: {40 + i * 60}px;"
+							onclick={() => (selected = layer.id)}
+						>
+							<span class="text-2xl">{layer.emoji}</span>
+							<span class="mt-1 text-sm font-semibold drop-shadow">{layer.label}</span>
+						</Stack.Item>
+					{/each}
+				</Stack.Root>
+			</div>
+
+			<!-- Breadcrumb order -->
+			<div class="text-muted-foreground flex items-center gap-1.5 text-xs">
+				<span class="text-foreground font-medium">Back → Front:</span>
+				{#each bond?.state.items ?? [] as item, i (item.id)}
+					<span
+						class={[
+							'rounded px-2 py-0.5 text-xs font-medium',
+							item.id === selected ? 'bg-primary text-primary-foreground' : 'bg-foreground/10'
+						]}
+					>
+						{getLabel(item.id)}
+					</span>
+					{#if i < (bond?.state.items.length ?? 0) - 1}
+						<span class="text-muted-foreground">›</span>
+					{/if}
+				{/each}
+			</div>
 		</div>
 	</div>
 </Story>

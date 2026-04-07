@@ -6,17 +6,57 @@
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
 
 	const { Story } = defineMeta({
-		title: 'ATOMS/Scrollable'
+		title: 'ATOMS/Scrollable',
+		parameters: {
+			layout: 'fullscreen'
+		}
 	});
 </script>
 
+<script lang="ts">
+	const messages = [
+		{ id: 1, sender: 'Alice', avatar: 'A', time: '9:01 AM', text: 'Hey team! Just pushed the new design tokens to the repo.' },
+		{ id: 2, sender: 'Bob', avatar: 'B', time: '9:03 AM', text: 'Nice! I\'ll pull and integrate them into the component library.' },
+		{ id: 3, sender: 'Alice', avatar: 'A', time: '9:05 AM', text: 'Make sure to check the color contrast ratios — accessibility is a priority.' },
+		{ id: 4, sender: 'Charlie', avatar: 'C', time: '9:08 AM', text: 'I can run the a11y audit once the tokens are integrated. Also, the client wants to see a progress update by 3pm.' },
+		{ id: 5, sender: 'Bob', avatar: 'B', time: '9:10 AM', text: 'Should be ready by noon. The button variants are done, working on form inputs now.' },
+		{ id: 6, sender: 'Alice', avatar: 'A', time: '9:12 AM', text: 'Great. I\'ll prepare the presentation deck in the meantime.' },
+		{ id: 7, sender: 'Charlie', avatar: 'C', time: '9:15 AM', text: 'Don\'t forget to include the before/after comparison screenshots 📸' },
+		{ id: 8, sender: 'Bob', avatar: 'B', time: '9:20 AM', text: 'Question: should the disabled state use opacity or a different background color?' },
+		{ id: 9, sender: 'Alice', avatar: 'A', time: '9:22 AM', text: 'Opacity 50% + pointer-events none. Keeps it consistent across all components.' },
+		{ id: 10, sender: 'Charlie', avatar: 'C', time: '9:25 AM', text: 'Agreed. Less visual noise that way. Also, the spacing tokens look fantastic on mobile.' },
+		{ id: 11, sender: 'Bob', avatar: 'B', time: '9:30 AM', text: 'Forms are done! Moving on to the select and combobox now.' },
+		{ id: 12, sender: 'Alice', avatar: 'A', time: '9:32 AM', text: 'Remember the select needs both single and multi-select variants.' },
+		{ id: 13, sender: 'Charlie', avatar: 'C', time: '9:35 AM', text: 'I\'ve added some test cases for keyboard navigation in the PR review.' },
+		{ id: 14, sender: 'Bob', avatar: 'B', time: '9:40 AM', text: 'Thanks! I\'ll address the review comments after lunch.' },
+		{ id: 15, sender: 'Alice', avatar: 'A', time: '9:45 AM', text: 'Team standup in 15 minutes — let\'s sync up there.' },
+		{ id: 16, sender: 'Charlie', avatar: 'C', time: '9:47 AM', text: 'Sounds good. I\'ll share the test coverage report.' },
+		{ id: 17, sender: 'Bob', avatar: 'B', time: '9:50 AM', text: 'Quick heads up: I found a z-index issue with the popover inside dialogs. Will fix after standup.' },
+		{ id: 18, sender: 'Alice', avatar: 'A', time: '9:52 AM', text: 'Good catch. That might be related to the portal layer changes we made last week.' },
+	];
+
+	const avatarColors: Record<string, string> = {
+		A: 'bg-blue-500',
+		B: 'bg-emerald-500',
+		C: 'bg-amber-500'
+	};
+</script>
+
 <Story name="Scrollable">
-	{#snippet children({ args })}
-		<div class="h-full w-full flex-1">
+	<div class="flex h-150 w-full items-center justify-center p-6">
+		<div class="border-border bg-card flex h-full w-full max-w-lg flex-col rounded-xl border shadow-lg">
+			<!-- Chat header -->
+			<div class="border-border flex items-center gap-3 border-b px-4 py-3">
+				<div class="bg-emerald-500 h-2.5 w-2.5 rounded-full"></div>
+				<h3 class="text-foreground text-sm font-semibold">Design Team Chat</h3>
+				<span class="text-muted-foreground ml-auto text-xs">{messages.length} messages</span>
+			</div>
+
+			<!-- Scrollable message area -->
 			<Scrollable_.Root
-				class="border-border box-border flex min-h-full w-full rounded-lg border shadow-inner"
+				class="flex min-h-0 flex-1"
 				open={false}
-				{@attach (node) => {
+				{@attach (node: HTMLElement) => {
 					const scrollable = ScrollableBond.get();
 					if (!scrollable) return;
 
@@ -28,89 +68,91 @@
 						scrollable.state.props.open = false;
 					})(node);
 
-					return () => {
-						c1();
-						c2();
-					};
+					return () => { c1(); c2(); };
 				}}
 			>
-				{#snippet children({ scrollable })}
-					<Scrollable_.Container class="max-h-[100svh]">
-						<Scrollable_.Content>
-							<div class="mx-auto w-[600px] p-4">
-								<h3 class="mb-4 text-lg font-semibold">Scrollable Content (New API)</h3>
-								<div class="grid grid-cols-3 gap-4">
-									{#each Array(99) as _, i (i)}
-										<div class="rounded border p-4 shadow">
-											<h4 class="font-medium">Card {i + 1}</h4>
-											<p class="mt-2 text-sm">
-												This is some sample content in card {i + 1}. You can scroll horizontally and
-												vertically to see more content.
-											</p>
-										</div>
-									{/each}
+				<Scrollable_.Container class="flex-1">
+					<Scrollable_.Content class="flex flex-col gap-3 p-4">
+						{#each messages as msg (msg.id)}
+							<div class="flex gap-3">
+								<div class={['flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white', avatarColors[msg.avatar]]}>
+									{msg.avatar}
 								</div>
-
-								<div class="bg-foreground/10 mt-6 rounded p-4">
-									<p class="text-sm">
-										This content area is larger than the container, so you can scroll both
-										horizontally and vertically using the custom scrollbars or mouse wheel.
-									</p>
-								</div>
-
-								<div class="mt-4 flex gap-2">
-									<button
-										class="rounded bg-blue-500 px-3 py-2 hover:bg-blue-600"
-										onclick={() => scrollable.scrollTo(0, 0)}
-									>
-										Scroll to Top
-									</button>
-									<button
-										class="rounded bg-green-500 px-3 py-2 hover:bg-green-600"
-										onclick={() => scrollable.scrollBy(50, 50)}
-									>
-										Scroll +50px
-									</button>
+								<div class="min-w-0 flex-1">
+									<div class="flex items-baseline gap-2">
+										<span class="text-foreground text-sm font-medium">{msg.sender}</span>
+										<span class="text-muted-foreground text-xs">{msg.time}</span>
+									</div>
+									<p class="text-foreground/80 mt-0.5 text-sm leading-relaxed">{msg.text}</p>
 								</div>
 							</div>
-						</Scrollable_.Content>
-					</Scrollable_.Container>
+						{/each}
+					</Scrollable_.Content>
+				</Scrollable_.Container>
 
-					<!-- New unified vertical scrollbar -->
-					<Scrollable_.Track
+				<Scrollable_.Track
+					orientation="vertical"
+					class="inset-y-0 right-0 w-0.5 rounded-md"
+					initial={(node: HTMLElement) => {
+						animate(node, { opacity: 0, right: 0, top: 0, bottom: 0 }, { duration: 0 });
+					}}
+					enter={(node: HTMLElement) => {
+						animate(node, { opacity: 1, right: 6, top: 6, bottom: 6 }, { duration: 0.3, ease: 'easeOut' });
+						return { duration: 300 };
+					}}
+					exit={(node: HTMLElement) => {
+						animate(node, { opacity: 0, right: 0, top: 0, bottom: 0 }, { duration: 0.3, ease: 'easeOut' });
+						return { duration: 300 };
+					}}
+				>
+					<Scrollable_.Thumb
 						orientation="vertical"
-						class="inset-y-0 right-0 w-[2px] rounded-md"
-						initial={(node) => {
-							animate(node, { opacity: 0, right: 0, top: 0, bottom: 0 }, { duration: 0 });
-						}}
-						enter={(node) => {
-							animate(
-								node,
-								{ opacity: 1, right: 8, top: 8, bottom: 8 },
-								{ duration: 0.3, ease: 'easeOut' }
-							);
-							return {
-								duration: 300
-							};
-						}}
-						exit={(node) => {
-							animate(
-								node,
-								{ opacity: 0, right: 0, top: 0, bottom: 0 },
-								{ duration: 0.3, ease: 'easeOut' }
-							);
-							return {
-								duration: 300
-							};
-						}}
-					>
-						<Scrollable_.Thumb
-							orientation="vertical"
-							class="left-[50%] w-2 origin-center translate-x-[-50%] rounded-none transition-colors"
-						/>
-					</Scrollable_.Track>
-				{/snippet}
+						class="bg-foreground/20 hover:bg-foreground/30 left-[50%] w-1.5 origin-center translate-x-[-50%] rounded-full transition-colors"
+					/>
+				</Scrollable_.Track>
 			</Scrollable_.Root>
+
+			<!-- Input area -->
+			<div class="border-border flex items-center gap-2 border-t px-4 py-3">
+				<input
+					type="text"
+					placeholder="Type a message..."
+					class="bg-muted text-foreground placeholder:text-muted-foreground flex-1 rounded-lg px-3 py-2 text-sm outline-none"
+				/>
+				<button class="bg-primary text-primary-foreground rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+					Send
+				</button>
+			</div>
 		</div>
-	{/snippet}
+	</div>
+</Story>
+
+<Story name="Simple Debug">
+	<div class="flex h-screen w-full items-center justify-center bg-gray-100 p-6">
+		<Scrollable_.Root
+			class="border relative h-96 w-96 border-black"
+			open={true}
+		>
+			{#snippet children({ scrollable })}
+				<div class="bg-blue-200 absolute left-0 top-0 z-50 p-2 text-xs">
+					<p>Scroll Y: {scrollable.state.props.scrollY}</p>
+					<p>Scroll Height: {scrollable.state.props.scrollHeight}</p>
+					<p>Client Height: {scrollable.state.props.clientHeight}</p>
+					<p>Can Scroll Y: {scrollable.canScrollY}</p>
+				</div>
+
+				<Scrollable_.Container class="h-full">
+					<Scrollable_.Content class="flex flex-col gap-4 p-4">
+						{#each Array(50) as _, i}
+							<div class="bg-white p-4 shadow">Item {i + 1}</div>
+						{/each}
+					</Scrollable_.Content>
+				</Scrollable_.Container>
+
+				<Scrollable_.Track orientation="vertical" class="bg-yellow-300">
+					<Scrollable_.Thumb orientation="vertical" class="!bg-red-500 !opacity-100" />
+				</Scrollable_.Track>
+			{/snippet}
+		</Scrollable_.Root>
+	</div>
 </Story>
