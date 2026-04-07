@@ -49,10 +49,10 @@
 <!--
   Scenario: notification tray drawer — a real app-shell pattern.
 -->
-<Drawer.Root bind:open>
+<Drawer.Root bind:open side="right">
 	<Drawer.Content
 		class="bg-background border-border fixed top-0 right-0 flex h-full w-80 flex-col border-l shadow-xl"
-		animate={animateDrawerContent({ ease: 'easeOut', side: 'right' })}
+		animate={animateDrawerContent({ ease: 'easeOut'})}
 		{@attach clickoutDrawer()}
 	>
 		<Drawer.Header class="border-border flex items-center justify-between border-b px-4 py-3">
