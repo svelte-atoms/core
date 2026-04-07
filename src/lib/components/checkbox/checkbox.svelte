@@ -3,7 +3,7 @@
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
 	import type { CheckboxProps } from './types';
-	import { animateCheckboxIndicatorIn, animateCheckboxIndicatorOut } from './motion';
+	import { animateCheckboxIndicatorIn, animateCheckboxIndicator } from './motion';
 	import './checkbox.css';
 	import { DURATION } from '$svelte-atoms/core/shared';
 	import { scale } from 'svelte/transition';
@@ -97,8 +97,8 @@
 			'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-inherit bg-current'
 		]}
 		base={indeterminateContent}
-		enter={animateCheckboxIndicatorIn()}
-		exit={animateCheckboxIndicatorOut()}
+		enter={animateCheckboxIndicator()}
+		exit={animateCheckboxIndicator()}
 	/>
 {/snippet}
 
@@ -109,8 +109,8 @@
 			'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
 		]}
 		base={checkedContent}
-		enter={animateCheckboxIndicatorIn()}
-		exit={animateCheckboxIndicatorOut()}
+		enter={animateCheckboxIndicator()}
+		exit={animateCheckboxIndicator()}
 	/>
 {/snippet}
 
@@ -120,8 +120,8 @@
 		class={[
 			'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
 		]}
-		enter={animateCheckboxIndicatorIn()}
-		exit={animateCheckboxIndicatorOut()}
+		enter={animateCheckboxIndicator()}
+		exit={animateCheckboxIndicator()}
 	>
 		<Icon class="h-full p-0" src={CheckmarkRegularIcon} />
 	</HtmlAtom>
