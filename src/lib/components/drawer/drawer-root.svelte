@@ -7,26 +7,24 @@
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal } from '../portal';
 	import { animateDrawerRoot } from './motion';
-	import { ZIndex } from '../portal/zindex';
 
 	type Element = HTMLElementTagNameMap[E];
 
 	let {
 		open = $bindable(false),
+		side = 'right',
 		children = undefined,
 		class: klass = '',
 		as = 'div',
 		disabled = false,
 		portal = undefined,
-		onclose = undefined,
 		"z-index": zindex = 1,
+		onclose = undefined,
 		initial = animateDrawerRoot({ duration: 0 }),
 		animate = animateDrawerRoot({}),
 		factory = _factory,
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
-
-	new ZIndex(() => zindex).share();
 
 	const bondProps = defineState<DrawerBondProps>(
 		[
@@ -38,6 +36,7 @@
 				}
 			),
 			defineProperty('disabled', () => disabled),
+			defineProperty('side', () => side),
 			defineProperty('rest', () => restProps)
 		],
 		() => ({})

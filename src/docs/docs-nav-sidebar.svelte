@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageContent } from './content-sidebar.svelte';
 	import ContentSidebar from './content-sidebar.svelte';
-	import { animateDrawerContentFromLeft, Drawer } from '$lib/components/drawer';
+	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
 	import { DURATION } from '$svelte-atoms/core';
 
 	type Props = {
@@ -18,10 +18,10 @@
 <ContentSidebar {data} {pathname} />
 
 <!-- Mobile: Drawer from left -->
-<Drawer.Root bind:open {onclose} class="lg:hidden">
+<Drawer.Root bind:open {onclose} side="left" class="lg:hidden">
 	{#snippet children({ drawer })}
 		<Drawer.Backdrop class={['duration-75 bg-black/0 transition-[backdrop-filter]', drawer.state.props.open ? 'backdrop-grayscale-100' : '']} />
-		<Drawer.Content side="left" class="bg-background border-border w-80 border-r p-0 shadow-xl flex flex-col" animate={animateDrawerContentFromLeft({duration: DURATION.smooth/1000})}>
+		<Drawer.Content class="bg-background border-border w-80 border-r p-0 shadow-xl flex flex-col" animate={animateDrawerContent({duration: DURATION.smooth/1000})}>
 			<Drawer.Header class="border-b border-border px-6 py-4 flex items-center justify-between">
 				<h2 class="text-foreground text-lg font-semibold">Navigation</h2>
 				<button 
