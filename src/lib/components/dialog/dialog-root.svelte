@@ -85,7 +85,7 @@
 		'$preset',
 		klass
 	]}
-	style={`z-index: ${layer.get()};`}
+	style="z-index: {layer.get()};"
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();

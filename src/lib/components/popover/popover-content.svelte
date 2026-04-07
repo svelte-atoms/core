@@ -113,7 +113,7 @@
 	portal={portalId ?? 'root.l0'}
 	as="div"
 	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
-	style={`z-index: ${layer.get()}; position: ${positionStrategy};`}
+	style="z-index: {layer.get()}; position: {positionStrategy};"
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
 	{...bond.content({ engine: 'internal' }).spread}

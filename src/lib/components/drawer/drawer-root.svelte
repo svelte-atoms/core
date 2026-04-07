@@ -5,7 +5,7 @@
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
-	import { ActivePortal } from '../portal';
+	import { ActivePortal, ZLayer } from '../portal';
 	import { animateDrawerRoot } from './motion';
 
 	type Element = HTMLElementTagNameMap[E];
@@ -25,6 +25,8 @@
 		factory = _factory,
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
+
+	const layer = new ZLayer('drawer', () => typeof zindex === 'number' ? zindex : parseInt(zindex as string)).share();
 
 	const bondProps = defineState<DrawerBondProps>(
 		[
@@ -79,6 +81,7 @@
 		'$preset',
 		klass
 	]}
+	style="z-index: {layer.get()};"
 	closeby="none"
 	initial={initial?.bind(bond.state)}
 	animate={animate?.bind(bond.state)}
