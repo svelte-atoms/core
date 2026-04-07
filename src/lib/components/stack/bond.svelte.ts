@@ -108,7 +108,7 @@ export class StackState extends BondState<StackStateProps> {
 
 		if (!item) return;
 
-		this.#order = [...order]
+		const newOrder = [...order]
 			.sort((a, b) => {
 				if (a.id === value) return 1;
 				if (b.id === value) return -1;
@@ -116,7 +116,10 @@ export class StackState extends BondState<StackStateProps> {
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
 
-		const topValue = order.at(-1)?.id;
+		this.#order = newOrder;
+
+		// Update value to the new top item
+		const topValue = newOrder.at(-1)?.id;
 		if (topValue) {
 			this.props.value = topValue;
 		}
@@ -127,7 +130,7 @@ export class StackState extends BondState<StackStateProps> {
 		const item = order.find((item) => item.id === value);
 		if (!item) return;
 
-		this.#order = [...order]
+		const newOrder = [...order]
 			.sort((a, b) => {
 				if (a.id === value) return -1;
 				if (b.id === value) return 1;
@@ -135,7 +138,10 @@ export class StackState extends BondState<StackStateProps> {
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
 
-		const topValue = order.at(-1)?.id;
+		this.#order = newOrder;
+
+		// Update value to the new top item
+		const topValue = newOrder.at(-1)?.id;
 		if (topValue) {
 			this.props.value = topValue;
 		}
@@ -146,10 +152,13 @@ export class StackState extends BondState<StackStateProps> {
 		const item = order.find((i) => i.id === value);
 		if (!item) return;
 
-		const neighbor = [...order].sort((a, b) => a.index - b.index).find((i) => i.index > item.index);
+		const sortedOrder = [...order].sort((a, b) => a.index - b.index);
+		const currentIndex = sortedOrder.findIndex((i) => i.id === value);
+		const neighbor = sortedOrder[currentIndex + 1];
+		
 		if (!neighbor) return;
 
-		this.#order = [...order]
+		const newOrder = [...order]
 			.sort((a, b) => {
 				if (a.id === value && b.id === neighbor.id) return 1;
 				if (a.id === neighbor.id && b.id === value) return -1;
@@ -157,7 +166,10 @@ export class StackState extends BondState<StackStateProps> {
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
 
-		const topValue = order.at(-1)?.id;
+		this.#order = newOrder;
+
+		// Update value to the new top item
+		const topValue = newOrder.at(-1)?.id;
 		if (topValue) {
 			this.props.value = topValue;
 		}
@@ -168,10 +180,13 @@ export class StackState extends BondState<StackStateProps> {
 		const item = order.find((i) => i.id === value);
 		if (!item) return;
 
-		const neighbor = [...order].sort((a, b) => b.index - a.index).find((i) => i.index < item.index);
+		const sortedOrder = [...order].sort((a, b) => a.index - b.index);
+		const currentIndex = sortedOrder.findIndex((i) => i.id === value);
+		const neighbor = sortedOrder[currentIndex - 1];
+		
 		if (!neighbor) return;
 
-		this.#order = [...order]
+		const newOrder = [...order]
 			.sort((a, b) => {
 				if (a.id === value && b.id === neighbor.id) return -1;
 				if (a.id === neighbor.id && b.id === value) return 1;
@@ -179,7 +194,10 @@ export class StackState extends BondState<StackStateProps> {
 			})
 			.map((item, i) => ({ ...item, index: i + 1 }));
 
-		const topValue = order.at(-1)?.id;
+		this.#order = newOrder;
+
+		// Update value to the new top item
+		const topValue = newOrder.at(-1)?.id;
 		if (topValue) {
 			this.props.value = topValue;
 		}

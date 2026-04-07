@@ -19,7 +19,7 @@
 
 <Story name="DataGrid">
 	{#snippet children({ args })}
-		<DataGridCmp.Root class="" {@attach datagridContainer.attach}>
+		<DataGridCmp.Root class="" bind:values {@attach datagridContainer.attach}>
 			<DataGridCmp.Header>
 				<DataGridCmp.Tr header>
 					<DataGridCmp.Th width="auto">

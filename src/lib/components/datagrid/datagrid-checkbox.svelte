@@ -31,13 +31,14 @@
 
 	const activeCheckbox = $derived(isHeader ? headerCheckbox : rowCheckbox);
 
-	function handleHeaderChange(ev: Event, { checked = false }: { checked?: boolean }) {
+	function handleHeaderChange(ev: Event, context: { checked?: boolean } = {}) {
+		const checked = context.checked ?? false;
+		
 		onchange?.(ev, { checked });
-		if (ev.defaultPrevented) return;
 
 		const allIds = [...(datagridBond?.state.rows.keys() ?? [])];
 
-		if(checked){
+		if(checked === true){
 			datagridBond?.state.select(allIds);
 		} else {
 			datagridBond?.state.unselect(allIds);

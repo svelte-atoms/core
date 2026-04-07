@@ -1,8 +1,9 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { ScrollableBond, ScrollableState, type ScrollableStateProps } from './bond.svelte';
+	import { ScrollableBond, ScrollableState, type ScrollableBondProps } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
+	
 	let {
 		scrollX = $bindable(0),
 		scrollY = $bindable(0),
@@ -14,19 +15,19 @@
 		disabled = false,
 		open = true,
 		factory = _factory,
-		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		children,
+		onmount,
+		ondestroy,
+		animate,
+		enter,
+		exit,
+		initial,
 		...restProps
-	}: ScrollableRootProps<T> = $props();
+	}: ScrollableRootProps<E, B> = $props();
 
 	let isScrolling = $state(false);
 
-	const bondProps = defineState<ScrollableStateProps>([
+	const bondProps = defineState<ScrollableBondProps>([
 		defineProperty(
 			'scrollX',
 			() => scrollX,
@@ -73,11 +74,14 @@
 
 	const bond = factory(bondProps).share();
 
-	const rootProps = $derived({ ...bond.root(), ...restProps });
+	const rootProps = $derived({
+		...bond.root().spread,
+		...restProps
+	});
 
 	function _factory(props: typeof bondProps) {
 		const scrollableState = new ScrollableState(() => props);
-		return new ScrollableBond(scrollableState).share();
+		return new ScrollableBond(scrollableState);
 	}
 
 	export function getBond() {
@@ -87,14 +91,15 @@
 
 <HtmlAtom
 	{bond}
+	as="div"
 	preset="scrollable"
 	class={['scrollable-root border-border relative box-content overflow-hidden', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	{enter}
+	{exit}
+	{initial}
+	{animate}
+	{onmount}
+	{ondestroy}
 	{...rootProps}
 >
 	{@render children?.({ scrollable: bond })}

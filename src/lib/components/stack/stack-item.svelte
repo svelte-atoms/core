@@ -16,6 +16,7 @@
 		class: klass = '',
 		value,
 		children,
+		style: userStyle = '',
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { value: string } = $props();
 
@@ -29,9 +30,13 @@
 		};
 	});
 
+	const zIndex = $derived(bond?.state.getZIndex(value) ?? 0);
+
 	const itemProps = $derived({
 		...bond?.item(value).spread,
-		...restProps
+		...restProps,
+		// Merge user style with z-index from atom
+		style: userStyle ? `${userStyle}; z-index: ${zIndex}` : `z-index: ${zIndex}`
 	});
 </script>
 
