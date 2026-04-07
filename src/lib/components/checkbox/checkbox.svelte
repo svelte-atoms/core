@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { circOut } from 'svelte/easing';
-	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { scale } from 'svelte/transition';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
-	import { DURATION } from '$svelte-atoms/core/shared';
 	import type { CheckboxProps } from './types';
+	import { animateCheckboxIndicatorIn, animateCheckboxIndicatorOut } from './motion';
 	import './checkbox.css';
+	import { DURATION } from '$svelte-atoms/core/shared';
+	import { scale } from 'svelte/transition';
+	import { circOut } from 'svelte/easing';
 
 	let {
 		class: klass = '',
@@ -29,8 +29,9 @@
 		onfocus,
 		onclick = undefined,
 		...restProps
-	}: CheckboxProps & Exclude<HTMLInputAttributes, 'type'> = $props();
+	}: CheckboxProps = $props();
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let checkboxElement: HTMLInputElement | undefined = $state();
 
 	// Computed state for visual representation
@@ -38,45 +39,98 @@
 	const isIndeterminate = $derived(indeterminate === true);
 	const showCheckmark = $derived(isChecked && !isIndeterminate);
 
+	const overlayContent = $derived(isIndeterminate ? indeterminateSnippet : showCheckmark ? checkedSnippet : undefined);
+
 	function handleChange(ev: Event) {
 		onchange?.(ev, {
-			checked: checked,
-			value: checked,
-			type: 'boolean'
+			checked: checked
 		});
 	}
 
 	function handleInput(ev: Event) {
 		oninput?.(ev, {
-			checked: checked,
-			value: checked,
-			type: 'boolean'
+			checked: checked
 		});
 	}
 
 	function handleClick(ev: MouseEvent) {
 		if (disabled) return;
 
+		// Stop propagation to prevent double-firing
+		ev.stopPropagation();
+
+		// Let user's onclick handler run first
 		onclick?.(ev);
 
+		// If user prevented default, don't toggle
 		if (ev.defaultPrevented) {
 			return;
 		}
+
+		// Check if click originated from the hidden input (via label click)
+		// If so, the input's bind:checked will handle the toggle
+		if (ev.target === checkboxElement) {
+			return;
+		}
+
+		// Store old value before toggle
+		const oldChecked = checked;
 
 		// Handle indeterminate → checked → unchecked cycle
 		if (indeterminate) {
 			// Indeterminate → checked
 			indeterminate = false;
 			checked = true;
-		} else {
-			// Toggle checked state
-			checked = !checked;
-		}
+		} 
 
-		// Trigger input event manually if needed
-		handleInput(ev);
+		// Fire input event with new value
+		if (checked !== oldChecked) {
+			handleInput(ev);
+		}
 	}
 </script>
+
+{#snippet indeterminateSnippet()}
+	<HtmlAtom
+		preset="checkbox.indeterminate"
+		class={[
+			'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-inherit bg-current'
+		]}
+		base={indeterminateContent}
+		enter={animateCheckboxIndicatorIn()}
+		exit={animateCheckboxIndicatorOut()}
+	/>
+{/snippet}
+
+{#snippet customCheckedSnippet()}
+	<HtmlAtom
+		preset="checkbox.checkmark"
+		class={[
+			'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
+		]}
+		base={checkedContent}
+		enter={animateCheckboxIndicatorIn()}
+		exit={animateCheckboxIndicatorOut()}
+	/>
+{/snippet}
+
+{#snippet defaultCheckedSnippet()}
+	<HtmlAtom
+		preset="checkbox.checkmark"
+		class={[
+			'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
+		]}
+		enter={animateCheckboxIndicatorIn()}
+		exit={animateCheckboxIndicatorOut()}
+	>
+		<Icon class="h-full p-0" src={CheckmarkRegularIcon} />
+	</HtmlAtom>
+{/snippet}
+
+{#snippet checkedSnippet()}
+	{@const content = checkedContent ? customCheckedSnippet : defaultCheckedSnippet}
+	{@render content?.()}
+{/snippet}
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -117,43 +171,5 @@
 		tabindex="-1"
 	/>
 
-	{#if isIndeterminate}
-		{#if indeterminateContent}
-			<HtmlAtom
-				preset="checkbox.indeterminate"
-				class={[
-					'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-[inherit] bg-current'
-				]}
-				base={indeterminateContent}
-			/>
-		{:else}
-			<HtmlAtom
-				preset="checkbox.indeterminate"
-				class={[
-					'checkbox-indeterminate pointer-events-none flex size-full scale-50 items-center justify-center rounded-[inherit] bg-current'
-				]}
-			/>
-		{/if}
-	{:else if showCheckmark}
-		{#if checkedContent}
-			<HtmlAtom
-				preset="checkbox.checkmark"
-				class={[
-					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
-				]}
-				base={checkedContent}
-			/>
-		{:else}
-			<HtmlAtom
-				preset="checkbox.checkmark"
-				class={[
-					'checkbox-indicator text-accent pointer-events-none flex h-full content-center items-center justify-center overflow-hidden p-0.5'
-				]}
-				enter={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
-				exit={(node) => scale(node, { duration: DURATION.fast, easing: circOut, start: 0.6 })}
-			>
-				<Icon class="h-full p-0" src={CheckmarkRegularIcon} />
-			</HtmlAtom>
-		{/if}
-	{/if}
+	{@render overlayContent?.()}
 </HtmlAtom>

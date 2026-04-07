@@ -3,6 +3,7 @@
 	import { Stack } from '../stack';
 	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion';
 
 	const radioGroupContext = getRadioGroupContext();
 
@@ -43,6 +44,8 @@
 	const isReadonly = $derived(_readonly || readonly);
 	const isChecked = $derived(proxy.current === value);
 
+	const checkedContentSnippet = $derived(isChecked ? checkedContent ? customCheckedContent: defaultCheckedContent : undefined);
+
 	function handleChange(ev: Event) {
 		const checked = (ev.currentTarget as HTMLInputElement)?.checked ?? false;
 
@@ -69,12 +72,28 @@
 	}
 </script>
 
+{#snippet defaultCheckedContent()}
+	<Stack.Item 
+		class="rounded-inherit pointer-events-none size-full scale-[0.6] bg-current" 
+		enter={animateRadioIndicatorIn()}
+		exit={animateRadioIndicatorOut()}
+	/>
+{/snippet}
+
+{#snippet customCheckedContent()}
+	<HtmlAtom
+		class="rounded-inherit pointer-events-none size-full scale-[0.6] bg-current"
+		base={checkedContent}
+		enter={animateRadioIndicatorIn()}
+		exit={animateRadioIndicatorOut()}
+	/>
+{/snippet}
+
 <Stack.Root
 	preset="radio"
 	class={[
-		'text-foreground bg-input box-border inline-flex aspect-square size-4 max-h-fit max-w-fit cursor-pointer place-items-center rounded-full border p-0',
+		'text-foreground bg-input box-border inline-flex aspect-square size-4 max-h-fit max-w-fit cursor-pointer place-items-center rounded-full border border-border p-0',
 		isDisabled && 'pointer-events-none opacity-50',
-		'$preset',
 		toClassValue.apply(null, [klass, {}])
 	]}
 	as="label"
@@ -96,14 +115,5 @@
 		/>
 	</Stack.Item>
 
-	{#if isChecked}
-		{#if checkedContent}
-			<HtmlAtom
-				class="rounded-inherit pointer-events-none size-full scale-50 bg-current"
-				base={checkedContent}
-			/>
-		{:else}
-			<Stack.Item class="rounded-inherit pointer-events-none size-full scale-50 bg-current" />
-		{/if}
-	{/if}
+	{@render checkedContentSnippet?.()}
 </Stack.Root>
