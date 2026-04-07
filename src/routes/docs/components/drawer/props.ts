@@ -13,6 +13,12 @@ export const slideoverRootProps: PropDefinition[] = [
 		description: 'Controls whether the drawer is open. Bind this prop for controlled usage.'
 	},
 	{
+		name: 'side',
+		type: "'left' | 'right' | 'top' | 'bottom' | undefined",
+		default: "'right'",
+		description: 'Which edge of the screen the drawer slides in from. Controls the slide animation direction.'
+	},
+	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',
@@ -21,8 +27,8 @@ export const slideoverRootProps: PropDefinition[] = [
 	{
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
-		default: "''",
-		description: 'Portal target selector or PortalBond instance. Teleports drawer content to a different DOM node.'
+		default: "'root.l0'",
+		description: 'Portal target selector or PortalBond instance. Teleports drawer content to a different DOM node. Defaults to L0 z-layer.'
 	},
 	{
 		name: 'onclose',

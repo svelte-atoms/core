@@ -128,8 +128,8 @@
 				<Button onclick={() => (leftOpen = true)}>Open Nav</Button>
 				<Button variant="outline" onclick={() => (bottomOpen = true)}>Delete Item</Button>
 
-				<Drawer.Root bind:open={leftOpen}>
-					<Drawer.Content side="left" class="w-72 flex flex-col">
+				<Drawer.Root bind:open={leftOpen} side="left">
+					<Drawer.Content class="w-72 flex flex-col">
 						<Drawer.Header class="border-b border-border px-6 py-4">
 							<Drawer.Title>Navigation</Drawer.Title>
 						</Drawer.Header>
@@ -164,8 +164,8 @@
 					</Drawer.Content>
 				</Drawer.Root>
 
-				<Drawer.Root bind:open={bottomOpen}>
-					<Drawer.Content side="bottom" class="mx-auto max-w-lg rounded-t-2xl">
+				<Drawer.Root bind:open={bottomOpen} side="bottom">
+					<Drawer.Content class="mx-auto max-w-lg rounded-t-2xl">
 						<Drawer.Header class="border-b border-border px-6 pt-6 pb-4">
 							<div>
 								<Drawer.Title class="text-lg font-semibold">Delete this item?</Drawer.Title>
