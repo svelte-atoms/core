@@ -24,6 +24,7 @@ export interface DialogProps<
 	portal?: string | PortalBond;
 	factory?: (props: DialogBondProps) => DialogBond;
 	trigger?: DialogChildren;
+	onclick?: (ev: MouseEvent, bond: DialogBond) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

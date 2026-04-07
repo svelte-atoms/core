@@ -1,5 +1,5 @@
 <script module lang="ts">
-	export type RootPortals = 'root.l0' | 'root.l1' | 'root.l2' | 'root.l3';
+	export type RootPortals = 'root.l0';
 </script>
 
 <script lang="ts">
@@ -8,7 +8,6 @@
 	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
-	import L0Portal from './l0-portal.svelte';
 	import type { RootProps } from './types';
 
 	let {

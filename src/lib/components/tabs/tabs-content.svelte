@@ -23,7 +23,8 @@
    {@render item.render({
 		...(item.props ?? {}),
 		...(value === item.value ? {} : {children: undefined}),
-		...contentProps
+		...contentProps,
+		selected: value === item.value
    })}
 {/each}
 

@@ -15,11 +15,10 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		side = 'right' as DrawerSide,
-		animate = animateDrawerContent({ side }),
+		animate = animateDrawerContent({ }),
 		enter = undefined,
 		exit = undefined,
-		initial = animateDrawerContent({ duration: 0, side }),
+		initial = animateDrawerContent({ duration: 0 }),
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();
 
