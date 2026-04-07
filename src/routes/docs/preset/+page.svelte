@@ -3,7 +3,7 @@
 
 	const globalPresetCode = `// +layout.svelte (App Root)
 import { setPreset } from '@svelte-atoms/core/context';
-import { Root } from '@svelte-atoms/core/components/root';
+import { Root } from '@svelte-atoms/core/root';
 
 const theme = {
   button: () => ({

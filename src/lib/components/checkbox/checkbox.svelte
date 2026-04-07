@@ -3,11 +3,8 @@
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
 	import type { CheckboxProps } from './types';
-	import { animateCheckboxIndicatorIn, animateCheckboxIndicator } from './motion';
+	import { animateCheckboxIndicator } from './motion';
 	import './checkbox.css';
-	import { DURATION } from '$svelte-atoms/core/shared';
-	import { scale } from 'svelte/transition';
-	import { circOut } from 'svelte/easing';
 
 	let {
 		class: klass = '',
