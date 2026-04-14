@@ -6,6 +6,7 @@
 	import { animatePopoverContent } from './motion';
 	import { ZLayer } from '../portal/zlayer.svelte';
 	import type { PopoverContentProps } from './types';
+	import Floating from './strategies/floating.svelte';
 
 	const bond = PopoverBond.get();
 
@@ -98,6 +99,8 @@
 	}
 
 	function containerAnimate(this: typeof bond.state, node: HTMLElement) {
+		void bond.state.props.open; // Ensure reactivity to open state changes
+
 		const styles = calculatePosition();
 		
 		if (!styles) {
@@ -109,6 +112,8 @@
 	}
 </script>
 
+<Floating />
+
 <Teleport
 	portal={portalId ?? 'root.l0'}
 	as="div"
@@ -116,8 +121,8 @@
 	style="z-index: {layer.get()}; position: {positionStrategy};"
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
-	{...bond.content({ engine: 'internal' }).spread}
->
+	{...bond.content().spread}
+>	
 	<HtmlAtom
 		{bond}
 		preset="popover.content"

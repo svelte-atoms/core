@@ -1,10 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { autoUpdate, type ComputePositionReturn, type Placement } from '@floating-ui/dom';
+import { type ComputePositionReturn, type Placement } from '@floating-ui/dom';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { BondAtom } from '$svelte-atoms/core/shared';
 import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
-import { popoverPositioning } from './behaviors/positioning';
 import type { PortalBond } from '../portal';
+import type { PopoverStrategy } from './strategy-types';
+import { createAttachmentKey } from 'svelte/attachments';
 
 export type PopoverParams = {
 	apply?: (
@@ -34,6 +35,7 @@ export type PopoverStateProps = BondStateProps & {
 	placement: Placement | undefined;
 	offset: number;
 	portal?: string | PortalBond;
+	strategy?: PopoverStrategy;
 	readonly positionStrategy: 'fixed' | 'absolute';
 	readonly rest?: Record<string, unknown>;
 };
@@ -66,8 +68,8 @@ export class PopoverBond<
 	}
 
 	/** Handle for granular access to content attrs, handlers, and attachment */
-	content(params?: PopoverContentPropsParams) {
-		return this.atom('content', () => new PopoverContentAtom(this, params?.engine));
+	content() {
+		return this.atom('content', () => new PopoverContentAtom(this));
 	}
 
 	/** Handle for granular access to arrow attrs and attachment */
@@ -134,11 +136,8 @@ export class PopoverArrowAtom extends BondAtom<PopoverBond, HTMLElement> {
 }
 
 export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
-	#engine: PopoverContentPropsParams['engine'];
-
-	constructor(bond: PopoverBond, engine: PopoverContentPropsParams['engine'] = 'internal') {
+	constructor(bond: PopoverBond) {
 		super(bond, 'content');
-		this.#engine = engine;
 	}
 
 	override get attrs() {
@@ -193,17 +192,6 @@ export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
 		if (!triggerContainsFocus) {
 			setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
 		}
-
-		const engine = this.#engine ?? 'internal';
-
-		if (typeof engine === 'function') {
-			const cleanup = (engine as PopoverEngine)(this.bond)({});
-			return () => cleanup?.();
-		}
-
-		const cleanup = popoverPositioning(this.bond)({}, autoUpdate);
-
-		return () => cleanup?.();
 	}
 }
 

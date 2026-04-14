@@ -1,4 +1,4 @@
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { PopoverBond } from './bond.svelte';
@@ -15,6 +15,7 @@ export interface PopoverRootProps {
 	placement?: Placement;
 	offset?: number;
 	portal?: string | PortalBond;
+	strategy?: Component<Record<string, any>, Record<string, any>> | undefined;
 	extend?: Record<string, unknown>;
 	factory?: Factory<PopoverBond>;
 	children?: PopoverChildren;
