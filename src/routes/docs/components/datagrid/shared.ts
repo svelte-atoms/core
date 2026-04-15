@@ -97,6 +97,68 @@ const sortableCode = `
   </DataGrid.Body>
 </DataGrid.Root>`.trim();
 
+const rowSpanningColumnCode = `
+<script lang="ts">
+  import { DataGrid } from '@svelte-atoms/core';
+
+  const inventory = [
+    { id: 'sku-001', code: 'AMX-100', store: 'Downtown', name: 'Amoxicillin 500mg', category: 'Antibiotics' },
+    { id: 'sku-002', code: 'ATR-220', store: 'Central', name: 'Atorvastatin 20mg', category: 'Cardio' },
+    { id: 'sku-003', code: 'MET-500', store: 'Westside', name: 'Metformin 500mg', category: 'Diabetes' },
+    { id: 'sku-004', code: 'IBP-200', store: 'North', name: 'Ibuprofen 200mg', category: 'Pain Relief' }
+  ];
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const presentLetters = new Set(inventory.map((item) => item.name.charAt(0).toUpperCase()));
+<\/script>
+
+<DataGrid.Root
+  class="h-[24rem] gap-0"
+  {@attach (node: HTMLElement) => {
+    node.style.gridTemplateRows = 'auto 1fr auto';
+  }}
+>
+  <DataGrid.Header class="h-min border-x-0 border-t-0">
+    <DataGrid.Tr class="h-min" header>
+      <DataGrid.Th width="44px" />
+      <DataGrid.Th width="auto" class="pl-4">SKU Code</DataGrid.Th>
+      <DataGrid.Th width="auto">Store</DataGrid.Th>
+      <DataGrid.Th width="1fr">Product Name</DataGrid.Th>
+      <DataGrid.Th width="auto">Category</DataGrid.Th>
+    </DataGrid.Tr>
+  </DataGrid.Header>
+
+  <DataGrid.Body class="col-span-full grid grid-cols-subgrid">
+    <div class="row-span-full flex flex-col items-center gap-0.5 overflow-y-auto border-r border-border py-2">
+      {#each alphabet as letter (letter)}
+        {@const active = presentLetters.has(letter)}
+        <span class="flex size-7 items-center justify-center rounded text-xs font-medium {active ? 'text-primary' : 'text-muted-foreground/30'}">
+          {letter}
+        </span>
+      {/each}
+    </div>
+
+    <div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
+      {#each inventory as item (item.id)}
+        <DataGrid.Tr value={item.id}>
+          <DataGrid.Td class="font-mono text-xs font-semibold text-primary">{item.code}</DataGrid.Td>
+          <DataGrid.Td>{item.store}</DataGrid.Td>
+          <DataGrid.Td class="font-medium">{item.name}</DataGrid.Td>
+          <DataGrid.Td>
+            <span class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {item.category}
+            </span>
+          </DataGrid.Td>
+        </DataGrid.Tr>
+      {/each}
+    </div>
+  </DataGrid.Body>
+
+  <DataGrid.Footer class="col-span-full border-t border-border px-3 py-2 text-xs text-muted-foreground">
+    Row-spanning first column (A-Z rail) + subgrid-aligned content rows
+  </DataGrid.Footer>
+</DataGrid.Root>`.trim();
+
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -153,6 +215,10 @@ const useCases = [
 	{
 		title: 'Comparison Tables',
 		description: 'Show feature comparisons or side-by-side data with fixed header rows and responsive column visibility via hidden prop.'
+  },
+  {
+    title: 'Cross-Row Side Rails',
+    description: 'Create side columns that span all data rows (alphabet index, timeline, status rail) by combining row-span-full containers with subgrid-aligned row content.'
 	}
 ];
 
@@ -208,6 +274,7 @@ export const metadata = {
 		basic: basicCode,
 		selectable: selectableCode,
 		sortable: sortableCode,
+    rowSpanningColumn: rowSpanningColumnCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures
