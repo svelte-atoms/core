@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { onDestroy } from 'svelte';
+	import { onDestroy, untrack } from 'svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { FieldBond, FieldBondState, type FieldStateProps } from './bond.svelte';
@@ -32,16 +32,23 @@
 		),
 		defineProperty('type', () => typeof value),
 		defineProperty('schema', () => schema),
-		defineProperty('validator', () => validator ?? formBond.state.props.validator)
+		defineProperty(
+			'validator',
+			() =>
+				validator ??
+				(formBond?.state?.props as { validator?: FieldStateProps['validator'] } | undefined)
+					?.validator
+		)
 	]);
-	const bond = factory(bondProps).share();
+	const bondFactory = untrack(() => factory);
+	const bond = bondFactory(bondProps).share();
 
 	const rootProps = $derived({
 		...bond?.root(),
 		...restProps
 	});
 
-	const unmount = formBond.state.mountField(bond.id, bond);
+	const unmount = formBond?.state.mountField(bond.id, bond) ?? (() => {});
 	onDestroy(() => unmount());
 
 	function _factory(props: typeof bondProps) {

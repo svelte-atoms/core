@@ -1,6 +1,5 @@
 import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
-import { FormBond, type FormBondState } from '../bond.svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 
 export interface ValidationError {
@@ -156,18 +155,9 @@ export class FieldBondState<
 	#data = $state<unknown>(undefined);
 	#errors = $state<ValidationError[]>([]);
 	#isValidating = $state(false);
-	#form?: FormBondState;
 
 	constructor(props: () => Props) {
 		super(props);
-
-		this.#form = FormBond.get()?.state;
-
-		if (!this.#form) {
-			throw new Error(
-				'Form Context is undefined, FieldAtom must be used within a FormAtom context'
-			);
-		}
 	}
 
 	get value() {
