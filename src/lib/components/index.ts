@@ -49,3 +49,4 @@ export * from './contextmenu';
 export * from './divider';
 export * from './image';
 export * from './virtual';
+export * from './switch';
