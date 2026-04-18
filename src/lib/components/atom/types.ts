@@ -32,6 +32,17 @@ export type Base<Args extends unknown[] = unknown[]> = Args extends [
 			: never;
 
 // ============================================================================
+// Snippet Props (Base for extensible snippet contexts)
+// ============================================================================
+
+/**
+ * Base interface for snippet context props.
+ * Extend this to type the snippet argument in your component.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface SnippetProps {}
+
+// ============================================================================
 // Variants (Support both static and dynamic)
 // ============================================================================
 
