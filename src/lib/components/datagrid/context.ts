@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 
 // ── Header context ─────────────────────────────────────────────────────────
-// Used by DataGridTrBondState to determine whether a Tr is a header row.
+// Used by DataGridRowBondState to determine whether a row is a header row.
 
 const DATAGRID_HEADER_CONTEXT_KEY = '@atoms/context/datagrid/header';
 

@@ -1,33 +1,52 @@
 import { getContext, setContext } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { DataGridBond } from '../bond.svelte';
 import { getDatagridHeaderContext } from '../context';
 
-export type DataGridTrBondProps<T = unknown> = BondStateProps & {
+export type DataGridRowBondProps<T = unknown> = BondStateProps & {
 	value?: string;
 	header?: boolean;
 	data?: T;
 };
 
-export type DataGridTrBondElements = {
+export type DataGridRowBondElements = {
 	root: HTMLElement;
 };
 
-export class DataGridTrBond<
+export class DataGridRowRootAtom<T = unknown> extends BondAtom<DataGridRowBond<T>> {
+	constructor(bond: DataGridRowBond<T>) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'data-kind': 'datagrid-row',
+			'data-header': this.bond.state.isHeader ? 'true' : undefined,
+			'data-selected': this.bond.state.isSelected ? 'true' : undefined
+		};
+	}
+}
+
+export class DataGridRowBond<
 	T = unknown,
-	Props extends DataGridTrBondProps<T> = DataGridTrBondProps<T>,
-	State extends DataGridTrBondState<T, Props> = DataGridTrBondState<T, Props>,
-	Elements extends DataGridTrBondElements = DataGridTrBondElements
+	Props extends DataGridRowBondProps<T> = DataGridRowBondProps<T>,
+	State extends DataGridRowBondState<T, Props> = DataGridRowBondState<T, Props>,
+	Elements extends DataGridRowBondElements = DataGridRowBondElements
 > extends Bond<Props, State, Elements> {
-	static CONTEXT_KEY = '@atoms/context/datagrid/tr';
+	static CONTEXT_KEY = '@atoms/context/datagrid/row';
 
 	readonly #datagrid: DataGridBond<T>;
 
 	constructor(s: State) {
-		super(s);
+		super(s, 'datagrid-row');
 		const datagrid = DataGridBond.get<T>();
-		if (!datagrid) throw new Error('DataGridTrBond must be used within a DataGridBond context.');
+		if (!datagrid) throw new Error('DataGridRowBond must be used within a DataGridBond context.');
 		this.#datagrid = datagrid;
 	}
 
@@ -36,7 +55,7 @@ export class DataGridTrBond<
 	}
 
 	share(): this {
-		return DataGridTrBond.set(this) as this;
+		return DataGridRowBond.set(this) as this;
 	}
 
 	mount(): () => void {
@@ -44,28 +63,21 @@ export class DataGridTrBond<
 	}
 
 	root() {
-		return {
-			'data-kind': 'datagrid-tr',
-			'data-header': this.state.isHeader ? 'true' : undefined,
-			'data-selected': this.state.isSelected ? 'true' : undefined,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new DataGridRowRootAtom(this));
 	}
 
-	static get<T = unknown>(): DataGridTrBond<T> | undefined {
-		return getContext(DataGridTrBond.CONTEXT_KEY);
+	static get<T = unknown>(): DataGridRowBond<T> | undefined {
+		return getContext(DataGridRowBond.CONTEXT_KEY);
 	}
 
-	static set<T = unknown>(bond: DataGridTrBond<T>): DataGridTrBond<T> {
-		return setContext(DataGridTrBond.CONTEXT_KEY, bond);
+	static set<T = unknown>(bond: DataGridRowBond<T>): DataGridRowBond<T> {
+		return setContext(DataGridRowBond.CONTEXT_KEY, bond);
 	}
 }
 
-export class DataGridTrBondState<
+export class DataGridRowBondState<
 	T = unknown,
-	Props extends DataGridTrBondProps<T> = DataGridTrBondProps<T>
+	Props extends DataGridRowBondProps<T> = DataGridRowBondProps<T>
 > extends BondState<Props> {
 	readonly #datagrid = DataGridBond.get<T>();
 	readonly #isHeader: boolean = !!getDatagridHeaderContext();
@@ -98,3 +110,8 @@ export class DataGridTrBondState<
 		this.#datagrid?.state.unselect([this.id]);
 	}
 }
+
+// Backward-compatible aliases for existing imports.
+export type DataGridTrBondProps<T = unknown> = DataGridRowBondProps<T>;
+export type DataGridTrBondElements = DataGridRowBondElements;
+export { DataGridRowBond as DataGridTrBond, DataGridRowBondState as DataGridTrBondState };

@@ -2,8 +2,8 @@ import type { Snippet } from 'svelte';
 import type { DataGridBond } from './bond.svelte';
 import type { CheckboxProps } from '../checkbox/types';
 import type { Factory } from '$svelte-atoms/core/types';
-import type { DataGridTrBond } from './row/bond.svelte';
-import type { DataGridThBond } from './column/bond.svelte';
+import type { DataGridRowBond } from './row/bond.svelte';
+import type { DataGridColumnBond } from './column/bond.svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
@@ -28,17 +28,30 @@ export interface DatagridSnippetProps<T = unknown> extends SnippetProps {
 
 export type DatagridChildren<T = unknown> = Snippet<[DatagridSnippetProps<T>]>;
 
-export interface DatagridThSnippetProps<T = unknown> extends SnippetProps {
-	th: DataGridThBond<T>;
+export interface DatagridColumnSnippetProps<T = unknown> extends SnippetProps {
+	column: DataGridColumnBond<T>;
 }
 
-export type DatagridThChildren<T = unknown> = Snippet<[DatagridThSnippetProps<T>]>;
+export type DatagridColumnChildren<T = unknown> = Snippet<[DatagridColumnSnippetProps<T>]>;
 
-export interface DatagridTrSnippetProps<T = unknown> extends SnippetProps {
-	tr: DataGridTrBond<T>;
+export interface DatagridRowSnippetProps<T = unknown> extends SnippetProps {
+	row: DataGridRowBond<T>;
 }
 
-export type DatagridTrChildren<T = unknown> = Snippet<[DatagridTrSnippetProps<T>]>;
+export type DatagridRowChildren<T = unknown> = Snippet<[DatagridRowSnippetProps<T>]>;
+
+// Backward-compatible snippet aliases.
+export interface DatagridThSnippetProps<T = unknown> extends DatagridColumnSnippetProps<T> {
+	th: DataGridColumnBond<T>;
+}
+
+export type DatagridThChildren<T = unknown> = DatagridColumnChildren<T>;
+
+export interface DatagridTrSnippetProps<T = unknown> extends DatagridRowSnippetProps<T> {
+	tr: DataGridRowBond<T>;
+}
+
+export type DatagridTrChildren<T = unknown> = DatagridRowChildren<T>;
 
 // ── Component prop types ────────────────────────────────────────────────────
 
@@ -79,8 +92,8 @@ export interface DatagridThProps<
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends Override<
-	HtmlAtomProps<E, B, DatagridThChildren<T>>,
-	{ children?: DatagridThChildren<T> }
+	HtmlAtomProps<E, B, DatagridColumnChildren<T>>,
+	{ children?: DatagridColumnChildren<T> }
 > {
 	id?: string;
 	width?: string;
@@ -88,7 +101,7 @@ export interface DatagridThProps<
 	screen?: string;
 	sortable?: boolean | SortableType;
 	hidden?: boolean;
-	factory?: () => DataGridThBond<T>;
+	factory?: () => DataGridColumnBond<T>;
 	onsort?: (event: CustomEvent, options: { field?: SortableType; direction: Direction }) => void;
 }
 
@@ -108,22 +121,30 @@ export interface DatagridTrProps<
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends Override<
-	HtmlAtomProps<E, B, DatagridTrChildren<T>>,
-	{ children?: DatagridTrChildren<T> }
+	HtmlAtomProps<E, B, DatagridRowChildren<T>>,
+	{ children?: DatagridRowChildren<T> }
 > {
 	value?: string;
 	rows?: string;
 	header?: boolean;
 	data?: T;
-	factory?: Factory<DataGridTrBond<T>>;
-	onclick?: (ev: Event, options: { tr?: DataGridTrBond<T> }) => void;
+	factory?: Factory<DataGridRowBond<T>>;
+	onclick?: (ev: Event, options: { row?: DataGridRowBond<T> }) => void;
 }
 
 // ── Semantic type aliases — preferred going forward ───────────────────────
 // DatagridHeaderProps and DatagridFooterProps already have canonical names.
 /** Preferred alias for DatagridTrProps */
-export type DatagridRowProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridTrProps<T, E, B>;
+export type DatagridRowProps<
+	T,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridTrProps<T, E, B>;
 /** Preferred alias for DatagridThProps */
-export type DatagridColumnProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridThProps<T, E, B>;
+export type DatagridColumnProps<
+	T,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridThProps<T, E, B>;
 /** Preferred alias for DatagridTdProps */
 export type DatagridCellProps<T> = DatagridTdProps<T>;

@@ -1,9 +1,14 @@
 import { SvelteMap } from 'svelte/reactivity';
 import { getContext, setContext } from 'svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { nanoid } from 'nanoid';
-import type { DataGridTrBond } from './row/bond.svelte';
-import type { DataGridThBond } from './column/bond.svelte';
+import type { DataGridRowBond } from './row/bond.svelte';
+import type { DataGridColumnBond } from './column/bond.svelte';
 
 export type DataGridStateProps<T> = BondStateProps & {
 	multiple?: boolean;
@@ -19,6 +24,30 @@ export type DataGridElements = {
 	footer: HTMLElement;
 };
 
+class DataGridRootAtom<T = unknown> extends BondAtom<DataGridBond<T>, HTMLElement> {
+	constructor(bond: DataGridBond<T>) {
+		super(bond, 'root');
+	}
+}
+
+class DataGridHeaderAtom<T = unknown> extends BondAtom<DataGridBond<T>, HTMLElement> {
+	constructor(bond: DataGridBond<T>) {
+		super(bond, 'header');
+	}
+}
+
+class DataGridBodyAtom<T = unknown> extends BondAtom<DataGridBond<T>, HTMLElement> {
+	constructor(bond: DataGridBond<T>) {
+		super(bond, 'body');
+	}
+}
+
+class DataGridFooterAtom<T = unknown> extends BondAtom<DataGridBond<T>, HTMLElement> {
+	constructor(bond: DataGridBond<T>) {
+		super(bond, 'footer');
+	}
+}
+
 export class DataGridBond<T = unknown> extends Bond<
 	DataGridStateProps<T>,
 	DataGridBondState<T>,
@@ -27,7 +56,7 @@ export class DataGridBond<T = unknown> extends Bond<
 	static CONTEXT_KEY = '@atoms/context/datagrid';
 
 	constructor(s: DataGridBondState<T>) {
-		super(s);
+		super(s, 'datagrid');
 	}
 
 	get id() {
@@ -36,6 +65,22 @@ export class DataGridBond<T = unknown> extends Bond<
 
 	share(): this {
 		return DataGridBond.set(this) as this;
+	}
+
+	root() {
+		return this.atom('root', () => new DataGridRootAtom(this));
+	}
+
+	header() {
+		return this.atom('header', () => new DataGridHeaderAtom(this));
+	}
+
+	body() {
+		return this.atom('body', () => new DataGridBodyAtom(this));
+	}
+
+	footer() {
+		return this.atom('footer', () => new DataGridFooterAtom(this));
 	}
 
 	static get<T = unknown>(): DataGridBond<T> | undefined {
@@ -50,13 +95,13 @@ export class DataGridBond<T = unknown> extends Bond<
 export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 	readonly #id: string = nanoid();
 
-	#rows: SvelteMap<string, DataGridTrBond<T>> = new SvelteMap();
-	#columns: SvelteMap<string, DataGridThBond<T>> = new SvelteMap();
+	#rows: SvelteMap<string, DataGridRowBond<T>> = new SvelteMap();
+	#columns: SvelteMap<string, DataGridColumnBond<T>> = new SvelteMap();
 
 	#selectedRows = $derived(
 		(this.props.values ?? [])
 			.map((value) => this.#rows.get(value))
-			.filter((r): r is DataGridTrBond<T> => r !== undefined)
+			.filter((r): r is DataGridRowBond<T> => r !== undefined)
 	);
 
 	#sortableColumns = $derived(
@@ -65,9 +110,7 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 
 	#template = $derived(
 		this.props.template ||
-		[...this.#columns.values()]
-			.map((col) => col.state.props.width ?? '1fr')
-			.join(' ')
+			[...this.#columns.values()].map((col) => col.state.props.width ?? '1fr').join(' ')
 	);
 
 	constructor(props: () => DataGridStateProps<T>) {
@@ -78,19 +121,19 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 		return this.#id;
 	}
 
-	get rows(): ReadonlyMap<string, DataGridTrBond<T>> {
+	get rows(): ReadonlyMap<string, DataGridRowBond<T>> {
 		return this.#rows;
 	}
 
-	get columns(): ReadonlyMap<string, DataGridThBond<T>> {
+	get columns(): ReadonlyMap<string, DataGridColumnBond<T>> {
 		return this.#columns;
 	}
 
-	get selectedRows(): readonly DataGridTrBond<T>[] {
+	get selectedRows(): readonly DataGridRowBond<T>[] {
 		return this.#selectedRows;
 	}
 
-	get sortableColumns(): readonly DataGridThBond<T>[] {
+	get sortableColumns(): readonly DataGridColumnBond<T>[] {
 		return this.#sortableColumns;
 	}
 
@@ -98,25 +141,23 @@ export class DataGridBondState<T> extends BondState<DataGridStateProps<T>> {
 		return this.#template;
 	}
 
-	mountColumn(id: string, item: DataGridThBond<T>): () => void {
+	mountColumn(id: string, item: DataGridColumnBond<T>): () => void {
 		this.#columns.set(id, item);
 		return () => this.#columns.delete(id);
 	}
 
-	mountRow(id: string, item: DataGridTrBond<T>): () => void {
+	mountRow(id: string, item: DataGridRowBond<T>): () => void {
 		this.#rows.set(id, item);
 		return () => this.#rows.delete(id);
 	}
 
 	select(ids: string[]): void {
-		const next = new Set(this.props.values ?? []);
-		for (const id of ids) next.add(id);
-		this.props.values = [...next];
+		this.props.values = [...(this.props.values ?? []), ...ids].filter(
+			(value, index, array) => array.indexOf(value) === index
+		);
 	}
 
 	unselect(ids: string[]): void {
-		const next = new Set(this.props.values ?? []);
-		for (const id of ids) next.delete(id);
-		this.props.values = [...next];
+		this.props.values = (this.props.values ?? []).filter((value) => !ids.includes(value));
 	}
 }

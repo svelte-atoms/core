@@ -1,10 +1,14 @@
 import { getContext, setContext } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
 import type { Direction, SortableType } from '$svelte-atoms/core/types';
-import { DataGridBond, type DataGridBondState } from '../bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { DataGridBond } from '../bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
-export type DataGridThBondProps = BondStateProps & {
+export type DataGridColumnBondProps = BondStateProps & {
 	id: string;
 	width?: string;
 	screen?: string;
@@ -13,27 +17,44 @@ export type DataGridThBondProps = BondStateProps & {
 	direction: Direction;
 };
 
-export type DataGridThElements = {
+export type DataGridColumnElements = {
 	root: HTMLElement;
 };
 
-export class DataGridThBond<T = unknown> extends Bond<
-	DataGridThBondProps,
-	DataGridThBondState<T>,
-	DataGridThElements
+export class DataGridColumnRootAtom<T = unknown> extends BondAtom<DataGridColumnBond<T>> {
+	constructor(bond: DataGridColumnBond<T>) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		const props = this.bond.state.props;
+		return {
+			...super.attrs,
+			'data-kind': 'datagrid-column',
+			'data-sortable': props.sortable ? 'true' : undefined,
+			'data-direction': props.direction
+		};
+	}
+}
+
+export class DataGridColumnBond<T = unknown> extends Bond<
+	DataGridColumnBondProps,
+	DataGridColumnBondState<T>,
+	DataGridColumnElements
 > {
-	static CONTEXT_KEY = '@atoms/context/datagrid/th';
+	static CONTEXT_KEY = '@atoms/context/datagrid/column';
 
 	readonly #datagrid: DataGridBond<T>;
 
-	constructor(s: DataGridThBondState<T>) {
-		super(s);
+	constructor(s: DataGridColumnBondState<T>) {
+		super(s, 'datagrid-column');
 		this.#datagrid = DataGridBond.get() as DataGridBond<T>;
 	}
 
 	get isHidden(): boolean {
 		const el = this.elements.root;
-		return el.hidden || getComputedStyle(el).display === 'none';
+		if (!(el instanceof HTMLElement)) return false;
+		return Boolean(el.hidden) || getComputedStyle(el).display === 'none';
 	}
 
 	get index(): number {
@@ -42,7 +63,8 @@ export class DataGridThBond<T = unknown> extends Bond<
 	}
 
 	get text(): string {
-		return this.elements.root?.innerText ?? '';
+		const el = this.elements.root;
+		return el instanceof HTMLElement ? el.innerText : '';
 	}
 
 	get datagrid(): DataGridBond<T> {
@@ -50,41 +72,34 @@ export class DataGridThBond<T = unknown> extends Bond<
 	}
 
 	share(): this {
-		return DataGridThBond.set(this) as this;
+		return DataGridColumnBond.set(this) as this;
 	}
 
 	mount(): () => void {
 		return this.#datagrid.state.mountColumn(this.state.id, this);
 	}
 
-	attachment() {
-		return {
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+	root() {
+		return this.atom('root', () => new DataGridColumnRootAtom(this));
 	}
 
-	static get<T = unknown>(): DataGridThBond<T> | undefined {
-		return getContext(DataGridThBond.CONTEXT_KEY);
+	static get<T = unknown>(): DataGridColumnBond<T> | undefined {
+		return getContext(DataGridColumnBond.CONTEXT_KEY);
 	}
 
-	static set<T = unknown>(bond: DataGridThBond<T>): DataGridThBond<T> {
-		return setContext(DataGridThBond.CONTEXT_KEY, bond);
+	static set<T = unknown>(bond: DataGridColumnBond<T>): DataGridColumnBond<T> {
+		return setContext(DataGridColumnBond.CONTEXT_KEY, bond);
 	}
 }
 
-export class DataGridThBondState<T = unknown> extends BondState<DataGridThBondProps> {
-	readonly #datagrid: DataGridBondState<T>;
-
-	constructor(props: () => DataGridThBondProps) {
+export class DataGridColumnBondState<T = unknown> extends BondState<DataGridColumnBondProps> {
+	constructor(props: () => DataGridColumnBondProps) {
 		super(props);
 
 		const datagrid = DataGridBond.get<T>();
 		if (!datagrid) {
-			throw new Error('DataGridThBond must be used within a DataGridBond context.');
+			throw new Error('DataGridColumnBond must be used within a DataGridBond context.');
 		}
-		this.#datagrid = datagrid.state;
 	}
 
 	get isSortable(): boolean | SortableType | undefined {
@@ -99,3 +114,8 @@ export class DataGridThBondState<T = unknown> extends BondState<DataGridThBondPr
 		this.props.direction = 'desc';
 	}
 }
+
+// Backward-compatible aliases for existing imports.
+export type DataGridThBondProps = DataGridColumnBondProps;
+export type DataGridThElements = DataGridColumnElements;
+export { DataGridColumnBond as DataGridThBond, DataGridColumnBondState as DataGridThBondState };
