@@ -4,19 +4,24 @@
 	import type { DatagridFooterProps } from './types';
 
 	const bond = DataGridBond.get<T>();
+	if (!bond) {
+		throw new Error('DataGrid.Footer must be used within DataGrid.Root.');
+	}
 
 	let {
 		class: klass = '',
 		children = undefined,
 		...restProps
 	}: DatagridFooterProps<T, E, B> = $props();
+
+	const footerProps = $derived({ ...bond.footer().spread, ...restProps });
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="datagrid.footer"
-	class={['border-border contents', '$preset', klass]}
-	{...restProps}
+		preset="datagrid.footer"
+	class={['border-border', '$preset', klass, 'contents']}
+	{...footerProps}
 >
 	{@render children?.({ datagrid: bond })}
 </HtmlAtom>

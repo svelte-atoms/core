@@ -2,8 +2,8 @@ import type { Snippet } from 'svelte';
 import type { DataGridBond } from './bond.svelte';
 import type { CheckboxProps } from '../checkbox/types';
 import type { Factory } from '$svelte-atoms/core/types';
-import type { DataGridTrBond } from './tr/bond.svelte';
-import type { DataGridThBond } from './th/bond.svelte';
+import type { DataGridRowBond } from './row/bond.svelte';
+import type { DataGridColumnBond } from './column/bond.svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
@@ -28,17 +28,34 @@ export interface DatagridSnippetProps<T = unknown> extends SnippetProps {
 
 export type DatagridChildren<T = unknown> = Snippet<[DatagridSnippetProps<T>]>;
 
-export interface DatagridThSnippetProps<T = unknown> extends SnippetProps {
-	th: DataGridThBond<T>;
+export interface DatagridColumnSnippetProps<T = unknown> extends SnippetProps {
+	column: DataGridColumnBond<T>;
 }
 
-export type DatagridThChildren<T = unknown> = Snippet<[DatagridThSnippetProps<T>]>;
+export type DatagridColumnChildren<T = unknown> = Snippet<[DatagridColumnSnippetProps<T>]>;
 
-export interface DatagridTrSnippetProps<T = unknown> extends SnippetProps {
-	tr: DataGridTrBond<T>;
+export interface DatagridRowSnippetProps<T = unknown> extends SnippetProps {
+	row: DataGridRowBond<T>;
 }
 
-export type DatagridTrChildren<T = unknown> = Snippet<[DatagridTrSnippetProps<T>]>;
+export type DatagridRowChildren<T = unknown> = Snippet<[DatagridRowSnippetProps<T>]>;
+
+// ── Deprecated snippet aliases ───────────────────────────────────────────
+/** @deprecated Use `DatagridColumnSnippetProps` instead */
+export interface DatagridThSnippetProps<T = unknown> extends DatagridColumnSnippetProps<T> {
+	th: DataGridColumnBond<T>;
+}
+
+/** @deprecated Use `DatagridColumnChildren` instead */
+export type DatagridThChildren<T = unknown> = DatagridColumnChildren<T>;
+
+/** @deprecated Use `DatagridRowSnippetProps` instead */
+export interface DatagridTrSnippetProps<T = unknown> extends DatagridRowSnippetProps<T> {
+	tr: DataGridRowBond<T>;
+}
+
+/** @deprecated Use `DatagridRowChildren` instead */
+export type DatagridTrChildren<T = unknown> = DatagridRowChildren<T>;
 
 // ── Component prop types ────────────────────────────────────────────────────
 
@@ -74,13 +91,13 @@ export interface DatagridFooterProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DatagridChildren<T>> {}
 
-export interface DatagridThProps<
+export interface DatagridColumnProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends Override<
-	HtmlAtomProps<E, B, DatagridThChildren<T>>,
-	{ children?: DatagridThChildren<T> }
+	HtmlAtomProps<E, B, DatagridColumnChildren<T>>,
+	{ children?: DatagridColumnChildren<T> }
 > {
 	id?: string;
 	width?: string;
@@ -88,33 +105,54 @@ export interface DatagridThProps<
 	screen?: string;
 	sortable?: boolean | SortableType;
 	hidden?: boolean;
-	factory?: () => DataGridThBond<T>;
+	factory?: () => DataGridColumnBond<T>;
 	onsort?: (event: CustomEvent, options: { field?: SortableType; direction: Direction }) => void;
 }
 
-export interface DatagridTdProps<
+/** @deprecated Use `DatagridColumnProps` instead */
+export type DatagridThProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridColumnProps<T, E, B>;
+
+export interface DatagridCellProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DatagridChildren<T>> {
-	onclick?: (ev: Event, options: { td?: DataGridBond<T> }) => void;
+	onclick?: (ev: Event, options: { cell?: DataGridBond<T> }) => void;
 }
+
+/** @deprecated Use `DatagridCellProps` instead */
+export type DatagridTdProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridCellProps<T, E, B>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DatagridCheckboxProps extends Omit<CheckboxProps, 'children'> {}
 
-export interface DatagridTrProps<
+export interface DatagridRowProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends Override<
-	HtmlAtomProps<E, B, DatagridTrChildren<T>>,
-	{ children?: DatagridTrChildren<T> }
+	HtmlAtomProps<E, B, DatagridRowChildren<T>>,
+	{ children?: DatagridRowChildren<T> }
 > {
 	value?: string;
 	rows?: string;
 	header?: boolean;
 	data?: T;
-	factory?: Factory<DataGridTrBond<T>>;
-	onclick?: (ev: Event, options: { tr?: DataGridTrBond<T> }) => void;
+	factory?: Factory<DataGridRowBond<T>>;
+	onclick?: (ev: Event, options: { row?: DataGridRowBond<T> }) => void;
 }
+
+/** @deprecated Use `DatagridRowProps` instead */
+export type DatagridTrProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridRowProps<T, E, B>;

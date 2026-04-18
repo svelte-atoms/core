@@ -1,7 +1,7 @@
 <script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { DataGridBond } from '../bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { DatagridTdProps } from '../types';
+	import type { DatagridCellProps } from '../types';
 
 	const bond = DataGridBond.get<T>();
 
@@ -10,7 +10,7 @@
 		children = undefined,
 		onclick = undefined,
 		...restProps
-	}: DatagridTdProps<T, E, B> = $props();
+	}: DatagridCellProps<T, E, B> = $props();
 
 	let element = $state<HTMLElement | undefined>();
 
@@ -31,7 +31,7 @@
 	const isHidden = $derived(column?.state.props.hidden ?? false);
 
 	function handleClick(ev: Event) {
-		onclick?.(ev, { td: bond });
+		onclick?.(ev, { ...(bond && { cell: bond }) });
 	}
 </script>
 
@@ -39,11 +39,11 @@
 	<HtmlAtom
 		{@attach (node) => { element = node; }}
 		{bond}
-		preset="datagrid.td"
+		preset="datagrid.cell"
 		class={['border-border flex h-full items-center py-2 text-left', '$preset', klass]}
 		onclick={handleClick}
 		{...restProps}
 	>
-		{@render children?.({ td: bond })}
+		{@render children?.({ datagrid: bond })}
 	</HtmlAtom>
 {/if}

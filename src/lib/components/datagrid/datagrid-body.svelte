@@ -10,13 +10,15 @@
 		children = undefined,
 		...restProps
 	}: DatagridBodyProps<T, E, B> = $props();
+
+	const bodyProps = $derived({ ...bond?.body().spread, ...restProps });
 </script>
 
 <HtmlAtom
 	{bond}
 	preset="datagrid.body"
 	class={['border-border contents', '$preset', klass]}
-	{...restProps}
+	{...bodyProps}
 >
 	{@render children?.({ datagrid: bond })}
 </HtmlAtom>

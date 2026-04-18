@@ -145,10 +145,10 @@ export interface PresetModuleMap {
 	'tree': PresetEntry;
 	'datagrid': PresetEntry;
 	'datagrid.header': PresetEntry;
-	'datagrid.th': PresetEntry;
+	'datagrid.column': PresetEntry;
 	'datagrid.body': PresetEntry;
-	'datagrid.tr': PresetEntry;
-	'datagrid.td': PresetEntry;
+	'datagrid.row': PresetEntry;
+	'datagrid.cell': PresetEntry;
 	'datagrid.footer': PresetEntry;
 	'datagrid.checkbox': PresetEntry;
 	'datagrid.sort-icon': PresetEntry;

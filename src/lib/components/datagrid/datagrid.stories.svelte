@@ -48,82 +48,79 @@
 </script>
 
 <Story name="DataGrid">
-	<DataGridCmp.Root bind:values {@attach datagridContainer.attach}>
-		<DataGridCmp.Header>
-			<DataGridCmp.Tr header>
-				<DataGridCmp.Th width="40px">
-					<DataGridCmp.Checkbox />
-				</DataGridCmp.Th>
-				<DataGridCmp.Th width="1fr">Member</DataGridCmp.Th>
-				<DataGridCmp.Th
-					width="auto"
-					hidden={datagridContainer.current?.width
-						? datagridContainer.current.width < 768
-						: false}
-				>Role</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto">Status</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto"></DataGridCmp.Th>
-			</DataGridCmp.Tr>
-		</DataGridCmp.Header>
-
-		<DataGridCmp.Body>
-			{#each teamMembers as member (member.id)}
-				<DataGridCmp.Tr value={member.id}>
-					<DataGridCmp.Td>
+	{#snippet template()}
+		<DataGridCmp.Root bind:values {@attach datagridContainer.attach}>
+			<DataGridCmp.Header>
+				<DataGridCmp.Row header>
+					<DataGridCmp.Column width="auto">
 						<DataGridCmp.Checkbox />
-					</DataGridCmp.Td>
+					</DataGridCmp.Column>
+					<DataGridCmp.Column width="1fr">Member</DataGridCmp.Column>
+					<DataGridCmp.Column width="1fr">Role</DataGridCmp.Column>
+					<DataGridCmp.Column width="auto">Status</DataGridCmp.Column>
+					<DataGridCmp.Column width="auto"></DataGridCmp.Column>
+				</DataGridCmp.Row>
+			</DataGridCmp.Header>
 
-					<DataGridCmp.Td>
-						<div class="flex items-center gap-3">
-							<div
-								class="flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white {member.color}"
-							>
-								{member.initials}
+			<DataGridCmp.Body>
+				{#each teamMembers as member (member.id)}
+					<DataGridCmp.Row value={member.id}>
+						<DataGridCmp.Cell>
+							<DataGridCmp.Checkbox />
+						</DataGridCmp.Cell>
+
+						<DataGridCmp.Cell>
+							<div class="flex items-center gap-3">
+								<div
+									class="flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white {member.color}"
+								>
+									{member.initials}
+								</div>
+								<div class="min-w-0">
+									<div class="truncate text-sm font-medium text-foreground">{member.name}</div>
+									<div class="truncate text-xs text-muted-foreground">{member.email}</div>
+								</div>
 							</div>
-							<div class="min-w-0">
-								<div class="truncate text-sm font-medium text-foreground">{member.name}</div>
-								<div class="truncate text-xs text-muted-foreground">{member.email}</div>
+						</DataGridCmp.Cell>
+
+						<DataGridCmp.Cell>
+							<div class="flex flex-col gap-0.5">
+								<span class="text-sm text-foreground">{member.role}</span>
+								<span class="text-xs text-muted-foreground">{member.department}</span>
 							</div>
-						</div>
-					</DataGridCmp.Td>
+						</DataGridCmp.Cell>
 
-					<DataGridCmp.Td>
-						<div class="flex flex-col gap-0.5">
-							<span class="text-sm text-foreground">{member.role}</span>
-							<span class="text-xs text-muted-foreground">{member.department}</span>
-						</div>
-					</DataGridCmp.Td>
+						<DataGridCmp.Cell>
+							{@const cfg = statusConfig[member.status]}
+							<span class="inline-flex items-center gap-1.5 text-sm">
+								<span class="size-2 rounded-full {cfg.dot}"></span>
+								{cfg.label}
+							</span>
+						</DataGridCmp.Cell>
 
-					<DataGridCmp.Td>
-						{@const cfg = statusConfig[member.status]}
-						<span class="inline-flex items-center gap-1.5 text-sm">
-							<span class="size-2 rounded-full {cfg.dot}"></span>
-							{cfg.label}
-						</span>
-					</DataGridCmp.Td>
+						<DataGridCmp.Cell base={Select.Root} placement="bottom-end" offset={0}>
+							<Select.Trigger class="flex aspect-square items-center justify-center p-0">
+								<Icon src={MoreVerticalIcon} />
+							</Select.Trigger>
+							<Select.List>
+								<Select.Item value="view">View Profile</Select.Item>
+								<Select.Item value="edit">Edit</Select.Item>
+								<Select.Item value="remove">Remove</Select.Item>
+							</Select.List>
+						</DataGridCmp.Cell>
+					</DataGridCmp.Row>
+				{/each}
+			</DataGridCmp.Body>
 
-					<DataGridCmp.Td base={Select.Root} placement="bottom-end" offset={0}>
-						<Select.Trigger class="flex aspect-square items-center justify-center p-0">
-							<Icon src={MoreVerticalIcon} />
-						</Select.Trigger>
-						<Select.List>
-							<Select.Item value="view">View Profile</Select.Item>
-							<Select.Item value="edit">Edit</Select.Item>
-							<Select.Item value="remove">Remove</Select.Item>
-						</Select.List>
-					</DataGridCmp.Td>
-				</DataGridCmp.Tr>
-			{/each}
-		</DataGridCmp.Body>
-
-		<DataGridCmp.Footer>
-			<span class="text-xs text-muted-foreground">
-				{values.length > 0
-					? `${values.length} of ${teamMembers.length} selected`
-					: `${teamMembers.length} members`}
-			</span>
-		</DataGridCmp.Footer>
-	</DataGridCmp.Root>
+			<DataGridCmp.Footer>
+				<span class="text-xs text-muted-foreground">
+					{values.length > 0
+						? `${values.length} of ${teamMembers.length} selected`
+						: `${teamMembers.length} members`}
+				</span>
+			</DataGridCmp.Footer>
+		</DataGridCmp.Root>
+	{/snippet}
 </Story>
 
 <Story name="Row-Spanning Side Column">
@@ -134,13 +131,13 @@
 		}}
 	>
 		<DataGridCmp.Header class="h-min border-x-0 border-t-0">
-			<DataGridCmp.Tr class="h-min" header>
-				<DataGridCmp.Th width="44px" />
-				<DataGridCmp.Th width="auto" class="pl-4">SKU Code</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto">Store</DataGridCmp.Th>
-				<DataGridCmp.Th width="1fr">Product Name</DataGridCmp.Th>
-				<DataGridCmp.Th width="auto">Category</DataGridCmp.Th>
-			</DataGridCmp.Tr>
+			<DataGridCmp.Row class="h-min" header>
+				<DataGridCmp.Column width="44px" />
+				<DataGridCmp.Column width="auto" class="pl-4">SKU Code</DataGridCmp.Column>
+				<DataGridCmp.Column width="auto">Store</DataGridCmp.Column>
+				<DataGridCmp.Column width="1fr">Product Name</DataGridCmp.Column>
+				<DataGridCmp.Column width="auto">Category</DataGridCmp.Column>
+			</DataGridCmp.Row>
 		</DataGridCmp.Header>
 
 		<DataGridCmp.Body class="col-span-full grid grid-cols-subgrid">
@@ -161,20 +158,20 @@
 
 			<div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
 				{#each inventoryRows as item (item.id)}
-					<DataGridCmp.Tr>
-						<DataGridCmp.Td class="font-mono text-xs font-semibold text-primary">
+					<DataGridCmp.Row>
+						<DataGridCmp.Cell class="font-mono text-xs font-semibold text-primary">
 							{item.code}
-						</DataGridCmp.Td>
-						<DataGridCmp.Td>{item.store}</DataGridCmp.Td>
-						<DataGridCmp.Td class="font-medium">{item.name}</DataGridCmp.Td>
-						<DataGridCmp.Td>
+						</DataGridCmp.Cell>
+						<DataGridCmp.Cell>{item.store}</DataGridCmp.Cell>
+						<DataGridCmp.Cell class="font-medium">{item.name}</DataGridCmp.Cell>
+						<DataGridCmp.Cell>
 							<span
 								class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
 							>
 								{item.category}
 							</span>
-						</DataGridCmp.Td>
-					</DataGridCmp.Tr>
+						</DataGridCmp.Cell>
+					</DataGridCmp.Row>
 				{/each}
 			</div>
 		</DataGridCmp.Body>

@@ -23,3 +23,9 @@ export type DeepOverride<T, U> = U extends object
 	: U;
 
 export type Factory<T extends Bond> = (props?: BondStateProps) => T;
+
+/** Sort direction */
+export type Direction = 'asc' | 'desc';
+
+/** Column sort type — the field key used when sorting */
+export type SortableType = string;

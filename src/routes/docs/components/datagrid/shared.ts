@@ -18,19 +18,19 @@ const basicCode = `
 
 <DataGrid.Root>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row>
+      <DataGrid.Column>Name</DataGrid.Column>
+      <DataGrid.Column>Email</DataGrid.Column>
+      <DataGrid.Column>Role</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
-    {#each users as user (user.id)}
-      <DataGrid.Tr value={user.id}>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-        <DataGrid.Td>{user.role}</DataGrid.Td>
-      </DataGrid.Tr>
+    {#each users as user}
+      <DataGrid.Row>
+        <DataGrid.Cell>{user.name}</DataGrid.Cell>
+        <DataGrid.Cell>{user.email}</DataGrid.Cell>
+        <DataGrid.Cell>{user.role}</DataGrid.Cell>
+      </DataGrid.Row>
     {/each}
   </DataGrid.Body>
 </DataGrid.Root>`.trim();
@@ -50,23 +50,23 @@ const selectableCode = `
 
 <DataGrid.Root bind:values={selectedIds}>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th width="auto">
-        <DataGrid.Checkbox />
-      </DataGrid.Th>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row>
+      <DataGrid.Column>
+        <input type="checkbox" />
+      </DataGrid.Column>
+      <DataGrid.Column>Name</DataGrid.Column>
+      <DataGrid.Column>Email</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
-    {#each users as user (user.id)}
-      <DataGrid.Tr value={user.id}>
-        <DataGrid.Td>
-          <DataGrid.Checkbox />
-        </DataGrid.Td>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-      </DataGrid.Tr>
+    {#each users as user}
+      <DataGrid.Row>
+        <DataGrid.Cell>
+          <input type="checkbox" />
+        </DataGrid.Cell>
+        <DataGrid.Cell>{user.name}</DataGrid.Cell>
+        <DataGrid.Cell>{user.email}</DataGrid.Cell>
+      </DataGrid.Row>
     {/each}
   </DataGrid.Body>
 </DataGrid.Root>`.trim();
@@ -86,11 +86,11 @@ const sortableCode = `
 
 <DataGrid.Root>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th sortable="name" onsort={handleSort}>Name</DataGrid.Th>
-      <DataGrid.Th sortable="email" onsort={handleSort}>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row header>
+      <DataGrid.Column sortable="name" onsort={handleSort}>Name</DataGrid.Column>
+      <DataGrid.Column sortable="email" onsort={handleSort}>Email</DataGrid.Column>
+      <DataGrid.Column>Role</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
     <!-- rows -->
@@ -119,13 +119,13 @@ const rowSpanningColumnCode = `
   }}
 >
   <DataGrid.Header class="h-min border-x-0 border-t-0">
-    <DataGrid.Tr class="h-min" header>
-      <DataGrid.Th width="44px" />
-      <DataGrid.Th width="auto" class="pl-4">SKU Code</DataGrid.Th>
-      <DataGrid.Th width="auto">Store</DataGrid.Th>
-      <DataGrid.Th width="1fr">Product Name</DataGrid.Th>
-      <DataGrid.Th width="auto">Category</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row class="h-min" header>
+      <DataGrid.Column width="44px" />
+      <DataGrid.Column width="auto" class="pl-4">SKU Code</DataGrid.Column>
+      <DataGrid.Column width="auto">Store</DataGrid.Column>
+      <DataGrid.Column width="1fr">Product Name</DataGrid.Column>
+      <DataGrid.Column width="auto">Category</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
 
   <DataGrid.Body class="col-span-full grid grid-cols-subgrid">
@@ -140,16 +140,16 @@ const rowSpanningColumnCode = `
 
     <div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
       {#each inventory as item (item.id)}
-        <DataGrid.Tr value={item.id}>
-          <DataGrid.Td class="font-mono text-xs font-semibold text-primary">{item.code}</DataGrid.Td>
-          <DataGrid.Td>{item.store}</DataGrid.Td>
-          <DataGrid.Td class="font-medium">{item.name}</DataGrid.Td>
-          <DataGrid.Td>
+        <DataGrid.Row value={item.id}>
+          <DataGrid.Cell class="font-mono text-xs font-semibold text-primary">{item.code}</DataGrid.Cell>
+          <DataGrid.Cell>{item.store}</DataGrid.Cell>
+          <DataGrid.Cell class="font-medium">{item.name}</DataGrid.Cell>
+          <DataGrid.Cell>
             <span class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
               {item.category}
             </span>
-          </DataGrid.Td>
-        </DataGrid.Tr>
+          </DataGrid.Cell>
+        </DataGrid.Row>
       {/each}
     </div>
   </DataGrid.Body>
@@ -169,13 +169,13 @@ setPreset({
   'datagrid.header': () => ({
     class: 'border-b font-medium'
   }),
-  'datagrid.tr': () => ({
+  'datagrid.row': () => ({
     class: 'border-b transition-colors'
   }),
-  'datagrid.th': () => ({
+  'datagrid.column': () => ({
     class: 'h-12 px-4 text-left text-muted-foreground'
   }),
-  'datagrid.td': () => ({
+  'datagrid.cell': () => ({
     class: 'px-4 py-2'
   }),
   'datagrid.checkbox': () => ({
@@ -194,72 +194,86 @@ const accessibilityFeatures = [
 const useCases = [
 	{
 		title: 'Admin Data Tables',
-		description: 'Display and manage records (users, orders, products) in admin dashboards with sortable columns and row selection.'
+		description:
+			'Display and manage records (users, orders, products) in admin dashboards with sortable columns and row selection.'
 	},
 	{
 		title: 'Reporting and Analytics',
-		description: 'Present structured data with sortable columns and column visibility controls for business reports and analytics views.'
+		description:
+			'Present structured data with sortable columns and column visibility controls for business reports and analytics views.'
 	},
 	{
 		title: 'Selectable Row Lists',
-		description: 'Allow users to select one or multiple rows with checkboxes for bulk operations like deletion, export, or status updates.'
+		description:
+			'Allow users to select one or multiple rows with checkboxes for bulk operations like deletion, export, or status updates.'
 	},
 	{
 		title: 'Inventory Management',
-		description: 'Manage product or asset inventories with rich row data, custom cell rendering via base prop, and action buttons per row.'
+		description:
+			'Manage product or asset inventories with rich row data, custom cell rendering via base prop, and action buttons per row.'
 	},
 	{
 		title: 'Log Viewers',
-		description: 'Display time-series or event logs in a structured grid with sortable timestamps and filterable columns.'
+		description:
+			'Display time-series or event logs in a structured grid with sortable timestamps and filterable columns.'
 	},
 	{
 		title: 'Comparison Tables',
-		description: 'Show feature comparisons or side-by-side data with fixed header rows and responsive column visibility via hidden prop.'
-  },
-  {
-    title: 'Cross-Row Side Rails',
-    description: 'Create side columns that span all data rows (alphabet index, timeline, status rail) by combining row-span-full containers with subgrid-aligned row content.'
+		description:
+			'Show feature comparisons or side-by-side data with fixed header rows and responsive column visibility via hidden prop.'
+	},
+	{
+		title: 'Cross-Row Side Rails',
+		description:
+			'Create side columns that span all data rows (alphabet index, timeline, status rail) by combining row-span-full containers with subgrid-aligned row content.'
 	}
 ];
 
 const componentsSummary = [
 	{
 		name: 'DataGrid.Root',
-		description: 'Root grid container. Owns the DataGridBond context, manages column template (auto-computed from Th widths) and selection state via bind:values.'
+		description:
+			'Root grid container. Owns the DataGridBond context, manages column template (auto-computed from Th widths) and selection state via bind:values.'
 	},
 	{
 		name: 'DataGrid.Header',
-		description: 'Header section. Sets the header context — all Tr rows inside are treated as header rows and excluded from selection.'
+		description:
+			'Header section. Sets the header context — all Tr rows inside are treated as header rows and excluded from selection.'
 	},
 	{
 		name: 'DataGrid.Body',
-		description: 'Body section. Contains the data rows rendered with DataGrid.Tr.'
+		description: 'Body section. Contains the data rows rendered with DataGrid.Row.'
 	},
 	{
 		name: 'DataGrid.Footer',
 		description: 'Optional footer section. Useful for summary rows, pagination controls, or totals.'
 	},
 	{
-		name: 'DataGrid.Tr',
-		description: 'Row element using CSS subgrid (grid-column: 1 / -1). Mounts into the selection map unless header=true. Accepts a value prop for selection tracking and a data prop for typed row context.'
+		name: 'DataGrid.Row',
+		description:
+			'Row element using CSS subgrid (grid-column: 1 / -1). Mounts into the selection map unless header=true. Accepts a value prop for selection tracking and a data prop for typed row context.'
 	},
 	{
-		name: 'DataGrid.Th',
-		description: 'Column header cell. Defines column width for auto template computation, supports sortable for click-to-sort with bindable direction, and hidden to exclude the column from the layout.'
+		name: 'DataGrid.Column',
+		description:
+			'Column header cell. Defines column width for auto template computation, supports sortable for click-to-sort with bindable direction, and hidden to exclude the column from the layout.'
 	},
 	{
-		name: 'DataGrid.Td',
-		description: 'Data cell. Finds its matching Th by DOM index for visibility. Accepts a base prop to render a component (e.g. a dropdown) instead of a plain div.'
+		name: 'DataGrid.Cell',
+		description:
+			'Data cell. Finds its matching Th by DOM index for visibility. Accepts a base prop to render a component (e.g. a dropdown) instead of a plain div.'
 	},
 	{
 		name: 'DataGrid.Checkbox',
-		description: 'Selection checkbox. In header rows: select-all / deselect-all. In body rows: toggles that row. State is automatically derived from the datagrid bond — no manual wiring needed.'
+		description:
+			'Selection checkbox. In header rows: select-all / deselect-all. In body rows: toggles that row. State is automatically derived from the datagrid bond — no manual wiring needed.'
 	}
 ];
 
 export const metadata = {
 	title: 'DataGrid - Svelte Atoms',
-	description: 'Flexible CSS subgrid-based data grid for displaying tabular data with sorting, selection, and custom cell rendering.',
+	description:
+		'Flexible CSS subgrid-based data grid for displaying tabular data with sorting, selection, and custom cell rendering.',
 	componentTitle: 'DataGrid',
 	componentDescription:
 		'Grid component for structured data with sortable columns, row selection, custom cell rendering, and responsive columns.',
@@ -274,7 +288,7 @@ export const metadata = {
 		basic: basicCode,
 		selectable: selectableCode,
 		sortable: sortableCode,
-    rowSpanningColumn: rowSpanningColumnCode,
+		rowSpanningColumn: rowSpanningColumnCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

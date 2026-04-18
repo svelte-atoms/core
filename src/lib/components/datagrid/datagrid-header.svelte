@@ -5,6 +5,9 @@
 	import type { DatagridHeaderProps } from './types';
 
 	const bond = DataGridBond.get<T>();
+	if (!bond) {
+		throw new Error('DataGrid.Header must be used within DataGrid.Root.');
+	}
 
 	let {
 		class: klass = '',
@@ -12,14 +15,28 @@
 		...restProps
 	}: DatagridHeaderProps<T, E, B> = $props();
 
-	setDatagridHeaderContext({ derived: { data: { header: true } } });
+	const header = $state(true);
+
+	const derived_header = $derived({
+		data: {
+			header
+		}
+	});
+
+	setDatagridHeaderContext({
+		get derived() {
+			return derived_header;
+		}
+	});
+
+	const headerProps = $derived({ ...bond.header().spread, ...restProps });
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="datagrid.header"
+		preset="datagrid.header"
 	class={['border-border col-span-full grid grid-cols-subgrid', '$preset', klass]}
-	{...restProps}
+	{...headerProps}
 >
 	{@render children?.({ datagrid: bond })}
 </HtmlAtom>

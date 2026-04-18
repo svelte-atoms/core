@@ -26,9 +26,10 @@
 	]);
 
 	const bond = untrack(() => factory(bondProps)).share();
+	const rootProps = $derived({ ...bond.root().spread, ...restProps });
 
-	function _factory(props: typeof bondProps) {
-		const state = new DataGridBondState<T>(() => props);
+	function _factory(props?: DataGridStateProps<T>) {
+		const state = new DataGridBondState<T>(() => props ?? bondProps);
 		return new DataGridBond<T>(state);
 	}
 
@@ -42,7 +43,7 @@
 	preset="datagrid"
 	class={['border-border datagrid-root w-full gap-x-0 gap-y-0', '$preset', klass]}
 	style="--template-columns:{bond.state.template || fallbackTemplate}"
-	{...restProps}
+	{...rootProps}
 >
 	{@render children?.({ datagrid: bond })}
 </HtmlAtom>
