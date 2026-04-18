@@ -1,6 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'label', B extends Base = Base">
-	import { Label } from '$svelte-atoms/core/components/label';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { FieldBond } from './bond.svelte';
 	import type { FieldLabelProps } from '../types';
 
@@ -8,10 +7,9 @@
 
 	let {
 		class: klass = '',
-		as = 'label' as E,
 		children = undefined,
 		...restProps
-	}: FieldLabelProps = $props();
+	}: FieldLabelProps<E, B> = $props();
 
 	const labelProps = $derived({
 		...bond?.label(),
@@ -19,6 +17,6 @@
 	});
 </script>
 
-<Label {as} {bond} preset="field.label" class={['flex flex-col', '$preset', klass]} {...labelProps}>
-	{@render children?.()}
-</Label>
+<HtmlAtom preset="field.label" class={['flex flex-col', '$preset', klass]} {...labelProps}>
+	{@render children?.({ field: bond })}
+</HtmlAtom>

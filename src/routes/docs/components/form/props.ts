@@ -64,7 +64,7 @@ export const fieldLabelProps: PropDefinition[] = [
 		name: 'children',
 		type: 'Snippet',
 		default: '-',
-		description: 'Label content'
+		description: 'Label content. Receives { field } in snippet props.'
 	}
 ];
 
@@ -85,16 +85,28 @@ export const fieldControlProps: PropDefinition[] = [
 		name: 'children',
 		type: 'Snippet',
 		default: '-',
-		description: 'Control content (Input.Control, Textarea.Control, etc.)'
+		description: 'Control content (Input.Control, Textarea.Control, etc.). Receives { field } in snippet props.'
 	}
 ];
 
-export const fieldErrorsProps: PropDefinition[] = [
+export const fieldHelperTextProps: PropDefinition[] = [
+	{
+		name: 'as',
+		type: 'HTMLElementTagNameMap key',
+		default: "'p'",
+		description: 'HTML element to render helper text as.'
+	},
 	{
 		name: 'class',
 		type: 'string',
 		default: "''",
 		description: 'Additional CSS classes'
+	},
+	{
+		name: 'children',
+		type: 'Snippet',
+		default: '-',
+		description: 'Helper text content rendered under the field control. Receives { field } in snippet props.'
 	}
 ];
 
@@ -112,8 +124,8 @@ export default [
 		props: fieldControlProps
 	},
 	{
-		name: 'Field.Errors',
-		description: 'Component to display field error messages.',
-		props: fieldErrorsProps
+		name: 'Field.HelperText',
+		description: 'Component to display helper text under the field control.',
+		props: fieldHelperTextProps
 	}
 ];

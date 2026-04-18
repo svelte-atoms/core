@@ -1,10 +1,11 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { Override, Factory } from '$svelte-atoms/core/types';
+import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { Factory } from '$svelte-atoms/core/types';
 import type { FormBond } from './bond.svelte';
-import type { FieldBond } from './field/bond.svelte';
-import type { LabelProps } from '$svelte-atoms/core/components/label';
-import type { Schema } from './validation-adapters';
+import type { FieldBond, FieldStateProps } from './field/bond.svelte';
+
+type SnippetProps = Record<string, unknown>;
+type Schema = unknown;
 
 // ============================================================================
 // Form Snippet Props (Extensible)
@@ -26,53 +27,54 @@ interface CommonProps {
 	factory?: Factory<FormBond>;
 }
 
-interface RenderlessProps {
-	renderless?: true;
+export interface FormRootProps<B extends Base = Base>
+	extends HtmlAtomProps<'form', B, FormChildren>, CommonProps {
+	renderless?: boolean;
 	children?: FormChildren;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface RenderfullProps<B extends Base = Base> extends Override<
-	HtmlAtomProps<'form', B, FormChildren>,
-	{
-		renderless?: false;
-	}
-> {}
-
-export type FormRootProps<B extends Base = Base> = CommonProps &
-	(RenderlessProps | RenderfullProps<B>);
-
-export type FieldRootProps<
+export interface FieldRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = Override<
-	HtmlAtomProps<E, B, FieldChildren>,
-	{
-		disabled: boolean;
-		readonly: boolean;
-		name?: string;
-		value?: any;
-		schema?: Schema;
-		parse: (schema: Schema) => void;
-		extend: any;
-		factory?: Factory<FieldBond>;
-	}
->;
+> extends HtmlAtomProps<E, B, FieldChildren> {
+	disabled?: boolean;
+	readonly?: boolean;
+	name?: string;
+	value?: unknown;
+	schema?: Schema;
+	parse?: (schema: Schema) => void;
+	extend?: Record<string, unknown>;
+	factory?: ((props: FieldStateProps) => FieldBond) | Factory<FieldBond>;
+}
 
-export type FieldLabelProps<
+export interface FieldLabelProps<
 	E extends keyof HTMLElementTagNameMap = 'label',
 	B extends Base = Base
-> = Omit<LabelProps<E, B>, 'for'>;
+> extends HtmlAtomProps<E, B, FieldChildren> {
+	for?: never;
+}
 
-export type FieldControlProps<B extends Base<{ value?: unknown }>> = Override<
-	HtmlAtomProps<any, B, FieldChildren>,
-	{
-		value?: any;
-		valueAsDate?: Date;
-		valueAsNumber?: number;
-		checked?: boolean;
-		files?: File[] | null;
-		oninput?: (ev: CustomEvent, detail?: { value: any }) => void;
-		children?: Snippet;
-	}
->;
+export interface FieldControlProps<
+	E extends keyof HTMLElementTagNameMap = 'div',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, FieldChildren> {
+	value?: unknown;
+	valueAsDate?: Date;
+	valueAsNumber?: number;
+	checked?: boolean;
+	files?: File[] | null;
+	oninput?: (ev: CustomEvent, detail?: { value: unknown }) => void;
+	children?: FieldChildren;
+}
+
+export interface FieldHelperTextProps<
+	E extends keyof HTMLElementTagNameMap = 'p',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, FieldChildren> {
+	children?: FieldChildren;
+}
+
+export interface FieldTextProps<
+	E extends keyof HTMLElementTagNameMap = 'p',
+	B extends Base = Base
+> extends FieldHelperTextProps<E, B> {}

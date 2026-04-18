@@ -69,7 +69,7 @@ export interface HtmlAtomProps<
 	Children extends Snippet<unknown[]> = Snippet
 > extends HtmlElementProps<E, Children> {
 	/** Optional Bond for state management & context */
-	bond?: Bond;
+	bond?: Bond | undefined;
 
 	/** Base component or snippet to render (can be overridden) */
 	base?: B | undefined;

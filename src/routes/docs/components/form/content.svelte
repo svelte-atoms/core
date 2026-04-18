@@ -12,9 +12,10 @@
 		DocAccessibility,
 		DocCode,
 	} from '$docs/components';
-	import { formRootProps, fieldRootProps, fieldLabelProps, fieldControlProps, fieldErrorsProps } from './props';
+	import { formRootProps, fieldRootProps, fieldLabelProps, fieldControlProps, fieldHelperTextProps } from './props';
 	import { metadata } from './shared';
 	import type { DocMode } from '$docs/context/doc-mode.svelte';
+	import type { FieldSnippetProps } from '$lib/components/form';
 	import type { Frontmatter } from '$docs/md/frontmatter';
 	import { newLine } from '$docs/md/template';
 
@@ -31,6 +32,13 @@
 
 	let name = $state('');
 	let email = $state('');
+
+	const commonFieldProps = {
+		disabled: false,
+		readonly: false,
+		extend: {},
+		parse: () => {}
+	};
 </script>
 
 <DocPage
@@ -66,17 +74,17 @@
 		<DocExample title="Basic Form" description="Simple form with labeled fields." code={metadata.examples.basic}>
 			<div class="w-80">
 				<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-					<Field.Root name="name">
+					<Field.Root {...commonFieldProps} name="name">
 						<Field.Label>Name</Field.Label>
 						<Input.Root>
-							<Field.Control base={Input.Control} bind:value={name} placeholder="Enter your name" />
+							<Field.Control base={Input.Control as unknown as never} bind:value={name} placeholder="Enter your name" />
 						</Input.Root>
 					</Field.Root>
 
-					<Field.Root name="email">
+					<Field.Root {...commonFieldProps} name="email">
 						<Field.Label>Email</Field.Label>
 						<Input.Root>
-							<Field.Control base={Input.Control} bind:value={email} type="email" placeholder="Enter your email" />
+							<Field.Control base={Input.Control as unknown as never} bind:value={email} type="email" placeholder="Enter your email" />
 						</Input.Root>
 					</Field.Root>
 
@@ -85,21 +93,21 @@
 			</div>
 		</DocExample>
 
-		<DocExample title="Form with Validation Errors" description="Field with inline error messages." code={metadata.examples.validation}>
+		<DocExample title="Form with Validation Errors" description="Field with inline error messages." code={metadata.examples.validated}>
 			<div class="w-80">
 				<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-					<Field.Root name="email">
-						<Field.Label>Email</Field.Label>
-						<Input.Root>
-							<Field.Control base={Input.Control} type="email" placeholder="Enter your email" />
-						</Input.Root>
-						<Field.Errors>
-							{#snippet children({ errors }: { errors: string[] })}
-								{#each errors as error, i (i)}
-									<p class="text-destructive mt-1 text-xs">{error}</p>
-								{/each}
-							{/snippet}
-						</Field.Errors>
+					<Field.Root {...commonFieldProps} name="email">
+						{#snippet children({ field }: FieldSnippetProps)}
+							<Field.Label>Email</Field.Label>
+							<Input.Root>
+								<Field.Control base={Input.Control as unknown as never} type="email" placeholder="Enter your email" />
+							</Input.Root>
+							{#if field?.state.errors.length}
+								<Field.HelperText class="text-destructive">{field.state.errors[0]?.message}</Field.HelperText>
+							{:else}
+								<Field.HelperText>We'll only use this for account updates.</Field.HelperText>
+							{/if}
+						{/snippet}
 					</Field.Root>
 
 					<Button type="submit">Submit</Button>
@@ -146,13 +154,13 @@
 		<DocProps data={fieldControlProps} />
 
 		<DocOnly for="markdown">
-{newLine(2)}### Field.Errors
+{newLine(2)}### Field.HelperText
 
-**Preset Key:** `field.errors`
+**Preset Key:** `field.helper-text`
 
 </DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Field.Errors</h3></DocOnly>
-		<DocProps data={fieldErrorsProps} />
+		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Field.HelperText</h3></DocOnly>
+		<DocProps data={fieldHelperTextProps} />
 	</DocSection>
 
 	<DocSection title="Accessibility">
