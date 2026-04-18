@@ -43,10 +43,12 @@
 	const bondFactory = untrack(() => factory);
 	const bond = bondFactory(bondProps).share();
 
-	const rootProps = $derived({
-		...bond?.root(),
-		...restProps
-	});
+	const rootProps = $derived(
+		({
+			...bond?.root(),
+			...restProps
+		}) as Record<string, unknown>
+	);
 
 	const unmount = formBond?.state.mountField(bond.id, bond) ?? (() => {});
 	onDestroy(() => unmount());

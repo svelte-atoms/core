@@ -1,96 +1,155 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import AForm from './form-root.svelte';
+	import FormRoot from './form-root.svelte';
 	import { Field } from './field';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
+	import { Radio, RadioGroup } from '../radio';
 
 	const { Story } = defineMeta({
-		title: 'ATOMS/Form'
+		title: 'ATOMS/Form',
+		parameters: {
+			layout: 'centered'
+		}
 	});
 </script>
 
 <script lang="ts">
 	import { z } from 'zod';
 	import { ZodAdapter } from './field/validation-adapters';
-	import { Radio, RadioGroup } from '../radio';
 
-	const nameSchema = z.string().min(2).max(100);
-
-	const personSchema = z.object({
-		firstName: nameSchema,
-		lastName: nameSchema,
-		isAdmin: z.boolean()
+	const profileSchema = z.object({
+		firstName: z.string().trim().min(2, 'First name must be at least 2 characters.'),
+		lastName: z.string().trim().min(2, 'Last name must be at least 2 characters.'),
+		email: z.string().email('Please enter a valid email.'),
+		isAdmin: z.boolean(),
+		theme: z.enum(['light', 'dark'])
 	});
 
-	type PersonSchema = z.infer<typeof personSchema>;
+	const signupSchema = z.object({
+		name: z.string().trim().min(3, 'Display name must be at least 3 characters.'),
+		agreeToTerms: z.boolean().refine((value) => value, {
+			message: 'You must accept terms to continue.'
+		})
+	});
 
 	const validator = new ZodAdapter();
+
+	const commonFieldProps = {
+		disabled: false,
+		readonly: false,
+		extend: {},
+		parse: () => {}
+	};
+
+	let firstName = $state('');
+	let lastName = $state('');
+	let email = $state('');
+	let isAdmin = $state(false);
+	let theme = $state('light');
+
+	let name = $state('');
+	let agreeToTerms = $state(false);
 </script>
 
-<Story name="Form">
-	{#snippet children({ args })}
-		<AForm class="flex flex-col gap-2" {validator}>
-			<div class="mb-4 flex flex-col">
-				<h2 class="text-3xl font-semibold">Form Title</h2>
-				<p class="text-sm text-gray-500">Form description goes here.</p>
-			</div>
+<Story name="Profile Editor">
+	<FormRoot
+		class="bg-card border-border flex w-full max-w-4xl flex-col gap-6 rounded-xl border p-6"
+		{validator}
+	>
+		<header class="space-y-1">
+			<h2 class="text-xl font-semibold">Team Profile</h2>
+			<p class="text-muted-foreground text-sm">Composed form with text, checkbox, and radio fields.</p>
+		</header>
 
-			<div class="flex gap-2">
-				<Field.Root name="first name" schema={personSchema.shape.firstName}>
-					{#snippet children({ field })}
-						<Field.Label>First Name</Field.Label>
-						<Input.Root>
-							<Field.Control
-								base={Input.Control}
-								placeholder="Enter your first name"
-								onblur={() => {
-									const results = field?.state.validate();
-									console.log(results);
-								}}
-							/>
-						</Input.Root>
-						{#if field?.state?.errors?.length > 0}
-							<div class="text-xs text-red-600">
-								{#each field.state.errors as error, i (i)}
-									<div>{error.message}</div>
-								{/each}
-							</div>
-						{/if}
-					{/snippet}
-				</Field.Root>
+		<div class="grid gap-4 md:grid-cols-2">
+			<Field.Root {...commonFieldProps} name="firstName" schema={profileSchema.shape.firstName} value={firstName}>
+				<Field.Label>First Name</Field.Label>
+				<Input.Root>
+					<Field.Control base={Input.Control as unknown as never} bind:value={firstName} placeholder="Maya" />
+				</Input.Root>
+				<Field.HelperText>This will appear on your profile and team mentions.</Field.HelperText>
+			</Field.Root>
 
-				<Field.Root name="last name" schema={personSchema.shape.lastName}>
-					<Field.Label>Last Name</Field.Label>
-					<Input.Root>
-						<Field.Control base={Input.Control} placeholder="Enter your last name" />
-					</Input.Root>
-				</Field.Root>
-			</div>
+			<Field.Root {...commonFieldProps} name="lastName" schema={profileSchema.shape.lastName} value={lastName}>
+				<Field.Label>Last Name</Field.Label>
+				<Input.Root>
+					<Field.Control base={Input.Control as unknown as never} bind:value={lastName} placeholder="Lopez" />
+				</Input.Root>
+			</Field.Root>
 
-			<div class="flex flex-col">
-				<Field.Root name="is admin" schema={personSchema.shape.isAdmin}>
-					<Field.Label>Is Admin?</Field.Label>
-					<Field.Control base={Checkbox} />
-				</Field.Root>
-			</div>
+			<Field.Root {...commonFieldProps} name="email" schema={profileSchema.shape.email} value={email} class="md:col-span-2">
+				<Field.Label>Email</Field.Label>
+				<Input.Root>
+					<Field.Control base={Input.Control as unknown as never} type="email" bind:value={email} placeholder="maya@example.com" />
+				</Input.Root>
+				<Field.HelperText>We will only use this for account and security notifications.</Field.HelperText>
+			</Field.Root>
+		</div>
 
-			<div class="flex flex-col">
-				<Field.Root name="color" schema={personSchema.shape.color}>
-					<Field.Label>Is current scheme black?</Field.Label>
-					<Field.Control class="flex flex-col items-start text-sm" base={RadioGroup}>
-						<div class="flex items-center gap-2">
-							<Radio value="yes" />
-							<div>Yes</div>
-						</div>
+		<div class="grid gap-5 md:grid-cols-2">
+			<Field.Root {...commonFieldProps} name="isAdmin" schema={profileSchema.shape.isAdmin} value={isAdmin}>
+				<Field.Label>Administrator Access</Field.Label>
+				<label class="mt-2 flex items-center gap-2 text-sm">
+					<Field.Control base={Checkbox as unknown as never} bind:checked={isAdmin} />
+					<span>Grant this user admin permissions</span>
+				</label>
+			</Field.Root>
 
-						<div class="flex items-center gap-2">
-							<Radio value="no" />
-							<div>No</div>
-						</div>
-					</Field.Control>
-				</Field.Root>
-			</div>
-		</AForm>
-	{/snippet}
+			<Field.Root {...commonFieldProps} name="theme" schema={profileSchema.shape.theme} value={theme}>
+				<Field.Label>Theme</Field.Label>
+				<Field.Control base={RadioGroup as unknown as never} class="mt-2 flex gap-4 text-sm" bind:value={theme}>
+					<label class="flex items-center gap-2">
+						<Radio value="light" />
+						<span>Light</span>
+					</label>
+					<label class="flex items-center gap-2">
+						<Radio value="dark" />
+						<span>Dark</span>
+					</label>
+				</Field.Control>
+			</Field.Root>
+		</div>
+
+		<div class="border-t pt-4">
+			<pre class="bg-muted text-muted-foreground overflow-x-auto rounded-md p-2 text-xs">
+{JSON.stringify({ firstName, lastName, email, isAdmin, theme }, null, 2)}</pre>
+		</div>
+	</FormRoot>
+</Story>
+
+<Story name="Signup Gate">
+	<div class="w-full max-w-xl">
+		<FormRoot class="bg-card border-border flex flex-col gap-4 rounded-xl border p-5" {validator}>
+			<Field.Root {...commonFieldProps} name="name" schema={signupSchema.shape.name} value={name}>
+				<Field.Label>Display Name</Field.Label>
+				<Input.Root>
+					<Field.Control base={Input.Control as unknown as never} placeholder="your-handle" bind:value={name} />
+				</Input.Root>
+			</Field.Root>
+
+			<Field.Root
+				{...commonFieldProps}
+				name="agreeToTerms"
+				schema={signupSchema.shape.agreeToTerms}
+				value={agreeToTerms}
+			>
+				<div class="flex items-start gap-2">
+					<div class="pt-0.5">
+						<Field.Control base={Checkbox as unknown as never} bind:checked={agreeToTerms} />
+					</div>
+					<Field.Label class="text-sm leading-5">
+						I confirm I have read and accept the Terms and Privacy Policy.
+					</Field.Label>
+				</div>
+			</Field.Root>
+
+			<button type="button" class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-3 py-2 text-sm">
+				Create account
+			</button>
+
+			<pre class="bg-muted text-muted-foreground overflow-x-auto rounded-md p-2 text-xs">
+{JSON.stringify({ name, agreeToTerms }, null, 2)}</pre>
+		</FormRoot>
+	</div>
 </Story>

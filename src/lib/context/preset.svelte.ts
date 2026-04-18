@@ -87,6 +87,7 @@ export interface PresetModuleMap {
 	'dropdown.item': PresetEntry;
 	'field.control': PresetEntry;
 	'field.label': PresetEntry;
+	'field.helper-text': PresetEntry;
 	'field': PresetEntry;
 	'form': PresetEntry;
 	'icon': PresetEntry;

@@ -4,19 +4,26 @@ const basicCode = `
   import { Input } from '@svelte-atoms/core/input';
   import { Button } from '@svelte-atoms/core/button';
 
+	const commonFieldProps = {
+		disabled: false,
+		readonly: false,
+		extend: {},
+		parse: () => {}
+	};
+
   let name = $state('');
   let email = $state('');
-<\/script>
+</script>
 
 <Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root name="name">
+	<Field.Root {...commonFieldProps} name="name">
     <Field.Label>Name</Field.Label>
     <Input.Root>
       <Field.Control base={Input.Control} bind:value={name} placeholder="Enter your name" />
     </Input.Root>
   </Field.Root>
 
-  <Field.Root name="email">
+	<Field.Root {...commonFieldProps} name="email">
     <Field.Label>Email</Field.Label>
     <Input.Root>
       <Field.Control base={Input.Control} bind:value={email} type="email" placeholder="Enter your email" />
@@ -31,22 +38,28 @@ const validatedCode = `
   import { Form, Field } from '@svelte-atoms/core/form';
   import { Input } from '@svelte-atoms/core/input';
   import { Button } from '@svelte-atoms/core/button';
-<\/script>
+	const commonFieldProps = {
+		disabled: false,
+		readonly: false,
+		extend: {},
+		parse: () => {}
+	};
+</script>
 
 <Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-  <Field.Root name="email">
-    <Field.Label>Email</Field.Label>
-    <Input.Root>
-      <Field.Control base={Input.Control} type="email" placeholder="Enter your email" />
-    </Input.Root>
-    <Field.Errors>
-      {#snippet children({ errors })}
-        {#each errors as error}
-          <p class="text-destructive mt-1 text-xs">{error}</p>
-        {/each}
-      {/snippet}
-    </Field.Errors>
-  </Field.Root>
+	<Field.Root {...commonFieldProps} name="email">
+		{#snippet children({ field })}
+			<Field.Label>Email</Field.Label>
+			<Input.Root>
+				<Field.Control base={Input.Control} type="email" placeholder="Enter your email" />
+			</Input.Root>
+			{#if field?.state.errors.length}
+				<Field.HelperText class="text-destructive">
+					{field.state.errors[0]?.message}
+				</Field.HelperText>
+			{/if}
+		{/snippet}
+	</Field.Root>
 
   <Button type="submit">Submit</Button>
 </Form>`.trim();
@@ -66,6 +79,9 @@ const preset = setPreset({
   }),
   'field.control': () => ({
     class: 'w-full'
+	}),
+	'field.helper-text': () => ({
+		class: 'text-xs text-muted-foreground mt-1'
   })
 });
 `.trim();
@@ -113,19 +129,19 @@ const componentsSummary = [
 	},
 	{
 		name: 'Field.Root',
-		description: 'Container for a single form field. Manages the field bond (name, value, validation), and provides field context to Label, Control, and Errors.'
+		description: 'Container for a single form field. Manages the field bond (name, value, validation), and provides field context to all field atoms.'
 	},
 	{
 		name: 'Field.Label',
-		description: 'Accessible label element automatically associated with the field control via the field bond.'
+		description: 'Accessible label element automatically associated with the field control via the field bond. Exposes { field } in snippet children.'
 	},
 	{
 		name: 'Field.Control',
-		description: 'Wrapper component that connects an input element (Input.Root, Textarea.Root, etc.) to the field bond for value and validation state wiring.'
+		description: 'Wrapper component that connects an input element (Input.Root, Textarea.Root, etc.) to the field bond for value and validation state wiring. Exposes { field } in snippet children.'
 	},
 	{
-		name: 'Field.Errors',
-		description: 'Displays validation error messages for the field. Reads errors from the field bond and renders them with proper ARIA attributes.'
+		name: 'Field.HelperText',
+		description: 'Helper text rendered under the field control for guidance, hints, or supporting context. Exposes { field } in snippet children.'
 	}
 ];
 
