@@ -3,7 +3,7 @@ import type { DataGridBond } from './bond.svelte';
 import type { CheckboxProps } from '../checkbox/types';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { DataGridTrBond } from './row/bond.svelte';
-import type { DataGridThBond } from './col/bond.svelte';
+import type { DataGridThBond } from './column/bond.svelte';
 import type { HtmlAtomProps, Base } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
@@ -120,13 +120,10 @@ export interface DatagridTrProps<
 }
 
 // ── Semantic type aliases — preferred going forward ───────────────────────
-/** Preferred alias for DatagridHeaderProps */
-export type DatagridHeadProps<T> = DatagridHeaderProps<T>;
-/** Preferred alias for DatagridFooterProps */
-export type DatagridFootProps<T> = DatagridFooterProps<T>;
+// DatagridHeaderProps and DatagridFooterProps already have canonical names.
 /** Preferred alias for DatagridTrProps */
 export type DatagridRowProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridTrProps<T, E, B>;
 /** Preferred alias for DatagridThProps */
-export type DatagridColProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridThProps<T, E, B>;
+export type DatagridColumnProps<T, E extends HtmlElementTagName = 'div', B extends Base = Base> = DatagridThProps<T, E, B>;
 /** Preferred alias for DatagridTdProps */
 export type DatagridCellProps<T> = DatagridTdProps<T>;

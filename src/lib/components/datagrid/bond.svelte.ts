@@ -3,7 +3,7 @@ import { getContext, setContext } from 'svelte';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { nanoid } from 'nanoid';
 import type { DataGridTrBond } from './row/bond.svelte';
-import type { DataGridThBond } from './col/bond.svelte';
+import type { DataGridThBond } from './column/bond.svelte';
 
 export type DataGridStateProps<T> = BondStateProps & {
 	multiple?: boolean;
