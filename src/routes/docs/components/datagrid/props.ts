@@ -16,7 +16,8 @@ export const datagridRootProps: PropDefinition[] = [
 		name: 'template',
 		type: 'string | undefined',
 		default: 'undefined',
-		description: 'Explicit CSS grid-template-columns value. When omitted, auto-computed from Th widths.'
+		description:
+			'Explicit CSS grid-template-columns value. When omitted, auto-computed from Th widths.'
 	},
 	{
 		name: 'fallbackTemplate',
@@ -34,7 +35,8 @@ export const datagridRootProps: PropDefinition[] = [
 		name: 'factory',
 		type: 'Factory<DataGridBond<T>> | undefined',
 		default: 'undefined',
-		description: 'Custom factory to create the DataGridBond instance. Useful for extending or pre-configuring the bond.'
+		description:
+			'Custom factory to create the DataGridBond instance. Useful for extending or pre-configuring the bond.'
 	},
 	{
 		name: 'children',
@@ -112,7 +114,8 @@ export const datagridTrProps: PropDefinition[] = [
 		name: 'header',
 		type: 'boolean',
 		default: 'false',
-		description: 'Marks this row as a header row. Header rows are not registered in the selection map and receive header styling.'
+		description:
+			'Marks this row as a header row. Header rows are not registered in the selection map and receive header styling.'
 	},
 	{
 		name: 'data',
@@ -145,7 +148,8 @@ export const datagridThProps: PropDefinition[] = [
 		name: 'id',
 		type: 'string',
 		default: 'nanoid()',
-		description: 'Unique column identifier. Auto-generated if omitted. Used to associate Td cells with their column.'
+		description:
+			'Unique column identifier. Auto-generated if omitted. Used to associate Td cells with their column.'
 	},
 	{
 		name: 'class',
@@ -157,7 +161,8 @@ export const datagridThProps: PropDefinition[] = [
 		name: 'width',
 		type: 'string',
 		default: "'1fr'",
-		description: 'Column width token used in the auto-computed grid-template-columns (e.g. "200px", "auto", "1fr").'
+		description:
+			'Column width token used in the auto-computed grid-template-columns (e.g. "200px", "auto", "1fr").'
 	},
 	{
 		name: 'direction',
@@ -175,7 +180,8 @@ export const datagridThProps: PropDefinition[] = [
 		name: 'sortable',
 		type: 'boolean | SortableType | undefined',
 		default: 'undefined',
-		description: 'Enables click-to-sort on this column. Pass a string to identify the sort field in onsort.'
+		description:
+			'Enables click-to-sort on this column. Pass a string to identify the sort field in onsort.'
 	},
 	{
 		name: 'hidden',
@@ -193,7 +199,8 @@ export const datagridThProps: PropDefinition[] = [
 		name: 'onsort',
 		type: '((event: CustomEvent, options: { field?: SortableType; direction: Direction }) => void) | undefined',
 		default: 'undefined',
-		description: 'Callback fired after sort direction changes. Receives the new direction and field identifier.'
+		description:
+			'Callback fired after sort direction changes. Receives the new direction and field identifier.'
 	},
 	{
 		name: 'children',
@@ -220,7 +227,8 @@ export const datagridTdProps: PropDefinition[] = [
 		name: 'children',
 		type: 'Snippet<[{ td: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
-		description: 'Cell content. Receives the datagrid bond. Also accepts a component via the base prop.'
+		description:
+			'Cell content. Receives the datagrid bond. Also accepts a component via the base prop.'
 	}
 ];
 
@@ -241,12 +249,14 @@ export const datagridCheckboxProps: PropDefinition[] = [
 		name: 'checked',
 		type: 'boolean',
 		default: 'false',
-		description: 'Bindable checked state. Automatically derived from selection state unless overridden.'
+		description:
+			'Bindable checked state. Automatically derived from selection state unless overridden.'
 	},
 	{
 		name: 'onchange',
 		type: '((ev: Event, options: { checked?: boolean }) => void) | undefined',
 		default: 'undefined',
-		description: 'Change handler. In header rows, triggers select/deselect all. In body rows, toggles the row.'
+		description:
+			'Change handler. In header rows, triggers select/deselect all. In body rows, toggles the row.'
 	}
 ];

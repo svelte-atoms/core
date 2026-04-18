@@ -194,42 +194,51 @@ const accessibilityFeatures = [
 const useCases = [
 	{
 		title: 'Admin Data Tables',
-		description: 'Display and manage records (users, orders, products) in admin dashboards with sortable columns and row selection.'
+		description:
+			'Display and manage records (users, orders, products) in admin dashboards with sortable columns and row selection.'
 	},
 	{
 		title: 'Reporting and Analytics',
-		description: 'Present structured data with sortable columns and column visibility controls for business reports and analytics views.'
+		description:
+			'Present structured data with sortable columns and column visibility controls for business reports and analytics views.'
 	},
 	{
 		title: 'Selectable Row Lists',
-		description: 'Allow users to select one or multiple rows with checkboxes for bulk operations like deletion, export, or status updates.'
+		description:
+			'Allow users to select one or multiple rows with checkboxes for bulk operations like deletion, export, or status updates.'
 	},
 	{
 		title: 'Inventory Management',
-		description: 'Manage product or asset inventories with rich row data, custom cell rendering via base prop, and action buttons per row.'
+		description:
+			'Manage product or asset inventories with rich row data, custom cell rendering via base prop, and action buttons per row.'
 	},
 	{
 		title: 'Log Viewers',
-		description: 'Display time-series or event logs in a structured grid with sortable timestamps and filterable columns.'
+		description:
+			'Display time-series or event logs in a structured grid with sortable timestamps and filterable columns.'
 	},
 	{
 		title: 'Comparison Tables',
-		description: 'Show feature comparisons or side-by-side data with fixed header rows and responsive column visibility via hidden prop.'
-  },
-  {
-    title: 'Cross-Row Side Rails',
-    description: 'Create side columns that span all data rows (alphabet index, timeline, status rail) by combining row-span-full containers with subgrid-aligned row content.'
+		description:
+			'Show feature comparisons or side-by-side data with fixed header rows and responsive column visibility via hidden prop.'
+	},
+	{
+		title: 'Cross-Row Side Rails',
+		description:
+			'Create side columns that span all data rows (alphabet index, timeline, status rail) by combining row-span-full containers with subgrid-aligned row content.'
 	}
 ];
 
 const componentsSummary = [
 	{
 		name: 'DataGrid.Root',
-		description: 'Root grid container. Owns the DataGridBond context, manages column template (auto-computed from Th widths) and selection state via bind:values.'
+		description:
+			'Root grid container. Owns the DataGridBond context, manages column template (auto-computed from Th widths) and selection state via bind:values.'
 	},
 	{
 		name: 'DataGrid.Header',
-		description: 'Header section. Sets the header context — all Tr rows inside are treated as header rows and excluded from selection.'
+		description:
+			'Header section. Sets the header context — all Tr rows inside are treated as header rows and excluded from selection.'
 	},
 	{
 		name: 'DataGrid.Body',
@@ -241,25 +250,30 @@ const componentsSummary = [
 	},
 	{
 		name: 'DataGrid.Row',
-		description: 'Row element using CSS subgrid (grid-column: 1 / -1). Mounts into the selection map unless header=true. Accepts a value prop for selection tracking and a data prop for typed row context.'
+		description:
+			'Row element using CSS subgrid (grid-column: 1 / -1). Mounts into the selection map unless header=true. Accepts a value prop for selection tracking and a data prop for typed row context.'
 	},
 	{
 		name: 'DataGrid.Column',
-		description: 'Column header cell. Defines column width for auto template computation, supports sortable for click-to-sort with bindable direction, and hidden to exclude the column from the layout.'
+		description:
+			'Column header cell. Defines column width for auto template computation, supports sortable for click-to-sort with bindable direction, and hidden to exclude the column from the layout.'
 	},
 	{
 		name: 'DataGrid.Cell',
-		description: 'Data cell. Finds its matching Th by DOM index for visibility. Accepts a base prop to render a component (e.g. a dropdown) instead of a plain div.'
+		description:
+			'Data cell. Finds its matching Th by DOM index for visibility. Accepts a base prop to render a component (e.g. a dropdown) instead of a plain div.'
 	},
 	{
 		name: 'DataGrid.Checkbox',
-		description: 'Selection checkbox. In header rows: select-all / deselect-all. In body rows: toggles that row. State is automatically derived from the datagrid bond — no manual wiring needed.'
+		description:
+			'Selection checkbox. In header rows: select-all / deselect-all. In body rows: toggles that row. State is automatically derived from the datagrid bond — no manual wiring needed.'
 	}
 ];
 
 export const metadata = {
 	title: 'DataGrid - Svelte Atoms',
-	description: 'Flexible CSS subgrid-based data grid for displaying tabular data with sorting, selection, and custom cell rendering.',
+	description:
+		'Flexible CSS subgrid-based data grid for displaying tabular data with sorting, selection, and custom cell rendering.',
 	componentTitle: 'DataGrid',
 	componentDescription:
 		'Grid component for structured data with sortable columns, row selection, custom cell rendering, and responsive columns.',
@@ -274,7 +288,7 @@ export const metadata = {
 		basic: basicCode,
 		selectable: selectableCode,
 		sortable: sortableCode,
-    rowSpanningColumn: rowSpanningColumnCode,
+		rowSpanningColumn: rowSpanningColumnCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

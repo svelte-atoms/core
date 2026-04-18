@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DataGrid } from '$lib/components/datagrid';
+	import { Tabs as ATabs, Tab } from '$lib/components/tabs';
 	import {
 		DocPage,
 		DocSection,
@@ -56,6 +57,57 @@
 		new Set(inventoryRows.map((item) => item.name.charAt(0).toUpperCase()))
 	);
 
+	const apiTabs = [
+		{
+			value: 'datagrid-root',
+			label: 'DataGrid.Root',
+			presetKey: 'datagrid',
+			props: datagridRootProps
+		},
+		{
+			value: 'datagrid-header',
+			label: 'DataGrid.Header',
+			presetKey: 'datagrid.header',
+			props: datagridHeaderProps
+		},
+		{
+			value: 'datagrid-body',
+			label: 'DataGrid.Body',
+			presetKey: 'datagrid.body',
+			props: datagridBodyProps
+		},
+		{
+			value: 'datagrid-footer',
+			label: 'DataGrid.Footer',
+			presetKey: 'datagrid.footer',
+			props: datagridFooterProps
+		},
+		{
+			value: 'datagrid-row',
+			label: 'DataGrid.Row',
+			presetKey: 'datagrid.row',
+			props: datagridTrProps
+		},
+		{
+			value: 'datagrid-column',
+			label: 'DataGrid.Column',
+			presetKey: 'datagrid.column',
+			props: datagridThProps
+		},
+		{
+			value: 'datagrid-cell',
+			label: 'DataGrid.Td',
+			presetKey: 'datagrid.cell',
+			props: datagridTdProps
+		},
+		{
+			value: 'datagrid-checkbox',
+			label: 'DataGrid.Checkbox',
+			presetKey: 'datagrid.checkbox',
+			props: datagridCheckboxProps
+		}
+	];
+
 	let selectedIds = $state<string[]>([]);
 </script>
 
@@ -107,9 +159,9 @@
 				<DataGrid.Body>
 					{#each users as user (user.id)}
 						<DataGrid.Row value={user.id}>
-							<DataGrid.Cell>{user.name}</DataGrid.Cell>
-							<DataGrid.Cell>{user.email}</DataGrid.Cell>
-							<DataGrid.Cell>{user.role}</DataGrid.Cell>
+							<DataGrid.Td>{user.name}</DataGrid.Td>
+							<DataGrid.Td>{user.email}</DataGrid.Td>
+							<DataGrid.Td>{user.role}</DataGrid.Td>
 						</DataGrid.Row>
 					{/each}
 				</DataGrid.Body>
@@ -131,11 +183,11 @@
 					<DataGrid.Body>
 						{#each users as user (user.id)}
 							<DataGrid.Row value={user.id}>
-								<DataGrid.Cell>
+								<DataGrid.Td>
 									<DataGrid.Checkbox />
-								</DataGrid.Cell>
-								<DataGrid.Cell>{user.name}</DataGrid.Cell>
-								<DataGrid.Cell>{user.email}</DataGrid.Cell>
+								</DataGrid.Td>
+								<DataGrid.Td>{user.name}</DataGrid.Td>
+								<DataGrid.Td>{user.email}</DataGrid.Td>
 							</DataGrid.Row>
 						{/each}
 					</DataGrid.Body>
@@ -156,9 +208,9 @@
 				<DataGrid.Body>
 					{#each users as user (user.id)}
 						<DataGrid.Row value={user.id}>
-							<DataGrid.Cell>{user.name}</DataGrid.Cell>
-							<DataGrid.Cell>{user.email}</DataGrid.Cell>
-							<DataGrid.Cell>{user.role}</DataGrid.Cell>
+							<DataGrid.Td>{user.name}</DataGrid.Td>
+							<DataGrid.Td>{user.email}</DataGrid.Td>
+							<DataGrid.Td>{user.role}</DataGrid.Td>
 						</DataGrid.Row>
 					{/each}
 				</DataGrid.Body>
@@ -171,7 +223,7 @@
 			code={metadata.examples.rowSpanningColumn}
 		>
 			<DataGrid.Root
-				class="h-96 gap-0"
+				class="h-96 gap-0 overflow-hidden"
 				{@attach (node: HTMLElement) => {
 					node.style.gridTemplateRows = 'auto 1fr auto';
 				}}
@@ -205,18 +257,18 @@
 					<div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
 						{#each inventoryRows as item (item.id)}
 							<DataGrid.Row value={item.id}>
-								<DataGrid.Cell class="font-mono text-xs font-semibold text-primary">
+								<DataGrid.Td class="font-mono text-xs font-semibold text-primary">
 									{item.code}
-								</DataGrid.Cell>
-								<DataGrid.Cell>{item.store}</DataGrid.Cell>
-								<DataGrid.Cell class="font-medium">{item.name}</DataGrid.Cell>
-								<DataGrid.Cell>
+								</DataGrid.Td>
+								<DataGrid.Td>{item.store}</DataGrid.Td>
+								<DataGrid.Td class="font-medium">{item.name}</DataGrid.Td>
+								<DataGrid.Td>
 									<span
 										class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground"
 									>
 										{item.category}
 									</span>
-								</DataGrid.Cell>
+								</DataGrid.Td>
 							</DataGrid.Row>
 						{/each}
 					</div>
@@ -230,79 +282,34 @@
 	</DocSection>
 
 	<DocSection title="API Reference">
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Root
+		<DocOnly for="html">
+			<ATabs.Root value={apiTabs[0]?.value ?? 'datagrid-root'} class="mt-2">
+				<ATabs.Header class="border-b overflow-x-auto scrollbar-none">
+					{#each apiTabs as tab, i (i)}
+						<Tab.Root value={tab.value}>
+							<Tab.Header class="px-3 py-2 text-xs">{tab.label}</Tab.Header>
+							<Tab.Body>
+								<p class="text-muted-foreground mb-3 text-xs">Preset Key: {tab.presetKey}</p>
+								<DocProps data={tab.props} />
+							</Tab.Body>
+						</Tab.Root>
+					{/each}
+				</ATabs.Header>
+				<ATabs.Body class="max-w-full overflow-hidden">
+					<ATabs.Content class="pt-4 max-w-full overflow-hidden" />
+				</ATabs.Body>
+			</ATabs.Root>
+		</DocOnly>
 
-**Preset Key:** `datagrid`
+		{#each apiTabs as tab, i (i)}
+			<DocOnly for="markdown">
+{newLine(2)}### {tab.label}
 
-</DocOnly>
-				<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Root
-
-**Preset Key:** `datagrid`</h3></DocOnly>
-		<DocProps data={datagridRootProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Header
-
-**Preset Key:** `datagrid.header`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Header</h3></DocOnly>
-		<DocProps data={datagridHeaderProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Body
-
-**Preset Key:** `datagrid.body`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Body</h3></DocOnly>
-		<DocProps data={datagridBodyProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Footer
-
-**Preset Key:** `datagrid.footer`
+**Preset Key:** `{tab.presetKey}`
 
 </DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Footer</h3></DocOnly>
-		<DocProps data={datagridFooterProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Row (Row)
-
-**Preset Key:** `datagrid.row`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Row (Row)</h3></DocOnly>
-		<DocProps data={datagridTrProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Column (Column Header)
-
-**Preset Key:** `datagrid.column`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Column (Column Header)</h3></DocOnly>
-		<DocProps data={datagridThProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Cell (Cell)
-
-**Preset Key:** `datagrid.cell`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Cell (Cell)</h3></DocOnly>
-		<DocProps data={datagridTdProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### DataGrid.Checkbox
-
-**Preset Key:** `datagrid.checkbox`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">DataGrid.Checkbox</h3></DocOnly>
-		<DocProps data={datagridCheckboxProps} />
+			<DocOnly for="markdown"><DocProps data={tab.props} /></DocOnly>
+		{/each}
 	</DocSection>
 
 	<DocSection title="Accessibility">
