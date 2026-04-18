@@ -97,10 +97,10 @@ export const preset: Partial<Preset> = {
 		};
 	},
 	// Semantic aliases — same styles as old keys
-	'datagrid.head': () => ({
-		class: 'bg-background/25 py-0'
+	'datagrid.header': () => ({
+			class: 'bg-background/25 py-0'
 	}),
-	'datagrid.foot': () => ({}),
+	'datagrid.footer': () => ({}),
 	'datagrid.row': (bond) => {
 		const isSelected = bond?.state?.isSelected ?? false;
 		const isHeader = bond?.state?.isHeader ?? false;
@@ -112,13 +112,13 @@ export const preset: Partial<Preset> = {
 			]
 		};
 	},
-	'datagrid.col': () => ({
-		class: 'px-0 py-2 text-left font-semibold text-sm'
+	'datagrid.column': () => ({
+			class: 'px-0 py-2 text-left font-semibold text-sm'
 	}),
 	'datagrid.cell': () => ({
-		class: 'px-0 py-2'
+			class: 'px-0 py-2'
 	}),
-	'datagrid.col-sort-icon': () => ({}),
+	'datagrid.column-sort-icon': () => ({}),
 	'dialog.content': () => ({
 		class:
 			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-[calc(100svw-8px)] md:max-w-3xl lg:max-w-4xl xl:max-w-[50svw] p-0'
