@@ -40,17 +40,21 @@ export interface DatagridRowSnippetProps<T = unknown> extends SnippetProps {
 
 export type DatagridRowChildren<T = unknown> = Snippet<[DatagridRowSnippetProps<T>]>;
 
-// Backward-compatible snippet aliases.
+// ── Deprecated snippet aliases ───────────────────────────────────────────
+/** @deprecated Use `DatagridColumnSnippetProps` instead */
 export interface DatagridThSnippetProps<T = unknown> extends DatagridColumnSnippetProps<T> {
 	th: DataGridColumnBond<T>;
 }
 
+/** @deprecated Use `DatagridColumnChildren` instead */
 export type DatagridThChildren<T = unknown> = DatagridColumnChildren<T>;
 
+/** @deprecated Use `DatagridRowSnippetProps` instead */
 export interface DatagridTrSnippetProps<T = unknown> extends DatagridRowSnippetProps<T> {
 	tr: DataGridRowBond<T>;
 }
 
+/** @deprecated Use `DatagridRowChildren` instead */
 export type DatagridTrChildren<T = unknown> = DatagridRowChildren<T>;
 
 // ── Component prop types ────────────────────────────────────────────────────
@@ -87,7 +91,7 @@ export interface DatagridFooterProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DatagridChildren<T>> {}
 
-export interface DatagridThProps<
+export interface DatagridColumnProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
@@ -105,18 +109,32 @@ export interface DatagridThProps<
 	onsort?: (event: CustomEvent, options: { field?: SortableType; direction: Direction }) => void;
 }
 
-export interface DatagridTdProps<
+/** @deprecated Use `DatagridColumnProps` instead */
+export type DatagridThProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridColumnProps<T, E, B>;
+
+export interface DatagridCellProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DatagridChildren<T>> {
-	onclick?: (ev: Event, options: { td?: DataGridBond<T> }) => void;
+	onclick?: (ev: Event, options: { cell?: DataGridBond<T> }) => void;
 }
+
+/** @deprecated Use `DatagridCellProps` instead */
+export type DatagridTdProps<
+	T = unknown,
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> = DatagridCellProps<T, E, B>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DatagridCheckboxProps extends Omit<CheckboxProps, 'children'> {}
 
-export interface DatagridTrProps<
+export interface DatagridRowProps<
 	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
@@ -132,19 +150,9 @@ export interface DatagridTrProps<
 	onclick?: (ev: Event, options: { row?: DataGridRowBond<T> }) => void;
 }
 
-// ── Semantic type aliases — preferred going forward ───────────────────────
-// DatagridHeaderProps and DatagridFooterProps already have canonical names.
-/** Preferred alias for DatagridTrProps */
-export type DatagridRowProps<
-	T,
+/** @deprecated Use `DatagridRowProps` instead */
+export type DatagridTrProps<
+	T = unknown,
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
-> = DatagridTrProps<T, E, B>;
-/** Preferred alias for DatagridThProps */
-export type DatagridColumnProps<
-	T,
-	E extends HtmlElementTagName = 'div',
-	B extends Base = Base
-> = DatagridThProps<T, E, B>;
-/** Preferred alias for DatagridTdProps */
-export type DatagridCellProps<T> = DatagridTdProps<T>;
+> = DatagridRowProps<T, E, B>;
