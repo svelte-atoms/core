@@ -1,43 +1,41 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
+<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { nanoid } from 'nanoid';
+	import { untrack } from 'svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { DataGridThBond, DataGridThBondState, type DataGridThBondProps } from './bond.svelte';
-	import type { DatagridContext } from '../context';
-	import type { DatagridThProps } from '../types';
+	import {
+		DataGridColumnBond,
+		DataGridColumnBondState,
+		type DataGridColumnBondProps
+	} from './bond.svelte';
+	import type { DatagridColumnProps } from '../types';
 
 	let {
 		class: klass = '',
 		id = nanoid(),
 		width = '1fr',
 		direction = 'asc',
-		screen = undefined,
 		hidden = false,
 		sortable = undefined,
 		factory = _factory,
 		children = undefined,
 		onclick = undefined,
 		onsort = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
-	}: DatagridThProps = $props();
+	}: DatagridColumnProps<T, E, B> = $props();
 
-	const bond = factory().share();
+	const bond = untrack(() => factory()).share();
 
 	const isSortable = $derived(bond.state.isSortable);
+	const columnProps = $derived({ ...bond.root().spread, ...bond.state.props, ...restProps });
 	// const directionAsNumber = $derived(+(direction === 'asc'));
 
 	const unmount = bond.mount();
 
 	$effect(() => unmount);
 
-	function _factory() {
-		const bondProps = defineState<DataGridThBondProps>([
+	function _factory(): DataGridColumnBond<T> {
+		const bondProps = defineState<DataGridColumnBondProps>([
 			defineProperty('id', () => id),
 			defineProperty('width', () => width),
 			defineProperty('sortable', () => sortable),
@@ -45,12 +43,15 @@
 			defineProperty('direction', () => direction)
 		]);
 
-		const bondState = new DataGridThBondState(() => bondProps);
-		return new DataGridThBond(bondState);
+		const bondState = new DataGridColumnBondState(() => bondProps);
+		return new DataGridColumnBond<T>(bondState);
 	}
 
 	function onclick_(ev: Event) {
-		onclick?.(ev as MouseEvent & { currentTarget: EventTarget & HTMLDivElement });
+		const onClick = onclick as
+			| ((event: MouseEvent & { currentTarget: EventTarget & HTMLDivElement }) => void)
+			| undefined;
+		onClick?.(ev as MouseEvent & { currentTarget: EventTarget & HTMLDivElement });
 
 		if (!ev.defaultPrevented) {
 			if (!isSortable) {
@@ -69,20 +70,17 @@
 				}
 			}
 
-			onsort?.(new CustomEvent('sort'), {
-				field: typeof sortable === 'boolean' ? undefined : sortable,
-				direction
-			});
+			if (typeof sortable === 'string') {
+				onsort?.(new CustomEvent('sort'), { field: sortable, direction });
+			} else {
+				onsort?.(new CustomEvent('sort'), { direction });
+			}
 		}
 	}
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 {#if !hidden}
 	<HtmlAtom
-		{@attach (node) => {
-			bond.elements.root = node;
-		}}
 		{bond}
 			preset="datagrid.column"
 		class={[
@@ -91,16 +89,9 @@
 			'$preset',
 			klass
 		]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
-		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
 		onclick={onclick_}
-		{...bond.props()}
-		{...restProps}
+		{...columnProps}
 	>
-		{@render children?.({ th: bond as unknown as DatagridContext })}
+		{@render children?.({ column: bond })}
 	</HtmlAtom>
 {/if}

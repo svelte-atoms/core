@@ -1,11 +1,11 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
 	import { animate as motion } from 'motion';
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { DataGridThBond } from './bond.svelte';
+	import { DataGridColumnBond } from './bond.svelte.ts';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
-	const bond = DataGridThBond.get();
+	const bond = DataGridColumnBond.get();
 
 	const isSortable = $derived(bond.state.isSortable);
 	const directionAsNumber = $derived(+(bond.state.props.direction === 'asc'));
