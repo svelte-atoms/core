@@ -15,7 +15,11 @@
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
-	new ZLayer('sidebar', () => zindex as number).share();
+	const normalizedZIndex = $derived(
+		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	);
+
+	new ZLayer('sidebar', () => normalizedZIndex ?? 0).share();
 
 	const bondProps = defineState<SidebarBondProps>([
 		defineProperty(

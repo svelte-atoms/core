@@ -26,21 +26,18 @@
 
 	const layer = new ZLayer('popover', () => parentLayer?.get() ?? 0).share();
 	
-	const activePortalBond = (() => {
+	const activePortalBond = $derived.by(() => {
 		const key = bond.state.props.portal;
 		if (key instanceof PortalBond) {
 			return key;
 		}
 
-		let portal: PortalBond | undefined | null = undefined;
-
 		if (typeof key === 'string') {
-			portal = PortalsBond.get()?.state.get(key);
-			console.error('portal was not found');
+			return PortalsBond.get()?.state.get(key);
 		}
 
-		return portal ?? PortalBond.get();
-	})();
+		return PortalBond.get();
+	});
 
 	let {
 		class: klass = '',

@@ -22,7 +22,10 @@
 		...restProps
 	}: DialogProps<E, B> = $props();
 
-	const layer = new ZLayer('dialog', () => zindex as number).share();
+	const normalizedZIndex = $derived(
+		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	);
+	const layer = new ZLayer('dialog', () => normalizedZIndex ?? 0).share();
 
 	const bondProps = defineState<DialogBondProps>(
 		[

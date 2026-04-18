@@ -26,7 +26,10 @@
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const layer = new ZLayer('drawer', () => typeof zindex === 'number' ? zindex : parseInt(zindex as string)).share();
+	const normalizedZIndex = $derived(
+		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	);
+	const layer = new ZLayer('drawer', () => normalizedZIndex ?? 0).share();
 
 	const bondProps = defineState<DrawerBondProps>(
 		[
