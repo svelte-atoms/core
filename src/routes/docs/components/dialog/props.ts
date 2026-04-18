@@ -22,7 +22,8 @@ export const dialogProps: PropDefinition[] = [
 		name: 'portal',
 		type: 'string | PortalBond | undefined',
 		default: "''",
-		description: 'Portal target selector or PortalBond instance. Teleports dialog content to a different DOM node (e.g., document.body).'
+		description:
+			'Portal target selector or PortalBond instance. Teleports dialog content to a different DOM node (e.g., document.body).'
 	},
 	{
 		name: 'factory',
@@ -34,8 +35,9 @@ export const dialogProps: PropDefinition[] = [
 		name: 'children',
 		type: 'Snippet<[{ dialog: DialogBond<DialogBondState<DialogBondProps>>; }]> | undefined',
 		default: 'undefined',
-		description: 'Dialog content. Receives the DialogBond for accessing open state and close functionality.'
-	},
+		description:
+			'Dialog content. Receives the DialogBond for accessing open state and close functionality.'
+	}
 ];
 
 export const dialogContentProps: PropDefinition[] = [
@@ -122,7 +124,7 @@ export const dialogContentProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogHeaderProps: PropDefinition[] = [
@@ -209,7 +211,7 @@ export const dialogHeaderProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogBodyProps: PropDefinition[] = [
@@ -296,7 +298,7 @@ export const dialogBodyProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogFooterProps: PropDefinition[] = [
@@ -383,7 +385,7 @@ export const dialogFooterProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogTitleProps: PropDefinition[] = [
@@ -470,7 +472,7 @@ export const dialogTitleProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogDescriptionProps: PropDefinition[] = [
@@ -557,7 +559,7 @@ export const dialogDescriptionProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
 
 export const dialogCloseButtonProps: PropDefinition[] = [
@@ -644,6 +646,5 @@ export const dialogCloseButtonProps: PropDefinition[] = [
 		type: 'Snippet',
 		default: 'undefined',
 		description: 'Children content snippet'
-	},
+	}
 ];
-
