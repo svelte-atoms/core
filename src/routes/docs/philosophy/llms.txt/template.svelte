@@ -141,9 +141,9 @@ Svelte Atoms uses composition:
 <DataGrid.Root>
   <DataGrid.Header>
     {#each columns as column, i (i)}
-      <DataGrid.HeaderCell sortable>
+      <DataGrid.Column sortable>
         {column.label}
-      </DataGrid.HeaderCell>
+      </DataGrid.Column>
     {/each}
   </DataGrid.Header>
   

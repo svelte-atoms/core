@@ -74,7 +74,7 @@ export const preset: Partial<Preset> = {
 	'datagrid.header': () => ({
 		class: 'bg-background/25 py-0'
 	}),
-	'datagrid.tr': (bond) => {
+	'datagrid.row': (bond) => {
 		const isSelected = bond?.state?.isSelected ?? false;
 		const isHeader = bond?.state?.isHeader ?? false;
 
@@ -86,38 +86,17 @@ export const preset: Partial<Preset> = {
 			]
 		};
 	},
-	'datagrid.th': () => {
+	'datagrid.column': () => {
 		return {
 			class: 'px-0 py-2 text-left font-semibold text-sm'
 		};
 	},
-	'datagrid.td': () => {
+	'datagrid.cell': () => {
 		return {
 			class: 'px-0 py-2'
 		};
 	},
-	// Semantic aliases — same styles as old keys
-	'datagrid.header': () => ({
-			class: 'bg-background/25 py-0'
-	}),
 	'datagrid.footer': () => ({}),
-	'datagrid.row': (bond) => {
-		const isSelected = bond?.state?.isSelected ?? false;
-		const isHeader = bond?.state?.isHeader ?? false;
-		return {
-			class: [
-				'pr-8 pl-8 duration-100 transition-colors rounded-none',
-				!isHeader && 'hover:bg-foreground/2 active:bg-foreground/4 last:border-b-0',
-				isSelected && 'bg-primary/2 hover:bg-primary/4 active:bg-primary/6'
-			]
-		};
-	},
-	'datagrid.column': () => ({
-			class: 'px-0 py-2 text-left font-semibold text-sm'
-	}),
-	'datagrid.cell': () => ({
-			class: 'px-0 py-2'
-	}),
 	'datagrid.column-sort-icon': () => ({}),
 	'dialog.content': () => ({
 		class:

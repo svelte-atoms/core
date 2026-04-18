@@ -4,7 +4,7 @@ import type { CheckboxProps } from '../checkbox/types';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { DataGridTrBond } from './row/bond.svelte';
 import type { DataGridThBond } from './column/bond.svelte';
-import type { HtmlAtomProps, Base } from '../atom';
+import type { HtmlAtomProps, Base, SnippetProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
 import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
 

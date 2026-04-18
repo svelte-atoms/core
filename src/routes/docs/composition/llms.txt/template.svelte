@@ -59,7 +59,7 @@ The most powerful example is {inlineCode('Field.Control')}, which adapts to any 
 
 Compose table cells with interactive components:
 
-{codeBlock(`<DataGrid.Td base={Dropdown.Root} placement="bottom-end">
+{codeBlock(`<DataGrid.Cell base={Dropdown.Root} placement="bottom-end">
 	<Dropdown.Trigger>
 		<Icon src={MoreVerticalIcon} />
 	</Dropdown.Trigger>
@@ -67,9 +67,9 @@ Compose table cells with interactive components:
 		<Dropdown.Item value="edit">Edit</Dropdown.Item>
 		<Dropdown.Item value="delete">Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>`, 'svelte')}
+</DataGrid.Cell>`, 'svelte')}
 
-The {inlineCode('DataGrid.Td')} now:
+The {inlineCode('DataGrid.Cell')} now:
 
 - Maintains table cell semantics and styling
 - Adds Dropdown positioning, open/close state
@@ -298,13 +298,13 @@ The {inlineCode('Input.Root')} is composed into the trigger, bringing input styl
 
 ### Interactive Table Cell
 
-{codeBlock(`<DataGrid.Td base={Dropdown.Root}>
+{codeBlock(`<DataGrid.Cell base={Dropdown.Root}>
 	<Dropdown.Trigger base={Button} variant="ghost" size="sm">Actions</Dropdown.Trigger>
 	<Dropdown.List>
 		<Dropdown.Item>Edit</Dropdown.Item>
 		<Dropdown.Item>Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>`, 'svelte')}
+</DataGrid.Cell>`, 'svelte')}
 
 **Combines**: Table cell + Dropdown + Button
 

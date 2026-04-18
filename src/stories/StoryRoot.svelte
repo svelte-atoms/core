@@ -65,7 +65,7 @@
 		'datagrid.header': () => ({
 			class: 'bg-background/25 py-2'
 		}),
-		'datagrid.tr': () => ({
+		'datagrid.row': () => ({
 			class: 'pr-2 pl-4'
 		}),
 		collapsible: () => ({

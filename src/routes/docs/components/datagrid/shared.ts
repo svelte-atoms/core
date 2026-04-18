@@ -86,11 +86,11 @@ const sortableCode = `
 
 <DataGrid.Root>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th sortable="name" onsort={handleSort}>Name</DataGrid.Th>
-      <DataGrid.Th sortable="email" onsort={handleSort}>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row header>
+      <DataGrid.Column sortable="name" onsort={handleSort}>Name</DataGrid.Column>
+      <DataGrid.Column sortable="email" onsort={handleSort}>Email</DataGrid.Column>
+      <DataGrid.Column>Role</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
     <!-- rows -->
@@ -119,13 +119,13 @@ const rowSpanningColumnCode = `
   }}
 >
   <DataGrid.Header class="h-min border-x-0 border-t-0">
-    <DataGrid.Tr class="h-min" header>
-      <DataGrid.Th width="44px" />
-      <DataGrid.Th width="auto" class="pl-4">SKU Code</DataGrid.Th>
-      <DataGrid.Th width="auto">Store</DataGrid.Th>
-      <DataGrid.Th width="1fr">Product Name</DataGrid.Th>
-      <DataGrid.Th width="auto">Category</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row class="h-min" header>
+      <DataGrid.Column width="44px" />
+      <DataGrid.Column width="auto" class="pl-4">SKU Code</DataGrid.Column>
+      <DataGrid.Column width="auto">Store</DataGrid.Column>
+      <DataGrid.Column width="1fr">Product Name</DataGrid.Column>
+      <DataGrid.Column width="auto">Category</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
 
   <DataGrid.Body class="col-span-full grid grid-cols-subgrid">
@@ -140,16 +140,16 @@ const rowSpanningColumnCode = `
 
     <div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
       {#each inventory as item (item.id)}
-        <DataGrid.Tr value={item.id}>
-          <DataGrid.Td class="font-mono text-xs font-semibold text-primary">{item.code}</DataGrid.Td>
-          <DataGrid.Td>{item.store}</DataGrid.Td>
-          <DataGrid.Td class="font-medium">{item.name}</DataGrid.Td>
-          <DataGrid.Td>
+        <DataGrid.Row value={item.id}>
+          <DataGrid.Cell class="font-mono text-xs font-semibold text-primary">{item.code}</DataGrid.Cell>
+          <DataGrid.Cell>{item.store}</DataGrid.Cell>
+          <DataGrid.Cell class="font-medium">{item.name}</DataGrid.Cell>
+          <DataGrid.Cell>
             <span class="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
               {item.category}
             </span>
-          </DataGrid.Td>
-        </DataGrid.Tr>
+          </DataGrid.Cell>
+        </DataGrid.Row>
       {/each}
     </div>
   </DataGrid.Body>
@@ -169,13 +169,13 @@ setPreset({
   'datagrid.header': () => ({
     class: 'border-b font-medium'
   }),
-  'datagrid.tr': () => ({
+  'datagrid.row': () => ({
     class: 'border-b transition-colors'
   }),
-  'datagrid.th': () => ({
+  'datagrid.column': () => ({
     class: 'h-12 px-4 text-left text-muted-foreground'
   }),
-  'datagrid.td': () => ({
+  'datagrid.cell': () => ({
     class: 'px-4 py-2'
   }),
   'datagrid.checkbox': () => ({
@@ -233,22 +233,22 @@ const componentsSummary = [
 	},
 	{
 		name: 'DataGrid.Body',
-		description: 'Body section. Contains the data rows rendered with DataGrid.Tr.'
+		description: 'Body section. Contains the data rows rendered with DataGrid.Row.'
 	},
 	{
 		name: 'DataGrid.Footer',
 		description: 'Optional footer section. Useful for summary rows, pagination controls, or totals.'
 	},
 	{
-		name: 'DataGrid.Tr',
+		name: 'DataGrid.Row',
 		description: 'Row element using CSS subgrid (grid-column: 1 / -1). Mounts into the selection map unless header=true. Accepts a value prop for selection tracking and a data prop for typed row context.'
 	},
 	{
-		name: 'DataGrid.Th',
+		name: 'DataGrid.Column',
 		description: 'Column header cell. Defines column width for auto template computation, supports sortable for click-to-sort with bindable direction, and hidden to exclude the column from the layout.'
 	},
 	{
-		name: 'DataGrid.Td',
+		name: 'DataGrid.Cell',
 		description: 'Data cell. Finds its matching Th by DOM index for visibility. Accepts a base prop to render a component (e.g. a dropdown) instead of a plain div.'
 	},
 	{
