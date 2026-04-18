@@ -5,7 +5,7 @@
 	import type { DatagridCheckboxProps } from './types';
 
 	const datagridBond = DataGridBond.get();
-	const datagridTrBond = DataGridRowBond.get();
+	const datagridRowBond = DataGridRowBond.get();
 
 	let {
 		class: klass = '',
@@ -17,8 +17,8 @@
 		...restProps
 	}: DatagridCheckboxProps = $props();
 
-	const isHeader = $derived(datagridTrBond?.state.isHeader ?? false);
-	const rowId = $derived(datagridTrBond?.state.id);
+	const isHeader = $derived(datagridRowBond?.state.isHeader ?? false);
+	const rowId = $derived(datagridRowBond?.state.id);
 
 	const selectedCount = $derived(datagridBond?.state.selectedRows.length ?? 0);
 	const rowCount = $derived(datagridBond?.state.rows.size ?? 0);
@@ -26,7 +26,7 @@
 	const isAllSelected = $derived(rowCount > 0 && selectedCount === rowCount);
 	const isHeaderIndeterminate = $derived(selectedCount > 0 && selectedCount < rowCount);
 
-	const isRowSelected = $derived(datagridTrBond?.state.isSelected ?? false);
+	const isRowSelected = $derived(datagridRowBond?.state.isSelected ?? false);
 
 	const classNames = $derived(['datagrid-cell-checkbox', '$preset', klass]);
 
@@ -61,9 +61,9 @@
 		if (currentEvent.defaultPrevented || !rowId) return;
 
 		if(checked){
-			datagridTrBond?.state.select();
+			datagridRowBond?.state.select();
 		} else {
-			datagridTrBond?.state.unselect();
+			datagridRowBond?.state.unselect();
 		}
 	}
 </script>
@@ -72,7 +72,7 @@
 	<Checkbox
 		{...(value !== undefined ? { value: value as string } : {})}
 		{...(onclick ? { onclick: onclick as (ev?: Event) => void } : {})}
-		bond={datagridTrBond}
+		bond={datagridRowBond}
 		preset="datagrid.checkbox"
 		class={classNames}
 		checked={isAllSelected}
@@ -86,7 +86,7 @@
 	<Checkbox
 		{...(value !== undefined ? { value: value as string } : {})}
 		{...(onclick ? { onclick: onclick as (ev?: Event) => void } : {})}
-		bond={datagridTrBond}
+		bond={datagridRowBond}
 		preset="datagrid.checkbox"
 		class={classNames}
 		checked={isRowSelected}
