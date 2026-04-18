@@ -5,6 +5,7 @@
 	import type { CheckboxProps } from './types';
 	import { animateCheckboxIndicator } from './motion';
 	import './checkbox.css';
+	import { Input } from '../input';
 
 	let {
 		class: klass = '',
@@ -52,9 +53,13 @@
 
 	function handleClick(ev: MouseEvent) {
 		if (disabled) return;
-
-		// Stop propagation to prevent double-firing
-		ev.stopPropagation();
+		
+		// Check if click originated from the hidden input (via label click)
+		// If so, the input's bind:checked will handle the toggle
+		console.log(ev.target);
+		if (ev.target === checkboxElement) {
+			return;
+		}
 
 		// Let user's onclick handler run first
 		onclick?.(ev);
@@ -64,26 +69,18 @@
 			return;
 		}
 
-		// Check if click originated from the hidden input (via label click)
-		// If so, the input's bind:checked will handle the toggle
-		if (ev.target === checkboxElement) {
-			return;
-		}
-
-		// Store old value before toggle
-		const oldChecked = checked;
-
 		// Handle indeterminate → checked → unchecked cycle
 		if (indeterminate) {
 			// Indeterminate → checked
 			indeterminate = false;
 			checked = true;
-		} 
-
-		// Fire input event with new value
-		if (checked !== oldChecked) {
-			handleInput(ev);
+		} else {
+			// Checked → unchecked or unchecked → checked
+			ev.stopPropagation(); // Prevent click from bubbling to label and toggling again
+			checked = !checked;
 		}
+
+		handleInput(ev);
 	}
 </script>
 
@@ -131,11 +128,11 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<HtmlAtom
+<Input.Root
 	preset="checkbox"
 	as="div"
 	class={[
-		'checkbox-root border-border outline-primary bg-input text-foreground aspect-square h-5 w-fit cursor-pointer rounded-sm border outline-0 outline-offset-2 transition-colors duration-100',
+		'checkbox-root aspect-square shrink-0 text-foreground h-5 w-fit cursor-pointer rounded-sm outline-0 outline-offset-2 transition-colors duration-100',
 		isChecked && 'bg-foreground',
 		'$preset',
 		klass,
@@ -169,4 +166,4 @@
 	/>
 
 	{@render overlayContent?.()}
-</HtmlAtom>
+</Input.Root>
