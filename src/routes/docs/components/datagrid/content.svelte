@@ -96,7 +96,7 @@
 		},
 		{
 			value: 'datagrid-cell',
-			label: 'DataGrid.Td',
+			label: 'DataGrid.Cell',
 			presetKey: 'datagrid.cell',
 			props: datagridTdProps
 		},

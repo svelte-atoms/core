@@ -125,19 +125,19 @@ export const datagridTrProps: PropDefinition[] = [
 	},
 	{
 		name: 'factory',
-		type: 'Factory<DataGridTrBond<T>> | undefined',
+		type: 'Factory<DataGridRowBond<T>> | undefined',
 		default: 'undefined',
-		description: 'Custom factory to create the DataGridTrBond instance for this row.'
+		description: 'Custom factory to create the DataGridRowBond instance for this row.'
 	},
 	{
 		name: 'onclick',
-		type: '((ev: Event, options: { tr?: DataGridTrBond<T> }) => void) | undefined',
+		type: '((ev: Event, options: { row?: DataGridRowBond<T> }) => void) | undefined',
 		default: 'undefined',
 		description: 'Click handler for the row. Receives the event and the row bond.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ tr: DataGridTrBond<T> }]> | undefined',
+		type: 'Snippet<[{ row: DataGridRowBond<T> }]> | undefined',
 		default: 'undefined',
 		description: 'Row cell content. Receives the row bond.'
 	}
@@ -191,9 +191,9 @@ export const datagridThProps: PropDefinition[] = [
 	},
 	{
 		name: 'factory',
-		type: '(() => DataGridThBond<T>) | undefined',
+		type: '(() => DataGridColumnBond<T>) | undefined',
 		default: 'undefined',
-		description: 'Custom factory to create the DataGridThBond instance for this column.'
+		description: 'Custom factory to create the DataGridColumnBond instance for this column.'
 	},
 	{
 		name: 'onsort',
@@ -204,7 +204,7 @@ export const datagridThProps: PropDefinition[] = [
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ th: DataGridThBond<T> }]> | undefined',
+		type: 'Snippet<[{ column: DataGridColumnBond<T> }]> | undefined',
 		default: 'undefined',
 		description: 'Column header content. Receives the column bond.'
 	}
@@ -219,13 +219,13 @@ export const datagridTdProps: PropDefinition[] = [
 	},
 	{
 		name: 'onclick',
-		type: '((ev: Event, options: { td?: DataGridBond<T> }) => void) | undefined',
+		type: '((ev: Event, options: { cell?: DataGridBond<T> }) => void) | undefined',
 		default: 'undefined',
 		description: 'Click handler for the cell. Receives the event and the datagrid bond.'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ td: DataGridBond<T> | undefined }]> | undefined',
+		type: 'Snippet<[{ datagrid: DataGridBond<T> | undefined }]> | undefined',
 		default: 'undefined',
 		description:
 			'Cell content. Receives the datagrid bond. Also accepts a component via the base prop.'
