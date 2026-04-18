@@ -18,15 +18,18 @@
 		as = 'div',
 		disabled = false,
 		portal = undefined,
+		"z-index": zindex = 1,
 		onclose = undefined,
-		"z-index": zindex = 0,
 		initial = animateDrawerRoot({ duration: 0 }),
 		animate = animateDrawerRoot({}),
 		factory = _factory,
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const layer = new ZLayer('drawer', () => typeof zindex === 'number' ? zindex : parseInt(zindex as string)).share();
+	const normalizedZIndex = $derived(
+		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	);
+	const layer = new ZLayer('drawer', () => normalizedZIndex ?? 0).share();
 
 	const bondProps = defineState<DrawerBondProps>(
 		[

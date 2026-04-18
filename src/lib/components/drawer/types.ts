@@ -74,6 +74,7 @@ export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B ext
 			}
 		>,
 		DrawerExtendProps {
+	"z-index"?: number;
 	open?: boolean;
 	disabled?: boolean;
 	side?: 'left' | 'right' | 'top' | 'bottom';
