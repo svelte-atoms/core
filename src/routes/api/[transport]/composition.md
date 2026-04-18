@@ -66,7 +66,7 @@ The most powerful example is `Field.Control`, which adapts to any input componen
 Compose table cells with interactive components:
 
 ```svelte
-<DataGrid.Td base={Dropdown.Root} placement="bottom-end">
+<DataGrid.Cell base={Dropdown.Root} placement="bottom-end">
 	<Dropdown.Trigger>
 		<Icon src={MoreVerticalIcon} />
 	</Dropdown.Trigger>
@@ -74,10 +74,10 @@ Compose table cells with interactive components:
 		<Dropdown.Item value="edit">Edit</Dropdown.Item>
 		<Dropdown.Item value="delete">Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>
+</DataGrid.Cell>
 ```
 
-The `DataGrid.Td` now:
+The `DataGrid.Cell` now:
 
 - Maintains table cell semantics and styling
 - Adds Dropdown positioning, open/close state
@@ -329,13 +329,13 @@ The `Input.Root` is composed into the trigger, bringing input styling and icon s
 ### Interactive Table Cell
 
 ```svelte
-<DataGrid.Td base={Dropdown.Root}>
+<DataGrid.Cell base={Dropdown.Root}>
 	<Dropdown.Trigger base={Button} variant="ghost" size="sm">Actions</Dropdown.Trigger>
 	<Dropdown.List>
 		<Dropdown.Item>Edit</Dropdown.Item>
 		<Dropdown.Item>Delete</Dropdown.Item>
 	</Dropdown.List>
-</DataGrid.Td>
+</DataGrid.Cell>
 ```
 
 **Combines**: Table cell + Dropdown + Button

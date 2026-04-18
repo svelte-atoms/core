@@ -271,8 +271,8 @@ type PresetModuleName =
 	| 'popover.content'
 	| 'popover.trigger'
 	| 'datagrid'
-	| 'datagrid.th'
-	| 'datagrid.td';
+	| 'datagrid.column'
+	| 'datagrid.cell';
 // ... and many more
 ```
 
@@ -338,7 +338,7 @@ Check `src/lib/context/preset.svelte.ts` for the complete list.
 		card: () => ({
 			class: 'rounded-lg bg-slate-50'
 		}),
-		'datagrid.th': () => ({
+		'datagrid.column': () => ({
 			class: 'text-xs uppercase text-slate-500'
 		})
 	};

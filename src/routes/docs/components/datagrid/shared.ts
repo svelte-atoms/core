@@ -18,19 +18,19 @@ const basicCode = `
 
 <DataGrid.Root>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-      <DataGrid.Th>Role</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row>
+      <DataGrid.Column>Name</DataGrid.Column>
+      <DataGrid.Column>Email</DataGrid.Column>
+      <DataGrid.Column>Role</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
-    {#each users as user (user.id)}
-      <DataGrid.Tr value={user.id}>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-        <DataGrid.Td>{user.role}</DataGrid.Td>
-      </DataGrid.Tr>
+    {#each users as user}
+      <DataGrid.Row>
+        <DataGrid.Cell>{user.name}</DataGrid.Cell>
+        <DataGrid.Cell>{user.email}</DataGrid.Cell>
+        <DataGrid.Cell>{user.role}</DataGrid.Cell>
+      </DataGrid.Row>
     {/each}
   </DataGrid.Body>
 </DataGrid.Root>`.trim();
@@ -50,23 +50,23 @@ const selectableCode = `
 
 <DataGrid.Root bind:values={selectedIds}>
   <DataGrid.Header>
-    <DataGrid.Tr header>
-      <DataGrid.Th width="auto">
-        <DataGrid.Checkbox />
-      </DataGrid.Th>
-      <DataGrid.Th>Name</DataGrid.Th>
-      <DataGrid.Th>Email</DataGrid.Th>
-    </DataGrid.Tr>
+    <DataGrid.Row>
+      <DataGrid.Column>
+        <input type="checkbox" />
+      </DataGrid.Column>
+      <DataGrid.Column>Name</DataGrid.Column>
+      <DataGrid.Column>Email</DataGrid.Column>
+    </DataGrid.Row>
   </DataGrid.Header>
   <DataGrid.Body>
-    {#each users as user (user.id)}
-      <DataGrid.Tr value={user.id}>
-        <DataGrid.Td>
-          <DataGrid.Checkbox />
-        </DataGrid.Td>
-        <DataGrid.Td>{user.name}</DataGrid.Td>
-        <DataGrid.Td>{user.email}</DataGrid.Td>
-      </DataGrid.Tr>
+    {#each users as user}
+      <DataGrid.Row>
+        <DataGrid.Cell>
+          <input type="checkbox" />
+        </DataGrid.Cell>
+        <DataGrid.Cell>{user.name}</DataGrid.Cell>
+        <DataGrid.Cell>{user.email}</DataGrid.Cell>
+      </DataGrid.Row>
     {/each}
   </DataGrid.Body>
 </DataGrid.Root>`.trim();

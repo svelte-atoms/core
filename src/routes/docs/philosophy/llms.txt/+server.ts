@@ -1,4 +1,3 @@
-
 import Page from './template.svelte';
 import { metadata } from '../shared';
 
@@ -10,10 +9,8 @@ const frontmatter: Frontmatter = {
 	title: 'Design Philosophy',
 	category: 'getting-started',
 	depth: 'beginner',
-	related: ['atoms', 'bonds', 'crafting'],
+	related: ['atoms', 'bonds', 'crafting']
 };
-
-
 
 export function GET() {
 	const text = renderLlmContent(Page, { frontmatter, metadata });
