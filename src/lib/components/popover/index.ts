@@ -12,5 +12,6 @@ export {
 	PopoverArrowAtom,
 	PopoverIndicatorAtom
 } from './bond.svelte';
-export { popoverPositioning } from './behaviors/positioning';
 export * from './types';
+export * from './strategy-types';
+export * as PopoverStrategies from './strategies';
