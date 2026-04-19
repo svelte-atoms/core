@@ -147,6 +147,16 @@
 			"svelte": "./dist/components/container/index.js",
 			"default": "./dist/components/container/index.js"
 		},
+		"./contextmenu": {
+			"types": "./dist/components/contextmenu/index.d.ts",
+			"svelte": "./dist/components/contextmenu/index.js",
+			"default": "./dist/components/contextmenu/index.js"
+		},
+		"./contextmenu/atoms": {
+			"types": "./dist/components/contextmenu/atoms.d.ts",
+			"svelte": "./dist/components/contextmenu/atoms.js",
+			"default": "./dist/components/contextmenu/atoms.js"
+		},
 		"./combobox": {
 			"types": "./dist/components/combobox/index.d.ts",
 			"svelte": "./dist/components/combobox/index.js",
@@ -387,6 +397,11 @@
 			"svelte": "./dist/components/sidebar/atoms.js",
 			"default": "./dist/components/sidebar/atoms.js"
 		},
+		"./slider": {
+			"types": "./dist/components/slider/index.d.ts",
+			"svelte": "./dist/components/slider/index.js",
+			"default": "./dist/components/slider/index.js"
+		},
 		"./stack": {
 			"types": "./dist/components/stack/index.d.ts",
 			"svelte": "./dist/components/stack/index.js",
@@ -421,6 +436,11 @@
 			"types": "./dist/components/swatch/index.d.ts",
 			"svelte": "./dist/components/swatch/index.js",
 			"default": "./dist/components/swatch/index.js"
+		},
+		"./switch": {
+			"types": "./dist/components/switch/index.d.ts",
+			"svelte": "./dist/components/switch/index.js",
+			"default": "./dist/components/switch/index.js"
 		},
 		"./tabs": {
 			"types": "./dist/components/tabs/index.d.ts",
