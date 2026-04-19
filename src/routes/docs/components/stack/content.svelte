@@ -35,7 +35,7 @@
 	status={metadata.status}
 	llms={true}
 	breadcrumbs={metadata.breadcrumbs}
-	prev={{ label: 'Sidebar', href: '/docs/components/sidebar' }}
+	prev={{ label: 'Slider', href: '/docs/components/slider' }}
 	next={{ label: 'Stepper', href: '/docs/components/stepper' }}
 	{frontmatter}
 >
