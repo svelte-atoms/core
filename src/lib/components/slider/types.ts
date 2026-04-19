@@ -49,7 +49,7 @@ export interface SliderProps extends HtmlAtomProps<'div'> {
 	orientation?: 'horizontal' | 'vertical';
 	/**
 	 * Custom thumb — replaces the default circular thumb.
-	 * Receives `{ value, percent }`.
+	 * Receives `{ value, percent }` and is rendered inside the positioned thumb wrapper.
 	 */
 	thumbContent?: Snippet<[{ value: number; percent: number }]>;
 	/**

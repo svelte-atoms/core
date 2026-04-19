@@ -99,18 +99,24 @@
 {/snippet}
 
 {#snippet defaultThumb()}
+	<div class="bg-foreground border-border h-full w-full rounded-full shadow-sm shadow-black/50"></div>
+{/snippet}
+
+{#snippet thumbWrapper()}
 	<HtmlAtom
 		preset="slider.thumb"
 		as="div"
 		class={[
-			'slider-thumb bg-foreground border-border pointer-events-none absolute h-5 w-5 rounded-full shadow-sm shadow-black/50',
+			'slider-thumb pointer-events-none absolute h-5 w-5',
 			isVertical
-				? 'left-1/2 -translate-x-1/2 -translate-y-1/2'
+				? 'left-1/2 -translate-x-1/2 translate-y-1/2'
 				: 'top-1/2 -translate-x-1/2 -translate-y-1/2',
 			'$preset'
 		]}
-		style={isVertical ? `bottom: calc(${percent}% - 10px)` : `left: ${percent}%`}
-	/>
+		style={isVertical ? `bottom: ${percent}%` : `left: ${percent}%`}
+	>
+		{@render (thumbContent ?? defaultThumb)({ value: normalizedValue, percent })}
+	</HtmlAtom>
 {/snippet}
 
 <HtmlAtom
@@ -137,20 +143,22 @@
 		step={normalizedStep}
 		{disabled}
 		type="range"
-		bind:value
+		value={normalizedValue}
 		oninput={handleInput}
 		onchange={handleChange}
 		class={[
 			'slider-input absolute inset-0 h-full w-full cursor-pointer opacity-0',
 			disabled && 'cursor-not-allowed'
 		]}
+		style={isVertical ? 'writing-mode: vertical-lr; direction: rtl; touch-action: none;' : undefined}
 		aria-valuemin={normalizedMin}
 		aria-valuemax={normalizedMax}
 		aria-valuenow={normalizedValue}
+		aria-orientation={orientation}
 		aria-disabled={disabled || undefined}
 	/>
 
-	{@render (thumbContent ?? defaultThumb)({ value: normalizedValue, percent })}
+	{@render thumbWrapper()}
 </HtmlAtom>
 
 {@render children?.()}
