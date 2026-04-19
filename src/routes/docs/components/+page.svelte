@@ -63,7 +63,7 @@
 		// 	description: 'Right-click menu for contextual actions',
 		// 	category: 'Overlay',
 		// 	status: 'Beta',
-		// 	href: '/docs/components/contextmenu'
+		// 	href: '/docs/components/context-menu'
 		// },
 		{
 			name: 'DataGrid',

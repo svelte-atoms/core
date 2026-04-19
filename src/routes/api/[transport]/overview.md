@@ -142,7 +142,7 @@ Floating and overlay UI elements:
 Navigation and wayfinding components:
 
 - **Menu** - Navigation menus
-- **ContextMenu** - Right-click menus
+- **Context Menu** - Right-click menus
 - **Breadcrumb** - Hierarchical navigation
 - **Sidebar** - Side navigation panels
 - **List** - Structured list displays
