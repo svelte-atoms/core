@@ -28,11 +28,12 @@ export interface AnimateParams {
 	open: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PopoverContentProps<
 	T extends HtmlElementTagName,
 	B extends Base = Base
-> extends HtmlAtomProps<T, B, PopoverChildren> {}
+> extends HtmlAtomProps<T, B, PopoverChildren> {
+	onclickoutside?: (ev: PointerEvent, atom: PopoverBond) => void;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PopoverIndicatorProps<

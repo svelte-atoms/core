@@ -46,7 +46,7 @@ export * from './swatch';
 export * from './lazy';
 export * from './chip';
 export * from './toast';
-export * from './contextmenu';
+export * from './context-menu';
 export * from './divider';
 export * from './image';
 export * from './virtual';

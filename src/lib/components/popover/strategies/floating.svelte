@@ -17,7 +17,6 @@
 	const content = $derived(bond?.element('content'));
 
 	$effect.pre(() => {
-
 		if (!trigger || !content || !open) return;
 
 		// Use the existing positioning behavior
@@ -29,13 +28,14 @@
 	function compute(bond: PopoverBond) {
 		return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
 			const { offset: ofs, placements, placement } = bond.state.props;
-			
+
 			const trigger = bond.element<HTMLElement>('trigger');
+			const virtualTrigger = bond.state.virtualTrigger ?? trigger;
 			const content = bond.element<HTMLElement>('content');
 			const arrowElement = bond.element<HTMLElement>('arrow');
 
 			// Guard: ensure required elements exist
-			if (!trigger || !content) {
+			if (!virtualTrigger || !content) {
 				return;
 			}
 
@@ -71,7 +71,7 @@
 				// Double rAF ensures browser has completed layout + paint
 				await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-				const position = await computePosition(trigger, content, {
+				const position = await computePosition(virtualTrigger, content, {
 					placement: placement ?? 'bottom',
 					middleware,
 					strategy: bond.state.props.positionStrategy
@@ -91,14 +91,16 @@
 				onchangeCallback?.(content, position);
 
 				// Set minimum width to match trigger
-				requestAnimationFrame(() => {
-					content.style.minWidth = `${trigger.clientWidth}px`;
-				});
+				if (trigger && !bond.state.virtualTrigger) {
+					requestAnimationFrame(() => {
+						content.style.minWidth = `${trigger.clientWidth}px`;
+					});
+				}
 			};
 
 			// Use auto-update if provided, otherwise compute once
-			if (updater) {
-				return updater(trigger, content, compute, {
+			if (updater && !bond.state.virtualTrigger) {
+				return updater(virtualTrigger, content, compute, {
 					ancestorScroll: false
 				});
 			}

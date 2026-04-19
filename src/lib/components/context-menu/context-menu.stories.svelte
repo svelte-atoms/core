@@ -49,7 +49,12 @@
 	const images = $state([
 		{ id: 1, src: 'https://picsum.photos/seed/forest/400/300', alt: 'Forest', label: 'Forest' },
 		{ id: 2, src: 'https://picsum.photos/seed/ocean/400/300', alt: 'Ocean', label: 'Ocean' },
-		{ id: 3, src: 'https://picsum.photos/seed/mountain/400/300', alt: 'Mountain', label: 'Mountain' },
+		{
+			id: 3,
+			src: 'https://picsum.photos/seed/mountain/400/300',
+			alt: 'Mountain',
+			label: 'Mountain'
+		},
 		{ id: 4, src: 'https://picsum.photos/seed/city/400/300', alt: 'City', label: 'City' }
 	]);
 	let imageAction = $state('');
@@ -61,16 +66,33 @@
 <Story name="Basic Zone" args={{}}>
 	<AContextMenu.Root>
 		<AContextMenu.Trigger>
-			<div class="flex h-40 w-72 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted text-sm font-medium">
+			<div
+				class="flex h-40 w-72 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted text-sm font-medium"
+			>
 				Right-click to open the context menu
 			</div>
 		</AContextMenu.Trigger>
-		<AContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover shadow-md">
-			<AContextMenu.Item preset="context-menu.item" class="border-none" onclick={() => console.log('Copy')}>Copy</AContextMenu.Item>
-			<AContextMenu.Item preset="context-menu.item" class="border-none" onclick={() => console.log('Paste')}>Paste</AContextMenu.Item>
+		<AContextMenu.Content
+			preset="context-menu.content"
+			class="min-w-48 rounded-lg border bg-popover shadow-md"
+		>
+			<AContextMenu.Item
+				preset="context-menu.item"
+				class="border-none"
+				onclick={() => console.log('Copy')}>Copy</AContextMenu.Item
+			>
+			<AContextMenu.Item
+				preset="context-menu.item"
+				class="border-none"
+				onclick={() => console.log('Paste')}>Paste</AContextMenu.Item
+			>
 			<AContextMenu.Divider />
-			<AContextMenu.Item preset="context-menu.item" class="border-none text-destructive" onclick={() => console.log('Delete')}>Delete</AContextMenu.Item>
-		</AContextMenu.List>
+			<AContextMenu.Item
+				preset="context-menu.item"
+				class="border-none text-destructive"
+				onclick={() => console.log('Delete')}>Delete</AContextMenu.Item
+			>
+		</AContextMenu.Content>
 	</AContextMenu.Root>
 </Story>
 
@@ -87,7 +109,10 @@
 				<Icon src={ArrowIcon} class="size-4" />
 			</AContextMenu.Trigger>
 
-			<AContextMenu.List preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+			<AContextMenu.Content
+				preset="context-menu.content"
+				class="min-w-44 rounded-lg border bg-popover shadow-md"
+			>
 				<AContextMenu.Item
 					preset="context-menu.item"
 					class="flex items-center gap-2 border-none"
@@ -113,7 +138,7 @@
 					<Icon src={CloseIcon} class="size-4" />
 					Remove
 				</AContextMenu.Item>
-			</AContextMenu.List>
+			</AContextMenu.Content>
 		</AContextMenu.Root>
 
 		{#if buttonAction}
@@ -138,7 +163,10 @@
 				/>
 			</AContextMenu.Trigger>
 
-			<AContextMenu.List preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+			<AContextMenu.Content
+				preset="context-menu.content"
+				class="min-w-44 rounded-lg border bg-popover shadow-md"
+			>
 				<AContextMenu.Item
 					preset="context-menu.item"
 					class="flex items-center gap-2 border-none"
@@ -174,7 +202,7 @@
 					<Icon src={CloseIcon} class="size-4" />
 					Clear
 				</AContextMenu.Item>
-			</AContextMenu.List>
+			</AContextMenu.Content>
 		</AContextMenu.Root>
 
 		{#if inputAction}
@@ -195,12 +223,18 @@
 				<AContextMenu.Root>
 					<AContextMenu.Trigger>
 						<div class="flex cursor-context-menu flex-col items-center gap-1">
-							<Avatar alt={user.name} class="size-12 ring-2 ring-transparent transition-all hover:ring-primary" />
+							<Avatar
+								alt={user.name}
+								class="size-12 ring-2 ring-transparent transition-all hover:ring-primary"
+							/>
 							<span class="text-xs font-medium">{user.name.split(' ')[0]}</span>
 						</div>
 					</AContextMenu.Trigger>
 
-					<AContextMenu.List preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+					<AContextMenu.Content
+						preset="context-menu.content"
+						class="min-w-44 rounded-lg border bg-popover shadow-md"
+					>
 						<div class="border-b px-3 py-2">
 							<p class="text-sm font-semibold">{user.name}</p>
 							<p class="text-xs text-muted-foreground">{user.role}</p>
@@ -230,7 +264,7 @@
 							<Icon src={CloseIcon} class="size-4" />
 							Remove user
 						</AContextMenu.Item>
-					</AContextMenu.List>
+					</AContextMenu.Content>
 				</AContextMenu.Root>
 			{/each}
 		</div>
@@ -250,25 +284,33 @@
 
 		<ADataGrid.Root class="w-full rounded-lg border">
 			<ADataGrid.Header>
-				<ADataGrid.Tr header>
-					<ADataGrid.Th>Name</ADataGrid.Th>
-					<ADataGrid.Th>Role</ADataGrid.Th>
-					<ADataGrid.Th>Email</ADataGrid.Th>
-				</ADataGrid.Tr>
+				<ADataGrid.Row header>
+					<ADataGrid.Column>Name</ADataGrid.Column>
+					<ADataGrid.Column>Role</ADataGrid.Column>
+					<ADataGrid.Column>Email</ADataGrid.Column>
+				</ADataGrid.Row>
 			</ADataGrid.Header>
 
 			<ADataGrid.Body>
 				{#each rows as row (row.id)}
 					<AContextMenu.Root>
-						<AContextMenu.Trigger base={ADataGrid.Tr} class="cursor-context-menu transition-colors hover:bg-muted/50 rounded-none">
-								<ADataGrid.Td>{row.name}</ADataGrid.Td>
-								<ADataGrid.Td>{row.role}</ADataGrid.Td>
-								<ADataGrid.Td class="text-muted-foreground">{row.email}</ADataGrid.Td>
+						<AContextMenu.Trigger
+							base={ADataGrid.Row}
+							class="cursor-context-menu transition-colors hover:bg-muted/50 rounded-none px-4"
+						>
+							<ADataGrid.Cell>{row.name}</ADataGrid.Cell>
+							<ADataGrid.Cell>{row.role}</ADataGrid.Cell>
+							<ADataGrid.Cell class="text-muted-foreground">{row.email}</ADataGrid.Cell>
 						</AContextMenu.Trigger>
 
-						<AContextMenu.List preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
-							<div class="border-b px-3 py-2">
-								<p class="text-xs font-semibold text-muted-foreground">Row #{row.id} — {row.name}</p>
+						<AContextMenu.Content
+							preset="context-menu.content"
+							class="min-w-44 rounded-lg border bg-popover shadow-md p-0"
+						>
+							<div class="border-b border-border px-3 py-2">
+								<p class="text-xs font-semibold text-muted-foreground">
+									Row #{row.id} — {row.name}
+								</p>
 							</div>
 							<AContextMenu.Item
 								preset="context-menu.item"
@@ -298,7 +340,7 @@
 								<Icon src={CloseIcon} class="size-4" />
 								Delete row
 							</AContextMenu.Item>
-						</AContextMenu.List>
+						</AContextMenu.Content>
 					</AContextMenu.Root>
 				{/each}
 			</ADataGrid.Body>
@@ -320,22 +362,27 @@
 		<div class="grid w-full grid-cols-2 gap-3">
 			{#each images as image (image.id)}
 				<AContextMenu.Root>
-					<AContextMenu.Trigger>
-						<div class="group relative w-64 cursor-context-menu overflow-hidden rounded-xl border">
-							<img
-								src={image.src}
-								alt={image.alt}
-								width="256"
-								height="144"
-								class="h-36 w-64 object-cover transition-transform group-hover:scale-105"
-							/>
-							<div class="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent px-3 py-2">
-								<span class="text-xs font-medium text-white">{image.label}</span>
-							</div>
+					<AContextMenu.Trigger
+						class="group relative w-64 cursor-context-menu overflow-hidden rounded-xl border border-border p-0"
+					>
+						<img
+							src={image.src}
+							alt={image.alt}
+							width="256"
+							height="144"
+							class="h-36 w-64 object-cover transition-transform group-hover:scale-105"
+						/>
+						<div
+							class="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/60 to-transparent px-3 py-2"
+						>
+							<span class="text-xs font-medium text-white">{image.label}</span>
 						</div>
 					</AContextMenu.Trigger>
 
-					<AContextMenu.List preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+					<AContextMenu.Content
+						preset="context-menu.content"
+						class="min-w-44 rounded-lg border bg-popover/70 shadow-md backdrop-blur-xs"
+					>
 						<AContextMenu.Item
 							preset="context-menu.item"
 							class="flex items-center gap-2 border-none"
@@ -374,14 +421,17 @@
 							preset="context-menu.item"
 							class="flex items-center gap-2 border-none text-destructive"
 							onclick={() => {
-								images.splice(images.findIndex((i) => i.id === image.id), 1);
+								images.splice(
+									images.findIndex((i) => i.id === image.id),
+									1
+								);
 								imageAction = `Deleted: ${image.label}`;
 							}}
 						>
 							<Icon src={CloseIcon} class="size-4" />
 							Delete image
 						</AContextMenu.Item>
-					</AContextMenu.List>
+					</AContextMenu.Content>
 				</AContextMenu.Root>
 			{/each}
 		</div>

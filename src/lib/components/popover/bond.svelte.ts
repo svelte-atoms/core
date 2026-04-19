@@ -1,11 +1,14 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { type ComputePositionReturn, type Placement } from '@floating-ui/dom';
+import {
+	type ComputePositionReturn,
+	type Placement,
+	type ReferenceElement
+} from '@floating-ui/dom';
 import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { BondAtom } from '$svelte-atoms/core/shared';
 import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 import type { PortalBond } from '../portal';
 import type { PopoverStrategy } from './strategy-types';
-import { createAttachmentKey } from 'svelte/attachments';
 
 export type PopoverParams = {
 	apply?: (
@@ -46,7 +49,6 @@ export type TriggerParams = {
 
 export type PopoverDomElements = {
 	trigger: HTMLElement;
-	virtualTrigger: HTMLElement;
 	content: HTMLElement;
 	indicator: HTMLElement;
 	arrow: HTMLElement;
@@ -99,6 +101,7 @@ export class PopoverState<
 	Props extends PopoverStateProps = PopoverStateProps
 > extends BondState<Props> {
 	position = $state<ComputePositionReturn>();
+	virtualTrigger = $state<ReferenceElement>();
 
 	constructor(props: () => Props) {
 		super(props);
