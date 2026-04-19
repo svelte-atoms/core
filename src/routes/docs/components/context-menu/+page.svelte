@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ContextMenu } from '$lib/components/contextmenu';
+	import { ContextMenu } from '$lib/components/context-menu';
 	import {
 		PageHeader,
 		Breadcrumb,
@@ -12,10 +12,10 @@
 		CodeBlock
 	} from '$docs/components';
 	import {
-		contextmenuRootProps,
-		contextmenuTriggerProps,
-		contextmenuContentProps,
-		contextmenuItemProps
+		contextMenuRootProps,
+		contextMenuTriggerProps,
+		contextMenuContentProps,
+		contextMenuItemProps
 	} from './props';
 
 	const basicCode = `<ContextMenu.Root>
@@ -24,11 +24,11 @@
       Right-click me
     </div>
   </ContextMenu.Trigger>
-  <ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
-    <ContextMenu.Item>Copy</ContextMenu.Item>
-    <ContextMenu.Item>Paste</ContextMenu.Item>
+	<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+		<ContextMenu.Item preset="context-menu.item">Copy</ContextMenu.Item>
+		<ContextMenu.Item preset="context-menu.item">Paste</ContextMenu.Item>
     <ContextMenu.Divider />
-    <ContextMenu.Item class="text-destructive">Delete</ContextMenu.Item>
+		<ContextMenu.Item preset="context-menu.item" class="text-destructive">Delete</ContextMenu.Item>
   </ContextMenu.List>
 </ContextMenu.Root>`;
 
@@ -38,22 +38,22 @@
       Right-click for options
     </div>
   </ContextMenu.Trigger>
-  <ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+	<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
     <ContextMenu.Group>
       <ContextMenu.Title class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
         Edit
       </ContextMenu.Title>
-      <ContextMenu.Item>Cut</ContextMenu.Item>
-      <ContextMenu.Item>Copy</ContextMenu.Item>
-      <ContextMenu.Item>Paste</ContextMenu.Item>
+			<ContextMenu.Item preset="context-menu.item">Cut</ContextMenu.Item>
+			<ContextMenu.Item preset="context-menu.item">Copy</ContextMenu.Item>
+			<ContextMenu.Item preset="context-menu.item">Paste</ContextMenu.Item>
     </ContextMenu.Group>
     <ContextMenu.Divider />
     <ContextMenu.Group>
       <ContextMenu.Title class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
         Actions
       </ContextMenu.Title>
-      <ContextMenu.Item>Rename</ContextMenu.Item>
-      <ContextMenu.Item class="text-destructive">Delete</ContextMenu.Item>
+			<ContextMenu.Item preset="context-menu.item">Rename</ContextMenu.Item>
+			<ContextMenu.Item preset="context-menu.item" class="text-destructive">Delete</ContextMenu.Item>
     </ContextMenu.Group>
   </ContextMenu.List>
 </ContextMenu.Root>`;
@@ -68,15 +68,15 @@
       Right-click (State: {open ? 'open' : 'closed'})
     </div>
   </ContextMenu.Trigger>
-  <ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
-    <ContextMenu.Item onclick={() => alert('Action 1 clicked')}>
+	<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+		<ContextMenu.Item preset="context-menu.item" onclick={() => alert('Action 1 clicked')}>
       Action 1
     </ContextMenu.Item>
-    <ContextMenu.Item onclick={() => alert('Action 2 clicked')}>
+		<ContextMenu.Item preset="context-menu.item" onclick={() => alert('Action 2 clicked')}>
       Action 2
     </ContextMenu.Item>
     <ContextMenu.Divider />
-    <ContextMenu.Item onclick={() => (open = false)}>
+		<ContextMenu.Item preset="context-menu.item" onclick={() => (open = false)}>
       Close Menu
     </ContextMenu.Item>
   </ContextMenu.List>
@@ -103,28 +103,25 @@
       </p>
     </div>
   </ContextMenu.Trigger>
-  <ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
-    <ContextMenu.Item>View Profile</ContextMenu.Item>
-    <ContextMenu.Item>Send Message</ContextMenu.Item>
+	<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+		<ContextMenu.Item preset="context-menu.item">View Profile</ContextMenu.Item>
+		<ContextMenu.Item preset="context-menu.item">Send Message</ContextMenu.Item>
     <ContextMenu.Divider />
-    <ContextMenu.Item>Edit</ContextMenu.Item>
-    <ContextMenu.Item class="text-destructive">Remove</ContextMenu.Item>
+		<ContextMenu.Item preset="context-menu.item">Edit</ContextMenu.Item>
+		<ContextMenu.Item preset="context-menu.item" class="text-destructive">Remove</ContextMenu.Item>
   </ContextMenu.List>
 </ContextMenu.Root>`;
 
 	const presetConfigCode = `import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
-  'contextmenu': () => ({
-    class: 'min-w-[8rem] rounded-md border bg-popover p-1 shadow-md'
+	'context-menu.trigger': () => ({
+		class: 'cursor-context-menu select-none'
   }),
-  'contextmenu.trigger': () => ({
-    class: 'cursor-context-menu select-none'
+	'context-menu.content': () => ({
+		class: 'min-w-[8rem] rounded-md border bg-popover p-1 shadow-md flex flex-col gap-0.5'
   }),
-  'contextmenu.content': () => ({
-    class: 'flex flex-col gap-0.5'
-  }),
-  'contextmenu.item': () => ({
+	'context-menu.item': () => ({
     class: 'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'
   })
 });`;
@@ -133,7 +130,7 @@ const preset = createPreset({
 </script>
 
 <svelte:head>
-	<title>ContextMenu - Svelte Atoms</title>
+	<title>Context Menu - Svelte Atoms</title>
 	<meta
 		name="description"
 		content="Context menu component triggered by right-click interactions."
@@ -142,11 +139,11 @@ const preset = createPreset({
 
 <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 	<Breadcrumb
-		items={[{ label: 'Components', href: '/docs/components' }, { label: 'ContextMenu' }]}
+		items={[{ label: 'Components', href: '/docs/components' }, { label: 'Context Menu' }]}
 	/>
 
 	<PageHeader
-		title="ContextMenu"
+		title="Context Menu"
 		description="Right-click activated menu that appears at cursor position. Ideal for contextual actions and shortcuts."
 		status="stable"
 	/>
@@ -154,7 +151,7 @@ const preset = createPreset({
 	<Section title="Installation">
 		<Installation
 			packageName="@svelte-atoms/core"
-			importCode="import &#123; ContextMenu &#125; from '@svelte-atoms/core/contextmenu';"
+			importCode="import &#123; ContextMenu &#125; from '@svelte-atoms/core/context-menu';"
 		/>
 	</Section>
 
@@ -164,8 +161,9 @@ const preset = createPreset({
 	>
 		<div class="space-y-4">
 			<p class="text-muted-foreground text-sm">
-				You can customize the default styles for ContextMenu components by defining presets in your
-				configuration:
+				Trigger uses `context-menu.trigger` by default. List and item atoms are inherited from
+				Dropdown, so use `preset="context-menu.content"` and `preset="context-menu.item"` when you
+				want namespaced presets for this component.
 			</p>
 			<CodeBlock lang="typescript" code={presetConfigCode} />
 		</div>
@@ -186,10 +184,10 @@ const preset = createPreset({
 							Right-click me
 						</div>
 					</ContextMenu.Trigger>
-				<ContextMenu.List class="min-w-48 p-1">
-						<ContextMenu.Item>Copy</ContextMenu.Item>
-						<ContextMenu.Item>Paste</ContextMenu.Item>
-						<ContextMenu.Item class="text-destructive border-transparent">Delete</ContextMenu.Item>
+				<ContextMenu.List preset="context-menu.content" class="min-w-48 p-1">
+					<ContextMenu.Item preset="context-menu.item">Copy</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item">Paste</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item" class="text-destructive border-transparent">Delete</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 			</DemoExample>
@@ -207,22 +205,22 @@ const preset = createPreset({
 							Right-click for options
 						</div>
 					</ContextMenu.Trigger>
-				<ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+				<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
 						<ContextMenu.Group>
 							<ContextMenu.Title class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
 								Edit
 							</ContextMenu.Title>
-							<ContextMenu.Item>Cut</ContextMenu.Item>
-							<ContextMenu.Item>Copy</ContextMenu.Item>
-							<ContextMenu.Item class="border-transparent">Paste</ContextMenu.Item>
+							<ContextMenu.Item preset="context-menu.item">Cut</ContextMenu.Item>
+							<ContextMenu.Item preset="context-menu.item">Copy</ContextMenu.Item>
+							<ContextMenu.Item preset="context-menu.item" class="border-transparent">Paste</ContextMenu.Item>
 						</ContextMenu.Group>
 						<ContextMenu.Divider />
 						<ContextMenu.Group>
 							<ContextMenu.Title class="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
 								Actions
 							</ContextMenu.Title>
-							<ContextMenu.Item>Rename</ContextMenu.Item>
-							<ContextMenu.Item class="text-destructive border-transparent">Delete</ContextMenu.Item>
+							<ContextMenu.Item preset="context-menu.item">Rename</ContextMenu.Item>
+							<ContextMenu.Item preset="context-menu.item" class="text-destructive border-transparent">Delete</ContextMenu.Item>
 						</ContextMenu.Group>
 					</ContextMenu.List>
 				</ContextMenu.Root>
@@ -241,14 +239,14 @@ const preset = createPreset({
 							Right-click (State: {open ? 'open' : 'closed'})
 						</div>
 					</ContextMenu.Trigger>
-				<ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
-						<ContextMenu.Item onclick={() => alert('Action 1 clicked')}>
+				<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+					<ContextMenu.Item preset="context-menu.item" onclick={() => alert('Action 1 clicked')}>
 							Action 1
 						</ContextMenu.Item>
-						<ContextMenu.Item onclick={() => alert('Action 2 clicked')}>
+					<ContextMenu.Item preset="context-menu.item" onclick={() => alert('Action 2 clicked')}>
 							Action 2
 						</ContextMenu.Item>
-						<ContextMenu.Item class="border-transparent" onclick={() => (open = false)}>Close Menu</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item" class="border-transparent" onclick={() => (open = false)}>Close Menu</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 
@@ -281,11 +279,11 @@ const preset = createPreset({
 							<p class="text-muted-foreground text-sm">Right-click this card for actions</p>
 						</div>
 					</ContextMenu.Trigger>
-				<ContextMenu.List class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
-						<ContextMenu.Item>View Profile</ContextMenu.Item>
-						<ContextMenu.Item>Send Message</ContextMenu.Item>
-						<ContextMenu.Item>Edit</ContextMenu.Item>
-						<ContextMenu.Item class="text-destructive border-transparent">Remove</ContextMenu.Item>
+				<ContextMenu.List preset="context-menu.content" class="min-w-48 rounded-lg border bg-popover p-1 shadow-md">
+					<ContextMenu.Item preset="context-menu.item">View Profile</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item">Send Message</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item">Edit</ContextMenu.Item>
+					<ContextMenu.Item preset="context-menu.item" class="text-destructive border-transparent">Remove</ContextMenu.Item>
 					</ContextMenu.List>
 				</ContextMenu.Root>
 			</DemoExample>
@@ -296,19 +294,19 @@ const preset = createPreset({
 		<div class="space-y-6">
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">ContextMenu.Root Props</h3>
-				<Props data={contextmenuRootProps} />
+				<Props data={contextMenuRootProps} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">ContextMenu.Trigger Props</h3>
-				<Props data={contextmenuTriggerProps} />
+				<Props data={contextMenuTriggerProps} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">ContextMenu.Content Props</h3>
-				<Props data={contextmenuContentProps} />
+				<Props data={contextMenuContentProps} />
 			</div>
 			<div>
 				<h3 class="text-foreground mb-3 text-lg font-semibold">ContextMenu.Item Props</h3>
-				<Props data={contextmenuItemProps} />
+				<Props data={contextMenuItemProps} />
 			</div>
 		</div>
 	</Section>
@@ -329,12 +327,12 @@ const preset = createPreset({
 	<Section title="Related Components">
 		<div class="grid gap-4 sm:grid-cols-2">
 			<a
-				href="/docs/components/menu"
+				href="/docs/components/dropdown"
 				class="border-border hover:border-primary group rounded-lg border p-4 transition-colors"
 			>
-				<h4 class="group-hover:text-primary mb-1 font-semibold transition-colors">Menu</h4>
+				<h4 class="group-hover:text-primary mb-1 font-semibold transition-colors">Dropdown</h4>
 				<p class="text-muted-foreground text-sm">
-					Underlying menu component with click-triggered behavior
+					Underlying selection and item behavior reused by ContextMenu
 				</p>
 			</a>
 			<a

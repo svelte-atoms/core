@@ -5,12 +5,42 @@ export interface PropDefinition {
 	description: string;
 }
 
-export const contextmenuRootProps: PropDefinition[] = [
+export const contextMenuRootProps: PropDefinition[] = [
 	{
 		name: 'open',
 		type: 'boolean | undefined',
 		default: 'false',
 		description: 'Controls the open state of the context menu'
+	},
+	{
+		name: 'value',
+		type: 'unknown',
+		default: 'undefined',
+		description: 'Selected value when using single selection'
+	},
+	{
+		name: 'values',
+		type: 'unknown[] | undefined',
+		default: 'undefined',
+		description: 'Selected values when using multiple selection'
+	},
+	{
+		name: 'label',
+		type: 'string | undefined',
+		default: 'undefined',
+		description: 'Derived label for the selected item'
+	},
+	{
+		name: 'labels',
+		type: 'string[] | undefined',
+		default: 'undefined',
+		description: 'Derived labels for selected items'
+	},
+	{
+		name: 'multiple',
+		type: 'boolean | undefined',
+		default: 'false',
+		description: 'Enables multi-select behavior for menu items'
 	},
 	{
 		name: 'disabled',
@@ -33,40 +63,40 @@ export const contextmenuRootProps: PropDefinition[] = [
 	{
 		name: 'offset',
 		type: 'number | undefined',
-		default: '0',
+		default: '1',
 		description: 'Offset distance from the trigger element'
 	},
 	{
-		name: 'portal',
-		type: 'string | PortalBond | undefined',
-		default: "''",
-		description: 'Portal target for rendering the context menu'
-	},
-	{
-		name: 'extend',
-		type: 'Record<string, unknown> | undefined',
-		default: "''",
-		description: 'Extended configuration options'
+		name: 'keys',
+		type: 'string[] | undefined',
+		default: '[]',
+		description: 'Optional keyboard search keys used by the dropdown bond'
 	},
 	{
 		name: 'factory',
-		type: 'Factory<MenuBond> | undefined',
+		type: 'Factory<DropdownBond> | undefined',
 		default: 'undefined',
-		description: 'Factory function for creating the menu bond'
+		description: 'Factory function for creating the dropdown bond'
+	},
+	{
+		name: 'onquerychange',
+		type: '((query: string) => void) | undefined',
+		default: 'undefined',
+		description: 'Callback for query updates inherited from Dropdown.Root'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ menu: MenuBond; }]> | undefined',
+		type: 'Snippet<[{ dropdown: DropdownBond; }]> | undefined',
 		default: 'undefined',
-		description: 'Children content snippet with menu bond access'
+		description: 'Children content snippet with dropdown bond access'
 	}
 ];
 
-export const contextmenuTriggerProps: PropDefinition[] = [
+export const contextMenuTriggerProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'string',
-		default: "'contextmenu.trigger'",
+		default: "'context-menu.trigger'",
 		description: 'Preset key for styling the trigger element'
 	},
 	{
@@ -91,7 +121,7 @@ export const contextmenuTriggerProps: PropDefinition[] = [
 	}
 ];
 
-export const contextmenuContentProps: PropDefinition[] = [
+export const contextMenuContentProps: PropDefinition[] = [
 	{
 		name: 'bond',
 		type: 'Bond',
@@ -107,8 +137,9 @@ export const contextmenuContentProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'PresetModuleName | string',
-		default: "'contextmenu.content'",
-		description: 'Preset module name for styling'
+		default: "'menu.content'",
+		description:
+			'Default inherited preset. Pass `preset="context-menu.content"` if you want a namespaced context menu preset.'
 	},
 	{
 		name: 'variants',
@@ -178,7 +209,7 @@ export const contextmenuContentProps: PropDefinition[] = [
 	}
 ];
 
-export const contextmenuItemProps: PropDefinition[] = [
+export const contextMenuItemProps: PropDefinition[] = [
 	{
 		name: 'class',
 		type: 'ClassValue',
@@ -188,8 +219,21 @@ export const contextmenuItemProps: PropDefinition[] = [
 	{
 		name: 'preset',
 		type: 'string | undefined',
-		default: "'contextmenu.item'",
-		description: 'Preset key for styling'
+		default: "'dropdown.item'",
+		description:
+			'Default inherited preset. Pass `preset="context-menu.item"` if you want a namespaced context menu preset.'
+	},
+	{
+		name: 'value',
+		type: 'string | undefined',
+		default: 'nanoid()',
+		description: 'Unique value used for selection state'
+	},
+	{
+		name: 'data',
+		type: 'unknown',
+		default: 'undefined',
+		description: 'Custom data attached to the item controller'
 	},
 	{
 		name: 'disabled',
@@ -205,49 +249,49 @@ export const contextmenuItemProps: PropDefinition[] = [
 	},
 	{
 		name: 'onmount',
-		type: '((this: MenuItemController) => void) | undefined',
+		type: '((this: DropdownItemController) => void) | undefined',
 		default: 'undefined',
 		description: 'Function called when element is mounted'
 	},
 	{
 		name: 'ondestroy',
-		type: '((this: MenuItemController) => void) | undefined',
+		type: '((this: DropdownItemController) => void) | undefined',
 		default: 'undefined',
 		description: 'Function called when element is destroyed'
 	},
 	{
 		name: 'animate',
-		type: '((this: MenuItemController) => any) | undefined',
+		type: '((this: DropdownItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Animation configuration'
 	},
 	{
 		name: 'enter',
-		type: '((this: MenuItemController) => any) | undefined',
+		type: '((this: DropdownItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Transition function for entering'
 	},
 	{
 		name: 'exit',
-		type: '((this: MenuItemController) => any) | undefined',
+		type: '((this: DropdownItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Transition function for exiting'
 	},
 	{
 		name: 'initial',
-		type: '((this: MenuItemController) => any) | undefined',
+		type: '((this: DropdownItemController) => any) | undefined',
 		default: 'undefined',
 		description: 'Initial state configuration'
 	},
 	{
 		name: 'factory',
-		type: '(() => MenuItemController) | undefined',
+		type: '(() => DropdownItemController) | undefined',
 		default: 'undefined',
-		description: 'Factory function to create a custom MenuItemController instance'
+		description: 'Factory function to create a custom DropdownItemController instance'
 	},
 	{
 		name: 'children',
-		type: 'Snippet<[{ menuItem: MenuItemController; }]> | undefined',
+		type: 'Snippet<[{ dropdownItem: DropdownItemController; }]> | undefined',
 		default: 'undefined',
 		description: 'Render prop for children'
 	},

@@ -1,32 +1,34 @@
 # ContextMenu Module
 
-The ContextMenu module provides a context menu implementation triggered by right-click interactions. It extends the Menu component with special trigger behavior that opens the menu at the cursor position.
+The ContextMenu module provides a context menu implementation triggered by right-click interactions. It extends the Dropdown component with special trigger behavior that opens the menu at the cursor position.
 
 ## Features
 
 - **Right-Click Activation**: Opens menu on right-click (contextmenu event)
 - **Cursor Positioning**: Menu appears at the exact cursor location
 - **Virtual Trigger**: Uses a virtual element for positioning at cursor coordinates
-- **Menu Integration**: Reuses Menu components for content, items, and styling
+- **Dropdown Integration**: Reuses dropdown components for content, items, and styling
 - **Customizable**: Supports custom behavior through props and event handlers
 
 ## Components
 
 ### ContextMenu.Root
 
-Root container for the context menu system. Extends Menu.Root with positioning logic.
+Root container for the context menu system. Extends Dropdown.Root with positioning logic.
 
-**Preset Key:** `contextmenu`
+ContextMenu.Root is inherited from `Dropdown.Root`.
+
+Notable inherited props include `open`, `value`, `values`, `multiple`, `disabled`, `placements`, `placement`, `offset`, `keys`, `factory`, and `onquerychange`.
 
 **Props:**
 
-{{contextmenuRootProps}}
+{{contextMenuRootProps}}
 
 ### ContextMenu.Trigger
 
 Element that triggers the context menu on right-click. Prevents the default browser context menu and opens the custom menu at cursor position.
 
-**Preset Key:** `contextmenu.trigger`
+**Preset Key:** `context-menu.trigger`
 
 **Key Behavior:**
 
@@ -37,31 +39,35 @@ Element that triggers the context menu on right-click. Prevents the default brow
 
 **Props:**
 
-{{contextmenuTriggerProps}}
+{{contextMenuTriggerProps}}
 
 ### ContextMenu.Content / ContextMenu.List
 
-The context menu content container. Same as Menu.Content.
+The context menu content container. Same as Dropdown.Content.
 
-**Preset Key:** `contextmenu.content`
+Default preset: `menu.content`
+
+Use `preset="context-menu.content"` if you want a context-menu-specific preset namespace.
 
 **Props:**
 
-{{contextmenuContentProps}}
+{{contextMenuContentProps}}
 
 ### ContextMenu.Item
 
-Individual menu item component. Same as Menu.Item.
+Individual menu item component. Same as Dropdown.Item.
 
-**Preset Key:** `contextmenu.item`
+Default preset: `dropdown.item`
+
+Use `preset="context-menu.item"` if you want a context-menu-specific preset namespace.
 
 **Props:**
 
-{{contextmenuItemProps}}
+{{contextMenuItemProps}}
 
 ### Other Components
 
-The following components are inherited from Menu and List modules:
+The following components are inherited from Dropdown, Popover, and List modules:
 
 - **ContextMenu.Arrow** - Arrow pointer for the menu (from Popover)
 - **ContextMenu.Indicator** - State indicator (from Popover)
@@ -75,7 +81,7 @@ The following components are inherited from Menu and List modules:
 
 ```svelte
 <script>
-  import { ContextMenu } from '@svelte-atoms/core/contextmenu';
+  import { ContextMenu } from '@svelte-atoms/core/context-menu';
 </script>
 
 <ContextMenu.Root>
@@ -192,7 +198,7 @@ This approach allows the menu to appear exactly where the user right-clicked, ra
 
 ## Accessibility
 
-The ContextMenu component inherits accessibility features from Menu and Popover:
+The ContextMenu component inherits accessibility features from Dropdown and Popover:
 
 - Keyboard navigation within menu items
 - Focus management when opening/closing
@@ -209,13 +215,13 @@ Customize the context menu appearance using presets:
 import { createPreset } from '@svelte-atoms/core';
 
 const preset = createPreset({
-	'contextmenu.trigger': () => ({
+  'context-menu.trigger': () => ({
 		class: 'cursor-context-menu select-none'
 	}),
-	'menu.content': () => ({
-		class: 'flex flex-col gap-0.5'
+  'context-menu.content': () => ({
+    class: 'min-w-[8rem] rounded-md border bg-popover p-1 shadow-md flex flex-col gap-0.5'
 	}),
-	'menu.item': () => ({
+  'context-menu.item': () => ({
 		class:
 			'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground'
 	})
@@ -224,6 +230,6 @@ const preset = createPreset({
 
 ## Related Components
 
-- **Menu** - The underlying menu implementation
+- **Dropdown** - The underlying dropdown implementation
 - **Popover** - Provides positioning and overlay behavior
 - **List** - Provides Divider, Group, and Title components
