@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import type { SliderProps } from './types';
+	import type { SliderChangeDetails, SliderProps } from './types';
 
 	let {
 		class: klass = '',
@@ -22,19 +22,56 @@
 		...restProps
 	}: SliderProps & HTMLAttributes<HTMLDivElement> = $props();
 
+	function clampNumber(current: number, lower: number, upper: number) {
+		if (!Number.isFinite(current)) return lower;
+		return Math.min(upper, Math.max(lower, current));
+	}
+
+	const normalizedMin = $derived(Math.min(min, max));
+	const normalizedMax = $derived(Math.max(min, max));
+	const normalizedStep = $derived(step > 0 ? step : 1);
+
+	const normalizedValue = $derived(clampNumber(value, normalizedMin, normalizedMax));
 	const isVertical = $derived(orientation === 'vertical');
-	const percent = $derived(((value - min) / (max - min)) * 100);
+	const percent = $derived.by(() => {
+		const range = normalizedMax - normalizedMin;
+		if (range <= 0) return 0;
+		return ((normalizedValue - normalizedMin) / range) * 100;
+	});
+
+	$effect(() => {
+		const nextValue = clampNumber(value, normalizedMin, normalizedMax);
+		if (nextValue !== value) {
+			value = nextValue;
+		}
+	});
+
+	function createDetails(currentValue: number): SliderChangeDetails {
+		const range = normalizedMax - normalizedMin;
+		const currentPercent = range <= 0 ? 0 : ((currentValue - normalizedMin) / range) * 100;
+
+		return {
+			value: currentValue,
+			percent: currentPercent,
+			min: normalizedMin,
+			max: normalizedMax,
+			step: normalizedStep,
+			type: 'number'
+		};
+	}
 
 	function handleInput(ev: Event) {
-		const input = ev.target as HTMLInputElement;
-		value = Number(input.value);
-		oninput?.(ev, { value });
+		const input = ev.currentTarget as HTMLInputElement;
+		const nextValue = clampNumber(Number(input.value), normalizedMin, normalizedMax);
+		value = nextValue;
+		oninput?.(ev, createDetails(nextValue));
 	}
 
 	function handleChange(ev: Event) {
-		const input = ev.target as HTMLInputElement;
-		value = Number(input.value);
-		onchange?.(ev, { value });
+		const input = ev.currentTarget as HTMLInputElement;
+		const nextValue = clampNumber(Number(input.value), normalizedMin, normalizedMax);
+		value = nextValue;
+		onchange?.(ev, createDetails(nextValue));
 	}
 </script>
 
@@ -43,7 +80,7 @@
 		preset="slider.track"
 		as="div"
 		class={[
-			'slider-track bg-input border-border relative overflow-hidden rounded-full border',
+			'slider-track bg-input border-border relative overflow-hidden rounded-full',
 			isVertical ? 'h-full w-2' : 'h-2 w-full',
 			'$preset'
 		]}
@@ -66,7 +103,7 @@
 		preset="slider.thumb"
 		as="div"
 		class={[
-			'slider-thumb bg-background border-border pointer-events-none absolute h-5 w-5 rounded-full border-2 shadow-sm',
+			'slider-thumb bg-foreground border-border pointer-events-none absolute h-5 w-5 rounded-full shadow-sm shadow-black/50',
 			isVertical
 				? 'left-1/2 -translate-x-1/2 -translate-y-1/2'
 				: 'top-1/2 -translate-x-1/2 -translate-y-1/2',
@@ -89,15 +126,15 @@
 	aria-orientation={orientation}
 	{...restProps}
 >
-	{@render (trackContent ?? defaultTrack)({ value, percent, min, max })}
+	{@render (trackContent ?? defaultTrack)({ value: normalizedValue, percent, min: normalizedMin, max: normalizedMax })}
 
 	<!-- Native range input — invisible, full coverage, handles all a11y + keyboard -->
 	<input
 		{id}
 		{name}
-		{min}
-		{max}
-		{step}
+		min={normalizedMin}
+		max={normalizedMax}
+		step={normalizedStep}
 		{disabled}
 		type="range"
 		bind:value
@@ -106,16 +143,14 @@
 		class={[
 			'slider-input absolute inset-0 h-full w-full cursor-pointer opacity-0',
 			disabled && 'cursor-not-allowed'
-		].filter(Boolean).join(' ')}
-		aria-valuemin={min}
-		aria-valuemax={max}
-		aria-valuenow={value}
+		]}
+		aria-valuemin={normalizedMin}
+		aria-valuemax={normalizedMax}
+		aria-valuenow={normalizedValue}
 		aria-disabled={disabled || undefined}
 	/>
 
-	{@render (thumbContent ?? defaultThumb)({ value, percent })}
+	{@render (thumbContent ?? defaultThumb)({ value: normalizedValue, percent })}
 </HtmlAtom>
 
-{#if children}
-	{@render children()}
-{/if}
+{@render children?.()}

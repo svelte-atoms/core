@@ -1,13 +1,16 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
-/**
- * Extend this interface to add custom slider properties in your application.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SliderExtendProps {}
+export interface SliderChangeDetails {
+	value: number;
+	percent: number;
+	min: number;
+	max: number;
+	step: number;
+	type: 'number';
+}
 
-export interface SliderProps extends HtmlAtomProps<'div'>, SliderExtendProps {
+export interface SliderProps extends HtmlAtomProps<'div'> {
 	/**
 	 * Current value
 	 */
@@ -61,9 +64,9 @@ export interface SliderProps extends HtmlAtomProps<'div'>, SliderExtendProps {
 	/**
 	 * Change handler (fires on release)
 	 */
-	onchange?: (ev?: Event, options?: { value: number }) => void;
+	onchange?: (ev?: Event, options?: SliderChangeDetails) => void;
 	/**
 	 * Input handler (fires continuously while dragging)
 	 */
-	oninput?: (ev?: Event, options?: { value: number }) => void;
+	oninput?: (ev?: Event, options?: SliderChangeDetails) => void;
 }
