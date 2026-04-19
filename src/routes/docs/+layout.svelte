@@ -92,6 +92,7 @@
 				{ title: 'Radio', href: '/docs/components/radio' },
 				{ title: 'Scrollable', href: '/docs/components/scrollable' },
 				{ title: 'Sidebar', href: '/docs/components/sidebar' },
+				{ title: 'Slider', href: '/docs/components/slider' },
 				{ title: 'Stack', href: '/docs/components/stack' },
 				{ title: 'Stepper', href: '/docs/components/stepper' },
 				{ title: 'Swatch', href: '/docs/components/swatch' },

@@ -46,7 +46,7 @@
 	llms={true}
 	breadcrumbs={metadata.breadcrumbs}
 	prev={{ label: 'Select', href: '/docs/components/select' }}
-	next={{ label: 'Stack', href: '/docs/components/stack' }}
+	next={{ label: 'Slider', href: '/docs/components/slider' }}
 	{frontmatter}
 >
 	<DocOnly for="markdown">
