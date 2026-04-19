@@ -20,6 +20,7 @@ export * from './badge';
 export * from './breadcrumb';
 export * from './checkbox';
 export * from './combobox';
+export * from './context-menu';
 export * from './label';
 export * from './layer';
 export * from './link';
