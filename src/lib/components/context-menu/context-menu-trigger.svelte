@@ -22,6 +22,7 @@
 		preset = 'context-menu.trigger',
 		onclick = null,
 		oncontextmenu = undefined,
+		class: klass = '',
 		...restProps
 	}: HTMLAttributes<ElementType> & ContextMenuTriggerProps<E, B> = $props();
 
@@ -55,4 +56,4 @@
 	}
 </script>
 
-<Trigger {preset} onclick={onclick ?? undefined} oncontextmenu={handleContextMenu} {...restProps} />
+<Trigger {preset} class={['cursor-context-menu', klass]} onclick={onclick ?? undefined} oncontextmenu={handleContextMenu} {...restProps} />
