@@ -33,8 +33,10 @@
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
+		"!dist/**/*.spec.*",
+		"!dist/**/*.stories.*"
 	],
+
 	"sideEffects": [
 		"**/*.css"
 	],
