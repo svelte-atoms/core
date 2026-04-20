@@ -46,7 +46,7 @@
 
 	<DocExample title="On Button" description="Use Button as the trigger base" code={buttonCode}>
 		<ContextMenu.Root>
-			<ContextMenu.Trigger base={Button} variant="outline">Right-click button</ContextMenu.Trigger>
+			<ContextMenu.Trigger base={Button} variant="secondary">Right-click button</ContextMenu.Trigger>
 			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md p-0">
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Open</ContextMenu.Item>
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Rename</ContextMenu.Item>
