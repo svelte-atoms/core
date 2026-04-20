@@ -9,7 +9,6 @@ import {
 } from '$svelte-atoms/core/components/popover/bond.svelte';
 import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
-import type { DropdownMenuItemAtom } from './item/bond.svelte';
 
 export type DropdownMenuBondProps = PopoverStateProps;
 
@@ -88,7 +87,7 @@ export class DropdownMenuTriggerAtom extends PopoverTriggerAtom {
 						ev.preventDefault();
 					}
 
-					this.bond.state.highlightedItem?.element?.click();
+					this.bond.state.highlightedItem?.element?.click?.();
 				}
 
 				superHandlers.onkeydown?.(ev);

@@ -27,8 +27,8 @@
 		"test:e2e": "playwright test",
 		"storybook:dev": "storybook dev -p 6006 --no-open",
 		"storybook:build": "storybook build",
-		"storybook:serve": "bunx http-server ./storybook-static",
-		"mcp:inspect": "bunx @modelcontextprotocol/inspector http://localhost:5173/api/sse"
+		"storybook:serve": "bun x http-server ./storybook-static",
+		"mcp:inspect": "bun x @modelcontextprotocol/inspector http://localhost:5173/api/sse"
 	},
 	"files": [
 		"dist",
@@ -236,6 +236,16 @@
 			"types": "./dist/components/dropdown-menu/item/index.d.ts",
 			"svelte": "./dist/components/dropdown-menu/item/index.js",
 			"default": "./dist/components/dropdown-menu/item/index.js"
+		},
+		"./context-menu": {
+			"types": "./dist/components/context-menu/index.d.ts",
+			"svelte": "./dist/components/context-menu/index.js",
+			"default": "./dist/components/context-menu/index.js"
+		},
+		"./context-menu/atoms": {
+			"types": "./dist/components/context-menu/atoms.d.ts",
+			"svelte": "./dist/components/context-menu/atoms.js",
+			"default": "./dist/components/context-menu/atoms.js"
 		},
 		"./element": {
 			"types": "./dist/components/element/index.d.ts",

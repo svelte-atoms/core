@@ -1,19 +1,25 @@
 import { on } from 'svelte/events';
 
+export type ClickoutOptions = AddEventListenerOptions & {
+	type?: 'click' | 'pointerdown' | 'mousedown';
+};
+
 export function clickout<T extends Element>(
 	onclick?: (ev: PointerEvent, node?: T) => void,
-	options?: AddEventListenerOptions | undefined
+	options?: ClickoutOptions
 ) {
 	return (node: T) => {
-		const handler = (ev: PointerEvent) => {
+		const type = options?.type ?? 'click';
+
+		const handler = (ev: Event) => {
 			const target = ev.target as T;
 
 			if (!node.contains(target)) {
-				onclick?.(ev, node);
+				onclick?.(ev as PointerEvent, node);
 			}
 		};
 
-		const cleanup = on(window, 'click', handler, options);
+		const cleanup = on(window, type, handler, options);
 
 		return () => {
 			cleanup();

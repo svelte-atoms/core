@@ -7,6 +7,7 @@
 	import { ZLayer } from '../portal/zlayer.svelte';
 	import type { PopoverContentProps } from './types';
 	import Floating from './strategies/floating.svelte';
+	import { clickout } from '$svelte-atoms/core/attachments';
 
 	const bond = PopoverBond.get();
 
@@ -25,7 +26,7 @@
 	})();
 
 	const layer = new ZLayer('popover', () => parentLayer?.get() ?? 0).share();
-	
+
 	const activePortalBond = $derived.by(() => {
 		const key = bond.state.props.portal;
 		if (key instanceof PortalBond) {
@@ -43,6 +44,7 @@
 		class: klass = '',
 		children = undefined,
 		animate = animatePopoverContent(),
+		onclickoutside = undefined,
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
 
@@ -54,7 +56,7 @@
 	 */
 	function calculatePosition() {
 		const position = bond.state.position;
-		
+
 		if (!position) {
 			return null;
 		}
@@ -73,8 +75,8 @@
 		const arrowDelta = middlewareData?.arrow ? 1 : 0;
 
 		// Calculate final position with offset and arrow adjustment
-		const finalX = x + (directionX * offset * openState) + (arrowDelta * directionX * arrowWidth);
-		const finalY = y + (directionY * offset * openState) + (arrowDelta * directionY * arrowHeight);
+		const finalX = x + directionX * offset * openState + arrowDelta * directionX * arrowWidth;
+		const finalY = y + directionY * offset * openState + arrowDelta * directionY * arrowHeight;
 
 		return {
 			transform: `translate3d(${finalX}px, ${finalY}px, 1px)`,
@@ -84,7 +86,7 @@
 
 	function containerInitial(this: typeof bond.state, node: HTMLElement) {
 		const styles = calculatePosition();
-		
+
 		// Hide content until position is calculated to avoid ghosting
 		if (!styles) {
 			node.style.opacity = '0';
@@ -99,13 +101,32 @@
 		void bond.state.props.open; // Ensure reactivity to open state changes
 
 		const styles = calculatePosition();
-		
+
 		if (!styles) {
 			return;
 		}
 
 		node.style.transform = styles.transform;
 		node.style.opacity = '1';
+	}
+
+	function clickoutAttachement(node: HTMLElement) {
+		const cleanup = clickout((ev) => {
+			if (onclickoutside) {
+				onclickoutside(ev, bond);
+				return;
+			}
+
+			const trigger = bond.element('trigger');
+
+			if (trigger && (trigger.contains(ev.target as Node) || trigger === ev.target)) {
+				return;
+			}
+
+			bond.state.close();
+		}, {})(node);
+
+		return cleanup;
 	}
 </script>
 
@@ -119,8 +140,9 @@
 	initial={containerInitial?.bind(bond.state)}
 	animate={containerAnimate?.bind(bond.state)}
 	{...bond.content().spread}
->	
+>
 	<HtmlAtom
+		{@attach clickoutAttachement}
 		{bond}
 		preset="popover.content"
 		class={[

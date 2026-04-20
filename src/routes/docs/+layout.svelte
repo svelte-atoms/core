@@ -76,7 +76,7 @@
 				{ title: 'Checkbox', href: '/docs/components/checkbox' },
 				{ title: 'Collapsible', href: '/docs/components/collapsible' },
 				{ title: 'Combobox', href: '/docs/components/combobox' },
-				{ title: 'Context Menu', href: '/docs/components/contextmenu', disabled: true },
+				{ title: 'Context Menu', href: '/docs/components/context-menu' },
 				{ title: 'DataGrid', href: '/docs/components/datagrid' },
 				{ title: 'Dialog', href: '/docs/components/dialog' },
 				{ title: 'Divider', href: '/docs/components/divider' },

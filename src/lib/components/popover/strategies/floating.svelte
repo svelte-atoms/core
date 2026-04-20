@@ -9,16 +9,16 @@
 		type ComputePositionConfig
 	} from '@floating-ui/dom';
 	import { PopoverBond, type PopoverParams } from '../bond.svelte';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
 
 	const bond = PopoverBond.get();
 
 	const open = $derived(bond?.state.props.open);
-	const trigger = $derived(bond?.element('trigger'));
-	const content = $derived(bond?.element('content'));
+	const reference = $derived(bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger'));
+	const content = $derived(bond?.element<HTMLElement>('content'));
 
 	$effect.pre(() => {
-
-		if (!trigger || !content || !open) return;
+		if (!(reference) || !content || !open) return;
 
 		// Use the existing positioning behavior
 		const cleanup = compute(bond)({}, autoUpdate);
@@ -29,13 +29,11 @@
 	function compute(bond: PopoverBond) {
 		return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
 			const { offset: ofs, placements, placement } = bond.state.props;
-			
-			const trigger = bond.element<HTMLElement>('trigger');
-			const content = bond.element<HTMLElement>('content');
+
 			const arrowElement = bond.element<HTMLElement>('arrow');
 
 			// Guard: ensure required elements exist
-			if (!trigger || !content) {
+			if (!reference || !content) {
 				return;
 			}
 
@@ -71,7 +69,7 @@
 				// Double rAF ensures browser has completed layout + paint
 				await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-				const position = await computePosition(trigger, content, {
+				const position = await computePosition(reference, content, {
 					placement: placement ?? 'bottom',
 					middleware,
 					strategy: bond.state.props.positionStrategy
@@ -91,14 +89,16 @@
 				onchangeCallback?.(content, position);
 
 				// Set minimum width to match trigger
-				requestAnimationFrame(() => {
-					content.style.minWidth = `${trigger.clientWidth}px`;
-				});
+				if (reference && (reference instanceof Element)) {
+					requestAnimationFrame(() => {
+						content.style.minWidth = `${reference.clientWidth}px`;
+					});
+				}
 			};
 
 			// Use auto-update if provided, otherwise compute once
 			if (updater) {
-				return updater(trigger, content, compute, {
+				return updater(reference, content, compute, {
 					ancestorScroll: false
 				});
 			}

@@ -19,7 +19,7 @@
 		class: className = '',
 		showLineNumbers = false,
 		showLeftBorder = true,
-		transparent = true,
+		transparent = true
 	}: Props = $props();
 
 	const appTheme = Theme.get();
@@ -28,12 +28,35 @@
 	let highlightedCode = $state('');
 	let isLoading = $state(true);
 
+	function normalizeLang(value: string): BundledLanguage {
+		const normalized = value.trim().toLowerCase();
+
+		switch (normalized) {
+			case 'ts':
+			case 'typescript':
+				return 'typescript';
+			case 'js':
+			case 'javascript':
+				return 'javascript';
+			case 'sh':
+			case 'shell':
+			case 'bash':
+				return 'bash';
+			case 'markup':
+			case 'xml':
+			case 'html':
+				return 'html';
+			default:
+				return normalized as BundledLanguage;
+		}
+	}
+
 	// Languages to always pre-load so they're available in the browser bundle
 	const BASE_LANGS: BundledLanguage[] = ['typescript', 'svelte', 'bash', 'json', 'html', 'css'];
 
 	$effect(() => {
 		const resolvedTheme = (theme ?? (isDark ? 'github-dark' : 'vitesse-light')) as BundledTheme;
-		const resolvedLang = lang as BundledLanguage;
+		const resolvedLang = normalizeLang(lang);
 		isLoading = true;
 
 		// Merge requested lang into pre-loaded set
@@ -50,7 +73,14 @@
 					lang: resolvedLang,
 					theme: resolvedTheme,
 					transformers: showLineNumbers
-						? [{ name: 'line-numbers', line(node, line) { node.properties['data-line'] = line; } }]
+						? [
+								{
+									name: 'line-numbers',
+									line(node, line) {
+										node.properties['data-line'] = line;
+									}
+								}
+							]
 						: []
 				})
 			)
@@ -66,7 +96,10 @@
 	});
 </script>
 
-<div class="code-block {transparent ? 'transparent' : ''} {className}" style:--left-border-width={showLeftBorder ? '1px' : '0px'}>
+<div
+	class="code-block {transparent ? 'transparent' : ''} {className}"
+	style:--left-border-width={showLeftBorder ? '1px' : '0px'}
+>
 	{#if isLoading}
 		<div class="bg-muted animate-pulse rounded-lg p-4">
 			<div class="bg-muted-foreground/20 h-4 w-3/4 rounded"></div>
@@ -84,7 +117,8 @@
 		padding: 1rem 1.25rem;
 		overflow-x: auto;
 		border-radius: 0;
-		border-left: var(--left-border-width, 0px) solid color-mix(in oklch, currentColor 15%, transparent);
+		border-left: var(--left-border-width, 0px) solid
+			color-mix(in oklch, currentColor 15%, transparent);
 		background: transparent !important;
 		margin: 0;
 	}
