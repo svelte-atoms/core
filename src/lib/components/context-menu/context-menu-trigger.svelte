@@ -1,20 +1,22 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import type { ReferenceElement } from '@floating-ui/dom';
 	import { Trigger } from '../popover/atoms';
-	import { DropdownBond } from '../dropdown/bond.svelte';
+	import { DropdownMenuBond } from '../dropdown-menu/bond.svelte';
 	import type { ContextMenuTriggerProps } from './types';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
 
 	type ElementType = HTMLElementTagNameMap[E];
 
-	const bond = DropdownBond.get();
+	const bond = DropdownMenuBond.get();
 
 	if (!bond) {
 		throw new Error('<ContextMenu.Trigger /> must be used within a <ContextMenu.Root />');
 	}
 
-	const dropdownBond = bond;
+	const dropdownMenuBond = bond;
+
+	const virtualTriggerAtom = dropdownMenuBond.virtualTrigger();
 
 	let {
 		preset = 'context-menu.trigger',
@@ -43,12 +45,13 @@
 				left: ev.clientX,
 				right: ev.clientX,
 				bottom: ev.clientY
-			})
-		};
+			} as DOMRect),
+			contains: () => false
+		} as BondVirtualElement;
 
-		dropdownBond.state.virtualTrigger = virtualElement as ReferenceElement;
+		virtualTriggerAtom.element = virtualElement;
 
-		dropdownBond.state.open();
+		dropdownMenuBond.state.open();
 	}
 </script>
 

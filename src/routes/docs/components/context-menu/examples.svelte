@@ -32,12 +32,10 @@
 {#if contentType === 'html'}
 	<DocExample title="Basic Zone" description="Right-click the zone to open the menu" code={basicCode}>
 		<ContextMenu.Root>
-			<ContextMenu.Trigger>
-				<div class="flex h-32 w-64 items-center justify-center rounded-lg border border-dashed p-4 text-sm">
+			<ContextMenu.Trigger class="flex h-32 w-64 items-center justify-center rounded-lg border border-dashed p-4 text-sm">
 					Right-click this area
-				</div>
 			</ContextMenu.Trigger>
-			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md p-0">
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Copy</ContextMenu.Item>
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Paste</ContextMenu.Item>
 				<ContextMenu.Divider />
@@ -49,7 +47,7 @@
 	<DocExample title="On Button" description="Use Button as the trigger base" code={buttonCode}>
 		<ContextMenu.Root>
 			<ContextMenu.Trigger base={Button} variant="outline">Right-click button</ContextMenu.Trigger>
-			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md">
+			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md p-0">
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Open</ContextMenu.Item>
 				<ContextMenu.Item preset="context-menu.item" class="border-none">Rename</ContextMenu.Item>
 			</ContextMenu.Content>
@@ -67,13 +65,13 @@
 			<DataGrid.Body>
 				{#each rows as row (row.id)}
 					<ContextMenu.Root>
-						<ContextMenu.Trigger base={DataGrid.Row} class="cursor-context-menu px-8">
+						<ContextMenu.Trigger base={DataGrid.Row} class="cursor-context-menu px-8 py-0 rounded-none">
 							<DataGrid.Cell>{row.name}</DataGrid.Cell>
 							<DataGrid.Cell>{row.role}</DataGrid.Cell>
 						</ContextMenu.Trigger>
 						<ContextMenu.Content
 							preset="context-menu.content"
-							class="min-w-44 rounded-lg border bg-popover shadow-md"
+							class="min-w-44 rounded-lg border bg-popover shadow-md p-0"
 						>
 							<ContextMenu.Item preset="context-menu.item" class="border-none">Edit row</ContextMenu.Item>
 							<ContextMenu.Item preset="context-menu.item" class="border-none text-destructive"

@@ -3,7 +3,7 @@
 	import type { Base } from '../atom';
 	import type { HtmlElementTagName } from '../element';
 	import { PopoverBond, type PopoverContentProps } from '../popover';
-	import { Content } from '../popover/atoms';
+	import { Content } from '../dropdown-menu/atoms';
 
     const bond = PopoverBond.get();
 
@@ -14,7 +14,7 @@
 	let { onclickoutside, ...restProps }: PopoverContentProps<E, B> = $props();
 
 	function onclickoutHandler(ev: PointerEvent, bond: PopoverBond) {
-		const trigger = bond.element('trigger');
+		const trigger = bond.element<Element>('trigger');
 
 		// button is right button do not close the popover
 		if (
