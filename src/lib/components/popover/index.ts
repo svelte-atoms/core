@@ -10,7 +10,8 @@ export {
 	PopoverTriggerAtom,
 	PopoverContentAtom,
 	PopoverArrowAtom,
-	PopoverIndicatorAtom
+	PopoverIndicatorAtom,
+	PopoverVirtualTriggerAtom
 } from './bond.svelte';
 export * from './types';
 export * from './strategy-types';

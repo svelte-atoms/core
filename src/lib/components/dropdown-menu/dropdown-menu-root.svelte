@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { DropdownMenuBond, DropdownMenuBondState, type DropdownMenuBondProps } from './bond.svelte';
 	import { Root } from '../popover/atoms';
+	import type { PopoverRootProps } from '../popover';
 
-	let { open = $bindable(false), factory = _factory, children, ...restProps } = $props();
+	let { open = $bindable(false), factory = _factory, ...restProps }: PopoverRootProps = $props();
 
 	function _factory(props: DropdownMenuBondProps) {
 		const menuBondState = new DropdownMenuBondState(() => props);
@@ -10,6 +11,4 @@
 	}
 </script>
 
-<Root bind:open {factory} {...restProps}>
-	{@render children?.()}
-</Root>
+<Root bind:open {factory} {...restProps} />

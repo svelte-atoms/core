@@ -1,10 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
+import { type ComputePositionReturn, type Placement } from '@floating-ui/dom';
 import {
-	type ComputePositionReturn,
-	type Placement,
-	type ReferenceElement
-} from '@floating-ui/dom';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+	Bond,
+	BondState,
+	type BondStateProps,
+	type BondVirtualElement
+} from '$svelte-atoms/core/shared/bond.svelte';
 import { BondAtom } from '$svelte-atoms/core/shared';
 import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 import type { PortalBond } from '../portal';
@@ -49,6 +50,7 @@ export type TriggerParams = {
 
 export type PopoverDomElements = {
 	trigger: HTMLElement;
+	'virtual-trigger'?: BondVirtualElement;
 	content: HTMLElement;
 	indicator: HTMLElement;
 	arrow: HTMLElement;
@@ -67,6 +69,11 @@ export class PopoverBond<
 	/** Handle for granular access to trigger attrs, handlers, and attachment */
 	trigger() {
 		return this.atom('trigger', () => new PopoverTriggerAtom(this));
+	}
+
+	/** Handle for granular access to the virtual trigger reference */
+	virtualTrigger() {
+		return this.atom('virtual-trigger', () => new PopoverVirtualTriggerAtom(this));
 	}
 
 	/** Handle for granular access to content attrs, handlers, and attachment */
@@ -101,7 +108,6 @@ export class PopoverState<
 	Props extends PopoverStateProps = PopoverStateProps
 > extends BondState<Props> {
 	position = $state<ComputePositionReturn>();
-	virtualTrigger = $state<ReferenceElement>();
 
 	constructor(props: () => Props) {
 		super(props);
@@ -135,6 +141,36 @@ export class PopoverArrowAtom extends BondAtom<PopoverBond, HTMLElement> {
 			role: 'presentation',
 			'aria-hidden': true
 		};
+	}
+}
+
+export class PopoverVirtualTriggerAtom extends BondAtom<PopoverBond, BondVirtualElement> {
+	constructor(bond: PopoverBond) {
+		super(bond, 'virtual-trigger');
+	}
+
+	override get attrs() {
+		return {};
+	}
+
+	override get handlers() {
+		return {};
+	}
+
+	override get attachments() {
+		return {};
+	}
+
+	override get spread() {
+		return {};
+	}
+
+	override get element() {
+		return super.element;
+	}
+
+	override set element(element: BondVirtualElement | undefined) {
+		this.setElement(element);
 	}
 }
 
@@ -179,7 +215,7 @@ export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
 	}
 
 	override onmount(node: HTMLElement) {
-		const triggerElement = this.bond.element('trigger');
+		const triggerElement = this.bond.element<Element>('trigger');
 
 		if (!triggerElement) return;
 

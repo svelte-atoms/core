@@ -2,9 +2,12 @@ import { nanoid } from 'nanoid';
 import { getElementId } from '../utils/dom.svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import { SvelteMap } from 'svelte/reactivity';
+import type { VirtualElement } from '@floating-ui/dom';
+
+export type BondVirtualElement = VirtualElement;
 
 export type BondStateProps = { id?: string };
-export type BondElements = Record<string, Element | undefined>;
+export type BondElements = Record<string, Element | BondVirtualElement | undefined>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 class AtomsQueue<T extends BondAtom<any, any>> {
@@ -72,7 +75,7 @@ export abstract class Bond<
 	}
 
 	get elements() {
-		const obj: Record<string, Element | undefined> = {};
+		const obj: Record<string, Element | BondVirtualElement | undefined> = {};
 		this.#queue.forEach((key, atom) => (obj[key] = atom.element));
 		return obj;
 	}
@@ -108,7 +111,9 @@ export abstract class Bond<
 
 	abstract share(): this;
 
-	element<T extends Element = Element>(key: keyof Elements): T | undefined {
+	element<T extends Element | BondVirtualElement = Element | BondVirtualElement>(
+		key: keyof Elements
+	): T | undefined {
 		return this.#queue.get(key as string)?.element as T | undefined;
 	}
 
@@ -146,9 +151,9 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 
 export abstract class BondAtom<
 	B extends Bond<BondStateProps, BondState<BondStateProps>, BondElements> = Bond,
-	E extends Element = Element
+	E extends Element | BondVirtualElement = Element | BondVirtualElement
 > {
-	#element?: E;
+	#element = $state<E | undefined>();
 	protected bond: B;
 	protected key: string;
 
@@ -184,7 +189,7 @@ export abstract class BondAtom<
 	get attachments(): Record<string, (node: E) => void | (() => void)> {
 		return {
 			[createAttachmentKey()]: (node: E) => {
-				this.#element = node as E;
+				this.setElement(node);
 
 				const cleanup = this.onmount(node);
 
@@ -205,4 +210,8 @@ export abstract class BondAtom<
 		return;
 	}
 	ondestroy?(): void {}
+
+	protected setElement(element: E | undefined) {
+		this.#element = element;
+	}
 }
