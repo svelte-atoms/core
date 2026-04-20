@@ -32,7 +32,7 @@
 {#if contentType === 'html'}
 	<DocExample title="Basic Zone" description="Right-click the zone to open the menu" code={basicCode}>
 		<ContextMenu.Root>
-			<ContextMenu.Trigger class="flex h-32 w-64 items-center justify-center rounded-lg border border-dashed p-4 text-sm">
+			<ContextMenu.Trigger class="flex h-32 w-64 items-center justify-center rounded-lg border border-dashed p-4 text-sm bg-card/50">
 					Right-click this area
 			</ContextMenu.Trigger>
 			<ContextMenu.Content preset="context-menu.content" class="min-w-44 rounded-lg border bg-popover shadow-md p-0">
