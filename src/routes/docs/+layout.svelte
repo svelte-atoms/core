@@ -84,6 +84,7 @@
 				{ title: 'Dropdown Menu', href: '/docs/components/dropdown-menu' },
 				{ title: 'Form', href: '/docs/components/form' },
 				{ title: 'Input', href: '/docs/components/input' },
+				{ title: 'Kbd', href: '/docs/components/kbd' },
 				{ title: 'Label', href: '/docs/components/label' },
 				{ title: 'Link', href: '/docs/components/link' },
 				{ title: 'List', href: '/docs/components/list' },

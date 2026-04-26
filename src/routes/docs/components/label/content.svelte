@@ -36,7 +36,7 @@
 	status={metadata.status}
 	llms={true}
 	breadcrumbs={metadata.breadcrumbs}
-	prev={{ label: 'Input', href: '/docs/components/input' }}
+	prev={{ label: 'Kbd', href: '/docs/components/kbd' }}
 	next={{ label: 'Link', href: '/docs/components/link' }}
 	{frontmatter}
 >
