@@ -82,6 +82,7 @@ export const metadata = {
 			{ title: 'Textarea', href: '/docs/components/textarea/llms.txt', description: 'Textarea component' },
 			{ title: 'Checkbox', href: '/docs/components/checkbox/llms.txt', description: 'Checkbox component' },
 			{ title: 'Radio', href: '/docs/components/radio/llms.txt', description: 'Radio component' },
+			{ title: 'Kbd', href: '/docs/components/kbd/llms.txt', description: 'Kbd and Shortcut components' },
 			{ title: 'Label', href: '/docs/components/label/llms.txt', description: 'Label component' },
 			{ title: 'Form', href: '/docs/components/form/llms.txt', description: 'Form component' },
 			{ title: 'Combobox', href: '/docs/components/combobox/llms.txt', description: 'Combobox component' }

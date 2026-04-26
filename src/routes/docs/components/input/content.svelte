@@ -56,7 +56,7 @@
 	llms={true}
 	breadcrumbs={metadata.breadcrumbs}
 	prev={{ label: 'Form', href: '/docs/components/form' }}
-	next={{ label: 'Label', href: '/docs/components/label' }}
+	next={{ label: 'Kbd', href: '/docs/components/kbd' }}
 	{frontmatter}
 >
 	<DocOnly for="markdown">
