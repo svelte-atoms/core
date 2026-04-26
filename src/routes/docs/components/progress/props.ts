@@ -1,9 +1,4 @@
-export interface PropDefinition {
-	name: string;
-	type: string;
-	default: string;
-	description: string;
-}
+import type { PropDefinition } from '$docs/types';
 
 const sharedProgressProps: PropDefinition[] = [
 	{
