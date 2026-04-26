@@ -10,7 +10,22 @@
 		children,
 		...restProps
 	}: ShortcutProps = $props();
+
+	let content = $derived(children ?? defaultChildren)
 </script>
+
+{#snippet separatorContent()}
+	<span class="text-muted-foreground text-xs">{separator}</span>
+{/snippet}
+
+{#snippet defaultChildren()}
+	{#each keys as key, i ( key )}
+		{@const content = i > 0 ? separatorContent : null}
+	
+		{@render content?.()}
+		<Kbd>{key}</Kbd>
+	{/each}
+{/snippet}
 
 <HtmlAtom
 	preset="shortcut"
@@ -19,14 +34,5 @@
 	aria-label={keys.join(' ' + separator + ' ')}
 	{...restProps}
 >
-	{#if children}
-		{@render children()}
-	{:else}
-		{#each keys as key, i ( key )}
-			{#if i > 0}
-				<span class="text-muted-foreground text-xs">{separator}</span>
-			{/if}
-			<Kbd>{key}</Kbd>
-		{/each}
-	{/if}
+	{@render content()}
 </HtmlAtom>
