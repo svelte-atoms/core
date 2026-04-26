@@ -41,7 +41,7 @@ export type PresetEntry = (
  * ```
  */
 export interface PresetModuleMap {
-	'accordion': PresetEntry;
+	accordion: PresetEntry;
 	'accordion.item.body': PresetEntry;
 	'accordion.item.header': PresetEntry;
 	'accordion.item.indicator': PresetEntry;
@@ -51,7 +51,7 @@ export interface PresetModuleMap {
 	'alert.content': PresetEntry;
 	'alert.description': PresetEntry;
 	'alert.icon': PresetEntry;
-	'alert': PresetEntry;
+	alert: PresetEntry;
 	'alert.title': PresetEntry;
 	'card.content': PresetEntry;
 	'card.description': PresetEntry;
@@ -59,13 +59,13 @@ export interface PresetModuleMap {
 	'card.header': PresetEntry;
 	'card.body': PresetEntry;
 	'card.media': PresetEntry;
-	'card': PresetEntry;
+	card: PresetEntry;
 	'card.subtitle': PresetEntry;
 	'card.title': PresetEntry;
 	'collapsible.body': PresetEntry;
 	'collapsible.header': PresetEntry;
 	'collapsible.indicator': PresetEntry;
-	'collapsible': PresetEntry;
+	collapsible: PresetEntry;
 	'combobox.control': PresetEntry;
 	'combobox.trigger': PresetEntry;
 	'combobox.item': PresetEntry;
@@ -75,30 +75,30 @@ export interface PresetModuleMap {
 	'dialog.description': PresetEntry;
 	'dialog.footer': PresetEntry;
 	'dialog.header': PresetEntry;
-	'dialog': PresetEntry;
+	dialog: PresetEntry;
 	'dialog.title': PresetEntry;
-	'divider': PresetEntry;
+	divider: PresetEntry;
 	'dropdown.placeholder': PresetEntry;
 	'dropdown.query': PresetEntry;
 	'dropdown.trigger': PresetEntry;
 	'dropdown.selections': PresetEntry;
 	'dropdown.selection': PresetEntry;
-	'dropdown': PresetEntry;
+	dropdown: PresetEntry;
 	'dropdown.item': PresetEntry;
 	'field.control': PresetEntry;
 	'field.label': PresetEntry;
 	'field.helper-text': PresetEntry;
-	'field': PresetEntry;
-	'form': PresetEntry;
-	'icon': PresetEntry;
-	'input': PresetEntry;
+	field: PresetEntry;
+	form: PresetEntry;
+	icon: PresetEntry;
+	input: PresetEntry;
 	'input.control': PresetEntry;
 	'input.password': PresetEntry;
 	'input.placeholder': PresetEntry;
-	'label': PresetEntry;
+	label: PresetEntry;
 	'layer.inner': PresetEntry;
-	'layer': PresetEntry;
-	'link': PresetEntry;
+	layer: PresetEntry;
+	link: PresetEntry;
 	'list.divider': PresetEntry;
 	'list.group': PresetEntry;
 	'list.item': PresetEntry;
@@ -108,11 +108,11 @@ export interface PresetModuleMap {
 	'popover.content': PresetEntry;
 	'popover.trigger': PresetEntry;
 	'portal.inner': PresetEntry;
-	'portal': PresetEntry;
-	'root': PresetEntry;
+	portal: PresetEntry;
+	root: PresetEntry;
 	'root.portals': PresetEntry;
 	'sidebar.content': PresetEntry;
-	'sidebar': PresetEntry;
+	sidebar: PresetEntry;
 	'drawer.backdrop': PresetEntry;
 	'drawer.body': PresetEntry;
 	'drawer.content': PresetEntry;
@@ -120,10 +120,10 @@ export interface PresetModuleMap {
 	'drawer.title': PresetEntry;
 	'drawer.footer': PresetEntry;
 	'drawer.header': PresetEntry;
-	'drawer': PresetEntry;
+	drawer: PresetEntry;
 	'stack.root': PresetEntry;
 	'stack.item': PresetEntry;
-	'stepper': PresetEntry;
+	stepper: PresetEntry;
 	'stepper.header': PresetEntry;
 	'stepper.body': PresetEntry;
 	'stepper.footer': PresetEntry;
@@ -134,16 +134,16 @@ export interface PresetModuleMap {
 	'stepper.step.separator': PresetEntry;
 	'tabs.body': PresetEntry;
 	'tabs.header': PresetEntry;
-	'tabs': PresetEntry;
+	tabs: PresetEntry;
 	'tab.header': PresetEntry;
 	'tab.body': PresetEntry;
 	'tab.description': PresetEntry;
-	'tab': PresetEntry;
+	tab: PresetEntry;
 	'tree.body': PresetEntry;
 	'tree.header': PresetEntry;
 	'tree.indicator': PresetEntry;
-	'tree': PresetEntry;
-	'datagrid': PresetEntry;
+	tree: PresetEntry;
+	datagrid: PresetEntry;
 	'datagrid.header': PresetEntry;
 	'datagrid.column': PresetEntry;
 	'datagrid.body': PresetEntry;
@@ -152,31 +152,31 @@ export interface PresetModuleMap {
 	'datagrid.footer': PresetEntry;
 	'datagrid.checkbox': PresetEntry;
 	'datagrid.sort-icon': PresetEntry;
-	'scrollable': PresetEntry;
+	scrollable: PresetEntry;
 	'scrollable.container': PresetEntry;
 	'scrollable.content': PresetEntry;
 	'scrollable.track': PresetEntry;
 	'scrollable.thumb': PresetEntry;
-	'toast': PresetEntry;
+	toast: PresetEntry;
 	'toast.toaster': PresetEntry;
 	'toast.item': PresetEntry;
 	'toast.title': PresetEntry;
 	'toast.description': PresetEntry;
 	'toast.close-button': PresetEntry;
-	'breadcrumb': PresetEntry;
+	breadcrumb: PresetEntry;
 	'breadcrumb.item': PresetEntry;
 	'breadcrumb.separator': PresetEntry;
-	'badge': PresetEntry;
-	'chip': PresetEntry;
+	badge: PresetEntry;
+	chip: PresetEntry;
 	'chip.close-button': PresetEntry;
-	'button': PresetEntry;
-	'checkbox': PresetEntry;
+	button: PresetEntry;
+	checkbox: PresetEntry;
 	'checkbox.checkmark': PresetEntry;
 	'checkbox.indeterminate': PresetEntry;
-	'radio': PresetEntry;
+	radio: PresetEntry;
 	'radio.group': PresetEntry;
-	'container': PresetEntry;
-	'calendar': PresetEntry;
+	container: PresetEntry;
+	calendar: PresetEntry;
 	'calendar.day': PresetEntry;
 	'calendar.header': PresetEntry;
 	'calendar.weekday': PresetEntry;
@@ -186,6 +186,13 @@ export interface PresetModuleMap {
 	'datepicker.years': PresetEntry;
 	'datepicker.months': PresetEntry;
 	'datepicker.header': PresetEntry;
+	progress: PresetEntry;
+	'progress.linear': PresetEntry;
+	'progress.linear.track': PresetEntry;
+	'progress.linear.fill': PresetEntry;
+	'progress.circular': PresetEntry;
+	'progress.circular.track': PresetEntry;
+	'progress.circular.fill': PresetEntry;
 }
 
 /** All valid preset slot names — derived from PresetModuleMap for extensibility. */
@@ -208,4 +215,3 @@ export function setPreset(preset: Partial<Preset>) {
 	const currentPreset = getPreset() || {};
 	return setContext(CONTEXT_KEY, merge(currentPreset, preset));
 }
-
