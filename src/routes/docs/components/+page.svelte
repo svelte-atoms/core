@@ -157,6 +157,13 @@
 			href: '/docs/components/portal'
 		},
 		{
+			name: 'Progress',
+			description: 'Linear and circular progress indicators with indeterminate support',
+			category: 'Feedback',
+			status: 'Stable',
+			href: '/docs/components/progress'
+		},
+		{
 			name: 'Radio',
 			description: 'Single selection from multiple options',
 			category: 'Form',

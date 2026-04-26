@@ -89,6 +89,7 @@
 				{ title: 'List', href: '/docs/components/list' },
 				{ title: 'Select', href: '/docs/components/select' },
 				{ title: 'Popover', href: '/docs/components/popover' },
+				{ title: 'Progress', href: '/docs/components/progress' },
 				{ title: 'Radio', href: '/docs/components/radio' },
 				{ title: 'Scrollable', href: '/docs/components/scrollable' },
 				{ title: 'Sidebar', href: '/docs/components/sidebar' },
