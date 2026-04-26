@@ -56,13 +56,14 @@
 	aria-valuemin={0}
 	aria-valuemax={max}
 	aria-valuenow={isIndeterminate ? undefined : value ?? undefined}
+	aria-valuetext={isIndeterminate ? undefined : `${Math.round(percent!)}%`}
 	data-indeterminate={isIndeterminate}
 	data-value={isIndeterminate ? undefined : value ?? undefined}
 	data-max={max}
 	data-completed={!isIndeterminate && percent === 100}
 	{...restProps}
 >
-	<svg viewBox="0 0 48 48" class="h-full w-full -rotate-90">
+	<svg viewBox="0 0 48 48" class="h-full w-full -rotate-90" aria-hidden="true">
 		<SvgElement
 			as="circle"
 			preset="progress.circular.track"
