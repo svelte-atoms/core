@@ -13,12 +13,12 @@
 
 	const bond = PopoverBond.get();
 
-	const open = $derived(bond?.state.props.open);
+	const tracking = $derived(bond?.state.shouldTrackPosition ?? false);
 	const reference = $derived(bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger'));
 	const content = $derived(bond?.element<HTMLElement>('content'));
 
 	$effect.pre(() => {
-		if (!(reference) || !content || !open) return;
+		if (!reference || !content || !tracking) return;
 
 		// Use the existing positioning behavior
 		const cleanup = compute(bond)({}, autoUpdate);
@@ -79,13 +79,13 @@
 				const x = Math.round((position.x ?? 0) * 100) / 100;
 				const y = Math.round((position.y ?? 0) * 100) / 100;
 
-				bond.state.position = {
+				bond.state.notifyComputed({
 					middlewareData: position.middlewareData,
 					placement: position.placement,
 					strategy: position.strategy,
 					x,
 					y
-				};
+				});
 				onchangeCallback?.(content, position);
 
 				// Set minimum width to match trigger
