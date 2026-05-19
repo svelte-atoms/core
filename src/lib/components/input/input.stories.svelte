@@ -79,16 +79,16 @@
 			<Label>Custom buttons</Label>
 			<MyInput.Root>
 				<MyInput.NumberControl number={0}>
-					{#snippet decrementContent({ decrement, disabled })}
+					{#snippet decrement({ action, disabled })}
 						<button
-							onclick={decrement}
+							onclick={action}
 							{disabled}
 							class="px-3 text-lg font-bold disabled:opacity-30"
 						>−</button>
 					{/snippet}
-					{#snippet incrementContent({ increment, disabled })}
+					{#snippet increment({ action, disabled })}
 						<button
-							onclick={increment}
+							onclick={action}
 							{disabled}
 							class="px-3 text-lg font-bold disabled:opacity-30"
 						>+</button>

@@ -88,9 +88,9 @@ export interface InputNumberControlProps {
 	placeholder?: string;
 	showControls?: boolean;
 	/** Custom decrement button snippet */
-	decrementContent?: Snippet<[{ decrement: () => void; disabled: boolean }]>;
+	decrement?: Snippet<[{ action: () => void; disabled: boolean }]>;
 	/** Custom increment button snippet */
-	incrementContent?: Snippet<[{ increment: () => void; disabled: boolean }]>;
+	increment?: Snippet<[{ action: () => void; disabled: boolean }]>;
 	onchange?: (ev?: Event, options?: { number: number }) => void;
 }
 
