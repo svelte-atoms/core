@@ -9,12 +9,6 @@
 		open = $bindable(false),
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: TreeIndicatorProps<E, B> = $props();
 
@@ -28,12 +22,6 @@
 	{bond}
 	preset="tree.indicator"
 	class={['border-border aspect-square h-fit', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...indicatorProps}
 >
 	{@render children?.({ tree: bond })}

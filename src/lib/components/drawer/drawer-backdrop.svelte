@@ -10,12 +10,6 @@
 
 	let {
 		class: klass = '',
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: SlideoverBackdropProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -29,11 +23,5 @@
 	{bond}
 	preset="drawer.backdrop"
 	class={['border-border absolute inset-0 bg-black/30', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
 	{...backdropProps}
 />

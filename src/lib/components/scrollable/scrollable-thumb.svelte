@@ -7,12 +7,7 @@
 		class: klass = '',
 		children,
 		orientation = 'vertical',
-		onmount,
-		ondestroy,
-		animate,
-		enter,
-		exit,
-		initial,
+
 		...restProps
 	}: ScrollableThumbProps<E, B> = $props();
 
@@ -39,12 +34,6 @@
 		'$preset',
 		klass
 	]}
-	{enter}
-	{exit}
-	{initial}
-	{animate}
-	{onmount}
-	{ondestroy}
 	{...thumbProps}
 >
 	{@render children?.()}

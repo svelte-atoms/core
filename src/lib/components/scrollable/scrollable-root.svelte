@@ -16,12 +16,6 @@
 		open = true,
 		factory = _factory,
 		children,
-		onmount,
-		ondestroy,
-		animate,
-		enter,
-		exit,
-		initial,
 		...restProps
 	}: ScrollableRootProps<E, B> = $props();
 
@@ -94,12 +88,6 @@
 	as="div"
 	preset="scrollable"
 	class={['scrollable-root border-border relative box-content overflow-hidden', '$preset', klass]}
-	{enter}
-	{exit}
-	{initial}
-	{animate}
-	{onmount}
-	{ondestroy}
 	{...rootProps}
 >
 	{@render children?.({ scrollable: bond })}

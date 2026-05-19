@@ -9,12 +9,10 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = animateCollapsibleBody(),
-		enter = undefined,
-		exit = undefined,
-		initial = animateCollapsibleBody({ duration: 0 }),
+		fallback = {
+			animate: animateCollapsibleBody(),
+			initial: animateCollapsibleBody({ duration: 0 })
+		},
 		...restProps
 	}: CollapsibleBodyProps<E, B> = $props();
 
@@ -28,12 +26,7 @@
 	{bond}
 	preset="collapsible.body"
 	class={['border-border', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
+	{fallback}
 	{...bodyProps}
 >
 	{@render children?.({ collapsible: bond })}

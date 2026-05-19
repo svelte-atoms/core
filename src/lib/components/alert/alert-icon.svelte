@@ -11,12 +11,6 @@
 		base = Icon,
 		preset = 'alert.icon',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: AlertIconProps<E, B> = $props();
 
@@ -35,12 +29,6 @@
 		'$preset',
 		klass
 	]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...iconProps}
 >
 	{@render children?.({ alert: bond! })}

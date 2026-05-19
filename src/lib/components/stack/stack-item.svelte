@@ -38,11 +38,15 @@
 		// Merge user style with z-index from atom
 		style: userStyle ? `${userStyle}; z-index: ${zIndex}` : `z-index: ${zIndex}`
 	});
+
+	const isActive = $derived(bond?.state.props.value === value);
 </script>
 
 <HtmlAtom
 	preset="stack.item"
 	class={['stack-item', '$preset', klass]}
+	data-value={value}
+	data-active={isActive}
 	{...itemProps}
 >
 	{@render children?.()}

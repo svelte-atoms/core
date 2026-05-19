@@ -12,12 +12,6 @@
 	let {
 		class: klass = '',
 		children,
-		onmount,
-		ondestroy,
-		animate,
-		enter,
-		exit,
-		initial,
 		...restProps
 	}: ScrollableContainerProps<E, B> = $props();
 
@@ -52,12 +46,6 @@
 		'$preset',
 		klass
 	]}
-	{enter}
-	{exit}
-	{initial}
-	{animate}
-	{onmount}
-	{ondestroy}
 	{...containerProps}
 >
 	{#if children}

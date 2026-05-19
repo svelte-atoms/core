@@ -10,12 +10,6 @@
 		class: klass = '',
 		children = undefined,
 		factory = _factory,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: TreeRootProps<E, B> = $props();
 
@@ -54,12 +48,6 @@
 	{bond}
 	preset="tree"
 	class={['border-border flex flex-col', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...rootProps}
 >
 	{@render children?.({ tree: bond })}

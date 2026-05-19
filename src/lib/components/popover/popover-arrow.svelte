@@ -13,7 +13,9 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		animate = _animate,
+		fallback = {
+			animate: _animate
+		},
 		...restProps
 	}: PopoverArrowProps<E, B> = $props();
 
@@ -74,9 +76,9 @@
 
 <HtmlAtom
 	{bond}
+	{fallback}
 	preset="popover.arrow"
 	class={['text-border border-border pointer-events-none absolute opacity-0', '$preset', klass]}
-	animate={animate?.bind(bond.state)}
 	style="{side}: 100%;"
 	{...arrowProps}
 >

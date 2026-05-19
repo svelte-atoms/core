@@ -14,12 +14,6 @@
 		class: klass = '',
 		as = 'button' as E,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		onclick = undefined,
 		...restProps
 	}: DialogCloseButtonProps<E, B> = $props();
@@ -39,12 +33,6 @@
 	{bond}
 	preset="dialog.close-button"
 	class={['border-border cursor-pointer', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	onclick={onclick_}
 	{...restProps}
 >

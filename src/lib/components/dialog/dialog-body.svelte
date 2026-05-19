@@ -6,12 +6,6 @@
 	let {
 		class: klass,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: DialogBodyProps<E, B> = $props();
 
@@ -27,12 +21,6 @@
 	{bond}
 	preset="dialog.body"
 	class={['border-border px-4 py-2', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...bodyProps}
 >
 	{@render children?.({ dialog: bond })}

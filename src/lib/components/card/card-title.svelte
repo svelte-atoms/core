@@ -9,12 +9,6 @@
 		class: klass = '',
 		as = 'h3' as E,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: CardTitleProps<E, B> = $props();
 
@@ -33,12 +27,6 @@
 		'$preset',
 		klass
 	]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...titleProps}
 >
 	{@render children?.()}

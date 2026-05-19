@@ -9,12 +9,6 @@
 		class: klass = '',
 		as = 'div' as E,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: CardHeaderProps<E, B> = $props();
 
@@ -29,12 +23,6 @@
 	{bond}
 	preset="card.header"
 	class={['card-header border-border flex flex-col space-y-1.5 px-4 py-4', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...headerProps}
 >
 	{@render children?.()}

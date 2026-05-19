@@ -12,12 +12,6 @@
 
 	let {
 		class: klass = '',
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = _animate,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	} = $props();
 
@@ -35,12 +29,9 @@
 		{bond}
 			preset="datagrid.column-sort-icon"
 		class={['border-border', '$preset', klass]}
-		enter={enter?.bind(bond.state)}
-		exit={exit?.bind(bond.state)}
-		initial={initial?.bind(bond.state)}
-		animate={animate?.bind(bond.state)}
-		onmount={onmount?.bind(bond.state)}
-		ondestroy={ondestroy?.bind(bond.state)}
+		fallback={{
+			animate: _animate,
+		}}
 		{...restProps}
 	>
 		<Icon>

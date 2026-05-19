@@ -12,11 +12,11 @@
 	}: FieldLabelProps<E, B> = $props();
 
 	const labelProps = $derived({
-		...bond?.label(),
+		...(bond?.label().spread ?? {}),
 		...restProps
 	});
 </script>
 
-<HtmlAtom preset="field.label" class={['flex flex-col', '$preset', klass]} {...labelProps}>
+<HtmlAtom preset="field.label" class={['flex', '$preset', klass]} {...labelProps}>
 	{@render children?.({ field: bond })}
 </HtmlAtom>

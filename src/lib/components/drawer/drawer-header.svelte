@@ -11,12 +11,6 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: SlideoverHeaderProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -30,12 +24,6 @@
 	{bond}
 	preset="drawer.header"
 	class={['border-border', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
 	{...headerProps}
 	{...restProps}
 >
