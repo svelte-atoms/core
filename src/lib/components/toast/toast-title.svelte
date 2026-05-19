@@ -1,35 +1,30 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { ToastBond } from './bond';
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { ToastBond } from './bond.svelte';
 	import type { ToastTitleProps } from './types';
-
-	const bond = ToastBond.get();
 
 	let {
 		class: klass = '',
+		as = 'p' as E,
+		preset = 'toast.title',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
-	}: ToastTitleProps<T> & HTMLAttributes<HTMLElementTagNameMap[T]> = $props();
+	}: ToastTitleProps<E, B> = $props();
+
+	const bond = ToastBond.get();
+
+	const titleProps = $derived({
+		...(bond?.title().spread ?? {}),
+		...restProps
+	});
 </script>
 
 <HtmlAtom
+	{as}
 	{bond}
-	preset="toast.title"
-	class={['border-border', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond?.title(restProps)}
+	{preset}
+	class={['$preset', klass]}
+	{...titleProps}
 >
 	{@render children?.({ toast: bond })}
 </HtmlAtom>

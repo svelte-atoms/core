@@ -1,25 +1,23 @@
-<script lang="ts" generics="T extends keyof HTMLElementTagNameMap">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import { ToastBond, ToastBondState, type ToastBondProps } from './bond';
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { ToastBond, ToastBondState, type ToastBondProps } from './bond.svelte';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { ToastRootProps } from './types';
+	import { untrack } from 'svelte';
 
 	let {
-		open = $bindable(false),
-		class: klass = '',
+		open = $bindable(true),
 		disabled = false,
-		extend = {},
-		factory = _factory,
+		duration = 0,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		dismissible: _dismissible,
+		class: klass = '',
+		preset = 'toast',
+		factory = defaultFactory,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
+		onclose = undefined,
 		...restProps
-	}: ToastRootProps<T> & HTMLAttributes<HTMLElementTagNameMap[T]> = $props();
+	}: ToastRootProps<E, B> = $props();
 
 	const bondProps = defineState<ToastBondProps>(
 		[
@@ -27,19 +25,36 @@
 				'open',
 				() => open,
 				(v) => {
+					if (open === v) return;
 					open = v;
+					if (!v) onclose?.();
 				}
-			)
+			),
+			defineProperty('rest', () => restProps)
 		],
-		() => ({ disabled, extend })
+		() => ({ disabled })
 	);
 
-	const bond = factory(bondProps).share();
+	const bond = untrack(() => factory(bondProps)).share();
 
-	function _factory(props: typeof bondProps) {
+	function defaultFactory(props: ToastBondProps) {
 		const bondState = new ToastBondState(() => props);
 		return new ToastBond(bondState);
 	}
+
+	const rootProps: Record<string, unknown> = $derived({
+		...bond.root().spread,
+		...restProps
+	});
+
+	// Auto-dismiss when a positive duration is provided
+	$effect(() => {
+		if (!open || duration <= 0) return;
+		const handle = setTimeout(() => {
+			open = false;
+		}, duration);
+		return () => clearTimeout(handle);
+	});
 
 	export function getBond() {
 		return bond;
@@ -48,14 +63,9 @@
 
 <HtmlAtom
 	{bond}
+	{preset}
 	class={['border-border', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	{...bond?.root(restProps)}
+	{...rootProps}
 >
 	{@render children?.({ toast: bond })}
 </HtmlAtom>

@@ -1,14 +1,12 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { Override } from '$svelte-atoms/core/types';
-import type { ToastBond } from './bond';
-import type { ToastPosition } from './manager.svelte';
+import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { ToastBond, ToastBondProps } from './bond.svelte';
 
 // ============================================================================
 // Toast Snippet Props (Extensible)
 // ============================================================================
 
-export interface ToastSnippetProps extends SnippetProps {
+export interface ToastSnippetProps {
 	toast: ToastBond | undefined;
 }
 
@@ -17,28 +15,31 @@ export type ToastChildren = Snippet<[ToastSnippetProps]>;
 export interface ToastRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B, ToastChildren>, { children?: ToastChildren }> {
+> extends HtmlAtomProps<E, B, ToastChildren> {
+	open?: boolean;
+	disabled?: boolean;
 	dismissible?: boolean;
-	/** Auto-dismiss duration in ms. Set to 0 to disable auto-dismiss. Default: 4000 */
+	/** Auto-dismiss duration in ms. Set to 0 to disable auto-dismiss. Default: 0. */
 	duration?: number;
-	onclose?: () => void | undefined;
+	onclose?: () => void;
+	/** Optional factory to construct a custom bond. */
+	factory?: (props: ToastBondProps) => ToastBond;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ToastTitleProps<
-	E extends keyof HTMLElementTagNameMap = 'div',
+	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B, ToastChildren>, { children?: ToastChildren }> {}
+> extends HtmlAtomProps<E, B, ToastChildren> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ToastDescriptionProps<
-	E extends keyof HTMLElementTagNameMap = 'div',
+	E extends keyof HTMLElementTagNameMap = 'p',
 	B extends Base = Base
-> extends Override<HtmlAtomProps<E, B, ToastChildren>, { children?: ToastChildren }> {}
+> extends HtmlAtomProps<E, B, ToastChildren> {}
 
-export interface ToasterProps extends HtmlAtomProps<'ol'> {
-	/** Position of the toast stack on screen. Default: 'bottom-right' */
-	position?: ToastPosition | undefined;
-	/** Gap between toasts in px. Default: 8 */
-	gap?: number | undefined;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ToastCloseProps<
+	E extends keyof HTMLElementTagNameMap = 'button',
+	B extends Base = Base
+> extends HtmlAtomProps<E, B, ToastChildren> {}
