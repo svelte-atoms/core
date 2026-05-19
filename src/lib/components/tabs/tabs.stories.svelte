@@ -37,6 +37,37 @@
 	])
 </script>
 
+<Story name="Uncontrolled" args={{}}>
+	<ATabs.Root>
+		<ATabs.Header class="border-b">
+			{#each array as item, i (i)}
+				<Tab.Root value={item.value}>
+					<Tab.Header>{item.label}</Tab.Header>
+					<Tab.Body class="p-4">
+						<h3 class="font-bold mb-2">{item.label} Content</h3>
+						<p>{item.description}</p>
+					</Tab.Body>
+				</Tab.Root>
+			{/each}
+		</ATabs.Header>
+
+		<ATabs.Body>
+			<ATabs.Content
+				enter={node => {
+					const duration = 0.3;
+					animate(node, { opacity: [0, 1] }, { duration });
+					return { duration };
+				}}
+				exit={node => {
+					const duration = 0.1;
+					animate(node, { opacity: [1, 0] }, { duration });
+					return { duration };
+				}}
+			/>
+		</ATabs.Body>
+	</ATabs.Root>
+</Story>
+
 <Story name="Tabs" args={{}}>
 	<ATabs.Root bind:value>
 		<ATabs.Header class="border-b">

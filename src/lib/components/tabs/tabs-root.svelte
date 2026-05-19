@@ -9,18 +9,26 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(undefined),
+		value = $bindable(),
 		children,
 		onchange,
 		preset = 'tabs' as const,
 		...restProps
 	}: TabsRootProps<D, E, B> = $props();
 
+	let revision = $state(0);
+
 	const bondProps = defineState<TabsBondProps>([
 		defineProperty(
 			'value',
-			() => value,
-			(v) => (value = v)
+			() => {
+				void revision; // Ensure reactivity in uncontrolled mode
+				return value;
+			},
+			(v) => {
+				value = v as D | undefined;
+				revision++; // Trigger reactivity in uncontrolled mode
+			}
 		),
 		defineProperty('rest', () => restProps)
 	]);

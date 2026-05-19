@@ -1,8 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { type Base } from '$svelte-atoms/core/components/atom';
-	import { tick } from 'svelte';
 	import { Stack } from '../stack';
-	import { StackBond } from '../stack/bond.svelte';
 	import { TabsBond } from './bond.svelte';
 	import type { TabsBodyProps } from './types';
 

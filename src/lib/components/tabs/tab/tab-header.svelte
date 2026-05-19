@@ -19,7 +19,7 @@
 		class: klass = '',
 		as = 'button' as E,
 		children,
-		onpointerdown,
+		onclick,
 		...restProps
 	}: TabHeaderProps<E, B> = $props();
 
@@ -28,10 +28,10 @@
 		...restProps
 	});
 
-	function handlePointerDown(ev: PointerEvent) {
+	function handleClick(ev: PointerEvent) {
 		if (isDisabled) return;
 
-		onpointerdown?.(ev, { ...(bond ? { tab: bond } : {}) });
+		onclick?.(ev, { ...(bond ? { tab: bond } : {}) });
 
 		if (ev.defaultPrevented) {
 			return;
@@ -54,7 +54,7 @@
 	]}  
 	type="button"
 	disabled={isDisabled}
-	onpointerdown={handlePointerDown}
+	onclick={handleClick}
 	{...headerProps}
 >
 	{@render children?.({ ...(bond ? { tab: bond } : {}) })}
