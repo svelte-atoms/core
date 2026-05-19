@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Icon, type IconProps } from '$svelte-atoms/core/components/icon';
 
-	let { class: klass = '', children = undefined, ...restProps }: IconProps = $props();
+	let { class: klass = '', preset = "input.icon", children = undefined, ...restProps }: IconProps = $props();
 </script>
 
 <Icon
-	preset="input.icon"
+	{preset}
 	class={[
 		'border-border flex aspect-square h-full items-center justify-center bg-transparent text-sm leading-0',
 		'$preset',
@@ -13,5 +13,5 @@
 	]}
 	{...restProps}
 >
-	{@render children?.()}
+	{@render children?.({})}
 </Icon>

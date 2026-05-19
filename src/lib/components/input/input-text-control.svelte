@@ -11,7 +11,6 @@
 
 	let {
 		value = $bindable(),
-		type = 'text',
 		class: klass = '',
 		placeholder = '',
 		disabled = false,
@@ -31,8 +30,14 @@
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		value = input.value;
-		if (bond) bond.state.props.value = value;
+
 		oninput?.(ev, { value });
+
+		if(ev.defaultPrevented) {
+			return;
+		}
+
+		if (bond) bond.state.props.value = value;
 	}
 </script>
 
@@ -44,12 +49,12 @@
 			if (bond) bond.state.props.value = v;
 		}
 	}
-	type={type}
+	type='text'
 	{placeholder}
 	{disabled}
 	{readonly}
 	class={cn(
-		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-2 leading-1 outline-none',
+		'text-foreground placeholder:text-muted-foreground h-full w-full flex-1 bg-transparent px-0 leading-1 outline-none',
 		preset?.class,
 		toClassValue(klass, bond)
 	)}

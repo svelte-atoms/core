@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputFileControlProps } from './types';
@@ -22,17 +21,6 @@
 	let inputEl = $state<HTMLInputElement>();
 
 	const hasFiles = $derived(files.length > 0);
-
-	const fileLabel = $derived(() => {
-		if (!hasFiles) return null;
-		if (files.length === 1) {
-			const f = files[0];
-			const ext = f.name.split('.').pop()?.toUpperCase() ?? '';
-			const size = formatSize(f.size);
-			return { name: f.name, ext, size };
-		}
-		return { name: `${files.length} files selected`, ext: '', size: formatSize(files.reduce((a, f) => a + f.size, 0)) };
-	});
 
 	function formatSize(bytes: number): string {
 		if (bytes < 1024) return `${bytes} B`;
