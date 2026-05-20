@@ -19,8 +19,6 @@
 
 	const bond = ToastBond.get();
 
-	console.log('test', bond);
-
 	const closeProps = $derived({
 		...(bond?.dismiss().spread ?? {}),
 		...restProps
