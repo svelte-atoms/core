@@ -162,6 +162,28 @@
 		}),
 		'dialog.content': ()=> ({
 			class: 'max-w-lg'
+		}),
+		toast: () => ({
+			class:
+				'relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md backdrop-blur-sm',
+			variants: {
+				variant: {
+					default: { class: 'bg-card text-card-foreground border-border' },
+					info: { class: 'bg-info/5 text-info border-info/30' },
+					success: { class: 'bg-success/10 text-success border-success/30' },
+					warning: { class: 'bg-warning/10 text-warning border-warning/30' },
+					error: { class: 'bg-destructive/10 text-destructive border-destructive/30' }
+				}
+			}
+		}),
+		'toast.title': () => ({
+			class: 'text-sm font-medium leading-tight'
+		}),
+		'toast.description': () => ({
+			class: 'text-sm opacity-80'
+		}),
+		'toast.close': () => ({
+			class: 'absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100'
 		})
 	};
 

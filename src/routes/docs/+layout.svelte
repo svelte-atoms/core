@@ -100,6 +100,7 @@
 				{ title: 'Swatch', href: '/docs/components/swatch' },
 				{ title: 'Tabs', href: '/docs/components/tabs' },
 				{ title: 'Textarea', href: '/docs/components/textarea' },
+				{ title: 'Toast', href: '/docs/components/toast' },
 				{ title: 'Tooltip', href: '/docs/components/tooltip' },
 				{ title: 'Tree', href: '/docs/components/tree' }
 			]
