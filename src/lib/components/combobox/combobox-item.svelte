@@ -14,12 +14,6 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	} = $props();
 </script>
@@ -50,12 +44,6 @@
 	{bond}
 	preset="combobox.item"
 	class={['border-border', '$preset', klass].filter(Boolean).join(' ')}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...restProps}
 >
 	{@render children?.({ combobox: bond })}

@@ -7,12 +7,6 @@
 		class: klass = '',
 		orientation = 'vertical',
 		children,
-		onmount,
-		ondestroy,
-		animate,
-		enter,
-		exit,
-		initial,
 		...restProps
 	}: ScrollableTrackProps<E, B> = $props();
 
@@ -45,12 +39,6 @@
 			'$preset',
 			klass
 		]}
-		{enter}
-		{exit}
-		{initial}
-		{animate}
-		{onmount}
-		{ondestroy}
 		{...trackProps}
 	>
 		{@render children?.()}

@@ -43,8 +43,10 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		animate = animatePopoverContent(),
 		onclickoutside = undefined,
+		fallback = {
+			animate: animatePopoverContent()
+		},
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
 
@@ -144,6 +146,7 @@
 	<HtmlAtom
 		{@attach clickoutAttachement}
 		{bond}
+		{fallback}
 		preset="popover.content"
 		class={[
 			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg outline-none',
@@ -151,7 +154,6 @@
 			'$preset',
 			klass
 		]}
-		animate={animate?.bind(bond.state)}
 		{...restProps}
 	>
 		{@render children?.({ popover: bond })}

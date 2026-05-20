@@ -81,6 +81,13 @@ export class StackState extends BondState<StackStateProps> {
 
 	constructor(props: () => StackStateProps) {
 		super(props);
+
+		$effect(() => {
+			const value = this.props.value;
+			if (value) {
+				untrack(() => this.bringToFront(value));
+			}
+		});
 	}
 
 	register(value: string) {
@@ -155,7 +162,7 @@ export class StackState extends BondState<StackStateProps> {
 		const sortedOrder = [...order].sort((a, b) => a.index - b.index);
 		const currentIndex = sortedOrder.findIndex((i) => i.id === value);
 		const neighbor = sortedOrder[currentIndex + 1];
-		
+
 		if (!neighbor) return;
 
 		const newOrder = [...order]
@@ -183,7 +190,7 @@ export class StackState extends BondState<StackStateProps> {
 		const sortedOrder = [...order].sort((a, b) => a.index - b.index);
 		const currentIndex = sortedOrder.findIndex((i) => i.id === value);
 		const neighbor = sortedOrder[currentIndex - 1];
-		
+
 		if (!neighbor) return;
 
 		const newOrder = [...order]

@@ -10,12 +10,6 @@
 		class: klass = '',
 		preset = 'alert.title',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: AlertTitleProps<E, B> = $props();
 
@@ -30,12 +24,6 @@
 	{bond}
 	{preset}
 	class={['alert-title border-border text-sm leading-tight font-medium', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...titleProps}
 >
 	{@render children?.({ alert: bond! })}

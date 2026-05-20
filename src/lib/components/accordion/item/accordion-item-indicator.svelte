@@ -12,12 +12,6 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = _animate,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		preset = 'accordion.item.indicator',
 		...restProps
 	}: AccordionItemIndicatorProps<E, B> = $props();
@@ -35,12 +29,6 @@
 <HtmlAtom
 	{preset}
 	class={['border-border pointer-events-none flex items-center justify-center', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...indicatorProps}
 >
 	{#if children}

@@ -9,12 +9,10 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = animateSidebarContent({ '0': '0px', '1': 'auto' }),
-		enter = undefined,
-		exit = undefined,
-		initial = animateSidebarContent({ '0': '0px', '1': 'auto', duration: 0 }),
+		fallback = {
+			animate: animateSidebarContent({ '0': '0px', '1': 'auto' }),
+			initial: animateSidebarContent({ '0': '0px', '1': 'auto', duration: 0 })
+		},
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
@@ -28,12 +26,7 @@
 	{bond}
 	preset="sidebar.content"
 	class={['bg-card border-border', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
+	{fallback}
 	{...contentProps}
 >
 	{@render children?.({ sidebar: bond })}

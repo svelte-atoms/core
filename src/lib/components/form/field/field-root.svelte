@@ -45,7 +45,7 @@
 
 	const rootProps = $derived(
 		({
-			...bond?.root(),
+			...bond.root().spread,
 			...restProps
 		}) as Record<string, unknown>
 	);
@@ -61,6 +61,7 @@
 	export function getBond() {
 		return bond;
 	}
+	
 </script>
 
 <HtmlAtom preset="field" class={['flex flex-col', '$preset', klass]} {...rootProps}>

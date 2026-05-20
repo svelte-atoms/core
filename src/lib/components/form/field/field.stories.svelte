@@ -53,7 +53,7 @@
 			<Field.Label>Username</Field.Label>
 			<Input.Root>
 				<Field.Control
-					base={Input.Control as unknown as never}
+					base={Input.TextControl as unknown as never}
 					bind:value={username}
 					placeholder="svelte-wizard"
 				/>
@@ -69,7 +69,7 @@
 		<Field.Root {...commonFieldProps} name="displayName" schema={profileSchema.shape.displayName} value={displayName}>
 			<Field.Label>Display Name</Field.Label>
 			<Input.Root>
-				<Field.Control base={Input.Control as unknown as never} bind:value={displayName} placeholder="Maya L" />
+				<Field.Control base={Input.TextControl as unknown as never} bind:value={displayName} placeholder="Maya L" />
 			</Input.Root>
 			<Field.HelperText>Shown in comments, mentions, and activity feeds.</Field.HelperText>
 		</Field.Root>

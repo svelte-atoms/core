@@ -7,13 +7,6 @@
 		class: klass = '',
 		as = 'button',
 		children = undefined,
-		onpointerdown = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		preset = 'accordion.item.header',
 		...restProps
 	}: AccordionItemHeaderProps = $props();
@@ -36,12 +29,6 @@
 		'$preset',
 		klass
 	]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	tabindex={as !== 'button' ? 0 : undefined}
 	{...headerProps}
 >

@@ -12,12 +12,6 @@
 		class: klass = '',
 		preset = 'alert.content',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: AlertContentProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -31,12 +25,6 @@
 	{bond}
 	{preset}
 	class={['alert-content border-border flex-1 space-y-1', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...contentProps}
 >
 	{@render children?.({ alert: bond! })}

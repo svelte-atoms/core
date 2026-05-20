@@ -20,9 +20,11 @@
 		portal = undefined,
 		"z-index": zindex = 1,
 		onclose = undefined,
-		initial = animateDrawerRoot({ duration: 0 }),
-		animate = animateDrawerRoot({}),
 		factory = _factory,
+		fallback = {
+			animate: animateDrawerRoot({}),
+			initial: animateDrawerRoot({ duration: 0 }),
+		},
 		...restProps
 	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -86,8 +88,7 @@
 	]}
 	style="z-index: {layer.get()};"
 	closeby="none"
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
+	{fallback}
 	{...rootProps}
 >
 	<ActivePortal portal={portal ?? 'root.l0'}>

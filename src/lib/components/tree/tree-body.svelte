@@ -9,12 +9,10 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = animateTreeBody(),
-		enter = undefined,
-		exit = undefined,
-		initial = animateTreeBody({ duration: 0 }),
+		fallback = {
+			animate: animateTreeBody(),
+			initial: animateTreeBody({ duration: 0 })
+		},
 		...restProps
 	}: TreeBodyProps<E, B> = $props();
 
@@ -28,12 +26,7 @@
 	{bond}
 	preset="tree.body"
 	class={['border-border pl-4', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
+	{fallback}
 	{...bodyProps}
 >
 	{@render children?.({ tree: bond })}

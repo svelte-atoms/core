@@ -6,12 +6,6 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: DialogHeaderProps<E, B> = $props();
 
@@ -27,12 +21,6 @@
 	{bond}
 	preset="dialog.header"
 	class={['border-border', 'flex w-full px-4 text-xl', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...headerProps}
 >
 	{@render children?.({ dialog: bond })}

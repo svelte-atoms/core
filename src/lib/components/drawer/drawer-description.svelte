@@ -12,12 +12,6 @@
 		class: klass = '',
 		as = 'p' as E,
 		children,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: SlideoverDescriptionProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -32,12 +26,6 @@
 	{bond}
 	preset="drawer.description"
 	class={['border-border', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
 	{...descriptionProps}
 >
 	{@render children?.({ drawer: bond })}

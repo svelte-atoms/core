@@ -13,12 +13,10 @@
 	let {
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = animateDrawerContent({ }),
-		enter = undefined,
-		exit = undefined,
-		initial = animateDrawerContent({ duration: 0 }),
+		fallback = {
+			animate: animateDrawerContent({ }),
+			initial: animateDrawerContent({ duration: 0 }),
+		},
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();
 
@@ -37,12 +35,7 @@
 		klass
 	]}
 	{bond}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
+	{fallback}
 	{...contentProps}
 >
 	{@render children?.({ drawer: bond })}

@@ -43,6 +43,7 @@
 	role="switch"
 	aria-checked={checked}
 	aria-disabled={disabled || undefined}
+	data-checked={checked}
 	onclick={handleClick}
 	{...restProps}
 >
@@ -68,6 +69,7 @@
 			checked ? 'translate-x-6' : 'translate-x-1',
 			'$preset'
 		]}
+		data-checked={checked}
 	/>
 </HtmlAtom>
 

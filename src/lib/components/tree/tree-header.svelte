@@ -12,12 +12,6 @@
 		class: klass = '',
 		children = undefined,
 		onpointerdown = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: TreeHeaderProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -41,12 +35,6 @@
 	{bond}
 	preset="tree.header"
 	class={['border-border cursor-pointer', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	onpointerdown={handlePointerDown}
 	{...headerProps}
 >

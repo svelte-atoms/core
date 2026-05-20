@@ -17,12 +17,6 @@
 		as = 'button' as E,
 		preset = 'alert.close-button',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: AlertCloseButtonProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -41,12 +35,6 @@
 		'$preset',
 		klass
 	]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...closeButtonProps}
 >
 	{#if children}

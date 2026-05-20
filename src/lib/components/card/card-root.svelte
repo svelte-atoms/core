@@ -13,12 +13,6 @@
 		children = undefined,
 		onclick = undefined,
 		onkeydown = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: CardRootProps<E, B> = $props();
 
@@ -78,12 +72,6 @@
 		klass
 	]}
 	{bond}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	onclick={handleClick}
 	onkeydown={handleKeydown}
 	{...rootProps}

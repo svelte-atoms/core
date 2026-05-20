@@ -8,12 +8,6 @@
 	let {
 		class: klass = '',
 		children,
-		onmount,
-		ondestroy,
-		animate,
-		enter,
-		exit,
-		initial,
 		...restProps
 	}: ScrollableContentProps<E, B> = $props();
 
@@ -32,12 +26,6 @@
 	as="div"
 	preset="scrollable.content"
 	class={['scrollable-content border-border h-full max-h-full', '$preset', klass]}
-	{enter}
-	{exit}
-	{initial}
-	{animate}
-	{onmount}
-	{ondestroy}
 	{...contentProps}
 >
 	{#if children}

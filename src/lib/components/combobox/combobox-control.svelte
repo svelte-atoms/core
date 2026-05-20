@@ -14,12 +14,6 @@
 		value = $bindable(),
 		class: klass = '',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: ComboboxControlProps = $props();
 
@@ -56,11 +50,5 @@
 	}
 	preset="combobox.control"
 	class={['border-border flex-1 py-1', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...comboboxProps}
 />

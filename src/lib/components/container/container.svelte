@@ -8,12 +8,6 @@
 		name = undefined,
 		clientWidth = $bindable(0),
 		clientHeight = $bindable(0),
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		children = undefined,
 		...restProps
 	}: ContainerProps = $props();
@@ -44,12 +38,6 @@
 	preset="container"
 	class={['border-border', '$preset', klass]}
 	style={[containerTypeStype, containerNameStyle].filter(Boolean).join('; ')}
-	onmount={onmount?.bind(null)}
-	ondestroy={ondestroy?.bind(null)}
-	animate={animate?.bind(null)}
-	enter={enter?.bind(null)}
-	exit={exit?.bind(null)}
-	initial={initial?.bind(null)}
 	{...restProps}
 >
 	{@render children?.({ clientWidth, clientHeight })}

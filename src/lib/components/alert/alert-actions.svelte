@@ -12,12 +12,6 @@
 		class: klass = '',
 		preset = 'alert.actions',
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: AlertActionsProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -31,12 +25,6 @@
 	{bond}
 	{preset}
 	class={['alert-actions border-border mt-3 flex items-center gap-2', '$preset', klass]}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
 	{...actionsProps}
 >
 	{@render children?.({ alert: bond! })}

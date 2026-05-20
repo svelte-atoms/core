@@ -18,12 +18,6 @@
 		class: klass = '',
 		factory = _factory,
 		children = undefined,
-		onmount = undefined,
-		ondestroy = undefined,
-		animate = undefined,
-		enter = undefined,
-		exit = undefined,
-		initial = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
@@ -53,12 +47,6 @@
 <HtmlAtom
 	preset="layer"
 	class={['pointer-events-none absolute inset-0', '$preset', klass]}
-	enter={enter?.bind(bond.state)}
-	exit={exit?.bind(bond.state)}
-	initial={initial?.bind(bond.state)}
-	animate={animate?.bind(bond.state)}
-	onmount={onmount?.bind(bond.state)}
-	ondestroy={ondestroy?.bind(bond.state)}
 	{...rootProps}
 >
 	{@render children?.()}
