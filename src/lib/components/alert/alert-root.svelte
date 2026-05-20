@@ -11,6 +11,7 @@
 		disabled = false,
 		extend = {},
 		factory = _factory,
+		children,
 		...restProps
 	}: AlertRootProps<E, B> = $props();
 
