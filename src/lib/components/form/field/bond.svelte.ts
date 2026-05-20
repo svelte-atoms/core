@@ -1,6 +1,10 @@
 import { getContext, setContext } from 'svelte';
-import { createAttachmentKey } from 'svelte/attachments';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondAtom,
+	BondState,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond.svelte';
 
 export interface ValidationError {
 	path: (string | number)[];
@@ -19,29 +23,54 @@ export interface ValidationAdapter<Schema, Value> {
 	validateAsync?(schema: Schema, value: Value): Promise<ValidationResult<Value>>;
 }
 
-export class ZodValidationAdapter<
-	T extends { parse: (value: unknown) => any; parseAsync?: (value: unknown) => Promise<any> }
-> implements ValidationAdapter<T, any> {
-	validate(schema: T, value: unknown): ValidationResult<any> {
+type ZodLikeIssue = {
+	path?: (string | number)[];
+	message?: string;
+	code?: string;
+};
+
+type ZodLikeSchema = {
+	parse: (value: unknown) => unknown;
+	parseAsync?: (value: unknown) => Promise<unknown>;
+};
+
+function isZodLikeError(error: unknown): error is { issues: ZodLikeIssue[] } {
+	return (
+		typeof error === 'object' &&
+		error !== null &&
+		'issues' in error &&
+		Array.isArray((error as { issues?: unknown }).issues)
+	);
+}
+
+function toValidationError(issue: ZodLikeIssue): ValidationError {
+	return {
+		path: issue.path || [],
+		message: issue.message || 'Validation error',
+		...(issue.code ? { code: issue.code } : {})
+	};
+}
+
+export class ZodValidationAdapter<T extends ZodLikeSchema> implements ValidationAdapter<
+	T,
+	unknown
+> {
+	validate(schema: T, value: unknown): ValidationResult {
 		try {
 			const data = schema.parse(value);
 			return { success: true, data, errors: [] };
-		} catch (error: any) {
-			if (error?.issues && Array.isArray(error.issues)) {
+		} catch (error: unknown) {
+			if (isZodLikeError(error)) {
 				return {
 					success: false,
-					errors: error.issues.map((issue: any) => ({
-						path: issue.path || [],
-						message: issue.message || 'Validation error',
-						code: issue.code
-					}))
+					errors: error.issues.map(toValidationError)
 				};
 			}
 			throw error;
 		}
 	}
 
-	async validateAsync(schema: T, value: unknown): Promise<ValidationResult<any>> {
+	async validateAsync(schema: T, value: unknown): Promise<ValidationResult> {
 		if (!schema.parseAsync) {
 			return this.validate(schema, value);
 		}
@@ -49,15 +78,11 @@ export class ZodValidationAdapter<
 		try {
 			const data = await schema.parseAsync(value);
 			return { success: true, data, errors: [] };
-		} catch (error: any) {
-			if (error?.issues && Array.isArray(error.issues)) {
+		} catch (error: unknown) {
+			if (isZodLikeError(error)) {
 				return {
 					success: false,
-					errors: error.issues.map((issue: any) => ({
-						path: issue.path || [],
-						message: issue.message || 'Validation error',
-						code: issue.code
-					}))
+					errors: error.issues.map(toValidationError)
 				};
 			}
 			throw error;
@@ -80,7 +105,7 @@ export type FieldStateProps<
 	checked?: boolean;
 	schema?: Schema;
 	validator?: ValidationAdapter<Schema, Value>;
-	onvalidation?: (errors: ValidationError[]) => void;
+	onvalidation?: (result: ValidationResult<Value>) => void;
 	extend: Extension;
 };
 
@@ -90,50 +115,73 @@ export type FieldDomElements = {
 	control: HTMLElement;
 };
 
+export class FieldRootAtom extends BondAtom<FieldBond, HTMLElement> {
+	constructor(bond: FieldBond) {
+		super(bond, 'root');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			id: `root-${this.bond.id}`,
+			role: 'group',
+			'aria-labelledby': `label-${this.bond.id}`,
+			'aria-describedby': this.bond.state.errors.length > 0 ? `error-${this.bond.id}` : undefined,
+			'aria-invalid': `${this.bond.state.errors.length > 0}`
+		};
+	}
+}
+
+export class FieldLabelAtom extends BondAtom<FieldBond, HTMLElement> {
+	constructor(bond: FieldBond) {
+		super(bond, 'label');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			id: `label-${this.bond.id}`,
+			for: `control-${this.bond.id}`
+		};
+	}
+}
+
+export class FieldControlAtom extends BondAtom<FieldBond, HTMLElement> {
+	constructor(bond: FieldBond) {
+		super(bond, 'control');
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			id: `control-${this.bond.id}`,
+			'aria-labelledby': `label-${this.bond.id}`,
+			'aria-describedby': this.bond.state.errors.length > 0 ? `error-${this.bond.id}` : undefined,
+			'aria-invalid': `${this.bond.state.errors.length > 0}`,
+			'aria-disabled': `${this.bond.state.props.disabled}`,
+			'aria-readonly': `${this.bond.state.props.readonly}`,
+			'aria-errormessage': this.bond.state.errors.length > 0 ? `error-${this.bond.id}` : undefined
+		};
+	}
+}
+
 export class FieldBond extends Bond<FieldStateProps, FieldBondState, FieldDomElements> {
 	static CONTEXT_KEY = '@atoms/context/form/field';
 
 	constructor(state: FieldBondState) {
-		super(state);
+		super(state, 'field');
 	}
 
 	root() {
-		return {
-			id: `root-${this.id}`,
-			role: 'group',
-			'aria-labelledby': `label-${this.id}`,
-			'aria-describedby': this.state.errors.length > 0 ? `error-${this.id}` : undefined,
-			'aria-invalid': !!this.state.errors.length + '',
-
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
+		return this.atom('root', () => new FieldRootAtom(this));
 	}
 
 	label() {
-		return {
-			id: `label-${this.id}`,
-			for: `control-${this.id}`,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.label = node;
-			}
-		};
+		return this.atom('label', () => new FieldLabelAtom(this));
 	}
 
 	control() {
-		return {
-			id: `control-${this.id}`,
-			'aria-labelledby': `label-${this.id}`,
-			'aria-describedby': this.state.errors.length > 0 ? `error-${this.id}` : undefined,
-			'aria-invalid': !!this.state.errors.length + '',
-			'aria-disabled': this.state.props.disabled + '',
-			'aria-readonly': this.state.props.readonly + '',
-
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.control = node;
-			}
-		};
+		return this.atom('control', () => new FieldControlAtom(this));
 	}
 
 	share(): this {
@@ -152,7 +200,6 @@ export class FieldBond extends Bond<FieldStateProps, FieldBondState, FieldDomEle
 export class FieldBondState<
 	Props extends FieldStateProps = FieldStateProps
 > extends BondState<Props> {
-	#data = $state<unknown>(undefined);
 	#errors = $state<ValidationError[]>([]);
 	#isValidating = $state(false);
 
@@ -193,15 +240,16 @@ export class FieldBondState<
 
 		if (!schema || !validator) {
 			this.#errors = [];
-			onvalidation?.([]);
-			return { errors: this.#errors };
+			const result: ValidationResult = { success: true, data: value, errors: [] };
+			onvalidation?.(result);
+			return result;
 		}
 
 		const result = validator.validate(schema, value);
 
 		this.#errors = result.errors;
 
-		onvalidation?.({ data: result.data, errors: this.#errors });
+		onvalidation?.(result);
 
 		return result;
 	}
@@ -211,8 +259,9 @@ export class FieldBondState<
 
 		if (!schema || !validator) {
 			this.#errors = [];
-			onvalidation?.([]);
-			return { errors: this.#errors };
+			const result: ValidationResult = { success: true, data: value, errors: [] };
+			onvalidation?.(result);
+			return result;
 		}
 
 		this.#isValidating = true;
@@ -224,7 +273,7 @@ export class FieldBondState<
 
 			this.#errors = result.errors;
 
-			onvalidation?.({ data: result.data, errors: this.#errors });
+			onvalidation?.(result);
 
 			return result;
 		} finally {
