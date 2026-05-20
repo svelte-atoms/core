@@ -12,7 +12,7 @@
 	let {
 		class: klass = '',
 		value = $bindable(),
-		placeholder = 'example.com/path',
+		placeholder = '',
 		disabled = false,
 		readonly = false,
 		preset: presetKey = 'input.url',
@@ -186,7 +186,7 @@
 		<!-- Offset to match input scroll position -->
 		<span style="transform: translateX(-{scrollLeft}px)">
 			{#if segments.length}
-				{#each segments as seg}
+				{#each segments as seg (seg)}
 					<span style={kindStyle[seg.kind]}>{seg.text}</span>
 				{/each}
 			{:else}
