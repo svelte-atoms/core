@@ -20,12 +20,13 @@
 
 	let {
 		class: klass = '',
-		as = 'div',
+		as = undefined,
 		base = undefined,
 		preset: presetKey = undefined,
 		bond = undefined,
 		variants = undefined,
-		children: childrenProp = undefined,
+		fallback = undefined,
+		children: children = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> = $props();
 
@@ -59,26 +60,39 @@
 
 	const finalBase = $derived(base ?? preset?.base);
 	const finalAs = $derived(as ?? preset?.as);
-	const finalRestProps = $derived(extractRestProps(preset, mergedVariants, restProps));
+	const finalRestProps = $derived(extractRestProps(preset, mergedVariants, restProps, fallback));
 
 	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
 
-	const renderer = $derived.by(() => {
-		if (isSnippetBase(finalBase))
-			return {
-				component: SnippetRenderer,
-				props: { snippet: finalBase, class: finalKlass, as: finalAs, children: childrenProp, ...finalRestProps }
-			};
+	// Memoize the snippet check so the renderer component / props don't both
+	// recompute it on every reactive tick.
+	const baseIsSnippet = $derived(isSnippetBase(finalBase));
 
-		return {
-			component: finalBase ?? atom,
-			props: { class: finalKlass, as: finalAs, ...finalRestProps }
-		};
-	}) as { component: Component; props: Record<string, any> };
+	// Track the renderer component and its props as INDEPENDENT signals.
+	// - `rendererComponent` only flips when the underlying base/atom changes,
+	//   so Svelte won't tear down + remount when only props change.
+	// - `rendererProps` re-allocates when any prop changes, but doesn't drag
+	//   the component identity with it (no nested `{ component, props }` wrapper).
+	const RendererComponent = $derived(
+		baseIsSnippet ? (SnippetRenderer as unknown as Component) : ((finalBase ?? atom) as Component)
+	);
+
+	const rendererProps = $derived.by((): Record<string, unknown> => {
+		if (baseIsSnippet) {
+			return {
+				snippet: finalBase,
+				class: finalKlass,
+				as: finalAs,
+				children: children,
+				...finalRestProps
+			};
+		}
+		return { class: finalKlass, as: finalAs, ...finalRestProps };
+	});
+
+	function forwardChildren(...args: any[]) {
+		return children?.(...args);
+	}
 </script>
 
-<renderer.component {...renderer.props}>
-	{#snippet children(args: any)}
-		{@render (childrenProp as any)?.(args)}
-	{/snippet}
-</renderer.component>
+<RendererComponent {...rendererProps} children={forwardChildren} />

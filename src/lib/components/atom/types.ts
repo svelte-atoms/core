@@ -105,6 +105,17 @@ export interface HtmlAtomProps<
 	 * ```
 	 */
 	variants?: Variants;
+
+	/**
+	 * Fallback props applied **before** the preset, so user/preset configuration
+	 * overrides them. Useful for component implementers who want sensible
+	 * defaults (e.g. `animate`, `enter`, `exit`, `initial`) without preventing
+	 * downstream consumers from customizing via presets.
+	 *
+	 * Merge order (last wins): `fallback` → `preset` → `variants` → `restProps`.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	fallback?: Record<string, any> | undefined;
 }
 
 export type { ElementType };
