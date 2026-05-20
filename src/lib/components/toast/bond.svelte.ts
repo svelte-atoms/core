@@ -78,7 +78,7 @@ export class ToastCloseAtom extends BondAtom<ToastBond> {
 	}
 
 	override get attrs() {
-		const isButton = this.element instanceof HTMLButtonElement;
+		const isButton = (this.element as any)?.tagName?.toLowerCase() === 'button';
 		return {
 			...super.attrs,
 			type: isButton ? 'button' : undefined,
