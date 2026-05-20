@@ -108,9 +108,41 @@ export class PopoverState<
 	Props extends PopoverStateProps = PopoverStateProps
 > extends BondState<Props> {
 	position = $state<ComputePositionReturn>();
+	/**
+	 * Controls whether the positioning strategy should actively compute the
+	 * popover position. Defaults to `open` when unset, but can be toggled
+	 * independently to keep computing while the content is hiding, or to
+	 * start computing on hover before the popover is opened.
+	 */
+	tracking = $state<boolean | undefined>(undefined);
+
+	#computedResolve!: (position: ComputePositionReturn) => void;
+	/**
+	 * A promise that resolves with the next position computation. The promise
+	 * is renewed after each resolution, so consumers can `await bond.state.computed`
+	 * repeatedly to wait for subsequent computations.
+	 */
+	computed: Promise<ComputePositionReturn> = this.#createComputed();
 
 	constructor(props: () => Props) {
 		super(props);
+	}
+
+	#createComputed() {
+		return new Promise<ComputePositionReturn>((resolve) => {
+			this.#computedResolve = resolve;
+		});
+	}
+
+	/** Notify awaiters of a fresh computation and renew the promise. */
+	notifyComputed(position: ComputePositionReturn) {
+		this.position = position;
+		this.#computedResolve(position);
+		this.computed = this.#createComputed();
+	}
+
+	get shouldTrackPosition() {
+		return this.tracking ?? this.isOpen;
 	}
 
 	get isOpen() {
