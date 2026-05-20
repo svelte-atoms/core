@@ -162,20 +162,16 @@ export const preset: Partial<Preset> = {
 					class: 'bg-transparent hover:bg-accent/90 active:bg-accent/100 text-accent-foreground'
 				},
 				warning: {
-					class:
-						'bg-yellow-500/5 text-yellow-500 border-yellow-500/50 border hover:bg-yellow-500/8 active:bg-yellow-500/10'
+					class: 'bg-warning/5 text-warning border-warning/50 border hover:bg-warning/8 active:bg-warning/10'
 				},
 				info: {
-					class:
-						'bg-blue-500/5 text-blue-500 border-blue-500/50 border hover:bg-blue-500/8 active:bg-blue-500/10'
+					class: 'bg-info/5 text-info border-info/50 border hover:bg-info/8 active:bg-info/10'
 				},
 				success: {
-					class:
-						'bg-green-500/5 text-green-500 border-green-500/50 border hover:bg-green-500/8 active:bg-green-500/10'
+					class: 'bg-success/5 text-success border-success/50 border hover:bg-success/8 active:bg-success/10'
 				},
 				error: {
-					class:
-						'bg-red-500/5 text-red-500 border-red-500/50 border hover:bg-red-500/8 active:bg-red-500/10'
+					class: 'bg-destructive/5 text-destructive border-destructive/50 border hover:bg-destructive/8 active:bg-destructive/10'
 				}
 			}
 		},
@@ -243,5 +239,27 @@ export const preset: Partial<Preset> = {
 	'dropdown.trigger': () => ({
 		base: Input.Root,
 		class: ''
+	}),
+	toast: () => ({
+		class:
+			'relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md backdrop-blur-xs',
+		variants: {
+			variant: {
+				default: { class: 'bg-card text-card-foreground border-border' },
+				info: { class: 'bg-info/5 text-info border-info/30' },
+				success: { class: 'bg-success/10 text-success border-success/30' },
+				warning: { class: 'bg-warning/10 text-warning border-warning/30' },
+				error: { class: 'bg-destructive/10 text-destructive border-destructive/30' }
+			}
+		}
+	}),
+	'toast.title': () => ({
+		class: 'text-sm font-medium leading-tight'
+	}),
+	'toast.description': () => ({
+		class: 'text-sm opacity-80'
+	}),
+	'toast.close': () => ({
+		class: 'absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100'
 	})
 };

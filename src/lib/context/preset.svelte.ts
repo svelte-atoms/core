@@ -158,11 +158,9 @@ export interface PresetModuleMap {
 	'scrollable.track': PresetEntry;
 	'scrollable.thumb': PresetEntry;
 	toast: PresetEntry;
-	'toast.toaster': PresetEntry;
-	'toast.item': PresetEntry;
 	'toast.title': PresetEntry;
 	'toast.description': PresetEntry;
-	'toast.close-button': PresetEntry;
+	'toast.close': PresetEntry;
 	breadcrumb: PresetEntry;
 	'breadcrumb.item': PresetEntry;
 	'breadcrumb.separator': PresetEntry;

@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { Toaster, toast } from '$lib/components/toast';
-	import { Button } from '$lib/components/button';
 	import {
 		DocPage,
 		DocSection,
-		DocExample,
 		DocProps,
 		DocOnly,
 		DocInstallation,
 		DocAccessibility,
 		DocCode,
 	} from '$docs/components';
-	import { toastRootProps, toastTitleProps, toastDescriptionProps } from './props';
+	import { toastRootProps, toastTitleProps, toastDescriptionProps, toastCloseProps } from './props';
 	import { metadata } from './shared';
+	import Examples from './examples.svelte';
 	import type { DocMode } from '$docs/context/doc-mode.svelte';
 	import type { Frontmatter } from '$docs/md/frontmatter';
 	import { newLine } from '$docs/md/template';
@@ -60,43 +58,17 @@
 		<DocInstallation packageName={metadata.packageName} importCode={metadata.importCode} />
 	</DocSection>
 
-	<DocSection title="Setup" subtitle="Add the Toaster component to your layout">
-		<DocCode code={`<!-- In your +layout.svelte -->
-<script>
-  import { Toaster } from '@svelte-atoms/core';
-<\/script>
-<Toaster />`} lang="svelte" />
-	</DocSection>
-
-	<DocSection title="Preset Configuration" subtitle="Customize the toast appearance using presets">
+	<DocSection title="Preset Configuration" subtitle="Customize toast appearance using preset keys">
 		<DocCode code={metadata.examples.preset} lang="typescript" />
 	</DocSection>
 
-	<DocSection title="Examples" subtitle="Trigger different toast notifications">
-		<DocExample title="Toast Variants" description="Different toast types for various contexts" code={metadata.examples.basic}>
-			<div class="flex flex-wrap gap-3">
-				<Button onclick={() => toast.default('This is a default toast message')}>Default</Button>
-				<Button onclick={() => toast.success('Operation completed successfully!')}>Success</Button>
-				<Button onclick={() => toast.error('Something went wrong.')}>Error</Button>
-				<Button onclick={() => toast.warning('Proceed with caution.')}>Warning</Button>
-				<Button onclick={() => toast.info('Here is some information.')}>Info</Button>
-			</div>
-		</DocExample>
-
-		<DocExample title="Toast with Description" description="Toast with title and description" code={metadata.examples.description}>
-			<Button onclick={() => toast.success('File saved', { description: 'Your document has been saved successfully.' })}>
-				Toast with Description
-			</Button>
-		</DocExample>
-
-		<DocExample title="Toast with Action" description="Toast containing an action button" code={metadata.examples.action}>
-			<Button onclick={() => toast.default('Item deleted', {
-				description: 'The item was removed.',
-				action: { label: 'Undo', onClick: () => {} }
-			})}>
-				Toast with Action
-			</Button>
-		</DocExample>
+	<DocSection title="Examples" subtitle="Imperative and declarative usage patterns">
+		<Examples
+			{contentType}
+			basicCode={metadata.examples.basic}
+			declarativeCode={metadata.examples.declarative}
+			autoDismissCode={metadata.examples.autoDismiss}
+		/>
 	</DocSection>
 
 	<DocSection title="API Reference">
@@ -106,9 +78,7 @@
 **Preset Key:** `toast`
 
 </DocOnly>
-				<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Toast.Root
-
-**Preset Key:** `toast`</h3></DocOnly>
+		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Toast.Root</h3></DocOnly>
 		<DocProps data={toastRootProps} />
 
 		<DocOnly for="markdown">
@@ -128,15 +98,18 @@
 </DocOnly>
 		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Toast.Description</h3></DocOnly>
 		<DocProps data={toastDescriptionProps} />
+
+		<DocOnly for="markdown">
+{newLine(2)}### Toast.Close
+
+**Preset Key:** `toast.close`
+
+</DocOnly>
+		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Toast.Close</h3></DocOnly>
+		<DocProps data={toastCloseProps} />
 	</DocSection>
 
 	<DocSection title="Accessibility">
 		<DocAccessibility features={metadata.accessibility} />
 	</DocSection>
-
-	<DocOnly for="markdown">
-{newLine(2)}## License
-
-MIT License
-	</DocOnly>
 </DocPage>
