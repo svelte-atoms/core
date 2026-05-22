@@ -1,6 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
-import { merge } from 'es-toolkit';
+import { mergePresetRecords, resolvePreset } from '$svelte-atoms/core/components/atom/utils/preset';
 import type { Base } from '$svelte-atoms/core/components/atom';
 import type { Bond } from '../shared';
 import type { Attachment } from 'svelte/attachments';
@@ -18,10 +18,21 @@ export interface PresetEntryRecord {
 	attachments?: Attachment[];
 }
 
+/** A single preset entry value — either a record or a deferred factory returning one. */
+export type PresetEntryValue = PresetEntryRecord | (() => PresetEntryRecord);
+
+/**
+ * A preset entry — invoked with a bond and returns either a single
+ * {@link PresetEntryValue} or an array of them.
+ *
+ * Returning an array makes it easy to layer/merge preset configurations
+ * (e.g. base preset + per-route override + per-component override). Entries
+ * are merged in order, with later entries taking precedence.
+ */
 export type PresetEntry = (
 	bond: Bond | undefined | null,
 	...args: any[]
-) => PresetEntryRecord | (() => PresetEntryRecord);
+) => PresetEntryValue | Array<PresetEntryValue>;
 
 /**
  * Registry of all preset slot names → their PresetEntry type.
@@ -210,6 +221,34 @@ export function getPreset(...args: unknown[]) {
 }
 
 export function setPreset(preset: Partial<Preset>) {
-	const currentPreset = getPreset() || {};
-	return setContext(CONTEXT_KEY, merge(currentPreset, preset));
+	return mergePreset(() => preset);
+}
+
+export function mergePreset(
+	callback: (currentPreset: Partial<Preset> | undefined) => Partial<Preset>
+) {
+	const currentPreset = getPreset();
+	const override = callback(currentPreset);
+	const result: Partial<Preset> = { ...currentPreset };
+
+	const keys = Object.keys(override) as PresetModuleName[];
+	for (let i = 0; i < keys.length; i++) {
+		const k = keys[i];
+		const next = override[k];
+		if (!next) continue;
+		const existing = currentPreset?.[k];
+		if (existing) {
+			const e = existing, n = next;
+			result[k] = ((bond, ...args) => {
+				const a = resolvePreset(e(bond, ...args));
+				const b = resolvePreset(n(bond, ...args));
+				if (a && b) return mergePresetRecords([a, b]);
+				return a ?? b;
+			}) as PresetEntry;
+		} else {
+			result[k] = next;
+		}
+	}
+
+	return setContext(CONTEXT_KEY, result);
 }
