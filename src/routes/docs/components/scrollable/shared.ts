@@ -1,39 +1,3 @@
-const basicCode = `
-<Scrollable.Root>
-  <Scrollable.Container height={200}>
-    <Scrollable.Content>
-      <div>Long content...</div>
-    </Scrollable.Content>
-  </Scrollable.Container>
-</Scrollable.Root>`.trim();
-
-const horizontalCode = `
-<Scrollable.Root>
-  <Scrollable.Container>
-    <Scrollable.Content>
-      <div class="flex gap-4">
-        <div>Item 1</div>
-        <div>Item 2</div>
-      </div>
-    </Scrollable.Content>
-  </Scrollable.Container>
-</Scrollable.Root>`.trim();
-
-const bothCode = `
-<Scrollable.Root>
-  <Scrollable.Container height={300}>
-    <Scrollable.Content>
-      <div class="grid grid-cols-10 gap-4" style="min-width: 1200px;">
-        {#each Array(50) as _, i}
-          <div class="bg-muted rounded p-4 text-center">
-            {i + 1}
-          </div>
-        {/each}
-      </div>
-    </Scrollable.Content>
-  </Scrollable.Container>
-</Scrollable.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -116,9 +80,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		horizontal: horizontalCode,
-		both: bothCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

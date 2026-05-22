@@ -1,21 +1,3 @@
-const basicCode = `
-<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item href="/components">Components</Breadcrumb.Item>
-  <Breadcrumb.Separator />
-  <Breadcrumb.Item>Breadcrumb</Breadcrumb.Item>
-</Breadcrumb.Root>`.trim();
-
-const customSeparatorCode = `
-<Breadcrumb.Root>
-  <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item href="/docs">Docs</Breadcrumb.Item>
-  <Breadcrumb.Separator>></Breadcrumb.Separator>
-  <Breadcrumb.Item>Components</Breadcrumb.Item>
-</Breadcrumb.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -104,8 +86,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		customSeparator: customSeparatorCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

@@ -1,78 +1,3 @@
-const basicCode = `
-<Popover.Root>
-  <Popover.Trigger base={Button}>Open Popover</Popover.Trigger>
-  <Popover.Content>
-    <div class="max-w-xs p-4">
-      <h4 class="mb-2 font-semibold">Popover Title</h4>
-      <p class="text-muted-foreground text-sm">
-        This is the popover content with some helpful information.
-      </p>
-    </div>
-  </Popover.Content>
-</Popover.Root>`.trim();
-
-const positionsCode = `
-<Popover.Root placement="top">
-  <Popover.Trigger base={Button} variant="outline">Top</Popover.Trigger>
-  <Popover.Content>
-    <div class="p-3 text-sm">Top popover</div>
-  </Popover.Content>
-</Popover.Root>`.trim();
-
-const controlledCode = `
-<script lang="ts">
-  let isOpen = $state(false);
-</script>
-
-<Popover.Root bind:open={isOpen}>
-  <Popover.Trigger base={Button} variant="outline">
-    Account Settings
-  </Popover.Trigger>
-  <Popover.Content>
-    <div class="w-80 p-4">
-      <div class="mb-4 flex items-start justify-between">
-        <div>
-          <h4 class="font-semibold">User Account</h4>
-          <p class="text-muted-foreground text-sm">
-            Manage your account settings
-          </p>
-        </div>
-        <Button 
-          size="sm" 
-          variant="ghost" 
-          onclick={() => (isOpen = false)}
-        >
-          ✕
-        </Button>
-      </div>
-      
-      <div class="space-y-3">
-        <div class="flex items-center gap-3">
-          <div class="bg-primary text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full">
-            JD
-          </div>
-          <div>
-            <p class="text-sm font-medium">John Doe</p>
-            <p class="text-muted-foreground text-xs">
-              john.doe@example.com
-            </p>
-          </div>
-        </div>
-        
-        <div class="border-border border-t pt-3">
-          <Button variant="outline" size="sm" class="w-full">
-            Edit Profile
-          </Button>
-        </div>
-      </div>
-    </div>
-  </Popover.Content>
-</Popover.Root>
-
-<p class="text-muted-foreground text-sm">
-  Popover is {isOpen ? 'open' : 'closed'}
-</p>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -146,7 +71,6 @@ const componentsSummary = [
 	}
 ];
 
-// Metadata
 export const metadata = {
 	title: 'Popover - Svelte Atoms',
 	description: 'Floating content panel triggered by user interaction.',
@@ -161,9 +85,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		positions: positionsCode,
-		controlled: controlledCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { animateDrawerContent, clickoutDrawer, Drawer } from '$svelte-atoms/core/components/drawer';
+	import { clickoutDrawer, Drawer } from '$svelte-atoms/core/components/drawer';
 	import { Button } from '$svelte-atoms/core/components/button';
 	import { Badge } from '$svelte-atoms/core/components/badge';
 	import Icon from '$svelte-atoms/core/components/icon/icon.svelte';
@@ -52,7 +52,6 @@
 <Drawer.Root bind:open side="right">
 	<Drawer.Content
 		class="bg-background border-border fixed top-0 right-0 flex h-full w-80 flex-col border-l shadow-xl"
-		animate={animateDrawerContent({ ease: 'easeOut'})}
 		{@attach clickoutDrawer()}
 	>
 		<Drawer.Header class="border-border flex items-center justify-between border-b px-4 py-3">

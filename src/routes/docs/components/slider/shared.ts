@@ -1,64 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { Slider } from '@svelte-atoms/core';
-
-  let value = $state(42);
-</script>
-
-<div class="space-y-2">
-  <Slider bind:value min={0} max={100} step={1} />
-  <p class="text-sm text-muted-foreground">Value: {value}</p>
-</div>`.trim();
-
-const rangeCode = `
-<script lang="ts">
-  import { Slider } from '@svelte-atoms/core';
-
-  let temperature = $state(22);
-</script>
-
-<div class="space-y-2">
-  <Slider bind:value={temperature} min={-20} max={40} step={0.5} />
-  <p>{temperature}°C</p>
-</div>`.trim();
-
-const verticalCode = `
-<script lang="ts">
-  import { Slider } from '@svelte-atoms/core';
-
-  let volume = $state(65);
-</script>
-
-<div class="flex h-48 items-end gap-4">
-  <Slider bind:value={volume} orientation="vertical" class="h-40" />
-  <p class="text-sm">Volume: {volume}%</p>
-</div>`.trim();
-
-const customContentCode = `
-<script lang="ts">
-  import { Slider } from '@svelte-atoms/core';
-
-  let progress = $state(30);
-</script>
-
-<Slider bind:value={progress}>
-  {#snippet thumbContent({ value })}
-		<div class="relative size-full rounded-full border border-border bg-background shadow-sm">
-			<div class="absolute inset-1 rounded-full bg-primary"></div>
-			<span class="sr-only">Current value: {value}</span>
-    </div>
-  {/snippet}
-
-  {#snippet trackContent({ percent })}
-    <div class="relative h-2 w-full rounded-full bg-muted">
-			<div class="absolute inset-y-0 left-0 rounded-full bg-primary" style="width: {percent}%"></div>
-    </div>
-  {/snippet}
-</Slider>`.trim();
-
-const disabledCode = `
-<Slider value={30} disabled />`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -126,11 +65,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Slider' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		range: rangeCode,
-		vertical: verticalCode,
-		custom: customContentCode,
-		disabled: disabledCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

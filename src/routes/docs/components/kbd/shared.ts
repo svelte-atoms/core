@@ -1,31 +1,3 @@
-const basicCode = `
-<Kbd>⌘</Kbd>
-<Kbd>Ctrl</Kbd>
-<Kbd>Shift</Kbd>
-<Kbd>Enter</Kbd>`.trim();
-
-const shortcutKeysCode = `
-<Shortcut keys={['⌘', 'K']} />
-<Shortcut keys={['Ctrl', 'S']} />
-<Shortcut keys={['Ctrl', 'Shift', 'H']} />`.trim();
-
-const customSeparatorCode = `
-<Shortcut keys={['Ctrl', 'Alt', 'Del']} separator="+" />
-<Shortcut keys={['Alt', 'Tab']} separator="→" />`.trim();
-
-const manualCompositionCode = `
-<Shortcut>
-  <Kbd>⌘</Kbd>
-  <span class="text-muted-foreground text-xs">then</span>
-  <Kbd>K</Kbd>
-</Shortcut>`.trim();
-
-const inlineCode = `
-<p>
-  Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette,
-  or use <Shortcut keys={['Ctrl', 'Shift', 'P']} /> to access all commands.
-</p>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -78,11 +50,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Kbd' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		shortcutKeys: shortcutKeysCode,
-		customSeparator: customSeparatorCode,
-		manualComposition: manualCompositionCode,
-		inline: inlineCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

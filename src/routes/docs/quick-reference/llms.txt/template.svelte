@@ -144,10 +144,10 @@
 
 ## 🎭 Animation Examples
 
-### With Motion One
+### With @svelte-atoms/vibra
 
 {codeBlock(`<script>
-	import { animate } from 'motion';
+	import { animate } from '@svelte-atoms/vibra';
 
 	function handleEnter(el) {
 		return animate(el, { opacity: [0, 1], y: [-20, 0] }, { duration: 0.3 });

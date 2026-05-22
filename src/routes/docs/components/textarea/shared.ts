@@ -1,19 +1,3 @@
-const basicCode = `
-<Textarea.Root>
-  <Textarea.Control placeholder="Enter your message..." />
-</Textarea.Root>`.trim();
-
-const rowsCode = `
-<Textarea.Root>
-  <Textarea.Control rows={3} placeholder="Small (3 rows)" class="max-w-lg" />
-</Textarea.Root>
-<Textarea.Root>
-  <Textarea.Control rows={6} placeholder="Medium (6 rows)" class="max-w-lg" />
-</Textarea.Root>
-<Textarea.Root>
-  <Textarea.Control rows={10} placeholder="Large (10 rows)" class="max-w-lg" />
-</Textarea.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -80,8 +64,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		rows: rowsCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

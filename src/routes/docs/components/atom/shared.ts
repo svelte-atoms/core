@@ -1,14 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { HtmlAtom } from '@svelte-atoms/core';
-<\/script>
-
-<HtmlAtom>Default div element</HtmlAtom>
-
-<HtmlAtom as="button" class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-  Click me
-</HtmlAtom>`.trim();
-
 const compositionCode = `
 <script lang="ts">
   import { HtmlAtom } from '@svelte-atoms/core';
@@ -36,34 +25,6 @@ const animationCode = `
     Animated content
   </HtmlAtom>
 {/if}`.trim();
-
-const variantsCode = `
-<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
-  
-  const variants = defineVariants({
-    variants: {
-      variant: {
-        primary: { class: 'bg-blue-500 text-white' },
-        secondary: { class: 'bg-gray-500 text-white' }
-      },
-      size: {
-        sm: { class: 'px-2 py-1 text-sm' },
-        md: { class: 'px-4 py-2' },
-        lg: { class: 'px-6 py-3 text-lg' }
-      }
-    }
-  });
-<\/script>
-
-<HtmlAtom 
-  as="button" 
-  variants={variants}
-  variant="primary"
-  size="md"
->
-  Styled Button
-</HtmlAtom>`.trim();
 
 const customComponentCode = `
 <script lang="ts">
@@ -153,10 +114,8 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Atom' }],
 	useCases,
 	examples: {
-		basic: basicCode,
 		composition: compositionCode,
 		animation: animationCode,
-		variants: variantsCode,
 		customComponent: customComponentCode,
 		preset: presetCode
 	},

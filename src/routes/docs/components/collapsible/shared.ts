@@ -1,38 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  let open = $state(false);
-<\/script>
-
-<Collapsible.Root bind:open>
-  <Collapsible.Header>
-    Toggle Content
-  </Collapsible.Header>
-  <Collapsible.Body>
-    <p>This content can be shown or hidden.</p>
-  </Collapsible.Body>
-</Collapsible.Root>`.trim();
-
-const controlledCode = `
-<script lang="ts">
-  let isOpen = $state(true);
-<\/script>
-
-<Collapsible.Root bind:open={isOpen}>
-  <Collapsible.Header>
-    <span>Controlled Collapsible</span>
-    <span>{isOpen ? 'Open' : 'Closed'}</span>
-  </Collapsible.Header>
-  <Collapsible.Body>
-    <div>
-      <p>This collapsible is controlled by external state.</p>
-    </div>
-  </Collapsible.Body>
-</Collapsible.Root>
-
-<button onclick={() => (isOpen = !isOpen)}>
-  Toggle from Outside
-</button>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -126,8 +91,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		controlled: controlledCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

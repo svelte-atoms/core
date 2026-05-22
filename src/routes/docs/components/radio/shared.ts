@@ -1,14 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  let selected = $state('option1');
-<\/script>
-
-<RadioGroup bind:value={selected}>
-  <Radio value="option1">Option 1<\/Radio>
-  <Radio value="option2">Option 2<\/Radio>
-  <Radio value="option3">Option 3<\/Radio>
-<\/RadioGroup>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -75,7 +64,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

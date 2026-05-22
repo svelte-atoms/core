@@ -1,26 +1,3 @@
-const basicCode = `
-<Badge>Default</Badge>`.trim();
-
-const variantsCode = `
-<Badge variant="default">Default</Badge>
-<Badge variant="primary">Primary</Badge>
-<Badge variant="success">Success</Badge>
-<Badge variant="warning">Warning</Badge>
-<Badge variant="error">Error</Badge>`.trim();
-
-const sizesCode = `
-<Badge size="sm">Small</Badge>
-<Badge size="md">Medium</Badge>
-<Badge size="lg">Large</Badge>`.trim();
-
-const notificationCode = `
-<div class="relative inline-block">
-  <button class="p-2">
-    <Icon name="bell" />
-  </button>
-  <Badge class="absolute -top-1 -right-1">3</Badge>
-</div>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -85,10 +62,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Badge' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		variants: variantsCode,
-		sizes: sizesCode,
-		notification: notificationCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

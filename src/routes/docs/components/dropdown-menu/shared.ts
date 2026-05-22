@@ -1,25 +1,3 @@
-const basicCode = `
-<DropdownMenu.Root>
-  <DropdownMenu.Trigger base={Button}>Open Menu</DropdownMenu.Trigger>
-  <DropdownMenu.Content class="max-w-xs rounded-lg border">
-    <DropdownMenu.Item>New File</DropdownMenu.Item>
-    <DropdownMenu.Item>Open File</DropdownMenu.Item>
-    <DropdownMenu.Item>Save</DropdownMenu.Item>
-    <DropdownMenu.Item>Save As...</DropdownMenu.Item>
-    <DropdownMenu.Item class="text-red-600">Exit</DropdownMenu.Item>
-  </DropdownMenu.Content>
-</DropdownMenu.Root>`.trim();
-
-const interactiveCode = `
-<DropdownMenu.Root>
-  <DropdownMenu.Trigger base={Button}>Open Menu</DropdownMenu.Trigger>
-  <DropdownMenu.Content class="max-w-xs rounded-lg border">
-    <DropdownMenu.Item onclick={() => alert('Profile clicked')}>Profile</DropdownMenu.Item>
-    <DropdownMenu.Item onclick={() => alert('Settings clicked')}>Settings</DropdownMenu.Item>
-    <DropdownMenu.Item onclick={() => alert('Logout clicked')}>Logout</DropdownMenu.Item>
-  </DropdownMenu.Content>
-</DropdownMenu.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -113,8 +91,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		interactive: interactiveCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

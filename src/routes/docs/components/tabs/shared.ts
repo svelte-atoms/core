@@ -1,45 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  let activeTab = $state('tab1');
-</script>
-
-<Tabs.Root bind:value={activeTab}>
-  <Tabs.Header>
-    <Tab.Root value="tab1">
-      <Tab.Header>Tab 1</Tab.Header>
-      <Tab.Body>Content 1</Tab.Body>
-    </Tab.Root>
-    <Tab.Root value="tab2">
-      <Tab.Header>Tab 2</Tab.Header>
-      <Tab.Body>Content 2</Tab.Body>
-    </Tab.Root>
-  </Tabs.Header>
-  <Tabs.Body>
-    <Tabs.Content />
-  </Tabs.Body>
-</Tabs.Root>`.trim();
-
-const contentCode = `
-<script lang="ts">
-  let exampleTab = $state('overview');
-</script>
-
-<Tabs.Root bind:value={exampleTab}>
-  <Tabs.Header>
-    <Tab.Root value="overview">
-      <Tab.Header>Overview</Tab.Header>
-      <Tab.Body>Content</Tab.Body>
-    </Tab.Root>
-    <Tab.Root value="features">
-      <Tab.Header>Features</Tab.Header>
-      <Tab.Body>More content</Tab.Body>
-    </Tab.Root>
-  </Tabs.Header>
-  <Tabs.Body>
-    <Tabs.Content />
-  </Tabs.Body>
-</Tabs.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -151,8 +109,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		content: contentCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

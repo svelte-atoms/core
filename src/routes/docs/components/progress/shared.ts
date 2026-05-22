@@ -1,24 +1,3 @@
-const linearBasicCode = `
-<ProgressLinear value={60} />`.trim();
-
-const linearIndeterminateCode = `
-<!-- Pass null (or omit value) for an indeterminate animation -->
-<ProgressLinear value={null} />`.trim();
-
-const circularBasicCode = `
-<ProgressCircular value={65} />`.trim();
-
-const circularIndeterminateCode = `
-<ProgressCircular value={null} />`.trim();
-
-const compositionLabelCode = `
-<script lang="ts">
-  let downloaded = $state(80);
-</script>
-
-<ProgressLinear value={downloaded} />
-<span class="text-primary text-xs font-bold">{downloaded} / 100 MB</span>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -86,11 +65,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Progress' }],
 	useCases,
 	examples: {
-		linearBasic: linearBasicCode,
-		linearIndeterminate: linearIndeterminateCode,
-		circularBasic: circularBasicCode,
-		circularIndeterminate: circularIndeterminateCode,
-		compositionLabel: compositionLabelCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

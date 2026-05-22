@@ -12,7 +12,7 @@
 
 	const motionExample = `${open}
 	import { Component, toTransitionConfig } from '@svelte-atoms/core';
-	import { animate } from 'motion';
+	import { animate } from '@svelte-atoms/vibra';
 ${close}
 
 <Component
@@ -50,7 +50,7 @@ ${close}
 
 	const accordionExample = `${open}
 	import { Accordion, AccordionItem, toTransitionConfig } from '@svelte-atoms/core';
-	import { animate } from 'motion';
+	import { animate } from '@svelte-atoms/vibra';
 ${close}
 
 <Accordion>
@@ -98,7 +98,7 @@ ${close}
 
 # Transitions & Animations
 
-Most components in {inlineCode('@svelte-atoms/core')} support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using Motion, Svelte transitions, or custom animation libraries.
+Most components in {inlineCode('@svelte-atoms/core')} support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using {inlineCode('@svelte-atoms/vibra')}, Svelte transitions, or custom animation libraries.
 
 ## Animation Hooks
 
@@ -109,9 +109,9 @@ Components that support transitions typically provide these props:
 - {inlineCode('exit')} - Define the exit animation when element disappears
 - {inlineCode('animate')} - Define animations that run when the element's state changes
 
-## Using Motion (Recommended)
+## Using @svelte-atoms/vibra (Recommended)
 
-The recommended approach is to use the {inlineCode('motion')} library with the {inlineCode('toTransitionConfig')} helper:
+The recommended approach is to use {inlineCode('@svelte-atoms/vibra')} with the {inlineCode('toTransitionConfig')} helper:
 
 {codeBlock(motionExample, 'svelte')}
 
