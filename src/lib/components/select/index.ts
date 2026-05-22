@@ -20,6 +20,6 @@ export * from './types';
 export type {
 	AnimatePopoverContentParams as AnimateSelectContentParams,
 	animatePopoverContent as animateSelectContent
-} from '../popover/motion';
+} from '../popover/motion.svelte';
 
 export { select } from './attachments.svelte';

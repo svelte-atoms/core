@@ -33,7 +33,8 @@ export type PortalOuterProps<
 
 export type TeleportProps<
 	E extends HtmlElementTagName = 'div',
-	B extends Base = Base
-> = HtmlAtomProps<E, B, PortalChildren> & {
+	B extends Base = Base,
+	Children extends Snippet<unknown[]> = PortalChildren
+> = HtmlAtomProps<E, B, Children> & {
 	portal?: string | PortalBond;
 };

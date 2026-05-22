@@ -51,6 +51,7 @@ export type TriggerParams = {
 export type PopoverDomElements = {
 	trigger: HTMLElement;
 	'virtual-trigger'?: BondVirtualElement;
+	overlay: HTMLElement;
 	content: HTMLElement;
 	indicator: HTMLElement;
 	arrow: HTMLElement;
@@ -74,6 +75,11 @@ export class PopoverBond<
 	/** Handle for granular access to the virtual trigger reference */
 	virtualTrigger() {
 		return this.atom('virtual-trigger', () => new PopoverVirtualTriggerAtom(this));
+	}
+
+	/** Handle for granular access to content attrs, handlers, and attachment */
+	overlay() {
+		return this.atom('overlay', () => new PopoverOverlayAtom(this));
 	}
 
 	/** Handle for granular access to content attrs, handlers, and attachment */
@@ -206,9 +212,9 @@ export class PopoverVirtualTriggerAtom extends BondAtom<PopoverBond, BondVirtual
 	}
 }
 
-export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
+export class PopoverOverlayAtom extends BondAtom<PopoverBond, HTMLElement> {
 	constructor(bond: PopoverBond) {
-		super(bond, 'content');
+		super(bond, 'overlay');
 	}
 
 	override get attrs() {
@@ -263,6 +269,33 @@ export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
 		if (!triggerContainsFocus) {
 			setTimeout(() => focus(node, ['textarea:not([disabled])', 'input:not([disabled])']), 0);
 		}
+	}
+}
+
+export class PopoverContentAtom extends BondAtom<PopoverBond, HTMLElement> {
+	constructor(bond: PopoverBond) {
+		super(bond, 'content');
+	}
+
+	override get attrs() {
+		const isOpen = this.bond.state?.props?.open ?? false;
+		const isDisabled = this.bond.state?.props?.disabled ?? false;
+
+		const isActive = isOpen && !isDisabled;
+
+		return {
+			...super.attrs,
+			'data-active': isActive
+		};
+	}
+
+	override get handlers() {
+		return {};
+	}
+
+	override onmount(_node: HTMLElement) {
+		void _node;
+		return;
 	}
 }
 
