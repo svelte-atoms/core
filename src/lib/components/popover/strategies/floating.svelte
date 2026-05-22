@@ -15,10 +15,10 @@
 
 	const tracking = $derived(bond?.state.shouldTrackPosition ?? false);
 	const reference = $derived(bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger'));
-	const content = $derived(bond?.element<HTMLElement>('content'));
+	const overlay = $derived(bond?.element<HTMLElement>('overlay'));
 
 	$effect.pre(() => {
-		if (!reference || !content || !tracking) return;
+		if (!reference || !overlay || !tracking) return;
 
 		// Use the existing positioning behavior
 		const cleanup = compute(bond)({}, autoUpdate);
@@ -33,7 +33,7 @@
 			const arrowElement = bond.element<HTMLElement>('arrow');
 
 			// Guard: ensure required elements exist
-			if (!reference || !content) {
+			if (!reference || !overlay) {
 				return;
 			}
 
@@ -69,7 +69,7 @@
 				// Double rAF ensures browser has completed layout + paint
 				await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-				const position = await computePosition(reference, content, {
+				const position = await computePosition(reference, overlay, {
 					placement: placement ?? 'bottom',
 					middleware,
 					strategy: bond.state.props.positionStrategy
@@ -86,19 +86,19 @@
 					x,
 					y
 				});
-				onchangeCallback?.(content, position);
+				onchangeCallback?.(overlay, position);
 
 				// Set minimum width to match trigger
 				if (reference && (reference instanceof Element)) {
 					requestAnimationFrame(() => {
-						content.style.minWidth = `${reference.clientWidth}px`;
+						overlay.style.minWidth = `${reference.clientWidth}px`;
 					});
 				}
 			};
 
 			// Use auto-update if provided, otherwise compute once
 			if (updater) {
-				return updater(reference, content, compute, {
+				return updater(reference, overlay, compute, {
 					ancestorScroll: false
 				});
 			}

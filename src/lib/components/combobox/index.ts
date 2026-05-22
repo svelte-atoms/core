@@ -5,4 +5,4 @@ export * from './types';
 export type {
 	AnimatePopoverContentParams as AnimateComboboxContentParams,
 	animatePopoverContent as animateComboboxContent
-} from '../popover/motion';
+} from '../popover/motion.svelte';

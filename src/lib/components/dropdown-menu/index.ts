@@ -12,7 +12,7 @@ export {
 export type {
 	AnimatePopoverContentParams as AnimateDropdownMenuContentParams,
 	animatePopoverContent as animateDropdownMenuContent
-} from '../popover/motion';
+} from '../popover/motion.svelte';
 
 export * from './item';
 export { dropdownMenu } from './attachments.svelte';

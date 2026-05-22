@@ -1,10 +1,10 @@
-import type { Snippet } from 'svelte';
+import type { Component, Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
 import type { Factory } from '$svelte-atoms/core/types';
 import type { PopoverBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
-import type { PortalBond } from '../portal';
+import type { PortalBond, TeleportProps } from '../portal';
 
 export type PopoverChildren = Snippet<[{ popover: PopoverBond }]>;
 
@@ -28,10 +28,19 @@ export interface AnimateParams {
 	open: boolean;
 }
 
+export interface PopoverOverlayProps<
+	E extends HtmlElementTagName = 'div',
+	B extends Base = Base
+> extends TeleportProps<E, B, PopoverChildren> {
+	portal: string | PortalBond;
+	children?: PopoverChildren;
+}
+
 export interface PopoverContentProps<
 	T extends HtmlElementTagName,
 	B extends Base = Base
 > extends HtmlAtomProps<T, B, PopoverChildren> {
+	overlay?: Component<PopoverOverlayProps>;
 	onclickoutside?: (ev: PointerEvent, atom: PopoverBond) => void;
 }
 
