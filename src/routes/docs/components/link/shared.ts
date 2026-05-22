@@ -1,21 +1,3 @@
-const basicCode = `
-<Link href="/about">About Us</Link>`.trim();
-
-const externalCode = `
-<Link href="https://example.com" target="_blank" rel="noopener noreferrer">
-  Visit Example
-</Link>`.trim();
-
-const variantsCode = `
-<Link variant="default">Default Link<\/Link>
-<Link variant="muted">Muted Link<\/Link>
-<Link variant="underline">Underlined Link<\/Link>`.trim();
-
-const sizesCode = `
-<Link size="sm">Small Link</Link>
-<Link size="md">Medium Link</Link>
-<Link size="lg">Large Link</Link>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -80,10 +62,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Link' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		external: externalCode,
-		variants: variantsCode,
-		sizes: sizesCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

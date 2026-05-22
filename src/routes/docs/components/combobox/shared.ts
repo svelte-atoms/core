@@ -1,98 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { Combobox } from '@svelte-atoms/core';
-  import { Input } from '@svelte-atoms/core';
-
-  let value = $state<string | undefined>();
-  let label = $state<string | undefined>();
-  
-  const options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ];
-<\/script>
-
-<Combobox.Root bind:value bind:label>
-  <Combobox.Trigger base={Input.Root}>
-    <Combobox.Control placeholder="Select an option..." />
-  </Combobox.Trigger>
-
-  <Combobox.Content>
-    {#each options as option (option.value)}
-      <Combobox.Item value={option.value}>{option.label}</Combobox.Item>
-    {/each}
-  </Combobox.Content>
-</Combobox.Root>`.trim();
-
-const multipleCode = `
-<script lang="ts">
-  import { Combobox } from '@svelte-atoms/core';
-  import { Input } from '@svelte-atoms/core';
-
-  let values = $state<string[]>([]);
-  let labels = $state<string[]>([]);
-  
-  const options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ];
-<\/script>
-
-<Combobox.Root bind:values bind:labels multiple>
-  <Combobox.Trigger base={Input.Root} class="flex h-auto min-h-10 flex-col items-start gap-2">
-    <Combobox.Control placeholder="Select multiple options..." />
-    <Combobox.Selections />
-  </Combobox.Trigger>
-
-  <Combobox.Content>
-    {#each options as option (option.value)}
-      <Combobox.Item value={option.value}>{option.label}</Combobox.Item>
-    {/each}
-  </Combobox.Content>
-</Combobox.Root>`.trim();
-
-const filterCode = `
-<script lang="ts">
-  import { Combobox } from '@svelte-atoms/core';
-  import { Input, Divider } from '@svelte-atoms/core';
-  import { filterDropdownData } from '@svelte-atoms/core/components/dropdown';
-
-  let value = $state<string | undefined>();
-  let label = $state<string | undefined>();
-  
-  let currencies = [
-    { value: 'usd', label: 'US Dollar' },
-    { value: 'eur', label: 'Euro' },
-    { value: 'gbp', label: 'British Pound' }
-  ];
-
-  const filteredItems = filterDropdownData(
-    () => currencies,
-    (query, item) => item.label.toLowerCase().includes(query.toLowerCase())
-  );
-<\/script>
-
-<Combobox.Root bind:value bind:label>
-  <Combobox.Trigger base={Input.Root}>
-    <Input.Icon class="text-foreground/50">$</Input.Icon>
-    <Divider vertical class="mx-1" />
-    <Combobox.Control placeholder="Select a currency..." />
-  </Combobox.Trigger>
-
-  <Combobox.Content>
-    <input 
-      bind:value={filteredItems.query} 
-      class="border-border border-b px-4 py-3"
-      placeholder="Type to filter..." 
-    />
-    {#each filteredItems.current as item (item.value)}
-      <Combobox.Item value={item.value}>{item.label}</Combobox.Item>
-    {/each}
-  </Combobox.Content>
-</Combobox.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -195,11 +100,8 @@ export const metadata = {
 	importCode: "import { Combobox } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Combobox' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
-		basic: basicCode,
-		multiple: multipleCode,
-		filter: filterCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

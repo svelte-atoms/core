@@ -47,7 +47,7 @@ export const preset: Partial<Preset> = {
 		const data = buttonVariants();
 
 		return {
-			class: 'transition-colors duration-100',
+			class: 'transition-colors duration-100 h-6',
 			variants: {
 				variant: data?.variant
 			},

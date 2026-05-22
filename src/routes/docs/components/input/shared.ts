@@ -1,38 +1,3 @@
-const basicCode = `
-<Input.Root>
-  <Input.Control placeholder="Enter text..." />
-</Input.Root>`.trim();
-
-const typesCode = `
-<Input.Root>
-  <Input.Control type="text" placeholder="Text input" />
-</Input.Root>
-
-<Input.Root>
-  <Input.Control type="email" placeholder="Email input" />
-</Input.Root>
-
-<Input.Root>
-  <Input.Control type="password" placeholder="Password input" />
-</Input.Root>
-
-<Input.Root>
-  <Input.Control type="number" placeholder="Number input" />
-</Input.Root>`.trim();
-
-const withIconCode = `
-<Input.Root>
-  <Input.Icon>$</Input.Icon>
-  <Input.Control placeholder="0.00" />
-  <Input.Icon>.00</Input.Icon>
-</Input.Root>`.trim();
-
-const withPlaceholderCode = `
-<Input.Root>
-  <Input.Control />
-  <Input.Placeholder>Enter your email...</Input.Placeholder>
-</Input.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -273,10 +238,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		types: typesCode,
-		withIcon: withIconCode,
-		withPlaceholder: withPlaceholderCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures,

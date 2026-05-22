@@ -1,63 +1,3 @@
-const basicCode = `
-<Accordion>
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      What is Svelte Atoms?
-      <AccordionItem.Indicator />
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Svelte Atoms is a modular, accessible, and extensible 
-      Svelte 5 UI component library with TailwindCSS.
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      How do I install it?
-      <AccordionItem.Indicator />
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Run: npm install @svelte-atoms/core
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`.trim();
-
-const collapsibleCode = `
-<Accordion collapsible>
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      What is Svelte Atoms?
-      <AccordionItem.Indicator />
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      A modular UI component library for Svelte 5.
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>
-      How do I install it?
-      <AccordionItem.Indicator />
-    </AccordionItem.Header>
-    <AccordionItem.Body>
-      Run: npm install @svelte-atoms/core
-    </AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`.trim();
-
-const multipleCode = `
-<Accordion multiple={true}>
-  <AccordionItem.Root>
-    <AccordionItem.Header>Section 1</AccordionItem.Header>
-    <AccordionItem.Body>Content 1</AccordionItem.Body>
-  </AccordionItem.Root>
-  
-  <AccordionItem.Root>
-    <AccordionItem.Header>Section 2</AccordionItem.Header>
-    <AccordionItem.Body>Content 2</AccordionItem.Body>
-  </AccordionItem.Root>
-</Accordion>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -159,9 +99,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		collapsible: collapsibleCode,
-		multiple: multipleCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

@@ -1,21 +1,11 @@
 <script lang="ts">
-	import { Dialog } from '$lib/components/dialog';
-	import { Button } from '$lib/components/button';
-	import {
-		DocPage,
-		DocSection,
-		DocExample,
-		DocProps,
-		DocOnly,
-		DocInstallation,
-		DocAccessibility,
-		DocCode,
-	} from '$docs/components';
-	import { dialogProps, dialogContentProps, dialogHeaderProps, dialogBodyProps, dialogFooterProps } from './props';
+	import { createExampleLoader } from '$docs/utils/example-loader';
+	import { DocComponentPage, DocExample, DocCode, DocPropsTabs } from '$docs/components';
+	import type { PropsSection } from '$docs/components';
+	import { dialogProps, dialogContentProps, dialogHeaderProps, dialogBodyProps, dialogFooterProps, dialogTitleProps, dialogDescriptionProps, dialogCloseButtonProps } from './props';
 	import { metadata } from './shared';
 	import type { DocMode } from '$docs/context/doc-mode.svelte';
 	import type { Frontmatter } from '$docs/md/frontmatter';
-	import { newLine } from '$docs/md/template';
 
 	let { contentType = 'html' }: { contentType?: DocMode } = $props();
 
@@ -27,145 +17,41 @@
 		prerequisites: [],
 		related: [],
 	};
+
+	const apiSections: PropsSection[] = [
+		{ label: 'Dialog.Root', presetKey: 'dialog', props: dialogProps },
+		{ label: 'Dialog.Content', presetKey: 'dialog.content', props: dialogContentProps },
+		{ label: 'Dialog.Header', presetKey: 'dialog.header', props: dialogHeaderProps },
+		{ label: 'Dialog.Body', presetKey: 'dialog.body', props: dialogBodyProps },
+		{ label: 'Dialog.Footer', presetKey: 'dialog.footer', props: dialogFooterProps },
+		{ label: 'Dialog.Title', presetKey: 'dialog.title', props: dialogTitleProps },
+		{ label: 'Dialog.Description', presetKey: 'dialog.description', props: dialogDescriptionProps },
+		{ label: 'Dialog.CloseButton', presetKey: 'dialog.close-button', props: dialogCloseButtonProps },
+	];
+
+	const _loaders = import.meta.glob('./examples/*.svelte');
+	const _sources = import.meta.glob('./examples/*.svelte', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+	const ex = createExampleLoader(_loaders, _sources);
 </script>
 
-<DocPage
+<DocComponentPage
 	{contentType}
-	title={metadata.componentTitle}
-	description={metadata.componentDescription}
-	status={metadata.status}
-	llms={true}
-	breadcrumbs={metadata.breadcrumbs}
+	{metadata}
+	{frontmatter}
 	prev={{ label: 'DataGrid', href: '/docs/components/datagrid' }}
 	next={{ label: 'Divider', href: '/docs/components/divider' }}
-	{frontmatter}
 >
-	<DocOnly for="markdown">
-		**Type**: Compound Component
-
-		## Use Cases
-
-		{#each metadata.useCases as uc, i (i)}
-		- **{uc.title}**: {uc.description}
-		{/each}
-
-		## Components
-
-		{#each metadata.componentsSummary as comp, i (i)}
-		- **{comp.name}**: {comp.description}
-		{/each}
-	</DocOnly>
-
-	<DocSection title="Installation">
-		<DocInstallation packageName={metadata.packageName} importCode={metadata.importCode} />
-	</DocSection>
-
-	<DocSection title="Preset Configuration" subtitle="Customize the dialog appearance using presets">
+	{#snippet preset()}
 		<DocCode code={metadata.examples.preset} lang="typescript" />
-	</DocSection>
+	{/snippet}
 
-	<DocSection title="Examples" subtitle="Explore different dialog variations and use cases">
-		<DocExample title="Basic Dialog" description="Modal dialog with a trigger button — no manual open state needed." code={metadata.examples.basic}>
-			<Dialog.Root>
-				{#snippet trigger({ dialog })}
-					<Button {...dialog.trigger()}>Open Dialog</Button>
-				{/snippet}
-				{#snippet children({ dialog })}
-					<Dialog.Content>
-						<Dialog.Header>
-							<h2 class="text-foreground text-lg font-semibold">Edit Profile</h2>
-							<Dialog.CloseButton class="ml-auto" />
-						</Dialog.Header>
-						<Dialog.Body class="text-muted-foreground text-sm">
-							<p>Make changes to your profile here. Click save when you're done.</p>
-						</Dialog.Body>
-						<Dialog.Footer class="flex justify-end gap-2">
-							<Button variant="outline" onclick={() => dialog.state.close()}>Cancel</Button>
-							<Button onclick={() => dialog.state.close()}>Save changes</Button>
-						</Dialog.Footer>
-					</Dialog.Content>
-				{/snippet}
-			</Dialog.Root>
-		</DocExample>
+	{#snippet examples()}
+		<DocExample title="Basic Dialog" description="Modal dialog with a trigger button — no manual open state needed." {...ex('./examples/basic.svelte')} />
 
-		<DocExample title="Destructive Action" description="Confirmation dialog for irreversible actions." code={metadata.examples.alert}>
-			<Dialog.Root>
-				{#snippet trigger({ dialog })}
-					<Button variant="destructive" {...dialog.trigger()}>Delete Account</Button>
-				{/snippet}
-				{#snippet children({ dialog })}
-					<Dialog.Content>
-						<Dialog.Header>
-							<h2 class="text-foreground text-lg font-semibold">Are you absolutely sure?</h2>
-							<Dialog.CloseButton class="ml-auto" />
-						</Dialog.Header>
-						<Dialog.Body class="text-muted-foreground text-sm">
-							<p>This action cannot be undone. This will permanently delete your account and remove all associated data.</p>
-						</Dialog.Body>
-						<Dialog.Footer class="flex justify-end gap-2">
-							<Button variant="outline" onclick={() => dialog.state.close()}>Cancel</Button>
-							<Button variant="destructive" onclick={() => dialog.state.close()}>Delete account</Button>
-						</Dialog.Footer>
-					</Dialog.Content>
-				{/snippet}
-			</Dialog.Root>
-		</DocExample>
-	</DocSection>
+		<DocExample title="Destructive Action" description="Confirmation dialog for irreversible actions." {...ex('./examples/destructive.svelte')} />
+	{/snippet}
 
-	<DocSection title="API Reference">
-		<DocOnly for="markdown">
-{newLine(2)}### Dialog.Root
-
-**Preset Key:** `dialog`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Dialog.Root</h3></DocOnly>
-		<DocProps data={dialogProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### Dialog.Content
-
-**Preset Key:** `dialog.content`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Dialog.Content</h3></DocOnly>
-		<DocProps data={dialogContentProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### Dialog.Header
-
-**Preset Key:** `dialog.header`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Dialog.Header</h3></DocOnly>
-		<DocProps data={dialogHeaderProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### Dialog.Body
-
-**Preset Key:** `dialog.body`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Dialog.Body</h3></DocOnly>
-		<DocProps data={dialogBodyProps} />
-
-		<DocOnly for="markdown">
-{newLine(2)}### Dialog.Footer
-
-**Preset Key:** `dialog.footer`
-
-</DocOnly>
-		<DocOnly for="html"><h3 class="text-foreground mb-3 mt-6 text-lg font-semibold">Dialog.Footer</h3></DocOnly>
-		<DocProps data={dialogFooterProps} />
-	</DocSection>
-
-	<DocSection title="Accessibility">
-		<DocAccessibility features={metadata.accessibility} />
-	</DocSection>
-
-	<DocOnly for="markdown">
-{newLine(2)}## License
-
-MIT License
-	</DocOnly>
-</DocPage>
+	{#snippet apiReference()}
+		<DocPropsTabs sections={apiSections} />
+	{/snippet}
+</DocComponentPage>

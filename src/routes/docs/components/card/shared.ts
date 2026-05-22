@@ -1,43 +1,3 @@
-const basicCode = `
-<script>
-  import { Card } from '@svelte-atoms/core';
-<\/script>
-
-<Card.Root>
-  <Card.Header>
-    <Card.Title>Card Title</Card.Title>
-    <Card.Subtitle>Card subtitle</Card.Subtitle>
-  </Card.Header>
-  <Card.Body>
-    <p>Main content goes here.</p>
-  </Card.Body>
-  <Card.Footer>
-    <button>Action</button>
-  </Card.Footer>
-</Card.Root>`.trim();
-
-const withMediaCode = `
-<Card.Root>
-  <Card.Media>
-    <img src="/card-image.jpg" alt="Card visual" />
-  </Card.Media>
-  <Card.Header>
-    <Card.Title>Media Card</Card.Title>
-    <Card.Description>Card with an image media section.</Card.Description>
-  </Card.Header>
-  <Card.Body>
-    <p>Card body content after the media section.</p>
-  </Card.Body>
-</Card.Root>`.trim();
-
-const clickableCode = `
-<Card.Root onclick={() => console.log('Clicked!')}>
-  <Card.Header>
-    <Card.Title>Clickable Card</Card.Title>
-    <Card.Description>Click anywhere on this card to trigger an action.</Card.Description>
-  </Card.Header>
-</Card.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -164,9 +124,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		withMedia: withMediaCode,
-		clickable: clickableCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

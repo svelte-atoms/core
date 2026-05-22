@@ -1,15 +1,3 @@
-const basicCode = `
-<Divider />`.trim();
-
-const orientationCode = `
-<Divider orientation="horizontal" />
-<Divider orientation="vertical" />`.trim();
-
-const labelCode = `
-<Divider>
-  <span>OR</span>
-</Divider>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -68,9 +56,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Divider' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		orientation: orientationCode,
-		label: labelCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

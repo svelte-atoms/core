@@ -414,7 +414,7 @@ export const metadata = {
 
 <!-- Custom animations should check preference -->
 <script>
-  import { animate } from 'motion';
+  import { animate } from '@svelte-atoms/vibra';
   
   function handleEnter(element) {
     const prefersReducedMotion = window.matchMedia(

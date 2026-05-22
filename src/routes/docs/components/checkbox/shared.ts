@@ -1,41 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { Checkbox } from '@svelte-atoms/core';
-<\/script>
-
-<div class="flex items-center gap-2">
-  <Checkbox id="basic" />
-  <label for="basic">Accept terms and conditions</label>
-</div>`.trim();
-
-const groupCode = `
-<div class="space-y-3">
-  <div class="flex items-center gap-2">
-    <Checkbox id="option1" />
-    <label for="option1">Newsletter updates</label>
-  </div>
-  <div class="flex items-center gap-2">
-    <Checkbox id="option2" />
-    <label for="option2">Marketing emails</label>
-  </div>
-  <div class="flex items-center gap-2">
-    <Checkbox id="option3" />
-    <label for="option3">Product announcements</label>
-  </div>
-</div>`.trim();
-
-const indeterminateCode = `
-<script lang="ts">
-  let indeterminate = $state(true);
-  let checked = $state(false);
-<\/script>
-
-<Checkbox bind:checked bind:indeterminate />`.trim();
-
-const disabledCode = `
-<Checkbox id="disabled" disabled />
-<label for="disabled">Disabled checkbox</label>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -106,10 +68,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Checkbox' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		group: groupCode,
-		indeterminate: indeterminateCode,
-		disabled: disabledCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

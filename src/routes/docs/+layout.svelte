@@ -2,6 +2,7 @@
 	import { type PageContent } from '$docs/content-sidebar.svelte';
 	import DocsNavSidebar from '$docs/docs-nav-sidebar.svelte';
 	import DocsTocSidebar from '$docs/docs-toc-sidebar.svelte';
+	import DocsFooter from '../docs-footer.svelte';
 	import { page } from '$app/stores';
 
 	let { children } = $props();
@@ -46,6 +47,7 @@
 	const sidebarData: PageContent[] = [
 		{
 			title: 'Getting Started',
+			href: '/docs',
 			children: [
 				{ title: 'Introduction', href: '/docs' },
 				{ title: 'Quick Start', href: '/docs/quick-start' },
@@ -64,6 +66,7 @@
 		},
 		{
 			title: 'Components',
+			href: '/docs/components',
 			children: [
 				{ title: 'Accordion', href: '/docs/components/accordion' },
 				{ title: 'Alert', href: '/docs/components/alert' },
@@ -156,6 +159,7 @@
 
 	<main bind:this={mainEl} class="docs-scroll min-w-0 flex-1 py-8">
 		{@render children?.()}
+		<DocsFooter />
 	</main>
 
 	<DocsTocSidebar

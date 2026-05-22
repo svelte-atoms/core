@@ -1,63 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { Toast, Toaster } from '@svelte-atoms/core/toast';
-
-  interface ToastData { title: string; description?: string }
-
-  const toaster = new Toaster();
-<\/script>
-
-<button onclick={() => toaster.add('default', { data: { title: 'Hello!' } as ToastData })}>
-  Default
-<\/button>
-<button onclick={() => toaster.add('success', { data: { title: 'Saved!' } as ToastData })}>
-  Success
-<\/button>
-
-<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2">
-  {#each toaster.toasts as item (item.id)}
-    {@const data = item.data as ToastData}
-    <Toast.Root
-      open={true}
-      onclose={() => toaster.dismiss(item.id)}
-      class="relative flex w-80 flex-col gap-1 rounded-md border p-4 pr-8 shadow-md"
-    >
-      <Toast.Title>{data.title}<\/Toast.Title>
-      {#if data.description}
-        <Toast.Description>{data.description}<\/Toast.Description>
-      {/if}
-      <Toast.Close class="absolute top-2 right-2" />
-    <\/Toast.Root>
-  {/each}
-<\/ol>`.trim();
-
-const declarativeCode = `
-<script lang="ts">
-  import { Toast } from '@svelte-atoms/core/toast';
-
-  let open = $state(false);
-<\/script>
-
-<button onclick={() => (open = true)}>Show toast<\/button>
-
-<Toast.Root bind:open class="...">
-  <Toast.Title>Declarative toast<\/Toast.Title>
-  <Toast.Description>Fully owned by markup — no manager required.<\/Toast.Description>
-  <Toast.Close />
-<\/Toast.Root>`.trim();
-
-const autoDismissCode = `
-<Toast.Root
-  bind:open
-  duration={3000}
-  onclose={() => (open = false)}
-  class="..."
->
-  <Toast.Title>Auto-dismiss<\/Toast.Title>
-  <Toast.Description>Gone in 3 seconds.<\/Toast.Description>
-  <Toast.Close />
-<\/Toast.Root>`.trim();
-
 const presetCode = `
 import { createPreset } from '@svelte-atoms/core';
 
@@ -143,9 +83,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		declarative: declarativeCode,
-		autoDismiss: autoDismissCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

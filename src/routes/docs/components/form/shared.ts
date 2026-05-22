@@ -1,69 +1,3 @@
-const basicCode = `
-<script lang="ts">
-  import { Form, Field } from '@svelte-atoms/core/form';
-  import { Input } from '@svelte-atoms/core/input';
-  import { Button } from '@svelte-atoms/core/button';
-
-	const commonFieldProps = {
-		disabled: false,
-		readonly: false,
-		extend: {},
-		parse: () => {}
-	};
-
-  let name = $state('');
-  let email = $state('');
-</script>
-
-<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-	<Field.Root {...commonFieldProps} name="name">
-    <Field.Label>Name</Field.Label>
-    <Input.Root>
-      <Field.Control base={Input.Control} bind:value={name} placeholder="Enter your name" />
-    </Input.Root>
-  </Field.Root>
-
-	<Field.Root {...commonFieldProps} name="email">
-    <Field.Label>Email</Field.Label>
-    <Input.Root>
-      <Field.Control base={Input.Control} bind:value={email} type="email" placeholder="Enter your email" />
-    </Input.Root>
-  </Field.Root>
-
-  <Button type="submit">Submit</Button>
-</Form>`.trim();
-
-const validatedCode = `
-<script lang="ts">
-  import { Form, Field } from '@svelte-atoms/core/form';
-  import { Input } from '@svelte-atoms/core/input';
-  import { Button } from '@svelte-atoms/core/button';
-	const commonFieldProps = {
-		disabled: false,
-		readonly: false,
-		extend: {},
-		parse: () => {}
-	};
-</script>
-
-<Form class="flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
-	<Field.Root {...commonFieldProps} name="email">
-		{#snippet children({ field })}
-			<Field.Label>Email</Field.Label>
-			<Input.Root>
-				<Field.Control base={Input.Control} type="email" placeholder="Enter your email" />
-			</Input.Root>
-			{#if field?.state.errors.length}
-				<Field.HelperText class="text-destructive">
-					{field.state.errors[0]?.message}
-				</Field.HelperText>
-			{/if}
-		{/snippet}
-	</Field.Root>
-
-  <Button type="submit">Submit</Button>
-</Form>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -157,10 +91,8 @@ export const metadata = {
 	importCode: "import { Form, Field } from '@svelte-atoms/core';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Form' }],
 	useCases,
-	componentsSummary, // TODO: Remove if simple component
+	componentsSummary,
 	examples: {
-		basic: basicCode,
-		validated: validatedCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

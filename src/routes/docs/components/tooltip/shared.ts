@@ -1,34 +1,3 @@
-const basicCode = `
-<Tooltip.Root>
-  <Tooltip.Trigger>
-    <button>Hover me</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    This is a tooltip
-  </Tooltip.Content>
-</Tooltip.Root>`.trim();
-
-const placementCode = `
-<Tooltip.Root placement="top">
-  <Tooltip.Trigger>
-    <button>Top</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    Top tooltip
-  </Tooltip.Content>
-</Tooltip.Root>`.trim();
-
-const arrowCode = `
-<Tooltip.Root>
-  <Tooltip.Trigger>
-    <button>Hover me</button>
-  </Tooltip.Trigger>
-  <Tooltip.Content>
-    Tooltip with arrow
-    <Tooltip.Arrow />
-  </Tooltip.Content>
-</Tooltip.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core/context';
 
@@ -114,9 +83,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		placement: placementCode,
-		arrow: arrowCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

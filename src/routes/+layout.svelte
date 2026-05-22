@@ -4,6 +4,7 @@
 	import Header from './header.svelte';
 	import Footer from './footer.svelte';
 	import { preset } from './preset';
+	import { page } from '$app/stores';
 
 	import '$lib/components/root/root.css';
 	import '../app.css';
@@ -13,6 +14,8 @@
 	setPreset(preset);
 
 	new Theme().share();
+
+	const isDocsPage = $derived($page.url.pathname.startsWith('/docs'));
 </script>
 
 <Root
@@ -27,6 +30,8 @@
 			{@render children?.()}
 		</main>
 
-		<Footer />
+		{#if !isDocsPage}
+			<Footer />
+		{/if}
 	</div>
 </Root>

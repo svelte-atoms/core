@@ -1,24 +1,3 @@
-const basicCode = `
-<Avatar src="/avatar.jpg" alt="User name" />`.trim();
-
-const sizesCode = `
-<Avatar size="sm" src="/avatar.jpg" alt="Small" />
-<Avatar size="md" src="/avatar.jpg" alt="Medium" />
-<Avatar size="lg" src="/avatar.jpg" alt="Large" />
-<Avatar size="xl" src="/avatar.jpg" alt="Extra Large" />`.trim();
-
-const fallbackCode = `
-<Avatar alt="John Doe" />
-<Avatar alt="Jane Smith" />`.trim();
-
-const groupCode = `
-<div class="flex -space-x-2">
-  <Avatar src="/avatar1.jpg" alt="User 1" />
-  <Avatar src="/avatar2.jpg" alt="User 2" />
-  <Avatar src="/avatar3.jpg" alt="User 3" />
-  <Avatar>+5</Avatar>
-</div>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -93,10 +72,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Avatar' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		sizes: sizesCode,
-		fallback: fallbackCode,
-		group: groupCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

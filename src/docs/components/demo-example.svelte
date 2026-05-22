@@ -1,15 +1,18 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ExampleLoader } from '$docs/utils/example-loader';
 	import CodeBlock from './code-block.svelte';
 
 	type Props = {
 		title: string;
 		description?: string;
 		code?: string;
-		children: Snippet;
+		/** Lazy component file loader — renders the example .svelte file in the preview area */
+		component?: ExampleLoader;
+		children?: Snippet;
 	};
 
-	let { title, description, code, children }: Props = $props();
+	let { title, description, code, component, children }: Props = $props();
 
 	let activeTab = $state<'preview' | 'code'>('preview');
 	let copySuccess = $state(false);
@@ -62,7 +65,15 @@
 	{#if activeTab === 'preview'}
 		<div class="bg-dot-grid relative min-h-32 p-8">
 			<div class="flex items-center justify-center">
-				{@render children()}
+				{#if component}
+					{#await component()}
+						<div class="bg-muted h-8 w-32 animate-pulse rounded"></div>
+					{:then mod}
+						<svelte:component this={mod.default} />
+					{/await}
+				{:else if children}
+					{@render children()}
+				{/if}
 			</div>
 		</div>
 	{/if}

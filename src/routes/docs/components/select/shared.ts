@@ -1,52 +1,3 @@
-const basicCode = `
-<Select.Root>
-  <Select.Trigger as="button">
-    Open Select
-  </Select.Trigger>
-  
-  <Select.Content>
-    <Select.Item value="profile">Profile</Select.Item>
-    <Select.Item value="settings">Settings</Select.Item>
-    <Select.Item value="logout">Logout</Select.Item>
-  </Select.Content>
-</Select.Root>`.trim();
-
-const multipleCode = `
-<script lang="ts">
-  import { Select, Input } from '@svelte-atoms/core';
-  
-  let selectedValues = $state<string[]>([]);
-  let selectedLabels = $state<string[]>([]);
-  
-  const items = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'cherry', label: 'Cherry' }
-  ];
-</script>
-
-<Select.Root bind:values={selectedValues} bind:labels={selectedLabels} multiple>
-	<Select.Trigger base={Input.Root} class="min-h-10 min-w-sm">
-		<Select.Selections class="flex flex-wrap gap-1" />
-		<Select.Placeholder class="">No fruits selected</Select.Placeholder>
-	</Select.Trigger>
-	
-	<Select.Content
-		class="bg-background mt-2 max-h-60 overflow-auto rounded-lg border shadow-lg"
-	>
-		<input
-			bind:value={filteredItems.query}
-			class="border-border border-b px-4 py-3"
-			placeholder="Search items..."
-		/>
-		{#each filteredItems.current as item (item.value)}
-			<Select.Item value={item.value} class="hover:bg-muted block px-4 py-2">
-				{item.label}
-			</Select.Item>
-		{/each}
-	</Select.Content>
-</Select.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -162,8 +113,6 @@ export const metadata = {
 	useCases,
 	componentsSummary,
 	examples: {
-		basic: basicCode,
-		multiple: multipleCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

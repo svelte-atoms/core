@@ -1,17 +1,3 @@
-const basicCode = `
-<Label for="email">Email Address</Label>
-<Input.Root>
-  <Input.Control id="email" type="email" />
-</Input.Root>`.trim();
-
-const requiredCode = `
-<Label for="username">
-  Username <span class="text-red-500">*</span>
-</Label>
-<Input.Root>
-  <Input.Control id="username" required />
-</Input.Root>`.trim();
-
 const presetCode = `
 import { setPreset } from '@svelte-atoms/core';
 
@@ -66,8 +52,6 @@ export const metadata = {
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Label' }],
 	useCases,
 	examples: {
-		basic: basicCode,
-		required: requiredCode,
 		preset: presetCode
 	},
 	accessibility: accessibilityFeatures

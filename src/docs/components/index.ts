@@ -20,5 +20,10 @@ export { default as DocOnly } from './doc-only.svelte';
 export { default as DocInstallation } from './doc-installation.svelte';
 export { default as DocAccessibility } from './doc-accessibility.svelte';
 export { default as DocCode } from './doc-code.svelte';
+// ── Composable page templates ─────────────────────────────────────────────
+export { default as DocComponentPage } from './doc-component-page.svelte';
+export { default as DocPropsSection } from './doc-props-section.svelte';
+export { default as DocPropsTabs } from './doc-props-tabs.svelte';
+export type { ComponentDocMeta, UseCase, ComponentSummary, PropsSection } from '$docs/types';
 export { getDocMode, setDocMode } from '../context/doc-mode.svelte';
 

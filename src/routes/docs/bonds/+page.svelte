@@ -1,855 +1,618 @@
 <script lang="ts">
-	import { Alert } from '$svelte-atoms/core/components/alert';
-	import LinkCard from '$docs/components/link-card.svelte';
 	import { Section, CodeBlock, DocCallout } from '$docs/components';
-</script>
+	import { Button } from '$lib/components/button';
 
-{#snippet SectionCard(title: string, code: string, description?: string, badge?: string)}
-	<div class="flex flex-col">
-		<h3 class="font-semibold mb-3">{title}</h3>
-		{#if description}
-			<p class="text-muted-foreground mb-4 text-sm leading-relaxed">
-				{@html description}
-			</p>
-		{/if}
-		<div class="overflow-hidden rounded-lg"><CodeBlock lang="typescript" code={code} /></div>
-	</div>
-{/snippet}
+	const defineStateCode = `import { type BondStateProps } from '@svelte-atoms/core';
 
-<div class="py-8">
-	<!-- Header -->
-	<div class="mb-12">
-		<h1 class="mb-4 text-4xl font-bold tracking-tight">Bonds</h1>
-		<p class="text-muted-foreground text-lg">
-			A powerful pattern for building compound components with shareable state.
-		</p>
-	</div>
-
-	<!-- What Are Bonds -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="what-are-bonds">What Are Bonds?</Section.Title>
-			<Section.Subtitle>
-				Bonds are class-based state containers designed for building compound components that need
-				to share state across multiple parts.
-			</Section.Subtitle>
-		</Section.Header>
-
-		<div class="space-y-4">
-			<p class="text-muted-foreground leading-relaxed">
-				A Bond is a two-part architecture: the <strong>BondState</strong> manages reactive props and
-				methods, while the <strong>Bond</strong> manages element references, generates element props,
-				and handles context sharing. This separation keeps concerns clear and code organized.
-			</p>
-			<p class="text-muted-foreground leading-relaxed">
-				Bonds leverage Svelte 5's Runes API (<code
-					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$state`}</code
-				>,
-				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$derived`}</code>,
-				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">{`$effect`}</code>) and
-				Svelte's context API for reactive state management and component communication.
-			</p>
-			<p class="text-muted-foreground leading-relaxed">
-				The Bond pattern uses <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
-					>createAttachmentKey()</code
-				> to automatically capture element references, making it easy to manage DOM elements and implement
-				advanced features like focus management, positioning, and animations.
-			</p>
-		</div>
-	</Section.Root>
-
-	<!-- Creating a Bond -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="creating-a-bond">Creating a Bond</Section.Title>
-			<Section.Subtitle>
-				Creating a bond requires four key pieces: a Bond class, a BondState class, bond state props
-				definition, and bond HTML element types.
-			</Section.Subtitle>
-		</Section.Header>
-
-		{@render SectionCard(
-			'1. Define Bond State Props',
-			`import { type BondStateProps } from '@svelte-atoms/core';
-
-// Define the props type for your bond state
+// 1. Describe the props your component exposes
 export type MyComponentStateProps = BondStateProps & {
   open: boolean;
   disabled: boolean;
-  // Add your component-specific props
-};`
-		)}
+};
 
-		{@render SectionCard(
-			'2. Define Bond HTML Elements',
-			`// Define the HTML elements your bond will manage
-export type MyComponentDomElements = {
-  root: HTMLElement;
-  trigger: HTMLElement;
-  content: HTMLElement;
-  // Add your component-specific elements
-};`
-		)}
-
-		{@render SectionCard(
-			'3. Create BondState Class',
-			`import { BondState } from '@svelte-atoms/core';
-
-// Create the BondState class to manage reactive state
-export class MyComponentState<
-  Props extends MyComponentStateProps = MyComponentStateProps
-> extends BondState<Props> {
-  constructor(props: () => Props) {
+// 2. Extend BondState — add computed getters and mutation methods
+export class MyComponentState extends BondState<MyComponentStateProps> {
+  constructor(props: () => MyComponentStateProps) {
     super(props);
   }
-  
-  // Derived state using $derived rune
+
   get isOpen() {
     return this.props.open ?? false;
   }
-  
-  // Methods to modify state
-  open() {
-    this.props.open = true;
-  }
-  
-  close() {
-    this.props.open = false;
-  }
-  
-  toggle() {
-    this.props.open = !this.props.open;
-  }
-}`
-		)}
 
-		{@render SectionCard(
-			'4. Create Bond Class',
-			`import { Bond } from '@svelte-atoms/core';
-import { createAttachmentKey } from 'svelte/attachments';
+  open()   { this.props.open = true;             }
+  close()  { this.props.open = false;            }
+  toggle() { this.props.open = !this.props.open; }
+}`;
+
+	const defineBondCode = `import { Bond, BondAtom, BondState } from '@svelte-atoms/core';
 import { getContext, setContext } from 'svelte';
 
-// Create the Bond class to manage elements and props
-export class MyComponentBond<
-  Props extends MyComponentStateProps = MyComponentStateProps,
-  State extends MyComponentState<Props> = MyComponentState<Props>,
-  Elements extends MyComponentDomElements = MyComponentDomElements
-> extends Bond<Props, State, Elements> {
-  static CONTEXT_KEY = '@your-app/bonds/my-component';
-  
-  constructor(state: State) {
-    super(state);
+// BondAtom subclasses — each one captures one DOM element automatically
+export class MyRootAtom extends BondAtom<MyComponentBond> {
+  constructor(bond: MyComponentBond) { super(bond, 'root'); }
+
+  override get attrs() {
+    return { ...super.attrs, 'aria-disabled': this.bond.state.props.disabled };
   }
-  
-  // Generate props for root element
-  root() {
+}
+
+export class MyTriggerAtom extends BondAtom<MyComponentBond> {
+  constructor(bond: MyComponentBond) { super(bond, 'trigger'); }
+
+  override get attrs() {
     return {
-      id: \`component-\${this.id}\`,
-      'data-kind': 'component-root',
-      [createAttachmentKey()]: (node: HTMLElement) => {
-        this.elements.root = node;
-      }
-    };
-  }
-  
-  // Generate props for trigger element
-  trigger() {
-    const isOpen = this.state?.props?.open ?? false;
-    const isDisabled = this.state?.props?.disabled ?? false;
-    
-    return {
-      id: \`component-trigger-\${this.id}\`,
+      ...super.attrs,
       role: 'button',
-      'aria-expanded': isOpen,
-      'aria-disabled': isDisabled,
-      onclick: () => this.state.toggle(),
-      [createAttachmentKey()]: (node: HTMLElement) => {
-        this.elements.trigger = node;
-      }
+      'aria-expanded': this.bond.state.isOpen
     };
   }
-  
-  // Generate props for content element
-  content() {
-    const isOpen = this.state?.props?.open ?? false;
-    
-    return {
-      id: \`component-content-\${this.id}\`,
-      'aria-hidden': !isOpen,
-      [createAttachmentKey()]: (node: HTMLElement) => {
-        this.elements.content = node;
-      }
-    };
+  override get handlers() {
+    return { onclick: () => this.bond.state.toggle() };
   }
-  
-  // Share bond via context for compound components
+}
+
+// The Bond class wires everything together
+export class MyComponentBond extends Bond<
+  MyComponentStateProps,
+  MyComponentState,
+  { root: HTMLElement; trigger: HTMLElement }
+> {
+  static CONTEXT_KEY = '@your-app/bonds/my-component';
+
+  constructor(state: MyComponentState) {
+    super(state, 'my-component');
+  }
+
+  // atom() registers a BondAtom — element capture is automatic via attachments
+  root()    { return this.atom('root',    () => new MyRootAtom(this));    }
+  trigger() { return this.atom('trigger', () => new MyTriggerAtom(this)); }
+
   share(): this {
     return MyComponentBond.set(this) as this;
   }
-  
-  // Context helpers
-  static override get(): MyComponentBond {
+
+  static get(): MyComponentBond | undefined {
     return getContext(MyComponentBond.CONTEXT_KEY);
   }
-  
-  static override set(bond: MyComponentBond) {
+  static set(bond: MyComponentBond): MyComponentBond {
     return setContext(MyComponentBond.CONTEXT_KEY, bond);
   }
-}`
-		)}
+}`;
 
-		{@render SectionCard(
-			'5. Using the Bond in Components',
-			`<script lang="ts">
+	const rootComponentCode = `<script lang="ts">
+  import { defineState, defineProperty } from '@svelte-atoms/core';
   import { MyComponentBond, MyComponentState } from './bond.svelte';
-  
-  let { open = $bindable(false), disabled = false } = $props();
-  
-  // Create bond state with reactive props
-  const bondState = new MyComponentState(() => ({
-    open,
-    disabled
-  }));
-  
-  // Create and share bond for compound components
-  const bond = new MyComponentBond(bondState).share();
-</script>
+  import type { MyComponentStateProps } from './bond.svelte';
 
-<!-- Root component spreads bond props -->
-<div {...bond.root()}>
-  <button {...bond.trigger()}>
+  let { open = $bindable(false), disabled = false } = $props();
+
+  // Wrap bindable props so BondState sees fine-grained reactive updates
+  const bondProps = defineState<MyComponentStateProps>([
+    defineProperty('open', () => open, (v) => { open = v; }),
+    defineProperty('disabled', () => disabled)
+  ]);
+
+  const bond = new MyComponentBond(
+    new MyComponentState(() => bondProps)
+  ).share();
+<\x2Fscript>
+
+<!-- Spread .spread onto each element — attrs + handlers + attachments -->
+<div {...bond.root().spread}>
+  <button {...bond.trigger().spread}>
     {bond.state.isOpen ? 'Close' : 'Open'}
   </button>
-  
-  <div {...bond.content()}>
-    <p>Content goes here</p>
-    <button onclick={() => bond.state.close()}>Close</button>
-  </div>
-</div>`
-		)}
-	</Section.Root>
+  {#if bond.state.isOpen}
+    <div>Content</div>
+  {/if}
+</div>`;
 
-	<!-- Key Features -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="key-features">Key Features</Section.Title>
-			<Section.Subtitle>
-				Bonds provide several advantages over traditional state management approaches.
-			</Section.Subtitle>
-		</Section.Header>
+	const childComponentCode = `<script lang="ts">
+  import { MyComponentBond } from './bond.svelte';
 
-		<div class="grid gap-4 md:grid-cols-2">
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-3 flex items-start gap-4">
-					<div class="text-primary mt-1 flex-shrink-0">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<rect width="18" height="18" x="3" y="3" rx="2" />
-							<path d="M7 3v18M17 3v18M3 7h18M3 17h18" />
-						</svg>
-					</div>
-					<div>
-						<h3 class="mb-2 text-lg font-semibold">Separation of Concerns</h3>
-						<p class="text-muted-foreground text-sm leading-relaxed">
-							BondState manages reactive props and methods, while Bond handles element references,
-							prop generation, and context sharing. Clean architecture by design.
-						</p>
-					</div>
-				</div>
-			</div>
+  // Retrieve the bond from Svelte context — no props needed
+  const bond = MyComponentBond.get();
 
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-3 flex items-start gap-4">
-					<div class="text-primary mt-1 flex-shrink-0">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<circle cx="12" cy="12" r="10" />
-							<circle cx="12" cy="12" r="4" />
-							<line x1="21.17" x2="12" y1="8" y2="8" />
-							<line x1="3.95" x2="8.54" y1="6.06" y2="14" />
-							<line x1="10.88" x2="15.46" y1="21.94" y2="14" />
-						</svg>
-					</div>
-					<div>
-						<h3 class="mb-2 text-lg font-semibold">Element Management</h3>
-						<p class="text-muted-foreground text-sm leading-relaxed">
-							Automatic element reference capture via <code
-								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-								>createAttachmentKey()</code
-							>. Access any DOM element through
-							<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">bond.elements</code
-							> for focus, positioning, and more.
-						</p>
-					</div>
-				</div>
-			</div>
+  function handleClose() {
+    bond?.state.close();
+    // Access captured DOM elements if needed
+    bond?.element('root')?.focus();
+  }
+<\x2Fscript>
 
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-3 flex items-start gap-4">
-					<div class="text-primary mt-1 flex-shrink-0">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<polyline points="16 18 22 12 16 6" />
-							<polyline points="8 6 2 12 8 18" />
-						</svg>
-					</div>
-					<div>
-						<h3 class="mb-2 text-lg font-semibold">Type Safety</h3>
-						<p class="text-muted-foreground text-sm leading-relaxed">
-							Full TypeScript support with generic typing. Define your props, state, and elements
-							once, get complete type inference everywhere.
-						</p>
-					</div>
-				</div>
-			</div>
+<button onclick={handleClose}>
+  {bond?.state.isOpen ? 'Close' : 'Open'}
+</button>`;
 
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-3 flex items-start gap-4">
-					<div class="text-primary mt-1 flex-shrink-0">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-						</svg>
-					</div>
-					<div>
-						<h3 class="mb-2 text-lg font-semibold">Context Integration</h3>
-						<p class="text-muted-foreground text-sm leading-relaxed">
-							Built-in context support with <code
-								class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.share()</code
-							>, <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.get()</code>,
-							and
-							<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">.set()</code>.
-							Share state across component trees without prop drilling.
-						</p>
-					</div>
-				</div>
-			</div>
+	const factoryCode = `let {
+  factory = _factory,
+  open = $bindable(false),
+  disabled = false
+} = $props();
 
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-3 flex items-start gap-4">
-					<div class="text-primary mt-1 flex-shrink-0">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
-							<path d="M21 3v5h-5" />
-						</svg>
-					</div>
-					<div>
-						<h3 class="mb-2 text-lg font-semibold">Fine-Grained Reactivity</h3>
-						<p class="text-muted-foreground text-sm leading-relaxed">
-							Built on Svelte 5's Runes API. Reactive props passed as functions keep updates
-							efficient. Only what changed re-renders.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</Section.Root>
+const bondProps = defineState<MyComponentStateProps>([
+  defineProperty('open', () => open, (v) => { open = v; }),
+  defineProperty('disabled', () => disabled)
+]);
 
-	<!-- Bond Architecture -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="bond-architecture">Bond Architecture</Section.Title>
-			<Section.Subtitle>
-				Understanding the two-part Bond architecture and how the pieces work together.
-			</Section.Subtitle>
-		</Section.Header>
+// factory prop lets callers swap in a custom Bond subclass
+const bond = factory(bondProps).share();
 
-		<div class="space-y-6">
-			{@render SectionCard(
-				'BondState: Props and Logic',
-				`export class TabsBondState extends BondState<TabsBondProps> {
+function _factory(props: typeof bondProps) {
+  return new MyComponentBond(new MyComponentState(() => props));
+}`;
+
+	const reactivePropsCode = `import { defineState, defineProperty } from '@svelte-atoms/core';
+
+let open = $bindable(false);
+let disabled = false;
+
+// defineProperty creates a reactive getter/setter on the props object.
+// BondState receives a function — so only the properties actually read
+// inside the Bond trigger updates, giving you fine-grained reactivity.
+const bondProps = defineState<DialogBondProps>([
+  defineProperty('open',     () => open,     (v) => { open = v; }),
+  defineProperty('disabled', () => disabled)
+]);
+
+const state = new DialogBondState(() => bondProps);`;
+
+	const bondStateArchCode = `export class TabsBondState extends BondState<TabsBondProps> {
   #items = new SvelteMap<string, TabBond>();
-  
-  // Derived computed property
-  #selectedItem = $derived(
-    this.props?.value 
-      ? this.#items.get(this.props.value) 
-      : undefined
-  );
-  
+
   constructor(props: () => TabsBondProps) {
-    super(props);  // Pass props function to base
+    super(props);
   }
-  
-  get selectedItem() {
-    return this.#selectedItem;
-  }
-  
+
+  // $derived runs inside the class — reacts to this.props.value
+  #selectedItem = $derived(
+    this.props?.value ? this.#items.get(this.props.value) : undefined
+  );
+
+  get selectedItem() { return this.#selectedItem; }
+
   select(id: string) {
-    this.props.value = id;  // Direct mutation
+    this.props.value = id;  // Setter on defineProperty triggers $bindable update
   }
-}`,
-				"BondState manages reactive props via a function that returns the props object. This ensures fine-grained reactivity - only tracking what's accessed."
-			)}
+}`;
 
-			{@render SectionCard(
-				'Bond: Elements and Props',
-				`export class DialogBond extends Bond<
-  DialogBondProps, 
-  DialogBondState, 
-  DialogBondElements
-> {
-  static CONTEXT_KEY = '@atoms/context/dialog';
-  
-  constructor(state: DialogBondState) {
-    super(state);
-  }
-  
-  // Generate props for root element
-  root() {
-    const isOpen = this.state.props.open ?? false;
-    
-    return {
-      id: \`dialog-\${this.id}\`,
-      'aria-modal': true,
-      'aria-labelledby': \`dialog-title-\${this.id}\`,
-      open: isOpen,
-      [createAttachmentKey()]: (node: HTMLDialogElement) => {
-        this.elements.root = node;  // Auto-capture
-      }
-    };
-  }
-}`,
-				'Bond manages element references and generates element props with proper ARIA attributes, IDs, and attachment keys for automatic element capture.'
-			)}
-
-			{@render SectionCard(
-				'Context Sharing',
-				`// In Bond class
+	const contextSharingCode = `// In the Bond class
 static get(): TreeBond | undefined {
   return getContext(TreeBond.CONTEXT_KEY);
 }
-
 static set(bond: TreeBond): TreeBond {
   return setContext(TreeBond.CONTEXT_KEY, bond);
 }
-
 share(): this {
   return TreeBond.set(this) as this;
 }
 
-// In component
-const bond = new TreeBond(state).share();
+// In the root component
+const bond = new TreeBond(state).share();  // puts bond into context
 
-// In child component
-const parentBond = TreeBond.get();`,
-				'Bonds provide static methods for context management, making it easy to share state across component trees without prop drilling.'
-			)}
+// In any child component — however deep
+const parentBond = TreeBond.get();`;
 
-			{@render SectionCard(
-				'Reactive Props Pattern',
-				`import { defineProperty, defineState } from '@svelte-atoms/core';
+	const getBondCode = `<script lang="ts">
+  import MyRoot from './my-root.svelte';
+  import type { MyComponentBond } from './bond.svelte';
 
-let open = $bindable(false);
+  let rootRef: MyRoot;
 
-// Create reactive props with bindables
-const bondProps = defineState<DialogBondProps>([
-  defineProperty(
-    'open',
-    () => open,           // Getter
-    (v) => { open = v; }  // Setter
-  )
-], () => ({ 
-  disabled: false  // Static props
-}));
-
-// Pass as function
-const state = new DialogBondState(() => bondProps);`,
-				'Props are passed as a function to BondState, enabling fine-grained reactivity. Use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">defineState</code> helper for bindable props.'
-			)}
-		</div>
-	</Section.Root>
-
-	<!-- Using Bonds in Components -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="using-bonds-in-components">Using Bonds in Components</Section.Title>
-			<Section.Subtitle>
-				Bonds are typically created in root components and shared via context to child components.
-			</Section.Subtitle>
-		</Section.Header>
-
-		<div class="space-y-6">
-			{@render SectionCard(
-				'Root Component Pattern',
-				`<script lang="ts">
-  import { TreeBond, TreeBondState } from './bond.svelte';
-  
-  let { open = $bindable(false), disabled = false } = $props();
-  
-  // Create reactive props
-  const bondProps = defineState<TreeBondProps>([
-    defineProperty('open', () => open, (v) => { open = v; })
-  ], () => ({ disabled }));
-  
-  // Create bond
-  const bondState = new TreeBondState(() => bondProps);
-  const bond = new TreeBond(bondState).share();
-</script>
-
-<!-- Spread bond props onto elements -->
-<div {...bond.root()}>
-  <button {...bond.header()}>Toggle</button>
-  <div {...bond.body()}>Content</div>
-</div>`,
-				'Root components create the bond, share it via context, and spread bond-generated props onto elements.'
-			)}
-
-			{@render SectionCard(
-				'Child Component Access',
-				`<script lang="ts">
-  import { TreeBond } from './bond.svelte';
-  
-  // Get bond from context
-  const bond = TreeBond.get();
-  
   function handleClick() {
-    // Access methods
+    const bond = rootRef.getBond();
     bond?.state.toggle();
-    
-    // Access elements
-    bond?.elements.root?.focus();
+    bond?.element('trigger')?.focus();
   }
+<\x2Fscript>
+
+<MyRoot bind:this={rootRef} />
+<button onclick={handleClick}>Toggle</button>`;
 </script>
 
-<button onclick={handleClick}>
-  {bond?.state.props.open ? 'Close' : 'Open'}
-</button>`,
-				'Child components retrieve the bond from context and can access state, methods, and elements.'
-			)}
+<svelte:head>
+	<title>Bonds — Svelte Atoms</title>
+	<meta
+		name="description"
+		content="Learn how the Bond pattern powers compound components in Svelte Atoms — BondState, BondAtom, context sharing, and reactive props."
+	/>
+</svelte:head>
 
-			{@render SectionCard(
-				'Factory Pattern',
-				`let {
-  factory = _factory,
-  open = $bindable(false)
-} = $props();
-
-const bondProps = defineState(...);
-
-// Use factory (allows customization)
-const bond = factory(bondProps).share();
-
-function _factory(props) {
-  const state = new TreeBondState(() => props);
-  return new TreeBond(state);
-}`,
-				'Components accept a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">factory</code> prop for custom bond creation, enabling extension and testing.'
-			)}
-
-			{@render SectionCard(
-				'Accessing from Parent',
-				`<script lang="ts">
-  import TreeRoot from './tree-root.svelte';
-  
-  let treeRef: TreeRoot;
-  
-  function handleClick() {
-    const bond = treeRef.getBond();
-    bond.state.toggle();
-  }
-</script>
-
-<TreeRoot bind:this={treeRef} />
-<button onclick={handleClick}>Toggle Tree</button>`,
-				'Parent components can access child bonds via exported <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">getBond()</code> methods.'
-			)}
-		</div>
-	</Section.Root>
-
-	<!-- When to Use Bonds -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="when-to-use-bonds">When to Use Bonds</Section.Title>
-			<Section.Subtitle>
-				Bonds are powerful but not always necessary. Here's when to use them.
-			</Section.Subtitle>
-		</Section.Header>
-
-		<div class="grid gap-4 md:grid-cols-2">
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-2 flex items-center gap-2">
-					<div class="text-primary">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</div>
-					<h3 class="font-semibold">Building Compound Components</h3>
-				</div>
-				<p class="text-muted-foreground text-sm">
-					When creating components with multiple parts that need to share state across separate
-					child components. This is the primary use case for bonds.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-2 flex items-center gap-2">
-					<div class="text-primary">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</div>
-					<h3 class="font-semibold">Shareable State Across Components</h3>
-				</div>
-				<p class="text-muted-foreground text-sm">
-					When multiple child components need to access and modify the same state in a coordinated
-					way without prop drilling.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-2 flex items-center gap-2">
-					<div class="text-primary">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</div>
-					<h3 class="font-semibold">Reusable Logic</h3>
-				</div>
-				<p class="text-muted-foreground text-sm">
-					When you want to extract and reuse component logic across different parts of your app.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<div class="mb-2 flex items-center gap-2">
-					<div class="text-primary">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-							<polyline points="22 4 12 14.01 9 11.01"></polyline>
-						</svg>
-					</div>
-					<h3 class="font-semibold">Testing</h3>
-				</div>
-				<p class="text-muted-foreground text-sm">
-					Bonds are easy to test in isolation since they're just JavaScript objects with methods.
-				</p>
-			</div>
-		</div>
-
-		<DocCallout variant="warning" title="When Not to Use Bonds" class="mt-6">
-			For simple components with a single piece of state, a plain <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`$state`}</code> variable is often clearer. Don't over-engineer.
-		</DocCallout>
-	</Section.Root>
-
-	<!-- Best Practices -->
-	<Section.Root>
-		<Section.Header>
-			<Section.Title id="best-practices">Best Practices</Section.Title>
-			<Section.Subtitle>Guidelines for working effectively with Bonds.</Section.Subtitle>
-		</Section.Header>
-
-		<div class="grid gap-4 md:grid-cols-2">
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Use Props as Functions</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Always pass props to BondState as a function (<code
-						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs whitespace-nowrap"
-						>() =&gt; props</code
-					>) for fine-grained reactivity. This ensures only accessed properties trigger updates.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Type Your Elements</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Define a type for your bond elements to get autocomplete and type safety when accessing
-					<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-						>bond.elements.root</code
-					>, etc.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Use Attachment Keys</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Always use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-						>createAttachmentKey()</code
-					> in your element prop methods to automatically capture element references. No manual ref management
-					needed.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Keep Context Keys Unique</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Use descriptive, prefixed context keys like <code
-						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-						>'@atoms/context/component-name'</code
-					> to avoid collisions with other context values. When extending from other existing bonds,
-					it's recommended to keep using the same context key to maintain compatibility.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Spread Bond Props</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Always spread bond-generated props onto elements: <code
-						class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`{...bond.root()}`}</code
-					>. This ensures IDs, ARIA attributes, and attachments work correctly.
-				</p>
-			</div>
-
-			<div class="border-border/50 rounded-lg border p-6">
-				<h3 class="mb-2 font-semibold">Export getBond()</h3>
-				<p class="text-muted-foreground text-sm leading-relaxed">
-					Export a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs"
-						>getBond()</code
-					> method from root components to allow parent components to access the bond imperatively when
-					needed.
-				</p>
-			</div>
-		</div>
-	</Section.Root>
-
-	<!-- Learn More -->
-	<Section.Root class="mb-0">
-		<Section.Header>
-			<Section.Title id="learn-more">Learn More</Section.Title>
-			<Section.Subtitle>
-				Ready to dive deeper into Bonds and the architecture behind them?
-			</Section.Subtitle>
-		</Section.Header>
-
-		<div class="grid gap-5 sm:grid-cols-2">
-			<LinkCard
-				title="Philosophy"
-				description="Understand the design principles and architecture behind Bonds."
-				href="/docs/philosophy"
-				linkText="Read philosophy"
-			>
-				{#snippet icon()}
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-						<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-					</svg>
-				{/snippet}
-			</LinkCard>
-
-			<LinkCard
-				title="Browse Components"
-				description="See Bonds in action with real component examples."
-				href="/docs"
-				linkText="View components"
-			>
-				{#snippet icon()}
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<rect width="7" height="7" x="3" y="3" rx="1" />
-						<rect width="7" height="7" x="14" y="3" rx="1" />
-						<rect width="7" height="7" x="14" y="14" rx="1" />
-						<rect width="7" height="7" x="3" y="14" rx="1" />
-					</svg>
-				{/snippet}
-			</LinkCard>
-		</div>
-	</Section.Root>
+<!-- Hero -->
+<div class="border-border/60 mb-14 border-b pb-12">
+	<p class="text-primary mb-3 text-sm font-medium uppercase tracking-wide">Bonds</p>
+	<h1 class="text-foreground mb-4 text-4xl font-bold tracking-tight">
+		State without prop drilling.
+	</h1>
+	<p class="text-muted-foreground mb-8 max-w-xl text-lg leading-relaxed">
+		A Bond is a class-based state container that lives in Svelte context. Root components create
+		one; every descendant reads it automatically — no props passed between them.
+	</p>
+	<div class="flex flex-wrap gap-3">
+		<Button href="/docs/philosophy" as="a" variant="primary" class="gap-2 px-5">
+			Read the philosophy
+			<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+			</svg>
+		</Button>
+		<Button href="/docs/components/accordion" as="a" variant="outline" class="px-5">See a Bond in action</Button>
+	</div>
 </div>
+
+<!-- What Are Bonds -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>What are Bonds?</Section.Title>
+		<Section.Subtitle>
+			A two-part architecture: BondState holds reactive data, Bond manages elements and context.
+		</Section.Subtitle>
+	</Section.Header>
+
+	<div class="space-y-3 text-sm leading-relaxed">
+		<p class="text-muted-foreground">
+			A Bond is split into two classes. <strong class="text-foreground">BondState</strong> owns the
+			reactive props and mutation methods — it's where your component's logic lives.
+			<strong class="text-foreground">Bond</strong> owns the DOM element references (via
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">BondAtom</code>
+			subclasses), generates element spreads with ARIA and event handlers, and puts itself into
+			Svelte context via <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.share()</code>.
+		</p>
+		<p class="text-muted-foreground">
+			Child components call
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">Bond.get()</code> to
+			retrieve the bond from context and read state, call methods, or access captured DOM elements
+			— without any props being threaded between components.
+		</p>
+	</div>
+</Section.Root>
+
+<!-- Key Features -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Key features</Section.Title>
+		<Section.Subtitle>What Bonds give you that plain stores and prop-drilling don't.</Section.Subtitle>
+	</Section.Header>
+
+	<div class="grid gap-3 sm:grid-cols-2">
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7h18M3 17h18"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Separation of concerns</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">BondState owns logic; Bond owns DOM. Neither knows about Svelte component lifecycle.</p>
+			</div>
+		</div>
+
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+					<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Automatic element capture</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">BondAtom attachments track DOM nodes the moment they mount — no manual ref management needed.</p>
+			</div>
+		</div>
+
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Full type safety</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">Generic typing from props → state → elements → spread. Your IDE knows every method at authoring time.</p>
+			</div>
+		</div>
+
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Fine-grained reactivity</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">Props are passed as a function — only the properties actually read inside the Bond trigger updates.</p>
+			</div>
+		</div>
+
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Context integration</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">Built-in <code class="font-mono text-xs">.share()</code>, <code class="font-mono text-xs">.get()</code>, <code class="font-mono text-xs">.set()</code> — share state across any component tree depth.</p>
+			</div>
+		</div>
+
+		<div class="border-border flex items-start gap-3 rounded-lg border p-4">
+			<div class="bg-primary/10 text-primary mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Customisable via factory</p>
+				<p class="text-muted-foreground text-xs leading-relaxed">Components accept a <code class="font-mono text-xs">factory</code> prop so callers can swap in Bond subclasses for testing or extension.</p>
+			</div>
+		</div>
+	</div>
+</Section.Root>
+
+<!-- Creating a Bond -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Creating a Bond</Section.Title>
+		<Section.Subtitle>
+			Four pieces: props type, BondState class, BondAtom subclasses, and Bond class.
+		</Section.Subtitle>
+	</Section.Header>
+
+	<div class="space-y-6">
+		<div>
+			<p class="text-foreground mb-3 text-sm font-semibold">1 — Define state props and BondState</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={defineStateCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">2 — Create BondAtom subclasses and Bond</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				Each <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">BondAtom</code>
+				subclass represents one DOM element. Override <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">attrs</code>
+				for ARIA/data attributes and <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">handlers</code>
+				for events. Element capture is automatic — <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">BondAtom.attachments</code>
+				wires up the element reference when the node mounts.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={defineBondCode} />
+			</div>
+		</div>
+	</div>
+</Section.Root>
+
+<!-- Using in Components -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Using Bonds in components</Section.Title>
+		<Section.Subtitle>
+			Root components create and share the Bond; children retrieve it from context.
+		</Section.Subtitle>
+	</Section.Header>
+
+	<div class="space-y-6">
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Root component</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				Call <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.share()</code>
+				to place the Bond in Svelte context, then spread
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.spread</code>
+				on each element — it contains attrs, event handlers, and the attachment that captures the DOM node.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="svelte" code={rootComponentCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Child component</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				Children call the static <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.get()</code>
+				to retrieve the Bond. Use <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">bond.element('key')</code>
+				to access captured DOM elements.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="svelte" code={childComponentCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Factory prop</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				Expose a <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">factory</code>
+				prop so callers can inject a custom Bond subclass — useful for testing or extending behavior.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={factoryCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Accessing from a parent</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				Export a <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">getBond()</code>
+				function from the root component so parent components can imperatively read or mutate bond state.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="svelte" code={getBondCode} />
+			</div>
+		</div>
+	</div>
+</Section.Root>
+
+<!-- Architecture Deep Dive -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Architecture deep dive</Section.Title>
+		<Section.Subtitle>BondState props, reactive derived values, and context sharing.</Section.Subtitle>
+	</Section.Header>
+
+	<div class="space-y-6">
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">BondState — props and logic</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">this.props</code>
+				calls the function passed to the constructor, returning the live reactive object built by
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineState</code>.
+				Use <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">$derived</code>
+				as a class field for computed values — Svelte 5 Runes work inside class bodies.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={bondStateArchCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Reactive props with defineState</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineProperty</code>
+				creates a reactive getter/setter pair on the props object. When BondState accesses
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">this.props.open</code>,
+				it runs the getter — and only that getter triggers updates, giving fine-grained reactivity.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={reactivePropsCode} />
+			</div>
+		</div>
+
+		<div>
+			<p class="text-foreground mb-1 text-sm font-semibold">Context sharing</p>
+			<p class="text-muted-foreground mb-3 text-sm">
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.share()</code>
+				wraps <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">setContext</code>.
+				The static
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.get()</code>
+				wraps <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">getContext</code>.
+				Every Bond subclass defines its own unique context key.
+			</p>
+			<div class="overflow-hidden rounded-lg">
+				<CodeBlock lang="typescript" code={contextSharingCode} />
+			</div>
+		</div>
+	</div>
+</Section.Root>
+
+<!-- When to Use Bonds -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>When to use Bonds</Section.Title>
+		<Section.Subtitle>Bonds are powerful but not always the right tool.</Section.Subtitle>
+	</Section.Header>
+
+	<div class="grid gap-3 sm:grid-cols-2">
+		<div class="border-border rounded-lg border p-4">
+			<p class="text-foreground mb-1 text-sm font-semibold">Compound components</p>
+			<p class="text-muted-foreground text-xs leading-relaxed">Multiple sibling parts (trigger, content, item) that must share state — the primary use case for Bonds.</p>
+		</div>
+		<div class="border-border rounded-lg border p-4">
+			<p class="text-foreground mb-1 text-sm font-semibold">DOM coordination</p>
+			<p class="text-muted-foreground text-xs leading-relaxed">When parts need to measure, focus, or position relative to each other — BondAtom element refs make this clean.</p>
+		</div>
+		<div class="border-border rounded-lg border p-4">
+			<p class="text-foreground mb-1 text-sm font-semibold">Reusable logic</p>
+			<p class="text-muted-foreground text-xs leading-relaxed">Extract component behavior into a plain class — easy to unit-test without mounting a component.</p>
+		</div>
+		<div class="border-border rounded-lg border p-4">
+			<p class="text-foreground mb-1 text-sm font-semibold">Extensibility</p>
+			<p class="text-muted-foreground text-xs leading-relaxed">Subclass a Bond to override ARIA attrs or add behavior without forking the original component.</p>
+		</div>
+	</div>
+
+	<div class="mt-4">
+		<DocCallout variant="warning" title="When not to use Bonds">
+			For a single piece of state inside one component, a plain
+			<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">$state</code> variable is
+			simpler and clearer. Don't reach for the Bond pattern until you have multiple coordinating parts.
+		</DocCallout>
+	</div>
+</Section.Root>
+
+<!-- Best Practices -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Best practices</Section.Title>
+		<Section.Subtitle>Guidelines for working effectively with Bonds.</Section.Subtitle>
+	</Section.Header>
+
+	<div class="border-border divide-border divide-y rounded-lg border">
+		<div class="flex items-start gap-3 px-5 py-4">
+			<span class="text-primary mt-0.5 shrink-0 font-mono text-xs leading-5 font-bold">01</span>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Wrap props with defineState</p>
+				<p class="text-muted-foreground text-sm">Pass a function to BondState — not a plain object. <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">defineProperty</code> bridges <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">$bindable</code> props into the Bond without losing reactivity.</p>
+			</div>
+		</div>
+		<div class="flex items-start gap-3 px-5 py-4">
+			<span class="text-primary mt-0.5 shrink-0 font-mono text-xs leading-5 font-bold">02</span>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Spread <code class="font-mono text-xs">.spread</code> on elements</p>
+				<p class="text-muted-foreground text-sm">Always use <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">{`{...bond.root().spread}`}</code> — it includes attrs, handlers, and the attachment that captures the element reference.</p>
+			</div>
+		</div>
+		<div class="flex items-start gap-3 px-5 py-4">
+			<span class="text-primary mt-0.5 shrink-0 font-mono text-xs leading-5 font-bold">03</span>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Use unique CONTEXT_KEY values</p>
+				<p class="text-muted-foreground text-sm">Prefix with your package or app name: <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">'@my-app/bond/accordion'</code>. When subclassing an existing Bond, keep the parent key to preserve context compatibility.</p>
+			</div>
+		</div>
+		<div class="flex items-start gap-3 px-5 py-4">
+			<span class="text-primary mt-0.5 shrink-0 font-mono text-xs leading-5 font-bold">04</span>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Export getBond()</p>
+				<p class="text-muted-foreground text-sm">Export a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">getBond()</code> function from root components so parents can access the bond imperatively when needed.</p>
+			</div>
+		</div>
+		<div class="flex items-start gap-3 px-5 py-4">
+			<span class="text-primary mt-0.5 shrink-0 font-mono text-xs leading-5 font-bold">05</span>
+			<div>
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Name your Bond in the constructor</p>
+				<p class="text-muted-foreground text-sm">Pass a <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">name</code> string to <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">super(state, 'my-component')</code> — it becomes the <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">data-bond</code> attribute used for debugging and CSS selectors.</p>
+			</div>
+		</div>
+	</div>
+</Section.Root>
+
+<!-- Learn More -->
+<Section.Root class="mb-0">
+	<Section.Header>
+		<Section.Title>Learn more</Section.Title>
+		<Section.Subtitle>See Bonds in action or understand the architecture behind them.</Section.Subtitle>
+	</Section.Header>
+
+	<!-- eslint-disable svelte/no-navigation-without-resolve -->
+	<div class="grid gap-3 sm:grid-cols-2">
+		<a href="/docs/philosophy" class="group border-border hover:border-primary/40 hover:bg-muted/30 flex items-center gap-4 rounded-lg border p-4 transition-all">
+			<div class="bg-primary/10 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+				</svg>
+			</div>
+			<div class="min-w-0 flex-1">
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Philosophy</p>
+				<p class="text-muted-foreground text-xs">Understand the design principles behind the Bond pattern.</p>
+			</div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground/50 group-hover:text-primary shrink-0 -translate-x-1 transition-all group-hover:translate-x-0" aria-hidden="true">
+				<path d="m9 18 6-6-6-6"/>
+			</svg>
+		</a>
+		<a href="/docs/components/accordion" class="group border-border hover:border-primary/40 hover:bg-muted/30 flex items-center gap-4 rounded-lg border p-4 transition-all">
+			<div class="bg-primary/10 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/>
+					<rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>
+				</svg>
+			</div>
+			<div class="min-w-0 flex-1">
+				<p class="text-foreground mb-0.5 text-sm font-semibold">Accordion component</p>
+				<p class="text-muted-foreground text-xs">See a real Bond implementation with full source.</p>
+			</div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground/50 group-hover:text-primary shrink-0 -translate-x-1 transition-all group-hover:translate-x-0" aria-hidden="true">
+				<path d="m9 18 6-6-6-6"/>
+			</svg>
+		</a>
+	</div>
+	<!-- eslint-enable svelte/no-navigation-without-resolve -->
+</Section.Root>

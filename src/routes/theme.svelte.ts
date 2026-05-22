@@ -5,10 +5,10 @@ const [get, set] = createContext<Theme>();
 
 export class Theme {
 	#systemColorScheme = colorScheme();
-	#userColorScheme: ColorScheme | undefined = $state();
+	#userColorScheme: ColorScheme | undefined = $state('light');
 
 	constructor() {
-		$effect.pre(() => {
+		$effect(() => {
 			if (this.colorScheme === 'dark') {
 				document.documentElement.classList.add('dark');
 			} else {
@@ -27,6 +27,11 @@ export class Theme {
 
 	set userColorScheme(value: ColorScheme | undefined) {
 		this.#userColorScheme = value;
+		if (value) {
+			localStorage.setItem('color-scheme', value);
+		} else {
+			localStorage.removeItem('color-scheme');
+		}
 	}
 
 	get colorScheme() {
@@ -38,11 +43,7 @@ export class Theme {
 	}
 
 	toggle() {
-		if (this.#userColorScheme === 'dark') {
-			this.#userColorScheme = 'light';
-		} else {
-			this.#userColorScheme = 'dark';
-		}
+		this.userColorScheme = this.colorScheme === 'dark' ? 'light' : 'dark';
 	}
 
 	static get = get;
