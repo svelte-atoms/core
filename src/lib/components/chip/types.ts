@@ -11,16 +11,16 @@ export interface ChipSnippetProps extends SnippetProps {}
 export type ChipChildren = Snippet<[ChipSnippetProps]>;
 
 export interface ChipProps extends HtmlAtomProps<'div', never, ChipChildren> {
-	/** Custom icon rendered inside the default close button */
+	// Custom icon rendered inside the default close button.
 	icon?: Snippet<[ChipSnippetProps]> | undefined;
-	/** Fully replace the close button with a custom snippet */
+	// Fully replace the close button with a custom snippet.
 	closeButton?: Snippet<[ChipSnippetProps]> | undefined;
-	/** Called when the default close button is clicked */
+	// Called when the default close button is clicked.
 	onclose?: ((ev: MouseEvent) => void) | undefined;
 }
 
 export interface ChipCloseButtonProps extends HtmlAtomProps<'button', never, ChipChildren> {
-	/** Custom icon to render inside the close button */
+	// Custom icon to render inside the close button.
 	icon?: Snippet<[ChipSnippetProps]> | undefined;
 	onclick?: ((ev: MouseEvent) => void) | undefined;
 }

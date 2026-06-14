@@ -3,28 +3,21 @@ import { cubicOut, cubicIn } from 'svelte/easing';
 import type { TransitionFunction } from '../element';
 
 export type AnimateRadioIndicatorParams = {
-	/** Animation duration in milliseconds (default: 200 for in, 150 for out) */
+	// Duration in ms (default: 200 for in, 150 for out).
 	duration?: number;
-	/** Delay before animation starts in milliseconds (default: 0) */
+	// Delay in ms before animation starts (default: 0).
 	delay?: number;
-	/** Custom easing function (default: cubicOut for in, cubicIn for out) */
+	// Easing function (default: cubicOut for in, cubicIn for out).
 	easing?: EasingFunction;
 };
 
-/**
- * Check if user prefers reduced motion
- */
+// Returns true if the user prefers reduced motion.
 function prefersReducedMotion(): boolean {
 	if (typeof window === 'undefined') return false;
 	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/**
- * Enter transition for radio indicator (check)
- * Smooth scale and fade in
- *
- * Respects prefers-reduced-motion by using instant transition
- */
+// Enter transition for the radio indicator — scale+fade in; instant if reduced-motion.
 export function animateRadioIndicatorIn(
 	params: AnimateRadioIndicatorParams = {}
 ): TransitionFunction<HTMLElement> {
@@ -48,12 +41,7 @@ export function animateRadioIndicatorIn(
 	};
 }
 
-/**
- * Exit transition for radio indicator (uncheck)
- * Quick scale and fade out
- *
- * Respects prefers-reduced-motion by using instant transition
- */
+// Exit transition for the radio indicator — scale+fade out; instant if reduced-motion.
 export function animateRadioIndicatorOut(
 	params: AnimateRadioIndicatorParams = {}
 ): TransitionFunction<HTMLElement> {

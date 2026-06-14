@@ -5,6 +5,7 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		disabled = false,
 		readonly = false,
 		required = false,
@@ -14,6 +15,8 @@
 		oninput = undefined,
 		...restProps
 	} = $props();
+
+	const groupProps = $derived({ preset: preset ?? 'radio.group', ...restProps });
 
 	const context = defineState<RadioGroupContext>([
 		defineProperty('disabled', () => disabled ?? false),
@@ -36,6 +39,6 @@
 	});
 </script>
 
-<HtmlAtom preset="radio.group" class={['flex flex-col gap-1', '$preset', klass]} {...restProps}>
+<HtmlAtom class={['flex flex-col gap-1', '$preset', klass]} {...groupProps}>
 	{@render children?.()}
 </HtmlAtom>

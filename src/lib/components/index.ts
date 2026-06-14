@@ -11,6 +11,7 @@ export * from './tooltip';
 export * from './list';
 export * from './portal';
 export * from './popover';
+export * from './popover-dialog';
 export * from './datagrid';
 export * from './accordion';
 export * from './collapsible';

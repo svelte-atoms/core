@@ -7,19 +7,24 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'label' as E,
 		for: labelfor = null,
 		children,
 		...restProps
 	}: LabelProps<E, B> & HTMLAttributes<Element> = $props();
+
+	const labelProps = $derived({
+		preset: preset ?? 'label',
+		...restProps
+	});
 </script>
 
 <HtmlAtom
 	{as}
-	preset="label"
 	class={['font-medium', '$preset', klass]}
 	for={labelfor}
-	{...restProps}
+	{...labelProps}
 >
 	{@render children?.()}
 </HtmlAtom>

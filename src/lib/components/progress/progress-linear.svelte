@@ -8,9 +8,11 @@
 		class: klass = '',
 		value = null,
 		max = 100,
-		preset = 'progress.linear',
+		preset = undefined,
 		...restProps
 	}: ProgressLinearProps & HTMLAttributes<HTMLDivElement> = $props();
+
+	const linearProps = $derived({ preset: preset ?? 'progress.linear', ...restProps });
 
 	const isIndeterminate = $derived(value === null || value === undefined);
 	const percent = $derived(isIndeterminate ? null : Math.min(100, Math.max(0, (value! / max) * 100)));
@@ -30,7 +32,6 @@
 {/snippet}
 
 <HtmlAtom
-	{preset}
 	as="div"
 	class={['progress-root flex flex-col gap-1', '$preset', klass]}
 	role="progressbar"
@@ -42,7 +43,7 @@
 	data-value={isIndeterminate ? undefined : value ?? undefined}
 	data-max={max}
 	data-completed={!isIndeterminate && percent === 100}
-	{...restProps}
+	{...linearProps}
 >
 	<HtmlElement
 		preset="progress.linear.track"

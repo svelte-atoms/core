@@ -15,11 +15,13 @@
 	let {
 		class: klass = '',
 		children = undefined,
+		preset = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const placeholderProps = $derived({
-		...bond?.placeholder(),
+		preset: preset ?? bond?.atom('placeholder').preset ?? 'input.placeholder',
+		...(bond?.atom('placeholder').spread ?? {}),
 		...restProps
 	});
 
@@ -40,7 +42,6 @@
 
 {#if shouldShowPlaceholder}
 	<HtmlAtom
-		preset="input.placeholder"
 		class={[
 			'text-muted-foreground pointer-events-none absolute inset-0 flex h-full w-full items-center px-1 leading-1 outline-none',
 			'$preset',

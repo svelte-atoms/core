@@ -37,10 +37,7 @@
 	// ── Coord parsing ──────────────────────────────────────────────────────
 	type ParsedCoords = { lat: number; lng: number } | null;
 
-	/**
-	 * Accepts: "lat, lng" | "lat lng" | "lat;lng"
-	 * Numbers may be signed decimals or have a trailing N/S/E/W suffix.
-	 */
+	// Accepts: "lat, lng" | "lat lng" | "lat;lng" — signed decimals or N/S/E/W suffix.
 	function parseCoords(raw: string): ParsedCoords {
 		if (!raw.trim()) return null;
 

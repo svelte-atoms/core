@@ -14,10 +14,15 @@
 	let {
 		class: klass = '',
 		src = undefined,
-		preset = 'icon',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: IconProps<Src, E, B> & HTMLAttributes<Element> = $props();
+
+	const iconProps = $derived({
+		preset: preset ?? 'icon',
+		...restProps
+	});
 
 	const content = $derived(src ? sourceSnippet : children );
 </script>
@@ -28,13 +33,12 @@
 {/snippet}
 
 <HtmlAtom
-	{preset}
 	class={[
 		'icon inline-flex aspect-square h-6 items-center justify-center leading-none text-current',
 		'$preset',
 		klass
 	]}
-	{...restProps}
+	{...iconProps}
 >
 	{@render content?.()}
 </HtmlAtom>

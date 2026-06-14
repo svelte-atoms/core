@@ -13,7 +13,7 @@
 		id,
 		name,
 		orientation = 'horizontal',
-		preset = 'slider',
+		preset = undefined,
 		thumbContent = undefined,
 		trackContent = undefined,
 		onchange = undefined,
@@ -21,6 +21,8 @@
 		children = undefined,
 		...restProps
 	}: SliderProps & HTMLAttributes<HTMLDivElement> = $props();
+
+	const sliderProps = $derived({ preset: preset ?? 'slider', ...restProps });
 
 	function clampNumber(current: number, lower: number, upper: number) {
 		if (!Number.isFinite(current)) return lower;
@@ -120,7 +122,6 @@
 {/snippet}
 
 <HtmlAtom
-	{preset}
 	as="div"
 	class={[
 		'slider-root relative flex items-center',
@@ -130,7 +131,7 @@
 		klass
 	]}
 	aria-orientation={orientation}
-	{...restProps}
+	{...sliderProps}
 >
 	{@render (trackContent ?? defaultTrack)({ value: normalizedValue, percent, min: normalizedMin, max: normalizedMax })}
 

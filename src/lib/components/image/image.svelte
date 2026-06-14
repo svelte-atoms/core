@@ -7,14 +7,16 @@
 		src = undefined,
 		alt = undefined,
 		children = undefined,
+		preset = undefined,
 		...restProps
 	} = $props();
 
 	let hasError = $state(false);
+
+	const imageProps = $derived({ preset: preset ?? 'image', ...restProps });
 </script>
 
 <HtmlAtom
-	preset="image"
 	as="div"
 	class={[
 		'flex items-center justify-center overflow-hidden rounded-lg',
@@ -22,7 +24,7 @@
 		'$preset',
 		toClassValue(klass, { error: hasError })
 	]}
-	{...restProps}
+	{...imageProps}
 >
 	<img
 		class={[hasError && 'hidden size-full object-cover']}

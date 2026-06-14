@@ -50,7 +50,7 @@
 		node = n;
 	};
 
-	const finalKlass = $derived(cn(toClassValue(klass)));
+	const finalKlass = $derived(cn('border-border',toClassValue(klass)));
 	const hasTransitions = $derived(!!(enter ?? exit));
 	const transitionSnippet = $derived(
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition

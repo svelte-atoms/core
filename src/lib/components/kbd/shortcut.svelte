@@ -5,11 +5,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		keys = [],
 		separator = '+',
 		children,
 		...restProps
 	}: ShortcutProps = $props();
+
+	const shortcutProps = $derived({ preset: preset ?? 'shortcut', ...restProps });
 
 	let content = $derived(children ?? defaultChildren)
 </script>
@@ -28,11 +31,10 @@
 {/snippet}
 
 <HtmlAtom
-	preset="shortcut"
 	as="span"
 	class={['shortcut inline-flex items-center gap-1', '$preset', klass]}
 	aria-label={keys.join(' ' + separator + ' ')}
-	{...restProps}
+	{...shortcutProps}
 >
 	{@render content()}
 </HtmlAtom>

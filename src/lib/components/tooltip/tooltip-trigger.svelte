@@ -4,7 +4,12 @@
 
 	const popoverBond = PopoverBond.get();
 
-	let { preset = 'tooltip.trigger', onmount, children, onclick = undefined, ...restProps } = $props();
+	let { preset = undefined, onmount, children, onclick = undefined, ...restProps } = $props();
+
+	const triggerProps = $derived({
+		preset: preset ?? 'tooltip.trigger',
+		...restProps
+	});
 
 	function tooltip(node: HTMLElement) {
 		const onpointerenter = async () => {
@@ -34,6 +39,6 @@
 	}
 </script>
 
-<Trigger preset={preset} onmount={tooltip} {onclick} {...restProps}>
+<Trigger onmount={tooltip} {onclick} {...triggerProps}>
 	{@render children?.()}
 </Trigger>

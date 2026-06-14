@@ -14,7 +14,7 @@
 		showControls = true,
 		disabled = false,
 		placeholder = undefined,
-		preset = 'input.number',
+		preset = undefined,
 		decrement = undefined,
 		increment = undefined,
 		onchange = undefined,

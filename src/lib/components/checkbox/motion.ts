@@ -3,28 +3,21 @@ import { cubicIn } from 'svelte/easing';
 import type { TransitionFunction } from '../element';
 
 export type AnimateCheckboxIndicatorParams = {
-	/** Animation duration in milliseconds */
+	// Animation duration in milliseconds.
 	duration?: number;
-	/** Delay before animation starts in milliseconds (default: 0) */
+	// Delay before animation starts in milliseconds (default: 0).
 	delay?: number;
-	/** Custom easing function (default: cubicIn) */
+	// Custom easing function (default: cubicIn).
 	easing?: EasingFunction;
 };
 
-/**
- * Check if user prefers reduced motion
- */
+// Returns true if the user has requested reduced motion.
 function prefersReducedMotion(): boolean {
 	if (typeof window === 'undefined') return false;
 	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/**
- * Exit transition for checkbox indicator (uncheck/clear indeterminate)
- * Quick scale and fade out
- *
- * Respects prefers-reduced-motion by using instant transition
- */
+// Exit transition for the checkbox indicator (scale + fade out). Instant when prefers-reduced-motion is set.
 export function animateCheckboxIndicator(
 	params: AnimateCheckboxIndicatorParams = {}
 ): TransitionFunction<HTMLElement> {

@@ -1,6 +1,4 @@
-/**
- * Types for the input/time sub-module.
- */
+// Types for the input/time sub-module.
 
 // ── Segment ────────────────────────────────────────────────────────────────
 export interface SegmentProps {
@@ -14,7 +12,7 @@ export interface SegmentProps {
 	class?: string;
 	onchange?: (value: number | undefined) => void;
 	onfocusmove?: (dir: -1 | 1) => void;
-	/** Fired when ArrowUp/Down wraps past min/max */
+	// Fired when ArrowUp/Down wraps past min/max
 	onrollover?: (dir: 1 | -1) => void;
 }
 

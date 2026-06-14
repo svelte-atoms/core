@@ -51,32 +51,32 @@ export interface ElementProps<T extends ElementTagName = ElementTagName> extends
 	string,
 	unknown
 > {
-	/** CSS class binding (string, array, or computed) */
+	// CSS class binding (string, array, or computed)
 	class?: ClassValue | ClassValue[];
 
-	/** Change the HTML tag (use polymorphic components) */
+	// Change the HTML tag (use polymorphic components)
 	as?: T | (string & {});
 
-	/** Apply styles globally */
+	// Apply styles globally
 	global?: boolean;
 
-	/** Initial animation/setup on mount */
+	// Initial animation/setup on mount
 	initial?: NodeFunction<T>;
 
-	/** Enter transition */
+	// Enter transition
 	enter?: TransitionFunction<T>;
 
-	/** Exit transition */
+	// Exit transition
 	exit?: TransitionFunction<T>;
 
-	/** Animation function */
+	// Animation function
 	animate?: NodeFunction<T>;
 
-	/** Lifecycle: on mount */
-	onmount?: NodeFunction<T>;
+	// Lifecycle: on mount. Includes `undefined` for exactOptionalPropertyTypes compatibility.
+	onmount?: NodeFunction<T> | undefined;
 
-	/** Lifecycle: on destroy */
-	ondestroy?: NodeFunction<T>;
+	// Lifecycle: on destroy. Same `undefined` rationale as onmount.
+	ondestroy?: NodeFunction<T> | undefined;
 
 	[key: string]: unknown;
 }
@@ -86,10 +86,10 @@ export interface ElementProps<T extends ElementTagName = ElementTagName> extends
 // ============================================================================
 
 export interface HtmlElementEventProps {
-	/** Fired when enter transition ends */
+	// Fired when enter transition ends
 	onintroend?: (ev: TransitionEvent) => void;
 
-	/** Fired when exit transition ends */
+	// Fired when exit transition ends
 	onexitend?: (ev: TransitionEvent) => void;
 }
 

@@ -13,10 +13,12 @@
 		disabled = false,
 		placeholder = 'Choose file…',
 		triggerContent = undefined,
-		preset = 'input.file',
+		preset = undefined,
 		onchange = undefined,
 		...restProps
 	}: InputFileControlProps = $props();
+
+	const fileControlProps = $derived({ preset: preset ?? 'input.file', ...restProps });
 
 	let inputEl = $state<HTMLInputElement>();
 
@@ -65,7 +67,6 @@
 <HtmlAtom
 	as="button"
 	type="button"
-	{preset}
 	{disabled}
 	onclick={openPicker}
 	class={[
@@ -73,6 +74,7 @@
 		'$preset',
 		klass
 	]}
+	{...fileControlProps}
 >
 	{#if triggerContent}
 		{@render triggerContent({ files, hasFiles, open: openPicker })}

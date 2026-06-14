@@ -26,8 +26,11 @@
 		onblur,
 		onfocus,
 		onclick = undefined,
+		preset = undefined,
 		...restProps
 	}: CheckboxProps = $props();
+
+	const checkboxRootProps = $derived({ preset: preset ?? 'checkbox', ...restProps });
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let checkboxElement: HTMLInputElement | undefined = $state();
@@ -53,10 +56,9 @@
 
 	function handleClick(ev: MouseEvent) {
 		if (disabled) return;
-		
-		// Check if click originated from the hidden input (via label click)
-		// If so, the input's bind:checked will handle the toggle
-		console.log(ev.target);
+
+		// The click was forwarded by the native input (e.g. clicking the
+		// surrounding <label> text). bind:checked already owns that toggle.
 		if (ev.target === checkboxElement) {
 			return;
 		}
@@ -69,6 +71,12 @@
 			return;
 		}
 
+		// We own the toggle below. An ancestor <label> would otherwise forward
+		// this same click to the hidden input and toggle a second time, undoing
+		// our change. preventDefault() cancels that forwarding — stopPropagation
+		// does NOT, since label-forwarding is a default action, not propagation.
+		ev.preventDefault();
+
 		// Handle indeterminate → checked → unchecked cycle
 		if (indeterminate) {
 			// Indeterminate → checked
@@ -76,7 +84,6 @@
 			checked = true;
 		} else {
 			// Checked → unchecked or unchecked → checked
-			ev.stopPropagation(); // Prevent click from bubbling to label and toggling again
 			checked = !checked;
 		}
 
@@ -129,7 +136,6 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <Input.Root
-	preset="checkbox"
 	as="div"
 	class={[
 		'checkbox-root aspect-square shrink-0 text-foreground h-5 w-fit cursor-pointer rounded-sm outline-0 outline-offset-2 transition-colors duration-100',
@@ -144,7 +150,7 @@
 	{exit}
 	{initial}
 	onclick={handleClick}
-	{...restProps}
+	{...checkboxRootProps}
 >
 	<input
 		bind:this={checkboxElement}

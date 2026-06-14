@@ -17,5 +17,4 @@ export type BadgeChildren = Snippet<[BadgeSnippetProps]>;
 // ============================================================================
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface BadgeProps extends HtmlAtomProps<'span', never, BadgeChildren> {
-}
+export interface BadgeProps extends HtmlAtomProps<'span', never, BadgeChildren> {}

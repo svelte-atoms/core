@@ -16,14 +16,14 @@ export const COLOR_FN_SPACES: ColorFormat[] = [
 
 export interface FormatDef {
 	format: ColorFormat;
-	/** CSS function name, e.g. 'rgb', 'hsl', 'color' */
+	// CSS function name, e.g. 'rgb', 'hsl', 'color'
 	fn: string;
-	/** For color() format — the colorspace argument */
+	// For color() format — the colorspace argument
 	colorspace?: string;
-	/** Separator between channels: ' ' (modern) or ', ' (legacy) */
+	// Channel separator: ' ' (modern) or ', ' (legacy)
 	sep: ' ' | ', ';
 	channels: ChannelDef[];
-	/** Whether alpha channel is supported */
+	// Whether alpha channel is supported
 	alpha: boolean;
 }
 

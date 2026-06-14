@@ -4,6 +4,7 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		type = 'inline-size',
 		name = undefined,
 		clientWidth = $bindable(0),
@@ -14,6 +15,11 @@
 
 	const containerTypeStype = $derived(type ? `container-type: ${type};` : '');
 	const containerNameStyle = $derived(name ? `container-name: ${name};` : '');
+
+	const containerProps = $derived({
+		preset: preset ?? 'container',
+		...restProps
+	});
 </script>
 
 <HtmlAtom
@@ -35,10 +41,9 @@
 			}
 		};
 	}}
-	preset="container"
 	class={['border-border', '$preset', klass]}
 	style={[containerTypeStype, containerNameStyle].filter(Boolean).join('; ')}
-	{...restProps}
+	{...containerProps}
 >
 	{@render children?.({ clientWidth, clientHeight })}
 </HtmlAtom>

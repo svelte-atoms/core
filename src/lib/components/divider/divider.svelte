@@ -3,16 +3,21 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'div',
 		vertical = false,
 		transparent = false,
 		...restProps
 	} = $props();
+
+	const dividerProps = $derived({
+		preset: preset ?? 'divider',
+		...restProps
+	});
 </script>
 
 <HtmlAtom
 	{as}
-	preset="divider"
 	class={[
 		'atoms-ui divider border-border',
 		transparent && 'bg-transparent',
@@ -23,5 +28,5 @@
 		vertical && 'my-0',
 		'$preset'
 	]}
-	{...restProps}
+	{...dividerProps}
 ></HtmlAtom>

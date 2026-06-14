@@ -28,7 +28,7 @@
 	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
 	const valueProps = $derived({
-		...(bond?.input?.() ?? {}),
+		...(bond?.atom('input').spread ?? {}),
 		...restProps
 	});
 
@@ -80,9 +80,9 @@
 		() => value,
 		(v) => {
 			value = v;
-			if (bond) {
-				bond.state.props.value = v;
-			}
+			// Write through the bond's InputModel (the shared input capability's value
+			// controller) instead of poking `props.value` directly.
+			bond?.value.set(v);
 		}
 	}
 	class={cn(
