@@ -38,6 +38,10 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 
 		// Skip animation if open state hasn't changed
 		if (isOpen === prevOpen) return;
+		if (prevOpen === undefined && !isOpen) {
+			prevOpen = isOpen;
+			return;
+		}
 		prevOpen = isOpen;
 
 		requestAnimationFrame(() => {

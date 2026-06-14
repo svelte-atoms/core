@@ -79,7 +79,7 @@
 		}
 
 		node.style.transform = styles.transform;
-		node.style.opacity = '1';
+		node.style.opacity = styles.opacity;
 	}
 </script>
 
