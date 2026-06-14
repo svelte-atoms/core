@@ -31,10 +31,14 @@
 
 	let {
 		class: klass = '',
-		preset = 'datepicker.months',
-		children,
+		preset = undefined,
 		...restProps
 	}: DatePickerMonthsProps = $props();
+
+	const monthsProps = $derived({
+		preset: preset ?? 'datepicker.months',
+		...restProps
+	});
 
 	function enter(node: HTMLElement) {
 		animate(
@@ -103,8 +107,7 @@
 				duration: 100
 			};
 		}}
-		{preset}
-		{...restProps}
+		{...monthsProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col gap-2" {enter} {exit}>
 			<!-- Year Display -->

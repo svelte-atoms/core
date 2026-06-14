@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { startOfDay } from 'date-fns';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { Root } from '../popover/atoms';
 	import type { CalendarRange } from '../calendar/types';
 	import { DatePickerBond, DatePickerBondState, type DatePickerBondProps } from './bond.svelte';
 	import type { DatePickerRootProps } from './types';
+	import { bindBond } from '$svelte-atoms/core/shared';
+	import { useFocusRestore } from '$svelte-atoms/core/shared/overlay';
 
 	let {
 		open = $bindable(false),
@@ -16,81 +16,40 @@
 		min = undefined,
 		max = undefined,
 		type = 'single',
-		offset = 1,
-		factory = _factory,
+		factory = defaultFactory,
 		children,
 		...restProps
 	}: DatePickerRootProps = $props();
 
-	const seed = {};
-
-	const bondProps = defineState<DatePickerBondProps>(
-		[
-			defineProperty(
-				'open',
-				() => open,
-				(v) => {
-					open = v;
-				}
-			),
-			defineProperty(
-				'range',
-				() => range,
-				(v: CalendarRange) => {
-					range = v;
-					value = v[0];
-				}
-			),
-			defineProperty(
-				'value',
-				() => range?.[0],
-				(v) => {
-					range[0] = v;
-				}
-			),
-			defineProperty(
-				'pivote',
-				() => pivote,
-				(v: Date) => (pivote = v)
-			),
-			defineProperty(
-				'start',
-				() => range[0],
-				(v: Date) => {
-					range[0] = v;
-				}
-			),
-			defineProperty(
-				'end',
-				() => range[1],
-				(v: Date | undefined) => {
-					range[1] = v;
-				}
-			),
-			defineProperty(
-				'min',
-				() => min,
-				(v: Date | undefined) => (min = v)
-			),
-			defineProperty(
-				'max',
-				() => max,
-				(v: Date | undefined) => (max = v)
-			),
-			defineProperty('type', () => type ?? 'single'),
-			defineProperty('rest', () => restProps)
-		],
-		() => seed
+	const binding = bindBond<DatePickerBond>(
+		(props) => factory(props),
+		{
+			open: [() => open, (v) => (open = v)],
+			range: [() => range, (v: CalendarRange) => (range = v)],
+			value: [() => range?.[0], (v) => (range[0] = v)],
+			pivote: [() => pivote, (v) => (pivote = v as Date)],
+			start: [() => range[0], (v) => (range[0] = v)],
+			end: [() => range[1], (v) => (range[1] = v)],
+			min: [() => min, (v) => (min = v)],
+			max: [() => max, (v) => (max = v)],
+			type: () => type ?? 'single',
+			rest: () => restProps
+		}
 	);
+	// `share()` publishes the bond under both the date-picker context key (read by
+	// `DatePickerBond.get()` in the calendar/header/sub-pickers) and the popover key
+	// (read by the re-exported `Trigger`/`Content`/`Arrow`/`Indicator`), via the
+	// flat-composition `share` override. ADR 0004 Decision 1.
+	const bond = binding.bond.share();
 
-	const bond = factory().share();
+	// Focus capture/restore reacts to `open` (ADR 0001 / ADR 0003) — the same hook the
+	// popover Root used to apply; carried here now that the bond is shared directly.
+	useFocusRestore(bond);
 
-	function _factory() {
-		const bondState = new DatePickerBondState(() => bondProps);
+	function defaultFactory(props: DatePickerBondProps) {
+		const bondState = new DatePickerBondState(props);
 		return new DatePickerBond(bondState);
 	}
 </script>
 
-<Root bind:open extend={bondProps} {offset} {...restProps}>
-	{@render children?.({ datePicker: bond })}
-</Root>
+{@render children?.({ datePicker: bond })}

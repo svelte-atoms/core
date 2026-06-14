@@ -10,10 +10,14 @@
 
 	let {
 		class: klass = '',
-		preset = 'datepicker.header',
-		children,
+		preset = undefined,
 		...restProps
 	}: DatePickerHeaderProps = $props();
+
+	const headerProps = $derived({
+		preset: preset ?? 'datepicker.header',
+		...restProps
+	});
 
 	const calendarBondProps = $derived(datePickerBond?.state?.props);
 
@@ -40,8 +44,7 @@
 <HtmlAtom
 	as="nav"
 	class={['border-border flex items-center justify-between gap-2 border-b p-2', '$preset', klass]}
-	{preset}
-	{...restProps}
+	{...headerProps}
 >
 	<!-- Previous Month Button -->
 	<button

@@ -1,5 +1,5 @@
-import type { Component, Snippet } from 'svelte';
-import type { SnippetProps } from '$svelte-atoms/core/components/atom';
+import type { Snippet } from 'svelte';
+import type { ComponentBase, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Day, CalendarRange } from '../calendar/types';
 import type { DatePickerBond } from './bond.svelte';
 import type { Factory } from '$svelte-atoms/core/types';
@@ -18,12 +18,12 @@ export interface DatePickerCalendarProps {
 	class?: string;
 	preset?: string;
 	children?: Snippet<[{ day: Day }]>;
-	Header?: Component;
-	Weekdays?: Component;
-	Body?: Component;
-	Day?: Component;
-	Months?: Component;
-	Years?: Component;
+	header?: ComponentBase;
+	weekdays?: ComponentBase;
+	body?: ComponentBase;
+	day?: ComponentBase;
+	months?: ComponentBase;
+	years?: ComponentBase;
 	[key: string]: unknown;
 }
 

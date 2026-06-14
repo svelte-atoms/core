@@ -27,10 +27,14 @@
 
 	let {
 		class: klass = '',
-		preset = 'datepicker.years',
-		children,
+		preset = undefined,
 		...restProps
 	}: DatePickerYearsProps = $props();
+
+	const yearsProps = $derived({
+		preset: preset ?? 'datepicker.years',
+		...restProps
+	});
 
 	let scrollTimeout: NodeJS.Timeout | undefined = undefined;
 
@@ -120,8 +124,7 @@
 			};
 		}}
 		onwheel={handleWheel}
-		{preset}
-		{...restProps}
+		{...yearsProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col" {enter} {exit}>
 			<!-- Navigation Bar -->
