@@ -20,7 +20,7 @@
 	
 	const content = $derived(activePortal ? proxy : undefined);
 	
-	function proxy(...args: any[]) {
+	function proxy(...args) {
 		activePortal?.share();
 
 		return children?.(...args);

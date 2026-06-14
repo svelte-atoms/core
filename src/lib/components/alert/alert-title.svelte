@@ -8,12 +8,13 @@
 	let {
 		as = 'h4' as E,
 		class: klass = '',
-		preset = 'alert.title',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertTitleProps<E, B> = $props();
 
 	const titleProps = $derived({
+		preset: preset ?? 'alert.title',
 		...bond?.title(),
 		...restProps
 	});
@@ -22,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	{preset}
 	class={['alert-title border-border text-sm leading-tight font-medium', '$preset', klass]}
 	{...titleProps}
 >

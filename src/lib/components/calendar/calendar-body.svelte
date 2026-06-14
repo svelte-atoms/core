@@ -12,13 +12,14 @@
 	let {
 		class: klass = '',
 		weekday,
-		preset = 'calendar.body',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	} = $props();
 
 	const bodyProps = $derived({
-		...calendarBond?.body(),
+		preset: preset ?? 'calendar.body',
+		...calendarBond?.body().spread,
 		...restProps
 	});
 
@@ -88,7 +89,6 @@
 
 <HtmlAtom
 	class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)}
-	{preset}
 	{...bodyProps}
 >
 	{#each currentMonth?.days ?? [] as day (day.id)}

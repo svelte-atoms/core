@@ -1,10 +1,11 @@
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { ScrollableBond } from './bond.svelte';
 	import type { ScrollableThumbProps } from './types';
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children,
 		orientation = 'vertical',
 
@@ -17,8 +18,11 @@
 		throw new Error('ScrollableThumb must be used within a ScrollableRoot');
 	}
 
+	const atom = $derived(orientation === 'horizontal' ? bond.atom('thumbX') : bond.atom('thumbY'));
+
 	const thumbProps = $derived({
-		...(orientation === 'horizontal' ? bond.thumbX().spread : bond.thumbY().spread),
+		preset: preset ?? 'scrollable.thumb',
+		...atom.spread,
 		...restProps
 	});
 </script>
@@ -26,7 +30,6 @@
 <HtmlAtom
 	{bond}
 	as="div"
-	preset="scrollable.thumb"
 	class={[
 		'scrollable-thumb border-border bg-foreground/10 hover:bg-foreground/20 absolute cursor-grab rounded-md active:cursor-grabbing',
 		orientation === 'horizontal' ? 'scrollable-thumb-x' : 'scrollable-thumb-y',

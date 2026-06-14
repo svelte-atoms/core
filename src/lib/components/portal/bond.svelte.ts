@@ -1,4 +1,3 @@
-import { getContext, setContext } from 'svelte';
 import {
 	Bond,
 	BondState,
@@ -6,6 +5,7 @@ import {
 	type BondElements,
 	type BondStateProps
 } from '$svelte-atoms/core/shared/bond.svelte';
+import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 
 export type PortalStateProps = BondStateProps & {
 	id: string;
@@ -17,8 +17,11 @@ export type PortalElements = BondElements & {
 	inner?: HTMLElement;
 };
 
-export class PortalRootAtom extends BondAtom<PortalBond, HTMLElement> {
-	constructor(bond: PortalBond) {
+// Bond shape the portal atoms type `this.bond` against — breaks the atom↔bond cycle.
+type PortalBondView = ViewOf<PortalState>;
+
+export class PortalRootAtom extends BondAtom<PortalBondView, HTMLElement> {
+	constructor(bond: PortalBondView) {
 		super(bond, 'root');
 	}
 
@@ -30,33 +33,17 @@ export class PortalRootAtom extends BondAtom<PortalBond, HTMLElement> {
 	}
 }
 
-export class PortalInnerAtom extends BondAtom<PortalBond, HTMLElement> {
-	constructor(bond: PortalBond) {
+export class PortalInnerAtom extends BondAtom<PortalBondView, HTMLElement> {
+	constructor(bond: PortalBondView) {
 		super(bond, 'inner');
 	}
 }
 
-export class PortalBond extends Bond<PortalStateProps, PortalState, PortalElements> {
-	static CONTEXT_KEY = '@atoms/context/portal';
-
-	constructor(atom: PortalState) {
-		super(atom, 'portal');
-	}
-
+// Hand-written base for PortalBond — resolves the portal target and overrides destroy
+// to remove detached DOM nodes (calls super.destroy()).
+class PortalBondBase extends Bond<PortalStateProps, PortalState> {
 	get targetElement() {
 		return this.element<HTMLElement>('inner') ?? this.element<HTMLElement>('root');
-	}
-
-	root() {
-		return this.atom('root', () => new PortalRootAtom(this));
-	}
-
-	inner() {
-		return this.atom('inner', () => new PortalInnerAtom(this));
-	}
-
-	share(): this {
-		return PortalBond.set(this) as this;
 	}
 
 	override destroy(): void {
@@ -64,18 +51,24 @@ export class PortalBond extends Bond<PortalStateProps, PortalState, PortalElemen
 		this.element<HTMLElement>('inner')?.remove();
 		this.element<HTMLElement>('root')?.remove();
 	}
-
-	static get(): PortalBond | undefined {
-		return getContext(PortalBond.CONTEXT_KEY);
-	}
-
-	static set(bond: PortalBond): PortalBond {
-		return setContext(PortalBond.CONTEXT_KEY, bond);
-	}
 }
 
+// PortalBond — defineBond (§6) over PortalBondBase.
+export const PortalBond = defineBond<
+	{ root: typeof PortalRootAtom; inner: typeof PortalInnerAtom },
+	PortalState,
+	typeof PortalBondBase
+>({
+	name: 'portal',
+	base: PortalBondBase,
+	atoms: { root: PortalRootAtom, inner: PortalInnerAtom }
+});
+
+// Instance type of the portal bond — paired with the const above.
+export type PortalBond = BondOf<typeof PortalBond>;
+
 export class PortalState extends BondState<PortalStateProps> {
-	constructor(props: () => PortalStateProps) {
+	constructor(props: PortalStateProps) {
 		super(props);
 	}
 }

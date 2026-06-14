@@ -1,36 +1,25 @@
 import { SvelteMap } from 'svelte/reactivity';
-import { getContext, setContext } from 'svelte';
 import type { PortalBond } from '../bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
 
 export type PortalsStateProps = BondStateProps & {
 	id: string;
 };
 
-export class PortalsBond extends Bond<PortalsStateProps, PortalsState> {
-	static CONTEXT_KEY = '@atoms/context/portals';
+// Context-only registry bond (no atoms); the portal map lives on PortalsState.
+export const PortalsBond = defineBond<Record<never, never>, PortalsState>({
+	name: 'portals',
+	atoms: {}
+});
 
-	constructor(bond: PortalsState) {
-		super(bond, 'portals');
-	}
-
-	share() {
-		return PortalsBond.set(this) as this;
-	}
-
-	static get(): PortalsBond | undefined {
-		return getContext(PortalsBond.CONTEXT_KEY);
-	}
-
-	static set(bond: PortalsBond): PortalsBond {
-		return setContext(PortalsBond.CONTEXT_KEY, bond);
-	}
-}
+// Instance type of the portals bond — paired with the const above.
+export type PortalsBond = BondOf<typeof PortalsBond>;
 
 export class PortalsState extends BondState<PortalsStateProps> {
 	#portals: Map<string, PortalBond> = new SvelteMap();
 
-	constructor(props: () => PortalsStateProps) {
+	constructor(props: PortalsStateProps) {
 		super(props);
 	}
 

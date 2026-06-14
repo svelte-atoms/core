@@ -4,17 +4,19 @@
 	import type { ToastDescriptionProps } from './types';
 
 	let {
-		class: klass = '',
 		as = 'p' as E,
-		preset = 'toast.description',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: ToastDescriptionProps<E, B> = $props();
 
 	const bond = ToastBond.get();
 
+	const atom = bond?.description();
+
 	const descriptionProps = $derived({
-		...(bond?.description().spread ?? {}),
+		preset: preset ?? atom?.preset,
+		...(atom?.spread ?? {}),
 		...restProps
 	});
 </script>
@@ -22,8 +24,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	{preset}
-	class={['$preset', klass]}
 	{...descriptionProps}
 >
 	{@render children?.({ toast: bond })}

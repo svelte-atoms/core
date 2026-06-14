@@ -1,6 +1,6 @@
 import { createAttachmentKey } from 'svelte/attachments';
-import { getContext, setContext } from 'svelte';
 import {
+	bondContextKey,
 	Bond,
 	BondState,
 	type BondElements,
@@ -21,8 +21,8 @@ const LAYER_ELEMENTS_KIND = {
 	inner: 'layer-inner'
 };
 
-export class LayerBond extends Bond<LayerBondProps, LayerBondState, LayerBondElements> {
-	static CONTEXT_KEY = '@atoms/context/layer';
+export class LayerBond extends Bond<LayerBondProps, LayerBondState> {
+	static CONTEXT_KEY = bondContextKey('layer');
 
 	constructor(atom: LayerBondState) {
 		super(atom);
@@ -51,22 +51,10 @@ export class LayerBond extends Bond<LayerBondProps, LayerBondState, LayerBondEle
 			}
 		};
 	}
-
-	share(): this {
-		return LayerBond.set(this) as this;
-	}
-
-	static get(): LayerBond | undefined {
-		return getContext(LayerBond.CONTEXT_KEY);
-	}
-
-	static set(bond: LayerBond): LayerBond {
-		return setContext(LayerBond.CONTEXT_KEY, bond);
-	}
 }
 
 export class LayerBondState extends BondState<LayerBondProps> {
-	constructor(props: () => LayerBondProps) {
+	constructor(props: LayerBondProps) {
 		super(props);
 	}
 }

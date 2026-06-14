@@ -7,12 +7,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'div' as E,
 		children = undefined,
 		...restProps
 	}: CardHeaderProps<E, B> = $props();
 
 	const headerProps = $derived({
+		preset: preset ?? 'card.header',
 		...bond?.header(),
 		...restProps
 	});
@@ -21,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="card.header"
 	class={['card-header border-border flex flex-col space-y-1.5 px-4 py-4', '$preset', klass]}
 	{...headerProps}
 >

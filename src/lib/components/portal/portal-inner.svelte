@@ -14,19 +14,22 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> = $props();
 
+	const atom = bond?.atom('inner');
+
 	const bondProps = $derived({
-		...bond?.inner().spread,
+		preset: preset ?? atom?.preset ?? 'portal.inner',
+		...atom?.spread,
 		...restProps
 	});
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="portal.inner"
 	class={['border-border relative size-full', '$preset', klass]}
 	{...bondProps}
 >

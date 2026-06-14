@@ -1,16 +1,13 @@
-<script module lang="ts">
-	export type { ScrollableContainerProps } from './types';
-</script>
-
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
+<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { ScrollableContainerProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import './scrollable-container.css';
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children,
 		...restProps
 	}: ScrollableContainerProps<E, B> = $props();
@@ -21,14 +18,17 @@
 		throw new Error('ScrollableContainer must be used within a ScrollableRoot');
 	}
 
+	const atom = bond.atom('container');
+
 	const containerProps = $derived({
-		...bond.container().spread,
+		preset: preset ?? atom.preset,
+		...atom.spread,
 		...restProps
 	});
 </script>
 
 <HtmlAtom
-	{@attach (node) => {
+	{@attach (node: HTMLElement) => {
 		if (!bond) return;
 
 		return resizeObserver(() => {
@@ -40,7 +40,6 @@
 	}}
 	{bond}
 	as="div"
-	preset="scrollable.container"
 	class={[
 		'scrollable-container border-border h-full max-h-full w-full overflow-auto',
 		'$preset',

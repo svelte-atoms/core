@@ -8,20 +8,23 @@
 	let {
 		open = $bindable(false),
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: TreeIndicatorProps<E, B> = $props();
 
+	const atom = bond?.atom('indicator');
+
 	const indicatorProps = $derived({
-		...bond?.indicator().spread,
+		preset: preset ?? atom?.preset,
+		...atom?.spread,
 		...restProps
 	});
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="tree.indicator"
-	class={['border-border aspect-square h-fit', '$preset', klass]}
+	class={['aspect-square h-fit', '$preset', klass]}
 	{...indicatorProps}
 >
 	{@render children?.({ tree: bond })}

@@ -8,6 +8,7 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		fallback = {
 			animate: animateSidebarContent({ '0': '0px', '1': 'auto' }),
@@ -16,15 +17,17 @@
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
+	const atom = bond?.atom('content');
+
 	const contentProps = $derived({
-		...bond?.content().spread,
+		preset: preset ?? atom?.preset,
+		...atom?.spread,
 		...restProps
 	});
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="sidebar.content"
 	class={['bg-card border-border', '$preset', klass]}
 	{fallback}
 	{...contentProps}

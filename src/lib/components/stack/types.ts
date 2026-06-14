@@ -14,7 +14,7 @@ export interface StackRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, StackChildren> {
-	/** The value of the topmost (front) item — bindable, updates reactively */
+	// The value of the topmost (front) item — bindable, updates reactively.
 	value?: string;
 }
 
@@ -22,6 +22,6 @@ export interface StackItemProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, StackChildren> {
-	/** Unique identifier for this stack item */
+	// Unique identifier for this stack item.
 	value: string;
 }

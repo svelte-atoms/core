@@ -1,16 +1,15 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';
-	import { untrack } from 'svelte';
 
 	let {
 		open = $bindable(false),
 		disabled = false,
 		"z-index": zindex = 0,
-		factory = _factory,
+		factory = defaultFactory,
 		children = undefined,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
@@ -21,22 +20,18 @@
 
 	new ZLayer('sidebar', () => normalizedZIndex ?? 0).share();
 
-	const bondProps = defineState<SidebarBondProps>([
-		defineProperty(
-			'open',
-			() => open,
-			(v) => {
-				open = v;
-			}
-		),
-		defineProperty('disabled', () => disabled),
-		defineProperty('rest', () => restProps)
-	]);
+	const binding = bindBond<SidebarBond>(
+		(props) => factory(props),
+		{
+			open: [() => open, (v) => { open = v; }],
+			disabled: () => disabled,
+			rest: () => restProps
+		}
+	);
+	const bond = binding.bond.share();
 
-	const bond = untrack(() => factory(bondProps)).share();
-
-	function _factory(props: typeof bondProps) {
-		const bondState = new SidebarBondState(() => props);
+	function defaultFactory(props: SidebarBondProps) {
+		const bondState = new SidebarBondState(props);
 		const bond = new SidebarBond(bondState);
 
 		return bond;

@@ -1,10 +1,6 @@
 import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Snippet } from 'svelte';
 
-// ============================================================================
-// Root Snippet Props (Extensible)
-// ============================================================================
-
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RootSnippetProps extends SnippetProps {}
 
@@ -14,12 +10,6 @@ export interface RootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, RootChildren> {
-	/**
-	 * Main content to render inside the root component.
-	 */
-
-	/**
-	 * Custom portal configuration snippet.
-	 */
+	// Custom portal configuration snippet.
 	portals?: Snippet;
 }

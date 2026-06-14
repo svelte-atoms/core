@@ -17,9 +17,9 @@ export interface ToastOptions<T = unknown> {
 	id?: string;
 	duration?: number;
 	dismissible?: boolean;
-	/** Arbitrary payload accessible from a custom toast component via `item.data`. */
+	// Arbitrary payload accessible from a custom toast component via `item.data`.
 	data?: T;
-	/** Custom component to render in place of the default toast layout. Receives `{ item }`. */
+	// Custom component to render in place of the default toast layout. Receives `{ item }`.
 	component?: Component<{ item: ToastItem<T> }>;
 }
 
@@ -90,7 +90,7 @@ export class Toaster {
 		}
 	}
 
-	/** Pause auto-dismiss timer (e.g. on pointerenter). */
+	// Pause auto-dismiss timer (e.g. on pointerenter).
 	pause(...ids: string[]) {
 		for (const id of ids) {
 			const t = this.#timers.get(id);
@@ -102,7 +102,7 @@ export class Toaster {
 		}
 	}
 
-	/** Resume previously paused auto-dismiss timer. */
+	// Resume previously paused auto-dismiss timer.
 	resume(...ids: string[]) {
 		for (const id of ids) {
 			const t = this.#timers.get(id);

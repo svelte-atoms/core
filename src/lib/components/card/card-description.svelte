@@ -7,12 +7,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'p' as E,
 		children = undefined,
 		...restProps
 	}: CardDescriptionProps<E, B> = $props();
 
 	const descriptionProps = $derived({
+		preset: preset ?? 'card.description',
 		...bond?.description(),
 		...restProps
 	});
@@ -21,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="card.description"
 	class={['card-description border-border text-sm text-gray-500', '$preset', klass]}
 	{...descriptionProps}
 >

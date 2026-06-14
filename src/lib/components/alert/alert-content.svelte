@@ -10,12 +10,13 @@
 
 	let {
 		class: klass = '',
-		preset = 'alert.content',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertContentProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const contentProps = $derived({
+		preset: preset ?? 'alert.content',
 		...bond?.content(),
 		...restProps
 	});
@@ -23,7 +24,6 @@
 
 <HtmlAtom
 	{bond}
-	{preset}
 	class={['alert-content border-border flex-1 space-y-1', '$preset', klass]}
 	{...contentProps}
 >

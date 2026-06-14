@@ -8,6 +8,7 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		fallback = {
 			animate: animateTreeBody(),
@@ -16,16 +17,18 @@
 		...restProps
 	}: TreeBodyProps<E, B> = $props();
 
+	const atom = bond?.atom('body');
+
 	const bodyProps = $derived({
-		...bond?.body().spread,
+		preset: preset ?? atom?.preset,
+		...atom?.spread,
 		...restProps
 	});
 </script>
 
 <HtmlAtom
 	{bond}
-	preset="tree.body"
-	class={['border-border pl-4', '$preset', klass]}
+	class={['pl-4', '$preset', klass]}
 	{fallback}
 	{...bodyProps}
 >

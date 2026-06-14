@@ -8,12 +8,13 @@
 	let {
 		class: klass = '',
 		as = 'p' as E,
-		preset = 'alert.description',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertDescriptionProps<E, B> = $props();
 
 	const descriptionProps = $derived({
+		preset: preset ?? 'alert.description',
 		...bond?.description(),
 		...restProps
 	});
@@ -21,7 +22,6 @@
 
 <HtmlAtom
 	{bond}
-	{preset}
 	class={['alert-description border-border mt-1 text-sm leading-relaxed', '$preset', klass]}
 	{as}
 	{...descriptionProps}

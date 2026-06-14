@@ -10,13 +10,17 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		onpointerdown = undefined,
 		...restProps
 	}: TreeHeaderProps<E, B> & HTMLAttributes<Element> = $props();
 
+	const atom = bond?.atom('header');
+
 	const headerProps = $derived({
-		...bond?.header().spread,
+		preset: preset ?? atom?.preset,
+		...atom?.spread,
 		...restProps
 	});
 
@@ -33,8 +37,7 @@
 
 <HtmlAtom
 	{bond}
-	preset="tree.header"
-	class={['border-border cursor-pointer', '$preset', klass]}
+	class={['cursor-pointer', '$preset', klass]}
 	onpointerdown={handlePointerDown}
 	{...headerProps}
 >

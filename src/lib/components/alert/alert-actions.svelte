@@ -10,12 +10,13 @@
 
 	let {
 		class: klass = '',
-		preset = 'alert.actions',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertActionsProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const actionsProps = $derived({
+		preset: preset ?? 'alert.actions',
 		...bond?.actions(),
 		...restProps
 	});
@@ -23,7 +24,6 @@
 
 <HtmlAtom
 	{bond}
-	{preset}
 	class={['alert-actions border-border mt-3 flex items-center gap-2', '$preset', klass]}
 	{...actionsProps}
 >

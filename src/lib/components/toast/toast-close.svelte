@@ -11,7 +11,7 @@
 	let {
 		class: klass = '',
 		as = 'button' as E,
-		preset = 'toast.close',
+		preset = undefined,
 		children = undefined,
 		onclick = undefined,
 		...restProps
@@ -19,8 +19,11 @@
 
 	const bond = ToastBond.get();
 
+	const atom = bond?.dismiss();
+
 	const closeProps = $derived({
-		...(bond?.dismiss().spread ?? {}),
+		preset: preset ?? atom?.preset,
+		...(atom?.spread ?? {}),
 		...restProps
 	});
 
@@ -34,7 +37,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	{preset}
 	class={['cursor-pointer text-current h-6', '$preset', klass]}
 	{...closeProps}
 	onclick={onclick_}

@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
 	import type { TreeRootProps } from './types';
@@ -8,34 +8,25 @@
 		open = $bindable(false),
 		disabled = false,
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
-		factory = _factory,
+		factory = defaultFactory,
 		...restProps
 	}: TreeRootProps<E, B> = $props();
 
-	const bondProps = defineState<TreeBondProps>(
-		[
-			defineProperty(
-				'open',
-				() => open,
-				(v) => {
-					open = v;
-				}
-			),
-			defineProperty('rest', () => restProps)
-		],
-		() => ({ disabled })
+	const binding = bindBond<TreeBond>(
+		(props) => factory(props),
+		{
+			open: [() => open, (v) => { open = v; }],
+			disabled: () => disabled,
+			rest: () => restProps
+		},
+		{ preset: () => preset }
 	);
+	const bond = binding.bond.share();
 
-	const bond = factory(bondProps).share();
-
-	const rootProps = $derived({
-		...bond.root().spread,
-		...restProps
-	});
-
-	function _factory(props: typeof bondProps) {
-		const bondState = new TreeBondState(() => props);
+	function defaultFactory(props: TreeBondProps) {
+		const bondState = new TreeBondState(props);
 		return new TreeBond(bondState);
 	}
 
@@ -45,10 +36,9 @@
 </script>
 
 <HtmlAtom
-	{bond}
-	preset="tree"
-	class={['border-border flex flex-col', '$preset', klass]}
-	{...rootProps}
+	class={['flex flex-col', '$preset', klass]}
+	{...binding.props}
+	{...restProps}
 >
 	{@render children?.({ tree: bond })}
 </HtmlAtom>

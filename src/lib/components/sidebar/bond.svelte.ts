@@ -1,10 +1,9 @@
-import { getContext, setContext, untrack } from 'svelte';
+import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
-	Bond,
-	BondState,
-	BondAtom,
-	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+	createDisclosure,
+	type Disclosure
+} from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -20,12 +19,15 @@ export type SidebarElements = {
 	content: HTMLElement;
 };
 
-class SidebarContentAtom extends BondAtom<SidebarBond, HTMLElement> {
-	constructor(bond: SidebarBond) {
+// Bond shape the sidebar atoms type `this.bond` against — breaks the atom↔bond cycle.
+type SidebarBondView = ViewOf<SidebarBondState>;
+
+class SidebarContentAtom extends BondAtom<SidebarBondView, HTMLElement> {
+	constructor(bond: SidebarBondView) {
 		super(bond, 'content');
 	}
 	override get attrs() {
-		const props = untrack(() => this.bond.state.props);
+		const props = this.bond.state.props;
 		const isOpen = props?.open ?? false;
 		const isDisabled = props?.disabled ?? false;
 
@@ -37,49 +39,46 @@ class SidebarContentAtom extends BondAtom<SidebarBond, HTMLElement> {
 	}
 }
 
-export class SidebarBond<
-	Props extends SidebarBondProps = SidebarBondProps,
-	State extends SidebarBondState<Props> = SidebarBondState<Props>
-> extends Bond<Props, State, SidebarElements> {
-	static CONTEXT_KEY = '@atomic-sv/bonds/sidebar';
+// SidebarBond — non-generic (legacy bond-level generics were unused); `SidebarBondState` keeps its `Props` generic.
+export const SidebarBond = defineBond<{ content: typeof SidebarContentAtom }, SidebarBondState>({
+	name: 'sidebar',
+	atoms: { content: SidebarContentAtom }
+});
 
-	constructor(state: State) {
-		super(state, 'sidebar');
-	}
-
-	content() {
-		return this.atom('content', () => new SidebarContentAtom(this));
-	}
-
-	share(): this {
-		return SidebarBond.set(this) as this;
-	}
-
-	static get(): SidebarBond | undefined {
-		return getContext(SidebarBond.CONTEXT_KEY);
-	}
-
-	static set(bond: SidebarBond): SidebarBond {
-		return setContext(SidebarBond.CONTEXT_KEY, bond);
-	}
-}
+// Instance type of the sidebar bond — paired with the `const` above.
+export type SidebarBond = BondOf<typeof SidebarBond>;
 
 export class SidebarBondState<
 	Props extends SidebarBondProps = SidebarBondProps
 > extends BondState<Props> {
-	constructor(props: () => Props) {
+	// Disclosure capability; storage stays in `props.open`.
+	#disclosure: Disclosure = createDisclosure({
+		get: () => this.props.open,
+		set: (v) => (this.props.open = v)
+	});
+
+	constructor(props: Props) {
 		super(props);
 	}
 
+	// The disclosure capability — open/closed.
+	get disclosure(): Disclosure {
+		return this.#disclosure;
+	}
+
+	get isOpen() {
+		return this.#disclosure.isOpen;
+	}
+
 	open() {
-		this.props.open = true;
+		this.#disclosure.open();
 	}
 
 	close() {
-		this.props.open = false;
+		this.#disclosure.close();
 	}
 
 	toggle() {
-		this.props.open = !this.props.open;
+		this.#disclosure.toggle();
 	}
 }

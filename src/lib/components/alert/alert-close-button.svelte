@@ -15,12 +15,13 @@
 	let {
 		class: klass = '',
 		as = 'button' as E,
-		preset = 'alert.close-button',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertCloseButtonProps<E, B> & HTMLAttributes<Element> = $props();
 
 	const closeButtonProps = $derived({
+		preset: preset ?? 'alert.close-button',
 		...bond?.closeButton(),
 		...restProps
 	});
@@ -29,7 +30,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	{preset}
 	class={[
 		'alert-close-button border-border flex size-6 items-center justify-center rounded p-0.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10',
 		'$preset',

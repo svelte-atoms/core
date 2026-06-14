@@ -7,12 +7,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'p' as E,
 		children = undefined,
 		...restProps
 	}: CardSubtitleProps<E, B> = $props();
 
 	const subtitleProps = $derived({
+		preset: preset ?? 'card.subtitle',
 		...bond?.subtitle(),
 		...restProps
 	});
@@ -21,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="card.subtitle"
 	class={['card-subtitle border-border text-sm font-medium text-gray-600', '$preset', klass]}
 	{...subtitleProps}
 >

@@ -7,12 +7,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'h3' as E,
 		children = undefined,
 		...restProps
 	}: CardTitleProps<E, B> = $props();
 
 	const titleProps = $derived({
+		preset: preset ?? 'card.title',
 		...bond?.title(),
 		...restProps
 	});
@@ -21,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="card.title"
 	class={[
 		'card-title border-border text-lg leading-none font-semibold tracking-tight',
 		'$preset',

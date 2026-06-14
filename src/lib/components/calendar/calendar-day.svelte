@@ -14,7 +14,7 @@
 
 	let {
 		class: klass = '',
-		preset = 'calendar.day',
+		preset = undefined,
 		day,
 		as = 'button',
 		children = undefined,
@@ -23,7 +23,8 @@
 	}: CalendarDayProps = $props();
 
 	const dayProps = $derived({
-		...calendarBond?.day(day),
+		preset: preset ?? 'calendar.day',
+		...calendarBond?.day(day).spread,
 		...restProps
 	});
 
@@ -59,7 +60,6 @@
 
 <HtmlAtom
 	{as}
-	{preset}
 	class={[
 		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l',
 		'hover:bg-accent hover:text-accent-foreground',

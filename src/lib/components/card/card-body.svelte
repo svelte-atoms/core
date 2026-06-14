@@ -7,11 +7,13 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: CardContentProps<E, B> = $props();
 
 	const contentProps = $derived({
+		preset: preset ?? 'card.content',
 		...bond?.content(),
 		...restProps
 	});
@@ -19,7 +21,6 @@
 
 <HtmlAtom
 	{bond}
-	preset="card.content"
 	class={['card-content border-border px-4 pb-4', '$preset', klass]}
 	{...contentProps}
 >

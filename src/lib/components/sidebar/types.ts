@@ -17,7 +17,7 @@ export type SidebarRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > = HtmlAtomProps<E, B, SidebarChildren> & {
-	"z-index"?: number;
+	'z-index'?: number;
 	open?: boolean;
 	disabled?: boolean;
 	width?: string | number;

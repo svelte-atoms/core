@@ -9,12 +9,13 @@
 	let {
 		class: klass = '',
 		base = Icon,
-		preset = 'alert.icon',
+		preset = undefined,
 		children = undefined,
 		...restProps
 	}: AlertIconProps<E, B> = $props();
 
 	const iconProps = $derived({
+		preset: preset ?? 'alert.icon',
 		...bond?.icon(),
 		...restProps
 	});
@@ -23,7 +24,6 @@
 <HtmlAtom
 	{bond}
 	{base}
-	{preset}
 	class={[
 		'alert-icon border-border inline-flex aspect-square h-5 items-center justify-center rounded-full text-sm font-medium',
 		'$preset',

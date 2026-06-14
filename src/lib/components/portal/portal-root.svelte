@@ -8,14 +8,16 @@
 	import { PortalsBond, PortalBond, PortalState, type PortalStateProps } from '.';
 	import { RootBond } from '$svelte-atoms/core/components/root';
 	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import type { Factory } from '$svelte-atoms/core/types';
 
 	type Element = ElementType<E>;
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		id,
-		factory = _factory,
+		factory = defaultFactory,
 		children = undefined,
 		...restProps
 	}: PortalOuterProps<E, B> & HTMLAttributes<Element> = $props();
@@ -23,8 +25,15 @@
 	const rootBond = RootBond.get();
 	const portalsBond = PortalsBond.get();
 
-	const bondProps = defineState<PortalStateProps>([defineProperty('id', () => id), defineProperty('rest', () => restProps)]);
-	const bond = factory(bondProps).share() as PortalBond;
+	const binding = bindBond<PortalBond>(
+		(props) => (factory as Factory<PortalBond>)(props),
+		{
+			id: () => id,
+			rest: () => restProps
+		},
+		{ preset: () => preset }
+	);
+	const bond = binding.bond.share();
 
 	portalsBond?.state.set(id, bond);
 
@@ -39,13 +48,8 @@
 		};
 	});
 
-	const rootProps = $derived({
-		...bond.root().spread,
-		...restProps
-	});
-
-	function _factory(props: typeof bondProps) {
-		const portalState = new PortalState(() => props);
+	function defaultFactory(props: PortalStateProps) {
+		const portalState = new PortalState(props);
 		return new PortalBond(portalState);
 	}
 
@@ -55,10 +59,9 @@
 </script>
 
 <HtmlAtom
-	{bond}
-	preset="portal"
 	class={['border-border pointer-events-none', '$preset', klass]}
-	{...rootProps}
+	{...binding.props}
+	{...restProps}
 >
 	{@render children?.()}
 </HtmlAtom>

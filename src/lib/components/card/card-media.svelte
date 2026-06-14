@@ -7,12 +7,14 @@
 
 	let {
 		class: klass = '',
+		preset = undefined,
 		as = 'div' as E,
 		children = undefined,
 		...restProps
 	}: CardMediaProps<E, B> = $props();
 
 	const mediaProps = $derived({
+		preset: preset ?? 'card.media',
 		...bond?.media(),
 		...restProps
 	});
@@ -21,7 +23,6 @@
 <HtmlAtom
 	{as}
 	{bond}
-	preset="card.media"
 	class={['card-media border-border overflow-hidden', '$preset', klass]}
 	{...mediaProps}
 >
