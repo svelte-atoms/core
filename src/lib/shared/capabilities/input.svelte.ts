@@ -1,9 +1,5 @@
 import type { Behavior, Capability } from '../bond.svelte';
-import type { OverlayView } from '../overlay/types';
-import type { RovingFocus } from './roving-focus.svelte';
-
-// `createInput` returns the InputModel surface; `inputCapability` wraps it into a
-// projectable Capability for the role stitch (BondAtom.role('input', field?)).
+import type { OverlayView } from '$svelte-atoms/core/components/overlay/types';
 
 // A reactive text field — get/set over an injected store (a bond prop).
 export interface InputField {
@@ -49,9 +45,8 @@ export interface InputProjectionOptions {
 	itemDomId?: (id: string) => string;
 }
 
-// Wrap an InputModel into a projectable Capability (slot 'input') so an editable
-// control atom binds to it by role via BondAtom.role('input', field?).
-// Projects the overlay-combobox a11y set (role, aria-autocomplete/expanded/controls/activedescendant).
+// Wrap an InputModel into a projectable Capability (slot 'input'); role 'input' binds an editable
+// control and projects the overlay-combobox a11y set (role, aria-autocomplete/expanded/controls/activedescendant).
 export function inputCapability(
 	model: InputModel,
 	options: InputProjectionOptions = {}
@@ -62,6 +57,8 @@ export function inputCapability(
 
 	return {
 		slot: 'input',
+		// Reads the roving capability's activeId for aria-activedescendant.
+		requires: ['roving'],
 		surface: model,
 		behavior(role, ctx): Behavior | undefined {
 			if (role !== 'input') return undefined;
@@ -69,7 +66,7 @@ export function inputCapability(
 			return {
 				attrs: (bond) => {
 					const o = bond as OverlayView;
-					const active = o.capability<RovingFocus>('roving')?.surface.activeId ?? null;
+					const active = o.capability('roving')?.surface?.activeId ?? null;
 					return {
 						role: 'combobox',
 						'aria-autocomplete': autocomplete,

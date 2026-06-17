@@ -6,6 +6,10 @@ import { SvelteMap } from 'svelte/reactivity';
 import type { VirtualElement } from '@floating-ui/dom';
 import { Collection } from './collection.svelte';
 import { collectionCapability, collectionSlot } from './capabilities/collection.svelte';
+import type { SelectionModel } from './capabilities/selection.svelte';
+import type { RovingFocus } from './capabilities/roving-focus.svelte';
+import type { InputModel } from './capabilities/input.svelte';
+import type { Disclosure } from './capabilities/disclosure.svelte';
 
 export type BondVirtualElement = VirtualElement;
 
@@ -35,12 +39,59 @@ export interface Behavior<
 	onmount?(node: E, bond: B): void | (() => void);
 }
 
+// Slot → surface-type registry, so `capability(slot)` returns a typed surface without a cast.
+// Augmentable: consumer libraries `declare module` to add their own slots. Policy slots whose
+// surfaces live outside this layer (focus/escape) are intentionally absent — retrieve with an explicit type.
+export interface CapabilitySurfaces {
+	selection: SelectionModel<unknown>;
+	roving: RovingFocus;
+	input: InputModel;
+	'trigger-content': Disclosure;
+}
+// Slots known to the type system; plain strings (e.g. `collection:<kind>`, policy slots) stay valid.
+export type KnownSlot = keyof CapabilitySurfaces & string;
+
+// Role → ctx-type contract. `item`/`input` carry a string identifier; structural roles carry nothing.
+// `.role()` enforces this; unknown (consumer) roles fall through to an optional `unknown` ctx.
+export interface RoleContexts {
+	item: string;
+	input: string;
+	container: void;
+	content: void;
+	surface: void;
+	trigger: void;
+	label: void;
+	description: void;
+	control: void;
+}
+export type KnownRole = keyof RoleContexts & string;
+// The ctx argument tuple a role requires: none for `void` roles, one for ctx-bearing roles,
+// optional-unknown for custom roles — so `.role('item')` is a compile error but `.role('custom')` is fine.
+export type RoleCtxArgs<R extends string> = R extends KnownRole
+	? RoleContexts[R] extends void
+		? [ctx?: undefined]
+		: [ctx: RoleContexts[R]]
+	: [ctx?: unknown];
+
 // The behavior-axis brick (dual of the atom). slot = fusion key, surface = consumer API, behavior() decorates by role. §4.2.
 export interface Capability<Surface = unknown> {
 	readonly slot: string;
 	// Present on stateful models (Disclosure, SelectionModel…); omitted on stateless policies.
 	readonly surface?: Surface;
+	// Sibling slots this capability reads at projection/setup time; validated at registration (DEV).
+	readonly requires?: readonly string[];
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
+	// Run once when the bond goes live (driven by useCapabilities at root init); returns optional teardown.
+	// The home for whole-bond effects (focus restore, document listeners) that no single atom owns.
+	setup?(bond: Bond): (() => void) | void;
+}
+
+// Introspection snapshot of one registered capability — for tests, devtools, and docs.
+export interface CapabilityInfo {
+	slot: string;
+	hasSurface: boolean;
+	requires: readonly string[];
+	hasSetup: boolean;
 }
 
 // Reactive key→value map with microtask-deferred writes (avoids state_unsafe_mutation in $derived).
@@ -208,13 +259,25 @@ export abstract class Bond<
 
 	// Register a Capability (delegates to BondState, single home per ADR 0001 §11.1).
 	capability<C extends Capability>(capability: C): C;
-	// Retrieve a registered capability by its slot, or undefined.
+	// Retrieve a known slot with its typed surface (no cast).
+	capability<K extends KnownSlot>(slot: K): Capability<CapabilitySurfaces[K]> | undefined;
+	// Retrieve any slot (dynamic/custom); surface type unknown unless supplied.
 	capability<S = unknown>(slot: string): Capability<S> | undefined;
 	capability<C extends Capability, S = unknown>(
 		capabilityOrSlot: C | string
 	): C | Capability<S> | undefined {
 		if (typeof capabilityOrSlot === 'string') return this.#state.capability<S>(capabilityOrSlot);
 		return this.#state.capability(capabilityOrSlot);
+	}
+
+	// All registered capabilities, in registration order; drives setup() and introspection.
+	get capabilities(): readonly Capability[] {
+		return this.#state.capabilities;
+	}
+
+	// Introspection snapshot of registered capabilities — for tests, devtools, and docs.
+	describeCapabilities(): CapabilityInfo[] {
+		return this.#state.describeCapabilities();
 	}
 
 	destroy() {
@@ -275,7 +338,9 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 
 	// Register a Capability in its single home (this state). §11.1.
 	capability<C extends Capability>(capability: C): C;
-	// Retrieve a registered capability by its slot, or undefined.
+	// Retrieve a known slot with its typed surface (no cast).
+	capability<K extends KnownSlot>(slot: K): Capability<CapabilitySurfaces[K]> | undefined;
+	// Retrieve any slot (dynamic/custom).
 	capability<S = unknown>(slot: string): Capability<S> | undefined;
 	capability<C extends Capability, S = unknown>(
 		capabilityOrSlot: C | string
@@ -289,15 +354,56 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 			}
 			return found;
 		}
-		// Last-wins-per-slot: re-registering a slot replaces it (lets a spec override a base default; `fuse` relies on this).
+		// Last-wins-per-slot: re-registering a slot replaces the prior holder (lets a spec override a
+		// base default; `fuse` and the overlay capability stacks rely on it). DEV-logs the replacement
+		// so order-dependent overrides aren't silent (#4).
 		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrSlot.slot);
-		if (i >= 0) this.#capabilities[i] = capabilityOrSlot;
-		else this.#capabilities.push(capabilityOrSlot);
+		if (i >= 0) {
+			if (import.meta.env?.DEV) {
+				console.debug(`[svelte-atoms] capability slot "${capabilityOrSlot.slot}" replaced in "${this.id}" (last-wins).`);
+			}
+			this.#capabilities[i] = capabilityOrSlot;
+		} else {
+			this.#capabilities.push(capabilityOrSlot);
+		}
 		return capabilityOrSlot;
+	}
+
+	// All registered capabilities, in registration order; drives setup() and introspection.
+	get capabilities(): readonly Capability[] {
+		return this.#capabilities;
+	}
+
+	// Snapshot of registered capabilities — slots, surface presence, deps, setup. For tests/devtools/docs.
+	describeCapabilities(): CapabilityInfo[] {
+		return this.#capabilities.map((c) => ({
+			slot: c.slot,
+			hasSurface: c.surface !== undefined,
+			requires: c.requires ?? [],
+			hasSetup: typeof c.setup === 'function'
+		}));
+	}
+
+	// DEV: warn once if any capability declares a `requires` slot that never registered. Deferred to
+	// first projection so the whole constructor-time registration order is complete before checking (#3).
+	#requiresChecked = false;
+	#checkRequires() {
+		const slots = new Set(this.#capabilities.map((c) => c.slot));
+		for (const cap of this.#capabilities) {
+			for (const need of cap.requires ?? []) {
+				if (!slots.has(need)) {
+					console.warn(`[svelte-atoms] capability "${cap.slot}" requires slot "${need}", which is not registered in "${this.id}".`);
+				}
+			}
+		}
 	}
 
 	// Every capability's Behavior projection for role; consumed by BondAtom.role().
 	behaviorsForRole(role: string, ctx?: unknown): Behavior[] {
+		if (import.meta.env?.DEV && !this.#requiresChecked) {
+			this.#requiresChecked = true;
+			this.#checkRequires();
+		}
 		const out: Behavior[] = [];
 		for (const capability of this.#capabilities) {
 			const behavior = capability.behavior?.(role, ctx);
@@ -333,7 +439,10 @@ export class BondAtom<
 	}
 
 	// Declare the role this atom plays; folds in capability projections for that role. §4.2.
-	role(role: string, ctx?: unknown): this {
+	// Typed per role: `item`/`input` require their string ctx, structural roles take none; custom
+	// string roles still accepted with an optional ctx (see RoleContexts).
+	role<R extends string>(role: R, ...args: RoleCtxArgs<R>): this {
+		const ctx = args[0] as unknown;
 		// Record the role (so a sibling resolves our id via bond.atomByRole), then fold in projections.
 		this.#roles.add(role);
 		const behaviors = this.bond.state.behaviorsForRole(role, ctx);

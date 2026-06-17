@@ -5,6 +5,11 @@ export {
 	bondContextKey,
 	type Behavior,
 	type Capability,
+	type CapabilityInfo,
+	type CapabilitySurfaces,
+	type KnownSlot,
+	type RoleContexts,
+	type KnownRole,
 	type BondClass,
 	type BondElements,
 	type BondStateProps,
@@ -12,6 +17,7 @@ export {
 	type AtomRegistry
 } from './bond.svelte';
 export { bindBond, BondBinding, type BondBindingOptions } from './bind-bond.svelte';
+export { useCapabilities } from './use-capabilities.svelte';
 export { Collection } from './collection.svelte';
 export {
 	collectionCapability,
@@ -51,6 +57,10 @@ export {
 	type RovingBacking,
 	type RovingProjectionOptions
 } from './capabilities/roving-focus.svelte';
+export {
+	navigationCapability,
+	type NavigationProjectionOptions
+} from './capabilities/navigation.svelte';
 export {
 	createInput,
 	inputCapability,

@@ -35,7 +35,7 @@ export type BondBaseClass = abstract new (...args: any[]) => Bond;
 // Shape a bond must satisfy to be a parts: part. DefinedBondClass satisfies it; hand-written bonds via a spec getter.
 export type FusablePart = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	readonly spec: BondSpec<any>;
+	readonly spec: BondSpec<any, any>;
 	readonly CONTEXT_KEY?: string;
 	readonly CONTEXT_KEYS?: readonly string[];
 };
