@@ -6,6 +6,7 @@ import {
 	OverlayState,
 	OverlayBond,
 	modalCapabilities,
+	TRIGGER,
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
@@ -124,7 +125,7 @@ export const DialogBond = defineBond<
 >({
 	name: 'dialog',
 	base: OverlayBond,
-	capabilities: () => modalCapabilities().filter((c) => c.slot !== 'trigger'),
+	capabilities: () => modalCapabilities().filter((c) => c.slot !== TRIGGER),
 	atoms: {
 		root: ModalRootAtom,
 		content: DialogContentAtom,

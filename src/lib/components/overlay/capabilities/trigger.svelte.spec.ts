@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { clickTrigger } from '../policies/trigger.svelte';
+import { clickTrigger, TRIGGER } from '../policies/trigger.svelte';
 import type { OverlayView } from '../types';
 
 // Minimal Overlay-ish stub: what the trigger policy reads.
@@ -14,7 +14,7 @@ function fakeBond(isOpen = false, isDisabled = false) {
 describe('clickTrigger — trigger policy', () => {
 	it('lives in slot "trigger" with no surface (stateless policy)', () => {
 		const cap = clickTrigger();
-		expect(cap.slot).toBe('trigger');
+		expect(cap.slot).toBe(TRIGGER);
 		expect(cap.surface).toBeUndefined();
 	});
 

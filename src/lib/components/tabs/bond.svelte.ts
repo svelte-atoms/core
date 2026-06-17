@@ -10,6 +10,7 @@ import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared'
 import {
 	createSelection,
 	selectionCapability,
+	SELECTION,
 	type SelectionModel
 } from '$svelte-atoms/core/shared/capabilities/selection.svelte';
 import type { Collection } from '$svelte-atoms/core/shared/collection.svelte';
@@ -104,7 +105,7 @@ class TabsBondBase extends Bond<TabsBondProps, TabsBondState> implements ITabs {
 		return this.element<HTMLElement>('header');
 	}
 	selectionCapability(): Capability | undefined {
-		return this.capability('selection');
+		return this.capability(SELECTION);
 	}
 	mountItem(value: string, tab: TabBond) {
 		return this.state.mountItem(value, tab);

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { Bond, BondState, BondAtom, bondContextKey, type BondStateProps } from '../bond.svelte';
-import { createRovingFocus, rovingCapability } from './roving-focus.svelte';
-import { navigationCapability } from './navigation.svelte';
+import { createRovingFocus, rovingCapability, ROVING } from './roving-focus.svelte';
+import { navigationCapability, NAVIGATION } from './navigation.svelte';
 
 // Roving over a fixed id list; navigation projects keydown handlers that drive it.
 class NavState extends BondState<BondStateProps> {
@@ -114,13 +114,13 @@ describe('capability introspection + requires (#6, #3)', () => {
 		bond.capability(navigationCapability(bond.state.roving));
 
 		const info = bond.describeCapabilities();
-		const nav = info.find((c) => c.slot === 'navigation');
+		const nav = info.find((c) => c.slot === NAVIGATION);
 		expect(nav).toBeDefined();
 		expect(nav!.hasSurface).toBe(true);
-		expect(nav!.requires).toEqual(['roving']);
+		expect(nav!.requires).toEqual([ROVING]);
 		expect(nav!.hasSetup).toBe(false);
 
-		const roving = info.find((c) => c.slot === 'roving');
+		const roving = info.find((c) => c.slot === ROVING);
 		expect(roving!.requires).toEqual([]);
 	});
 
@@ -131,7 +131,7 @@ describe('capability introspection + requires (#6, #3)', () => {
 		bond.capability(navigationCapability(bond.state.roving));
 		new NavAtom(bond).role('container'); // first projection triggers the check
 
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('requires slot "roving"'));
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('requires slot "@svelte-atoms/cap:roving"'));
 		warn.mockRestore();
 	});
 });

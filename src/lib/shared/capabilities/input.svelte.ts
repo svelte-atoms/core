@@ -1,5 +1,9 @@
-import type { Behavior, Capability } from '../bond.svelte';
+import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
+import { ROVING } from './roving-focus.svelte';
 import type { OverlayView } from '$svelte-atoms/core/components/overlay/types';
+
+// Public slot key — surface type travels with the key, so `capability(INPUT)` is typed (no cast).
+export const INPUT = sharedCapabilityKey<InputModel>('@svelte-atoms/cap:input');
 
 // A reactive text field — get/set over an injected store (a bond prop).
 export interface InputField {
@@ -56,9 +60,9 @@ export function inputCapability(
 	const toDomId = options.itemDomId ?? ((id: string) => id);
 
 	return {
-		slot: 'input',
+		slot: INPUT,
 		// Reads the roving capability's activeId for aria-activedescendant.
-		requires: ['roving'],
+		requires: [ROVING],
 		surface: model,
 		behavior(role, ctx): Behavior | undefined {
 			if (role !== 'input') return undefined;
@@ -66,7 +70,7 @@ export function inputCapability(
 			return {
 				attrs: (bond) => {
 					const o = bond as OverlayView;
-					const active = o.capability('roving')?.surface?.activeId ?? null;
+					const active = o.capability(ROVING)?.surface?.activeId ?? null;
 					return {
 						role: 'combobox',
 						'aria-autocomplete': autocomplete,

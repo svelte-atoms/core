@@ -6,6 +6,7 @@ import {
 	OverlayState,
 	OverlayBond,
 	modalCapabilities,
+	TRIGGER,
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
@@ -156,7 +157,7 @@ export const DrawerBond = defineBond<
 >({
 	name: 'drawer',
 	base: OverlayBond,
-	capabilities: () => modalCapabilities().filter((c) => c.slot !== 'trigger'),
+	capabilities: () => modalCapabilities().filter((c) => c.slot !== TRIGGER),
 	atoms: {
 		root: DrawerRootAtom,
 		content: DrawerContentAtom,

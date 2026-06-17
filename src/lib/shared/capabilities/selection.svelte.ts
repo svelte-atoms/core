@@ -1,4 +1,7 @@
-import type { Behavior, Capability } from '../bond.svelte';
+import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
+
+// Public slot key — surface type travels with the key, so `capability(SELECTION)` is typed (no cast).
+export const SELECTION = sharedCapabilityKey<SelectionModel<unknown>>('@svelte-atoms/cap:selection');
 
 // SelectionModel<T> — owns the logic of "which values are committed" (single vs multiple,
 // set algebra) but not the storage: state lives in consumer-bindable bond props.
@@ -93,7 +96,7 @@ export function selectionCapability<T>(
 	const interactive = options.interactive ?? true;
 
 	return {
-		slot: 'selection',
+		slot: SELECTION,
 		surface: model,
 		behavior(role, ctx): Behavior | undefined {
 			if (role === 'item') {

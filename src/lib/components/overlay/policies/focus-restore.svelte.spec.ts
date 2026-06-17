@@ -1,6 +1,7 @@
 import { describe, expect, it, afterEach } from 'vitest';
 import { flushSync } from 'svelte';
 import { useFocusRestore } from './focus-restore.svelte';
+import { FOCUS } from './focus.svelte';
 import type { OverlayView } from '../types';
 import type { OverlayKnobs } from '../types';
 
@@ -27,8 +28,8 @@ function mockOverlay(
 	let open = $state(false);
 	const bond = {
 		// Restore config lives on the focus capability's surface.
-		capability: (slot: string) =>
-			slot === 'focus'
+		capability: (slot: symbol) =>
+			slot === FOCUS
 				? { slot, surface: { strategy: undefined, ...focus } }
 				: undefined,
 		state: {

@@ -9,8 +9,8 @@ class TestState extends BondState<BondStateProps> {}
 describe('collectionCapability — identity & surface', () => {
 	it('slots at `collection:<kind>` and surfaces the Collection', () => {
 		const cap = collectionCapability<string>('item');
-		expect(cap.slot).toBe('collection:item');
 		expect(cap.slot).toBe(collectionSlot('item'));
+		expect(cap.slot.description).toBe('@svelte-atoms/cap:collection:item');
 		expect(cap.surface).toBeInstanceOf(Collection);
 		expect(cap.surface.kind).toBe('item');
 	});
@@ -27,7 +27,7 @@ describe('BondState.collection — registry unification', () => {
 		const items = state.collection('item');
 		expect(items).toBeInstanceOf(Collection);
 		// Same instance is reachable through the capability seam — one registry.
-		expect(state.capability('collection:item')?.surface).toBe(items);
+		expect(state.capability(collectionSlot('item'))?.surface).toBe(items);
 	});
 
 	it('caches per kind (same instance on repeat access) and namespaces by kind', () => {

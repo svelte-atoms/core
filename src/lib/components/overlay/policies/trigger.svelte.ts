@@ -1,6 +1,9 @@
-import type { Capability } from '$svelte-atoms/core/shared/bond.svelte';
+import { sharedCapabilityKey, type Capability } from '$svelte-atoms/core/shared/bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
+
+// Public slot key for trigger gesture policies (click/hover/contextmenu/manual share the slot, last-wins).
+export const TRIGGER = sharedCapabilityKey('@svelte-atoms/cap:trigger');
 
 export type HoverTriggerOptions = {
 	// Delay before opening on pointer-enter, ms. Default 200.
@@ -29,7 +32,7 @@ function triggerAttrs(o: OverlayView, ariaHasPopup: OverlayKnobs['ariaHasPopup']
 export function clickTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
 	return {
-		slot: 'trigger',
+		slot: TRIGGER,
 		behavior(role) {
 			if (role !== 'trigger') return undefined;
 			return {
@@ -67,7 +70,7 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 		closeT = undefined;
 	};
 	return {
-		slot: 'trigger',
+		slot: TRIGGER,
 		behavior(role) {
 			if (role !== 'trigger') return undefined;
 			return {
@@ -103,7 +106,7 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
 	return {
-		slot: 'trigger',
+		slot: TRIGGER,
 		behavior(role) {
 			if (role !== 'trigger') return undefined;
 			return {
@@ -126,7 +129,7 @@ export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 export function manualTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
 	return {
-		slot: 'trigger',
+		slot: TRIGGER,
 		behavior(role) {
 			if (role !== 'trigger') return undefined;
 			return {

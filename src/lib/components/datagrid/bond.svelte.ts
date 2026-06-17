@@ -9,6 +9,7 @@ import type { Collection } from '$svelte-atoms/core/shared/collection.svelte';
 import {
 	createSelection,
 	selectionCapability,
+	SELECTION,
 	type SelectionModel
 } from '$svelte-atoms/core/shared/capabilities/selection.svelte';
 import { nanoid } from 'nanoid';
@@ -186,6 +187,6 @@ export class DataGridBondState<T = unknown>
 	}
 
 	selectionCapability(): Capability | undefined {
-		return this.capability('selection');
+		return this.capability(SELECTION);
 	}
 }

@@ -1,5 +1,10 @@
-import type { Behavior, Capability } from '../bond.svelte';
-import type { RovingFocus } from './roving-focus.svelte';
+import { capabilityKey, type Behavior, type Capability } from '../bond.svelte';
+import { ROVING, type RovingFocus } from './roving-focus.svelte';
+
+// Private slot key (process-unique Symbol, not exported from the public barrel): navigation is a
+// behavior-only policy that nobody retrieves by key, so it stays unforgeable — no consumer can name
+// the slot to replace it. The private seam (#2). ADR 0005 D6.
+export const NAVIGATION = capabilityKey('navigation');
 
 // Options for `navigationCapability`'s keydown projection.
 export interface NavigationProjectionOptions {
@@ -41,9 +46,9 @@ export function navigationCapability(
 	};
 
 	return {
-		slot: 'navigation',
+		slot: NAVIGATION,
 		surface: roving,
-		requires: ['roving'],
+		requires: [ROVING],
 		behavior(role): Behavior | undefined {
 			if (!roles.includes(role)) return undefined;
 			return {

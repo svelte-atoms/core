@@ -1,5 +1,9 @@
-import type { Capability } from '$svelte-atoms/core/shared/bond.svelte';
+import { sharedCapabilityKey, type Capability } from '$svelte-atoms/core/shared/bond.svelte';
+import { INPUT } from '$svelte-atoms/core/shared/capabilities/input.svelte';
 import type { OverlayView, EscapeOutcome } from '../types';
+
+// Public slot key for the escape policy.
+export const ESCAPE = sharedCapabilityKey<EscapeHandler>('@svelte-atoms/cap:escape');
 
 export type { EscapeOutcome };
 
@@ -10,11 +14,11 @@ export type EscapeHandler = (bond: OverlayView, ev: KeyboardEvent) => void;
 // Prefer the pre-built constants below for common cases.
 export function escapePolicy(
 	onEscape: EscapeHandler,
-	opts: { enabled?: boolean; requires?: readonly string[] } = {}
+	opts: { enabled?: boolean; requires?: readonly symbol[] } = {}
 ): Capability<EscapeHandler> {
 	const enabled = opts.enabled !== false;
 	return {
-		slot: 'escape',
+		slot: ESCAPE,
 		surface: onEscape,
 		...(opts.requires ? { requires: opts.requires } : {}),
 		behavior(role) {
@@ -48,9 +52,9 @@ export const ignoreEscape: Capability<EscapeHandler> = escapePolicy(() => {
 // First Escape clears the overlay's `'input'` capability; second Escape closes. Used by Combobox and Select.
 export const clearThenClose: Capability<EscapeHandler> = escapePolicy(
 	(bond) => {
-		const input = bond.capability('input')?.surface;
+		const input = bond.capability(INPUT)?.surface;
 		if (input?.clear()) return;
 		bond.state.close();
 	},
-	{ requires: ['input'] }
+	{ requires: [INPUT] }
 );

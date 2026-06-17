@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import { closeOnEscape, ignoreEscape, clearThenClose } from './escape.svelte';
+import { INPUT } from '$svelte-atoms/core/shared';
 import type { OverlayView } from '../types';
 
 function mockBond(input?: { clear: () => boolean }) {
 	const state = { close: vi.fn() };
 	return {
 		state,
-		capability: (slot: string) => (slot === 'input' && input ? { surface: input } : undefined)
+		capability: (slot: symbol) => (slot === INPUT && input ? { surface: input } : undefined)
 	} as unknown as OverlayView & { state: typeof state };
 }
 

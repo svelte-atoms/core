@@ -6,10 +6,6 @@ import { SvelteMap } from 'svelte/reactivity';
 import type { VirtualElement } from '@floating-ui/dom';
 import { Collection } from './collection.svelte';
 import { collectionCapability, collectionSlot } from './capabilities/collection.svelte';
-import type { SelectionModel } from './capabilities/selection.svelte';
-import type { RovingFocus } from './capabilities/roving-focus.svelte';
-import type { InputModel } from './capabilities/input.svelte';
-import type { Disclosure } from './capabilities/disclosure.svelte';
 
 export type BondVirtualElement = VirtualElement;
 
@@ -39,17 +35,33 @@ export interface Behavior<
 	onmount?(node: E, bond: B): void | (() => void);
 }
 
-// Slot → surface-type registry, so `capability(slot)` returns a typed surface without a cast.
-// Augmentable: consumer libraries `declare module` to add their own slots. Policy slots whose
-// surfaces live outside this layer (focus/escape) are intentionally absent — retrieve with an explicit type.
-export interface CapabilitySurfaces {
-	selection: SelectionModel<unknown>;
-	roving: RovingFocus;
-	input: InputModel;
-	'trigger-content': Disclosure;
+// A capability slot key: a symbol that carries its surface type as a phantom parameter, so the key
+// *is* the type registry — `capability(key)` returns `Capability<Surface>` with no cast and no parallel
+// slot→type map to drift or augment. Mint with capabilityKey()/sharedCapabilityKey(). ADR 0005 D6.
+declare const SURFACE: unique symbol;
+export type CapabilityKey<Surface = unknown> = symbol & { readonly [SURFACE]?: Surface };
+
+// The surface a key projects (its phantom), or `unknown` for a bare symbol.
+export type SurfaceOf<K> = K extends CapabilityKey<infer S> ? S : unknown;
+
+// Mint a process-unique slot key. A key that is *not* exported is unforgeable — no outside code can
+// name the slot, so its capability cannot be replaced via last-wins. The private seam. ADR 0005 D6.
+export function capabilityKey<Surface = unknown>(description: string): CapabilityKey<Surface> {
+	return Symbol(description) as CapabilityKey<Surface>;
 }
-// Slots known to the type system; plain strings (e.g. `collection:<kind>`, policy slots) stay valid.
-export type KnownSlot = keyof CapabilitySurfaces & string;
+
+// Mint a realm-shared slot key (Symbol.for): the same description resolves to one key across duplicate
+// library copies / HMR (like BOND_BRAND) and across a parametric family (collection:<kind>). Forgeable
+// by description, by design — this is the public projection seam. Namespace descriptions to avoid
+// cross-library collision in the global symbol registry. ADR 0005 D6.
+export function sharedCapabilityKey<Surface = unknown>(description: string): CapabilityKey<Surface> {
+	return Symbol.for(description) as CapabilityKey<Surface>;
+}
+
+// Human-readable slot name for DEV diagnostics and introspection (symbols don't coerce in templates).
+function slotName(slot: symbol): string {
+	return slot.description ?? slot.toString();
+}
 
 // Role → ctx-type contract. `item`/`input` carry a string identifier; structural roles carry nothing.
 // `.role()` enforces this; unknown (consumer) roles fall through to an optional `unknown` ctx.
@@ -75,11 +87,13 @@ export type RoleCtxArgs<R extends string> = R extends KnownRole
 
 // The behavior-axis brick (dual of the atom). slot = fusion key, surface = consumer API, behavior() decorates by role. §4.2.
 export interface Capability<Surface = unknown> {
-	readonly slot: string;
+	// The fusion/lookup key. A symbol (CapabilityKey) — registration is variance-free; retrieval is
+	// typed through the key's phantom in `capability(key)`, not through this field.
+	readonly slot: symbol;
 	// Present on stateful models (Disclosure, SelectionModel…); omitted on stateless policies.
 	readonly surface?: Surface;
-	// Sibling slots this capability reads at projection/setup time; validated at registration (DEV).
-	readonly requires?: readonly string[];
+	// Sibling slot keys this capability reads at projection/setup time; validated by identity (DEV).
+	readonly requires?: readonly symbol[];
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
 	// Run once when the bond goes live (driven by useCapabilities at root init); returns optional teardown.
 	// The home for whole-bond effects (focus restore, document listeners) that no single atom owns.
@@ -88,9 +102,11 @@ export interface Capability<Surface = unknown> {
 
 // Introspection snapshot of one registered capability — for tests, devtools, and docs.
 export interface CapabilityInfo {
-	slot: string;
+	slot: symbol;
+	// The slot key's description, for human-readable display (symbols don't stringify in templates).
+	description: string | undefined;
 	hasSurface: boolean;
-	requires: readonly string[];
+	requires: readonly symbol[];
 	hasSetup: boolean;
 }
 
@@ -259,15 +275,12 @@ export abstract class Bond<
 
 	// Register a Capability (delegates to BondState, single home per ADR 0001 §11.1).
 	capability<C extends Capability>(capability: C): C;
-	// Retrieve a known slot with its typed surface (no cast).
-	capability<K extends KnownSlot>(slot: K): Capability<CapabilitySurfaces[K]> | undefined;
-	// Retrieve any slot (dynamic/custom); surface type unknown unless supplied.
-	capability<S = unknown>(slot: string): Capability<S> | undefined;
-	capability<C extends Capability, S = unknown>(
-		capabilityOrSlot: C | string
-	): C | Capability<S> | undefined {
-		if (typeof capabilityOrSlot === 'string') return this.#state.capability<S>(capabilityOrSlot);
-		return this.#state.capability(capabilityOrSlot);
+	// Retrieve a slot by its key; the surface type travels with the key (no cast, no slot→type map).
+	capability<S>(key: CapabilityKey<S>): Capability<S> | undefined;
+	capability<S = unknown>(
+		capabilityOrKey: Capability | CapabilityKey<S>
+	): Capability<S> | undefined {
+		return this.#state.capability(capabilityOrKey as CapabilityKey<S>);
 	}
 
 	// All registered capabilities, in registration order; drives setup() and introspection.
@@ -338,35 +351,33 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 
 	// Register a Capability in its single home (this state). §11.1.
 	capability<C extends Capability>(capability: C): C;
-	// Retrieve a known slot with its typed surface (no cast).
-	capability<K extends KnownSlot>(slot: K): Capability<CapabilitySurfaces[K]> | undefined;
-	// Retrieve any slot (dynamic/custom).
-	capability<S = unknown>(slot: string): Capability<S> | undefined;
-	capability<C extends Capability, S = unknown>(
-		capabilityOrSlot: C | string
-	): C | Capability<S> | undefined {
-		if (typeof capabilityOrSlot === 'string') {
-			const found = this.#capabilities.find((c) => c.slot === capabilityOrSlot) as
+	// Retrieve a slot by its key; the surface type travels with the key (no cast, no slot→type map).
+	capability<S>(key: CapabilityKey<S>): Capability<S> | undefined;
+	capability<S = unknown>(
+		capabilityOrKey: Capability | CapabilityKey<S>
+	): Capability<S> | undefined {
+		if (typeof capabilityOrKey === 'symbol') {
+			const found = this.#capabilities.find((c) => c.slot === capabilityOrKey) as
 				| Capability<S>
 				| undefined;
 			if (import.meta.env?.DEV && !found) {
-				console.warn(`[svelte-atoms] BondState.capability("${capabilityOrSlot}"): no capability registered at this slot in "${this.id}".`);
+				console.warn(`[svelte-atoms] BondState.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`);
 			}
 			return found;
 		}
 		// Last-wins-per-slot: re-registering a slot replaces the prior holder (lets a spec override a
 		// base default; `fuse` and the overlay capability stacks rely on it). DEV-logs the replacement
-		// so order-dependent overrides aren't silent (#4).
-		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrSlot.slot);
+		// so order-dependent overrides aren't silent (#4). Slot identity is by symbol, not string.
+		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrKey.slot);
 		if (i >= 0) {
 			if (import.meta.env?.DEV) {
-				console.debug(`[svelte-atoms] capability slot "${capabilityOrSlot.slot}" replaced in "${this.id}" (last-wins).`);
+				console.debug(`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" replaced in "${this.id}" (last-wins).`);
 			}
-			this.#capabilities[i] = capabilityOrSlot;
+			this.#capabilities[i] = capabilityOrKey;
 		} else {
-			this.#capabilities.push(capabilityOrSlot);
+			this.#capabilities.push(capabilityOrKey);
 		}
-		return capabilityOrSlot;
+		return capabilityOrKey as Capability<S>;
 	}
 
 	// All registered capabilities, in registration order; drives setup() and introspection.
@@ -378,6 +389,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 	describeCapabilities(): CapabilityInfo[] {
 		return this.#capabilities.map((c) => ({
 			slot: c.slot,
+			description: c.slot.description,
 			hasSurface: c.surface !== undefined,
 			requires: c.requires ?? [],
 			hasSetup: typeof c.setup === 'function'
@@ -392,7 +404,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		for (const cap of this.#capabilities) {
 			for (const need of cap.requires ?? []) {
 				if (!slots.has(need)) {
-					console.warn(`[svelte-atoms] capability "${cap.slot}" requires slot "${need}", which is not registered in "${this.id}".`);
+					console.warn(`[svelte-atoms] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`);
 				}
 			}
 		}

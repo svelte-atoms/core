@@ -1,10 +1,13 @@
-import type { Behavior, Capability } from '../bond.svelte';
+import { sharedCapabilityKey, type Behavior, type Capability, type CapabilityKey } from '../bond.svelte';
 import { Collection } from '../collection.svelte';
 
-// Slot prefix for collections; collection('item') registers at slot 'collection:item'.
-const COLLECTION_SLOT_PREFIX = 'collection:';
+// Slot-key prefix for collections; collection('item') registers at slot key for 'collection:item'.
+const COLLECTION_SLOT_PREFIX = '@svelte-atoms/cap:collection:';
 
-export const collectionSlot = (kind: string): string => `${COLLECTION_SLOT_PREFIX}${kind}`;
+// Parametric slot key per kind — Symbol.for so repeated calls (and duplicate library copies) resolve
+// to one key by identity, preserving find/last-wins semantics across the family.
+export const collectionSlot = (kind: string): CapabilityKey<Collection<unknown>> =>
+	sharedCapabilityKey<Collection<unknown>>(`${COLLECTION_SLOT_PREFIX}${kind}`);
 
 export interface CollectionProjectionOptions {
 	// Opt into positional ARIA (item → posinset/setsize/data-index, container → setsize). Default false (surface-only).

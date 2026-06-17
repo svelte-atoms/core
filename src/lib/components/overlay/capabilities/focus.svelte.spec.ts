@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { trappedFocus, focusOnOpen, noFocus } from '../policies/focus.svelte';
+import { trappedFocus, focusOnOpen, noFocus, FOCUS } from '../policies/focus.svelte';
 
 describe('focus policies', () => {
 	it('trappedFocus lives in slot "focus" with restore config as surface', () => {
 		const cap = trappedFocus({ restoreFocus: 'previous', captureFocusOnOpen: true });
-		expect(cap.slot).toBe('focus');
+		expect(cap.slot).toBe(FOCUS);
 		expect(cap.surface?.restoreFocus).toBe('previous');
 		expect(cap.surface?.captureFocusOnOpen).toBe(true);
 	});

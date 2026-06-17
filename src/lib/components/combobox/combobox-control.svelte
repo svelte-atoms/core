@@ -2,7 +2,7 @@
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { ComboboxBond } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
-	import type { InputModel } from '$svelte-atoms/core/shared';
+	import { INPUT } from '$svelte-atoms/core/shared';
 
 	const bond = ComboboxBond.get() as ComboboxBond;
 
@@ -20,7 +20,7 @@
 
 	// Trigger control is the `value` box (the `'input'` capability's `value` field): shows the
 	// selection, setting it commits. Filtering lives in a separate `Combobox.Query` (`query` field).
-	const input = $derived(bond.capability('input')?.surface as InputModel | undefined);
+	const input = $derived(bond.capability(INPUT)?.surface);
 
 	const atom = bond.control();
 
