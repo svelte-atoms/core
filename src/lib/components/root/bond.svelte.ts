@@ -1,5 +1,3 @@
-import { SvelteMap } from 'svelte/reactivity';
-import type { PortalBond } from '../portal/bond.svelte';
 import {
 	bondContextKey,
 	Bond,
@@ -34,17 +32,7 @@ export class RootBond extends Bond<RootStateProps, RootBondState> {
 }
 
 export class RootBondState extends BondState<RootStateProps> {
-	#portals: Map<string, PortalBond> = new SvelteMap();
-
 	constructor(state: RootStateProps) {
 		super(state);
-	}
-
-	setPortal(id: string, portal: PortalBond) {
-		this.#portals.set(id, portal);
-	}
-
-	getPortal(id: string) {
-		return this.#portals.get(id);
 	}
 }

@@ -74,7 +74,8 @@
 		{#if portal}
 			{@render portal?.()}
 		{:else}
-			<Portal.Outer id="root.l0" class="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+			<!-- Absolute surface over the root atom; the soft containment boundary for overlays. -->
+			<Portal.Outer id="root.l0">
 				<Portal.Inner />
 			</Portal.Outer>
 		{/if}

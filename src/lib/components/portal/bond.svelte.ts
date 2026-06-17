@@ -39,21 +39,14 @@ export class PortalInnerAtom extends BondAtom<PortalBondView, HTMLElement> {
 	}
 }
 
-// Hand-written base for PortalBond — resolves the portal target and overrides destroy
-// to remove detached DOM nodes (calls super.destroy()).
 class PortalBondBase extends Bond<PortalStateProps, PortalState> {
-	get targetElement() {
+	// The teleport sink and the floating-ui boundary are the same element: the Inner once mounted,
+	// else the Outer. A getter, not a $derived memo, so synchronous readers see a fresh value.
+	get boundaryElement(): HTMLElement | undefined {
 		return this.element<HTMLElement>('inner') ?? this.element<HTMLElement>('root');
-	}
-
-	override destroy(): void {
-		super.destroy();
-		this.element<HTMLElement>('inner')?.remove();
-		this.element<HTMLElement>('root')?.remove();
 	}
 }
 
-// PortalBond — defineBond (§6) over PortalBondBase.
 export const PortalBond = defineBond<
 	{ root: typeof PortalRootAtom; inner: typeof PortalInnerAtom },
 	PortalState,
@@ -64,11 +57,6 @@ export const PortalBond = defineBond<
 	atoms: { root: PortalRootAtom, inner: PortalInnerAtom }
 });
 
-// Instance type of the portal bond — paired with the const above.
 export type PortalBond = BondOf<typeof PortalBond>;
 
-export class PortalState extends BondState<PortalStateProps> {
-	constructor(props: PortalStateProps) {
-		super(props);
-	}
-}
+export class PortalState extends BondState<PortalStateProps> {}

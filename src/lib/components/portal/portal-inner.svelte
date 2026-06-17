@@ -22,15 +22,23 @@
 	const atom = bond?.atom('inner');
 
 	const bondProps = $derived({
-		preset: preset ?? atom?.preset ?? 'portal.inner',
+		preset: preset ?? atom?.preset,
 		...atom?.spread,
 		...restProps
 	});
 </script>
 
+<!--
+	Teleport sink and floating-ui boundary. `relative size-full` makes it the offsetParent the
+	teleported `absolute` overlays anchor against; no overflow clip keeps containment soft.
+-->
 <HtmlAtom
 	{bond}
-	class={['border-border relative size-full', '$preset', klass]}
+	class={[
+		'relative size-full',
+		'$preset',
+		klass
+	]}
 	{...bondProps}
 >
 	{@render children?.()}
