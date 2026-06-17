@@ -35,7 +35,7 @@
 	$effect(() => {
 		if (!el) return;
 		const text = getDisplay();
-		void buffer; void value; // reactive deps
+		void buffer; void value; // track as reactive deps
 
 		untrack(() => {
 			requestAnimationFrame(() => {

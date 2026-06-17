@@ -29,17 +29,14 @@
 	// `dropdown-menu.item` preset from the bond's canonical item atom instead.
 	const presentation = $derived({ preset: preset ?? menu.item().preset });
 
-	// Create reactive props object for the atom
 	const itemProps = $derived<DropdownMenuItemAtomProps>({
 		id,
 		disabled
 	});
 
-	// Create the atom instance
 	const atom = new DropdownMenuItemAtom<typeof menu>(itemProps, menu);
 
-	// Merge atom spread (attrs + handlers + element attachment + roving projection)
-	// with custom props.
+	// Atom spread (attrs + handlers + element attachment + roving projection) plus custom props.
 	const itemAttrs = $derived({
 		...atom.spread,
 		...restProps

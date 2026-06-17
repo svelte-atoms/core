@@ -9,7 +9,7 @@ export function isBrowser(): boolean {
 export function focusTrap(ev: KeyboardEvent) {
 	const node = ev.currentTarget as HTMLElement;
 
-	// Tab trap - keep focus within popover
+	// cycle Tab/Shift+Tab within the container
 	if (ev.key === 'Tab') {
 		const focusableElements = node.querySelectorAll<HTMLElement>(
 			'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'

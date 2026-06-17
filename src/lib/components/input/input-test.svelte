@@ -7,8 +7,7 @@
 <Input.Root>
 	{#snippet children({ input })}
 		<Input.Control bind:value placeholder="field" />
-		<!-- Reads the bond's InputModel surface — `bond.value.get()` reflects `props.value`,
-		     which `Input.Control` writes via `bond.value.set`. -->
+		<!-- `bond.value.get()` reflects `props.value`, which Input.Control writes via `bond.value.set`. -->
 		<output data-testid="model">{input.value.get()}</output>
 	{/snippet}
 </Input.Root>

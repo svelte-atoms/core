@@ -26,7 +26,7 @@
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
 
-	// ── Parse email into segments ─────────────────────────────────────────
+	// Parse email into segments
 	type Segment = { text: string; kind: 'local' | 'at' | 'domain' | 'tld' | 'plain' };
 
 	function parseSegments(raw: string): Segment[] {
@@ -43,7 +43,7 @@
 		segs.push({ text: '@', kind: 'at' });
 
 		if (domain) {
-			// Split domain into base + TLD on last dot
+			// Split domain into base + TLD on the last dot.
 			const lastDot = domain.lastIndexOf('.');
 			if (lastDot !== -1 && lastDot < domain.length - 1) {
 				segs.push({ text: domain.slice(0, lastDot), kind: 'domain' });

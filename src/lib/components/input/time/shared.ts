@@ -2,7 +2,7 @@
 export type { SegmentProps, TimeParts, DateTimeParts, LooseParts } from './types';
 import type { TimeParts, DateTimeParts } from './types';
 
-// ── Merge utility ──────────────────────────────────────────────────────────
+// Shallow-merge overrides into base, skipping undefined override values.
 export function mergeParts<T extends object>(base: T, overrides: T): T {
 	const clean = Object.fromEntries(
 		Object.entries(overrides).filter(([, v]) => v !== undefined)
@@ -10,7 +10,7 @@ export function mergeParts<T extends object>(base: T, overrides: T): T {
 	return { ...base, ...clean };
 }
 
-// ── Time helpers ───────────────────────────────────────────────────────────
+// Time helpers
 
 // Parse a HH:MM[:SS] string (always 24h internally) into TimeParts.
 export function parseTimeString(str: string, date?: Date, hourFormat: 12 | 24 = 24): TimeParts {
@@ -96,7 +96,7 @@ export function clampTimeParts(parts: TimeParts, min?: string, max?: string): Ti
 	return parts;
 }
 
-// ── DateTime helpers ───────────────────────────────────────────────────────
+// DateTime helpers
 
 // Parse a YYYY-MM-DD string into DateTimeParts (date-only, no time fields).
 export function parseDateString(str: string): DateTimeParts {

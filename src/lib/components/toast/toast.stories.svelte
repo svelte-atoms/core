@@ -24,10 +24,7 @@
 	let autoDismissOpen = $state(false);
 </script>
 
-<!--
-  Custom toaster built from building blocks + Toaster.
-  Demonstrates how to wire the manager's item list to Toast.Root.
--->
+<!-- Wires the Toaster manager's item list to Toast.Root. -->
 <Story name="Custom toaster">
 	<div class="flex h-screen flex-col items-center justify-center gap-4">
 		<div class="flex flex-wrap justify-center gap-2">
@@ -61,9 +58,7 @@
 	</ol>
 </Story>
 
-<!--
-  Auto-dismiss: toasts are removed from the manager after the duration.
--->
+<!-- Auto-dismiss: manager removes toasts after the duration. -->
 <Story name="Auto-dismiss">
 	<div class="flex h-screen flex-col items-center justify-center gap-4">
 		<Button onclick={() => toaster.add('default', { duration: 3000, data: { title: 'Auto-dismiss', description: 'Gone in 3 seconds.' } as ToastData })}>
@@ -91,9 +86,7 @@
 	</ol>
 </Story>
 
-<!--
-  Declarative: Toast.Root owned entirely by markup, no manager.
--->
+<!-- Declarative: Toast.Root owned by markup, no manager. -->
 <Story name="Declarative">
 	<div class="flex h-screen flex-col items-center justify-center gap-6">
 		<div class="flex gap-2">

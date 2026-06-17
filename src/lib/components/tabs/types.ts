@@ -4,10 +4,7 @@ import type { Factory } from '$svelte-atoms/core/types';
 import type { TabsBond } from './bond.svelte';
 import type { TabBond } from './tab/bond.svelte';
 
-// ============================================================================
-// Tabs Snippet Props (Extensible)
-// ============================================================================
-
+// Snippet props
 export interface TabsSnippetProps extends SnippetProps {
 	tabs: TabsBond;
 }

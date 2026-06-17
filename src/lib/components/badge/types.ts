@@ -1,20 +1,16 @@
 import type { HtmlAtomProps, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Snippet } from 'svelte';
 
-// ============================================================================
-// Badge Snippet Props (Extensible)
-// ============================================================================
+// Badge snippet props
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface BadgeSnippetProps extends SnippetProps {
-	// Badge doesn't provide context to children, but can be extended
+	// no context exposed to children yet; placeholder for extension
 }
 
 export type BadgeChildren = Snippet<[BadgeSnippetProps]>;
 
-// ============================================================================
-// Badge Props
-// ============================================================================
+// Badge props
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface BadgeProps extends HtmlAtomProps<'span', never, BadgeChildren> {}

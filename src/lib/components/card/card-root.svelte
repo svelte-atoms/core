@@ -25,7 +25,6 @@
 	);
 	const bond = binding.bond.share();
 
-	// Disabled styles
 	const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : '';
 
 	const rootProps = $derived({

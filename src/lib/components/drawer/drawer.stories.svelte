@@ -3,13 +3,11 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { clickoutDrawer, Drawer as Drawer_ } from '.';
 
-	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
+	// https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
 		title: 'Atoms/Drawer',
-		// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-
 		parameters: {
-			// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+			// https://storybook.js.org/docs/configure/story-layout
 			layout: 'fullscreen'
 		},
 		args: {}

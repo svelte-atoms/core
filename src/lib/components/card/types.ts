@@ -3,20 +3,14 @@ import type { CardBond } from './bond.svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Factory } from '$svelte-atoms/core/types';
 
-// ============================================================================
-// Card Snippet Props (Extensible)
-// ============================================================================
-
+// Card Snippet Props
 export interface CardSnippetProps extends SnippetProps {
 	card: CardBond;
 }
 
 export type CardChildren = Snippet<[CardSnippetProps]>;
 
-// ============================================================================
 // Card Root Props
-// ============================================================================
-
 export interface CardRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
@@ -27,9 +21,7 @@ export interface CardRootProps<
 	onkeydown?: (event: KeyboardEvent) => void;
 }
 
-// ============================================================================
 // Card Sub-component Props
-// ============================================================================
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CardHeaderProps<
@@ -73,7 +65,7 @@ export interface CardMediaProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, CardChildren> {}
 
-// Alias for CardBodyProps (used in card-body.svelte)
+// Alias for CardBodyProps (used in card-body.svelte).
 export type CardContentProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base

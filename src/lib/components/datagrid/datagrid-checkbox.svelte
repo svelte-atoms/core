@@ -48,10 +48,7 @@
 
 	function handleHeaderChange(ev?: Event) {
 		const checked = !isAllSelected;
-		// The Checkbox calls `preventDefault()` internally (to stop ancestor-<label>
-		// double-toggling) before forwarding this event to `oninput`, so the incoming
-		// `ev` is already `defaultPrevented`. Use a fresh event for the cancellation
-		// protocol so it reflects *the consumer's* intent, not the checkbox's internals.
+		// Fresh event for the cancellation protocol: incoming `ev` is already `defaultPrevented` by the Checkbox's label-forwarding guard, so it would reflect the checkbox's internals, not the consumer's intent.
 		const currentEvent = new Event(ev?.type ?? 'input');
 		handleCallbacks(currentEvent, checked);
 		if (currentEvent.defaultPrevented) return;
@@ -67,8 +64,7 @@
 
 	function handleRowChange(ev?: Event) {
 		const checked = !isRowSelected;
-		// Fresh event — the incoming `ev` is already `defaultPrevented` by the Checkbox's
-		// internal label-forwarding guard. See note in `handleHeaderChange`.
+		// Fresh event — incoming `ev` is already `defaultPrevented`; see `handleHeaderChange`.
 		const currentEvent = new Event(ev?.type ?? 'input');
 		handleCallbacks(currentEvent, checked);
 		if (currentEvent.defaultPrevented || !rowId) return;

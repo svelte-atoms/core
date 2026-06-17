@@ -3,7 +3,7 @@ import { untrack } from 'svelte';
 import { PopoverBond } from '.';
 
 export type AnimatePopoverContentParams = {
-	// Animation duration in seconds (default: 0.2)
+	// Animation duration in seconds (default: 0.05)
 	duration?: number;
 	// Delay before animation starts in seconds (default: 0)
 	delay?: number;
@@ -48,22 +48,17 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			const placement = untrack(() => position.placement);
 			const [side, alignment] = placement?.split('-') ?? ['bottom', ''];
 
-			// Get offset and arrow configuration
 			const offset = untrack(() => bond?.state.props.offset ?? 0);
 			const hasArrow = untrack(() => bond?.state.props.arrow ?? false);
 
-			// Calculate transform origin (anchor point relative to trigger)
 			const transformOrigin = getTransformOrigin(side, alignment);
 
-			// Calculate smart directional offset based on offset and arrow
 			const slideDistance = getSmartSlideDistance(offset, hasArrow);
 			const { x: offsetX, y: offsetY } = getDirectionalOffset(side, slideDistance);
 
-			// Set initial styles
 			node.style.transformOrigin = transformOrigin;
 			node.style.pointerEvents = 'none';
 
-			// Modern animation values
 			const keyframes = {
 				scaleY: isOpen ? [0.96, 1] : [1, 0.96],
 				translateX: isOpen ? [`${offsetX}px`, '0px'] : ['0px', `${offsetX}px`],
@@ -71,13 +66,12 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 				opacity: isOpen ? [0, 1] : [1, 0]
 			};
 
-			// Animate with spring or standard easing
 			const animation = animate(
 				node,
 				keyframes,
 				useSpring
 					? { easing: spring({ stiffness, damping }), delay }
-					: { duration, easing: [0.16, 1, 0.3, 1], delay } // Custom cubic-bezier for smooth motion
+					: { duration, easing: [0.16, 1, 0.3, 1], delay }
 			);
 
 			animation.finished.then(() => {
@@ -113,17 +107,14 @@ function getTransformOrigin(side: string, alignment: string): string {
 // Slide distance: 4px (flush/no-arrow), 6px (flush+arrow), min(offset/2,8) (gap/no-arrow), 8px (gap+arrow).
 function getSmartSlideDistance(offset: number, hasArrow: boolean): number {
 	if (offset === 0) {
-		// Flush against trigger - use minimal slide
 		return hasArrow ? 6 : 4;
 	}
 
 	if (hasArrow) {
-		// With arrow, use standard 8px slide for consistent arrow reveal
 		return 8;
 	}
 
-	// No arrow, offset > 0: Use proportional slide (max 8px)
-	// This creates a subtle effect that scales with the gap
+	// No arrow, gap > 0: proportional slide that scales with the gap (max 8px).
 	return Math.min(offset / 2, 8);
 }
 

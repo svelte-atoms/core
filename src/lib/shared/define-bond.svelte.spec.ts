@@ -139,9 +139,7 @@ describe('defineBond v2 — atom spec affordances', () => {
 	});
 
 	it('methods: attaches non-atom instance methods, typed via the `M` generic', () => {
-		// Fully-inferred call (no explicit type args) → `methods` are reflected in the
-		// instance type, so `bond.ping()` needs no cast. (When a bond specifies explicit
-		// type args, surface methods via the value+type-duality alias intersection instead.)
+		// Fully-inferred call: `methods` show up in the instance type, so `bond.ping()` needs no cast (explicit type args would require the duality-alias intersection instead).
 		const WithMethods = defineBond({
 			name: 'with-methods',
 			atoms: { root: RootAtom },

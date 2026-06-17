@@ -23,7 +23,6 @@
 
 	const pivote = $derived(calendarBondProps?.pivote ?? new Date());
 
-	// Format month and year
 	const monthName = $derived(pivote.toLocaleDateString('en-US', { month: 'long' }));
 	const year = $derived(pivote.getFullYear());
 
@@ -46,7 +45,6 @@
 	class={['border-border flex items-center justify-between gap-2 border-b p-2', '$preset', klass]}
 	{...headerProps}
 >
-	<!-- Previous Month Button -->
 	<button
 		type="button"
 		class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
@@ -69,7 +67,6 @@
 		</Icon>
 	</button>
 
-	<!-- Month and Year Display -->
 	<button
 		class="text-foreground h-full flex-1 cursor-pointer text-center text-sm font-semibold"
 		onclick={handleMonthPicker}
@@ -78,7 +75,6 @@
 		{year}
 	</button>
 
-	<!-- Next Month Button -->
 	<button
 		type="button"
 		class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"

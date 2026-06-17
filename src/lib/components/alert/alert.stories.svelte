@@ -17,7 +17,7 @@
 	let dismissedState = $state(false);
 	let autoHideState = $state(false);
 
-	// Auto-hide demo
+	// Auto-hide after 5s once shown.
 	$effect(() => {
 		if (autoHideState) {
 			const timer = setTimeout(() => {
@@ -47,7 +47,6 @@
 		<div class="space-y-4">
 			<h2 class="text-2xl font-bold">Alert Variants</h2>
 
-			<!-- Info Alert -->
 			<AAlert.Root base={alertLayout} variant="info">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -62,7 +61,6 @@
 				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
-			<!-- Success Alert -->
 			<AAlert.Root base={alertLayout} variant="success">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -77,7 +75,6 @@
 				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
-			<!-- Warning Alert -->
 			<AAlert.Root base={alertLayout} variant="warning">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -96,7 +93,6 @@
 				<AAlert.Content></AAlert.Content>
 			</AAlert.Root>
 
-			<!-- Error Alert -->
 			<AAlert.Root base={alertLayout} variant="error">
 				<AAlert.Icon>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

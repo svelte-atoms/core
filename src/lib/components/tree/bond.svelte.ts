@@ -20,7 +20,7 @@ export type TreeBondElements = {
 	indicator: HTMLElement;
 };
 
-// Minimal bond view for atoms — breaks the atom↔bond cycle.
+// Minimal bond view — breaks the atom↔bond cycle.
 type TreeBondView = ViewOf<TreeBondState>;
 
 class TreeRootAtom extends BondAtom<TreeBondView, HTMLElement> {
@@ -77,7 +77,7 @@ class TreeIndicatorAtom extends BondAtom<TreeBondView, HTMLElement> {
 	}
 }
 
-// Hand-written base: captures the parent tree bond from context for nesting support.
+// Captures the parent tree bond from context, enabling nesting.
 class TreeBondBase extends Bond<TreeBondProps, TreeBondState> {
 	#parent: TreeBond | undefined;
 
@@ -91,7 +91,6 @@ class TreeBondBase extends Bond<TreeBondProps, TreeBondState> {
 	}
 }
 
-// TreeBond via defineBond over TreeBondBase; header/body carry the trigger↔content link.
 export const TreeBond = defineBond<
 	{
 		root: typeof TreeRootAtom;
@@ -112,11 +111,10 @@ export const TreeBond = defineBond<
 	}
 });
 
-// Instance type of the tree bond.
 export type TreeBond = BondOf<typeof TreeBond>;
 
 export class TreeBondState<Props extends TreeBondProps = TreeBondProps> extends BondState<Props> {
-	// Disclosure capability; storage stays in props.open.
+	// Storage stays in props.open.
 	#disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
@@ -128,7 +126,6 @@ export class TreeBondState<Props extends TreeBondProps = TreeBondProps> extends 
 		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'group' }));
 	}
 
-	// The disclosure capability — expanded/collapsed.
 	get disclosure(): Disclosure {
 		return this.#disclosure;
 	}

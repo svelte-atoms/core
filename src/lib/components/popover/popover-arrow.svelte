@@ -33,7 +33,6 @@
 		...restProps
 	} as Record<string, unknown>);
 
-	// Rotation based on placement side
 	const rotation = $derived.by(() => {
 		switch (side) {
 			case 'top':

@@ -81,14 +81,13 @@ export class InputPlaceholderAtom extends BondAtom<InputBondView> {
 // Hand-written base for InputBond — holds value-coercion getters that read the value model
 // and the live element `type` (via the `input` atom). `defineBond` extends this.
 class InputBondBase extends Bond<InputStateProps, InputState> {
-	// The bond's InputModel — get/set map to the bindable `value` prop.
+	// get/set map to the bindable `value` prop.
 	get value(): InputModel {
 		return this.state.value;
 	}
 
 	// Value coerced to number; undefined if the element type isn't 'number' or value isn't finite.
 	get number(): number | undefined {
-		// InputControlAtom.type is the reactive mirror of the element's type (captured on mount).
 		if ((this.atom('input') as unknown as InputControlAtom).type !== 'number') return undefined;
 
 		const raw = this.value.get();

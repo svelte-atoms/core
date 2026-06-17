@@ -57,9 +57,6 @@
 						bind:value={dd.query}
 					/>
 
-					<!-- Default usage  -->
-					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" /> -->
-
 					<!-- Display selected values with animation -->
 					<ADropdown.Selections class="flex flex-wrap gap-1">
 						{#snippet children({ selections })}
@@ -97,18 +94,11 @@
 				>
 					<!-- Display selected values with animation -->
 					<ADropdown.Selections class="flex flex-wrap gap-1" />
-
-					<!-- Ability to customize the display of selected item -->
-					<!-- <ADropdown.Selections class="flex flex-wrap gap-1" >
-						{#snippet children({selection})}
-							{selection?.text}
-						{/snippet}
-					</ADropdown.Selections> -->
 				</ADropdown.Trigger>
 
 				<!-- ADropdown list with filtered items -->
 				<ADropdown.Content>
-					<!-- Inline search input within the trigger -->
+					<!-- Search input within the content -->
 					<input
 						bind:value={dd.query}
 						class="border-border flex-1 border-b px-4 py-3"

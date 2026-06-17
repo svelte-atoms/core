@@ -18,10 +18,8 @@
 		...restProps
 	}: ComboboxControlProps = $props();
 
-	// The trigger control is the `value` box: it shows the selected item's value (the `'input'`
-	// capability's `value` field), and setting it commits the selection. Filtering is a separate
-	// concern — a content `Combobox.Query` box drives the `query` field — so typing here no
-	// longer touches the filter.
+	// Trigger control is the `value` box (the `'input'` capability's `value` field): shows the
+	// selection, setting it commits. Filtering lives in a separate `Combobox.Query` (`query` field).
 	const input = $derived(bond.capability('input')?.surface as InputModel | undefined);
 
 	const atom = bond.control();

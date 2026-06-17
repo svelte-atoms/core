@@ -51,8 +51,6 @@
 	const bond = binding.bond.share();
 
 	function defaultFactory(props: FormProps) {
-		// Placeholder for any factory logic if needed
-
 		const bondState = new FormBondState(props);
 
 		return new FormBond(bondState);

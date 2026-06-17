@@ -33,7 +33,7 @@
 	let inputEl   = $state<HTMLInputElement>();
 	let isFocused = $state(false);
 
-	// ── Locale separators + pre-compiled regexes ──────────────────────────
+	// Locale separators + pre-compiled regexes
 	const separators = $derived.by(() => {
 		const parts   = new Intl.NumberFormat(locale).formatToParts(1234567.89);
 		const decimal = parts.find(p => p.type === 'decimal')?.value ?? '.';
@@ -46,7 +46,6 @@
 		};
 	});
 
-	// ── Helpers ───────────────────────────────────────────────────────────
 	const stepSize = $derived(step ?? Math.pow(10, -precision));
 
 	function clamp(n: number): number {
@@ -68,21 +67,21 @@
 		return n.toFixed(precision).replace('.', separators.decimal);
 	}
 
-	// ── Commit — sole writer of `amount` + `value` ────────────────────────
+	// Sole writer of `amount` + `value`.
 	function commit(n: number | undefined) {
 		amount = n !== undefined ? clamp(n) : undefined;
 		value  = amount !== undefined ? amount.toFixed(precision) : '';
 		if (bond) bond.state.props.value = value;
 	}
 
-	// ── Seed: if parent provides `value` string but not `amount` ─────────
+	// Seed `amount` from the `value` string when the parent supplies only `value`.
 	$effect(() => {
 		untrack(() => {
 			if (amount === undefined && value) commit(parseRaw(value));
 		});
 	});
 
-	// ── Display overlay parts ─────────────────────────────────────────────
+	// Display overlay parts
 	const formattedParts = $derived(
 		amount !== undefined
 			? new Intl.NumberFormat(locale, {
@@ -93,8 +92,6 @@
 			}).formatToParts(amount)
 			: []
 	);
-
-	// ── Handlers ──────────────────────────────────────────────────────────
 
 	function handleFocus() {
 		if (readonly) return;
@@ -110,7 +107,7 @@
 	}
 
 	function handleInput(ev: Event) {
-		// Don't touch state mid-typing — only notify
+		// Don't touch state mid-typing — only notify.
 		const raw = (ev.currentTarget as HTMLInputElement).value;
 		oninput?.(ev, { value: raw, amount: parseRaw(raw) });
 	}
@@ -137,7 +134,7 @@
 
 <span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
-	<!-- Display overlay — shown when blurred -->
+	<!-- Display overlay — shown while blurred -->
 	{#if !isFocused}
 		<span
 			aria-hidden="true"
@@ -161,7 +158,7 @@
 	</span>
 	{/if}
 
-	<!-- Native input — transparent when blurred, visible when focused -->
+	<!-- Native input — transparent while blurred, visible while focused -->
 	<input
 		bind:this={inputEl}
 		type="text"

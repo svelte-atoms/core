@@ -51,8 +51,7 @@ export class StackItemAtom extends BondAtom<StackBondView> {
 class StackBondBase extends Bond<StackStateProps, StackState> {
 	item(value: string) {
 		const key = `item:${value}`;
-		// Dynamic atom: register its factory under the per-value key via #instanceAtoms,
-		// keeping static atoms the fixed class registry, then resolve through the same seam.
+		// Register the per-value factory as an instance atom, then resolve via the shared atom seam.
 		this.registerAtom(key, (b) => new StackItemAtom(b as StackBondView, value));
 		return this.atom(key) as StackItemAtom;
 	}

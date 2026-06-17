@@ -15,7 +15,7 @@
 
 	const currentYear = $derived(getYear(pivote));
 
-	// Generate array of years to display (12 years: current ±5)
+	// 12-year grid: pivot −5 through pivot +6.
 	const yearsGrid = $derived.by(() => {
 		const years = [];
 		const startYear = pivoteYear - 5;
@@ -83,14 +83,13 @@
 	function handleWheel(event: WheelEvent) {
 		event.preventDefault();
 
-		// Clear any existing timeout
 		if (scrollTimeout) {
 			clearTimeout(scrollTimeout);
 		}
 
-		// Debounce the scroll event to avoid rapid year changes
+		// Debounce so rapid wheel deltas don't skip years.
 		scrollTimeout = setTimeout(() => {
-			const direction = event.deltaY > 0 ? 1 : -1; // Positive = scroll down = next year
+			const direction = event.deltaY > 0 ? 1 : -1; // scroll down = next year
 			pivoteYear = pivoteYear + direction;
 		}, 50);
 	}
@@ -127,11 +126,9 @@
 		{...yearsProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col" {enter} {exit}>
-			<!-- Navigation Bar -->
 			<nav
 				class="border-border text-foreground flex h-12 items-center justify-between gap-2 border-b px-2 py-2"
 			>
-				<!-- Previous Year Button -->
 				<button
 					type="button"
 					class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
@@ -154,12 +151,9 @@
 					</Icon>
 				</button>
 
-				<!-- Year Display -->
 				<div class="flex-1">
-					<!-- {currentYear} -->
 				</div>
 
-				<!-- Next Year Button -->
 				<button
 					type="button"
 					class="hover:bg-foreground/10 active:bg-foreground/20 flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
@@ -183,7 +177,6 @@
 				</button>
 			</nav>
 
-			<!-- Years Grid -->
 			<div class="grid flex-1 grid-cols-4 gap-1 px-2 py-2">
 				{#each yearsGrid as year, i (i)}
 					{@const isSelected = year === pivote.getFullYear()}

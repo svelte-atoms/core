@@ -49,7 +49,6 @@ export function defineVariants<V extends Record<string, Record<string, any>>>(
 	config: VariantDefinition<V> | ((bond?: Bond | null) => VariantDefinition<V>)
 ): TaggedVariantFn<V> {
 	const fn = (bond: Bond, props?: VariantProps<V>): Record<string, any> => {
-		// Get config (either static or dynamic based on bond)
 		const resolvedConfig = typeof config === 'function' ? config(bond) : config;
 		const finalProps = { ...resolvedConfig.defaults, ...props };
 		const classes: ClassValue[] = [];

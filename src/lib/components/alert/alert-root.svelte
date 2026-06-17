@@ -44,9 +44,7 @@
 <HtmlAtom
 	class={[
 		'alert border-border relative flex gap-1 rounded-md border p-4 transition-all duration-200',
-		// Base styles
 		'bg-background text-foreground',
-		// State styles
 		{
 			'pointer-events-none opacity-50': disabled
 		},

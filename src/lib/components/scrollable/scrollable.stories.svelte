@@ -45,14 +45,12 @@
 <Story name="Scrollable">
 	<div class="flex h-150 w-full items-center justify-center p-6">
 		<div class="border-border bg-card flex h-full w-full max-w-lg flex-col rounded-xl border shadow-lg">
-			<!-- Chat header -->
 			<div class="border-border flex items-center gap-3 border-b px-4 py-3">
 				<div class="bg-emerald-500 h-2.5 w-2.5 rounded-full"></div>
 				<h3 class="text-foreground text-sm font-semibold">Design Team Chat</h3>
 				<span class="text-muted-foreground ml-auto text-xs">{messages.length} messages</span>
 			</div>
 
-			<!-- Scrollable message area -->
 			<Scrollable_.Root
 				class="flex min-h-0 flex-1"
 				open={false}
@@ -112,7 +110,6 @@
 				</Scrollable_.Track>
 			</Scrollable_.Root>
 
-			<!-- Input area -->
 			<div class="border-border flex items-center gap-2 border-t px-4 py-3">
 				<input
 					type="text"

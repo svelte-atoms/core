@@ -40,7 +40,6 @@
 
 	const isSortable = $derived(bond.state.isSortable);
 	const columnProps = $derived({ ...binding.props, ...bond.state.props, ...restProps });
-	// const directionAsNumber = $derived(+(direction === 'asc'));
 
 	const unmount = bond.mount();
 
@@ -70,7 +69,6 @@
 				}
 			} else {
 				if (!(typeof sortable === 'boolean')) {
-					// sortby_columns[value] = column;
 				}
 			}
 

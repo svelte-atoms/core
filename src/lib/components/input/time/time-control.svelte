@@ -33,7 +33,7 @@
 
 	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
-	// ── Parsed state ($derived — external value always wins) ──────────────
+	// External value always wins over local edits.
 	const parts = $derived(parseTimeString(value, untrack(() => date ?? undefined), hourFormat));
 	const { hh, mm, ss, period: p } = $derived(parts);
 
@@ -41,12 +41,9 @@
 		hh === undefined || hourFormat === 24 ? hh : internalToDisplay(hh)
 	);
 
-	// ── Segment refs ───────────────────────────────────────────────────────
 	let segHours   = $state<{ focus(): void }>();
 	let segMinutes = $state<{ focus(): void }>();
 	let segSeconds = $state<{ focus(): void }>();
-
-	// ── Emit ───────────────────────────────────────────────────────────────
 
 	function emit(ev: Event | undefined, override: TimeParts = {}) {
 		const merged: TimeParts = mergeParts(parts, override);
@@ -54,7 +51,7 @@
 		const raw = buildTimeValue(clamped, withSeconds);
 		if (!raw) return;
 
-		// Sync date if bound
+		// Sync bound date prop in place
 		if (date && clamped.hh !== undefined && clamped.mm !== undefined) {
 			const nd = new Date(date);
 			nd.setHours(clamped.hh, clamped.mm, withSeconds ? (clamped.ss ?? 0) : 0, 0);
@@ -71,7 +68,7 @@
 		else    oninput?.(undefined as unknown as Event, detail);
 	}
 
-	// ── Hours: convert display→internal before emitting ───────────────────
+	// Convert display hours to internal 24h before emitting.
 	function handleHoursChange(displayH: number | undefined) {
 		if (displayH === undefined) { emit(undefined); return; }
 		const internal = hourFormat === 12
@@ -80,7 +77,6 @@
 		emit(undefined, { hh: internal });
 	}
 
-	// ── Period toggle ──────────────────────────────────────────────────────
 	function togglePeriod() {
 		if (disabled || readonly || hh === undefined) return;
 		const newPeriod = p === 'AM' ? 'PM' : 'AM';
@@ -105,7 +101,6 @@
 		}
 	}
 
-	// ── Paste ──────────────────────────────────────────────────────────────
 	function handlePaste(ev: ClipboardEvent) {
 		ev.preventDefault();
 		const text = ev.clipboardData?.getData('text') ?? '';
@@ -169,7 +164,7 @@
 		onchange={(v) => { const o: TimeParts = {}; if (v !== undefined) o.mm = v; emit(undefined, o); }}
 		onfocusmove={(dir) => {
 			if (dir === 1 && withSeconds) segSeconds?.focus();
-			else if (dir === 1 && hourFormat === 12) { /* AM/PM next — handled by tab */ }
+			else if (dir === 1 && hourFormat === 12) { /* AM/PM is reached via Tab, not arrow */ }
 			else if (dir === -1) segHours?.focus();
 		}}
 		onrollover={(dir) => {

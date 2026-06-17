@@ -90,11 +90,6 @@ export class CalendarBondState<
 	}
 
 	selectDate(date: Date) {
-		// if (this.props.range) {
-		// } else {
-		// 	this.props.value = date;
-		// }
-
 		if (!this.props.start) {
 			this.props.range[0] = date;
 		} else if (!this.props.end) {

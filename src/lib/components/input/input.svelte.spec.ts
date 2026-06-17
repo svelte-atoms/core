@@ -17,7 +17,7 @@ describe('Input — value flows through the InputModel', () => {
 
 		// Control's own bindable…
 		await expect.element(page.getByTestId('out')).toHaveTextContent('hello');
-		// …and the bond's InputModel surface (bond.value.get() reflects props.value via bond.value.set).
+		// …and the bond's InputModel surface.
 		await expect.element(page.getByTestId('model')).toHaveTextContent('hello');
 	});
 });

@@ -7,9 +7,7 @@ import type { FieldBond, FieldStateProps } from './field/bond.svelte';
 type SnippetProps = Record<string, unknown>;
 type Schema = unknown;
 
-// ============================================================================
-// Form Snippet Props (Extensible)
-// ============================================================================
+// Snippet props
 
 export interface FormSnippetProps extends SnippetProps {
 	form: FormBond;

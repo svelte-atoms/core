@@ -5,13 +5,9 @@
 
 	// PopoverDialog is the first Fusion (§9.4.1): fuse(Popover, Dialog). Popover's
 	// trigger/disclosure opens Dialog's modal content (centered, backdrop, focus-trapped).
-	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
 		title: 'Atoms/PopoverDialog',
-		// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-
 		parameters: {
-			// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
 			layout: 'fullscreen'
 		},
 		args: {}

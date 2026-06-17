@@ -11,21 +11,19 @@ export interface SliderChangeDetails {
 }
 
 export interface SliderProps extends HtmlAtomProps<'div'> {
-	// Current value.
 	value?: number;
-	// Minimum value. Default: 0.
+	// Default: 0.
 	min?: number;
-	// Maximum value. Default: 100.
+	// Default: 100.
 	max?: number;
 	// Step increment. Default: 1.
 	step?: number;
-	// Whether the slider is disabled.
 	disabled?: boolean;
-	// The id forwarded to the hidden input.
+	// Forwarded to the hidden input.
 	id?: string;
-	// The name forwarded to the hidden input.
+	// Forwarded to the hidden input.
 	name?: string;
-	// Orientation of the slider. Default: `'horizontal'`.
+	// Default: `'horizontal'`.
 	orientation?: 'horizontal' | 'vertical';
 	// Custom thumb snippet; replaces the default circular thumb; receives `{ value, percent }`.
 	thumbContent?: Snippet<[{ value: number; percent: number }]>;

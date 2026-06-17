@@ -22,7 +22,7 @@ export type CollapsibleDomElements = {
 	indicator: HTMLElement;
 };
 
-// Bond shape the collapsible atoms type this.bond against — breaks the atom↔bond cycle.
+// Bond shape the atoms type against — breaks the atom↔bond cycle.
 type CollapsibleBondView = ViewOf<CollapsibleState>;
 
 export class CollapsibleRootAtom extends BondAtom<CollapsibleBondView> {
@@ -40,8 +40,7 @@ export class CollapsibleHeaderAtom extends BondAtom<CollapsibleBondView> {
 		const isDisabled = this.bond.state?.props?.disabled ?? false;
 		const isButton = isBrowser() && this.element instanceof HTMLButtonElement;
 
-		// `aria-expanded` + `aria-controls` come from the trigger↔content link
-		// (role:'trigger'); only the button-vs-div semantics remain component-specific.
+		// aria-expanded/aria-controls come from the trigger↔content link; only button-vs-div semantics remain here.
 		return {
 			...super.attrs,
 			'aria-disabled': isDisabled ? 'true' : 'false',
@@ -78,7 +77,7 @@ export class CollapsibleBodyAtom extends BondAtom<CollapsibleBondView> {
 	override get attrs() {
 		const isOpen = this.bond.state?.props?.open ?? false;
 
-		// aria-labelledby + role=region come from the trigger↔content link (role:'content').
+		// aria-labelledby/role=region come from the trigger↔content link.
 		return {
 			...super.attrs,
 			inert: isOpen ? undefined : true
@@ -99,7 +98,7 @@ export class CollapsibleIndicatorAtom extends BondAtom<CollapsibleBondView> {
 	}
 }
 
-// Hand-written base for CollapsibleBond — captures parent from context for nesting.
+// Base captures the parent collapsible from context, enabling nesting.
 class CollapsibleBondBase extends Bond<CollapsibleStateProps, CollapsibleState> {
 	#parent: CollapsibleBond | undefined;
 
@@ -113,7 +112,6 @@ class CollapsibleBondBase extends Bond<CollapsibleStateProps, CollapsibleState> 
 	}
 }
 
-// CollapsibleBond via defineBond over CollapsibleBondBase; trigger↔content link applied via atom roles.
 export const CollapsibleBond = defineBond<
 	{
 		root: typeof CollapsibleRootAtom;
@@ -134,11 +132,10 @@ export const CollapsibleBond = defineBond<
 	}
 });
 
-// Instance type of the collapsible bond — paired with the const above.
 export type CollapsibleBond = BondOf<typeof CollapsibleBond>;
 
 export class CollapsibleState extends BondState<CollapsibleStateProps> {
-	// Disclosure capability; open/closed state stored in props.open.
+	// Open/closed state is backed by props.open.
 	#disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
@@ -146,7 +143,6 @@ export class CollapsibleState extends BondState<CollapsibleStateProps> {
 
 	constructor(props: CollapsibleStateProps) {
 		super(props);
-		// Projects aria-expanded/aria-controls onto header and aria-labelledby/role=region onto body.
 		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'region' }));
 	}
 

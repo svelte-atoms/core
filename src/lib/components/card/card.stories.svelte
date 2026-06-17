@@ -11,7 +11,6 @@
 	import { Card } from '.';
 </script>
 
-<!-- Default Card -->
 <Story name="Default">
 	<Card.Root class="max-w-sm">
 		<Card.Header>
@@ -39,7 +38,6 @@
 	</Card.Root>
 </Story>
 
-<!-- Card with Media -->
 <Story name="With Media">
 	<Card.Root class="max-w-sm">
 		<Card.Media>
@@ -62,7 +60,6 @@
 	</Card.Root>
 </Story>
 
-<!-- Clickable Card -->
 <Story name="Clickable">
 	<Card.Root
 		class="hover:bg-card/90 active:bg-card/80 max-w-sm cursor-pointer pb-4"
@@ -80,7 +77,6 @@
 	</Card.Root>
 </Story>
 
-<!-- Card Variants -->
 <Story name="Variants">
 	<div class="grid grid-cols-2 gap-4">
 		<Card.Root>
@@ -113,7 +109,6 @@
 	</div>
 </Story>
 
-<!-- Disabled Card -->
 <Story
 	name="Disabled"
 	args={{

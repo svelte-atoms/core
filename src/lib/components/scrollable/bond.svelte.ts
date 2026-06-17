@@ -1,7 +1,6 @@
 import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
 
-// All scroll-related props for the scrollable state.
 export type ScrollableBondProps = BondStateProps & {
 	scrollX: number;
 	scrollY: number;
@@ -16,7 +15,6 @@ export type ScrollableBondProps = BondStateProps & {
 	readonly rest?: Record<string, unknown>;
 };
 
-// DOM elements managed by the scrollable bond.
 export type ScrollableBondElements = {
 	root: HTMLElement;
 	container: HTMLElement;
@@ -67,7 +65,7 @@ export class ScrollableContentAtom extends BondAtom<ScrollableBondBase> {
 	}
 }
 
-// Scrollbar track atom — axis ('x'|'y') fixed at construction.
+// Track atom; axis fixed at construction.
 export class ScrollableTrackAtom extends BondAtom<ScrollableBondBase> {
 	#axis: 'x' | 'y';
 
@@ -95,7 +93,7 @@ export class ScrollableTrackAtom extends BondAtom<ScrollableBondBase> {
 	}
 }
 
-// Scrollbar thumb atom — axis ('x'|'y') fixed at construction.
+// Thumb atom; axis fixed at construction.
 export class ScrollableThumbAtom extends BondAtom<ScrollableBondBase> {
 	#axis: 'x' | 'y';
 
@@ -128,8 +126,7 @@ export class ScrollableThumbAtom extends BondAtom<ScrollableBondBase> {
 	}
 }
 
-// Axis-fixed leaves of the parameterized track/thumb atoms — `defineBond` constructs
-// atoms as `new Ctor(bond)` (no extra args), so each axis becomes its own zero-arg class.
+// defineBond constructs atoms as `new Ctor(bond)`, so each axis needs its own zero-arg subclass.
 class ScrollableTrackXAtom extends ScrollableTrackAtom {
 	constructor(bond: ScrollableBondBase) {
 		super(bond, 'x');
@@ -151,8 +148,7 @@ class ScrollableThumbYAtom extends ScrollableThumbAtom {
 	}
 }
 
-// Hand-written base for ScrollableBond — scroll geometry, drag, and measurement methods;
-// captures the parent scrollable context. defineBond extends this for atom plumbing.
+// Hand-written base: scroll geometry, drag, measurement, and parent-context capture; defineBond extends it.
 class ScrollableBondBase extends Bond<ScrollableBondProps, ScrollableState> {
 	#parent: ScrollableBond | undefined;
 
@@ -301,8 +297,7 @@ class ScrollableBondBase extends Bond<ScrollableBondProps, ScrollableState> {
 	}
 }
 
-// ScrollableBond — defineBond (§6) over ScrollableBondBase.
-// Atoms type `this.bond` against the base to access geometry/drag methods directly.
+// Atoms type `this.bond` against the base to reach geometry/drag methods directly.
 export const ScrollableBond = defineBond<
 	{
 		root: typeof ScrollableRootAtom;
@@ -329,7 +324,6 @@ export const ScrollableBond = defineBond<
 	}
 });
 
-// Instance type of the scrollable bond — paired with the const above.
 export type ScrollableBond = BondOf<typeof ScrollableBond>;
 
 export class ScrollableState extends BondState<ScrollableBondProps> {

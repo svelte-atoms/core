@@ -4,9 +4,6 @@ import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { CalendarBondState } from './bond.svelte';
 import type { Day } from './types';
 
-// Calendar atom subclasses for root/body/header (static, via defineBond atoms) and
-// weekDay/day (data-driven, via registerAtom). Types this.bond as CalendarBondView to break the atom↔bond cycle.
-
 export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 // Bond shape the calendar atoms type this.bond against — breaks the atom↔bond cycle.

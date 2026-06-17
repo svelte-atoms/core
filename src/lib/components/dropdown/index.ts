@@ -16,7 +16,7 @@ export {
 	type SelectStateProps as DropdownStateProps
 } from '../select/bond.svelte';
 
-// Item exports (already shimmed in item/index.ts)
+// Item exports
 export * from './item';
 
 // Runes

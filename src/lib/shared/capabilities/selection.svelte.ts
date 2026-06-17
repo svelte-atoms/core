@@ -1,8 +1,5 @@
 import type { Behavior, Capability } from '../bond.svelte';
 
-// `createSelection` returns the SelectionModel surface (storage-agnostic controller).
-// `selectionCapability` wraps it into a projectable Capability for the role stitch.
-
 // SelectionModel<T> — owns the logic of "which values are committed" (single vs multiple,
 // set algebra) but not the storage: state lives in consumer-bindable bond props.
 // Replaces hand-rolled set-algebra duplicated in accordion, tabs, select, datagrid, combobox.
@@ -103,9 +100,8 @@ export function selectionCapability<T>(
 				const value = ctx as T;
 				const projection: Behavior = {
 					attrs: () => ({
-						// aria-* is a boolean ARIA state (true/false); data-selected is a CSS
-						// hook, emitted present-only (absent when unselected) so `[data-selected]`
-						// selectors work conventionally.
+						// aria-* is a boolean state; data-selected is a present-only CSS hook
+						// (absent when unselected) so `[data-selected]` selectors work.
 						...(aria ? { [aria]: model.isSelected(value) } : {}),
 						'data-selected': model.isSelected(value) ? '' : undefined
 					})

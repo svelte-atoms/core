@@ -35,11 +35,7 @@
 			class={['stepper-content w-full', '$preset', contentKlass, klass]}
 			{...contentProps}
 		>
-			<!-- Render teleported step content -->
 			{@render stepContent.children({ step: activeStep! })}
-
-			<!-- Optional custom content wrapper -->
-			<!-- {@render children?.({ stepper: bond })} -->
 		</HtmlAtom>
 	{/key}
 {/snippet}

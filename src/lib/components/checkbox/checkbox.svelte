@@ -35,7 +35,6 @@
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let checkboxElement: HTMLInputElement | undefined = $state();
 
-	// Computed state for visual representation
 	const isChecked = $derived(checked === true);
 	const isIndeterminate = $derived(indeterminate === true);
 	const showCheckmark = $derived(isChecked && !isIndeterminate);
@@ -57,33 +56,25 @@
 	function handleClick(ev: MouseEvent) {
 		if (disabled) return;
 
-		// The click was forwarded by the native input (e.g. clicking the
-		// surrounding <label> text). bind:checked already owns that toggle.
+		// Click forwarded by the native input (e.g. clicking surrounding <label> text); bind:checked already owns that toggle.
 		if (ev.target === checkboxElement) {
 			return;
 		}
 
-		// Let user's onclick handler run first
 		onclick?.(ev);
 
-		// If user prevented default, don't toggle
 		if (ev.defaultPrevented) {
 			return;
 		}
 
-		// We own the toggle below. An ancestor <label> would otherwise forward
-		// this same click to the hidden input and toggle a second time, undoing
-		// our change. preventDefault() cancels that forwarding — stopPropagation
-		// does NOT, since label-forwarding is a default action, not propagation.
+		// We own the toggle below. preventDefault stops an ancestor <label> from forwarding this click to the
+		// hidden input and toggling a second time; stopPropagation would NOT, since forwarding is a default action.
 		ev.preventDefault();
 
-		// Handle indeterminate → checked → unchecked cycle
 		if (indeterminate) {
-			// Indeterminate → checked
 			indeterminate = false;
 			checked = true;
 		} else {
-			// Checked → unchecked or unchecked → checked
 			checked = !checked;
 		}
 

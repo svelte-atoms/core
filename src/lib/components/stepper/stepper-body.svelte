@@ -30,6 +30,5 @@
 	class={['stepper-body w-full', '$preset', klass]}
 	{...bodyProps}
 >
-	<!-- Custom body content -->
 	{@render children?.({ stepper: bond })}
 </HtmlAtom>

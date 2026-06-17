@@ -118,15 +118,12 @@ export type ToastBond = BondOf<typeof ToastBond>;
 export class ToastBondState<
 	Props extends ToastBondProps = ToastBondProps
 > extends BondState<Props> {
-	// Disclosure capability; storage stays in props.open.
+	// Storage stays in props.open.
 	#disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
 
-	// labelledControl() is registered by defineBond; no constructor needed beyond the base.
-
-	// The disclosure capability — open/closed.
 	get disclosure(): Disclosure {
 		return this.#disclosure;
 	}

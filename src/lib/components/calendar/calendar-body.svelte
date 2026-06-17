@@ -23,54 +23,6 @@
 		...restProps
 	});
 
-	// const generator = function (pivot: Date, start: Date, end?: Date) {
-	// 	const firstDay = new Date(pivot.getFullYear(), pivot.getMonth(), 1).getDay();
-	// 	const lastMonthDaysCount = monthDays(pivot.getMonth() - 1, pivot.getFullYear());
-	// 	const sample = new Date(
-	// 		pivot.getFullYear(),
-	// 		pivot.getMonth() - 1,
-	// 		lastMonthDaysCount - firstDay
-	// 	);
-
-	// 	const array = [];
-	// 	let next = false,
-	// 		prec = false;
-
-	// 	for (let index = 0; index < 42; index++) {
-	// 		sample.setDate(sample.getDate() + 1);
-
-	// 		prec = pivot.getMonth() > sample.getMonth() || pivot.getFullYear() > sample.getFullYear();
-	// 		next =
-	// 			(pivot.getMonth() < sample.getMonth() && pivot.getFullYear() === sample.getFullYear()) ||
-	// 			(pivot.getMonth() > sample.getMonth() && pivot.getFullYear() < sample.getFullYear());
-
-	// 		array.push({
-	// 			id: sample.getTime(),
-	// 			date: sample.getDate(),
-	// 			offmonth: next || prec,
-	// 			next,
-	// 			prec,
-	// 			today: isToday(sample),
-	// 			week: Math.floor(index / 7),
-	// 			month: sample.getMonth(),
-	// 			disabled: false,
-	// 			weekend: sample.getDay() == 0,
-	// 			name: format(sample, 'iiiii'),
-	// 			selected: start?.getTime() === sample.getTime()
-	// 		});
-	// 	}
-
-	// 	return array;
-	// };
-
-	// const days = $derived(
-	// 	generator(
-	// 		context_calendar.derived.data.pivote,
-	// 		context_calendar.derived.data.start ?? new Date(),
-	// 		context_calendar.derived.data.end
-	// 	)
-	// );
-
 	function monthDays(month: number, year = 2020) {
 		return new Date(year, month + 1, 0).getDate();
 	}

@@ -7,7 +7,7 @@
 	});
 </script>
 
-<!-- ─── Basic colors ──────────────────────────────────────────────────────── -->
+<!-- Basic colors -->
 <Story name="Basic Colors">
 	<div class="flex flex-wrap gap-3 p-4">
 		{#each [
@@ -28,7 +28,7 @@
 	</div>
 </Story>
 
-<!-- ─── Sizes ─────────────────────────────────────────────────────────────── -->
+<!-- Sizes -->
 <Story name="Sizes">
 	<div class="flex flex-wrap items-end gap-4 p-4">
 		{#each [
@@ -47,7 +47,7 @@
 	</div>
 </Story>
 
-<!-- ─── Radius variants ───────────────────────────────────────────────────── -->
+<!-- Radius variants -->
 <Story name="Radius">
 	<div class="flex flex-wrap items-center gap-4 p-4">
 		{#each [
@@ -67,7 +67,7 @@
 	</div>
 </Story>
 
-<!-- ─── Alpha / transparency ──────────────────────────────────────────────── -->
+<!-- Alpha / transparency -->
 <Story name="Alpha">
 	<div class="flex flex-wrap items-end gap-4 p-4">
 		{#each [

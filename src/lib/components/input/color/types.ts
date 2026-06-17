@@ -1,5 +1,3 @@
-// ── Color format namespace ─────────────────────────────────────────────────
-
 export type ColorFormat =
 	| 'named'
 	| 'hex'
@@ -19,8 +17,6 @@ export type ColorFormat =
 	| 'xyz-d50'
 	| 'xyz-d65';
 
-// ── Channel definition ─────────────────────────────────────────────────────
-
 export type ChannelKind =
 	| 'integer' // 0–255 integer (rgb channels)
 	| 'float' // decimal, typically 0–1
@@ -36,13 +32,10 @@ export interface ChannelDef {
 	kind: ChannelKind;
 	min: number;
 	max: number;
-	// Decimal precision for display/editing
 	precision?: number;
 	// Suffix shown after the value (e.g. '%', 'deg')
 	suffix?: string;
 }
-
-// ── Segment props ──────────────────────────────────────────────────────────
 
 export interface ColorSegmentProps {
 	value: number | string | undefined;
@@ -52,19 +45,17 @@ export interface ColorSegmentProps {
 	class?: string;
 	// Fired on every live change (arrow up/down, typing)
 	onchange?: (value: number | string | undefined) => void;
-	// Fired on blur / Enter — use for commit semantics
+	// Fired on blur / Enter (commit)
 	oncommit?: (ev: Event, value: number | string | undefined) => void;
 	onfocusmove?: (dir: 1 | -1) => void;
 }
 
-// ── Component props ────────────────────────────────────────────────────────
-
 export interface InputColorControlProps {
-	// Raw CSS color string (bindable); format is auto-detected (hex, rgb, hsl, oklab, color(…), etc.)
+	// Raw CSS color string (bindable); format auto-detected
 	value?: string;
-	// Override the active format; segments always render for this format regardless of value
+	// Override the active format; segments render for this format regardless of value
 	format?: ColorFormat;
-	// Always show the alpha channel segment even when the value has no alpha component
+	// Always show the alpha segment even when value has no alpha component
 	alpha?: boolean;
 	placeholder?: string;
 	disabled?: boolean;

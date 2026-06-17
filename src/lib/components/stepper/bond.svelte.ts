@@ -117,7 +117,7 @@ export class StepperState extends BondState<StepperStateProps> implements IStepp
 			},
 			goto: (step: number) => {
 				if (step >= 0 && step < this.totalSteps) {
-					// In linear mode, only allow going to previous steps or next immediate step
+					// Linear mode: only backward or the next immediate step.
 					if (this.props.linear) {
 						if (step <= this.props.step + 1) {
 							this.props.step = step;

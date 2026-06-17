@@ -13,7 +13,6 @@
 	const currentYear = $derived(getYear(pivote));
 	const currentMonth = $derived(getMonth(pivote));
 
-	// Generate array of months
 	const monthsGrid = [
 		'Jan',
 		'Feb',
@@ -110,7 +109,6 @@
 		{...monthsProps}
 	>
 		<HtmlAtom class="flex flex-1 flex-col gap-2" {enter} {exit}>
-			<!-- Year Display -->
 			<nav
 				class="border-border text-foreground flex h-12 items-center justify-center gap-2 border-b px-2 py-2"
 			>
@@ -122,7 +120,6 @@
 				</button>
 			</nav>
 
-			<!-- Months Grid -->
 			<div class="grid flex-1 grid-cols-3 gap-1 px-2 pb-2">
 				{#each monthsGrid as month, index (index)}
 					{@const isSelected = index === currentMonth}

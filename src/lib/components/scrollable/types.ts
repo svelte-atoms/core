@@ -7,10 +7,6 @@ import type { ScrollableBond } from './bond.svelte';
 // `Override` collapses HtmlAtomProps' named props into its index signature, so
 // `preset` must be re-declared on each Props interface below to keep its type.
 
-// ============================================================================
-// Scrollable Snippet Props (Extensible)
-// ============================================================================
-
 export interface ScrollableSnippetProps extends SnippetProps {
 	scrollable: ScrollableBond;
 }

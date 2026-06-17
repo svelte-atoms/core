@@ -27,17 +27,14 @@
 
 	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
 
-	// ── Slot refs ──────────────────────────────────────────────────────────
 	let slotEls = $state<Array<HTMLInputElement | undefined>>([]);
 
-	// ── Derived slots ─────────────────────────────────────────────────────
 	const slots  = $derived(Array.from({ length }, (_, i) => value?.[i] ?? ''));
 	const isFull = $derived(slots.every(s => s !== ''));
 
-	// ── Track previous full state so oncomplete only fires once per fill ──
+	// Tracks previous full state so oncomplete fires only once per fill.
 	let wasFull = $state(false);
 
-	// ── Input validation per type ─────────────────────────────────────────
 	function isValidChar(char: string): boolean {
 		if (type === 'numeric')     return /^\d$/.test(char);
 		if (type === 'alpha')       return /^[a-zA-Z]$/.test(char);
@@ -48,7 +45,6 @@
 		return type !== 'numeric' ? char.toUpperCase() : char;
 	}
 
-	// ── Commit value ──────────────────────────────────────────────────────
 	function commit(arr: string[]) {
 		value = arr.join('');
 		if (bond) bond.state.props.value = value;
@@ -58,12 +54,10 @@
 		return Array.from({ length }, (_, i) => value[i] ?? '');
 	}
 
-	// ── Focus helpers ─────────────────────────────────────────────────────
 	function focusSlot(index: number) {
 		slotEls[Math.max(0, Math.min(length - 1, index))]?.focus();
 	}
 
-	// ── Emit ──────────────────────────────────────────────────────────────
 	function emit(ev: Event) {
 		const detail = { value };
 		oninput?.(ev, detail);
@@ -76,7 +70,6 @@
 		wasFull = isFull;
 	}
 
-	// ── Keydown ───────────────────────────────────────────────────────────
 	function handleKeydown(ev: KeyboardEvent, index: number) {
 		if (disabled || readonly) return;
 
@@ -86,7 +79,6 @@
 			ev.preventDefault();
 			const arr = getArr();
 			if (arr[index]) {
-				// Clear current slot
 				arr[index] = '';
 				commit(arr);
 			} else if (index > 0) {
@@ -125,7 +117,6 @@
 		}
 	}
 
-	// ── Paste ─────────────────────────────────────────────────────────────
 	function handlePaste(ev: ClipboardEvent, fromIndex: number) {
 		ev.preventDefault();
 		const pasted = ev.clipboardData?.getData('text') ?? '';
@@ -188,7 +179,6 @@
 					!bond && 'border border-border bg-input',
 					'focus:bg-foreground/5',
 					!bond && 'focus:border-foreground/40 focus:ring-2 focus:ring-foreground/20',
-					// bond && i > 0 && !(groupSize !== undefined && i % groupSize === 0) && 'border-l border-border rounded-none',
 					disabled && 'cursor-not-allowed',
 					readonly && 'cursor-default',
 				)}
@@ -197,7 +187,7 @@
 				onpaste={(ev) => handlePaste(ev, i)}
 				onclick={() => slotEls[i]?.select()}
 				oninput={(ev) => {
-					// All input handled via keydown — suppress native input
+					// Input is handled in keydown; suppress the native input write.
 					(ev.currentTarget as HTMLInputElement).value = slotVal;
 				}}
 			/>

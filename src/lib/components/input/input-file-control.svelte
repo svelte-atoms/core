@@ -63,7 +63,6 @@
 	{...restProps}
 />
 
-<!-- visible control -->
 <HtmlAtom
 	as="button"
 	type="button"
@@ -79,7 +78,6 @@
 	{#if triggerContent}
 		{@render triggerContent({ files, hasFiles, open: openPicker })}
 	{:else if hasFiles}
-		<!-- file info -->
 		{#if files.length === 1}
 			{@const f = files[0]}
 			{@const ext = f.name.split('.').pop()?.toUpperCase() ?? ''}
@@ -95,7 +93,6 @@
 				{formatSize(files.reduce((a, f) => a + f.size, 0))}
 			</span>
 		{/if}
-		<!-- clear button -->
 		<button
 			type="button"
 			onclick={clearFiles}
@@ -107,7 +104,6 @@
 			</svg>
 		</button>
 	{:else}
-		<!-- placeholder -->
 		<svg viewBox="0 0 16 16" fill="none" class="text-muted-foreground h-4 w-4 shrink-0" aria-hidden="true">
 			<path d="M2 12V9l4-4 3 3 2-2 3 3v3H2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
 			<circle cx="11" cy="4" r="1.5" stroke="currentColor" stroke-width="1.2"/>

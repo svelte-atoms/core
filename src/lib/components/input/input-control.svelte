@@ -80,8 +80,7 @@
 		() => value,
 		(v) => {
 			value = v;
-			// Write through the bond's InputModel (the shared input capability's value
-			// controller) instead of poking `props.value` directly.
+			// Write through the bond's InputModel rather than poking `props.value` directly.
 			bond?.value.set(v);
 		}
 	}

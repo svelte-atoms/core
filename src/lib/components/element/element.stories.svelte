@@ -4,13 +4,13 @@
 	import { Button } from '../button';
 	import { fade } from 'svelte/transition';
 
-	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
+	// stories docs: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
 		title: 'Atoms/Element',
-		// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
+		// autodocs: https://storybook.js.org/docs/writing-docs/autodocs
 
 		parameters: {
-			// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
+			// layout: https://storybook.js.org/docs/configure/story-layout
 			layout: 'fullscreen'
 		},
 		args: {}
@@ -22,7 +22,6 @@
 </script>
 
 <Story name="Element" args={{}}>
-	<!-- Multi-select dropdown with search functionality -->
 	<div class="flex flex-col gap-4">
 		{#if showElement}
 			<HtmlElement enter={node=> ()=> fade(node, { duration: 500 })} exit={node => fade(node, { duration: 500 })} class="p-4 bg-blue-100 rounded" as="section">

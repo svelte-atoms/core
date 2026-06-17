@@ -26,13 +26,13 @@
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
 
-	// ── Parse URL into segments ──────────────────────────────────────────
+	// Parse URL into segments
 	type Segment = { text: string; kind: 'protocol' | 'host' | 'port' | 'pathname' | 'search' | 'hash' | 'plain' };
 
 	function parseSegments(raw: string): Segment[] {
 		if (!raw) return [];
 
-		// Normalise: if no protocol, add a fake one for URL parsing
+		// No protocol? prepend a fake one so URL() parses it.
 		const hasProtocol = /^[a-z][a-z0-9+\-.]*:\/\//i.test(raw);
 		const forParsing = hasProtocol ? raw : 'https://' + raw;
 
@@ -44,7 +44,6 @@
 				segs.push({ text: u.protocol + '//', kind: 'protocol' });
 			}
 
-			// username:password@
 			if (u.username) {
 				segs.push({ text: u.username + (u.password ? ':' + u.password : '') + '@', kind: 'plain' });
 			}
@@ -71,7 +70,7 @@
 
 			return segs;
 		} catch {
-			// Not a valid URL yet — return as plain text but try partial segment detection
+			// Not yet a valid URL — fall back to partial segment detection.
 			return partialSegments(raw);
 		}
 	}
@@ -80,7 +79,6 @@
 		const segs: Segment[] = [];
 		let rest = raw;
 
-		// Protocol
 		const protoMatch = rest.match(/^([a-z][a-z0-9+\-.]*:\/\/)/i);
 		if (protoMatch) {
 			segs.push({ text: protoMatch[1], kind: 'protocol' });
@@ -89,7 +87,7 @@
 
 		if (!rest) return segs;
 
-		// Split on first / ? #
+		// Split host from the rest at the first / ? or #
 		const sep = rest.search(/[/?#]/);
 		if (sep === -1) {
 			segs.push({ text: rest, kind: 'host' });
@@ -99,7 +97,6 @@
 		const hostPart = rest.slice(0, sep);
 		const afterHost = rest.slice(sep);
 
-		// host:port
 		const portMatch = hostPart.match(/^(.*):(\d+)$/);
 		if (portMatch) {
 			if (portMatch[1]) segs.push({ text: portMatch[1], kind: 'host' });
@@ -108,7 +105,6 @@
 			if (hostPart) segs.push({ text: hostPart, kind: 'host' });
 		}
 
-		// pathname / search / hash
 		const hashIdx = afterHost.indexOf('#');
 		const searchIdx = afterHost.indexOf('?');
 
@@ -146,12 +142,12 @@
 		plain:     'color: var(--input-hl-muted, var(--foreground))',
 	};
 
-	// ── Keep overlay scroll in sync with the real input ──────────────────
+	// Keep overlay scroll in sync with the real input
 	function syncScroll() {
 		scrollLeft = inputEl?.scrollLeft ?? 0;
 	}
 
-	// ── Event handlers ────────────────────────────────────────────────────
+	// Event handlers
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		value = input.value;
@@ -166,11 +162,9 @@
 </script>
 
 <!--
-  Layout: relative container with two layers:
-  1. Invisible real <input> on top (handles caret, selection, all native editing)
-  2. Coloured overlay <span> beneath it, same font/padding, pointer-events:none
-  The input has `color: transparent` so only the overlay is visible, but the
-  caret (caret-color) remains in its natural foreground colour.
+  Two layers: transparent-text <input> on top (caret, selection, native editing)
+  over a coloured overlay <span>. Only the overlay is visible; the caret keeps its
+  foreground colour via caret-color.
 -->
 <span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
 
@@ -183,7 +177,6 @@
 			toClassValue(klass, bond)
 		)}
 	>
-		<!-- Offset to match input scroll position -->
 		<span style="transform: translateX(-{scrollLeft}px)">
 			{#if segments.length}
 				{#each segments as seg (seg)}

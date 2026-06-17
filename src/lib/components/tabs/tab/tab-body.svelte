@@ -29,7 +29,7 @@
 
 	const value = $derived(tabBond?.state.props.value);
 
-	// Register content snippet with props and children with tabs on mount
+	// Register content snippet with tabs while mounted.
 	$effect.pre(() => {
 		if(!value) return;
 		if(!tabBond) return;
@@ -60,4 +60,4 @@
 	</Stack.Item>
 {/snippet}
 
-<!-- Content is teleported to Tabs.Content, so we don't render anything here -->
+<!-- Content is teleported to Tabs.Content; nothing rendered here. -->

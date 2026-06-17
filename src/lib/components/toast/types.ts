@@ -2,8 +2,7 @@ import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
 import type { ToastBond, ToastBondProps } from './bond.svelte';
 
-// Toast Snippet Props (Extensible)
-
+// Snippet props
 export interface ToastSnippetProps {
 	toast: ToastBond | undefined;
 }

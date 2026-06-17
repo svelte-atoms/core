@@ -41,7 +41,7 @@
 		preset: preset ?? 'stack.item',
 		...atom?.spread,
 		...restProps,
-		// Merge user style with z-index from atom
+		// Append the atom's z-index to any user-supplied style.
 		style: userStyle ? `${userStyle}; z-index: ${zIndex}` : `z-index: ${zIndex}`
 	});
 

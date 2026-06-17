@@ -39,7 +39,7 @@
 		...restProps
 	});
 
-	// Auto-dismiss when a positive duration is provided
+	// Auto-dismiss when duration > 0.
 	$effect(() => {
 		if (!open || duration <= 0) return;
 		const handle = setTimeout(() => {

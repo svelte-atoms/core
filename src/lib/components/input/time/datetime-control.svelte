@@ -34,18 +34,15 @@
 
 	const preset = resolvePreset(getPreset(untrack(() => resolvedPresetKey) as PresetModuleName)?.apply(bond, [bond]));
 
-	// ── Parsed state ($derived from value prop) ───────────────────────────
 	const parsedParts = $derived(
 		isDateOnly ? parseDateString(value) : parseDateTimeString(value)
 	);
 
-	// ── Draft parts: source of truth for segment rendering ────────────────
-	// Segments write here immediately (even when the full value can't be built yet).
-	// Synced from parsedParts when value changes externally.
+	// Source of truth for segment rendering: segments write here immediately,
+	// even when the full value can't yet be built. Synced from external value changes.
 	let draftParts = $state<DateTimeParts>({});
 
 	$effect(() => {
-		// Sync draft from external value changes (but don't overwrite mid-edit)
 		const p = parsedParts;
 		untrack(() => { draftParts = { ...p }; });
 	});
@@ -54,7 +51,6 @@
 
 	const maxDay = $derived(maxDaysInMonth(month, year));
 
-	// ── Segment refs ───────────────────────────────────────────────────────
 	let segMonth   = $state<{ focus(): void }>();
 	let segDay     = $state<{ focus(): void }>();
 	let segYear    = $state<{ focus(): void }>();
@@ -70,7 +66,6 @@
 				: [segMonth, segDay, segYear, segHours, segMinutes]
 	);
 
-	// ── Emit ───────────────────────────────────────────────────────────────
 	function emit(ev: Event | undefined, overrides: DateTimeParts = {}) {
 		// Always update draft so segments don't revert
 		const merged = mergeParts(draftParts, overrides);
@@ -80,7 +75,7 @@
 			? buildDateValue(merged)
 			: buildDateTimeValue(merged, withSeconds);
 
-		// Only update value/date when a complete, valid string can be built
+		// Only emit when a complete, valid string can be built
 		if (!v || v === value) return;
 
 		value = v;
@@ -93,12 +88,10 @@
 		else    oninput?.(undefined as unknown as Event, detail);
 	}
 
-	// ── Focus navigation ──────────────────────────────────────────────────
 	function moveFocus(from: number, dir: -1 | 1) {
 		segments[from + dir]?.focus();
 	}
 
-	// ── Paste ──────────────────────────────────────────────────────────────
 	function handlePaste(ev: ClipboardEvent) {
 		ev.preventDefault();
 		const text = ev.clipboardData?.getData('text') ?? '';

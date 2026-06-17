@@ -4,13 +4,10 @@
 	import { Label } from '../label';
 	import { OtpControl } from './atoms';
 
-	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
 		title: 'Atoms/Input',
-		// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
 
 		parameters: {
-			// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
 			layout: 'fullscreen'
 		},
 		args: {}
@@ -99,7 +96,7 @@
 	</div>
 </Story>
 
-<!-- ─── TimeControl ──────────────────────────────────────────────────────── -->
+<!-- TimeControl -->
 <Story name="Time Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
@@ -119,7 +116,7 @@
 	</div>
 </Story>
 
-<!-- ─── DateTimeControl ─────────────────────────────────────────────────── -->
+<!-- DateTimeControl -->
 <Story name="Date Time Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border">
@@ -132,7 +129,7 @@
 	</div>
 </Story>
 
-<!-- ─── DateControl ───────────────────────────────────────────────────────── -->
+<!-- DateControl -->
 <Story name="Date Control">
 	<div class="flex flex-col gap-4 p-4">
 		<div class="flex flex-col gap-1">
@@ -177,7 +174,7 @@
 	</div>
 </Story>
 
-<!-- ─── FileControl ──────────────────────────────────────────────────────── -->
+<!-- FileControl -->
 <Story name="File Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
@@ -215,7 +212,7 @@
 	</div>
 </Story>
 
-<!-- ─── UrlControl ───────────────────────────────────────────────────────── -->
+<!-- UrlControl -->
 <Story name="Url Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-80 items-center rounded-md border">
@@ -233,7 +230,7 @@
 	</div>
 </Story>
 
-<!-- ─── PhoneControl ─────────────────────────────────────────────────────── -->
+<!-- PhoneControl -->
 <Story name="Phone Control">
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
@@ -251,7 +248,7 @@
 	</div>
 </Story>
 
-<!-- ─── LocationControl ──────────────────────────────────────────────────── -->
+<!-- LocationControl -->
 <Story name="Location Control">
 	<div class="flex flex-col gap-4 p-4">
 		<div class="flex flex-col gap-1">
@@ -405,7 +402,7 @@
 		</div>
 	</div>
 </Story>
-<!-- ─── OTP Control ───────────────────────────────────────────────────────── -->
+<!-- OTP Control -->
 <Story name="OTP Control">
 	<div class="flex flex-col gap-6 p-4">
 
@@ -457,7 +454,7 @@
 	</div>
 </Story>
 
-<!-- ─── Currency Control ──────────────────────────────────────────────────── -->
+<!-- Currency Control -->
 <Story name="Currency Control">
 	<div class="flex flex-col gap-6 p-4">
 		<div class="flex flex-col gap-2">
@@ -518,7 +515,7 @@
 	</div>
 </Story>
 
-<!-- ─── Color Control ────────────────────────────────────────────────────── -->
+<!-- Color Control -->
 <Story name="Color Control">
 	<div class="flex flex-col gap-4 p-4">
 		<!-- Format grid -->

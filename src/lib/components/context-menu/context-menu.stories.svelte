@@ -20,14 +20,14 @@
 </script>
 
 <script lang="ts">
-	// ── Button story state ────────────────────────────────────────────────────
+	// Button story state
 	let buttonAction = $state('');
 
-	// ── Input story state ─────────────────────────────────────────────────────
+	// Input story state
 	let inputValue = $state('Right-click this input…');
 	let inputAction = $state('');
 
-	// ── Avatar story state ────────────────────────────────────────────────────
+	// Avatar story state
 	const users = $state([
 		{ name: 'Alice Chen', role: 'Engineer', src: '' },
 		{ name: 'Bob Martinez', role: 'Designer', src: '' },
@@ -35,7 +35,7 @@
 	]);
 	let avatarAction = $state('');
 
-	// ── Datagrid story state ──────────────────────────────────────────────────
+	// Datagrid story state
 	let rows = $state([
 		{ id: 1, name: 'Alice Chen', role: 'Engineer', email: 'alice@example.com' },
 		{ id: 2, name: 'Bob Martinez', role: 'Designer', email: 'bob@example.com' },
@@ -45,7 +45,7 @@
 	]);
 	let contextRow = $state('');
 
-	// ── Image story state ─────────────────────────────────────────────────────
+	// Image story state
 	const images = $state([
 		{ id: 1, src: 'https://picsum.photos/seed/forest/400/300', alt: 'Forest', label: 'Forest' },
 		{ id: 2, src: 'https://picsum.photos/seed/ocean/400/300', alt: 'Ocean', label: 'Ocean' },
@@ -60,9 +60,7 @@
 	let imageAction = $state('');
 </script>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Basic zone
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Basic zone -->
 <Story name="Basic Zone" args={{}}>
 	<AContextMenu.Root>
 		<AContextMenu.Trigger>
@@ -96,9 +94,7 @@
 	</AContextMenu.Root>
 </Story>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Button
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Button -->
 <Story name="On Button" args={{}}>
 	<div class="flex flex-col items-center gap-4">
 		<p class="text-sm text-muted-foreground">Right-click the button to see its context menu</p>
@@ -147,9 +143,7 @@
 	</div>
 </Story>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Input
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Input -->
 <Story name="On Input" args={{}}>
 	<div class="flex w-80 flex-col gap-4">
 		<p class="text-sm text-muted-foreground">Right-click the input for text actions</p>
@@ -211,9 +205,7 @@
 	</div>
 </Story>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Avatar
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Avatar -->
 <Story name="On Avatar" args={{}}>
 	<div class="flex flex-col items-center gap-6">
 		<p class="text-sm text-muted-foreground">Right-click an avatar for profile actions</p>
@@ -275,9 +267,7 @@
 	</div>
 </Story>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Datagrid row
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Datagrid row -->
 <Story name="On Datagrid Row" args={{}}>
 	<div class="w-full max-w-2xl">
 		<p class="mb-4 text-sm text-muted-foreground">Right-click any row for row-level actions</p>
@@ -352,9 +342,7 @@
 	</div>
 </Story>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-  Image gallery
-───────────────────────────────────────────────────────────────────────────── -->
+<!-- Image gallery -->
 <Story name="On Image Gallery" args={{}}>
 	<div class="flex w-full max-w-2xl flex-col items-center gap-4">
 		<p class="text-sm text-muted-foreground">Right-click an image for media actions</p>
