@@ -95,9 +95,10 @@ export interface Capability<Surface = unknown> {
 	// Sibling slot keys this capability reads at projection/setup time; validated by identity (DEV).
 	readonly requires?: readonly symbol[];
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
-	// Run once when the bond goes live (driven by useCapabilities at root init); returns optional teardown.
-	// The home for whole-bond effects (focus restore, document listeners) that no single atom owns.
-	setup?(bond: Bond): (() => void) | void;
+	// Run once when the bond goes live (driven by useCapabilities at root init); returns an optional
+	// teardown — a cleanup function or a Disposable (Symbol.dispose). The home for whole-bond effects
+	// (focus restore, document listeners) that no single atom owns.
+	setup?(bond: Bond): Disposable | (() => void) | void;
 }
 
 // Introspection snapshot of one registered capability — for tests, devtools, and docs.
