@@ -1,6 +1,7 @@
-import type { Capability } from '../../bond.svelte';
+import type { Capability } from '$svelte-atoms/core/shared/bond.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
 import { focus, focusTrap as tabTrap } from '$svelte-atoms/core/utils/dom.svelte';
+import { useFocusRestore } from './focus-restore.svelte';
 
 // Configuration surface of a focus policy — read by useFocusRestore.
 export type FocusPolicySurface = {
@@ -18,6 +19,8 @@ export function trappedFocus(opts: FocusPolicySurface = {}): Capability<FocusPol
 	return {
 		slot: 'focus',
 		surface: opts,
+		// Owns the open↔closed focus capture/restore effect (ADR 0003), driven by useCapabilities (#5).
+		setup: (bond) => useFocusRestore(bond as OverlayView),
 		behavior(role) {
 			if (role === 'surface') {
 				return {
@@ -41,6 +44,8 @@ export function focusOnOpen(opts: FocusPolicySurface = {}): Capability<FocusPoli
 	return {
 		slot: 'focus',
 		surface: opts,
+		// Owns the open↔closed focus capture/restore effect (ADR 0003), driven by useCapabilities (#5).
+		setup: (bond) => useFocusRestore(bond as OverlayView),
 		behavior(role) {
 			if (role === 'content') {
 				return {

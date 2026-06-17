@@ -1,5 +1,6 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Content } from '$svelte-atoms/core/components/popover/atoms';
+	import type { AnchorSize } from '$svelte-atoms/core/components/popover';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { MenuBond } from './bond.svelte';
 	import { Root } from '../list/atoms';
@@ -11,6 +12,7 @@
 		as = 'ul' as T,
 		base = Root as B,
 		preset = undefined,
+		minWidth = 'var(--sa-anchor-width)' as AnchorSize,
 		children = undefined,
 		...restProps
 	} = $props();
@@ -22,6 +24,7 @@
 	{as}
 	{base}
 	{bond}
+	{minWidth}
 	class={['border-border overflow-hidden p-0', '$preset', klass]}
 	{...contentProps}
 >

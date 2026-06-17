@@ -1,5 +1,6 @@
 import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
+import { OverlayBond } from '$svelte-atoms/core/components/overlay';
 import {
 	createDisclosure,
 	type Disclosure
@@ -19,7 +20,7 @@ export type SidebarElements = {
 	content: HTMLElement;
 };
 
-// Bond shape the sidebar atoms type `this.bond` against — breaks the atom↔bond cycle.
+// Bond shape the atoms type `this.bond` against — breaks the atom↔bond cycle.
 type SidebarBondView = ViewOf<SidebarBondState>;
 
 class SidebarContentAtom extends BondAtom<SidebarBondView, HTMLElement> {
@@ -39,19 +40,23 @@ class SidebarContentAtom extends BondAtom<SidebarBondView, HTMLElement> {
 	}
 }
 
-// SidebarBond — non-generic (legacy bond-level generics were unused); `SidebarBondState` keeps its `Props` generic.
-export const SidebarBond = defineBond<{ content: typeof SidebarContentAtom }, SidebarBondState>({
+// Non-generic bond; `SidebarBondState` keeps its `Props` generic.
+export const SidebarBond = defineBond<
+	{ content: typeof SidebarContentAtom },
+	SidebarBondState,
+	typeof OverlayBond
+>({
 	name: 'sidebar',
+	base: OverlayBond,
 	atoms: { content: SidebarContentAtom }
 });
 
-// Instance type of the sidebar bond — paired with the `const` above.
 export type SidebarBond = BondOf<typeof SidebarBond>;
 
 export class SidebarBondState<
 	Props extends SidebarBondProps = SidebarBondProps
 > extends BondState<Props> {
-	// Disclosure capability; storage stays in `props.open`.
+	// Storage stays in `props.open`.
 	#disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
@@ -61,7 +66,6 @@ export class SidebarBondState<
 		super(props);
 	}
 
-	// The disclosure capability — open/closed.
 	get disclosure(): Disclosure {
 		return this.#disclosure;
 	}

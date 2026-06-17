@@ -11,12 +11,14 @@
         throw new Error('<ContextMenu.Content /> must be used within a <ContextMenu.Root />');
     }
 
-	let { onclickoutside, ...restProps }: PopoverContentProps<E, B> = $props();
+	// Context menus size to their own `min-w-*` class, not the trigger: empty `minWidth` floor
+	// drops the inherited dropdown default so the class wins. Opt back in per-instance with `minWidth`.
+	let { onclickoutside, minWidth = '', ...restProps }: PopoverContentProps<E, B> = $props();
 
 	function onclickoutHandler(ev: PointerEvent, bond: PopoverBond) {
 		const trigger = bond.element<Element>('trigger');
 
-		// button is right button do not close the popover
+		// Right-click on the trigger should not close the popover.
 		if (
 			trigger &&
 			(trigger.contains(ev.target as Node) || trigger === ev.target) &&
@@ -47,6 +49,7 @@
 
 <Content
 	{@attach contextMenuOutAttachement}
+	{minWidth}
 	onclickoutside={onclickoutside ?? onclickoutHandler}
 	{...restProps}
 />

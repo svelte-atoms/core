@@ -5,7 +5,7 @@ import { defineBond } from './define-bond.svelte';
 import { fuse } from './fuse.svelte';
 import { createSelection, selectionCapability } from './capabilities/selection.svelte';
 import { createRovingFocus, rovingCapability } from './capabilities/roving-focus.svelte';
-import { trappedFocus, focusOnOpen } from './overlay/policies/focus.svelte';
+import { trappedFocus, focusOnOpen } from '$svelte-atoms/core/components/overlay/policies/focus.svelte';
 
 class FState extends BondState<BondStateProps> {
 	values = $state<string[]>([]);
@@ -91,10 +91,8 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 	});
 
 	it('later parts win on capability-SLOT collision (the PopoverDialog focus resolution)', () => {
-		// Mirrors `fuse(Popover, Dialog)`: both parts bring slot 'focus'; the modal
-		// (later) part's TrappedFocus must override the positioned FocusOnOpen. Works
-		// because `BondState.capability()` is last-wins-per-slot (§13.1) and `fuse` registers
-		// the concatenated capabilities through it.
+		// Mirrors `fuse(Popover, Dialog)`: both parts bring slot 'focus'; the later (modal)
+		// TrappedFocus wins over FocusOnOpen because capability() is last-wins-per-slot (§13.1).
 		const PositionedLike = defineBond<{ trigger: typeof TriggerAtom }, FState>({
 			name: 'positioned-like',
 			atoms: { trigger: TriggerAtom },

@@ -1,4 +1,4 @@
-import type { Capability } from '../../bond.svelte';
+import type { Capability } from '$svelte-atoms/core/shared/bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
 

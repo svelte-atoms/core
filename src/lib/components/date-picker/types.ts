@@ -1,13 +1,11 @@
 import type { Snippet } from 'svelte';
+import type { Placement } from '@floating-ui/dom';
 import type { ComponentBase, SnippetProps } from '$svelte-atoms/core/components/atom';
 import type { Day, CalendarRange } from '../calendar/types';
 import type { DatePickerBond } from './bond.svelte';
 import type { Factory } from '$svelte-atoms/core/types';
 
-// ============================================================================
-// DatePicker Snippet Props (Extensible)
-// ============================================================================
-
+// DatePicker Snippet Props
 export interface DatePickerSnippetProps extends SnippetProps {
 	datePicker: DatePickerBond;
 }
@@ -58,6 +56,8 @@ export interface DatePickerRootProps {
 	min?: Date;
 	max?: Date;
 	type?: 'range' | 'single';
+	placement?: Placement;
+	placements?: Placement[];
 	offset?: number;
 	factory?: Factory<DatePickerBond>;
 	children?: DatePickerChildren;

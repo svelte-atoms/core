@@ -3,8 +3,8 @@
 	import type { CalendarRange } from '../calendar/types';
 	import { DatePickerBond, DatePickerBondState, type DatePickerBondProps } from './bond.svelte';
 	import type { DatePickerRootProps } from './types';
-	import { bindBond } from '$svelte-atoms/core/shared';
-	import { useFocusRestore } from '$svelte-atoms/core/shared/overlay';
+	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
 
 	let {
 		open = $bindable(false),
@@ -16,6 +16,9 @@
 		min = undefined,
 		max = undefined,
 		type = 'single',
+		placement = 'bottom',
+		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'bottom', 'top'],
+		offset = 2,
 		factory = defaultFactory,
 		children,
 		...restProps
@@ -33,6 +36,12 @@
 			min: [() => min, (v) => (min = v)],
 			max: [() => max, (v) => (max = v)],
 			type: () => type ?? 'single',
+			// Positioning props — without these the bond's offset/placement stay undefined,
+			// which makes popover-overlay's transform compute to NaN and the overlay renders
+			// pinned at top-left instead of anchored to the trigger.
+			placement: () => placement,
+			placements: () => placements ?? [],
+			offset: () => offset,
 			rest: () => restProps
 		}
 	);
@@ -42,9 +51,11 @@
 	// flat-composition `share` override. ADR 0004 Decision 1.
 	const bond = binding.bond.share();
 
-	// Focus capture/restore reacts to `open` (ADR 0001 / ADR 0003) — the same hook the
-	// popover Root used to apply; carried here now that the bond is shared directly.
-	useFocusRestore(bond);
+	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
+	// setup() (ADR 0001 / ADR 0003, ADR 0010); the bond is shared directly here.
+	useCapabilities(bond);
+	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
+	useEscapeStack(bond);
 
 	function defaultFactory(props: DatePickerBondProps) {
 		const bondState = new DatePickerBondState(props);

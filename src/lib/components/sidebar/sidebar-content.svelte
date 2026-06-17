@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { Overlay } from '$svelte-atoms/core/components/overlay';
 	import { SidebarBond } from './bond.svelte';
 	import { animateSidebarContent } from './motion.svelte';
 	import type { SidebarRootProps } from './types';
@@ -26,11 +27,11 @@
 	});
 </script>
 
-<HtmlAtom
+<Overlay
 	{bond}
-	class={['bg-card border-border', '$preset', klass]}
+	class={['bg-card border-border', 'max-h-screen overflow-visible', '$preset', klass]}
 	{fallback}
 	{...contentProps}
 >
-	{@render children?.({ sidebar: bond })}
-</HtmlAtom>
+		{@render children?.({ sidebar: bond })}
+</Overlay>

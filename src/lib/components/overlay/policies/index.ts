@@ -23,3 +23,5 @@ export {
 } from './focus.svelte';
 
 export { useFocusRestore } from './focus-restore.svelte';
+
+export { enrollOverlay, isTopOverlay, useEscapeStack } from './escape-stack.svelte';

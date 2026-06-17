@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import { type Base } from '$svelte-atoms/core/components/atom';
-	import { type OverlayState } from '$svelte-atoms/core/shared/overlay';
+	import { type OverlayState } from '$svelte-atoms/core/components/overlay';
 	import { ZLayer } from '../portal/zlayer.svelte';
 	import { Content as DialogContent } from '../dialog/atoms';
 	import { PopoverDialogBond } from './bond.svelte';
@@ -23,7 +23,7 @@
 	const normalizedZIndex = $derived(
 		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
 	);
-	const layer = new ZLayer('dialog', () => normalizedZIndex ?? 0).share();
+	const layer = new ZLayer('modal', () => normalizedZIndex ?? 0).share();
 
 	const open = $derived((bond?.state as OverlayState | undefined)?.isOpen ?? false);
 	const disabled = $derived(
@@ -57,7 +57,7 @@
 		'pointer-events-none fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/0 transition-colors duration-200',
 		open && 'pointer-events-auto bg-neutral-900/10'
 	]}
-	style="z-index: {layer.get()};"
+	style="z-index: {layer.value};"
 	onclick={onclickRoot}
 	oncancel={(ev) => {
 		ev.preventDefault();

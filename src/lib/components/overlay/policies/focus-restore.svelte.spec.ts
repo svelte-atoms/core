@@ -26,7 +26,7 @@ function mockOverlay(
 ) {
 	let open = $state(false);
 	const bond = {
-		// Restore config now lives on the focus capability's surface.
+		// Restore config lives on the focus capability's surface.
 		capability: (slot: string) =>
 			slot === 'focus'
 				? { slot, surface: { strategy: undefined, ...focus } }

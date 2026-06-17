@@ -1,11 +1,10 @@
-import type { Capability } from '../../bond.svelte';
+import type { Capability } from '$svelte-atoms/core/shared/bond.svelte';
 import type { OverlayKnobs } from '../types';
 import { clickTrigger } from '../policies/trigger.svelte';
 import { trappedFocus, focusOnOpen } from '../policies/focus.svelte';
 import { closeOnEscape } from '../policies/escape.svelte';
 
-// Default capability bundles per overlay branch — replaces ModalOverlay/PositionedOverlay's
-// defaultTrigger/Focus/Escape/Knobs(). Individual slots can be overridden (last-wins).
+// Default capability bundles per overlay branch. Individual slots can be overridden (last-wins).
 
 // Modal branch (Dialog, Drawer): click trigger, trapped focus, restore to previous.
 export function modalCapabilities(knobs: Pick<OverlayKnobs, 'ariaHasPopup'> = {}): Capability[] {

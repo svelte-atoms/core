@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { PopoverDialogBond, PopoverDialogBondState, type PopoverDialogBondProps } from './bond.svelte';
 import { PopoverTriggerAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { DialogContentAtom, DialogTitleAtom } from '../dialog/bond.svelte';
-import { ModalRootAtom } from '$svelte-atoms/core/shared/overlay';
+import { ModalRootAtom } from '$svelte-atoms/core/components/overlay';
 
 function makeBond(initial: Partial<PopoverDialogBondProps> = {}) {
 	const props = $state<PopoverDialogBondProps>({ open: false, disabled: false, ...initial });

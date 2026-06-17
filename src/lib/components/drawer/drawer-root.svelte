@@ -3,11 +3,11 @@
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
-	import { useFocusRestore } from '$svelte-atoms/core/shared/overlay';
+	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal, ZLayer } from '../portal';
 	import { animateDrawerRoot } from './motion';
-	import { bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -19,6 +19,7 @@
 		preset = undefined,
 		disabled = false,
 		portal = undefined,
+		// +1 in the `modal` band so a Drawer wins over a sibling Dialog (+0); LAYER_BASE, ADR 0009 D5.
 		"z-index": zindex = 1,
 		onclose = undefined,
 		factory = defaultFactory,
@@ -32,7 +33,7 @@
 	const normalizedZIndex = $derived(
 		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
 	);
-	const layer = new ZLayer('drawer', () => normalizedZIndex ?? 0).share();
+	const layer = new ZLayer('modal', () => normalizedZIndex ?? 0).share();
 
 	const binding = bindBond<DrawerBond>(
 		(props) => factory(props),
@@ -45,8 +46,11 @@
 	);
 	const bond = binding.bond.share();
 	
-	// Focus capture/restore reacts to `open` (ADR 0001 / ADR 0003).
-	useFocusRestore(bond);
+	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
+	// setup() (ADR 0001 / ADR 0003, #5, ADR 0010).
+	useCapabilities(bond);
+	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
+	useEscapeStack(bond);
 
 	const rootProps = $derived({
 		...binding?.props,
@@ -81,7 +85,7 @@
 		'$preset',
 		klass
 	]}
-	style="z-index: {layer.get()};"
+	style="z-index: {layer.value};"
 	closeby="none"
 	{fallback}
 	{...rootProps}

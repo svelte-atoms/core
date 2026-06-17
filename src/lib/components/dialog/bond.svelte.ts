@@ -4,19 +4,15 @@ import {
 	ModalRootAtom,
 	ModalContentAtom,
 	OverlayState,
+	OverlayBond,
 	modalCapabilities,
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
-} from '$svelte-atoms/core/shared/overlay';
+} from '$svelte-atoms/core/components/overlay';
 
 export type DialogBondProps = OverlayStateProps & {
 	disabled: boolean;
-	configs?: {
-		popovers?: {
-			strategy: 'fixed' | 'absolute';
-		};
-	};
 };
 
 export type DialogBondElements = ModalOverlayElements & {
@@ -110,7 +106,9 @@ export class DialogBondState<
 	Props extends DialogBondProps = DialogBondProps
 > extends OverlayState<Props> {}
 
-// Controlled modal disclosure (no trigger — use PopoverDialog for that). Focus-trap + escape from modalCapabilities(); trigger capability filtered out.
+// Controlled modal disclosure (no trigger — use PopoverDialog for that); trigger capability filtered out.
+// Nested popovers teleport into the dialog's own in-content OverlayPortal, so they position with the
+// default 'absolute' strategy against an in-content offsetParent — no fixed override needed.
 export const DialogBond = defineBond<
 	{
 		root: typeof ModalRootAtom;
@@ -121,9 +119,11 @@ export const DialogBond = defineBond<
 		body: typeof DialogBodyAtom;
 		footer: typeof DialogFooterAtom;
 	},
-	DialogBondState
+	DialogBondState,
+	typeof OverlayBond
 >({
 	name: 'dialog',
+	base: OverlayBond,
 	capabilities: () => modalCapabilities().filter((c) => c.slot !== 'trigger'),
 	atoms: {
 		root: ModalRootAtom,
@@ -134,6 +134,13 @@ export const DialogBond = defineBond<
 		body: DialogBodyAtom,
 		footer: DialogFooterAtom
 	}
+});
+
+// Propagate OverlayBond's context key transitively so fused bonds (e.g. PopoverDialogBond) re-share it.
+Object.defineProperty(DialogBond, 'CONTEXT_KEYS', {
+	value: [DialogBond.CONTEXT_KEY, OverlayBond.CONTEXT_KEY],
+	writable: true,
+	configurable: true
 });
 
 // Instance type of the dialog bond — paired with the const above (value + type).

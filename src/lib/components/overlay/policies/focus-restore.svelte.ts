@@ -6,7 +6,7 @@ import type { FocusPolicySurface } from './focus.svelte';
 export function useFocusRestore(bond: OverlayView | undefined): void {
 	if (!bond) return;
 
-	// Restore config lives on the focus capability surface (dissolved knobs, §13).
+	// Restore config lives on the focus capability surface (§13).
 	const focusSurface = bond.capability<FocusPolicySurface>('focus')?.surface;
 	let restoreTarget: HTMLElement | null = null;
 	let wasOpen = false;

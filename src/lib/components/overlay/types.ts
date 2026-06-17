@@ -1,8 +1,7 @@
-import type { Bond, BondStateProps, BondVirtualElement } from '../bond.svelte';
-import type { OverlayState } from './overlay.svelte';
+import type { Bond, BondStateProps, BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
+import type { OverlayState } from './bond.svelte';
 
-// Minimal bond shape overlay strategies/capabilities depend on: any Bond whose state is
-// an OverlayState. Strategies bind to this so they keep working with defineBond-authored overlays.
+// Minimal bond shape overlay capabilities depend on: any Bond whose state is an OverlayState.
 export type OverlayView = Bond & { state: OverlayState };
 
 // Minimum shape every overlay state must satisfy. Flavours extend with their own props.
@@ -12,11 +11,9 @@ export type OverlayStateProps = BondStateProps & {
 	readonly rest?: Record<string, unknown>;
 };
 
-// Shared value-types for overlay configuration. The former cross-cutting knobs bag has
-// dissolved into per-capability options (§13 Stage 4); this type survives as the canonical
-// definition those capabilities pick from via indexed access.
+// Canonical overlay config value-types; per-capability options pick from these via indexed access (§13 Stage 4).
 export type OverlayKnobs = {
-	// Value emitted on the trigger's aria-haspopup.
+	// trigger's aria-haspopup value.
 	ariaHasPopup?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid' | true | false;
 	// Where focus returns when the overlay closes.
 	restoreFocus?: 'trigger' | 'previous' | 'none' | (() => HTMLElement | null);

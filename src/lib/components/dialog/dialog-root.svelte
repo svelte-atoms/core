@@ -2,10 +2,10 @@
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
-	import { useFocusRestore } from '$svelte-atoms/core/shared/overlay';
+	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
 	import type { DialogProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';
-	import { bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	let {
 		class: klass = '',
@@ -14,6 +14,7 @@
 		disabled = false,
 		type = 'modal' as 'modal' | 'non-modal',
 		as = 'dialog' as E,
+		// Default +0 within the `modal` band; a sibling Drawer (+1) wins by convention (ADR 0009 D5). Override to reorder.
 		"z-index": zindex = 0,
 		portal = undefined,
 		factory = defaultFactory,
@@ -25,7 +26,7 @@
 	const normalizedZIndex = $derived(
 		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
 	);
-	const layer = new ZLayer('dialog', () => normalizedZIndex ?? 0).share();
+	const layer = new ZLayer('modal', () => normalizedZIndex ?? 0).share();
 
 	const binding = bindBond<DialogBond>(
 		(props) => factory(props),
@@ -38,9 +39,11 @@
 	);
 	const bond = binding.bond.share();
 
-	// Focus capture/restore reacts to `open` (ADR 0001 / ADR 0003) — restores to
-	// the previously-focused element however the dialog closes.
-	useFocusRestore(bond); 
+	// Run capability setups — focus capture/restore (ADR 0001 / ADR 0003) is owned by the focus
+	// capability's setup() and applies however the dialog closes (#5, ADR 0010).
+	useCapabilities(bond);
+	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2): a nested popover's Escape closes only it.
+	useEscapeStack(bond);
 
 	const rootProps: Record<string, unknown> = $derived({
 		...binding?.props,
@@ -53,17 +56,15 @@
 	}
 
 	function onclickDialogElement(ev: MouseEvent) {
-		// Ignore clicks that originated inside the dialog content
 		if (bond?.elements?.content?.contains(ev.target as Node)) {
 			return;
 		}
 
-		// Let the user's onclick handler run first; they can call ev.preventDefault() to cancel close
+		// User handler runs first; ev.preventDefault() cancels the close
 		onclick?.(ev, bond);
 
 		if (ev.defaultPrevented) return;
 
-		// Close on backdrop click unless opted out
 		if (type === 'modal' && !disabled) {
 			bond.state.close();
 		}
@@ -84,7 +85,7 @@
 		'$preset',
 		klass
 	]}
-	style="z-index: {layer.get()};"
+	style="z-index: {layer.value};"
 	onclick={onclickDialogElement}
 	oncancel={(ev) => {
 		ev.preventDefault();
