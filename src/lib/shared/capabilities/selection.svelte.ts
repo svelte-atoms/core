@@ -18,6 +18,8 @@ export interface SelectionModel<T> {
 	// Commit if absent, remove if present.
 	toggle(value: T): void;
 	clear(): void;
+	// Iterable protocol — yields the committed values in storage order (`[...selection]`, `for…of`).
+	[Symbol.iterator](): IterableIterator<T>;
 }
 
 // The storage seam the model controls. The bond supplies reactive accessors over its own props
@@ -70,7 +72,9 @@ export function createSelection<T>(backing: SelectionBacking<T>): SelectionModel
 		select,
 		deselect,
 		toggle,
-		clear
+		clear,
+		// Snapshot the backing each iteration so the read registers reactivity at the call site.
+		[Symbol.iterator]: () => list()[Symbol.iterator]()
 	};
 }
 

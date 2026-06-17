@@ -48,6 +48,25 @@ describe('BondState.collection — registry unification', () => {
 	});
 });
 
+describe('Collection — iterable protocol (#4)', () => {
+	it('iterates [id, value] entries in insertion order; spreads and destructures', () => {
+		const col = new Collection<{ id: string }>('item');
+		const a = { id: 'a' };
+		const b = { id: 'b' };
+		col.attach('a', a);
+		col.attach('b', b);
+
+		expect([...col]).toEqual([
+			['a', a],
+			['b', b]
+		]);
+
+		const out: string[] = [];
+		for (const [id, value] of col) out.push(`${id}:${value.id}`);
+		expect(out).toEqual(['a:a', 'b:b']);
+	});
+});
+
 describe('collectionCapability — positional ARIA (opt-in)', () => {
 	it('projects 1-based posinset + setsize + 0-based data-index on role "item"', () => {
 		const cap = collectionCapability<{ id: string }>('item', { positional: true });
