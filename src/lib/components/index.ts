@@ -24,7 +24,6 @@ export * from './checkbox';
 export * from './combobox';
 export * from './context-menu';
 export * from './label';
-export * from './layer';
 export * from './link';
 export * from './list';
 export * from './menu';
