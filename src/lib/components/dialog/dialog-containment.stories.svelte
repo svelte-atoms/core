@@ -17,22 +17,67 @@
 	//    declares `order={{ below: 'dialog-header' }}`, so it renders *beneath* the sticky
 	//    header as it scrolls under it — while the default Popover renders above.
 	const { Story } = defineMeta({
-		title: 'Atoms/Dialog',
+		title: 'Atoms/Dialog/Containment',
 		parameters: { layout: 'fullscreen' },
-		args: {}
+		args: {
+			disabled: false,
+			type: 'modal'
+		},
+		argTypes: {
+			disabled: {
+				control: 'boolean',
+				description: 'Disable interaction (backdrop click will not close)'
+			},
+			type: {
+				control: 'select',
+				options: ['modal', 'non-modal'],
+				description:
+					"'modal' closes on backdrop click (default); 'non-modal' keeps it open on backdrop click"
+			}
+		}
 	});
 </script>
 
 <script lang="ts">
 	let open = $state(false);
+	let nestedOpen = $state(false);
 	const filler = Array.from({ length: 14 }, (_, i) => i + 1);
 </script>
 
+<Story name="Basic">
+	{#snippet template(args)}
+		<div class="flex flex-col items-start justify-center p-8">
+			<Button variant="primary" onclick={() => (open = true)}>Open Dialog</Button>
+
+			<ADialog.Root class="bg-neutral-900/20" z-index={10} bind:open {...args}>
+				<ADialog.Content class="max-w-120">
+					<ADialog.Header class="flex items-center">
+						<ADialog.Title>Dialog title</ADialog.Title>
+						<ADialog.CloseButton class="ml-auto" />
+					</ADialog.Header>
+
+					<ADialog.Body>
+						<ADialog.Description>
+							This is a standard dialog. The backdrop click behaviour is controlled by the
+							<strong>type</strong> arg — set it to
+							<code>non-modal</code> to keep the dialog open when clicking outside.
+						</ADialog.Description>
+					</ADialog.Body>
+
+					<ADialog.Footer class="gap-4">
+						<Button onclick={() => (open = false)}>Close</Button>
+					</ADialog.Footer>
+				</ADialog.Content>
+			</ADialog.Root>
+		</div>
+	{/snippet}
+</Story>
+
 <Story name="Nested Popover" args={{}}>
 	<div class="flex flex-col items-start justify-center p-8">
-		<Button variant="primary" onclick={() => (open = true)}>Open Dialog</Button>
+		<Button variant="primary" onclick={() => (nestedOpen = true)}>Open Dialog</Button>
 
-		<ADialog.Root class="bg-neutral-900/20" z-index={10} bind:open>
+		<ADialog.Root class="bg-neutral-900/20" z-index={10} bind:open={nestedOpen}>
 			<ADialog.Content class="h-[60svh] max-w-120">
 				<!--
 					Sticky header registered as a z-anchor. Inside a Dialog the Overlay host resets the
@@ -81,7 +126,7 @@
 				</ADialog.Body>
 
 				<ADialog.Footer class="gap-4">
-					<button onclick={() => (open = false)}>Close</button>
+					<button onclick={() => (nestedOpen = false)}>Close</button>
 				</ADialog.Footer>
 			</ADialog.Content>
 		</ADialog.Root>

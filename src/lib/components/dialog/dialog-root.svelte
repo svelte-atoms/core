@@ -1,11 +1,11 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
+	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
-	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
+	import { DialogBond, DialogBondState } from './bond.svelte';
 	import type { DialogProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, bondFactory, useCapabilities } from '$svelte-atoms/core/shared';
 
 	let {
 		class: klass = '',
@@ -17,7 +17,7 @@
 		// Default +0 within the `modal` band; a sibling Drawer (+1) wins by convention (ADR 0009 D5). Override to reorder.
 		"z-index": zindex = 0,
 		portal = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(DialogBondState, DialogBond),
 		children = undefined,
 		onclick = undefined,
 		...restProps
@@ -32,8 +32,7 @@
 		(props) => factory(props),
 		{
 			open: [() => open, (v) => (open = v)],
-			disabled: () => disabled,
-			rest: () => restProps
+			disabled: () => disabled
 		},
 		{ preset: () => preset }
 	);
@@ -43,20 +42,14 @@
 	// capability's setup() and applies however the dialog closes (#5, ADR 0010).
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2): a nested popover's Escape closes only it.
-	useEscapeStack(bond);
 
 	const rootProps: Record<string, unknown> = $derived({
 		...binding?.props,
 		...restProps
 	});
 
-	function defaultFactory(props: DialogBondProps) {
-		const bondState = new DialogBondState(props);
-		return new DialogBond(bondState);
-	}
-
 	function onclickDialogElement(ev: MouseEvent) {
-		if (bond?.elements?.content?.contains(ev.target as Node)) {
+		if (containsTarget(bond?.elements?.content, ev.target)) {
 			return;
 		}
 
