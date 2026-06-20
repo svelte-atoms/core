@@ -9,7 +9,7 @@ export type RootChildren = Snippet<[RootSnippetProps]>;
 export interface RootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B, RootChildren> {
+> extends HtmlAtomProps<E, B> {
 	// Custom portal configuration snippet.
 	portals?: Snippet;
 }

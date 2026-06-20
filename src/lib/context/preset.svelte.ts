@@ -58,6 +58,13 @@ export interface PresetModuleMap {
 	'combobox.control': PresetEntry;
 	'combobox.trigger': PresetEntry;
 	'combobox.item': PresetEntry;
+	'combobox.content': PresetEntry;
+	'select.content': PresetEntry;
+	'select.item': PresetEntry;
+	'dropdown-menu.content': PresetEntry;
+	'dropdown-menu.item': PresetEntry;
+	'context-menu.content': PresetEntry;
+	'context-menu.item': PresetEntry;
 	'dialog.close-button': PresetEntry;
 	'dialog.body': PresetEntry;
 	'dialog.content': PresetEntry;
@@ -213,8 +220,7 @@ export function mergePreset(
 	const result: Partial<Preset> = { ...currentPreset };
 
 	const keys = Object.keys(override) as PresetModuleName[];
-	for (let i = 0; i < keys.length; i++) {
-		const k = keys[i];
+	for (const k of keys) {
 		const next = override[k];
 		if (!next) continue;
 		const existing = currentPreset?.[k];

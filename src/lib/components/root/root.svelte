@@ -5,8 +5,9 @@
 <script lang="ts">
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { ActivePortal, Portal, Portals } from '$svelte-atoms/core/components/portal';
-	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState } from './bond.svelte';
 	import type { RootProps } from './types';
@@ -20,7 +21,7 @@
 		...restProps
 	}: RootProps = $props();
 
-	const atomProps = $derived({ preset: preset ?? 'root', ...restProps });
+	const atomProps = $derived(mergePresetProps(preset, 'root', restProps));
 
 	let html: typeof HtmlElement | undefined = $state(HtmlElement);
 	let svg: typeof SvgElement | undefined = $state(undefined);
@@ -52,7 +53,7 @@
 	]);
 
 	const binding = bindBond<RootBond>(
-		(props) => new RootBond(new RootBondState(props)),
+		bondFactory(RootBondState, RootBond),
 		{ renderers: () => renderers }
 	);
 	const bond = binding.bond.share();
@@ -60,7 +61,7 @@
 
 <Portals id="root">
 	<Atom
-		{@attach (node) => {
+		{@attach (node: HTMLElement) => {
 			bond.rootElement = node;
 		}}
 		{base}
