@@ -54,9 +54,9 @@ export interface ElementProps<T extends ElementTagName = ElementTagName> extends
 	// runs once on mount, before enter transition
 	initial?: NodeFunction<T>;
 
-	enter?: TransitionFunction<T>;
+	enter?: TransitionFunction<ElementType<T>>;
 
-	exit?: TransitionFunction<T>;
+	exit?: TransitionFunction<ElementType<T>>;
 
 	animate?: NodeFunction<T>;
 
@@ -84,6 +84,13 @@ export interface HtmlElementProps<
 	children?: Children;
 }
 
-// SVG element props
-
-export type SvgElementProps<T extends SvgElementTagName = 'g'> = ElementProps<T>;
+// SVG element props — mirrors HtmlElementProps so `children` and the transition events
+// (onintroend/onexitend) are declared explicitly rather than collapsing to `{}` via the
+// HTMLAttributes Omit (ElementProps's index signature otherwise strips them).
+export interface SvgElementProps<
+	T extends SvgElementTagName = 'g',
+	Children extends Snippet<unknown[]> = Snippet
+>
+	extends ElementProps<T>, HtmlElementEventProps {
+	children?: Children;
+}
