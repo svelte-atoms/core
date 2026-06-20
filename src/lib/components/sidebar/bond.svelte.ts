@@ -1,18 +1,19 @@
-import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import { OverlayBond } from '$svelte-atoms/core/components/overlay';
 import {
 	createDisclosure,
 	type Disclosure
 } from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+import {
+	DisclosureState,
+	type DisclosureStateProps
+} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
-	BondStateProps & {
-		open: boolean;
-		disabled: boolean;
+	DisclosureStateProps & {
 		reversed: boolean;
 		extend: T;
-		readonly rest?: Record<string, unknown>;
 	};
 
 export type SidebarElements = {
@@ -55,34 +56,10 @@ export type SidebarBond = BondOf<typeof SidebarBond>;
 
 export class SidebarBondState<
 	Props extends SidebarBondProps = SidebarBondProps
-> extends BondState<Props> {
-	// Storage stays in `props.open`.
-	#disclosure: Disclosure = createDisclosure({
+> extends DisclosureState<Props> {
+	// Storage stays in `props.open`. isOpen/open/close/toggle are inherited.
+	readonly disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
-
-	constructor(props: Props) {
-		super(props);
-	}
-
-	get disclosure(): Disclosure {
-		return this.#disclosure;
-	}
-
-	get isOpen() {
-		return this.#disclosure.isOpen;
-	}
-
-	open() {
-		this.#disclosure.open();
-	}
-
-	close() {
-		this.#disclosure.close();
-	}
-
-	toggle() {
-		this.#disclosure.toggle();
-	}
 }

@@ -1,18 +1,19 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	createDisclosure,
 	type Disclosure
 } from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+import {
+	DisclosureState,
+	type DisclosureStateProps
+} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
 import { triggerContentLink } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
-export type CollapsibleStateProps = BondStateProps & {
-	open: boolean;
-	disabled: boolean;
+export type CollapsibleStateProps = DisclosureStateProps & {
 	value?: string;
 	data?: unknown;
-	readonly rest?: Record<string, unknown>;
 };
 
 export type CollapsibleDomElements = {
@@ -134,35 +135,15 @@ export const CollapsibleBond = defineBond<
 
 export type CollapsibleBond = BondOf<typeof CollapsibleBond>;
 
-export class CollapsibleState extends BondState<CollapsibleStateProps> {
-	// Open/closed state is backed by props.open.
-	#disclosure: Disclosure = createDisclosure({
+export class CollapsibleState extends DisclosureState<CollapsibleStateProps> {
+	// Open/closed state is backed by props.open. isOpen/open/close/toggle are inherited.
+	readonly disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
 
 	constructor(props: CollapsibleStateProps) {
 		super(props);
-		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'region' }));
-	}
-
-	get disclosure(): Disclosure {
-		return this.#disclosure;
-	}
-
-	get isOpen() {
-		return this.#disclosure.isOpen;
-	}
-
-	open() {
-		this.#disclosure.open();
-	}
-
-	close() {
-		this.#disclosure.close();
-	}
-
-	toggle() {
-		this.#disclosure.toggle();
+		this.capability(triggerContentLink(this.disclosure, { contentRole: 'region' }));
 	}
 }

@@ -39,7 +39,8 @@ export type TreeBodyProps<
 export type TreeIndicatorProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> = HtmlAtomProps<E, B> &
-	TreeBondProps & {
-		children?: Snippet<[{ tree?: TreeBond }]>;
-	};
+> = HtmlAtomProps<E, B> & {
+	open?: boolean;
+	disabled?: boolean;
+	children?: Snippet<[{ tree?: TreeBond }]>;
+};

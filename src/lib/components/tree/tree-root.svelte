@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { TreeBond, TreeBondState, type TreeBondProps } from './bond.svelte';
+	import { TreeBond, TreeBondState } from './bond.svelte';
 	import type { TreeRootProps } from './types';
 
 	let {
@@ -10,7 +11,7 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(TreeBondState, TreeBond),
 		...restProps
 	}: TreeRootProps<E, B> = $props();
 
@@ -18,17 +19,12 @@
 		(props) => factory(props),
 		{
 			open: [() => open, (v) => { open = v; }],
-			disabled: () => disabled,
-			rest: () => restProps
+			disabled: () => disabled
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
 
-	function defaultFactory(props: TreeBondProps) {
-		const bondState = new TreeBondState(props);
-		return new TreeBond(bondState);
-	}
 
 	export function getBond() {
 		return bond;

@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { Factory, Override } from '$svelte-atoms/core/types';
+import type { Factory } from '$svelte-atoms/core/types';
 import type { CollapsibleBond } from './bond.svelte';
 
 // Extension points: merge custom props into collapsible parts by augmenting these interfaces.

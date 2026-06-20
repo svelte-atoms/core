@@ -1,17 +1,17 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	createDisclosure,
 	type Disclosure
 } from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+import {
+	DisclosureState,
+	type DisclosureStateProps
+} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
 import { triggerContentLink } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
-export type TreeBondProps = BondStateProps & {
-	open: boolean;
-	disabled: boolean;
-	readonly rest?: Record<string, unknown>;
-};
+export type TreeBondProps = DisclosureStateProps;
 
 export type TreeBondElements = {
 	root: HTMLElement;
@@ -113,9 +113,9 @@ export const TreeBond = defineBond<
 
 export type TreeBond = BondOf<typeof TreeBond>;
 
-export class TreeBondState<Props extends TreeBondProps = TreeBondProps> extends BondState<Props> {
-	// Storage stays in props.open.
-	#disclosure: Disclosure = createDisclosure({
+export class TreeBondState<Props extends TreeBondProps = TreeBondProps> extends DisclosureState<Props> {
+	// Storage stays in props.open. isOpen/open/close/toggle are inherited.
+	readonly disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
@@ -123,26 +123,6 @@ export class TreeBondState<Props extends TreeBondProps = TreeBondProps> extends 
 	constructor(props: Props) {
 		super(props);
 		// trigger↔content link (§11.3): header gets aria-expanded/controls; body gets aria-labelledby/group.
-		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'group' }));
-	}
-
-	get disclosure(): Disclosure {
-		return this.#disclosure;
-	}
-
-	get isOpen() {
-		return this.#disclosure.isOpen;
-	}
-
-	open() {
-		this.#disclosure.open();
-	}
-
-	close() {
-		this.#disclosure.close();
-	}
-
-	toggle() {
-		this.#disclosure.toggle();
+		this.capability(triggerContentLink(this.disclosure, { contentRole: 'group' }));
 	}
 }

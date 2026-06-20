@@ -1,10 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TreeBond } from './bond.svelte';
 	import type { TreeBodyProps } from './types';
 	import { animateTreeBody } from './motion.svelte';
 
-	const bond = TreeBond.get();
+	const bond = TreeBond.getOrThrow('<Tree.Body /> must be used within a <Tree.Root />');
 
 	let {
 		class: klass = '',
@@ -17,13 +17,9 @@
 		...restProps
 	}: TreeBodyProps<E, B> = $props();
 
-	const atom = bond?.atom('body');
+	const atom = bond.atom('body');
 
-	const bodyProps = $derived({
-		preset: preset ?? atom?.preset,
-		...atom?.spread,
-		...restProps
-	});
+	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom

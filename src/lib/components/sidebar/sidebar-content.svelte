@@ -1,11 +1,11 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import { Overlay } from '$svelte-atoms/core/components/overlay';
 	import { SidebarBond } from './bond.svelte';
 	import { animateSidebarContent } from './motion.svelte';
 	import type { SidebarRootProps } from './types';
 
-	const bond = SidebarBond.get();
+	const bond = SidebarBond.getOrThrow('<Sidebar.Content /> must be used within a <Sidebar.Root />');
 
 	let {
 		class: klass = '',
@@ -18,13 +18,9 @@
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
-	const atom = bond?.atom('content');
+	const atom = bond.atom('content');
 
-	const contentProps = $derived({
-		preset: preset ?? atom?.preset,
-		...atom?.spread,
-		...restProps
-	});
+	const contentProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <Overlay

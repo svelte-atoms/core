@@ -26,7 +26,7 @@ export type SidebarRootProps<
 	overlay?: boolean;
 	/** Teleport target when `overlay` is set (defaults to the root portal `'root.l0'`). */
 	portal?: string;
-	factory?: (props: any) => SidebarBond;
+	factory?: Factory<SidebarBond>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

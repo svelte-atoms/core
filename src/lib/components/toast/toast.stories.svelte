@@ -8,7 +8,22 @@
 		parameters: {
 			layout: 'fullscreen'
 		},
-		args: {}
+		args: {
+			disabled: false,
+			duration: 0
+		},
+		argTypes: {
+			disabled: {
+				control: 'boolean',
+				description: 'Prevent the toast from being opened or dismissed by the user.'
+			},
+			duration: {
+				control: 'number',
+				description:
+					'Auto-dismiss delay in milliseconds. Set to 0 to disable auto-dismiss. Default: 0.',
+				table: { defaultValue: { summary: '0' } }
+			}
+		}
 	});
 </script>
 
@@ -20,9 +35,33 @@
 
 	const toaster = new Toaster();
 
+	let defaultOpen = $state(false);
 	let declarativeOpen = $state(false);
 	let autoDismissOpen = $state(false);
 </script>
+
+<!-- Configurable single declarative toast with Storybook controls. -->
+<Story name="Basic">
+	{#snippet template(args)}
+		<div class="flex h-screen flex-col items-center justify-center gap-4">
+			<Button onclick={() => (defaultOpen = !defaultOpen)}>
+				{defaultOpen ? 'Hide' : 'Show'} toast
+			</Button>
+			<Toast_.Root
+				bind:open={defaultOpen}
+				disabled={args.disabled}
+				duration={args.duration}
+				onclose={() => (defaultOpen = false)}
+			>
+				<Toast_.Title>Notification</Toast_.Title>
+				<Toast_.Description>
+					This is a configurable toast. Use the controls panel to adjust its behaviour.
+				</Toast_.Description>
+				<Toast_.Close />
+			</Toast_.Root>
+		</div>
+	{/snippet}
+</Story>
 
 <!-- Wires the Toaster manager's item list to Toast.Root. -->
 <Story name="Custom toaster">
@@ -44,15 +83,12 @@
 			<Toast_.Root
 				open={true}
 				onclose={() => toaster.dismiss(item.id)}
-				class="relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md"
-			>
-				<Toast_.Title class="text-sm font-medium leading-tight">{data.title}</Toast_.Title>
+				>
+				<Toast_.Title>{data.title}</Toast_.Title>
 				{#if data.description}
-					<Toast_.Description class="text-sm opacity-80">{data.description}</Toast_.Description>
+					<Toast_.Description>{data.description}</Toast_.Description>
 				{/if}
-				<Toast_.Close
-					class="absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100"
-				/>
+				<Toast_.Close />
 			</Toast_.Root>
 		{/each}
 	</ol>
@@ -72,15 +108,12 @@
 			<Toast_.Root
 				open={true}
 				onclose={() => toaster.dismiss(item.id)}
-				class="relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md"
-			>
-				<Toast_.Title class="text-sm font-medium leading-tight">{data.title}</Toast_.Title>
+				>
+				<Toast_.Title>{data.title}</Toast_.Title>
 				{#if data.description}
-					<Toast_.Description class="text-sm opacity-80">{data.description}</Toast_.Description>
+					<Toast_.Description>{data.description}</Toast_.Description>
 				{/if}
-				<Toast_.Close
-					class="absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100"
-				/>
+				<Toast_.Close />
 			</Toast_.Root>
 		{/each}
 	</ol>
@@ -98,25 +131,21 @@
 
 		<Toast_.Root
 			bind:open={declarativeOpen}
-			duration={0}
-			class="relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md"
-		>
-			<Toast_.Title class="text-sm font-medium leading-tight">Declarative toast</Toast_.Title>
-			<Toast_.Description class="text-sm opacity-80">
+			duration={0}		>
+			<Toast_.Title>Declarative toast</Toast_.Title>
+			<Toast_.Description>
 				Fully owned by markup — no manager required.
 			</Toast_.Description>
-			<Toast_.Close class="absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100" />
+			<Toast_.Close />
 		</Toast_.Root>
 
 		<Toast_.Root
 			bind:open={autoDismissOpen}
 			duration={3000}
-			onclose={() => (autoDismissOpen = false)}
-			class="relative flex w-80 flex-col gap-1 rounded-md border border-border bg-card p-4 pr-8 shadow-md"
-		>
-			<Toast_.Title class="text-sm font-medium leading-tight">Auto-dismiss</Toast_.Title>
-			<Toast_.Description class="text-sm opacity-80">Disappears after 3 seconds.</Toast_.Description>
-			<Toast_.Close class="absolute top-2 right-2 rounded p-1 opacity-50 transition-opacity hover:opacity-100" />
+			onclose={() => (autoDismissOpen = false)}		>
+			<Toast_.Title>Auto-dismiss</Toast_.Title>
+			<Toast_.Description>Disappears after 3 seconds.</Toast_.Description>
+			<Toast_.Close />
 		</Toast_.Root>
 	</div>
 </Story>

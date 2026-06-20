@@ -1,16 +1,16 @@
-import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type ViewOf, type BondOf } from '$svelte-atoms/core/shared/define-bond.svelte';
 import {
 	createDisclosure,
 	type Disclosure
 } from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+import {
+	DisclosureState,
+	type DisclosureStateProps
+} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
 import { labelledControl } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
 
-export type ToastBondProps = BondStateProps & {
-	open: boolean;
-	disabled: boolean;
-	readonly rest?: Record<string, unknown>;
-};
+export type ToastBondProps = DisclosureStateProps;
 
 export type ToastBondElements = {
 	root: HTMLElement;
@@ -117,20 +117,12 @@ export type ToastBond = BondOf<typeof ToastBond>;
 
 export class ToastBondState<
 	Props extends ToastBondProps = ToastBondProps
-> extends BondState<Props> {
-	// Storage stays in props.open.
-	#disclosure: Disclosure = createDisclosure({
+> extends DisclosureState<Props> {
+	// Storage stays in props.open. isOpen/close inherited; open/toggle override to add the disabled guard.
+	readonly disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
-
-	get disclosure(): Disclosure {
-		return this.#disclosure;
-	}
-
-	get isOpen() {
-		return this.#disclosure.isOpen;
-	}
 
 	get isDisabled() {
 		return this.props.disabled;
@@ -139,15 +131,11 @@ export class ToastBondState<
 	// `disabled` is the bond's own guard, layered around the shared disclosure.
 	open() {
 		if (this.props.disabled) return;
-		this.#disclosure.open();
-	}
-
-	close() {
-		this.#disclosure.close();
+		this.disclosure.open();
 	}
 
 	toggle() {
 		if (this.props.disabled) return;
-		this.#disclosure.toggle();
+		this.disclosure.toggle();
 	}
 }

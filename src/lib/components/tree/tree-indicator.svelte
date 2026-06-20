@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { TreeBond } from './bond.svelte';
 	import type { TreeIndicatorProps } from './types';
 
-	const bond = TreeBond.get();
+	const bond = TreeBond.getOrThrow('<Tree.Indicator /> must be used within a <Tree.Root />');
 
 	let {
 		open = $bindable(false),
@@ -13,13 +13,9 @@
 		...restProps
 	}: TreeIndicatorProps<E, B> = $props();
 
-	const atom = bond?.atom('indicator');
+	const atom = bond.atom('indicator');
 
-	const indicatorProps = $derived({
-		preset: preset ?? atom?.preset,
-		...atom?.spread,
-		...restProps
-	});
+	const indicatorProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom

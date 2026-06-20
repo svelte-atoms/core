@@ -4,7 +4,7 @@
 >
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import Close from '$svelte-atoms/core/icons/icon-close.svelte';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { ToastBond } from './bond.svelte';
 	import type { ToastCloseProps } from './types';
 
@@ -21,11 +21,7 @@
 
 	const atom = bond?.dismiss();
 
-	const closeProps = $derived({
-		preset: preset ?? atom?.preset,
-		...(atom?.spread ?? {}),
-		...restProps
-	});
+	const closeProps = $derived(mergeAtomProps(atom, preset, restProps));
 
 	function onclick_(ev: MouseEvent) {
 		(onclick as ((ev: MouseEvent) => void) | undefined)?.(ev);
