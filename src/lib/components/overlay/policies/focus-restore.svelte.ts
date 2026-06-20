@@ -1,5 +1,6 @@
 import type { OverlayView } from '../types';
 import { FOCUS, type FocusPolicySurface } from './focus.svelte';
+import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
 // State-reactive focus capture/restore for an overlay (ADR 0003). Call once from the root component.
 // $effect.pre snapshots activeElement on closed→open; $effect restores on open→closed regardless of how close was triggered.
@@ -15,7 +16,7 @@ export function useFocusRestore(bond: OverlayView | undefined): void {
 	$effect.pre(() => {
 		if (!bond.state.isOpen) return;
 		if (focusSurface?.captureFocusOnOpen === false) return;
-		if (typeof document === 'undefined') return;
+		if (!isBrowser()) return;
 		restoreTarget = document.activeElement as HTMLElement | null;
 	});
 
