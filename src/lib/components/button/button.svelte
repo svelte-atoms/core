@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { ButtonProps } from './types';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 
 	let {
 		class: klass = '',
@@ -11,11 +11,7 @@
 		...restProps
 	}: ButtonProps & HTMLAttributes<HTMLButtonElement> = $props();
 
-	const buttonProps = $derived({
-		preset: preset ?? 'button',
-		...restProps,
-		type
-	});
+	const buttonProps = $derived(mergePresetProps(preset, 'button', { ...restProps, type }));
 </script>
 
 <HtmlAtom

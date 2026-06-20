@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { AlertBond } from './bond.svelte';
 	import type { AlertIconProps } from './types';
 
@@ -14,11 +14,7 @@
 		...restProps
 	}: AlertIconProps<E, B> = $props();
 
-	const iconProps = $derived({
-		preset: preset ?? 'alert.icon',
-		...bond?.icon(),
-		...restProps
-	});
+	const iconProps = $derived(mergePresetProps(preset, 'alert.icon', { ...bond?.icon(), ...restProps }));
 </script>
 
 <HtmlAtom

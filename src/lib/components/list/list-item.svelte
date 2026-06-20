@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'li', B extends Base = Base">
-	import { HtmlAtom, type Base, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base, type HtmlAtomProps } from '$svelte-atoms/core/components/atom';
 
 	let {
 		class: klass = '',
@@ -9,7 +9,7 @@
 		...restProps
 	}: HtmlAtomProps<T, B> = $props();
 
-	const itemProps = $derived({ preset: preset ?? 'list.item', ...restProps });
+	const itemProps = $derived(mergePresetProps(preset, 'list.item', restProps));
 </script>
 
 <HtmlAtom

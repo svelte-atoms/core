@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import type { AvatarProps } from './types';
 	import './avatar.css';
 
 	let { class: klass = '', preset = undefined, src = '', alt = '', ...restProps }: AvatarProps = $props();
 
-	const avatarProps = $derived({ preset: preset ?? 'avatar', ...restProps });
+	const avatarProps = $derived(mergePresetProps(preset, 'avatar', restProps));
 
 	let hasError = $state(false);
 

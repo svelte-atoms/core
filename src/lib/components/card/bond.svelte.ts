@@ -9,7 +9,7 @@ import {
 
 export type CardBondProps = BondStateProps & {
 	disabled?: boolean;
-	readonly rest?: Record<string, unknown>;
+	clickable?: boolean;
 };
 
 export type CardBondElements = {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { clamp } from '$svelte-atoms/core/utils/math';
 	import type { ProgressCircularProps } from './types';
 	import { SvgElement } from '../element'
 
@@ -12,10 +13,10 @@
 		...restProps
 	}: ProgressCircularProps & HTMLAttributes<HTMLDivElement> = $props();
 
-	const circularProps = $derived({ preset: preset ?? 'progress.circular', ...restProps });
+	const circularProps = $derived(mergePresetProps(preset, 'progress.circular', restProps));
 
 	const isIndeterminate = $derived(value === null || value === undefined);
-	const percent = $derived(isIndeterminate ? null : Math.min(100, Math.max(0, (value! / max) * 100)));
+	const percent = $derived(isIndeterminate ? null : clamp((value! / max) * 100, 0, 100));
 
 	const radius = 20;
 	const circumference = 2 * Math.PI * radius;

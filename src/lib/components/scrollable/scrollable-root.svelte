@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { ScrollableBond, ScrollableState, type ScrollableBondProps } from './bond.svelte';
+	import { ScrollableBond, ScrollableState } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
 	
 	let {
@@ -15,7 +16,7 @@
 		preset = undefined,
 		disabled = false,
 		open = true,
-		factory = defaultFactory,
+		factory = bondFactory(ScrollableState, ScrollableBond),
 		children,
 		...restProps
 	}: ScrollableRootProps<E, B> = $props();
@@ -33,17 +34,12 @@
 			clientHeight: [() => clientHeight, (v) => (clientHeight = v)],
 			disabled: () => disabled,
 			open: [() => open, (v) => (open = v)],
-			isScrolling: [() => isScrolling, (v) => (isScrolling = v ?? false)],
-			rest: () => restProps
+			isScrolling: [() => isScrolling, (v) => (isScrolling = v ?? false)]
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
 
-	function defaultFactory(props: ScrollableBondProps) {
-		const scrollableState = new ScrollableState(props);
-		return new ScrollableBond(scrollableState);
-	}
 
 	export function getBond() {
 		return bond;
@@ -51,7 +47,6 @@
 </script>
 
 <HtmlAtom
-	{bond}
 	as="div"
 	class={['scrollable-root border-border relative box-content overflow-hidden', '$preset', klass]}
 	{...binding.props}

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
 	import type { ContainerProps } from './types';
 
 	let {
@@ -16,30 +17,18 @@
 	const containerTypeStype = $derived(type ? `container-type: ${type};` : '');
 	const containerNameStyle = $derived(name ? `container-name: ${name};` : '');
 
-	const containerProps = $derived({
-		preset: preset ?? 'container',
-		...restProps
-	});
+	const containerProps = $derived(mergePresetProps(preset, 'container', restProps));
 </script>
 
 <HtmlAtom
-	{@attach (node) => {
+	{@attach (node: HTMLElement) => {
 		const updateSize = () => {
 			clientWidth = node.clientWidth;
 			clientHeight = node.clientHeight;
 		};
 		updateSize();
 
-		const resizeObserver = new ResizeObserver(() => {
-			updateSize();
-		});
-		resizeObserver.observe(node);
-
-		return {
-			destroy() {
-				resizeObserver.disconnect();
-			}
-		};
+		return resizeObserver(updateSize)(node);
 	}}
 	class={['border-border', '$preset', klass]}
 	style={[containerTypeStype, containerNameStyle].filter(Boolean).join('; ')}

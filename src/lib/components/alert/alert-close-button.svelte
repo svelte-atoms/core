@@ -3,7 +3,7 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { AlertBond } from './bond.svelte';
 	import type { AlertCloseButtonProps } from './types';
 	import { Icon } from '../icon';
@@ -20,11 +20,7 @@
 		...restProps
 	}: AlertCloseButtonProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const closeButtonProps = $derived({
-		preset: preset ?? 'alert.close-button',
-		...bond?.closeButton(),
-		...restProps
-	});
+	const closeButtonProps = $derived(mergePresetProps(preset, 'alert.close-button', { ...bond?.closeButton(), ...restProps }));
 </script>
 
 <HtmlAtom

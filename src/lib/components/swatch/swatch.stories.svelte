@@ -3,9 +3,27 @@
 	import { Swatch } from '.';
 
 	const { Story } = defineMeta({
-		title: 'ATOMS/Swatch'
+		title: 'Atoms/Swatch',
+		parameters: { layout: 'centered' },
+		args: {
+			color: 'oklch(0.65 0.18 253)',
+		},
+		argTypes: {
+			color: {
+				control: 'text',
+				description:
+					'Any valid CSS color value — named, hex, rgb(), hsl(), oklch(), color(), transparent, or empty string to show the checkerboard placeholder.',
+			},
+		},
 	});
 </script>
+
+<!-- Configurable default -->
+<Story name="Basic">
+	{#snippet template(args)}
+		<Swatch {...args} class="size-10 rounded-md" />
+	{/snippet}
+</Story>
 
 <!-- Basic colors -->
 <Story name="Basic Colors">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import Kbd from './kbd.svelte';
 	import type { ShortcutProps } from './types';
 
@@ -12,7 +12,7 @@
 		...restProps
 	}: ShortcutProps = $props();
 
-	const shortcutProps = $derived({ preset: preset ?? 'shortcut', ...restProps });
+	const shortcutProps = $derived(mergePresetProps(preset, 'shortcut', restProps));
 
 	let content = $derived(children ?? defaultChildren)
 </script>

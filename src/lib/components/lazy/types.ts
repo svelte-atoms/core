@@ -8,7 +8,7 @@ export interface LazySnippetProps extends SnippetProps {}
 
 export type LazyChildren = Snippet<[LazySnippetProps]>;
 
-export interface LazyProps extends HtmlAtomProps<'button', never, LazyChildren> {
+export interface LazyProps extends HtmlAtomProps<'button', never> {
 	promise: Promise<Component>;
 	error?: Snippet<[error: unknown]>;
 	loading?: Snippet;

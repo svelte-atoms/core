@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { ScrollableTrackProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
 	let {
 		class: klass = '',
@@ -11,11 +11,7 @@
 		...restProps
 	}: ScrollableTrackProps<E, B> = $props();
 
-	const bond = ScrollableBond.get();
-
-	if (!bond) {
-		throw new Error('ScrollableTrack must be used within a ScrollableRoot');
-	}
+	const bond = ScrollableBond.getOrThrow('ScrollableTrack must be used within a ScrollableRoot');
 
 	const hasYScroll = $derived(bond.state.props.scrollHeight > bond.state.props.clientHeight);
 	const hasXScroll = $derived(bond.state.props.scrollWidth > bond.state.props.clientWidth);
@@ -25,11 +21,7 @@
 
 	const atom = $derived(orientation === 'horizontal' ? bond.atom('trackX') : bond.atom('trackY'));
 
-	const trackProps = $derived({
-		preset: preset ?? 'scrollable.track',
-		...atom.spread,
-		...restProps
-	});
+	const trackProps = $derived(mergePresetProps(preset, 'scrollable.track', { ...atom.spread, ...restProps }));
 </script>
 
 {#if (isOpen || isScrolling) && hasScroll}

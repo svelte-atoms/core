@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { clamp } from '$svelte-atoms/core/utils/math';
 	import type { ProgressLinearProps } from './types';
 	import { HtmlElement } from '../element';
 
@@ -12,10 +13,10 @@
 		...restProps
 	}: ProgressLinearProps & HTMLAttributes<HTMLDivElement> = $props();
 
-	const linearProps = $derived({ preset: preset ?? 'progress.linear', ...restProps });
+	const linearProps = $derived(mergePresetProps(preset, 'progress.linear', restProps));
 
 	const isIndeterminate = $derived(value === null || value === undefined);
-	const percent = $derived(isIndeterminate ? null : Math.min(100, Math.max(0, (value! / max) * 100)));
+	const percent = $derived(isIndeterminate ? null : clamp((value! / max) * 100, 0, 100));
 </script>
 
 {#snippet defaultLinearFill({ percent: p }: { percent: number | null })}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import type { ChipCloseButtonProps } from './types';
 	import CloseIcon from '../../icons/icon-close.svelte';
@@ -12,7 +12,7 @@
 		...restProps
 	}: ChipCloseButtonProps = $props();
 
-	const chipCloseButtonProps = $derived({ preset: preset ?? 'chip.close-button', ...restProps });
+	const chipCloseButtonProps = $derived(mergePresetProps(preset, 'chip.close-button', restProps));
 </script>
 
 <HtmlAtom

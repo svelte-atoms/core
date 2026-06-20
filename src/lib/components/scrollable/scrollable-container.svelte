@@ -2,7 +2,7 @@
 	import type { ScrollableContainerProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
 	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import './scrollable-container.css';
 
 	let {
@@ -12,19 +12,11 @@
 		...restProps
 	}: ScrollableContainerProps<E, B> = $props();
 
-	const bond = ScrollableBond.get();
-
-	if (!bond) {
-		throw new Error('ScrollableContainer must be used within a ScrollableRoot');
-	}
+	const bond = ScrollableBond.getOrThrow('ScrollableContainer must be used within a ScrollableRoot');
 
 	const atom = bond.atom('container');
 
-	const containerProps = $derived({
-		preset: preset ?? atom.preset,
-		...atom.spread,
-		...restProps
-	});
+	const containerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom

@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { AlertBond } from './bond.svelte';
 	import type { AlertDescriptionProps } from './types';
 
@@ -13,11 +13,7 @@
 		...restProps
 	}: AlertDescriptionProps<E, B> = $props();
 
-	const descriptionProps = $derived({
-		preset: preset ?? 'alert.description',
-		...bond?.description(),
-		...restProps
-	});
+	const descriptionProps = $derived(mergePresetProps(preset, 'alert.description', { ...bond?.description(), ...restProps }));
 </script>
 
 <HtmlAtom

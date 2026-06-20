@@ -1,5 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { bondFactory } from '$svelte-atoms/core/shared';
+	import type { Factory } from '$svelte-atoms/core/types';
 	import {
 		HtmlAtom,
 		type ElementType,
@@ -7,7 +9,7 @@
 		type Base
 	} from '$svelte-atoms/core/components/atom';
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
-	import { StackBond, StackState, type StackStateProps } from './bond.svelte';
+	import { StackBond, StackState } from './bond.svelte';
 	import './stack.css';
 
 	type Element = ElementType<E>;
@@ -16,10 +18,10 @@
 		value = $bindable<string | undefined>(undefined),
 		class: klass = '',
 		preset = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(StackState, StackBond),
 		children,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { factory?: typeof defaultFactory } = $props();
+	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { factory?: Factory<StackBond> } = $props();
 
 	const binding = bindBond<StackBond>(
 		(props) => factory(props),
@@ -30,10 +32,6 @@
 	);
 	const bond = binding.bond.share();
 
-	function defaultFactory(props: StackStateProps) {
-		const bondState = new StackState(props);
-		return new StackBond(bondState);
-	}
 
 	export function getBond() {
 		return bond;

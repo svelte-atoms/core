@@ -1,5 +1,5 @@
 <script>
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 
 	let {
 		class: klass = '',
@@ -10,10 +10,7 @@
 		...restProps
 	} = $props();
 
-	const dividerProps = $derived({
-		preset: preset ?? 'divider',
-		...restProps
-	});
+	const dividerProps = $derived(mergePresetProps(preset, 'divider', restProps));
 </script>
 
 <HtmlAtom

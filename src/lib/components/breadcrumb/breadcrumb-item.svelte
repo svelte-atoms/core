@@ -1,9 +1,9 @@
-<script lang="ts" generics="B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+<script lang="ts">
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 
 	let { class: klass = '', href = '', as = 'a', preset = undefined, children = undefined, ...restProps } = $props();
 
-	const itemProps = $derived({ preset: preset ?? 'breadcrumb.item', ...restProps });
+	const itemProps = $derived(mergePresetProps(preset, 'breadcrumb.item', restProps));
 </script>
 
 <HtmlAtom

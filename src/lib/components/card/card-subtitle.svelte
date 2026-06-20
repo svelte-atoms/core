@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CardBond } from './bond.svelte';
-	export type { CardSubtitleProps } from './types';
+	import type { CardSubtitleProps } from './types';
 
 	const bond = CardBond.get();
 
@@ -13,11 +13,7 @@
 		...restProps
 	}: CardSubtitleProps<E, B> = $props();
 
-	const subtitleProps = $derived({
-		preset: preset ?? 'card.subtitle',
-		...bond?.subtitle(),
-		...restProps
-	});
+	const subtitleProps = $derived(mergePresetProps(preset, 'card.subtitle', { ...bond?.subtitle(), ...restProps }));
 </script>
 
 <HtmlAtom

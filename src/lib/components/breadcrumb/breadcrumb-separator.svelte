@@ -1,9 +1,9 @@
-<script lang="ts" generics="B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+<script lang="ts">
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 
 	let { class: klass = '', as = 'span', preset = undefined, children = undefined, ...restProps } = $props();
 
-	const separatorProps = $derived({ preset: preset ?? 'breadcrumb.separator', ...restProps });
+	const separatorProps = $derived(mergePresetProps(preset, 'breadcrumb.separator', restProps));
 </script>
 
 <HtmlAtom

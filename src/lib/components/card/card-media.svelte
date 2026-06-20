@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CardBond } from './bond.svelte';
-	export type { CardMediaProps } from './types';
+	import type { CardMediaProps } from './types';
 
 	const bond = CardBond.get();
 
@@ -13,11 +13,7 @@
 		...restProps
 	}: CardMediaProps<E, B> = $props();
 
-	const mediaProps = $derived({
-		preset: preset ?? 'card.media',
-		...bond?.media(),
-		...restProps
-	});
+	const mediaProps = $derived(mergePresetProps(preset, 'card.media', { ...bond?.media(), ...restProps }));
 </script>
 
 <HtmlAtom

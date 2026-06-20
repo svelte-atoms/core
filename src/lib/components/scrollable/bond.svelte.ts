@@ -1,5 +1,6 @@
 import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
 import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { clamp } from '$svelte-atoms/core/utils/math';
 
 export type ScrollableBondProps = BondStateProps & {
 	scrollX: number;
@@ -12,7 +13,6 @@ export type ScrollableBondProps = BondStateProps & {
 	// Whether custom scrollbars are visible.
 	open: boolean;
 	isScrolling?: boolean;
-	readonly rest?: Record<string, unknown>;
 };
 
 export type ScrollableBondElements = {
@@ -278,11 +278,11 @@ class ScrollableBondBase extends Bond<ScrollableBondProps, ScrollableState> {
 			if (axis === 'x') {
 				const maxScrollX = container.scrollWidth - container.clientWidth;
 				const scrollDelta = (delta / trackSize) * maxScrollX;
-				container.scrollLeft = Math.max(0, Math.min(maxScrollX, startScroll + scrollDelta));
+				container.scrollLeft = clamp(startScroll + scrollDelta, 0, maxScrollX);
 			} else {
 				const maxScrollY = container.scrollHeight - container.clientHeight;
 				const scrollDelta = (delta / trackSize) * maxScrollY;
-				container.scrollTop = Math.max(0, Math.min(maxScrollY, startScroll + scrollDelta));
+				container.scrollTop = clamp(startScroll + scrollDelta, 0, maxScrollY);
 			}
 		};
 

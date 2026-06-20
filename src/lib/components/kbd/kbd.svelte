@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { KbdProps } from './types';
 
 	let { class: klass = '', preset = undefined, children, ...restProps }: KbdProps = $props();
 
-	const kbdProps = $derived({ preset: preset ?? 'kbd', ...restProps });
+	const kbdProps = $derived(mergePresetProps(preset, 'kbd', restProps));
 </script>
 
 <HtmlAtom

@@ -6,11 +6,7 @@
 
 	type Element = ElementType<E>;
 
-	const bond = StackBond.get();
-
-	if (!bond) {
-		throw new Error('Stack.Item must be used within a Stack.Root component.');
-	}
+	const bond = StackBond.getOrThrow('Stack.Item must be used within a Stack.Root component.');
 
 	let {
 		class: klass = '',

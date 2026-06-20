@@ -4,7 +4,6 @@ import { tick, untrack } from 'svelte';
 
 export type StackStateProps = BondStateProps & {
 	value?: string;
-	readonly rest?: Record<string, unknown>;
 };
 
 export type StackElements = {

@@ -4,7 +4,7 @@
 >
 	import type { Component } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
 	import type { IconProps } from './types';
 	import './icon.css';
@@ -19,10 +19,7 @@
 		...restProps
 	}: IconProps<Src, E, B> & HTMLAttributes<Element> = $props();
 
-	const iconProps = $derived({
-		preset: preset ?? 'icon',
-		...restProps
-	});
+	const iconProps = $derived(mergePresetProps(preset, 'icon', restProps));
 
 	const content = $derived(src ? sourceSnippet : children );
 </script>

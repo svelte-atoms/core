@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { HtmlAtom } from '../atom';
 
@@ -13,7 +14,7 @@
 
 	let hasError = $state(false);
 
-	const imageProps = $derived({ preset: preset ?? 'image', ...restProps });
+	const imageProps = $derived(mergePresetProps(preset, 'image', restProps));
 </script>
 
 <HtmlAtom
@@ -30,7 +31,7 @@
 		class={[hasError && 'hidden size-full object-cover']}
 		{src}
 		{alt}
-		onerror={(ev) => {
+		onerror={() => {
 			hasError = true;
 		}}
 	/>
