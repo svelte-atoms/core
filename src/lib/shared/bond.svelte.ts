@@ -99,6 +99,11 @@ export interface Capability<Surface = unknown> {
 	// teardown — a cleanup function or a Disposable (Symbol.dispose). The home for whole-bond effects
 	// (focus restore, document listeners) that no single atom owns.
 	setup?(bond: Bond): Disposable | (() => void) | void;
+	// Optional composition hook. When registered at a slot already held, the registry calls
+	// compose(prior) and stores the result instead of a blind last-wins replace — giving the
+	// replacement a reference to the holder it supersedes, so it can wrap/delegate rather than
+	// re-author the whole slot. Built by decorateCapability(). ADR 0005 D6.
+	compose?(prior: Capability<Surface>): Capability<Surface>;
 }
 
 // Introspection snapshot of one registered capability — for tests, devtools, and docs.
@@ -109,6 +114,46 @@ export interface CapabilityInfo {
 	hasSurface: boolean;
 	requires: readonly symbol[];
 	hasSetup: boolean;
+}
+
+// How a decorator wraps the capability it supersedes at a slot. Each field receives the prior holder's
+// own projection/surface/setup and returns the replacement; omit a field to delegate it unchanged.
+export interface CapabilityDecoration<S> {
+	// Override or augment a role's projection. `base` is the prior holder's Behavior for this role
+	// (undefined if it doesn't handle the role) — spread it to keep gesture/attrs and add your own.
+	behavior?(role: string, ctx: unknown, base: Behavior | undefined): Behavior | undefined;
+	// Replace or wrap the surface (the consumer-facing model). Default: keep the prior surface.
+	surface?(base: S | undefined): S;
+	// Replace or wrap the whole-bond setup() effect. Default: keep the prior setup.
+	setup?(base: Capability<S>['setup']): Capability<S>['setup'];
+}
+
+// Override SELECTED facets of whichever capability currently holds `slot`, delegating the rest — the
+// capability-layer dual of BondAtom.behavior() chaining. Register it AFTER the base (e.g. later in a
+// `capabilities:` array, or in the outer spec of a `parts:` composition); the registry's compose hook
+// hands it the prior holder so a spec can tweak one role without re-authoring the whole slot. ADR 0005 D6.
+export function decorateCapability<S>(
+	slot: CapabilityKey<S>,
+	decoration: CapabilityDecoration<S>
+): Capability<S> {
+	return {
+		slot,
+		compose(prior) {
+			const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
+			const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
+			return {
+				slot,
+				behavior: (role, ctx) => {
+					const base = prior.behavior?.(role, ctx);
+					return decoration.behavior ? decoration.behavior(role, ctx, base) : base;
+				},
+				// Conditional spreads: under exactOptionalPropertyTypes, absent key != explicit undefined.
+				...(surface !== undefined ? { surface } : {}),
+				...(prior.requires ? { requires: prior.requires } : {}),
+				...(setup ? { setup } : {})
+			};
+		}
+	};
 }
 
 // Reactive key→value map with microtask-deferred writes (avoids state_unsafe_mutation in $derived).
@@ -303,6 +348,17 @@ export abstract class Bond<
 		return getContext(this.CONTEXT_KEY);
 	}
 
+	// Like get(), but asserts presence — the single source of truth for the "must be used within
+	// its provider" context guard. Returns a non-optional bond so call sites need no `if (!bond)`
+	// dance (and stay narrowed inside closures/$derived). Pass a component-specific message.
+	static getOrThrow<T extends Bond>(this: BondClass<T>, message?: string): T {
+		const bond = getContext<T | undefined>(this.CONTEXT_KEY);
+		if (!bond) {
+			throw new Error(message ?? 'Bond context missing: component must be used within its provider.');
+		}
+		return bond;
+	}
+
 	// Imperative counterpart of share(), keyed off the concrete subclass.
 	static set<T extends Bond>(this: BondClass<T>, bond: T): T {
 		return setContext(this.CONTEXT_KEY, bond);
@@ -367,14 +423,19 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 			return found;
 		}
 		// Last-wins-per-slot: re-registering a slot replaces the prior holder (lets a spec override a
-		// base default; `fuse` and the overlay capability stacks rely on it). DEV-logs the replacement
-		// so order-dependent overrides aren't silent (#4). Slot identity is by symbol, not string.
+		// base default; `fuse` and the overlay capability stacks rely on it). A holder carrying a
+		// `compose` hook instead WRAPS the prior — the registry hands it the capability it supersedes
+		// so it can delegate (decorateCapability). DEV-logs either way so overrides aren't silent (#4).
+		// Slot identity is by symbol, not string.
 		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrKey.slot);
 		if (i >= 0) {
+			const prior = this.#capabilities[i]!;
+			const next = capabilityOrKey.compose ? capabilityOrKey.compose(prior) : capabilityOrKey;
 			if (import.meta.env?.DEV) {
-				console.debug(`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" replaced in "${this.id}" (last-wins).`);
+				const verb = capabilityOrKey.compose ? 'decorated' : 'replaced';
+				console.debug(`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`);
 			}
-			this.#capabilities[i] = capabilityOrKey;
+			this.#capabilities[i] = next;
 		} else {
 			this.#capabilities.push(capabilityOrKey);
 		}
@@ -433,6 +494,23 @@ export class BondAtom<
 	#id = $derived.by(() => getElementId(this.bond.id, this.kind));
 	#element = $state<E | undefined>();
 	#behaviors: Behavior<B, E>[] = [];
+	// Stable attachment key for this atom's element-capture attachment. Minted ONCE so the symbol
+	// identity is preserved across every `spread` access. createAttachmentKey() in the getter would
+	// hand Svelte a fresh symbol each reactive update, tearing down and re-running the attachment
+	// (Svelte keys attachments by symbol identity) — re-firing onmount/ondestroy on every change.
+	#attachKey = createAttachmentKey();
+	// Behavior onmounts, pre-bound under stable keys at behavior() time — same reasoning as #attachKey.
+	#behaviorAttachments: Record<symbol, (node: E) => void | (() => void)> = {};
+	// The element-capture attachment closure, bound once so its identity is stable too (a fresh closure
+	// under a stable key still re-runs). Dispatches to this.onmount/ondestroy so subclass overrides win.
+	#ownAttach = (node: E): void | (() => void) => {
+		this.setElement(node);
+		const cleanup = this.onmount(node);
+		return () => {
+			cleanup?.();
+			this.ondestroy?.();
+		};
+	};
 	// Roles this atom plays (declared via role()); the bond resolves cross-atom id refs by finding the player.
 	// Plain Set: written once at declaration; reactivity rides the queue, not this set.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
@@ -448,6 +526,12 @@ export class BondAtom<
 	// Compose a Behavior onto this atom; chainable, layered in order and folded into spread.
 	behavior(behavior: Behavior<B, E>): this {
 		this.#behaviors.push(behavior);
+		if (behavior.onmount) {
+			const onmount = behavior.onmount;
+			// Bind under a stable key now, not in the spread getter, so the attachment isn't torn
+			// down and re-run on every reactive read of spread (Svelte keys attachments by symbol).
+			this.#behaviorAttachments[createAttachmentKey()] = (node: E) => onmount(node, this.bond);
+		}
 		return this;
 	}
 
@@ -507,18 +591,7 @@ export class BondAtom<
 	}
 
 	get attachments(): Record<string, (node: E) => void | (() => void)> {
-		return {
-			[createAttachmentKey()]: (node: E) => {
-				this.setElement(node);
-
-				const cleanup = this.onmount(node);
-
-				return () => {
-					cleanup?.();
-					this.ondestroy?.();
-				};
-			}
-		};
+		return { [this.#attachKey]: this.#ownAttach };
 	}
 
 	get spread(): Record<string | symbol, unknown> {
@@ -528,18 +601,13 @@ export class BondAtom<
 
 		let attrs: Record<string, unknown> = { ...this.attrs };
 		let handlers: Record<string, unknown> = { ...this.handlers };
-		const behaviorAttachments: Record<symbol, (node: E) => void | (() => void)> = {};
 
 		for (const behavior of this.#behaviors) {
 			if (behavior.attrs) attrs = { ...attrs, ...behavior.attrs(this.bond) };
 			if (behavior.handlers) handlers = composeHandlers(handlers, behavior.handlers(this.bond));
-			if (behavior.onmount) {
-				const onmount = behavior.onmount;
-				behaviorAttachments[createAttachmentKey()] = (node: E) => onmount(node, this.bond);
-			}
 		}
 
-		return { ...attrs, ...handlers, ...this.attachments, ...behaviorAttachments };
+		return { ...attrs, ...handlers, ...this.attachments, ...this.#behaviorAttachments };
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

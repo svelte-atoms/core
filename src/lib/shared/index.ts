@@ -5,9 +5,11 @@ export {
 	bondContextKey,
 	capabilityKey,
 	sharedCapabilityKey,
+	decorateCapability,
 	type Behavior,
 	type Capability,
 	type CapabilityInfo,
+	type CapabilityDecoration,
 	type CapabilityKey,
 	type SurfaceOf,
 	type RoleContexts,
@@ -19,6 +21,7 @@ export {
 	type AtomRegistry
 } from './bond.svelte';
 export { bindBond, BondBinding, type BondBindingOptions } from './bind-bond.svelte';
+export { bondFactory } from './bond-factory';
 export { useCapabilities } from './use-capabilities.svelte';
 export { Collection } from './collection.svelte';
 export {

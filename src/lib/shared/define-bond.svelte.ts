@@ -103,6 +103,7 @@ export type DefinedBondClass<
 	// Transitive context-key list from parts: path; absent on non-composed bonds.
 	readonly CONTEXT_KEYS?: readonly string[];
 	get(): DefinedBond<A, State, Base, M> | undefined;
+	getOrThrow(message?: string): DefinedBond<A, State, Base, M>;
 	set(bond: DefinedBond<A, State, Base, M>): DefinedBond<A, State, Base, M>;
 	// The spec this bond was defined from — the seam Fusion composes over (§9).
 	readonly spec: BondSpec<A, Base>;

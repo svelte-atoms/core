@@ -1,6 +1,5 @@
 import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
 import { ROVING } from './roving-focus.svelte';
-import type { OverlayView } from '$svelte-atoms/core/components/overlay/types';
 
 // Public slot key — surface type travels with the key, so `capability(INPUT)` is typed (no cast).
 export const INPUT = sharedCapabilityKey<InputModel>('@svelte-atoms/cap:input');
@@ -47,6 +46,13 @@ export interface InputProjectionOptions {
 	controls?: string;
 	// Map the roving `activeId` to its DOM element id for `aria-activedescendant`. Default identity.
 	itemDomId?: (id: string) => string;
+	// Reactive accessor for whether the controlled popup is open → `aria-expanded`. The host bond
+	// supplies it (e.g. `() => this.isOpen`), keeping this capability agnostic of how a bond models
+	// open/closed state. Omitted when not supplied (no `aria-expanded` is emitted).
+	expanded?: () => boolean;
+	// Reactive accessor for whether the control is disabled → `aria-disabled` + `tabindex`. The host
+	// bond supplies it (e.g. `() => this.isDisabled`). Default `() => false`.
+	disabled?: () => boolean;
 }
 
 // Wrap an InputModel into a projectable Capability (slot 'input'); role 'input' binds an editable
@@ -58,6 +64,8 @@ export function inputCapability(
 	const autocomplete = options.autocomplete ?? 'list';
 	const controls = options.controls ?? 'container';
 	const toDomId = options.itemDomId ?? ((id: string) => id);
+	const isExpanded = options.expanded;
+	const isDisabled = options.disabled ?? (() => false);
 
 	return {
 		slot: INPUT,
@@ -68,17 +76,19 @@ export function inputCapability(
 			if (role !== 'input') return undefined;
 			const field = ctx as string | undefined;
 			return {
+				// `bond` stays the base Bond — `capability`/`atomByRole` are base-Bond methods and the
+				// open/disabled state arrives via injected accessors, so no bond shape is assumed.
 				attrs: (bond) => {
-					const o = bond as OverlayView;
-					const active = o.capability(ROVING)?.surface?.activeId ?? null;
+					const active = bond.capability(ROVING)?.surface?.activeId ?? null;
+					const disabled = isDisabled();
 					return {
 						role: 'combobox',
 						'aria-autocomplete': autocomplete,
-						'aria-expanded': o.state.isOpen,
-						'aria-controls': o.atomByRole(controls)?.id,
+						'aria-expanded': isExpanded?.(),
+						'aria-controls': bond.atomByRole(controls)?.id,
 						'aria-activedescendant': active === null ? undefined : toDomId(active),
-						'aria-disabled': o.state.isDisabled,
-						tabindex: o.state.isDisabled ? -1 : 0
+						'aria-disabled': disabled,
+						tabindex: disabled ? -1 : 0
 					};
 				},
 				handlers: () => ({
