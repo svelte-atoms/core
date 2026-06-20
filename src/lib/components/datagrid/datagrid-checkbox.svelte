@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { DataGridBond } from './bond.svelte';
 	import { DataGridRowBond } from './row/bond.svelte';
 	import type { DatagridCheckboxProps } from './types';
-	import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
 
 	const datagridBond = DataGridBond.get();
 	const datagridRowBond = DataGridRowBond.get();
@@ -19,10 +19,7 @@
 		...restProps
 	}: DatagridCheckboxProps = $props();
 
-	const checkboxProps = $derived({
-		preset: (preset ?? 'datagrid.checkbox') as PresetKey,
-		...restProps
-	});
+	const checkboxProps = $derived(mergePresetProps(preset, 'datagrid.checkbox', restProps));
 
 	const isHeader = $derived(datagridRowBond?.state.isHeader ?? false);
 	const rowId = $derived(datagridRowBond?.state.id);

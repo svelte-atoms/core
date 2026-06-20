@@ -83,7 +83,6 @@
 
 {#if !hidden}
 	<HtmlAtom
-		{bond}
 		class={[
 			'flex cursor-pointer py-1 font-medium select-none',
 			!!sortable && 'sortable',

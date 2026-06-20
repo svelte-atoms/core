@@ -3,14 +3,13 @@
 	import { cn } from '$svelte-atoms/core/utils';
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
-	import { HtmlAtom } from '../atom';
-	import './calendar-day.css';
+	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	const calendarBond = CalendarBond.get();
 
 	const selectedDateStart = $derived(calendarBond?.state.props.start);
 	const selectedDateEnd = $derived(calendarBond?.state.props.end);
-	const isRange = $derived(Array.isArray(calendarBond?.state.props.type === 'range'));
+	const isRange = $derived(calendarBond?.state.props.type === 'range');
 
 	let {
 		class: klass = '',
@@ -22,11 +21,7 @@
 		...restProps
 	}: CalendarDayProps = $props();
 
-	const dayProps = $derived({
-		preset: preset ?? 'calendar.day',
-		...calendarBond?.day(day).spread,
-		...restProps
-	});
+	const dayProps = $derived(mergePresetProps(preset, 'calendar.day', { ...calendarBond?.day(day).spread, ...restProps }));
 
 	const isSelected = $derived.by(() => {
 		if (selectedDateEnd && selectedDateStart) {
@@ -61,7 +56,7 @@
 <HtmlAtom
 	{as}
 	class={[
-		'calendar-day text-foreground/80 border-border box-border aspect-square cursor-pointer border-b border-l',
+		'calendar-day text-foreground/80 aspect-square cursor-pointer',
 		'hover:bg-accent hover:text-accent-foreground',
 		// State modifiers
 		day.weekend && 'text-primary',

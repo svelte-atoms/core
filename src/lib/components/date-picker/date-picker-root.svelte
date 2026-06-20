@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { startOfDay } from 'date-fns';
 	import type { CalendarRange } from '../calendar/types';
-	import { DatePickerBond, DatePickerBondState, type DatePickerBondProps } from './bond.svelte';
+	import { DatePickerBond, DatePickerBondState } from './bond.svelte';
 	import type { DatePickerRootProps } from './types';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
-	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
+	import { bondFactory,bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	let {
 		open = $bindable(false),
@@ -19,7 +18,7 @@
 		placement = 'bottom',
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'bottom', 'top'],
 		offset = 2,
-		factory = defaultFactory,
+		factory = bondFactory(DatePickerBondState, DatePickerBond),
 		children,
 		...restProps
 	}: DatePickerRootProps = $props();
@@ -42,6 +41,7 @@
 			placement: () => placement,
 			placements: () => placements ?? [],
 			offset: () => offset,
+			// Vestigial: element-less context root, no typed channel to forward restProps.
 			rest: () => restProps
 		}
 	);
@@ -55,12 +55,7 @@
 	// setup() (ADR 0001 / ADR 0003, ADR 0010); the bond is shared directly here.
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
-	useEscapeStack(bond);
 
-	function defaultFactory(props: DatePickerBondProps) {
-		const bondState = new DatePickerBondState(props);
-		return new DatePickerBond(bondState);
-	}
 </script>
 
 {@render children?.({ datePicker: bond })}

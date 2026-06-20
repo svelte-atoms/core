@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { StepperBond, type StepContentSnippet } from './bond.svelte';
 	import type { StepperContentProps } from './types';
 
@@ -18,11 +18,7 @@
 	const contentKlass = $derived(activeStepContent?.props.class)
 	const contentProps = $derived.by(()=> {
 		const { class: klass, ...restContentProps } = activeStepContent?.props ?? {};
-		return {
-			preset: preset ?? 'stepper.content',
-			...restContentProps,
-			...restProps
-		}
+		return mergePresetProps(preset, 'stepper.content', { ...restContentProps, ...restProps });
 	});
 
 	const content = $derived(activeStepContent && activeStep ? body : undefined);

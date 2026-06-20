@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { backInOut } from 'svelte/easing';
 	import CalendarDay from './calendar-day.svelte';
 	import { CalendarBond } from './bond.svelte';
 	import { cn } from '$svelte-atoms/core/utils';
-	import { HtmlAtom } from '../atom';
+	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	const calendarBond = CalendarBond.get();
 
@@ -13,38 +12,41 @@
 		class: klass = '',
 		weekday,
 		preset = undefined,
+		// When false, off-month padding days (trailing prev-month / leading next-month)
+		// are not rendered as real days — fully-off-month weeks are dropped and the
+		// remaining boundary off-month cells become inert placeholders. Use this for
+		// multi-month / range views where those dates already appear in the adjacent panel.
+		outsideDays = true,
 		children = undefined,
 		...restProps
 	} = $props();
 
-	const bodyProps = $derived({
-		preset: preset ?? 'calendar.body',
-		...calendarBond?.body().spread,
-		...restProps
+	// Days to lay out: with outsideDays the full 6-week grid; otherwise drop any week
+	// that is entirely off-month (the redundant all-next/prev-month row) while keeping
+	// 7-day alignment intact. Boundary off-month days are kept here and rendered as
+	// blank placeholders below so the columns stay put.
+	const visibleDays = $derived.by(() => {
+		const days = currentMonth?.days ?? [];
+		if (outsideDays) return days;
+
+		const weeks = [];
+		for (let i = 0; i < days.length; i += 7) {
+			weeks.push(days.slice(i, i + 7));
+		}
+		return weeks.filter((week) => week.some((day) => !day.offmonth)).flat();
 	});
 
-	function monthDays(month: number, year = 2020) {
-		return new Date(year, month + 1, 0).getDate();
-	}
-
-	function scle(node: HTMLElement, { delay = 0, duration = 400, easing = backInOut }) {
-		return {
-			delay,
-			duration,
-			easing,
-			css: (_, u) => {
-				return `transform: scale(${u})`;
-			}
-		};
-	}
+	const bodyProps = $derived(mergePresetProps(preset, 'calendar.body', { ...calendarBond?.body().spread, ...restProps }));
 </script>
 
 <HtmlAtom
-	class={cn('col-span-full grid h-full w-full grid-cols-subgrid', klass)}
+	class={cn('col-span-full grid w-full grid-cols-subgrid', klass)}
 	{...bodyProps}
 >
-	{#each currentMonth?.days ?? [] as day (day.id)}
-		{#if children}
+	{#each visibleDays as day (day.id)}
+		{#if !outsideDays && day.offmonth}
+			<div aria-hidden="true"></div>
+		{:else if children}
 			{@render children?.({ day })}
 		{:else}
 			<CalendarDay

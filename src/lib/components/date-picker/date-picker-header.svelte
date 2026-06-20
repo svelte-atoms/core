@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { HtmlAtom } from '../atom';
 	import { DatePickerBond } from './bond.svelte';
 	import { CalendarBond } from '../calendar/bond.svelte';
@@ -14,10 +15,7 @@
 		...restProps
 	}: DatePickerHeaderProps = $props();
 
-	const headerProps = $derived({
-		preset: preset ?? 'datepicker.header',
-		...restProps
-	});
+	const headerProps = $derived(mergePresetProps(preset, 'datepicker.header', restProps));
 
 	const calendarBondProps = $derived(datePickerBond?.state?.props);
 

@@ -96,6 +96,7 @@ interface DataGridBondConstructor {
 	new <T = unknown>(state: DataGridBondState<T>): DataGridBond<T>;
 	readonly CONTEXT_KEY: string;
 	get<T = unknown>(): DataGridBond<T> | undefined;
+	getOrThrow<T = unknown>(message?: string): DataGridBond<T>;
 	set<T = unknown>(bond: DataGridBond<T>): DataGridBond<T>;
 }
 

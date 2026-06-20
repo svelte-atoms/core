@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { animate } from 'motion';
 	import { getYear, setYear } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
@@ -7,7 +8,7 @@
 	import { HtmlAtom } from '../atom';
 	import { Icon } from '../icon';
 
-	const datePicker = DatePickerBond.get();
+	const datePicker = DatePickerBond.getOrThrow('<DatePicker.Years /> must be used within a <DatePicker.Root />');
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
@@ -31,10 +32,7 @@
 		...restProps
 	}: DatePickerYearsProps = $props();
 
-	const yearsProps = $derived({
-		preset: preset ?? 'datepicker.years',
-		...restProps
-	});
+	const yearsProps = $derived(mergePresetProps(preset, 'datepicker.years', restProps));
 
 	let scrollTimeout: NodeJS.Timeout | undefined = undefined;
 

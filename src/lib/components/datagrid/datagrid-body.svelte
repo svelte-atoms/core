@@ -1,6 +1,6 @@
 <script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { DataGridBond } from './bond.svelte';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { DatagridBodyProps } from './types';
 	import { tick } from 'svelte';
 
@@ -14,7 +14,7 @@
 	}: DatagridBodyProps<T, E, B> = $props();
 
 	const atom = bond?.atom('body');
-	const bodyProps = $derived({ preset: preset ?? atom?.preset, ...atom?.spread, ...restProps });
+	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 
 	// Gate rows until columns have flushed to the derived template; otherwise subgrid rows collapse to the `auto` fallback for one tick.
 	let isTemplateReady = $state(false);

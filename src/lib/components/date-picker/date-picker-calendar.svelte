@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { Content } from '../popover/atoms';
 	import {
 		Root,
@@ -28,10 +29,7 @@
 		...restProps
 	}: DatePickerCalendarProps = $props();
 
-	const calendarProps = $derived({
-		preset: preset ?? 'datepicker.calendar',
-		...restProps
-	});
+	const calendarProps = $derived(mergePresetProps(preset, 'datepicker.calendar', restProps));
 
 	function handleChange(_: CustomEvent, { range, pivote }: { range: CalendarRange; pivote: Date }) {
 		if (!datePickerBond) return;

@@ -31,7 +31,7 @@ export interface TabHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, TabChildren> {
-	onpointerdown?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
+	onclick?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

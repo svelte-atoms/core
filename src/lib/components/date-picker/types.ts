@@ -48,11 +48,11 @@ export interface DatePickerYearsProps {
 
 export interface DatePickerRootProps {
 	open?: boolean;
-	value?: Date;
+	value?: Date | undefined;
 	range?: CalendarRange;
 	pivote?: Date;
-	start?: Date;
-	end?: Date;
+	start?: Date | undefined;
+	end?: Date | undefined;
 	min?: Date;
 	max?: Date;
 	type?: 'range' | 'single';

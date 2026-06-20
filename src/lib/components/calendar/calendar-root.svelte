@@ -2,11 +2,11 @@
 	import { cn } from '$svelte-atoms/core/utils';
 	import { addMonths, format, isToday, startOfDay, subMonths } from 'date-fns';
 	import type { CalendarRange, CalendarRootProps, Day, Month } from './types';
-	import { CalendarBond, CalendarBondState, type CalendarBondProps } from './bond.svelte';
-	import { HtmlAtom } from '../atom';
+	import { CalendarBond, CalendarBondState } from './bond.svelte';
+	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	import './calendar.css';
-	import { bindBond } from '$svelte-atoms/core/shared';
+	import { bondFactory,bindBond } from '$svelte-atoms/core/shared';
 
 	let {
 		class: klass = '',
@@ -21,7 +21,7 @@
 		type = 'single',
 		extend = {},
 		onchange = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(CalendarBondState, CalendarBond),
 		children = undefined,
 		...restProps
 	}: CalendarRootProps = $props();
@@ -172,31 +172,20 @@
 			type: () => type ?? 'single',
 			nextMonth: () => monthNext,
 			currentMonth: () => monthCurrent,
-			previousMonth: () => monthPrevious,
-			rest: () => restProps
+			previousMonth: () => monthPrevious
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
 
-	const rootProps = $derived({
-		preset: preset ?? 'calendar',
-		...bond.root().spread,
-		...restProps
-	});
+	const rootProps = $derived(mergePresetProps(preset, 'calendar', { ...bond.root().spread, ...restProps }));
 
-	function defaultFactory(props: CalendarBondProps) {
-		const popoverState = new CalendarBondState(props);
-		const popoverBond = new CalendarBond(popoverState);
-
-		return popoverBond;
-	}
 
 	export function getBond() {
 		return bond;
 	}
 </script>
 
-<HtmlAtom class={cn('h-full w-full', klass)} data-atom="calendar-root" {...rootProps}>
+<HtmlAtom class={cn('h-fit w-full gap-px', klass)} data-atom="calendar-root" {...rootProps}>
 	{@render children?.({ calendar: bond })}
 </HtmlAtom>

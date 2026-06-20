@@ -8,7 +8,6 @@ export type StepperStateProps = BondStateProps & {
 	linear?: boolean;
 	disabled?: boolean;
 	orientation?: 'horizontal' | 'vertical';
-	readonly rest?: Record<string, unknown>;
 };
 
 export type StepperElements = {

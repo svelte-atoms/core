@@ -21,7 +21,6 @@ export type TabsBondProps<T extends Record<string, unknown> = Record<string, unk
 		value?: string | undefined;
 		multiple?: boolean;
 		extend?: T;
-		readonly rest?: Record<string, unknown>;
 	};
 
 export type TabElements = {
@@ -143,6 +142,7 @@ interface TabsBondConstructor {
 	new <T = unknown>(state: TabsBondState<T>): TabsBond<T>;
 	readonly CONTEXT_KEY: string;
 	get<T = unknown>(): TabsBond<T> | undefined;
+	getOrThrow<T = unknown>(message?: string): TabsBond<T>;
 	set<T = unknown>(bond: TabsBond<T>): TabsBond<T>;
 }
 

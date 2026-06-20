@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { animate } from 'motion';
 	import { getYear, getMonth, setMonth } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
@@ -6,7 +7,7 @@
 	import { DatePickerBond } from './bond.svelte';
 	import type { DatePickerMonthsProps } from './types';
 
-	const datePicker = DatePickerBond.get();
+	const datePicker = DatePickerBond.getOrThrow('<DatePicker.Months /> must be used within a <DatePicker.Root />');
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
@@ -34,10 +35,7 @@
 		...restProps
 	}: DatePickerMonthsProps = $props();
 
-	const monthsProps = $derived({
-		preset: preset ?? 'datepicker.months',
-		...restProps
-	});
+	const monthsProps = $derived(mergePresetProps(preset, 'datepicker.months', restProps));
 
 	function enter(node: HTMLElement) {
 		animate(

@@ -24,7 +24,6 @@ export type CalendarBondProps = BondStateProps & {
 	previousMonth?: Month;
 	nextMonth?: Month;
 	extend?: Record<string, unknown>;
-	readonly rest?: Record<string, unknown>;
 };
 
 export type CalendarBondElements = {

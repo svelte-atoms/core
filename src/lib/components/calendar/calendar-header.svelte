@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$svelte-atoms/core/utils';
-	import { HtmlAtom } from '../atom';
+	import { mergePresetProps, HtmlAtom } from '../atom';
 	import { CalendarBond } from './bond.svelte';
 	import CalendarWeekDay from './calendar-week-day.svelte';
 
@@ -9,16 +9,12 @@
 
 	let { class: klass = '', preset = undefined, ...restProps } = $props();
 
-	const headerProps = $derived({
-		preset: preset ?? 'calendar.header',
-		...calendarBond?.header().spread,
-		...restProps
-	});
+	const headerProps = $derived(mergePresetProps(preset, 'calendar.header', { ...calendarBond?.header().spread, ...restProps }));
 </script>
 
 <HtmlAtom
 	class={cn(
-		'calendar-header border-border col-span-full grid h-fit grid-cols-subgrid border-b',
+		'calendar-header col-span-full grid h-fit grid-cols-subgrid',
 		klass
 	)}
 	{...headerProps}
