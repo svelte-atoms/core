@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import { untrack } from 'svelte';
+	import { resolveControlPreset } from './shared';
+	import SegmentedField from './segmented-field.svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputUrlControlProps } from './types';
 
@@ -11,7 +8,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		placeholder = '',
 		disabled = false,
 		readonly = false,
@@ -21,10 +18,7 @@
 		...restProps
 	}: InputUrlControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
-
-	let inputEl = $state<HTMLInputElement>();
-	let scrollLeft = $state(0);
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	// Parse URL into segments
 	type Segment = { text: string; kind: 'protocol' | 'host' | 'port' | 'pathname' | 'search' | 'hash' | 'plain' };
@@ -81,8 +75,9 @@
 
 		const protoMatch = rest.match(/^([a-z][a-z0-9+\-.]*:\/\/)/i);
 		if (protoMatch) {
-			segs.push({ text: protoMatch[1], kind: 'protocol' });
-			rest = rest.slice(protoMatch[1].length);
+			// Group 1 is required by the regex, so it's present when protoMatch matched.
+			segs.push({ text: protoMatch[1]!, kind: 'protocol' });
+			rest = rest.slice(protoMatch[1]!.length);
 		}
 
 		if (!rest) return segs;
@@ -141,71 +136,24 @@
 		hash:      'color: var(--input-hl-accent, var(--foreground))',
 		plain:     'color: var(--input-hl-muted, var(--foreground))',
 	};
-
-	// Keep overlay scroll in sync with the real input
-	function syncScroll() {
-		scrollLeft = inputEl?.scrollLeft ?? 0;
-	}
-
-	// Event handlers
-	function handleInput(ev: Event) {
-		const input = ev.currentTarget as HTMLInputElement;
-		value = input.value;
-		if (bond) bond.state.props.value = value;
-		syncScroll();
-		oninput?.(ev, { value });
-	}
-
-	function handleChange(ev: Event) {
-		onchange?.(ev, { value });
-	}
 </script>
 
 <!--
   Two layers: transparent-text <input> on top (caret, selection, native editing)
-  over a coloured overlay <span>. Only the overlay is visible; the caret keeps its
-  foreground colour via caret-color.
+  over a coloured overlay <span>. Shared markup/scroll-sync lives in <SegmentedField>.
 -->
-<span class="relative flex h-full w-full flex-1 items-center overflow-hidden">
-
-	<!-- Coloured overlay — scrolls with the input -->
-	<span
-		aria-hidden="true"
-		class={cn(
-			'pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre px-2 font-mono text-sm',
-			preset?.class,
-			toClassValue(klass, bond)
-		)}
-	>
-		<span style="transform: translateX(-{scrollLeft}px)">
-			{#if segments.length}
-				{#each segments as seg (seg)}
-					<span style={kindStyle[seg.kind]}>{seg.text}</span>
-				{/each}
-			{:else}
-				<span class="text-muted-foreground">{placeholder}</span>
-			{/if}
-		</span>
-	</span>
-
-	<!-- Real input — transparent text, visible caret -->
-	<input
-		bind:this={inputEl}
-		type="text"
-		bind:value
-		{placeholder}
-		{disabled}
-		{readonly}
-		class={cn(
-			'relative h-full w-full flex-1 bg-transparent px-2 font-mono text-sm text-transparent caret-foreground outline-none',
-			'placeholder:text-transparent',
-			disabled && 'cursor-not-allowed',
-			preset?.class,
-			toClassValue(klass, bond)
-		)}
-		oninput={handleInput}
-		onchange={handleChange}
-		onscroll={syncScroll}
-		{...restProps}
-	/>
-</span>
+<SegmentedField
+	type="text"
+	bind:value
+	{segments}
+	{kindStyle}
+	{placeholder}
+	{disabled}
+	{readonly}
+	class={klass}
+	{preset}
+	{bond}
+	{onchange}
+	{oninput}
+	{...restProps}
+/>

@@ -1,6 +1,7 @@
 import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { Snippet } from 'svelte';
 import type { Override } from '$svelte-atoms/core/types';
+import type { ClassValue } from '$svelte-atoms/core/utils';
 import type { InputBond } from './bond.svelte';
 
 // Input Snippet Props
@@ -52,7 +53,7 @@ interface InputControlBaseProps {
 	date?: Date | null;
 	number?: number;
 	checked?: boolean;
-	class?: string;
+	class?: ClassValue | ClassValue[];
 	type?: InputControlType | null;
 	children?: InputChildren;
 }
@@ -79,10 +80,13 @@ export interface InputNumber24HourControlProps {
 
 export interface InputNumberControlProps {
 	number?: number;
+	min?: number;
+	max?: number;
 	// default 1
 	step?: number;
 	disabled?: boolean;
 	placeholder?: string;
+	preset?: string;
 	showControls?: boolean;
 	decrement?: Snippet<[{ action: () => void; disabled: boolean }]>;
 	increment?: Snippet<[{ action: () => void; disabled: boolean }]>;
@@ -90,7 +94,7 @@ export interface InputNumberControlProps {
 }
 
 // Time Control
-export interface InputNumberControlProps {
+export interface InputTimeControlProps {
 	// HH:MM or HH:MM:SS, always 24h internally
 	value?: string;
 	// Date to sync time with (bindable)
@@ -159,7 +163,11 @@ export interface InputFileControlProps {
 	onchange?: (ev: Event, options: { files: File[] }) => void;
 }
 
-export interface InputUrlControlProps {
+// Single source of truth for the shared string-value text-control prop shape: the bindable
+// string `value`, the standard field flags, and the `{ value }` change/input handlers. The
+// plain string controls (url/email/text/password) extend this; controls with a richer detail
+// payload (currency, location, …) stay bespoke.
+export interface TextControlPropsBase {
 	value?: string;
 	placeholder?: string;
 	disabled?: boolean;
@@ -170,37 +178,29 @@ export interface InputUrlControlProps {
 	oninput?: (ev: Event, options: { value: string }) => void;
 }
 
-export interface InputEmailControlProps {
-	value?: string;
-	placeholder?: string;
-	disabled?: boolean;
-	readonly?: boolean;
-	class?: string;
-	preset?: string;
-	onchange?: (ev: Event, options: { value: string }) => void;
-	oninput?: (ev: Event, options: { value: string }) => void;
-}
+export type InputUrlControlProps = TextControlPropsBase;
 
-export interface InputTextControlProps {
-	value?: string;
+export type InputEmailControlProps = TextControlPropsBase;
+
+export interface InputTextControlProps extends TextControlPropsBase {
 	// default 'text'; use Input.PasswordControl for the show/hide toggle
 	type?: 'text' | 'search' | 'password';
-	placeholder?: string;
-	disabled?: boolean;
-	readonly?: boolean;
-	class?: string;
-	preset?: string;
-	onchange?: (ev: Event, options: { value: string }) => void;
-	oninput?: (ev: Event, options: { value: string }) => void;
+}
+
+export interface InputPasswordControlProps extends TextControlPropsBase {
+	// show/hide toggle state (bindable)
+	visible?: boolean;
+	// custom show/hide toggle button content
+	toggleContent?: Snippet<[{ visible: boolean; toggle: () => void; disabled: boolean }]>;
 }
 
 export interface InputLocationControlProps {
 	// raw coords e.g. "40.7128, -74.0060", bindable, normalised on input/paste
 	value?: string;
 	// decimal degrees, bindable, derived from value
-	lat?: number;
+	lat?: number | undefined;
 	// decimal degrees, bindable, derived from value
-	lng?: number;
+	lng?: number | undefined;
 	// 'dd' decimal degrees (default), 'dms' degrees/minutes/seconds
 	format?: 'dd' | 'dms';
 	// decimal places in 'dd' mode (default 6)
@@ -220,6 +220,15 @@ export interface InputLocationControlProps {
 		ev: Event,
 		options: { lat: number | undefined; lng: number | undefined; value: string }
 	) => void;
+}
+
+// One overlay span rendered by the phone control's `span` snippet.
+export type PhoneSpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
+export interface PhoneSpan {
+	text: string;
+	class: string;
+	style?: string;
+	type: PhoneSpanType;
 }
 
 export interface InputPhoneControlProps {
@@ -265,7 +274,7 @@ export interface InputCurrencyControlProps {
 }
 
 // Color Control — types live in ./color/types.ts
-export type { InputColorControlExtendProps, InputColorControlProps } from './color/types';
+export type { InputColorControlProps } from './color/types';
 
 export interface InputOtpControlProps {
 	// entered characters, bindable

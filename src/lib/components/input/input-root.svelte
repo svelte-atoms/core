@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { InputBond, InputState, type InputStateProps } from './bond.svelte';
+	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { Factory } from '$svelte-atoms/core/types';
@@ -12,7 +13,7 @@
 		files = [],
 		preset = undefined,
 		children = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(InputState, InputBond),
 		...restProps
 	}: InputRootProps<E, B> = $props();
 
@@ -22,18 +23,12 @@
 			// Bridge HTML-input prop shapes to the bond's domain props (was loose `defineProperty`).
 			value: [() => value as InputStateProps['value'], (v) => { value = v as typeof value; }],
 			checked: [() => checked as InputStateProps['checked'], (v) => { checked = v as typeof checked; }],
-			files: [() => files as InputStateProps['files'], (v) => { files = [...(v ?? [])]; }],
-			rest: () => restProps
+			files: [() => files as InputStateProps['files'], (v) => { files = [...(v ?? [])]; }]
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
 
-	function defaultFactory(props: InputStateProps) {
-		const bondState = new InputState(props);
-
-		return new InputBond(bondState);
-	}
 
 	export function getBond() {
 		return bond;
@@ -46,7 +41,6 @@
 		'$preset',
 		klass
 	]}
-	{bond}
 	{...binding.props}
 	{...restProps}
 >

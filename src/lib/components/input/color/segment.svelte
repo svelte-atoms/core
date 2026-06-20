@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { clamp as clampRange } from '$svelte-atoms/core/utils/math';
 	import type { ColorSegmentProps } from './types';
 
 	let {
@@ -51,9 +52,7 @@
 		});
 	});
 
-	function clamp(v: number): number {
-		return Math.max(channel.min, Math.min(channel.max, v));
-	}
+	const clamp = (v: number) => clampRange(v, channel.min, channel.max);
 
 	// Parse el.textContent into a channel value (stripping the suffix first).
 	function parseContent(): number | string | undefined {

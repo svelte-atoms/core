@@ -9,7 +9,6 @@ export type InputStateProps = BondStateProps & {
 	files?: File[];
 	checked?: string[];
 	group?: any[];
-	readonly rest?: Record<string, unknown>;
 };
 
 export type InputElements = {

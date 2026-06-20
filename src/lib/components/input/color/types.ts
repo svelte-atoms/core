@@ -37,6 +37,10 @@ export interface ChannelDef {
 	suffix?: string;
 }
 
+// Parsed channel values keyed by channel id (e.g. `{ r: 'FF', g: '00', b: 'AA' }` for hex,
+// `{ h: 210, s: 50, l: 40 }` for hsl). Values are string or number; `undefined` for unset channels.
+export type ChannelValues = Record<string, number | string | undefined>;
+
 export interface ColorSegmentProps {
 	value: number | string | undefined;
 	channel: ChannelDef;

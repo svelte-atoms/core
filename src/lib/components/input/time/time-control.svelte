@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
+	import { resolveControlPreset } from '../shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
 	import { untrack } from 'svelte';
 	import { InputBond } from '../bond.svelte';
 	import type { InputTimeControlProps, InputNumber24HourControlProps, InputNumber12HourControlProps } from '../types';
@@ -11,13 +10,12 @@
 		displayToInternal, internalToDisplay,
 		type TimeParts,
 	} from './shared';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
 
 	const bond = InputBond.get();
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		date = $bindable<Date | undefined>(undefined),
 		hourFormat = 24,
 		withSeconds = false,
@@ -31,7 +29,7 @@
 		...restProps
 	}: InputTimeControlProps & (InputNumber24HourControlProps | InputNumber12HourControlProps) = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	// External value always wins over local edits.
 	const parts = $derived(parseTimeString(value, untrack(() => date ?? undefined), hourFormat));

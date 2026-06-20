@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolveControlPreset, writeInputValue } from './shared';
+	import { clamp } from '$svelte-atoms/core/utils/math';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import { untrack } from 'svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputOtpControlProps } from './types';
 
@@ -11,7 +9,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		length = 6,
 		type = 'numeric',
 		groupSize = undefined,
@@ -25,7 +23,7 @@
 		...restProps
 	}: InputOtpControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	let slotEls = $state<Array<HTMLInputElement | undefined>>([]);
 
@@ -47,7 +45,7 @@
 
 	function commit(arr: string[]) {
 		value = arr.join('');
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 	}
 
 	function getArr(): string[] {
@@ -55,7 +53,7 @@
 	}
 
 	function focusSlot(index: number) {
-		slotEls[Math.max(0, Math.min(length - 1, index))]?.focus();
+		slotEls[clamp(index, 0, length - 1)]?.focus();
 	}
 
 	function emit(ev: Event) {

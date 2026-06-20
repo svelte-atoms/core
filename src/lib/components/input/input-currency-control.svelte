@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolveControlPreset, writeInputValue } from './shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import { clamp as clampRange } from '$svelte-atoms/core/utils/math';
 	import { untrack } from 'svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputCurrencyControlProps } from './types';
@@ -11,7 +10,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		amount = $bindable<number | undefined>(undefined),
 		currency = 'USD',
 		locale = 'en-US',
@@ -28,7 +27,7 @@
 		...restProps
 	}: InputCurrencyControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	let inputEl   = $state<HTMLInputElement>();
 	let isFocused = $state(false);
@@ -48,9 +47,7 @@
 
 	const stepSize = $derived(step ?? Math.pow(10, -precision));
 
-	function clamp(n: number): number {
-		return Math.min(max ?? n, Math.max(min ?? n, n));
-	}
+	const clamp = (n: number) => clampRange(n, min ?? -Infinity, max ?? Infinity);
 
 	function parseRaw(raw: string): number | undefined {
 		const cleaned = raw
@@ -71,7 +68,7 @@
 	function commit(n: number | undefined) {
 		amount = n !== undefined ? clamp(n) : undefined;
 		value  = amount !== undefined ? amount.toFixed(precision) : '';
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 	}
 
 	// Seed `amount` from the `value` string when the parent supplies only `value`.

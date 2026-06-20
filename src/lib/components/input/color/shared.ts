@@ -1,4 +1,4 @@
-import type { ColorFormat, ChannelDef } from './types';
+import type { ColorFormat, ChannelDef, ChannelValues } from './types';
 
 // Color spaces valid inside the CSS color() function.
 export const COLOR_FN_SPACES: ColorFormat[] = [
@@ -226,8 +226,6 @@ export const FORMAT_DEFS: Record<ColorFormat, FormatDef> = {
 	}
 };
 
-export type ChannelValues = Record<string, number | string | undefined>;
-
 /** Parse a CSS color string into its format, channel values, and alpha. */
 export function parseColor(
 	raw: string
@@ -267,8 +265,9 @@ export function parseColor(
 	const fnM = s.match(/^([a-z-]+)\((.+)\)$/i);
 	if (!fnM) return undefined;
 
-	const fn = fnM[1].toLowerCase();
-	const body = fnM[2];
+	// Both capture groups are required by the regex above, so they're present when fnM matched.
+	const fn = fnM[1]!.toLowerCase();
+	const body = fnM[2]!;
 
 	// color(colorspace …)
 	if (fn === 'color') {

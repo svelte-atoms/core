@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputFileControlProps } from './types';
 
@@ -18,7 +18,7 @@
 		...restProps
 	}: InputFileControlProps = $props();
 
-	const fileControlProps = $derived({ preset: preset ?? 'input.file', ...restProps });
+	const fileControlProps = $derived(mergePresetProps(preset, 'input.file', restProps));
 
 	let inputEl = $state<HTMLInputElement>();
 
@@ -79,7 +79,7 @@
 		{@render triggerContent({ files, hasFiles, open: openPicker })}
 	{:else if hasFiles}
 		{#if files.length === 1}
-			{@const f = files[0]}
+			{@const f = files[0]!}
 			{@const ext = f.name.split('.').pop()?.toUpperCase() ?? ''}
 			{@const size = formatSize(f.size)}
 			<span class="bg-primary/10 text-primary rounded px-1.5 py-0.5 font-mono text-xs font-medium">

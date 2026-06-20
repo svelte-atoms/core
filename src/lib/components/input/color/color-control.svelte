@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolveControlPreset } from '../shared';
+	import { clamp } from '$svelte-atoms/core/utils/math';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import { untrack } from 'svelte';
 	import { InputBond } from '../bond.svelte';
 	import type { InputColorControlProps } from './types';
 	import type { ColorFormat, ChannelValues, ChannelDef } from './types';
@@ -14,7 +12,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		format: formatProp = undefined,
 		alpha: showAlpha = false,
 		placeholder = 'oklch(0.5 0.2 250deg)',
@@ -26,7 +24,7 @@
 		...restProps
 	}: InputColorControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	const activeFormat = $derived<ColorFormat>(formatProp ?? detectFormat(value) ?? 'hex');
 	const def = $derived(FORMAT_DEFS[activeFormat]);
@@ -50,7 +48,7 @@
 	const segCount = $derived(def.channels.length + (hasAlpha ? 1 : 0));
 
 	function focusSeg(i: number) {
-		segRefs[Math.max(0, Math.min(segCount - 1, i))]?.focus();
+		segRefs[clamp(i, 0, segCount - 1)]?.focus();
 	}
 
 	// Mirror the bindable value onto the bond state.

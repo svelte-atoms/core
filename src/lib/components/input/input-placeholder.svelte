@@ -26,7 +26,7 @@
 	});
 
 	const shouldShowPlaceholder = $derived.by(() => {
-		const type = bond?.elements?.input?.type ?? '';
+		const type = (bond?.elements?.input as HTMLInputElement | undefined)?.type ?? '';
 
 		if (['radio', 'checkbox'].includes(type)) {
 			return false;
@@ -47,7 +47,7 @@
 			'$preset',
 			klass
 		]}
-		style="left:{bond?.elements?.input?.offsetLeft ?? 0}px"
+		style="left:{(bond?.elements?.input as HTMLInputElement | undefined)?.offsetLeft ?? 0}px"
 		{...placeholderProps}
 	>
 		{@render children?.()}

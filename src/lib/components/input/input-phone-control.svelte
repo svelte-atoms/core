@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolveControlPreset, writeInputValue } from './shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import { untrack } from 'svelte';
 	import { InputBond } from './bond.svelte';
-	import type { InputPhoneControlProps } from './types';
+	import type { InputPhoneControlProps, PhoneSpan as Span, PhoneSpanType as SpanType } from './types';
 
 	const bond = InputBond.get();
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		format = undefined,
 		segments: segmentMap = undefined,
 		placeholder = '+_ (___) ___-____',
@@ -24,7 +21,7 @@
 		...restProps
 	}: InputPhoneControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
@@ -148,9 +145,7 @@
 		return kinds;
 	});
 
-	// Overlay spans
-	type SpanType = 'country' | 'area' | 'prefix' | 'line' | 'other' | 'lit' | 'empty';
-	type Span = { text: string; class: string; type: SpanType };
+	// Overlay spans — PhoneSpan/PhoneSpanType are the single source of truth in ./types.
 
 	const overlaySpans = $derived.by<Span[]>(() => {
 		if (!format) return [];
@@ -204,7 +199,7 @@
 
 		if (!format) {
 			value = input.value;
-			if (bond) bond.state.props.value = value;
+			writeInputValue(bond, value);
 			oninput?.(ev, { value });
 			return;
 		}
@@ -213,7 +208,7 @@
 		input.value = buildMasked(digits);
 		scrollLeft = input.scrollLeft;
 		value = digits;
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 		oninput?.(ev, { value });
 	}
 
@@ -225,7 +220,7 @@
 			const next = value.slice(0, -1);
 			if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
 			value = next;
-			if (bond) bond.state.props.value = value;
+			writeInputValue(bond, value);
 			oninput?.(undefined as unknown as Event, { value });
 		} else if (ev.key === 'Delete') {
 			ev.preventDefault();
@@ -241,7 +236,7 @@
 						const next = value.slice(0, t.slotIndex);
 						if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
 						value = next;
-						if (bond) bond.state.props.value = value;
+						writeInputValue(bond, value);
 						oninput?.(undefined as unknown as Event, { value });
 						return;
 					}
@@ -278,7 +273,7 @@
 			const start = input.selectionStart ?? value.length;
 			const end   = input.selectionEnd   ?? value.length;
 			value = value.slice(0, start) + pasted + value.slice(end);
-			if (bond) bond.state.props.value = value;
+			writeInputValue(bond, value);
 			oninput?.(ev, { value });
 			onchange?.(ev, { value });
 			return;
@@ -289,7 +284,7 @@
 		if (!digits) return;
 		value = digits;
 		if (inputEl) inputEl.value = buildMasked(digits);
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 		oninput?.(ev, { value });
 		onchange?.(ev, { value });
 	}
@@ -312,7 +307,7 @@
 	}
 </script>
 
-{#snippet defaultSpan(span: Span, index: number)}
+{#snippet defaultSpan(span: Span, _index: number)}
 	<span style={span.style}>{span.text}</span>
 {/snippet}
 

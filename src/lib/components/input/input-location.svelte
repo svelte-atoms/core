@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolveControlPreset, writeInputValue } from './shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import { untrack } from 'svelte';
 	import { InputBond } from './bond.svelte';
 	import type { InputLocationControlProps } from './types';
 
@@ -11,7 +8,7 @@
 
 	let {
 		class: klass = '',
-		value = $bindable(),
+		value = $bindable(''),
 		lat = $bindable<number | undefined>(undefined),
 		lng = $bindable<number | undefined>(undefined),
 		format = 'dd',
@@ -26,7 +23,7 @@
 		...restProps
 	}: InputLocationControlProps = $props();
 
-	const preset = resolvePreset(getPreset(untrack(() => presetKey) as PresetModuleName)?.apply(bond, [bond]));
+	const preset = resolveControlPreset(() => presetKey, bond);
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
@@ -168,7 +165,7 @@
 			const current = parseCoords(value);
 			if (current?.lat !== lat || current?.lng !== lng) {
 				value = `${lat}, ${lng}`;
-				if (bond) bond.state.props.value = value;
+				writeInputValue(bond, value);
 			}
 		}
 	});
@@ -186,7 +183,7 @@
 				lat = lt;
 				lng = ln;
 				value = `${lt}, ${ln}`;
-				if (bond) bond.state.props.value = value;
+				writeInputValue(bond, value);
 				onchange?.(new Event('change'), { lat, lng, value });
 			},
 			(err) => {
@@ -201,7 +198,7 @@
 	function handleInput(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		value = input.value;
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 		syncScroll();
 		oninput?.(ev, { lat, lng, value });
 	}
@@ -233,7 +230,7 @@
 			value = pasted;
 		}
 		if (inputEl) inputEl.value = value;
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 		oninput?.(new Event('input'), { lat, lng, value });
 	}
 </script>
