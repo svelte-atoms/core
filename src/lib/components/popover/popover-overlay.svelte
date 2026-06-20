@@ -3,7 +3,7 @@
 	import { PopoverBond } from "./bond.svelte";
 	import type { PopoverOverlayProps } from "./types";
 
-    const bond = PopoverBond.get();
+    const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
     const isOpen = $derived(bond?.state.isOpen ?? false);
 
 	const strategy = $derived(bond?.state.position?.strategy ?? 'absolute');
@@ -47,8 +47,9 @@
 
 		// Arrow dimensions
         const arrow = bond.element('arrow');
-		const arrowWidth = arrow?.clientWidth ?? 0;
-		const arrowHeight = arrow?.clientHeight ?? 0;
+		const arrowEl = arrow instanceof Element ? arrow : null;
+		const arrowWidth = arrowEl?.clientWidth ?? 0;
+		const arrowHeight = arrowEl?.clientHeight ?? 0;
 		const arrowDelta = middlewareData?.arrow ? 1 : 0;
 
 		// Apply offset and arrow adjustment to the base coordinates

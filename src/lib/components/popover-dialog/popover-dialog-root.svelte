@@ -1,6 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'dialog', B extends Base = Base">
 	import { type Base } from '$svelte-atoms/core/components/atom';
-	import { useEscapeStack, type OverlayView } from '$svelte-atoms/core/components/overlay';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 	import { PopoverDialogBond, PopoverDialogBondState } from './bond.svelte';
 	import type { PopoverDialogRootProps } from './types';
@@ -20,6 +19,7 @@
 		{
 			open: [() => open, (v) => (open = v)],
 			disabled: () => disabled,
+			// Vestigial: element-less context root, no typed channel to forward restProps.
 			rest: () => restProps
 		}
 	);
@@ -29,7 +29,6 @@
 	// prior focus on close, via the focus capability's setup() (ADR 0010).
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
-	useEscapeStack(bond as unknown as OverlayView);
 
 	export function getBond() {
 		return bond;

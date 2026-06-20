@@ -1,18 +1,12 @@
 <script
 	lang="ts"
-	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { DropdownMenuItemAtom, type DropdownMenuItemAtomProps } from './bond.svelte';
 	import { DropdownMenuBond } from '../bond.svelte';
 	import type { DropdownMenuItemProps } from './types';
 	import { List } from '../../list';
 
-	const menu = DropdownMenuBond.get();
-
-	if (!menu) {
-		throw new Error('<DropdownMenuItem> must be used within a <DropdownMenu>.');
-	}
+	const menu = DropdownMenuBond.getOrThrow('<DropdownMenuItem> must be used within a <DropdownMenu>.');
 
 	const ID = $props.id();
 	let {

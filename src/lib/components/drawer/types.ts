@@ -43,8 +43,8 @@ export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B ext
 			HtmlAtomProps<E, B, DrawerChildren>,
 			{
 				initial?: (node: HTMLElement, bond: DrawerBond) => void;
-				enter?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
-				exit?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<'dialog'>;
+				enter?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<HTMLElement>;
+				exit?: (node: HTMLElement, bond: DrawerBond) => TransitionFunction<HTMLElement>;
 			}
 		>,
 		DrawerExtendProps {

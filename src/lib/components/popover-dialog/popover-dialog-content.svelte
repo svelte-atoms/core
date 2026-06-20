@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
+	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { type OverlayState } from '$svelte-atoms/core/components/overlay';
 	import { ZLayer } from '../portal/zlayer.svelte';
@@ -33,7 +34,11 @@
 	// Backdrop = Dialog's modal root atom (the `<dialog>` element). The card itself is
 	// the reused `<Dialog.Content>` (DialogBond.get() resolves the fused bond), which
 	// carries the dialog content atom + the open/close motion — no duplication here.
-	const rootAtom = $derived(bond?.root());
+	// The fused bond's `root()` return type widens to `never` through the fusion seam; cast to the
+	// atom's read shape (preset + spread) so the presentation merge below type-checks.
+	const rootAtom = $derived(
+		bond?.root?.() as { preset?: unknown; spread?: Record<string, unknown> } | undefined
+	);
 	const rootProps: Record<string, unknown> = $derived({
 		preset: rootAtom?.preset,
 		...rootAtom?.spread
@@ -42,7 +47,7 @@
 	function onclickRoot(ev: MouseEvent) {
 		if (!bond) return;
 		// Ignore clicks that originated inside the card.
-		if (bond.elements?.content?.contains(ev.target as Node)) return;
+		if (containsTarget(bond.elements?.content, ev.target)) return;
 		onclick?.(ev, bond);
 		if (ev.defaultPrevented) return;
 		if (type === 'modal' && !disabled) (bond.state as OverlayState).close();

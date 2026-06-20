@@ -3,17 +3,14 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
 	import { clickout } from '$svelte-atoms/core/attachments';
+	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion.svelte';
 	import type { PopoverContentProps } from './types';
 	import Floating from './strategies/floating.svelte';
 	import PopoverOverlay from './popover-overlay.svelte';
 
-	const bond = PopoverBond.get();
-
-	if (!bond) {
-		throw new Error('<PopoverOverlay /> must be used within a <Popover />');
-	}
+	const bond = PopoverBond.getOrThrow('<PopoverOverlay /> must be used within a <Popover />');
 
 	// Resolve the configured portal (id or bond); fall back to the ambient PortalBond when
 	// none is configured or the id is unknown.
@@ -93,9 +90,7 @@
 				return;
 			}
 
-			const trigger = bond.element('trigger');
-
-			if (trigger instanceof Element && (trigger.contains(ev.target as Node) || trigger === ev.target)) {
+			if (containsTarget(bond.element('trigger'), ev.target)) {
 				return;
 			}
 

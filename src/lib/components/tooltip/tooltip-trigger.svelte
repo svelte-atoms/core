@@ -1,15 +1,13 @@
 <script lang="ts">
+	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
 
 	const popoverBond = PopoverBond.get();
 
-	let { preset = undefined, onmount, children, onclick = undefined, ...restProps } = $props();
+	let { preset = undefined, onmount = undefined, children, onclick = undefined, ...restProps } = $props();
 
-	const triggerProps = $derived({
-		preset: preset ?? 'tooltip.trigger',
-		...restProps
-	});
+	const triggerProps = $derived(mergePresetProps(preset, 'tooltip.trigger', restProps));
 
 	function tooltip(node: HTMLElement) {
 		const onpointerenter = async () => {

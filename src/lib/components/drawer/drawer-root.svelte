@@ -2,12 +2,11 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
-	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
+	import { DrawerBond, DrawerBondState } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal, ZLayer } from '../portal';
 	import { animateDrawerRoot } from './motion';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bondFactory,bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -22,7 +21,7 @@
 		// +1 in the `modal` band so a Drawer wins over a sibling Dialog (+0); LAYER_BASE, ADR 0009 D5.
 		"z-index": zindex = 1,
 		onclose = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(DrawerBondState, DrawerBond),
 		fallback = {
 			animate: animateDrawerRoot({}),
 			initial: animateDrawerRoot({ duration: 0 }),
@@ -40,8 +39,7 @@
 		{
 			open: [() => open, (v) => (open = v)],
 			disabled: () => disabled,
-			side: () => side,
-			rest: () => restProps
+			side: () => side
 		}
 	);
 	const bond = binding.bond.share();
@@ -50,7 +48,6 @@
 	// setup() (ADR 0001 / ADR 0003, #5, ADR 0010).
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
-	useEscapeStack(bond);
 
 	const rootProps = $derived({
 		...binding?.props,
@@ -65,12 +62,6 @@
 		}
 	});
 
-	function defaultFactory(props: DrawerBondProps) {
-		const bondState = new DrawerBondState(props);
-		const bond = new DrawerBond(bondState);
-
-		return bond;
-	}
 
 	export function getBond() {
 		return bond;

@@ -23,8 +23,11 @@ export type DropdownMenuBondElements = PopoverDomElements;
 
 // Item union: a per-instance BondAtom (dropdown-menu or subclass like SelectItemAtom) or a controller facade.
 export type DropdownMenuItem =
+	// `BondAtom<any, any>`: items are heterogeneous (HTMLElement-bound atoms like SelectItemAtom),
+	// and the element type is irrelevant to menu membership — widening avoids the `#behaviorAttachments`
+	// node-type contravariance that rejects `BondAtom<_, HTMLElement>` against the default union member.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	DropdownMenuItemControllerInterface<Record<string, any>> | BondAtom;
+	DropdownMenuItemControllerInterface<Record<string, any>> | BondAtom<any, any>;
 
 // Declared before the atoms so they can type `this.bond` against a view including this state (atom↔bond cycle break).
 export class DropdownMenuBondState<

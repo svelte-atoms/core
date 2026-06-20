@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { PortalBond } from './bond.svelte';
 	import {
-		HtmlAtom,
+		mergeAtomProps, HtmlAtom,
 		type ElementType,
 		type HtmlAtomProps,
 		type Base
@@ -21,11 +21,7 @@
 
 	const atom = bond?.atom('inner');
 
-	const bondProps = $derived({
-		preset: preset ?? atom?.preset,
-		...atom?.spread,
-		...restProps
-	});
+	const bondProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <!--

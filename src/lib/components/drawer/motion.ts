@@ -1,5 +1,4 @@
 import { animate, spring, type Easing, type Spring } from 'motion';
-import { DURATION } from '$svelte-atoms/core/shared';
 import { DrawerBond } from '.';
 import { untrack } from 'svelte';
 

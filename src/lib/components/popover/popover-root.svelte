@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PopoverState, PopoverBond } from './bond.svelte';
-	import type { PopoverStateProps } from './bond.svelte';
-	import { useEscapeStack, OverlayBond } from '$svelte-atoms/core/components/overlay';
+	import { bondFactory } from '$svelte-atoms/core/shared';
+	import { OverlayBond } from '$svelte-atoms/core/components/overlay';
 	import { useCapabilities } from '$svelte-atoms/core/shared/use-capabilities.svelte';
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
 	import type { PopoverRootProps } from './types';
@@ -15,7 +15,7 @@
 		placement = 'bottom',
 		offset = 2,
 		portal = undefined,
-		factory = defaultFactory,
+		factory = bondFactory(PopoverState, PopoverBond),
 		children = undefined,
 		...restProps
 	}: PopoverRootProps = $props();
@@ -29,6 +29,8 @@
 			offset: () => offset,
 			placements: () => placements ?? [],
 			portal: () => portal,
+			// Vestigial: this element-less context root has no typed channel to forward restProps
+			// (its rest type doesn't overlap bond state props). Kept to consume restProps; see note.
 			rest: () => restProps
 		}
 	);
@@ -38,14 +40,7 @@
 	// focus capability's setup(), so every overlay rendering via this Root gets it automatically (#5).
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
-	useEscapeStack(bond);
 
-	function defaultFactory(props: PopoverStateProps) {
-		const popoverState = new PopoverState(props);
-		const popoverBond = new PopoverBond(popoverState);
-
-		return popoverBond;
-	}
 
 	export function getBond() {
 		return bond;

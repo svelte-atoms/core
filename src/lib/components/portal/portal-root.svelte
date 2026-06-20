@@ -4,8 +4,9 @@
 
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { bondFactory } from '$svelte-atoms/core/shared';
 	import type { PortalOuterProps } from './types';
-	import { PortalsBond, PortalBond, PortalState, type PortalStateProps } from '.';
+	import { PortalsBond, PortalBond, PortalState } from '.';
 	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
 	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
 	import type { Factory } from '$svelte-atoms/core/types';
@@ -16,7 +17,7 @@
 		class: klass = '',
 		preset = undefined,
 		id,
-		factory = defaultFactory,
+		factory = bondFactory(PortalState, PortalBond),
 		children = undefined,
 		...restProps
 	}: PortalOuterProps<E, B> & HTMLAttributes<Element> = $props();
@@ -26,8 +27,7 @@
 	const binding = bindBond<PortalBond>(
 		(props) => (factory as Factory<PortalBond>)(props),
 		{
-			id: () => id,
-			rest: () => restProps
+			id: () => id
 		},
 		{ preset: () => preset }
 	);
@@ -45,10 +45,6 @@
 		};
 	});
 
-	function defaultFactory(props: PortalStateProps) {
-		const portalState = new PortalState(props);
-		return new PortalBond(portalState);
-	}
 
 	export function getBond() {
 		return bond;

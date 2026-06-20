@@ -9,7 +9,6 @@ import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared'
 
 export type PortalStateProps = BondStateProps & {
 	id: string;
-	readonly rest?: Record<string, unknown>;
 };
 
 export type PortalElements = BondElements & {
