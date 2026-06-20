@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createExampleLoader } from '$docs/utils/example-loader';
-	import { DocComponentPage, DocExample, DocOnly, DocCallout, DocPropsTabs } from '$docs/components';
+	import { DocComponentPage, DocExample, DocCallout, DocPropsTabs } from '$docs/components';
 	import type { PropsSection } from '$docs/components';
 	import { swatchProps } from './props';
 	import { metadata } from './shared';

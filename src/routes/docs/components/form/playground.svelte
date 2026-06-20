@@ -56,7 +56,7 @@
 						onsubmit={handleSubmit}
 					>
 						<Field.Root name="name" bind:value={formData.name} disabled={isDisabled}>
-							{#snippet children({ field })}
+							{#snippet children()}
 								<Field.Label class="mb-1 block text-sm font-medium text-gray-700">Name</Field.Label>
 								<Field.Control type="text" placeholder="Enter your name" component={Input.Root}>
 									<Input.Value />
@@ -65,7 +65,7 @@
 						</Field.Root>
 
 						<Field.Root name="email" bind:value={formData.email} disabled={isDisabled}>
-							{#snippet children({ field })}
+							{#snippet children()}
 								<Field.Label class="mb-1 block text-sm font-medium text-gray-700">
 									Email
 								</Field.Label>
@@ -76,7 +76,7 @@
 						</Field.Root>
 
 						<Field.Root name="message" bind:value={formData.message} disabled={isDisabled}>
-							{#snippet children({ field })}
+							{#snippet children()}
 								<Field.Label class="mb-1 block text-sm font-medium text-gray-700">
 									Message
 								</Field.Label>
@@ -87,7 +87,7 @@
 						</Field.Root>
 
 						<Field.Root name="subscribe" bind:value={formData.subscribe} disabled={isDisabled}>
-							{#snippet children({ field })}
+							{#snippet children()}
 								<div class="flex items-center space-x-2">
 									<Field.Control
 										type="checkbox"
@@ -136,7 +136,7 @@
 		</Playground.Preview>
 
 		<Playground.Controls>
-			<Playground.Header title="Customize Form" />
+			<Playground.Header>Customize Form</Playground.Header>
 
 			<div class="space-y-4">
 				<div>

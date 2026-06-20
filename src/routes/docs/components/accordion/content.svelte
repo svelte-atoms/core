@@ -4,7 +4,6 @@
 		DocComponentPage,
 		DocExample,
 		DocCode,
-		DocOnly,
 		DocPropsTabs,
 	} from '$docs/components';
 	import type { PropsSection } from '$docs/components';

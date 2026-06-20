@@ -46,10 +46,10 @@ export const tabHeaderProps: PropDefinition[] = [
 		description: 'Children'
 	},
 	{
-		name: 'onpointerdown',
+		name: 'onclick',
 		type: '((ev: PointerEvent, context: { tab?: TabBond<unknown>; }) => void) | undefined',
 		default: 'undefined',
-		description: 'Onpointerdown'
+		description: 'Onclick'
 	},
 	{
 		name: '...atomProps',

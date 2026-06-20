@@ -7,7 +7,7 @@
 		{ value: 'settings', label: 'Settings', content: 'Configure preferences and defaults.' },
 	];
 
-	let activeTab = $state(demoTabs[0].value);
+	let activeTab = $state(demoTabs[0]?.value ?? 'overview');
 </script>
 
 <div class="w-full max-w-lg">

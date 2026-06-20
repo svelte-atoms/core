@@ -7,7 +7,7 @@
 	let packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun' = $state('npm');
 	let copied = $state(false);
 
-	const installCommands: Record<string, string> = {
+	const installCommands: Record<'npm' | 'pnpm' | 'yarn' | 'bun', string> = {
 		npm: 'npm install @svelte-atoms/core',
 		pnpm: 'pnpm add @svelte-atoms/core',
 		yarn: 'yarn add @svelte-atoms/core',
