@@ -7,7 +7,26 @@
 	const { Story } = defineMeta({
 		title: 'Atoms/Select',
 		parameters: { layout: 'centered' },
-		args: {}
+		args: {
+			multiple: false,
+			disabled: false,
+			placement: 'bottom-start'
+		},
+		argTypes: {
+			multiple: {
+				control: 'boolean',
+				description: 'Allow selecting more than one option at a time'
+			},
+			disabled: {
+				control: 'boolean',
+				description: 'Prevent the dropdown from opening and all interaction'
+			},
+			placement: {
+				control: 'select',
+				options: ['bottom-start', 'bottom-end', 'top-start', 'top-end'],
+				description: 'Preferred placement of the dropdown content relative to the trigger'
+			}
+		}
 	});
 </script>
 
@@ -81,10 +100,73 @@
 	const itemClass =
 		'flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-foreground transition-colors hover:bg-foreground/5 data-[highlighted=true]:bg-foreground/5 data-[selected]:bg-primary/10 data-[selected]:font-medium data-[selected]:text-primary';
 	const contentClass =
-		'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-lg';
+		'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-sm';
 	const triggerClass =
 		'border-border flex h-11 w-full items-center gap-2 rounded-lg border px-3 transition-colors hover:border-foreground/30';
 </script>
+
+<!-- Default — fully configurable via Storybook controls (multiple, disabled, placement). -->
+<Story name="Basic">
+	{#snippet template(args)}
+		<div class="flex flex-col gap-2" style="width: 320px;">
+			<p class="text-foreground text-sm font-medium">Country</p>
+			<ASelect.Root
+				keys={countries.map((c) => c.value)}
+				multiple={args.multiple}
+				disabled={args.disabled}
+				placement={args.placement}
+			>
+				{#snippet children({ select })}
+					{@const hasValues = (select.state.props.values ?? []).length > 0}
+					<ASelect.Trigger
+						base={Input.Root}
+						class={triggerClass}
+						onclick={(ev: MouseEvent) => {
+							ev.preventDefault();
+							select.state.open();
+						}}
+					>
+						<div class="text-foreground flex flex-1 flex-wrap items-center gap-1 text-sm">
+							<ASelect.Selections getSelections={selectionsFrom(countries)}>
+								{#snippet children({ selections })}
+									{#each selections as selection (selection.id)}
+										{#if args.multiple}
+											<ASelect.Selection
+												{selection}
+												class="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium"
+											>
+												{selection.label}
+											</ASelect.Selection>
+										{:else}
+											<span>{selection.label}</span>
+										{/if}
+									{/each}
+								{/snippet}
+							</ASelect.Selections>
+							{#if !hasValues}
+								<span class="text-muted-foreground">
+									{args.multiple ? 'Select countries…' : 'Select a country…'}
+								</span>
+							{/if}
+						</div>
+						<ASelect.Indicator class="text-muted-foreground shrink-0" />
+					</ASelect.Trigger>
+
+					<ASelect.Content class={contentClass}>
+						<div class="max-h-60 overflow-auto py-1">
+							{#each countries as item (item.value)}
+								<ASelect.Item value={item.value} class={itemClass}>
+									<span class="flex-1" data-label>{item.label}</span>
+									<span class="text-primary opacity-0 data-on:opacity-100" data-on={(select.state.props.values ?? []).includes(item.value) ? '' : undefined}>✓</span>
+								</ASelect.Item>
+							{/each}
+						</div>
+					</ASelect.Content>
+				{/snippet}
+			</ASelect.Root>
+		</div>
+	{/snippet}
+</Story>
 
 <!-- 1. Single select — placeholder, selected display, keyboard-navigable list. -->
 <Story name="Single">

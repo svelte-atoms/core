@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { SwitchProps } from './types';
 
 	let {
@@ -17,10 +17,7 @@
 		...restProps
 	}: SwitchProps & HTMLAttributes<HTMLButtonElement> = $props();
 
-	const switchProps = $derived({
-		preset: preset ?? 'switch',
-		...restProps
-	});
+	const switchProps = $derived(mergePresetProps(preset, 'switch', restProps));
 
 	function handleClick(ev: MouseEvent) {
 		if (disabled) return;

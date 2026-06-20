@@ -2,7 +2,7 @@
 	import { getRadioGroupContext } from './context';
 	import { Stack } from '../stack';
 	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion';
 
 	const radioGroupContext = getRadioGroupContext();
@@ -23,7 +23,7 @@
 		...restProps
 	} = $props();
 
-	const radioProps = $derived({ preset: preset ?? 'radio', ...restProps });
+	const radioProps = $derived(mergePresetProps(preset, 'radio', restProps));
 
 	const _disabled = $derived(radioGroupContext?.disabled);
 	const _required = $derived(radioGroupContext?.required);
@@ -96,7 +96,7 @@
 	class={[
 		'text-foreground bg-input box-border inline-flex aspect-square size-4 max-h-fit max-w-fit cursor-pointer place-items-center rounded-full border border-border p-0',
 		isDisabled && 'pointer-events-none opacity-50',
-		toClassValue.apply(null, [klass, {}])
+		toClassValue(klass, {})
 	]}
 	as="label"
 	{...radioProps}

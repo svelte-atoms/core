@@ -2,7 +2,6 @@
 	import type { ComboboxRootProps } from './types';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 	import { ComboboxBond, ComboboxBondState, type ComboboxBondProps } from './bond.svelte';
-	import { useEscapeStack } from '$svelte-atoms/core/components/overlay';
 
 	let {
 		open = $bindable(false),
@@ -52,7 +51,6 @@
 	// setup() (ADR 0001 / ADR 0003, ADR 0010).
 	useCapabilities(bond);
 	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
-	useEscapeStack(bond);
 
 	function defaultFactory(props: ComboboxBondProps) {
 		const bondState = new ComboboxBondState<D>(props);

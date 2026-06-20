@@ -1,14 +1,11 @@
 <script lang="ts">
+	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
 	import { Input } from '$svelte-atoms/core/components/input';
 	import { ComboboxBond } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
 	import { INPUT } from '$svelte-atoms/core/shared';
 
-	const bond = ComboboxBond.get() as ComboboxBond;
-
-	if (!bond) {
-		throw new Error('Combobox atom was not found');
-	}
+	const bond = ComboboxBond.getOrThrow('Combobox atom was not found') as ComboboxBond;
 
 	let {
 		value = $bindable(),
@@ -24,11 +21,7 @@
 
 	const atom = bond.control();
 
-	const comboboxProps = $derived({
-		preset: preset ?? atom.preset,
-		...atom.spread,
-		...restProps
-	});
+	const comboboxProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <Input.Control

@@ -66,7 +66,11 @@ export class SelectBondState<
 				createInput({
 					query: { get: () => this.props.query ?? '', set: (v) => (this.props.query = v) }
 				}),
-				{ itemDomId: (id) => this.itemDomId(id) }
+				{
+					itemDomId: (id) => this.itemDomId(id),
+					expanded: () => this.isOpen,
+					disabled: () => this.isDisabled
+				}
 			)
 		);
 	}

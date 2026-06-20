@@ -23,6 +23,8 @@ export type FieldChildren = Snippet<[FieldSnippetProps]>;
 
 interface CommonProps {
 	factory?: Factory<FormBond>;
+	// Validation adapter/schema forwarded to the form bond (typed `unknown` there).
+	validator?: unknown;
 }
 
 export interface FormRootProps<B extends Base = Base>

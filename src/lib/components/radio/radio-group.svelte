@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setRadioGroupContext, type RadioGroupContext } from './context';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
 
 	let {
@@ -16,7 +16,7 @@
 		...restProps
 	} = $props();
 
-	const groupProps = $derived({ preset: preset ?? 'radio.group', ...restProps });
+	const groupProps = $derived(mergePresetProps(preset, 'radio.group', restProps));
 
 	const context = defineState<RadioGroupContext>([
 		defineProperty('disabled', () => disabled ?? false),

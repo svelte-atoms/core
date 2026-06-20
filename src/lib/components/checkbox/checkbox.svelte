@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
 	import type { CheckboxProps } from './types';
 	import { animateCheckboxIndicator } from './motion';
@@ -30,7 +30,7 @@
 		...restProps
 	}: CheckboxProps = $props();
 
-	const checkboxRootProps = $derived({ preset: preset ?? 'checkbox', ...restProps });
+	const checkboxRootProps = $derived(mergePresetProps(preset, 'checkbox', restProps));
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let checkboxElement: HTMLInputElement | undefined = $state();

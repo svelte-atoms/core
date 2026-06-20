@@ -4,11 +4,7 @@
 	import { SelectBond } from '../bond.svelte';
 	import { List } from '../../list';
 
-	const select = SelectBond.get();
-
-	if (!select) {
-		throw new Error('<SelectItem> must be used within a <Select>.');
-	}
+	const select = SelectBond.getOrThrow('<SelectItem> must be used within a <Select>.');
 
 	const ID = $props.id();
 
