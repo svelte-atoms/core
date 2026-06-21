@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { Bond, BondState, BondAtom, type BondStateProps } from './bond.svelte';
-import { defineBond } from './define-bond.svelte';
-import { createSelection, selectionCapability, SELECTION } from './capabilities/selection.svelte';
+import { Bond, BondState, BondAtom, type BondStateProps } from '../bond/bond.svelte';
+import { defineBond } from './define.svelte';
+import {
+	createSelection,
+	selectionCapability,
+	SELECTION
+} from '../capability/models/selection.svelte';
 
 class TState extends BondState<BondStateProps> {
 	values = $state<string[]>([]);
@@ -221,5 +225,42 @@ describe('defineBond v3 — `extends` (single-parent spec inheritance)', () => {
 	it('flattened static spec exposes parent+own atoms (the fuse/extends seam)', () => {
 		const spec = (Child as unknown as { spec: { atoms: Record<string, unknown> } }).spec;
 		expect(Object.keys(spec.atoms).sort()).toEqual(['item', 'root']); // merged
+	});
+});
+
+describe('defineBond v4 — state co-location (`state` + `create`)', () => {
+	it('exposes the declared State class statically and self-constructs via create()', () => {
+		const Stateful = defineBond({ name: 'stateful', state: TState, atoms: { root: RootAtom } });
+		expect(Stateful.state).toBe(TState); // static ref to the declared State class
+		const bond = Stateful.create({});
+		expect(bond).toBeInstanceOf(Stateful);
+		expect(bond.state).toBeInstanceOf(TState); // new Bond(new State(props))
+		expect(bond.root()).toBeInstanceOf(RootAtom); // generated atom factory still works
+	});
+
+	it('infers the State type from the `state` field (no explicit generics)', () => {
+		const Stateful = defineBond({
+			name: 'stateful-typed',
+			state: TState,
+			atoms: { root: RootAtom },
+			// thunk receives the inferred State — `state.selection` is TState-typed, no cast
+			capabilities: (state) => [selectionCapability(state.selection)]
+		});
+		const bond = Stateful.create({});
+		expect(bond.capability(SELECTION)?.surface).toBe((bond.state as TState).selection);
+	});
+
+	it('create() throws a directed error when the spec declares no state', () => {
+		const Stateless = defineBond({ name: 'stateless', atoms: { root: RootAtom } });
+		expect(() => (Stateless as unknown as { create(p: unknown): unknown }).create({})).toThrow(
+			/no `state` class declared/
+		);
+	});
+
+	it('create() respects subclass identity (this-based self-construction)', () => {
+		const Base = defineBond({ name: 'base-sc', state: TState, atoms: { root: RootAtom } });
+		class Sub extends Base {}
+		const bond = (Sub as unknown as { create(p: unknown): { constructor: unknown } }).create({});
+		expect(bond).toBeInstanceOf(Sub); // constructed under Sub, not Base
 	});
 });

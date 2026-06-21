@@ -1,18 +1,15 @@
-import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
-import { ROVING } from './roving-focus.svelte';
+import { defineCapability, sharedCapabilityKey, type Capability } from '../capability';
+import { ROVING } from './roving.svelte';
 
-// Public slot key — surface type travels with the key, so `capability(INPUT)` is typed (no cast).
+// Surface type travels with the key — capability(INPUT) is typed without a cast.
 export const INPUT = sharedCapabilityKey<InputModel>('@svelte-atoms/cap:input');
 
-// A reactive text field — get/set over an injected store (a bond prop).
 export interface InputField {
 	get(): string;
 	set(value: string): void;
 }
 
-// Controller over one or more named text fields, each backed by an injected store.
-// Context-agnostic: the consumer names fields and decides their meaning.
-// The first field is the primary (used when name is omitted). Owns no state.
+// The first key is the primary field. Owns no state — consumers supply the backing stores.
 export interface InputModel {
 	// A field's text (the primary field when `field` is omitted). Reactive.
 	get(field?: string): string;
@@ -22,7 +19,6 @@ export interface InputModel {
 	clear(field?: string): boolean;
 }
 
-// Build an InputModel over named field backings; the first key is the primary field.
 export function createInput(fields: Record<string, InputField>): InputModel {
 	const primary = Object.keys(fields)[0]!;
 	const pick = (field?: string): InputField | undefined => fields[field ?? primary];
@@ -38,7 +34,6 @@ export function createInput(fields: Record<string, InputField>): InputModel {
 	};
 }
 
-// Options for `inputCapability`'s projection.
 export interface InputProjectionOptions {
 	// `aria-autocomplete`. Default `'list'` (filter a list).
 	autocomplete?: 'none' | 'list' | 'inline' | 'both';
@@ -55,8 +50,6 @@ export interface InputProjectionOptions {
 	disabled?: () => boolean;
 }
 
-// Wrap an InputModel into a projectable Capability (slot 'input'); role 'input' binds an editable
-// control and projects the overlay-combobox a11y set (role, aria-autocomplete/expanded/controls/activedescendant).
 export function inputCapability(
 	model: InputModel,
 	options: InputProjectionOptions = {}
@@ -67,19 +60,14 @@ export function inputCapability(
 	const isExpanded = options.expanded;
 	const isDisabled = options.disabled ?? (() => false);
 
-	return {
+	return defineCapability<InputModel>({
 		slot: INPUT,
-		// Reads the roving capability's activeId for aria-activedescendant.
 		requires: [ROVING],
 		surface: model,
-		behavior(role, ctx): Behavior | undefined {
-			if (role !== 'input') return undefined;
-			const field = ctx as string | undefined;
-			return {
-				// `bond` stays the base Bond — `capability`/`atomByRole` are base-Bond methods and the
-				// open/disabled state arrives via injected accessors, so no bond shape is assumed.
+		roles: {
+			input: (field) => ({
 				attrs: (bond) => {
-					const active = bond.capability(ROVING)?.surface?.activeId ?? null;
+					const active = bond.requireSurface(ROVING).activeId;
 					const disabled = isDisabled();
 					return {
 						role: 'combobox',
@@ -94,7 +82,7 @@ export function inputCapability(
 				handlers: () => ({
 					oninput: (ev: Event) => model.set((ev.currentTarget as HTMLInputElement).value, field)
 				})
-			};
+			})
 		}
-	};
+	});
 }

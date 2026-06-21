@@ -7,7 +7,7 @@ import {
 	type Behavior,
 	type Capability,
 	type BondStateProps
-} from './bond.svelte';
+} from '../bond/bond.svelte';
 
 // decorateCapability lets a later registration WRAP the prior holder at a slot (delegate the rest)
 // instead of the default blind last-wins replace — the capability-layer dual of atom behavior chaining.

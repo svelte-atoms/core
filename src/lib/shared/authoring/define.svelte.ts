@@ -7,19 +7,14 @@ import {
 	type BondAtom,
 	type BondStateProps,
 	type Capability
-} from './bond.svelte';
+} from '../bond/bond.svelte';
 
-// defineBond — authoring surface (§6): collapses Bond boilerplate (CONTEXT_KEY, ctor, accessors).
-// Atom classes and BondState are still authored as classes; Fusion (§9) uses parts: [...].
-
-// Atom constructor new XAtom(bond). bond: any lets atoms declare a narrower view (§12.2) without variance errors.
+// bond: any lets atoms declare a narrower view (§12.2) without variance errors.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AtomConstructor = new (bond: any) => BondAtom<any, any>;
 
-// Method→atom mapping: class directly (method name == atom key), or { atom, key?, role? } with overrides.
 export type AtomSpec = AtomConstructor | { atom: AtomConstructor; key?: string; role?: string };
 
-// Atom instance type a method returns, for either AtomSpec form.
 export type AtomInstance<E> = E extends AtomConstructor
 	? InstanceType<E>
 	: E extends { atom: infer C }
@@ -28,11 +23,48 @@ export type AtomInstance<E> = E extends AtomConstructor
 			: never
 		: never;
 
-// A Bond-subclass constructor a spec can base: instead of Bond (§9.4); abstract bases allowed.
+// abstract classes allowed.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type BondBaseClass = abstract new (...args: any[]) => Bond;
 
-// Shape a bond must satisfy to be a parts: part. DefinedBondClass satisfies it; hand-written bonds via a spec getter.
+// any[] avoids a second inference site that would defeat State inference for generic State classes.
+// The precise props type for create() is recovered from the State class via StatePropsOf.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type StateCtor<State extends BondState = BondState> = new (...args: any[]) => State;
+
+export type StatePropsOf<State extends BondState> =
+	State extends BondState<infer P> ? P : BondStateProps;
+
+// this.state lets subclasses self-construct under their own identity.
+function bondCreate(
+	this: (new (state: BondState) => Bond) & { state?: StateCtor; name?: string },
+	props: BondStateProps
+): Bond {
+	const StateClass = this.state;
+	if (!StateClass) {
+		throw new Error(
+			`[svelte-atoms] ${this.name ?? 'bond'}.create(): no \`state\` class declared in the bond spec — pass { state } to defineBond/fuse, or construct the bond manually.`
+		);
+	}
+	return new this(new StateClass(props));
+}
+
+function attachStateFactory(cls: object, StateClass: StateCtor | undefined): void {
+	if (StateClass) {
+		Object.defineProperty(cls, 'state', {
+			value: StateClass,
+			writable: true,
+			configurable: true
+		});
+	}
+	Object.defineProperty(cls, 'create', {
+		value: bondCreate,
+		writable: true,
+		configurable: true
+	});
+}
+
+// hand-written bonds satisfy this via a spec getter.
 export type FusablePart = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	readonly spec: BondSpec<any, any>;
@@ -44,23 +76,25 @@ export interface BondSpec<
 	A extends Record<string, AtomSpec>,
 	Base extends BondBaseClass = typeof Bond
 > {
-	// DOM namespace + default preset base + context key (e.g. 'collapsible').
+	// DOM namespace, preset base, and context key (e.g. 'collapsible').
 	name: string;
-	// Method name → atom. Each becomes a cached, typed factory.
 	atoms: A;
-	// Base bond class to extend (default Bond) — e.g. ModalOverlay for overlay machinery.
+	// e.g. ModalOverlay for overlay machinery.
 	base?: Base;
-	// Capabilities registered on the bond at construction (delegates to state).
+	// Registration-home rule (#1): state-owned models register in BondState ctor; stateless policies
+	// or overrides register here. Ordering is load-bearing: last registration wins per slot (#8).
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	capabilities?: (state: any) => Capability[];
-	// Dotted preset base when it differs from name (e.g. accordion.item).
+	// Dotted preset override (e.g. accordion.item).
 	preset?: string;
-	// Flat composition (ADR 0004 D1): parts contribute atoms + capabilities, later wins; preferred over extends.
+	// ADR 0012: adds static state + create(props), threads the State type from the spec.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	state?: StateCtor<any>;
+	// ADR 0004 D1: atoms union + capabilities concatenate (later wins); preferred over extends.
 	parts?: readonly FusablePart[];
-	// Spec inheritance (§13): real subclass inheriting CONTEXT_KEY/instanceof/atoms; superseded by parts:.
+	// Real subclass inheriting CONTEXT_KEY/instanceof/atoms; superseded by parts:.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	extends?: DefinedBondClass<any, any, any>;
-	// Non-atom prototype methods; inherited/overridable via extends.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	methods?: Record<string, (this: any, ...args: any[]) => any>;
 }
@@ -76,22 +110,18 @@ export type DefinedBond<
 	[K in keyof A]: () => AtomInstance<A[K]>;
 } & M;
 
-// Spec-derived type utilities (ADR 0004 Decision 4) — replace the manual recipes every bond author repeats.
-
-// Instance type of any Bond constructor — alias for InstanceType<typeof X>.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type BondOf<C extends new (...args: any[]) => Bond> = InstanceType<C>;
 
-// Minimal bond shape an atom types this.bond against: any Bond whose state is S.
+// Minimal bond shape for atom type annotations (avoids import cycles).
 export type ViewOf<S extends BondState> = Bond & { state: S };
 
-// Extract the State type from a bond constructor: new (state: S) => Bond → S.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type StateOf<C extends new (state: any) => Bond> = C extends new (state: infer S) => Bond
 	? S
 	: never;
 
-// Generated bond class: constructible, with Bond's static context API and its originating spec.
+// Constructible bond class with static context API and its originating spec.
 export type DefinedBondClass<
 	A extends Record<string, AtomSpec>,
 	State extends BondState = BondState,
@@ -105,11 +135,14 @@ export type DefinedBondClass<
 	get(): DefinedBond<A, State, Base, M> | undefined;
 	getOrThrow(message?: string): DefinedBond<A, State, Base, M>;
 	set(bond: DefinedBond<A, State, Base, M>): DefinedBond<A, State, Base, M>;
-	// The spec this bond was defined from — the seam Fusion composes over (§9).
+	// Absent when the bond is constructed manually.
+	readonly state?: StateCtor<State>;
+	// Throws if the spec declared no state.
+	create(props: StatePropsOf<State>): DefinedBond<A, State, Base, M>;
+	// The seam Fusion composes over (§9).
 	readonly spec: BondSpec<A, Base>;
 };
 
-// Resolve an AtomSpec entry to its constructor, cache key, and optional role.
 function resolveAtomSpec(methodName: string, entry: AtomSpec) {
 	const Ctor = typeof entry === 'function' ? entry : entry.atom;
 	const key = typeof entry === 'function' ? methodName : (entry.key ?? methodName);
@@ -117,7 +150,6 @@ function resolveAtomSpec(methodName: string, entry: AtomSpec) {
 	return { Ctor, key, role };
 }
 
-// Project a spec's atoms map onto an AtomRegistry (key → factory).
 function buildAtomRegistry(atomsSpec: Record<string, AtomSpec>): AtomRegistry {
 	const registry: AtomRegistry = {};
 	for (const methodName of Object.keys(atomsSpec)) {
@@ -130,7 +162,6 @@ function buildAtomRegistry(atomsSpec: Record<string, AtomSpec>): AtomRegistry {
 	return registry;
 }
 
-// Attach a cached bond.methodName() accessor that delegates to bond.atom(key).
 function attachAccessor(proto: object, methodName: string, key: string) {
 	Object.defineProperty(proto, methodName, {
 		value(this: Bond) {
@@ -142,7 +173,6 @@ function attachAccessor(proto: object, methodName: string, key: string) {
 	});
 }
 
-// Attach a non-atom method to the prototype.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function attachMethod(proto: object, name: string, fn: (...args: any[]) => any) {
 	Object.defineProperty(proto, name, {
@@ -153,7 +183,6 @@ function attachMethod(proto: object, name: string, fn: (...args: any[]) => any) 
 	});
 }
 
-// Build a concrete Bond subclass from a spec — cached factory per atom slot, own CONTEXT_KEY, inherited static get/set.
 export function defineBond<
 	A extends Record<string, AtomSpec>,
 	State extends BondState<BondStateProps> = BondState,
@@ -163,10 +192,12 @@ export function defineBond<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	M extends Record<string, (...args: any[]) => any> = Record<never, never>
 >(
-	// `extends`/`methods` omitted from BondSpec then re-added so they're the sole inference sites for M/PAtoms.
-	spec: Omit<BondSpec<A, Base>, 'extends' | 'methods'> & {
+	// Omitted then re-added so capabilities is re-typed over THIS bond's State (#2) and state is an inference site (ADR 0012).
+	spec: Omit<BondSpec<A, Base>, 'extends' | 'methods' | 'capabilities' | 'state'> & {
 		extends?: DefinedBondClass<PAtoms, PState>;
 		methods?: M;
+		capabilities?: (state: State) => Capability[];
+		state?: StateCtor<State>;
 	}
 ): DefinedBondClass<Omit<PAtoms, keyof A> & A, State, Base, M> {
 	// ─── Flat composition path (`parts:`) — the compose operator (ADR 0004 Decision 1) ───
@@ -178,9 +209,11 @@ export function defineBond<
 			if (part.spec.capabilities) partsCapFns.push(part.spec.capabilities);
 		}
 		const mergedAtoms = { ...partsAtoms, ...spec.atoms };
+		// widened to BondState for the seam; runtime instance is always a State.
+		const ownCaps = spec.capabilities as ((state: BondState) => Capability[]) | undefined;
 		const mergedCapabilities = (state: BondState): Capability[] => [
 			...partsCapFns.flatMap((fn) => fn(state)),
-			...(spec.capabilities?.(state) ?? [])
+			...(ownCaps?.(state) ?? [])
 		];
 
 		const BaseClass = (spec.base ?? Bond) as unknown as new (
@@ -189,14 +222,13 @@ export function defineBond<
 		) => Bond;
 
 		class Composed extends BaseClass {
-			// Fully-merged spec — the seam a future parts: [ThisBond] reads.
+			// Seam a future parts: [ThisBond] reads.
 			static spec = {
 				...spec,
 				atoms: mergedAtoms,
 				capabilities: mergedCapabilities
 			} as unknown as BondSpec<Record<string, AtomSpec>>;
 
-			// Shared atom tier, built once: base registry + merged parts atoms (own wins).
 			static atoms: AtomRegistry = {
 				...(BaseClass as unknown as typeof Bond).atoms,
 				...buildAtomRegistry(mergedAtoms)
@@ -233,7 +265,6 @@ export function defineBond<
 				)
 			)
 		];
-		// Publish own + transitive keys for the next composition.
 		Object.defineProperty(Composed, 'CONTEXT_KEYS', {
 			value: [bondContextKey(spec.name), ...partContextKeys],
 			writable: true,
@@ -253,7 +284,6 @@ export function defineBond<
 			enumerable: false
 		});
 
-		// Accessors for all merged atoms (no prototype chain to inherit from).
 		for (const methodName of Object.keys(mergedAtoms)) {
 			const { key } = resolveAtomSpec(methodName, mergedAtoms[methodName]!);
 			attachAccessor(Composed.prototype, methodName, key);
@@ -261,6 +291,9 @@ export function defineBond<
 		for (const [name, fn] of Object.entries(spec.methods ?? {})) {
 			attachMethod(Composed.prototype, name, fn);
 		}
+
+		// ADR 0012: attach static state + create(props).
+		attachStateFactory(Composed, spec.state as StateCtor | undefined);
 
 		return Composed as unknown as DefinedBondClass<Omit<PAtoms, keyof A> & A, State, Base, M>;
 	}
@@ -277,19 +310,18 @@ export function defineBond<
 	) => Bond;
 
 	class Defined extends BaseClass {
-		// Flattened spec (own merged over parent's) — the seam fuse / nested extends reads.
+		// Seam fuse / nested extends reads.
 		static spec = (parent
 			? {
 					...spec,
 					atoms: { ...parent.spec.atoms, ...spec.atoms },
 					capabilities: (state: BondState) => [
 						...(parent.spec.capabilities?.(state) ?? []),
-						...(spec.capabilities?.(state) ?? [])
+						...((spec.capabilities as ((s: BondState) => Capability[]) | undefined)?.(state) ?? [])
 					]
 				}
 			: spec) as unknown as BondSpec<Record<string, AtomSpec>>;
 
-		// Shared atom tier, built once: parent/base registry + own atoms (own wins, §13.1).
 		static atoms: AtomRegistry = {
 			...(BaseClass as unknown as typeof Bond).atoms,
 			...buildAtomRegistry(spec.atoms)
@@ -321,7 +353,7 @@ export function defineBond<
 		});
 	}
 
-	// Attach only own atom accessors; the parent's are inherited via the prototype (own overrides, last-wins).
+	// own atoms only; the parent's are inherited via the prototype.
 	for (const methodName of Object.keys(spec.atoms)) {
 		const { key } = resolveAtomSpec(methodName, spec.atoms[methodName]!);
 		attachAccessor(Defined.prototype, methodName, key);
@@ -329,6 +361,10 @@ export function defineBond<
 	for (const [name, fn] of Object.entries(spec.methods ?? {})) {
 		attachMethod(Defined.prototype, name, fn);
 	}
+
+	// Self-construction (ADR 0012): static `state` + `create(props)` when the spec declares a state.
+	// A child via extends inherits the parent's static create; its own state (if any) wins here.
+	attachStateFactory(Defined, spec.state as StateCtor | undefined);
 
 	return Defined as unknown as DefinedBondClass<Omit<PAtoms, keyof A> & A, State, Base, M>;
 }

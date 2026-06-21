@@ -1,5 +1,5 @@
-import { capabilityKey, type Behavior, type Capability } from '../bond.svelte';
-import { ROVING, type RovingFocus } from './roving-focus.svelte';
+import { capabilityKey, defineCapability, type Capability } from '../capability';
+import { ROVING, type RovingFocus } from './roving.svelte';
 
 // Private slot key (process-unique Symbol, not exported from the public barrel): navigation is a
 // behavior-only policy that nobody retrieves by key, so it stays unforgeable — no consumer can name
@@ -45,15 +45,19 @@ export function navigationCapability(
 		if (handled && preventScroll) ev.preventDefault();
 	};
 
-	return {
+	// Roles are configured at runtime (options.roles), so this uses defineCapability's raw `behavior`
+	// escape hatch rather than the static typed `roles` map — the same projection on each configured role.
+	return defineCapability<RovingFocus>({
 		slot: NAVIGATION,
 		surface: roving,
 		requires: [ROVING],
-		behavior(role): Behavior | undefined {
+		behavior(role) {
 			if (!roles.includes(role)) return undefined;
 			return {
-				handlers: () => ({ onkeydown: ((ev: Event) => onkeydown(ev as KeyboardEvent)) as (ev: Event) => void })
+				handlers: () => ({
+					onkeydown: ((ev: Event) => onkeydown(ev as KeyboardEvent)) as (ev: Event) => void
+				})
 			};
 		}
-	};
+	});
 }

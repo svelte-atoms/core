@@ -1,11 +1,16 @@
-import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
+import {
+	defineCapability,
+	sharedCapabilityKey,
+	type Behavior,
+	type Capability
+} from '../capability';
 
-// Public slot key — surface type travels with the key, so `capability(SELECTION)` is typed (no cast).
-export const SELECTION = sharedCapabilityKey<SelectionModel<unknown>>('@svelte-atoms/cap:selection');
+// Surface type travels with the key — capability(SELECTION) is typed without a cast.
+export const SELECTION = sharedCapabilityKey<SelectionModel<unknown>>(
+	'@svelte-atoms/cap:selection'
+);
 
-// SelectionModel<T> — owns the logic of "which values are committed" (single vs multiple,
-// set algebra) but not the storage: state lives in consumer-bindable bond props.
-// Replaces hand-rolled set-algebra duplicated in accordion, tabs, select, datagrid, combobox.
+// Owns selection logic but not storage — state lives in the bond props the consumer bindables.
 export interface SelectionModel<T> {
 	// `'single'` collapses the committed set to one value; `'multiple'` unions.
 	readonly mode: 'single' | 'multiple';
@@ -30,8 +35,7 @@ export interface SelectionBacking<T> {
 	mode(): 'single' | 'multiple';
 }
 
-// Build a SelectionModel over an injected SelectionBacking.
-// Pure controller — holds no state; every read/write goes through the backing.
+// Pure controller — every read/write goes through the backing.
 export function createSelection<T>(backing: SelectionBacking<T>): SelectionModel<T> {
 	const list = (): T[] => [...(backing.get() ?? [])];
 	const has = (value: T): boolean => list().includes(value);
@@ -88,9 +92,6 @@ export interface SelectionProjectionOptions {
 	interactive?: boolean;
 }
 
-// Wrap a SelectionModel into a projectable Capability (slot 'selection').
-// 'item' (ctx = value) → aria-selected/data-selected + onclick that commits the value.
-// 'container' → aria-multiselectable from the model's mode.
 export function selectionCapability<T>(
 	model: SelectionModel<T>,
 	options: SelectionProjectionOptions = {}
@@ -99,12 +100,12 @@ export function selectionCapability<T>(
 	const commit = options.commit ?? 'toggle';
 	const interactive = options.interactive ?? true;
 
-	return {
+	return defineCapability<SelectionModel<T>>({
 		slot: SELECTION,
 		surface: model,
-		behavior(role, ctx): Behavior | undefined {
-			if (role === 'item') {
-				const value = ctx as T;
+		roles: {
+			item: (id) => {
+				const value = id as T;
 				const projection: Behavior = {
 					attrs: () => ({
 						// aria-* is a boolean state; data-selected is a present-only CSS hook
@@ -119,13 +120,10 @@ export function selectionCapability<T>(
 					});
 				}
 				return projection;
-			}
-			if (role === 'container') {
-				return {
-					attrs: () => ({ 'aria-multiselectable': model.mode === 'multiple' })
-				};
-			}
-			return undefined;
+			},
+			container: () => ({
+				attrs: () => ({ 'aria-multiselectable': model.mode === 'multiple' })
+			})
 		}
-	};
+	});
 }

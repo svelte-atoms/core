@@ -1,5 +1,10 @@
-import { sharedCapabilityKey, type Behavior, type Capability, type CapabilityKey } from '../bond.svelte';
-import { Collection } from '../collection.svelte';
+import {
+	defineCapability,
+	sharedCapabilityKey,
+	type Capability,
+	type CapabilityKey
+} from '../capability';
+import { Collection } from '../../bond/collection.svelte';
 
 // Slot-key prefix for collections; collection('item') registers at slot key for 'collection:item'.
 const COLLECTION_SLOT_PREFIX = '@svelte-atoms/cap:collection:';
@@ -27,31 +32,27 @@ export function collectionCapability<T>(
 	const collection = new Collection<T>(kind);
 	const positional = options.positional ?? false;
 
-	// Spread behavior only when positional — under exactOptionalPropertyTypes, absent key != undefined.
-	return {
+	// Positional ARIA is opt-in: without it the collection is a surface-only capability (no projection).
+	return defineCapability<Collection<T>>({
 		slot: collectionSlot(kind),
 		surface: collection,
-		...(positional ? { behavior } : {})
-	};
-
-	function behavior(role: string, ctx?: unknown): Behavior | undefined {
-		if (role === 'item') {
-			const id = ctx as string;
-			return {
-				attrs: () => {
-					const index = collection.indexOf(id);
-					// aria-* 1-based, data-index 0-based; both omitted until the id registers.
-					return {
-						'aria-posinset': index < 0 ? undefined : index + 1,
-						'aria-setsize': collection.size,
-						'data-index': index < 0 ? undefined : index
-					};
+		...(positional
+			? {
+					roles: {
+						item: (id) => ({
+							attrs: () => {
+								const index = collection.indexOf(id);
+								// aria-* 1-based, data-index 0-based; both omitted until the id registers.
+								return {
+									'aria-posinset': index < 0 ? undefined : index + 1,
+									'aria-setsize': collection.size,
+									'data-index': index < 0 ? undefined : index
+								};
+							}
+						}),
+						container: () => ({ attrs: () => ({ 'aria-setsize': collection.size }) })
+					}
 				}
-			};
-		}
-		if (role === 'container') {
-			return { attrs: () => ({ 'aria-setsize': collection.size }) };
-		}
-		return undefined;
-	}
+			: {})
+	}) as CollectionCapability<T>;
 }

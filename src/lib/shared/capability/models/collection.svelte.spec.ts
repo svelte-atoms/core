@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
 import { collectionCapability, collectionSlot } from './collection.svelte';
-import { Collection } from '../collection.svelte';
-import { BondState, type BondStateProps } from '../bond.svelte';
+import { Collection } from '../../bond/collection.svelte';
+import { BondState, type BondStateProps } from '../../bond/bond.svelte';
 
 class TestState extends BondState<BondStateProps> {}
 

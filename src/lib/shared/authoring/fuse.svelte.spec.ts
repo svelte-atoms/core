@@ -1,12 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { BondState, BondAtom, type BondStateProps } from './bond.svelte';
-import { Collection } from './collection.svelte';
-import { defineBond } from './define-bond.svelte';
+import { BondState, BondAtom, type BondStateProps } from '../bond/bond.svelte';
+import { Collection } from '../bond/collection.svelte';
+import { defineBond } from './define.svelte';
 import { fuse } from './fuse.svelte';
-import { createSelection, selectionCapability, SELECTION } from './capabilities/selection.svelte';
-import { createRovingFocus, rovingCapability, ROVING } from './capabilities/roving-focus.svelte';
-import { collectionSlot } from './capabilities/collection.svelte';
-import { trappedFocus, focusOnOpen, FOCUS } from '$svelte-atoms/core/components/overlay/policies/focus.svelte';
+import {
+	createSelection,
+	selectionCapability,
+	SELECTION
+} from '../capability/models/selection.svelte';
+import { createRovingFocus, rovingCapability, ROVING } from '../capability/models/roving.svelte';
+import { collectionSlot } from '../capability/models/collection.svelte';
+import {
+	trappedFocus,
+	focusOnOpen,
+	FOCUS
+} from '$svelte-atoms/core/components/overlay/policies/focus.svelte';
 
 class FState extends BondState<BondStateProps> {
 	values = $state<string[]>([]);
@@ -144,6 +152,15 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		const bond = new Refused(new FState());
 		const items = bond.state.collection('item');
 		expect(bond.capability(collectionSlot('item'))?.surface).toBe(items);
+	});
+
+	it('a fused bond can declare its State and self-construct via create() (ADR 0012)', () => {
+		const Stateful = fuse({ name: 'fused-state', parts: [Triggerable, Listbox], state: FState });
+		expect(Stateful.state).toBe(FState); // static ref carried onto the fusion
+		const bond = Stateful.create({});
+		expect(bond.state).toBeInstanceOf(FState);
+		expect(bond.trigger()).toBeInstanceOf(TriggerAtom); // atoms from parts still resolve
+		expect(bond.capability(SELECTION)).toBeDefined(); // capabilities from parts still register
 	});
 
 	it('later parts win on atom-key collision (resolve)', () => {

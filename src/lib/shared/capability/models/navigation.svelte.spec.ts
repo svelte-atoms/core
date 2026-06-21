@@ -1,6 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Bond, BondState, BondAtom, bondContextKey, type BondStateProps } from '../bond.svelte';
-import { createRovingFocus, rovingCapability, ROVING } from './roving-focus.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	bondContextKey,
+	type BondStateProps
+} from '../../bond/bond.svelte';
+import { createRovingFocus, rovingCapability, ROVING } from './roving.svelte';
 import { navigationCapability, NAVIGATION } from './navigation.svelte';
 
 // Roving over a fixed id list; navigation projects keydown handlers that drive it.
@@ -24,7 +30,11 @@ class NavAtom extends BondAtom<NavBond> {
 }
 
 function key(handlers: Record<string, unknown>, k: string) {
-	const ev = { key: k, defaultPrevented: false, preventDefault: vi.fn() } as unknown as KeyboardEvent;
+	const ev = {
+		key: k,
+		defaultPrevented: false,
+		preventDefault: vi.fn()
+	} as unknown as KeyboardEvent;
 	(handlers.onkeydown as (e: Event) => void)(ev);
 	return ev;
 }
@@ -50,7 +60,11 @@ describe('navigationCapability', () => {
 		bond.capability(navigationCapability(bond.state.roving));
 		const content = new NavAtom(bond).role('container');
 
-		const ev = { key: 'ArrowDown', defaultPrevented: true, preventDefault: vi.fn() } as unknown as KeyboardEvent;
+		const ev = {
+			key: 'ArrowDown',
+			defaultPrevented: true,
+			preventDefault: vi.fn()
+		} as unknown as KeyboardEvent;
 		(content.spread.onkeydown as (e: Event) => void)(ev);
 		expect(bond.state.roving.activeId).toBeNull();
 	});
@@ -131,7 +145,9 @@ describe('capability introspection + requires (#6, #3)', () => {
 		bond.capability(navigationCapability(bond.state.roving));
 		new NavAtom(bond).role('container'); // first projection triggers the check
 
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('requires slot "@svelte-atoms/cap:roving"'));
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringContaining('requires slot "@svelte-atoms/cap:roving"')
+		);
 		warn.mockRestore();
 	});
 });

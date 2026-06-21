@@ -1,5 +1,5 @@
 import { onDestroy } from 'svelte';
-import type { Bond } from './bond.svelte';
+import type { Bond } from '../bond/bond.svelte';
 
 // Normalize a capability's setup() return — a teardown function or a Disposable (Symbol.dispose) —
 // into a plain teardown thunk. A Disposable lets a capability hand back a `using`-managed resource
@@ -18,6 +18,10 @@ function toTeardown(live: Disposable | (() => void)): () => void {
 // semantics, so a later capability that depends on an earlier one's effect unwinds in dependency order.
 export function useCapabilities(bond: Bond | undefined): void {
 	if (!bond) return;
+
+	// Record that whole-bond effects are now live, so the DEV guard that fires when a setup()-bearing
+	// bond was never wired (#5) stays quiet for correctly-wired roots.
+	bond.markSetupConsumed();
 
 	const teardowns: Array<() => void> = [];
 	for (const capability of bond.capabilities) {

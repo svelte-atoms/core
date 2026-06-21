@@ -1,4 +1,4 @@
-import { BondState, type BondStateProps } from '../bond.svelte';
+import { BondState, type BondStateProps } from '../../bond/bond.svelte';
 import type { Disclosure } from './disclosure.svelte';
 
 // Props shared by every disclosure-backed bond state (pairs with DisclosureState): open/disabled plus
@@ -14,7 +14,9 @@ export type DisclosureStateProps = BondStateProps & {
 // this base owns the canonical isOpen/open/close/toggle forwarding so each disclosure-backed state
 // declares the delegation once (single source of truth). Subclasses may override a method to layer
 // extra logic — e.g. Toast guards open/toggle with `props.disabled`.
-export abstract class DisclosureState<P extends BondStateProps = BondStateProps> extends BondState<P> {
+export abstract class DisclosureState<
+	P extends BondStateProps = BondStateProps
+> extends BondState<P> {
 	abstract readonly disclosure: Disclosure;
 
 	get isOpen(): boolean {

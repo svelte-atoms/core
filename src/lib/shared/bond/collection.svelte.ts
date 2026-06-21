@@ -15,23 +15,18 @@ export class Collection<T> {
 		return this.#items.size;
 	}
 
-	// Reactive, insertion-ordered array of values.
 	get values(): readonly T[] {
 		return Array.from(this.#items.values());
 	}
 
-	// Reactive, insertion-ordered array of ids.
 	get keys(): readonly string[] {
 		return Array.from(this.#items.keys());
 	}
 
-	// Reactive, insertion-ordered array of [id, value] pairs.
 	get entries(): readonly [string, T][] {
 		return Array.from(this.#items.entries());
 	}
 
-	// Iterable protocol — `for (const [id, value] of collection)`, `[...collection]`, destructuring.
-	// Yields [id, value] entries in insertion order (mirrors Map); reactive via the backing SvelteMap.
 	[Symbol.iterator](): IterableIterator<[string, T]> {
 		return this.#items[Symbol.iterator]();
 	}
@@ -44,12 +39,10 @@ export class Collection<T> {
 		return this.#items.has(id);
 	}
 
-	// Remove the value under id. Prefer the cleanup from attach() for mount lifecycles.
 	delete(id: string): void {
 		this.#items.delete(id);
 	}
 
-	// Index of the value with this id in insertion order; -1 if missing.
 	indexOf(id: string): number {
 		let i = 0;
 		for (const key of this.#items.keys()) {
@@ -59,7 +52,6 @@ export class Collection<T> {
 		return -1;
 	}
 
-	// Register a value under an id; returns a cleanup that removes it (called from atom onmount).
 	attach(id: string, value: T): () => void {
 		// Runs inside the child's mount effect: read #items untracked to avoid effect_update_depth_exceeded.
 		if (import.meta.env?.DEV && untrack(() => this.#items.has(id))) {

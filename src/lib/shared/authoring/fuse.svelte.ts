@@ -1,21 +1,15 @@
-import type { BondState, Capability } from './bond.svelte';
+import type { BondState, Capability } from '../bond/bond.svelte';
 import {
 	defineBond,
 	type AtomSpec,
 	type BondSpec,
 	type DefinedBondClass,
-	type FusablePart
-} from './define-bond.svelte';
+	type FusablePart,
+	type StateCtor
+} from './define.svelte';
 
-// Fusion (§9): typed wrapper over defineBond({ parts: ... }). Atoms union (later wins); capabilities concatenate.
-// name rebrands (fresh namespace/preset/CONTEXT_KEY); share() also registers under each part's key.
+export type AtomsOf<P> = P extends { readonly spec: BondSpec<infer A> } ? A : Record<string, never>;
 
-// Extract the atom map A from a fusable part (via its spec).
-export type AtomsOf<P> = P extends { readonly spec: BondSpec<infer A> }
-	? A
-	: Record<string, never>;
-
-// Merge the atom maps of a tuple of bonds (later parts override on key collision).
 export type MergeAtoms<Parts extends readonly FusablePart[]> = Parts extends readonly [
 	infer Head,
 	...infer Tail
@@ -30,19 +24,15 @@ export interface FuseSpec<
 	Own extends Record<string, AtomSpec>,
 	State extends BondState
 > {
-	// Rebrand identity for the fused bond — namespace, preset base, context key.
 	name: string;
-	// The bonds to fuse. Atoms union (later wins on key); capabilities concatenate.
 	parts: Parts;
-	// Extra atoms only the fusion adds (win over part atoms on key collision).
 	atoms?: Own;
-	// Extra capabilities the fusion adds, on top of the parts'.
 	capabilities?: (state: State) => Capability[];
-	// Override the dotted preset base.
 	preset?: string;
+	// ADR 0012: generic State keeps explicit args so State threads precisely (e.g. SelectBond).
+	state?: StateCtor<State>;
 }
 
-// Typed entry point for flat composition; infers MergeAtoms<Parts> and delegates to defineBond.
 export function fuse<
 	const Parts extends readonly FusablePart[],
 	Own extends Record<string, AtomSpec> = Record<string, never>,
@@ -55,6 +45,7 @@ export function fuse<
 		...(spec.capabilities
 			? { capabilities: spec.capabilities as (state: BondState) => Capability[] }
 			: {}),
-		...(spec.preset ? { preset: spec.preset } : {})
+		...(spec.preset ? { preset: spec.preset } : {}),
+		...(spec.state ? { state: spec.state as StateCtor<State> } : {})
 	}) as unknown as DefinedBondClass<MergeAtoms<Parts> & Own, State>;
 }

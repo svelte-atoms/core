@@ -9,7 +9,7 @@ import {
 	type Capability,
 	type BondStateProps
 } from './bond.svelte';
-import Comp, { tally, resetTally } from './spread-attachment-test.svelte';
+import Comp, { tally, resetTally } from './probe.svelte';
 
 // Regression for the spread attachment-key churn: BondAtom.spread must NOT re-mint attachment keys
 // on each access, or Svelte tears down and re-runs every onmount on every reactive update that

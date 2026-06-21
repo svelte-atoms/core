@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { Bond, BondState, BondAtom, bondContextKey, capabilityKey, type BondStateProps } from '../bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	bondContextKey,
+	capabilityKey,
+	type BondStateProps
+} from '../../bond/bond.svelte';
 import { createSelection, selectionCapability, SELECTION } from './selection.svelte';
 
 // End-to-end proof of the role stitch: atom declares .role(...), bond folds in capability
@@ -87,7 +94,9 @@ describe('role stitch — selection projected onto an atom', () => {
 	it('respects projection options (commit: select, custom aria)', () => {
 		const bond = new TestBond(new TestState());
 		bond.state.multiple = false;
-		bond.capability(selectionCapability(bond.state.selection, { commit: 'select', aria: 'aria-checked' }));
+		bond.capability(
+			selectionCapability(bond.state.selection, { commit: 'select', aria: 'aria-checked' })
+		);
 		const a = new TestAtom(bond).role('item', 'a');
 		const b = new TestAtom(bond).role('item', 'b');
 

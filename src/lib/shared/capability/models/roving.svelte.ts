@@ -1,6 +1,6 @@
-import { sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
+import { defineCapability, sharedCapabilityKey, type Capability } from '../capability';
 
-// Public slot key — surface type travels with the key, so `capability(ROVING)` is typed (no cast).
+// Surface type travels with the key — capability(ROVING) is typed without a cast.
 export const ROVING = sharedCapabilityKey<RovingFocus>('@svelte-atoms/cap:roving');
 
 // RovingFocus — "which item is highlighted": a moving active index with next/previous/first/last/goto.
@@ -104,29 +104,23 @@ export function rovingCapability<T = unknown>(
 	options: RovingProjectionOptions = {}
 ): Capability<RovingFocus<T>> {
 	const toDomId = options.itemDomId ?? ((id: string) => id);
-	return {
+	return defineCapability<RovingFocus<T>>({
 		slot: ROVING,
 		surface: roving,
-		behavior(role, ctx): Behavior | undefined {
-			if (role === 'container') {
-				return {
-					attrs: () => {
-						const active = roving.activeId;
-						return {
-							'aria-activedescendant': active === null ? undefined : toDomId(active),
-							...(options.orientation ? { 'aria-orientation': options.orientation } : {})
-						};
-					}
-				};
-			}
-			if (role === 'item') {
-				const id = ctx as string;
-				return {
-					// boolean (true/false) — the keyboard-navigation styling hook (`[data-highlighted="true"]`)
-					attrs: () => ({ 'data-highlighted': roving.activeId === id })
-				};
-			}
-			return undefined;
+		roles: {
+			container: () => ({
+				attrs: () => {
+					const active = roving.activeId;
+					return {
+						'aria-activedescendant': active === null ? undefined : toDomId(active),
+						...(options.orientation ? { 'aria-orientation': options.orientation } : {})
+					};
+				}
+			}),
+			item: (id) => ({
+				// boolean (true/false) — the keyboard-navigation styling hook (`[data-highlighted="true"]`)
+				attrs: () => ({ 'data-highlighted': roving.activeId === id })
+			})
 		}
-	};
+	});
 }

@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
+import { createRovingFocus, rovingCapability, type RovingBacking } from './roving.svelte';
 import {
-	createRovingFocus,
-	rovingCapability,
-	type RovingBacking
-} from './roving-focus.svelte';
-import { Bond, BondState, BondAtom, bondContextKey, type BondStateProps } from '../bond.svelte';
+	Bond,
+	BondState,
+	BondAtom,
+	bondContextKey,
+	type BondStateProps
+} from '../../bond/bond.svelte';
 
 // Reactive ordered-id list standing in for a bond's Collection.
 function makeBacking(initial: string[] = [], wrap = true) {
@@ -122,7 +124,12 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 
 	it('container reflects the active item id (mapped to a DOM id)', () => {
 		const bond = new TBond(new TState());
-		bond.capability(rovingCapability(bond.state.roving, { itemDomId: (id) => `item-${id}`, orientation: 'vertical' }));
+		bond.capability(
+			rovingCapability(bond.state.roving, {
+				itemDomId: (id) => `item-${id}`,
+				orientation: 'vertical'
+			})
+		);
 		const container = new TAtom(bond, 'list').role('container');
 
 		expect(container.spread['aria-activedescendant']).toBeUndefined(); // nothing active

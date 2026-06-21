@@ -10,13 +10,15 @@
 <script lang="ts">
 	import type { Bond } from './bond.svelte';
 
-	let { bond, tick = 0 }: { bond: Bond; tick?: number } = $props();
+	type ProbeProps = { bond: Bond; tick?: number };
+
+	let { bond, tick = 0 }: ProbeProps = $props();
 
 	// `tick` (a prop) forces the derived to re-run, re-reading atom.spread — the same trigger a real
 	// consumer hits whenever any projected state (selection, isOpen, …) changes. The regression is that
 	// re-reading spread used to re-mint attachment keys and remount the element. bond.atom('item') is
 	// cached, so reading it inside the derived returns the same atom each pass.
-	const props = $derived({ 'data-tick': tick, ...bond.atom('item').spread });
+	const attrs = $derived({ 'data-tick': tick, ...bond.atom('item').spread });
 </script>
 
-<div {...props} data-testid="el">x</div>
+<div {...attrs} data-testid="el">x</div>

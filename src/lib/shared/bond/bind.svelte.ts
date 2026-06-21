@@ -1,7 +1,7 @@
 import { untrack } from 'svelte';
 import type { Bond, BondState, BondStateProps } from './bond.svelte';
-import { defineProperty, defineState, type StateDefiner } from '../utils/state';
-import type { PresetKey } from '../context/preset.svelte';
+import { defineProperty, defineState, type StateDefiner } from '../../utils/state';
+import type { PresetKey } from '../../context/preset.svelte';
 
 // Extracts the state-props type from a Bond; reads state first so defineBond bonds resolve, then falls back to Bond<P>.
 type PropsOf<B extends Bond> = B extends { state: BondState<infer P> }
@@ -50,11 +50,9 @@ function specToDefiners<P extends object>(spec: PropsSpec<P>): StateDefiner<Part
 		});
 }
 
-// Root-component ritual: assembles props via PropsSpec and builds the bond in untrack.
-// Caller shares it explicitly; spreading binding.atomProps + restProps gives preset→spread→rest precedence.
+// Assembles props and builds the bond in untrack; spreading atomProps + restProps gives preset→spread→rest precedence.
 export class BondBinding<B extends Bond = Bond> {
 	readonly bond: B;
-	// The assembled reactive props cell object handed to the factory (the bond's live BondState props).
 	readonly #props: PropsOf<B>;
 	readonly #atomKey: string;
 	readonly #presetGetter: (() => PresetKey | undefined) | undefined;
@@ -79,14 +77,12 @@ export class BondBinding<B extends Bond = Bond> {
 		return this.bond.atom(this.#atomKey);
 	}
 
-	// Reactive props for the root element; merge restProps on top in the template.
 	get props() {
 		const preset = this.preset;
 		return { preset, bond: this.bond, ...this.#props, ...this.atom.spread };
 	}
 }
 
-// Factory shorthand for BondBinding.
 export function bindBond<B extends Bond>(
 	factory: BondFactory<B>,
 	props: PropsSpec<PropsOf<B>>,

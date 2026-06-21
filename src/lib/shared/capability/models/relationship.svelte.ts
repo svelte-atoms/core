@@ -1,7 +1,12 @@
-import { capabilityKey, sharedCapabilityKey, type Behavior, type Capability } from '../bond.svelte';
+import {
+	capabilityKey,
+	defineCapability,
+	sharedCapabilityKey,
+	type Capability
+} from '../capability';
 import type { Disclosure } from './disclosure.svelte';
 
-// Public slot key — surface type travels with the key, so `capability(TRIGGER_CONTENT)` is typed.
+// Surface type travels with the key — capability(TRIGGER_CONTENT) is typed without a cast.
 export const TRIGGER_CONTENT = sharedCapabilityKey<Disclosure>('@svelte-atoms/cap:trigger-content');
 
 // Private slot key (not exported from the public barrel): labelledControl is a behavior-only linkage
@@ -26,30 +31,25 @@ export function triggerContentLink(
 	disclosure: Disclosure,
 	options: TriggerContentOptions = {}
 ): Capability<Disclosure> {
-	return {
+	return defineCapability<Disclosure>({
 		slot: TRIGGER_CONTENT,
 		surface: disclosure,
-		behavior(role): Behavior | undefined {
-			if (role === 'trigger') {
-				return {
-					attrs: (bond) => ({
-						'aria-controls': bond.atomByRole('content')?.id,
-						'aria-expanded': disclosure.isOpen,
-						...(options.haspopup ? { 'aria-haspopup': options.haspopup } : {})
-					})
-				};
-			}
-			if (role === 'content') {
-				return {
-					attrs: (bond) => ({
-						'aria-labelledby': bond.atomByRole('trigger')?.id,
-						...(options.contentRole ? { role: options.contentRole } : {})
-					})
-				};
-			}
-			return undefined;
+		roles: {
+			trigger: () => ({
+				attrs: (bond) => ({
+					'aria-controls': bond.atomByRole('content')?.id,
+					'aria-expanded': disclosure.isOpen,
+					...(options.haspopup ? { 'aria-haspopup': options.haspopup } : {})
+				})
+			}),
+			content: () => ({
+				attrs: (bond) => ({
+					'aria-labelledby': bond.atomByRole('trigger')?.id,
+					...(options.contentRole ? { role: options.contentRole } : {})
+				})
+			})
 		}
-	};
+	});
 }
 
 // Options for `labelledControl`.
@@ -62,26 +62,24 @@ export interface LabelledControlOptions {
 // the ARIA references to its label and description siblings; each reference is omitted when
 // the sibling is absent. Slot 'labelled'.
 export function labelledControl(options: LabelledControlOptions = {}): Capability<void> {
-	return {
+	return defineCapability<void>({
 		slot: LABELLED,
-		surface: undefined,
-		behavior(role): Behavior | undefined {
-			if (role === 'control') {
-				return {
-					attrs: (bond) => {
-						const label = bond.atomByRole('label')?.id;
-						const description = bond.atomByRole('description')?.id;
-						return {
-							...(label ? { 'aria-labelledby': label } : {}),
-							...(description ? { 'aria-describedby': description } : {})
-						};
-					}
-				};
-			}
-			if (role === 'label' && options.nativeFor) {
-				return { attrs: (bond) => ({ for: bond.atomByRole('control')?.id }) };
-			}
-			return undefined;
+		roles: {
+			control: () => ({
+				attrs: (bond) => {
+					const label = bond.atomByRole('label')?.id;
+					const description = bond.atomByRole('description')?.id;
+					return {
+						...(label ? { 'aria-labelledby': label } : {}),
+						...(description ? { 'aria-describedby': description } : {})
+					};
+				}
+			}),
+			// nativeFor emits the real `for` attr only when opted in; otherwise the label projects nothing.
+			label: () =>
+				options.nativeFor
+					? { attrs: (bond) => ({ for: bond.atomByRole('control')?.id }) }
+					: undefined
 		}
-	};
+	});
 }

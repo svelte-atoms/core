@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
-import { Bond, BondState, BondAtom, bondContextKey, type BondStateProps } from '../bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	bondContextKey,
+	type BondStateProps
+} from '../../bond/bond.svelte';
 import { createDisclosure } from './disclosure.svelte';
 import { triggerContentLink, labelledControl } from './relationship.svelte';
 
@@ -76,7 +82,9 @@ describe('triggerContentLink — reusable trigger ↔ content a11y linkage', () 
 
 	it('applies options (contentRole, haspopup)', () => {
 		const bond = new TestBond(new TestState());
-		bond.capability(triggerContentLink(bond.state.disclosure, { haspopup: 'menu', contentRole: 'region' }));
+		bond.capability(
+			triggerContentLink(bond.state.disclosure, { haspopup: 'menu', contentRole: 'region' })
+		);
 		const trigger = bond.addAtom('trigger-btn', 'trigger');
 		const content = bond.addAtom('panel', 'content');
 		expect(trigger.spread['aria-haspopup']).toBe('menu');
