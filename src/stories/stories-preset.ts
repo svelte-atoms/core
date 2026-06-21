@@ -116,7 +116,8 @@ export const storiesPreset: Partial<Preset> = {
 	datagrid: () => ({ class: 'overflow-hidden rounded-lg border border-border bg-card text-sm' }),
 	'datagrid.header': () => ({ class: 'bg-muted/40' }),
 	'datagrid.column': () => ({
-		class: 'h-10 items-center px-3 text-xs font-medium tracking-wide text-muted-foreground uppercase'
+		class:
+			'h-10 items-center px-3 text-xs font-medium tracking-wide text-muted-foreground uppercase'
 	}),
 	'datagrid.cell': () => ({ class: 'px-3' }),
 
@@ -124,15 +125,15 @@ export const storiesPreset: Partial<Preset> = {
 	// already supplies `flex w-full flex-col overflow-hidden`). ------------------------
 	collapsible: () => ({ class: 'rounded-lg border bg-card' }),
 	'collapsible.header': () => ({
-		class: 'justify-between gap-3 px-3 py-3 text-sm font-medium transition-colors hover:bg-foreground/5'
+		class:
+			'justify-between gap-3 px-3 py-3 text-sm font-medium transition-colors hover:bg-foreground/5'
 	}),
 	'collapsible.body': () => ({ class: 'text-sm text-muted-foreground' }),
 	'collapsible.indicator': () => ({ class: 'size-4 shrink-0 text-muted-foreground' }),
 
 	// Popover / menu / dropdown surfaces + items ------------------------------------
 	'popover.content': (bond) => {
-		const isAutoClosable =
-			(bond as unknown as PopoverBond)?.state?.props?.rest?.autoClose ?? false;
+		const isAutoClosable = (bond as unknown as PopoverBond)?.state?.props?.rest?.autoClose ?? false;
 		return {
 			class: `${SURFACE} p-1`,
 			[createAttachmentKey()]: (node: HTMLElement) => {

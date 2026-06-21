@@ -59,7 +59,9 @@
 				{#if isLastStep}
 					<Button size="sm" class="h-7 text-xs" onclick={() => (activeStep = 0)}>Restart</Button>
 				{:else}
-					<Button size="sm" class="h-7 text-xs" onclick={() => stepper.state.navigation.next()}>Next</Button>
+					<Button size="sm" class="h-7 text-xs" onclick={() => stepper.state.navigation.next()}
+						>Next</Button
+					>
 				{/if}
 			{/snippet}
 		</Stepper.Footer>

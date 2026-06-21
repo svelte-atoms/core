@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { createExampleLoader } from '$docs/utils/example-loader';
-	import { DocComponentPage, DocSection, DocExample, DocCode, DocPropsTabs } from '$docs/components';
+	import {
+		DocComponentPage,
+		DocSection,
+		DocExample,
+		DocCode,
+		DocPropsTabs
+	} from '$docs/components';
 	import type { PropsSection } from '$docs/components';
 	import { htmlAtomProps } from './props';
 	import { metadata } from './shared';
@@ -19,11 +25,15 @@
 	};
 
 	const apiSections: PropsSection[] = [
-		{ label: 'HtmlAtom Props', presetKey: 'atom', props: htmlAtomProps },
+		{ label: 'HtmlAtom Props', presetKey: 'atom', props: htmlAtomProps }
 	];
 
 	const _loaders = import.meta.glob('./examples/*.svelte');
-	const _sources = import.meta.glob('./examples/*.svelte', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+	const _sources = import.meta.glob('./examples/*.svelte', {
+		query: '?raw',
+		import: 'default',
+		eager: true
+	}) as Record<string, string>;
 	const ex = createExampleLoader(_loaders, _sources);
 </script>
 
@@ -35,8 +45,16 @@
 	next={{ label: 'Avatar', href: '/docs/components/avatar' }}
 >
 	{#snippet examples()}
-		<DocExample title="Basic Usage" description="Render any HTML element with the as prop" {...ex('./examples/basic.svelte')} />
-		<DocExample title="Variants System" description="Define reusable style combinations with type-safe props" {...ex('./examples/variants.svelte')} />
+		<DocExample
+			title="Basic Usage"
+			description="Render any HTML element with the as prop"
+			{...ex('./examples/basic.svelte')}
+		/>
+		<DocExample
+			title="Variants System"
+			description="Define reusable style combinations with type-safe props"
+			{...ex('./examples/variants.svelte')}
+		/>
 	{/snippet}
 
 	{#snippet extra()}

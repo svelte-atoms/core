@@ -4,7 +4,7 @@
 
 	let {
 		for: target = 'both',
-		children,
+		children
 	}: {
 		// Render mode gate: "html" = browser only, "markdown" = LLM output only, "both" = always (default)
 		for?: DocMode | 'both';

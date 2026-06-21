@@ -16,7 +16,8 @@ export const cardRootProps: PropDefinition[] = [
 		name: 'onclick',
 		type: '((event: MouseEvent) => void) | undefined',
 		default: 'undefined',
-		description: 'Click handler. When provided, the card becomes interactive/clickable with appropriate styling.'
+		description:
+			'Click handler. When provided, the card becomes interactive/clickable with appropriate styling.'
 	},
 	{
 		name: 'onkeydown',
@@ -34,8 +35,9 @@ export const cardRootProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
 
 export const cardSubPartProps: PropDefinition[] = [
@@ -61,6 +63,7 @@ export const cardSubPartProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];

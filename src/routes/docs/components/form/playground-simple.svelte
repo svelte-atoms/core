@@ -107,8 +107,7 @@
 										: selectedSize === 'lg'
 											? 'px-4 py-3 text-base'
 											: ''
-								}`}
-							></textarea>
+								}`}></textarea>
 						</div>
 
 						<div class="flex items-center space-x-2">

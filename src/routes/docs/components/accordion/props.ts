@@ -46,8 +46,9 @@ export const accordionRootProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
 
 export const accordionItemRootProps: PropDefinition[] = [
@@ -55,7 +56,8 @@ export const accordionItemRootProps: PropDefinition[] = [
 		name: 'value',
 		type: 'string | undefined',
 		default: 'undefined',
-		description: 'Unique identifier for this accordion item. Used to control open state programmatically.'
+		description:
+			'Unique identifier for this accordion item. Used to control open state programmatically.'
 	},
 	{
 		name: 'disabled',
@@ -73,8 +75,9 @@ export const accordionItemRootProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
 
 export const accordionItemHeaderProps: PropDefinition[] = [
@@ -100,8 +103,9 @@ export const accordionItemHeaderProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
 
 export const accordionItemBodyProps: PropDefinition[] = [
@@ -127,8 +131,9 @@ export const accordionItemBodyProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];
 
 export const accordionItemIndicatorProps: PropDefinition[] = [
@@ -154,6 +159,7 @@ export const accordionItemIndicatorProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
-	},
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+	}
 ];

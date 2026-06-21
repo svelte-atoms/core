@@ -5,7 +5,7 @@
 
 	let {
 		features,
-		title = undefined,
+		title = undefined
 	}: {
 		features: string[];
 		title?: string;
@@ -13,6 +13,7 @@
 
 	const mode = getDocMode();
 </script>
+
 {#if mode === 'html'}
 	<AccessibilityInfo {features} {title} />
 {:else}

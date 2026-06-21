@@ -15,22 +15,18 @@
 
 <FrontMatter {frontmatter} />
 
-# Extending & Fusing
+# Extending & Fusing Every component is a **bond** — a bag of *atoms* (DOM slots) and *capabilities*
+(behaviour). Because a bond is data, the set of bonds is closed under combination: you can extend
+one, fuse two, author a new one, and project shared behaviour as a capability — all over the same
+public seam. The four moves, smallest to largest: - **Extend** — inherit a component and override a
+slot ({inlineCode('defineBond({ extends })')}) - **Fuse** — combine two bonds into a new one ({inlineCode(
+	'fuse(...)'
+)}) - **Author** — declare a bond from atoms + capabilities ({inlineCode('defineBond(...)')}) -
+**Capability** — extract reusable behaviour onto the role seam ## Extend a component
 
-Every component is a **bond** — a bag of *atoms* (DOM slots) and *capabilities* (behaviour).
-Because a bond is data, the set of bonds is closed under combination: you can extend one, fuse
-two, author a new one, and project shared behaviour as a capability — all over the same public
-seam. The four moves, smallest to largest:
-
-- **Extend** — inherit a component and override a slot ({inlineCode('defineBond({ extends })')})
-- **Fuse** — combine two bonds into a new one ({inlineCode('fuse(...)')})
-- **Author** — declare a bond from atoms + capabilities ({inlineCode('defineBond(...)')})
-- **Capability** — extract reusable behaviour onto the role seam
-
-## Extend a component
-
-{inlineCode('extends')} is single-parent spec composition — the declarative {inlineCode('class extends')}.
-You inherit the parent's atoms, capabilities, and context key, and declare only what differs.
+{inlineCode('extends')} is single-parent spec composition — the declarative {inlineCode(
+	'class extends'
+)}. You inherit the parent's atoms, capabilities, and context key, and declare only what differs.
 The result is a real subclass: {inlineCode('instanceof')} the parent, same behaviour, rebranded.
 
 {codeBlock(
@@ -50,15 +46,13 @@ export type CommandMenuBond = InstanceType<typeof CommandMenuBond>;`,
 	'typescript'
 )}
 
-There is **one mechanism** for both composition and customisation: re-register an atom slot
-(via {inlineCode('atoms')}) or a capability slot (via {inlineCode('capabilities')}), and the
-later registration wins. No parallel hook system.
+There is **one mechanism** for both composition and customisation: re-register an atom slot (via {inlineCode(
+	'atoms'
+)}) or a capability slot (via {inlineCode('capabilities')}), and the later registration wins. No
+parallel hook system. ## Fuse two components
 
-## Fuse two components
-
-{inlineCode('fuse')} unions the parts' atoms and concatenates their capabilities, then resolves
-each slot last-wins. The result is a first-class bond you can fuse again (the closure property:
-bond + bond = bond).
+{inlineCode('fuse')} unions the parts' atoms and concatenates their capabilities, then resolves each slot
+last-wins. The result is a first-class bond you can fuse again (the closure property: bond + bond = bond).
 
 {codeBlock(
 	`import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@svelte-atoms/core';
@@ -73,9 +67,9 @@ export type PopoverDialogBond = InstanceType<typeof PopoverDialogBond>;`,
 	'typescript'
 )}
 
-**Reuse the parts' own components.** A fused bond is shared under *each part's* context key, so
-the parts' existing atom components resolve it. Your fusion's atom tree is mostly re-exports —
-not bespoke wrappers.
+**Reuse the parts' own components.** A fused bond is shared under *each part's* context key, so the
+parts' existing atom components resolve it. Your fusion's atom tree is mostly re-exports — not
+bespoke wrappers.
 
 {codeBlock(
 	`<PopoverDialog.Root bind:open>
@@ -90,9 +84,9 @@ not bespoke wrappers.
 
 ## Author a bond from scratch
 
-{inlineCode('defineBond')} wires a declarative spec — atoms, capabilities, and non-atom methods —
-into a real Bond subclass with cached, typed atom factories and a context key. State stays a
-class you inject at construction.
+{inlineCode('defineBond')} wires a declarative spec — atoms, capabilities, and non-atom methods — into
+a real Bond subclass with cached, typed atom factories and a context key. State stays a class you inject
+at construction.
 
 {codeBlock(
 	`import { defineBond, BondAtom } from '@svelte-atoms/core';
@@ -117,14 +111,11 @@ export type TilesBond = InstanceType<typeof TilesBond>;
 	'typescript'
 )}
 
-## Capabilities
-
-Behaviour lives in capabilities, not base classes — which is exactly why bonds compose. Reach
-for a built-in, or write your own.
-
-**Built-in stateful capabilities.** {inlineCode('RovingFocus')} ("which item is highlighted")
-and {inlineCode('SelectionModel')} ("what's committed") are two responsibilities a listbox
-composes — one each.
+## Capabilities Behaviour lives in capabilities, not base classes — which is exactly why bonds
+compose. Reach for a built-in, or write your own. **Built-in stateful capabilities.** {inlineCode(
+	'RovingFocus'
+)} ("which item is highlighted") and {inlineCode('SelectionModel')} ("what's committed") are two responsibilities
+a listbox composes — one each.
 
 {codeBlock(
 	`import {
@@ -149,8 +140,8 @@ capabilities: () => [
 	'typescript'
 )}
 
-**Write your own.** A capability is a {inlineCode('{ slot, surface, behavior(role) }')} triple.
-Atoms opt into a projection with {inlineCode('.role(role)')}; {inlineCode('fuse')}/{inlineCode(
+**Write your own.** A capability is a {inlineCode('{ slot, surface, behavior(role) }')} triple. Atoms
+opt into a projection with {inlineCode('.role(role)')}; {inlineCode('fuse')}/{inlineCode(
 	'defineBond'
 )} merge and resolve on the slot.
 
@@ -174,14 +165,11 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 	'typescript'
 )}
 
-A **capability** is the noun — it has a {inlineCode('slot')}, lives in the spec, and is what
-fusion resolves. A **behaviour** is the verb — the per-role projection an atom folds, with no
-identity. Use a capability when two parts must resolve to one (focus, selection, roving); use a
-one-off behaviour for an ad-hoc, single-atom decoration via {inlineCode('atom.use(...)')}.
-
-## Extend or compose?
-
-Reach for the smallest move that fits. If you only need to rearrange markup or restyle, **compose
-atoms** and use {inlineCode('base')}/{inlineCode('preset')} — no new bond needed. Reach for
-{inlineCode('extends')}/{inlineCode('fuse')} only when you need new *behaviour*: a new atom slot,
-a different capability, or two components' behaviour in one.
+A **capability** is the noun — it has a {inlineCode('slot')}, lives in the spec, and is what fusion
+resolves. A **behaviour** is the verb — the per-role projection an atom folds, with no identity. Use
+a capability when two parts must resolve to one (focus, selection, roving); use a one-off behaviour
+for an ad-hoc, single-atom decoration via {inlineCode('atom.use(...)')}. ## Extend or compose? Reach
+for the smallest move that fits. If you only need to rearrange markup or restyle, **compose atoms**
+and use {inlineCode('base')}/{inlineCode('preset')} — no new bond needed. Reach for
+{inlineCode('extends')}/{inlineCode('fuse')} only when you need new *behaviour*: a new atom slot, a different
+capability, or two components' behaviour in one.

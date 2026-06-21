@@ -22,7 +22,8 @@ export const collapsibleRootProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	}
 ];
 
@@ -49,7 +50,8 @@ export const collapsibleHeaderProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	}
 ];
 
@@ -76,6 +78,7 @@ export const collapsibleBodyProps: PropDefinition[] = [
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',
-		description: 'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
+		description:
+			'All HTML element props are supported. See [Atom Props](/docs/components/atom#props) for the complete list of inherited properties.'
 	}
 ];

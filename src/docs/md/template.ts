@@ -11,9 +11,7 @@ export function md(strings: TemplateStringsArray, ...values: any[]): string {
 
 	if (nonEmptyLines.length === 0) return '';
 
-	const minIndent = Math.min(
-		...nonEmptyLines.map((line) => line.match(/^\s*/)?.[0].length ?? 0)
-	);
+	const minIndent = Math.min(...nonEmptyLines.map((line) => line.match(/^\s*/)?.[0].length ?? 0));
 
 	return lines
 		.map((line) => line.slice(minIndent))

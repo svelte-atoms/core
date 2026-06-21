@@ -128,9 +128,9 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 		<Section.Title>Extending &amp; Fusing</Section.Title>
 		<Section.Subtitle>
 			Every component is a <strong>bond</strong> — a bag of <em>atoms</em> (DOM slots) and
-			<em>capabilities</em> (behaviour). Because a bond is data, the set of bonds is closed under
-			combination: you can extend one, fuse two, author a new one, and project shared behaviour as a
-			capability — all over the same public seam.
+			<em>capabilities</em> (behaviour). Because a bond is data, the set of bonds is closed under combination:
+			you can extend one, fuse two, author a new one, and project shared behaviour as a capability — all
+			over the same public seam.
 		</Section.Subtitle>
 	</Section.Header>
 
@@ -139,7 +139,8 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 		<ul class="text-muted-foreground list-disc space-y-1 pl-5 text-sm">
 			<li>
 				<strong>Extend</strong> — inherit a component and override a slot (<code
-					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineBond({'{ extends }'})</code
+					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+					>defineBond({'{ extends }'})</code
 				>)
 			</li>
 			<li>
@@ -161,10 +162,10 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 	<Section.Header>
 		<Section.Title>Extend a component</Section.Title>
 		<Section.Subtitle>
-			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">extends</code> is single-parent
-			spec composition — the declarative <code
-				class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">class extends</code
-			>. You inherit the parent's atoms, capabilities, and context key, and declare only what differs.
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">extends</code> is
+			single-parent spec composition — the declarative
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">class extends</code>. You
+			inherit the parent's atoms, capabilities, and context key, and declare only what differs.
 		</Section.Subtitle>
 	</Section.Header>
 
@@ -175,8 +176,9 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 	<DocCallout variant="info" title="Override by re-registering — last-wins">
 		There is one mechanism for both composition and customisation: re-register an atom slot (via
 		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">atoms</code>) or a capability
-		slot (via <code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">capabilities</code>),
-		and the later registration wins. No parallel hook system.
+		slot (via
+		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">capabilities</code>), and the
+		later registration wins. No parallel hook system.
 	</DocCallout>
 </Section.Root>
 
@@ -211,8 +213,8 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 		<Section.Title>Author a bond from scratch</Section.Title>
 		<Section.Subtitle>
 			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineBond</code> wires a declarative
-			spec — atoms, capabilities, and non-atom methods — into a real Bond subclass with cached, typed atom
-			factories and a context key.
+			spec — atoms, capabilities, and non-atom methods — into a real Bond subclass with cached, typed
+			atom factories and a context key.
 		</Section.Subtitle>
 	</Section.Header>
 
@@ -225,8 +227,8 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 	<Section.Header>
 		<Section.Title>Capabilities</Section.Title>
 		<Section.Subtitle>
-			Behaviour lives in capabilities, not base classes — which is exactly why bonds compose. Reach for
-			a built-in, or write your own.
+			Behaviour lives in capabilities, not base classes — which is exactly why bonds compose. Reach
+			for a built-in, or write your own.
 		</Section.Subtitle>
 	</Section.Header>
 
@@ -234,10 +236,10 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 		<div>
 			<p class="text-foreground mb-1 text-sm font-semibold">Built-in stateful capabilities</p>
 			<p class="text-muted-foreground mb-3 text-sm">
-				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">RovingFocus</code> ("which
-				item is highlighted") and <code
-					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">SelectionModel</code
-				> ("what's committed") are two responsibilities a listbox composes — one each.
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">RovingFocus</code>
+				("which item is highlighted") and
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">SelectionModel</code> ("what's
+				committed") are two responsibilities a listbox composes — one each.
 			</p>
 			<div class="overflow-hidden rounded-lg">
 				<CodeBlock lang="typescript" code={builtinsCode} />
@@ -249,9 +251,10 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 			<p class="text-muted-foreground mb-3 text-sm">
 				A capability is a <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
 					>{'{ slot, surface, behavior(role) }'}</code
-				> triple. Atoms opt into a projection with <code
-					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.role(role)</code
-				>; <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">fuse</code>/<code
+				>
+				triple. Atoms opt into a projection with
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">.role(role)</code>;
+				<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">fuse</code>/<code
 					class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs">defineBond</code
 				> merge and resolve on the slot.
 			</p>
@@ -262,11 +265,11 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 	</div>
 
 	<DocCallout variant="info" title="Capability or behaviour?">
-		A <strong>capability</strong> is the noun — it has a <code
-			class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">slot</code
-		>, lives in the spec, and is what fusion resolves. A <strong>behaviour</strong> is the verb — the per-role
-		projection an atom folds, with no identity. Use a capability when two parts must resolve to one (focus,
-		selection, roving); use a one-off behaviour for an ad-hoc, single-atom decoration via
+		A <strong>capability</strong> is the noun — it has a
+		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">slot</code>, lives in the
+		spec, and is what fusion resolves. A <strong>behaviour</strong> is the verb — the per-role
+		projection an atom folds, with no identity. Use a capability when two parts must resolve to one
+		(focus, selection, roving); use a one-off behaviour for an ad-hoc, single-atom decoration via
 		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">atom.use(...)</code>.
 	</DocCallout>
 </Section.Root>
@@ -281,9 +284,12 @@ export function busyCapability(isBusy: () => boolean): Capability<{ readonly bus
 		If you only need to rearrange markup or restyle, <strong>compose atoms</strong> and use
 		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">base</code>/<code
 			class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">preset</code
-		> — no new bond needed. Reach for <code
-			class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">extends</code
-		>/<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">fuse</code> only when you need new
+		>
+		— no new bond needed. Reach for
+		<code class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">extends</code>/<code
+			class="bg-muted text-foreground rounded px-1 py-0.5 text-xs">fuse</code
+		>
+		only when you need new
 		<em>behaviour</em> (a new atom slot, a different capability, or two components' behaviour in one).
 	</DocCallout>
 </Section.Root>

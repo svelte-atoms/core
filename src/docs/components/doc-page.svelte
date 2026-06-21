@@ -18,7 +18,7 @@
 		prev = undefined,
 		next = undefined,
 		frontmatter = undefined,
-		children,
+		children
 	}: {
 		contentType?: DocMode;
 		title: string;
@@ -37,7 +37,9 @@
 
 {#if contentType === 'html'}
 	<div class="py-8">
-		<div class="sticky top-[57px] z-9 -mx-8 bg-background/95 px-8 py-3 backdrop-blur-sm transition-all duration-200">
+		<div
+			class="sticky top-[57px] z-9 -mx-8 bg-background/95 px-8 py-3 backdrop-blur-sm transition-all duration-200"
+		>
 			<Breadcrumb items={breadcrumbs} />
 			<PageHeader {title} {description} {status} {llms} />
 		</div>
@@ -49,9 +51,9 @@
 		<FrontMatter {frontmatter} />
 	{/if}
 
-# {title}
+	# {title}
 
-{description}{newLine()}
+	{description}{newLine()}
 
-{@render children()}
+	{@render children()}
 {/if}

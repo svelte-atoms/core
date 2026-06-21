@@ -12,86 +12,71 @@
 
 {metadata.pageDescription}
 
-## What Are Atoms?
-
-In chemistry, atoms are the basic units that combine to form molecules. In Svelte Atoms, the same principle applies: atoms are the fundamental components that combine to create more complex UI patterns.
-
-Unlike traditional component libraries that provide fully-featured components, atoms give you the raw building blocks. They handle the hard parts (accessibility, keyboard navigation, state management) while giving you complete control over structure and styling.
-
-## Core Concepts
+## What Are Atoms? In chemistry, atoms are the basic units that combine to form molecules. In Svelte
+Atoms, the same principle applies: atoms are the fundamental components that combine to create more
+complex UI patterns. Unlike traditional component libraries that provide fully-featured components,
+atoms give you the raw building blocks. They handle the hard parts (accessibility, keyboard
+navigation, state management) while giving you complete control over structure and styling. ## Core
+Concepts
 
 {#each metadata.concepts as concept, i (i)}
-### {concept.title}
+	### {concept.title}
 
-{concept.description}
-
+	{concept.description}
 {/each}
 
 ### Key Features
 
 {list(metadata.anatomyExample.features.map((f) => `**${f.label}**: ${f.description}`))}
 
-## Anatomy of an Atom
-
-Here's how an atom works with a simple example:
+## Anatomy of an Atom Here's how an atom works with a simple example:
 
 {codeBlock(metadata.examples.anatomy, 'svelte')}
 
 ## When to Use Atoms
 
 {#each metadata.whenToUse as use, i (i)}
-### {use.category}
+	### {use.category}
 
-{use.description}
+	{use.description}
 
-**Examples:**
-{list(use.examples)}
-
+	**Examples:**
+	{list(use.examples)}
 {/each}
 
-## Atoms vs Full Components
-
-### Atoms
+## Atoms vs Full Components ### Atoms
 
 {list(metadata.atomsVsComponents.atoms.features.map((f) => `**${f.positive}**: ${f.text}`))}
 
-**Use atoms when:**
-- You need maximum flexibility
-- Your design system is unique
-- You want complete control over markup
-- You're building custom component patterns
-- You want to understand how things work
-
-### Full Components
+**Use atoms when:** - You need maximum flexibility - Your design system is unique - You want
+complete control over markup - You're building custom component patterns - You want to understand
+how things work ### Full Components
 
 {list(metadata.atomsVsComponents.components.features.map((f) => `**${f.positive}**: ${f.text}`))}
 
-**Use full components when:**
-- You want to move quickly
-- You're okay with opinionated defaults
-- You need common patterns out of the box
-- You prefer convention over configuration
-
-## Available Atoms
+**Use full components when:** - You want to move quickly - You're okay with opinionated defaults -
+You need common patterns out of the box - You prefer convention over configuration ## Available
+Atoms
 
 {#each metadata.availableAtoms as atom, i (i)}
-### {atom.name}
+	### {atom.name}
 
-{atom.description}
-
+	{atom.description}
 {/each}
 
-## Getting Started with Atoms
+## Getting Started with Atoms ### 1. Import an Atom
 
-### 1. Import an Atom
-
-{codeBlock(`
+{codeBlock(
+	`
 import { HtmlAtom } from '@svelte-atoms/core';
-`, 'typescript')}
+`,
+	'typescript'
+)}
 
 ### 2. Define Variants (Optional)
 
-{codeBlock(`
+{codeBlock(
+	`
 import { defineVariants } from '@svelte-atoms/core/utils';
 
 const buttonVariants = defineVariants({
@@ -111,11 +96,14 @@ const buttonVariants = defineVariants({
     size: 'md'
   }
 });
-`, 'typescript')}
+`,
+	'typescript'
+)}
 
 ### 3. Use the Atom
 
-{codeBlock(`
+{codeBlock(
+	`
 <HtmlAtom
   as="button"
   variants={buttonVariants}
@@ -125,11 +113,11 @@ const buttonVariants = defineVariants({
 >
   Click me
 </HtmlAtom>
-`, 'svelte')}
+`,
+	'svelte'
+)}
 
-## Examples
-
-### Custom Button Component
+## Examples ### Custom Button Component
 
 {codeBlock(metadata.examples.customButton, 'svelte')}
 

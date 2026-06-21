@@ -1,15 +1,15 @@
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-  import { FrontMatter } from '$docs/md/components';
-  import { codeBlock, list } from '$docs/md/template';
+	import { FrontMatter } from '$docs/md/components';
+	import { codeBlock, list } from '$docs/md/template';
 
-  let { data } = $props();
-  const { metadata, frontmatter } = $derived(data);
+	let { data } = $props();
+	const { metadata, frontmatter } = $derived(data);
 </script>
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 <FrontMatter {frontmatter} />
-
 
 # {metadata.pageTitle}
 
@@ -19,29 +19,28 @@
 
 {metadata.overview}
 
-Bonds are the foundation for complex components in Svelte Atoms. They encapsulate state, behavior, and element management in a type-safe, reactive way. Think of bonds as intelligent glue that connects component state to DOM elements while handling all the complexity of ARIA attributes, focus management, and event coordination.
-
-## Key Features
+Bonds are the foundation for complex components in Svelte Atoms. They encapsulate state, behavior,
+and element management in a type-safe, reactive way. Think of bonds as intelligent glue that
+connects component state to DOM elements while handling all the complexity of ARIA attributes, focus
+management, and event coordination. ## Key Features
 
 {list(metadata.keyFeatures)}
 
 ## Bond Architecture
 
 {#each metadata.architecture as arch, i (i)}
-### {arch.component}
+	### {arch.component}
 
-{arch.description}
+	{arch.description}
 
-**Responsibilities:**
-{list(arch.responsibilities)}
-
+	**Responsibilities:**
+	{list(arch.responsibilities)}
 {/each}
 
-## Creating a Bond
+## Creating a Bond ### Step 1: Define Props Type
 
-### Step 1: Define Props Type
-
-{codeBlock(`
+{codeBlock(
+	`
 import { BondStateProps } from '@svelte-atoms/core';
 
 // Define the props type for your bond state
@@ -50,21 +49,27 @@ export type MyComponentStateProps = BondStateProps & {
   disabled: boolean;
   // Add your component-specific props
 };
-`, 'typescript')}
+`,
+	'typescript'
+)}
 
 ### Step 2: Define DOM Elements
 
-{codeBlock(`// Define the HTML elements your bond will manage
+{codeBlock(
+	`// Define the HTML elements your bond will manage
 export type MyComponentDomElements = {
   root: HTMLElement;
   trigger: HTMLElement;
   content: HTMLElement;
   // Add your component-specific elements
-};`, 'typescript')}
+};`,
+	'typescript'
+)}
 
 ### Step 3: Create BondState Class
 
-{codeBlock(`import { BondState } from '@svelte-atoms/core';
+{codeBlock(
+	`import { BondState } from '@svelte-atoms/core';
 
 // Create the BondState class to manage reactive state
 export class MyComponentState<
@@ -91,11 +96,14 @@ export class MyComponentState<
   toggle() {
     this.props.open = !this.props.open;
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
 ### Step 4: Create Bond Class
 
-{codeBlock(`import { Bond } from '@svelte-atoms/core';
+{codeBlock(
+	`import { Bond } from '@svelte-atoms/core';
 import { getContext, setContext } from 'svelte';
 
 // Create the Bond class to manage elements and props
@@ -151,11 +159,14 @@ export class MyComponentBond<
   static override set(bond: MyComponentBond) {
     return setContext(MyComponentBond.CONTEXT_KEY, bond);
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
 ### Step 5: Use in Component
 
-{codeBlock(`<script lang="ts">
+{codeBlock(
+	`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { MyComponentBond, MyComponentState } from './bond.svelte';
   import { defineState, defineProperty } from '@svelte-atoms/core/utils';
@@ -182,24 +193,24 @@ export class MyComponentBond<
   <div {...bond.content()}>
     Content goes here
   </div>
-</div>`, 'svelte')}
+</div>`,
+	'svelte'
+)}
 
 ## Bond Patterns
 
 {#each metadata.bondPatterns as pattern, i (i)}
-### {pattern.title}
+	### {pattern.title}
 
-{pattern.description}
+	{pattern.description}
 
-**Use Case:** {pattern.useCase}
-
+	**Use Case:** {pattern.useCase}
 {/each}
 
-## Advanced Examples
+## Advanced Examples ### Reactive Props with defineState
 
-### Reactive Props with defineState
-
-{codeBlock(`import { defineState, defineProperty } from '@svelte-atoms/core/utils';
+{codeBlock(
+	`import { defineState, defineProperty } from '@svelte-atoms/core/utils';
 
 let open = $bindable(false);
 
@@ -210,11 +221,14 @@ const bondProps = defineState<DialogBondProps>([
   disabled: false  // Static defaults only — frozen snapshot, not reactive
 }));
 
-const state = new DialogBondState(bondProps);`, 'typescript')}
+const state = new DialogBondState(bondProps);`,
+	'typescript'
+)}
 
 ### Element Props with Spread
 
-{codeBlock(`<script lang="ts">
+{codeBlock(
+	`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
   const bond = new DialogBond(state).share();
 </script>
@@ -223,11 +237,14 @@ const state = new DialogBondState(bondProps);`, 'typescript')}
 <div {...bond.root()}>
   <h2 {...bond.title()}>Dialog Title</h2>
   <div {...bond.body()}>Content</div>
-</div>`, 'svelte')}
+</div>`,
+	'svelte'
+)}
 
 ### Accessing Bond from Children
 
-{codeBlock(`<script lang="ts">
+{codeBlock(
+	`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
   // In child component, retrieve parent bond
   const bond = DialogBond.get();
@@ -239,11 +256,14 @@ const state = new DialogBondState(bondProps);`, 'typescript')}
 
 <button onclick={handleClick}>
   {bond?.state.props.open ? 'Close' : 'Open'}
-</button>`, 'svelte')}
+</button>`,
+	'svelte'
+)}
 
 ### Bond Factories
 
-{codeBlock(`<script lang="ts">
+{codeBlock(
+	`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { createTreeBond } from './factory';
   
@@ -261,11 +281,14 @@ const state = new DialogBondState(bondProps);`, 'typescript')}
     const state = new TreeState(props);
     return new TreeBond(state);
   }
-</script>`, 'svelte')}
+</script>`,
+	'svelte'
+)}
 
 ### Imperative Bond Access
 
-{codeBlock(`<script lang="ts">
+{codeBlock(
+	`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
   import { TreeRoot } from './components';
   
@@ -278,13 +301,14 @@ const state = new DialogBondState(bondProps);`, 'typescript')}
 </script>
 
 <TreeRoot bind:this={treeRef} />
-<button onclick={handleClick}>Toggle Tree</button>`, 'svelte')}
+<button onclick={handleClick}>Toggle Tree</button>`,
+	'svelte'
+)}
 
-## Type Safety
+## Type Safety Bonds are fully type-safe with TypeScript:
 
-Bonds are fully type-safe with TypeScript:
-
-{codeBlock(`// Props are strongly typed
+{codeBlock(
+	`// Props are strongly typed
 type MyProps = BondStateProps & {
   value: string;
   onChange: (value: string) => void;
@@ -307,23 +331,19 @@ class MyBond extends Bond<MyProps, MyState, MyElements> {
       }
     };
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
-## Performance Considerations
+## Performance Considerations Bonds are designed for optimal performance: 1. **Fine-grained
+Reactivity**: Props passed as functions enable precise dependency tracking 2. **Memoization**:
+Derived state is automatically memoized with $derived 3. **Lazy Evaluation**: Props objects are only
+created when accessed 4. **Minimal Re-renders**: Only components that use tracked state re-render 5.
+**Element Attachments**: Automatic element tracking without manual refs ## Common Patterns ###
+Dialog/Modal Bond
 
-Bonds are designed for optimal performance:
-
-1. **Fine-grained Reactivity**: Props passed as functions enable precise dependency tracking
-2. **Memoization**: Derived state is automatically memoized with $derived
-3. **Lazy Evaluation**: Props objects are only created when accessed
-4. **Minimal Re-renders**: Only components that use tracked state re-render
-5. **Element Attachments**: Automatic element tracking without manual refs
-
-## Common Patterns
-
-### Dialog/Modal Bond
-
-{codeBlock(`class DialogState extends BondState<DialogProps> {
+{codeBlock(
+	`class DialogState extends BondState<DialogProps> {
   get isOpen() { return this.props.open; }
   open() { this.props.open = true; }
   close() { this.props.open = false; }
@@ -343,11 +363,14 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
       onclick: () => this.state.close()
     };
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
 ### Tabs Bond
 
-{codeBlock(`class TabsState extends BondState<TabsProps> {
+{codeBlock(
+	`class TabsState extends BondState<TabsProps> {
   #items = new SvelteMap<string, TabBond>();
   #selectedItem = $derived(this.#items.get(this.props.value));
   
@@ -360,11 +383,14 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
   registerTab(id: string, bond: TabBond) {
     this.#items.set(id, bond);
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
 ### Accordion Bond
 
-{codeBlock(`class AccordionState extends BondState<AccordionProps> {
+{codeBlock(
+	`class AccordionState extends BondState<AccordionProps> {
   #openItems = $state<Set<string>>(new Set());
   
   isOpen(id: string) {
@@ -381,22 +407,20 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
       this.#openItems.add(id);
     }
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
-## Best Practices
+## Best Practices 1. **Use Functions for Props**: Pass props as functions for optimal reactivity 2.
+**Keep State Minimal**: Only store what's necessary in bond state 3. **Derive When Possible**: Use
+$derived for computed values 4. **Share via Context**: Use context for compound components 5. **Type
+Everything**: Leverage TypeScript for all bond definitions 6. **Generate Element Props**: Let bonds
+handle ARIA and event binding 7. **Test Bonds Separately**: Unit test bond logic independent of
+components 8. **Document Public API**: Clearly document bond methods and properties ## Debugging
+Bonds
 
-1. **Use Functions for Props**: Pass props as functions for optimal reactivity
-2. **Keep State Minimal**: Only store what's necessary in bond state
-3. **Derive When Possible**: Use $derived for computed values
-4. **Share via Context**: Use context for compound components
-5. **Type Everything**: Leverage TypeScript for all bond definitions
-6. **Generate Element Props**: Let bonds handle ARIA and event binding
-7. **Test Bonds Separately**: Unit test bond logic independent of components
-8. **Document Public API**: Clearly document bond methods and properties
-
-## Debugging Bonds
-
-{codeBlock(`class MyBond extends Bond<Props, State, Elements> {
+{codeBlock(
+	`class MyBond extends Bond<Props, State, Elements> {
   // Add debug helpers
   debug() {
     console.log('Bond State:', this.state.props);
@@ -410,13 +434,14 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
     console.log('Root props:', props);
     return props;
   }
-}`, 'typescript')}
+}`,
+	'typescript'
+)}
 
-## Migration from Other Patterns
+## Migration from Other Patterns ### From Props Drilling
 
-### From Props Drilling
-
-{codeBlock(`<!-- Before: Props drilling -->
+{codeBlock(
+	`<!-- Before: Props drilling -->
 <Parent>
   <Child {parentState} {onUpdate} />
   <Grandchild {parentState} {onUpdate} />
@@ -426,11 +451,14 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
 <Parent>
   <Child />  <!-- Accesses bond via context -->
   <Grandchild />  <!-- No prop drilling -->
-</Parent>`, 'svelte')}
+</Parent>`,
+	'svelte'
+)}
 
 ### From Global Stores
 
-{codeBlock(`<!-- Before: Global store -->
+{codeBlock(
+	`<!-- Before: Global store -->
 <script>
   import { dialogStore } from './stores';
 </script>
@@ -438,11 +466,11 @@ class DialogBond extends Bond<DialogProps, DialogState, DialogElements> {
 <!-- After: Scoped bond -->
 <script>
   const bond = new DialogBond(state);
-</script>`, 'svelte')}
+</script>`,
+	'svelte'
+)}
 
-## Next Steps
-
-- Learn about [Atoms](/docs/atoms) - the components that use bonds
-- Explore [Component Examples](/docs/components) to see bonds in action
-- Read the [Philosophy](/docs/philosophy) to understand the design decisions
-- Check out [Advanced Patterns](/docs/advanced) for complex use cases
+## Next Steps - Learn about [Atoms](/docs/atoms) - the components that use bonds - Explore
+[Component Examples](/docs/components) to see bonds in action - Read the
+[Philosophy](/docs/philosophy) to understand the design decisions - Check out [Advanced
+Patterns](/docs/advanced) for complex use cases

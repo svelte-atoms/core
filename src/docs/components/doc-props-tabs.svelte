@@ -11,7 +11,10 @@
 	const mode = getDocMode();
 
 	function toValue(label: string) {
-		return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+		return label
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-|-$/g, '');
 	}
 
 	const resolved = $derived(sections.map((s) => ({ ...s, value: s.value ?? toValue(s.label) })));
@@ -39,12 +42,11 @@
 		</Tabs.Body>
 	</Tabs.Root>
 {:else}
-{#each resolved as section (section.value)}
-{newLine(2)}### {section.label}
-{#if section.presetKey}
-
-**Preset Key:** `{section.presetKey}`
-{/if}
-<PropsTable props={section.props} />
-{/each}
+	{#each resolved as section (section.value)}
+		{newLine(2)}### {section.label}
+		{#if section.presetKey}
+			**Preset Key:** `{section.presetKey}`
+		{/if}
+		<PropsTable props={section.props} />
+	{/each}
 {/if}

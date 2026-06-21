@@ -55,7 +55,7 @@ export const metadata = {
 			feature: 'Reactive Presets',
 			description: 'Access component bond state for dynamic styling based on component state',
 			example:
-				"Change styles based on isOpen, isActive, or any bond state property using the bond parameter in preset functions"
+				'Change styles based on isOpen, isActive, or any bond state property using the bond parameter in preset functions'
 		},
 		{
 			feature: '$preset Placeholder',

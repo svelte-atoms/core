@@ -5,7 +5,7 @@
 
 	let {
 		packageName,
-		importCode,
+		importCode
 	}: {
 		packageName: string;
 		importCode: string;
@@ -18,7 +18,7 @@
 {#if mode === 'html'}
 	<Installation {packageName} {importCode} />
 {:else}
-{codeBlock(installCmd, 'bash')}
+	{codeBlock(installCmd, 'bash')}
 
-{codeBlock(importCode, 'typescript')}
+	{codeBlock(importCode, 'typescript')}
 {/if}

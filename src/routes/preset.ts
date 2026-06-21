@@ -162,16 +162,19 @@ export const preset: Partial<Preset> = {
 					class: 'bg-transparent hover:bg-accent/90 active:bg-accent/100 text-accent-foreground'
 				},
 				warning: {
-					class: 'bg-warning/5 text-warning border-warning/50 border hover:bg-warning/8 active:bg-warning/10'
+					class:
+						'bg-warning/5 text-warning border-warning/50 border hover:bg-warning/8 active:bg-warning/10'
 				},
 				info: {
 					class: 'bg-info/5 text-info border-info/50 border hover:bg-info/8 active:bg-info/10'
 				},
 				success: {
-					class: 'bg-success/5 text-success border-success/50 border hover:bg-success/8 active:bg-success/10'
+					class:
+						'bg-success/5 text-success border-success/50 border hover:bg-success/8 active:bg-success/10'
 				},
 				error: {
-					class: 'bg-destructive/5 text-destructive border-destructive/50 border hover:bg-destructive/8 active:bg-destructive/10'
+					class:
+						'bg-destructive/5 text-destructive border-destructive/50 border hover:bg-destructive/8 active:bg-destructive/10'
 				}
 			}
 		},

@@ -32,8 +32,7 @@ export const metadata = {
 		{
 			step: 2,
 			title: 'Import Internal Styles',
-			description:
-				'Import the internal style file in your root layout (src/routes/+layout.svelte)'
+			description: 'Import the internal style file in your root layout (src/routes/+layout.svelte)'
 		},
 		{
 			step: 3,
@@ -49,7 +48,7 @@ export const metadata = {
 	nextSteps: [
 		{
 			title: 'Browse Components',
-			description: 'Explore the component library and see what\'s available',
+			description: "Explore the component library and see what's available",
 			link: '/docs/components'
 		},
 		{
