@@ -2,7 +2,8 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { PortalBond } from './bond.svelte';
 	import {
-		mergeAtomProps, HtmlAtom,
+		mergeAtomProps,
+		HtmlAtom,
 		type ElementType,
 		type HtmlAtomProps,
 		type Base
@@ -28,14 +29,6 @@
 	Teleport sink and floating-ui boundary. `relative size-full` makes it the offsetParent the
 	teleported `absolute` overlays anchor against; no overflow clip keeps containment soft.
 -->
-<HtmlAtom
-	{bond}
-	class={[
-		'relative size-full',
-		'$preset',
-		klass
-	]}
-	{...bondProps}
->
+<HtmlAtom {bond} class={['relative size-full', '$preset', klass]} {...bondProps}>
 	{@render children?.()}
 </HtmlAtom>

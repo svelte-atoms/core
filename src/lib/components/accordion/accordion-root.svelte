@@ -3,7 +3,7 @@
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { AccordionBond, AccordionState } from './bond.svelte';
 	import type { AccordionRootProps } from './types';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 
 	let {
 		value = $bindable(undefined),
@@ -36,7 +36,6 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
-
 
 	export function getBond() {
 		return bond;

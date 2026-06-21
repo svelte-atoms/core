@@ -16,7 +16,18 @@
 		argTypes: {
 			as: {
 				control: 'select',
-				options: ['div', 'section', 'article', 'aside', 'main', 'p', 'span', 'header', 'footer', 'nav'],
+				options: [
+					'div',
+					'section',
+					'article',
+					'aside',
+					'main',
+					'p',
+					'span',
+					'header',
+					'footer',
+					'nav'
+				],
 				description: 'The HTML tag to render as (polymorphic)'
 			},
 			global: {
@@ -102,7 +113,7 @@
 
 <Story name="Polymorphic Tag">
 	<div class="flex flex-col gap-3 w-72">
-		{#each ['div', 'section', 'article', 'aside', 'nav'] as tag}
+		{#each ['div', 'section', 'article', 'aside', 'nav'] as tag (tag)}
 			<HtmlElement
 				as={tag}
 				class="px-3 py-2 bg-muted rounded text-sm font-mono text-muted-foreground"

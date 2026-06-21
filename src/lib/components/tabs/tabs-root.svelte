@@ -3,7 +3,7 @@
 	generics="D extends string, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
 	import { TabsBond, TabsBondState, type TabsBondProps } from './bond.svelte';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { TabsRootProps } from './types';
 
@@ -50,10 +50,6 @@
 	}
 </script>
 
-<Atom
-	class={['flex w-full flex-1 flex-col', '$preset', klass]}
-	{...binding.props}
-	{...restProps}
->
+<Atom class={['flex w-full flex-1 flex-col', '$preset', klass]} {...binding.props} {...restProps}>
 	{@render children?.({ tabs: bond })}
 </Atom>

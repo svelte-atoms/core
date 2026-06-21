@@ -10,8 +10,10 @@ export {
 export * from './item';
 
 export { filterSelectData } from './runes.svelte';
-// @deprecated Use `filterSelectData` instead.
-export { filterSelectData as filter } from './runes.svelte';
+export {
+	/** @deprecated Use `filterSelectData` instead. */
+	filterSelectData as filter
+} from './runes.svelte';
 
 export * from './types';
 

@@ -1,14 +1,10 @@
-<script module lang="ts">
-	export type { PortalOuterProps } from './types';
-</script>
-
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import type { PortalOuterProps } from './types';
 	import { PortalsBond, PortalBond, PortalState } from '.';
 	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import type { Factory } from '$svelte-atoms/core/types';
 
 	type Element = ElementType<E>;
@@ -45,7 +41,6 @@
 		};
 	});
 
-
 	export function getBond() {
 		return bond;
 	}
@@ -57,11 +52,7 @@
 	back in).
 -->
 <HtmlAtom
-	class={[
-		'portal-root border-border pointer-events-none absolute inset-0',
-		'$preset',
-		klass
-	]}
+	class={['portal-root pointer-events-none absolute inset-0', '$preset', klass]}
 	{...binding.props}
 	{...restProps}
 >

@@ -62,12 +62,12 @@
 
 				<ATabs.Body>
 					<ATabs.Content
-						enter={node => {
+						enter={(node) => {
 							const duration = 0.3;
 							animate(node, { opacity: [0, 1] }, { duration });
 							return { duration };
 						}}
-						exit={node => {
+						exit={(node) => {
 							const duration = 0.1;
 							animate(node, { opacity: [1, 0] }, { duration });
 							return { duration };
@@ -95,12 +95,12 @@
 
 		<ATabs.Body>
 			<ATabs.Content
-				enter={node => {
+				enter={(node) => {
 					const duration = 0.3;
 					animate(node, { opacity: [0, 1] }, { duration });
 					return { duration };
 				}}
-				exit={node => {
+				exit={(node) => {
 					const duration = 0.1;
 					animate(node, { opacity: [1, 0] }, { duration });
 					return { duration };
@@ -150,12 +150,12 @@
 			<ATabs.Body>
 				<!-- Tab bodies are defined separately and teleported to Tabs.Content -->
 				<ATabs.Content
-					enter={node => {
+					enter={(node) => {
 						const duration = 0.3;
 						animate(node, { opacity: [0, 1] }, { duration });
 						return { duration };
 					}}
-					exit={node => {
+					exit={(node) => {
 						const duration = 0.1;
 						animate(node, { opacity: [1, 0] }, { duration });
 						return { duration };
@@ -164,9 +164,7 @@
 			</ATabs.Body>
 		</ATabs.Root>
 
-		<code
-			class="bg-muted/50 text-muted-foreground rounded-md border px-3 py-2 text-xs font-mono"
-		>
+		<code class="bg-muted/50 text-muted-foreground rounded-md border px-3 py-2 text-xs font-mono">
 			bind:value → <span class="text-foreground">"{value}"</span>
 		</code>
 	</div>

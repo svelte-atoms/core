@@ -56,12 +56,16 @@
 
 <Story name="Basic">
 	{#snippet template(args)}
-		<div class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4">
+		<div
+			class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4"
+		>
 			<ADropdownMenu.Root {...args}>
 				<ADropdownMenu.Trigger base={Button}>Options</ADropdownMenu.Trigger>
 				<ADropdownMenu.Content>
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Edit')}>Edit</ADropdownMenu.Item>
-					<ADropdownMenu.Item onclick={() => (lastAction = 'Duplicate')}>Duplicate</ADropdownMenu.Item>
+					<ADropdownMenu.Item onclick={() => (lastAction = 'Duplicate')}
+						>Duplicate</ADropdownMenu.Item
+					>
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Archive')}>Archive</ADropdownMenu.Item>
 					<ADropdownMenu.Divider />
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Delete')}>Delete</ADropdownMenu.Item>
@@ -73,9 +77,13 @@
 </Story>
 
 <Story name="Language Selector">
-	<div class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4">
+	<div
+		class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4"
+	>
 		<ADropdownMenu.Root bind:open>
-			<ADropdownMenu.Trigger base={Button}>{language === '—' ? 'Select a language' : language}</ADropdownMenu.Trigger>
+			<ADropdownMenu.Trigger base={Button}
+				>{language === '—' ? 'Select a language' : language}</ADropdownMenu.Trigger
+			>
 			<ADropdownMenu.Content>
 				<ADropdownMenu.Item onclick={() => (language = 'Arabic')}>Arabic</ADropdownMenu.Item>
 				<ADropdownMenu.Item onclick={() => (language = 'English')}>English</ADropdownMenu.Item>
@@ -119,11 +127,19 @@
 									&#x22EF;
 								</ADropdownMenu.Trigger>
 								<ADropdownMenu.Content>
-									<ADropdownMenu.Item onclick={() => (lastAction = `Edit row ${i + 1}`)}>Edit</ADropdownMenu.Item>
-									<ADropdownMenu.Item onclick={() => (lastAction = `Duplicate row ${i + 1}`)}>Duplicate</ADropdownMenu.Item>
-									<ADropdownMenu.Item onclick={() => (lastAction = `Archive row ${i + 1}`)}>Archive</ADropdownMenu.Item>
+									<ADropdownMenu.Item onclick={() => (lastAction = `Edit row ${i + 1}`)}
+										>Edit</ADropdownMenu.Item
+									>
+									<ADropdownMenu.Item onclick={() => (lastAction = `Duplicate row ${i + 1}`)}
+										>Duplicate</ADropdownMenu.Item
+									>
+									<ADropdownMenu.Item onclick={() => (lastAction = `Archive row ${i + 1}`)}
+										>Archive</ADropdownMenu.Item
+									>
 									<ADropdownMenu.Divider />
-									<ADropdownMenu.Item onclick={() => (lastAction = `Delete row ${i + 1}`)}>Delete</ADropdownMenu.Item>
+									<ADropdownMenu.Item onclick={() => (lastAction = `Delete row ${i + 1}`)}
+										>Delete</ADropdownMenu.Item
+									>
 								</ADropdownMenu.Content>
 							</ADropdownMenu.Root>
 						</div>
@@ -136,13 +152,16 @@
 </Story>
 
 <Story name="With Groups">
-	<div class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4">
+	<div
+		class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4"
+	>
 		<ADropdownMenu.Root bind:open={actionOpen} placement="bottom-start">
 			<ADropdownMenu.Trigger base={Button}>Actions</ADropdownMenu.Trigger>
 			<ADropdownMenu.Content>
 				<ADropdownMenu.Group>
 					<ADropdownMenu.Title>File</ADropdownMenu.Title>
-					<ADropdownMenu.Item onclick={() => (lastAction = 'New file')}>New file</ADropdownMenu.Item>
+					<ADropdownMenu.Item onclick={() => (lastAction = 'New file')}>New file</ADropdownMenu.Item
+					>
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Open')}>Open...</ADropdownMenu.Item>
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Save')}>Save</ADropdownMenu.Item>
 				</ADropdownMenu.Group>
@@ -154,7 +173,9 @@
 					<ADropdownMenu.Item onclick={() => (lastAction = 'Paste')}>Paste</ADropdownMenu.Item>
 				</ADropdownMenu.Group>
 				<ADropdownMenu.Divider />
-				<ADropdownMenu.Item disabled onclick={() => (lastAction = 'Export')}>Export (unavailable)</ADropdownMenu.Item>
+				<ADropdownMenu.Item disabled onclick={() => (lastAction = 'Export')}
+					>Export (unavailable)</ADropdownMenu.Item
+				>
 			</ADropdownMenu.Content>
 		</ADropdownMenu.Root>
 		<code class="text-muted-foreground text-xs font-mono">action: {lastAction}</code>
@@ -162,7 +183,9 @@
 </Story>
 
 <Story name="Profile Menu">
-	<div class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4">
+	<div
+		class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-4"
+	>
 		<ADropdownMenu.Root bind:open={profileOpen} placement="bottom-end">
 			<ADropdownMenu.Trigger
 				class="border-border bg-card hover:border-foreground/40 flex items-center gap-3 rounded-full border py-1.5 pl-1.5 pr-4 text-sm transition-colors"

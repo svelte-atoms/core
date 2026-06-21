@@ -2,7 +2,7 @@
 	import { ComboboxBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/select/atoms';
 
-	const bond = ComboboxBond.getOrThrow('Combobox atom was not found');
+	const bond = ComboboxBond.getOrThrow('ComboboxTrigger must be used within a Combobox');
 
 	let {
 		class: klass = '',

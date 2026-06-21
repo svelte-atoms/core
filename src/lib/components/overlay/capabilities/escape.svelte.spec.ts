@@ -44,7 +44,12 @@ describe('escape policies', () => {
 	});
 
 	it('enabled=false and disabled bonds short-circuit', () => {
-		const disabledPolicy = escapePolicy((b) => { b.state.close(); }, { enabled: false });
+		const disabledPolicy = escapePolicy(
+			(b) => {
+				b.state.close();
+			},
+			{ enabled: false }
+		);
 		const h1 = disabledPolicy.behavior!('surface')!.handlers!(fakeBond());
 		const ev1 = press(h1, 'Escape');
 		expect(ev1.preventDefault).not.toHaveBeenCalled();

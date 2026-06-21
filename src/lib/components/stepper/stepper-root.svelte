@@ -19,7 +19,12 @@
 	const binding = bindBond<StepperBond>(
 		(props) => factory(props),
 		{
-			step: [() => step, (v) => { step = v; }],
+			step: [
+				() => step,
+				(v) => {
+					step = v;
+				}
+			],
 			linear: () => linear,
 			disabled: () => disabled,
 			orientation: () => orientation
@@ -33,10 +38,6 @@
 	}
 </script>
 
-<HtmlAtom
-	class={['flex flex-col', '$preset', klass]}
-	{...binding.props}
-	{...restProps}
->
+<HtmlAtom class={['flex flex-col', '$preset', klass]} {...binding.props} {...restProps}>
 	{@render children?.({ stepper: bond })}
 </HtmlAtom>

@@ -57,7 +57,7 @@
 				{...args}
 				name="username"
 				schema={usernameSchema}
-				validator={validator}
+				{validator}
 				value={defaultUsername}
 				extend={{}}
 			>
@@ -69,9 +69,12 @@
 						placeholder="svelte-wizard"
 					/>
 				</Input.Root>
-				<Field.HelperText>Use 3 to 20 characters with letters, numbers, or dashes.</Field.HelperText>
+				<Field.HelperText>Use 3 to 20 characters with letters, numbers, or dashes.</Field.HelperText
+				>
 			</Field.Root>
-			<p class="text-muted-foreground mt-3 text-xs">Current value: {defaultUsername || '(empty)'}</p>
+			<p class="text-muted-foreground mt-3 text-xs">
+				Current value: {defaultUsername || '(empty)'}
+			</p>
 		</div>
 	{/snippet}
 </Story>
@@ -84,7 +87,7 @@
 			extend={{}}
 			name="username"
 			schema={usernameSchema}
-			validator={validator}
+			{validator}
 			value={username}
 		>
 			<Field.Label>Username</Field.Label>
@@ -102,16 +105,37 @@
 </Story>
 
 <Story name="Field Inside Form">
-	<FormRoot class="bg-card border-border flex w-140 flex-col gap-4 rounded-xl border p-5" {validator}>
-		<Field.Root disabled={false} readonly={false} extend={{}} name="displayName" schema={profileSchema.shape.displayName} value={displayName}>
+	<FormRoot
+		class="bg-card border-border flex w-140 flex-col gap-4 rounded-xl border p-5"
+		{validator}
+	>
+		<Field.Root
+			disabled={false}
+			readonly={false}
+			extend={{}}
+			name="displayName"
+			schema={profileSchema.shape.displayName}
+			value={displayName}
+		>
 			<Field.Label>Display Name</Field.Label>
 			<Input.Root>
-				<Field.Control base={Input.TextControl as unknown as never} bind:value={displayName} placeholder="Maya L" />
+				<Field.Control
+					base={Input.TextControl as unknown as never}
+					bind:value={displayName}
+					placeholder="Maya L"
+				/>
 			</Input.Root>
 			<Field.HelperText>Shown in comments, mentions, and activity feeds.</Field.HelperText>
 		</Field.Root>
 
-		<Field.Root disabled={false} readonly={false} extend={{}} name="notifyByEmail" schema={profileSchema.shape.notifyByEmail} value={notifyByEmail}>
+		<Field.Root
+			disabled={false}
+			readonly={false}
+			extend={{}}
+			name="notifyByEmail"
+			schema={profileSchema.shape.notifyByEmail}
+			value={notifyByEmail}
+		>
 			<label class="flex items-start gap-2">
 				<div class="pt-0.5">
 					<Field.Control base={Checkbox as unknown as never} bind:checked={notifyByEmail} />

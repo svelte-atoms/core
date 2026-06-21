@@ -1,5 +1,8 @@
-<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+<script
+	lang="ts"
+	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
+>
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { DataGridBond, DataGridBondState, type DataGridStateProps } from './bond.svelte';
 	import type { DatagridRootProps } from './types';

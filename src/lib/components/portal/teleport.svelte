@@ -1,15 +1,23 @@
 <script lang="ts" generics="E extends HtmlElementTagName = 'div', B extends Base = Base">
-	import type { HTMLAttributes } from 'svelte/elements';
 	import type { TeleportProps } from './types';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+	import type {
+		HtmlElementTagName,
+		HtmlElementType,
+		HtmlElementAttributes
+	} from '$svelte-atoms/core/components/element';
 	import { PortalsBond, resolvePortal } from './portals';
 	import { port } from './port';
 
 	type Element = HtmlElementType<E>;
 
-	let { portal, as, base, children, ...restProps }: TeleportProps<E, B> & HTMLAttributes<Element> =
-		$props();
+	let {
+		portal,
+		as,
+		base,
+		children,
+		...restProps
+	}: TeleportProps<E, B> & HtmlElementAttributes<Element> = $props();
 
 	const portalsBond = PortalsBond.get();
 
@@ -35,7 +43,7 @@
 
 {#snippet content()}
 	<HtmlAtom {@attach teleport} as={as as E} {base} {...restProps}>
-		{@render children?.({ portal: portalBond })}
+		{@render children?.({ portal: portalBond! })}
 	</HtmlAtom>
 {/snippet}
 

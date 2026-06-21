@@ -4,7 +4,7 @@ import {
 	SelectBondState as DropdownBondState,
 	type SelectStateProps as DropdownStateProps
 } from '$svelte-atoms/core/components/select/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import {
 	defineBond,
 	createInput,
@@ -136,12 +136,10 @@ class ComboboxControlAtom extends BondAtom<ComboboxBondView, HTMLInputElement> {
 
 // ComboboxBond — flat composition over DropdownBond, adds an editable control atom.
 // 'input' capability, ClearThenClose escape, and trigger are all inherited from Select.
-export const ComboboxBond = defineBond<
-	{ control: typeof ComboboxControlAtom },
-	ComboboxBondState
->({
+export const ComboboxBond = defineBond<{ control: typeof ComboboxControlAtom }, ComboboxBondState>({
 	parts: [DropdownBond],
 	name: 'combobox',
+	state: ComboboxBondState,
 	atoms: {
 		control: ComboboxControlAtom
 	}

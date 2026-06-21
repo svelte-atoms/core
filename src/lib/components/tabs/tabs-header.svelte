@@ -17,10 +17,6 @@
 	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Atom
-	{bond}
-	class={['relative flex min-w-full', '$preset', klass]}
-	{...headerProps}
->
+<Atom {bond} class={['relative flex min-w-full', '$preset', klass]} {...headerProps}>
 	{@render children?.({ tabs: bond })}
 </Atom>

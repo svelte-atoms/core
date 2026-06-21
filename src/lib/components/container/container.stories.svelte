@@ -13,7 +13,8 @@
 			type: {
 				control: 'select',
 				options: ['inline-size', 'size'],
-				description: 'CSS container-type value — "inline-size" tracks width only, "size" tracks both axes'
+				description:
+					'CSS container-type value — "inline-size" tracks width only, "size" tracks both axes'
 			},
 			name: {
 				control: 'text',

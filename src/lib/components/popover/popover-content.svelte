@@ -33,7 +33,7 @@
 		fallback = {
 			animate: animatePopoverContent()
 		},
-		"z-index": zIndex = undefined,
+		'z-index': zIndex = undefined,
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
 
@@ -51,12 +51,11 @@
 			width: trigger.clientWidth,
 			get minWidth() {
 				const computed = getComputedStyle(trigger);
-				return parseFloat(computed.minWidth) || 0
-			} 
-			,
+				return parseFloat(computed.minWidth) || 0;
+			},
 			get maxWidth() {
 				const computed = getComputedStyle(trigger);
-				return parseFloat(computed.maxWidth) || Infinity
+				return parseFloat(computed.maxWidth) || Infinity;
 			}
 		};
 	});
@@ -109,7 +108,7 @@
 		{bond}
 		{fallback}
 		class={[
-			'popover-content bg-popover text-popover-foreground border-border rounded-md border p-2 opacity-0 shadow-lg outline-none',
+			'popover-content bg-popover text-popover-foreground rounded-md border p-2 opacity-0 shadow-lg outline-none',
 			'$preset',
 			klass
 		]}

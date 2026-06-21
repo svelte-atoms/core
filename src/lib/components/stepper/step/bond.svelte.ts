@@ -1,5 +1,9 @@
 import { StepperBond, type IStepper } from '../bond.svelte';
-import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 
 // Bond shape the step atoms type `this.bond` against — breaks the atom↔bond cycle.

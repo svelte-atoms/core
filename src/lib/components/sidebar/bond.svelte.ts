@@ -1,14 +1,14 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import { OverlayBond } from '$svelte-atoms/core/components/overlay';
 import {
 	createDisclosure,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
 import {
 	DisclosureState,
 	type DisclosureStateProps
-} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	DisclosureStateProps & {

@@ -1,7 +1,7 @@
 // UI-side filtering over a reactive source list — source is never mutated, `current` is a $derived view.
 // createFilter: standalone (owns query). createBondFilter: spreads filter.props onto a list bond's Root.
 
-import { createLifecycleKey } from "../components";
+import { createLifecycleKey } from '../components';
 
 // Text accessor (case-insensitive substring) or { match } predicate receiving the normalised query.
 export type FilterMatcher<T> =
@@ -144,7 +144,7 @@ export function createBondFilter<T>(
 	let boundBond = $state<KeyedListBond | undefined>(undefined);
 
 	const source: QuerySource = options.query ?? {
-		get: () => (boundBond ? boundBond.state.props.query ?? '' : owned),
+		get: () => (boundBond ? (boundBond.state.props.query ?? '') : owned),
 		set: (value) => {
 			if (boundBond) {
 				boundBond.state.props.query = value;

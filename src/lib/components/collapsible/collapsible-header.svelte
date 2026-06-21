@@ -3,7 +3,9 @@
 	import type { CollapsibleHeaderProps } from './types';
 	import { CollapsibleBond } from './bond.svelte';
 
-	const bond = CollapsibleBond.get();
+	const bond = CollapsibleBond.getOrThrow(
+		'<Collapsible.Header /> must be used within a <Collapsible.Root />'
+	);
 
 	let {
 		class: klass = '',

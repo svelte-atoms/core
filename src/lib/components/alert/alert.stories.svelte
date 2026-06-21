@@ -47,7 +47,6 @@
 	});
 </script>
 
-
 <Story name="Basic">
 	{#snippet template(args)}
 		<div class="p-8">

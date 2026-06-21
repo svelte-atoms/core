@@ -4,13 +4,12 @@
 	import { Input } from '$svelte-atoms/core/components/input';
 	import type { SelectQueryProps } from './types';
 
-	const bond = SelectBond.getOrThrow('Select atom was not found');
+	const bond = SelectBond.getOrThrow('SelectQuery must be used within a Select');
 
 	let {
 		value = $bindable(),
 		class: klass = '',
 		preset = undefined,
-		children = undefined,
 		...restProps
 	}: SelectQueryProps = $props();
 

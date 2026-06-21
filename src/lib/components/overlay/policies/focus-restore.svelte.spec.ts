@@ -27,11 +27,10 @@ function mockOverlay(
 ) {
 	let open = $state(false);
 	const bond = {
-		// Restore config lives on the focus capability's surface.
+		// Restore config lives on the focus capability's surface — read via the canonical surface() accessor (#3).
 		capability: (slot: symbol) =>
-			slot === FOCUS
-				? { slot, surface: { strategy: undefined, ...focus } }
-				: undefined,
+			slot === FOCUS ? { slot, surface: { strategy: undefined, ...focus } } : undefined,
+		surface: (slot: symbol) => (slot === FOCUS ? { strategy: undefined, ...focus } : undefined),
 		state: {
 			get isOpen() {
 				return open;

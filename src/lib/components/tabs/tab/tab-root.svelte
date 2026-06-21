@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
 	import { type Snippet } from 'svelte';
@@ -12,23 +12,21 @@
 		disabled = false,
 		data = undefined as unknown,
 		factory = defaultFactory,
-		children,
+		children
 	}: {
-		value?: string;
+		// Required: it's the tab's selection key (the bond uses it directly in mountItem/select).
+		value: string;
 		disabled?: boolean;
 		data?: unknown;
 		factory?: typeof defaultFactory;
 		children?: Snippet<[{ tab: TabBond }]>;
 	} = $props();
 
-	const binding = bindBond<TabBond>(
-		(props) => factory(props),
-		{
-			value: () => value,
-			disabled: () => disabled,
-			data: () => data
-		}
-	);
+	const binding = bindBond<TabBond>((props) => factory(props), {
+		value: () => value,
+		disabled: () => disabled,
+		data: () => data
+	});
 	const bond = binding.bond.share();
 
 	const unmount = bond.mount();

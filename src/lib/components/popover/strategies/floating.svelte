@@ -11,7 +11,7 @@
 		type Strategy
 	} from '@floating-ui/dom';
 	import { PopoverBond, type PopoverParams } from '../bond.svelte';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond/bond.svelte';
 	import { OverlayBond } from '$svelte-atoms/core/components/overlay';
 	import { PortalBond } from '$svelte-atoms/core/components/portal';
 
@@ -24,7 +24,9 @@
 	const boundary = $derived(portalBond?.boundaryElement);
 
 	const tracking = $derived(bond?.state.shouldTrackPosition ?? false);
-	const reference = $derived(bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger'));
+	const reference = $derived(
+		bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger')
+	);
 	const overlay = $derived(bond?.element<HTMLElement>('overlay'));
 
 	// Strategy follows the trigger's scroll context: 'fixed' while viewport-anchored

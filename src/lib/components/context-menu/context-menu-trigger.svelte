@@ -4,16 +4,22 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Trigger } from '../popover/atoms';
 	import { DropdownMenuBond } from '../dropdown-menu/bond.svelte';
+	import { PopoverVirtualTriggerAtom } from '../popover';
 	import type { ContextMenuTriggerProps } from './types';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond/bond.svelte';
 
 	type ElementType = HTMLElementTagNameMap[E];
 
-	const bond = DropdownMenuBond.getOrThrow('<ContextMenu.Trigger /> must be used within a <ContextMenu.Root />');
+	const bond = DropdownMenuBond.getOrThrow(
+		'<ContextMenu.Trigger /> must be used within a <ContextMenu.Root />'
+	);
 
 	const dropdownMenuBond = bond;
 
-	const virtualTriggerAtom = dropdownMenuBond.atom('virtual-trigger');
+	// Composed from `parts: [PopoverBond]`, so the runtime atom is a PopoverVirtualTriggerAtom
+	// (which exposes a settable `element` for the cursor-anchored virtual trigger). The bond's
+	// declared atom map doesn't surface the inherited slot's class, so narrow it here.
+	const virtualTriggerAtom = dropdownMenuBond.atom('virtual-trigger') as PopoverVirtualTriggerAtom;
 
 	let {
 		preset = undefined,
@@ -36,16 +42,17 @@
 		if (event.defaultPrevented) return;
 
 		const virtualElement = {
-			getBoundingClientRect: () => ({
-				width: 0,
-				height: 0,
-				x: ev.clientX,
-				y: ev.clientY,
-				top: ev.clientY,
-				left: ev.clientX,
-				right: ev.clientX,
-				bottom: ev.clientY
-			} as DOMRect),
+			getBoundingClientRect: () =>
+				({
+					width: 0,
+					height: 0,
+					x: ev.clientX,
+					y: ev.clientY,
+					top: ev.clientY,
+					left: ev.clientX,
+					right: ev.clientX,
+					bottom: ev.clientY
+				}) as DOMRect,
 			contains: () => false
 		} as BondVirtualElement;
 
@@ -55,4 +62,9 @@
 	}
 </script>
 
-<Trigger class={['cursor-context-menu', klass]} onclick={onclick ?? undefined} oncontextmenu={handleContextMenu} {...triggerProps} />
+<Trigger
+	class={['cursor-context-menu', klass]}
+	onclick={onclick ?? undefined}
+	oncontextmenu={handleContextMenu}
+	{...triggerProps}
+/>

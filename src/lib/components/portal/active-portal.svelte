@@ -21,9 +21,10 @@
 	// enter/exit transitions still play.
 	const content = $derived(activePortal ? proxy : undefined);
 
-	function proxy(...args: unknown[]) {
+	// Rendered via `{@render content?.()}` with no args, and `children` is a 0-arg Snippet.
+	function proxy() {
 		activePortal?.share();
-		return children?.(...args);
+		return children?.();
 	}
 </script>
 

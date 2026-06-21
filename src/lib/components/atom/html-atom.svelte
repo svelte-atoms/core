@@ -1,4 +1,7 @@
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base, C extends AnySnippet = Snippet">
+<script
+	lang="ts"
+	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base, C extends AnySnippet = Snippet"
+>
 	import { type Component, type Snippet } from 'svelte';
 	import type { AnySnippet, Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
@@ -71,7 +74,7 @@
 		return { class: finalKlass, as: finalAs, ...finalRestProps };
 	});
 
-	function forwardChildren(...args: any[]) {
+	function forwardChildren(...args: unknown[]) {
 		return (children as ((...args: unknown[]) => unknown) | undefined)?.(...args);
 	}
 </script>

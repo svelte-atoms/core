@@ -30,12 +30,10 @@ export class SelectItemController<T = unknown> implements DropdownMenuItemContro
 		this.#props = props;
 		this.#id = this.props.id ?? nanoid();
 
-		this.#select = SelectBond.get() as
-			| SelectBond
-			| undefined;
+		this.#select = SelectBond.get() as SelectBond | undefined;
 
 		if (!this.#select) {
-			throw new Error('SelectItem must be used within a Select context');
+			throw new Error('SelectItem must be used within a Select context.');
 		}
 	}
 

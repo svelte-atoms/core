@@ -21,7 +21,9 @@
 
 	const atom = $derived(orientation === 'horizontal' ? bond.atom('trackX') : bond.atom('trackY'));
 
-	const trackProps = $derived(mergePresetProps(preset, 'scrollable.track', { ...atom.spread, ...restProps }));
+	const trackProps = $derived(
+		mergePresetProps(preset, 'scrollable.track', { ...atom.spread, ...restProps })
+	);
 </script>
 
 {#if (isOpen || isScrolling) && hasScroll}
@@ -29,7 +31,7 @@
 		{bond}
 		as="div"
 		class={[
-			'scrollable-track bg-foreground/10 hover:bg-foreground/15 border-border absolute z-10 rounded transition-opacity',
+			'scrollable-track bg-foreground/10 hover:bg-foreground/15 absolute z-10 rounded transition-opacity',
 			{ vertical: 'inset-y-0 right-0 w-2', horizontal: 'inset-x-0 bottom-0 h-2' }[orientation],
 			'$preset',
 			klass

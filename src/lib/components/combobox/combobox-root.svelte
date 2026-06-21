@@ -1,4 +1,4 @@
-<script lang="ts" generics="D">
+<script lang="ts">
 	import type { ComboboxRootProps } from './types';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 	import { ComboboxBond, ComboboxBondState, type ComboboxBondProps } from './bond.svelte';
@@ -20,40 +20,45 @@
 		...restProps
 	}: ComboboxRootProps = $props();
 
-	const binding = bindBond<ComboboxBond>(
-		(props) => factory(props),
-		{
-			open: [() => open, (v) => { open = v; }],
-			// Component is generic over `D`; the bond's props are string-keyed — bridge with casts.
-			values: [
-				() => (multiple ? values : [value]) as ComboboxBondProps['values'],
-				(v) => {
-					values = v;
-					value = v?.[0];
-				}
-			],
-			label: [() => label, (v) => (label = v)],
-			labels: [() => labels, (v) => (labels = v)],
-			disabled: () => disabled,
-			multiple: () => multiple,
-			placements: () => (placements ?? []) as ComboboxBondProps['placements'],
-			offset: () => offset,
-			// Bond-owned filter source (read by `createBondFilter`, cleared by `ClearThenClose`).
-			// Wired as an accessor so writes are reactive and `bind:query` works.
-			query: [() => query, (v) => { query = v ?? ''; }]
-		},
-		// Frozen base — only genuinely-static defaults / restProps spread belong here.
-		{ base: () => ({ placement: 'bottom-start', ...restProps }) }
-	);
+	const binding = bindBond<ComboboxBond>((props) => factory(props), {
+		open: [
+			() => open,
+			(v) => {
+				open = v;
+			}
+		],
+		// The bond's props are string-keyed; the bindables are loosely typed — bridge with casts.
+		values: [
+			() => (multiple ? values : [value]) as ComboboxBondProps['values'],
+			(v) => {
+				values = v;
+				value = v?.[0];
+			}
+		],
+		label: [() => label, (v) => (label = v)],
+		labels: [() => labels, (v) => (labels = v)],
+		disabled: () => disabled,
+		multiple: () => multiple,
+		placement: () => placement as ComboboxBondProps['placement'],
+		placements: () => (placements ?? []) as ComboboxBondProps['placements'],
+		offset: () => offset,
+		// Bond-owned filter source (read by `createBondFilter`, cleared by `ClearThenClose`).
+		// Wired as an accessor so writes are reactive and `bind:query` works.
+		query: [
+			() => query,
+			(v) => {
+				query = v ?? '';
+			}
+		],
+		// Vestigial: element-less context root, no typed channel to forward restProps.
+		rest: () => restProps
+	});
 	const bond = binding.bond.share();
 
-	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
-	// setup() (ADR 0001 / ADR 0003, ADR 0010).
 	useCapabilities(bond);
-	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
 
 	function defaultFactory(props: ComboboxBondProps) {
-		const bondState = new ComboboxBondState<D>(props);
+		const bondState = new ComboboxBondState(props);
 
 		return new ComboboxBond(bondState).share();
 	}

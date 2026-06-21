@@ -3,7 +3,7 @@ import { clickAction } from '$svelte-atoms/core/attachments/event.svelte';
 import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
 import { DrawerBond } from './bond.svelte';
 
-export function drawer(callback: (node: HTMLElement, bond?: DrawerBond) => any) {
+export function drawer(callback: (node: HTMLElement, bond?: DrawerBond) => void | (() => void)) {
 	const bond = DrawerBond.get();
 	return (node: HTMLElement) => callback(node, bond);
 }

@@ -8,7 +8,7 @@
 		type HtmlAtomProps,
 		type Base
 	} from '$svelte-atoms/core/components/atom';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { StackBond, StackState } from './bond.svelte';
 	import './stack.css';
 
@@ -26,22 +26,22 @@
 	const binding = bindBond<StackBond>(
 		(props) => factory(props),
 		{
-			value: [() => value as string | undefined, (v) => { value = v; }]
+			value: [
+				() => value as string | undefined,
+				(v) => {
+					value = v;
+				}
+			]
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
-
 
 	export function getBond() {
 		return bond;
 	}
 </script>
 
-<HtmlAtom
-	class={['stack-root', '$preset', klass]}
-	{...binding.props}
-	{...restProps}
->
+<HtmlAtom class={['stack-root', '$preset', klass]} {...binding.props} {...restProps}>
 	{@render children?.()}
 </HtmlAtom>

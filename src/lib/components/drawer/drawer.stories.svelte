@@ -44,11 +44,7 @@
 		{@const disabled = args.disabled as boolean}
 
 		<div class="relative flex h-screen w-full items-start justify-start p-8">
-			<Drawer_.Root
-				bind:open={isOpen}
-				{side}
-				{disabled}
-			>
+			<Drawer_.Root bind:open={isOpen} {side} {disabled}>
 				<Drawer_.Backdrop class="bg-black/40 backdrop-blur-sm" />
 				<Drawer_.Content
 					class="flex h-full w-80 flex-col border-r shadow-sm"
@@ -60,9 +56,7 @@
 					<Drawer_.Header>
 						<div class="flex flex-col gap-1">
 							<Drawer_.Title>Navigation</Drawer_.Title>
-							<Drawer_.Description>
-								Browse available sections.
-							</Drawer_.Description>
+							<Drawer_.Description>Browse available sections.</Drawer_.Description>
 						</div>
 						<button
 							class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
@@ -74,7 +68,7 @@
 					</Drawer_.Header>
 					<Drawer_.Body class="flex-1 overflow-y-auto px-4 py-4">
 						<nav class="flex flex-col gap-1">
-							{#each ['Dashboard', 'Projects', 'Team', 'Settings', 'Help'] as item}
+							{#each ['Dashboard', 'Projects', 'Team', 'Settings', 'Help'] as item (item)}
 								<button
 									class="hover:bg-muted text-foreground rounded-md px-3 py-2 text-left text-sm transition-colors"
 								>
@@ -120,9 +114,7 @@
 				<Drawer_.Header>
 					<div class="flex flex-col gap-1">
 						<Drawer_.Title>Navigation</Drawer_.Title>
-						<Drawer_.Description>
-							Browse available sections.
-						</Drawer_.Description>
+						<Drawer_.Description>Browse available sections.</Drawer_.Description>
 					</div>
 					<button
 						class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
@@ -134,7 +126,7 @@
 				</Drawer_.Header>
 				<Drawer_.Body class="flex-1 overflow-y-auto px-4 py-4">
 					<nav class="flex flex-col gap-1">
-						{#each ['Dashboard', 'Projects', 'Team', 'Settings', 'Help'] as item}
+						{#each ['Dashboard', 'Projects', 'Team', 'Settings', 'Help'] as item (item)}
 							<button
 								class="hover:bg-muted text-foreground rounded-md px-3 py-2 text-left text-sm transition-colors"
 							>
@@ -179,9 +171,7 @@
 				<Drawer_.Header>
 					<div class="flex flex-col gap-1">
 						<Drawer_.Title>Notifications</Drawer_.Title>
-						<Drawer_.Description>
-							Your recent activity.
-						</Drawer_.Description>
+						<Drawer_.Description>Your recent activity.</Drawer_.Description>
 					</div>
 					<button
 						class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
@@ -193,7 +183,7 @@
 				</Drawer_.Header>
 				<Drawer_.Body class="flex-1 overflow-y-auto px-4 py-4">
 					<div class="flex flex-col gap-3">
-						{#each ['Deploy succeeded — production', 'New comment on PR #42', 'Scheduled maintenance tonight', 'Invite accepted by Alex'] as note}
+						{#each ['Deploy succeeded — production', 'New comment on PR #42', 'Scheduled maintenance tonight', 'Invite accepted by Alex'] as note (note)}
 							<div class="bg-muted rounded-md px-3 py-2 text-sm">{note}</div>
 						{/each}
 					</div>
@@ -234,9 +224,7 @@
 				<Drawer_.Header class="mb-4 flex items-center justify-between">
 					<div class="flex flex-col gap-1">
 						<Drawer_.Title>Search</Drawer_.Title>
-						<Drawer_.Description>
-							Find anything in your workspace.
-						</Drawer_.Description>
+						<Drawer_.Description>Find anything in your workspace.</Drawer_.Description>
 					</div>
 					<button
 						class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
@@ -281,9 +269,7 @@
 				<Drawer_.Header class="mb-4 flex items-center justify-between">
 					<div class="flex flex-col gap-1">
 						<Drawer_.Title>Share</Drawer_.Title>
-						<Drawer_.Description>
-							Share this item with others.
-						</Drawer_.Description>
+						<Drawer_.Description>Share this item with others.</Drawer_.Description>
 					</div>
 					<button
 						class="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
@@ -294,7 +280,7 @@
 					</button>
 				</Drawer_.Header>
 				<Drawer_.Body class="flex flex-col gap-2">
-					{#each ['Copy link', 'Share via email', 'Export as PDF'] as action}
+					{#each ['Copy link', 'Share via email', 'Export as PDF'] as action (action)}
 						<button
 							class="hover:bg-muted text-foreground rounded-md px-3 py-2 text-left text-sm transition-colors"
 						>

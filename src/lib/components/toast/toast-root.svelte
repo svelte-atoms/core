@@ -2,17 +2,18 @@
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { ToastBond, ToastBondState } from './bond.svelte';
 	import type { ToastRootProps } from './types';
-	import { bondFactory,bindBond } from '$svelte-atoms/core/shared';
+	import { bondFactory, bindBond } from '$svelte-atoms/core/shared';
 
 	let {
 		open = $bindable(true),
 		disabled = false,
 		duration = 0,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		dismissible: _dismissible,
 		preset = undefined,
 		factory = bondFactory(ToastBondState, ToastBond),
 		children = undefined,
+		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onclose = undefined,
 		...restProps
 	}: ToastRootProps<E, B> = $props();
@@ -25,9 +26,8 @@
 		},
 		{ preset: () => preset }
 	);
-	
-	const bond = binding.bond.share();
 
+	const bond = binding.bond.share();
 
 	const rootProps = $derived({
 		...binding.props,
@@ -48,8 +48,6 @@
 	}
 </script>
 
-<HtmlAtom
-	{...rootProps}
->
+<HtmlAtom {...rootProps}>
 	{@render children?.({ toast: bond })}
 </HtmlAtom>

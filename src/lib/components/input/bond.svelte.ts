@@ -1,5 +1,16 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-import { createInput, defineBond, type BondOf, type InputModel, type ViewOf } from '$svelte-atoms/core/shared';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
+import {
+	createInput,
+	defineBond,
+	type BondOf,
+	type InputModel,
+	type ViewOf
+} from '$svelte-atoms/core/shared';
 import { SvelteDate } from 'svelte/reactivity';
 
 export type InputStateProps = BondStateProps & {
@@ -8,7 +19,7 @@ export type InputStateProps = BondStateProps & {
 	readonly date?: Date;
 	files?: File[];
 	checked?: string[];
-	group?: any[];
+	group?: unknown[];
 };
 
 export type InputElements = {

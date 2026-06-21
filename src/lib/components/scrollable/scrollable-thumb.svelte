@@ -16,14 +16,16 @@
 
 	const atom = $derived(orientation === 'horizontal' ? bond.atom('thumbX') : bond.atom('thumbY'));
 
-	const thumbProps = $derived(mergePresetProps(preset, 'scrollable.thumb', { ...atom.spread, ...restProps }));
+	const thumbProps = $derived(
+		mergePresetProps(preset, 'scrollable.thumb', { ...atom.spread, ...restProps })
+	);
 </script>
 
 <HtmlAtom
 	{bond}
 	as="div"
 	class={[
-		'scrollable-thumb border-border bg-foreground/10 hover:bg-foreground/20 absolute cursor-grab rounded-md active:cursor-grabbing',
+		'scrollable-thumb bg-foreground/10 hover:bg-foreground/20 absolute cursor-grab rounded-md active:cursor-grabbing',
 		orientation === 'horizontal' ? 'scrollable-thumb-x' : 'scrollable-thumb-y',
 		{ horizontal: 'h-full', vertical: 'w-full' }[orientation],
 		'$preset',

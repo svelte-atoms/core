@@ -18,12 +18,12 @@
 	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { value: string } = $props();
 
 	$effect.pre(() => {
-		if(!bond) return;
+		if (!bond) return;
 
-		bond.state.register(value)
+		bond.state.register(value);
 
 		return () => {
-			bond.state.unregister(value)
+			bond.state.unregister(value);
 		};
 	});
 

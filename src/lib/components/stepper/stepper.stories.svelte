@@ -36,7 +36,7 @@
 	import { Button } from '$lib/components/button';
 	import { Textarea } from '../textarea';
 	import type { StepperBond } from './bond.svelte';
-	import { animate } from 'motion'
+	import { animate } from 'motion';
 	import { Stack } from '../stack';
 
 	const steps = $state([
@@ -96,9 +96,9 @@
 										</div>
 
 										<div class="flex flex-col pr-4">
-											<Step.Title class={isActive
-														? 'text-foreground font-semibold'
-														: 'text-muted-foreground'}>
+											<Step.Title
+												class={isActive ? 'text-foreground font-semibold' : 'text-muted-foreground'}
+											>
 												{stepData?.header}
 												{#if stepData?.optional}
 													<span class="text-xs">(Optional)</span>
@@ -178,48 +178,48 @@
 		{#snippet children({ stepper })}
 			<!-- Header: Step indicators -->
 			<Stepper.Header class="flex justify-between">
-					{#each steps as stepData, i (i)}
-						<Step.Root index={i} header={stepData.header} body={stepData.body}>
-							{#snippet children({ step })}
-								{@const isActive = step?.state?.isActive}
+				{#each steps as stepData, i (i)}
+					<Step.Root index={i} header={stepData.header} body={stepData.body}>
+						{#snippet children({ step })}
+							{@const isActive = step?.state?.isActive}
 
-								<Step.Header class="flex flex-col gap-2 flex-1">
-									<div class="flex items-center w-full">
-										<Step.Indicator />
-										<Step.Separator class="" />
-									</div>
+							<Step.Header class="flex flex-col gap-2 flex-1">
+								<div class="flex items-center w-full">
+									<Step.Indicator />
+									<Step.Separator class="" />
+								</div>
 
-									<div class="flex flex-col pr-4">
-										<Step.Title class={isActive
-													? 'text-foreground font-semibold'
-													: 'text-muted-foreground'}>
-												{stepData?.header}
-												{#if stepData?.optional}
-													<span class="text-xs">(Optional)</span>
-												{/if}
-										</Step.Title>
+								<div class="flex flex-col pr-4">
+									<Step.Title
+										class={isActive ? 'text-foreground font-semibold' : 'text-muted-foreground'}
+									>
+										{stepData?.header}
+										{#if stepData?.optional}
+											<span class="text-xs">(Optional)</span>
+										{/if}
+									</Step.Title>
 
-										<Step.Description class={['text-xs text-muted-foreground']}>
-											{stepData?.body}
-										</Step.Description>
-									</div>
-								</Step.Header>
+									<Step.Description class={['text-xs text-muted-foreground']}>
+										{stepData?.body}
+									</Step.Description>
+								</div>
+							</Step.Header>
 
-								<!-- Step Content (shown in Stepper.Body when active) -->
-								<Step.Body>
-									<h3 class="text-xl font-semibold mb-4">
-										Step {i + 1}: {stepData.header}
-									</h3>
-									<p class="text-muted-foreground mb-6">{stepData.body}</p>
+							<!-- Step Content (shown in Stepper.Body when active) -->
+							<Step.Body>
+								<h3 class="text-xl font-semibold mb-4">
+									Step {i + 1}: {stepData.header}
+								</h3>
+								<p class="text-muted-foreground mb-6">{stepData.body}</p>
 
-									<!-- Actual step content would go here -->
-									<div class="text-sm text-muted-foreground">
-										Content for {stepData.header} step...
-									</div>
-								</Step.Body>
-							{/snippet}
-						</Step.Root>
-					{/each}
+								<!-- Actual step content would go here -->
+								<div class="text-sm text-muted-foreground">
+									Content for {stepData.header} step...
+								</div>
+							</Step.Body>
+						{/snippet}
+					</Step.Root>
+				{/each}
 			</Stepper.Header>
 
 			<!-- Body: Automatically renders active step content -->
@@ -228,12 +228,12 @@
 					<Stepper.Content
 						base={Stack.Item}
 						class="min-h-50 flex flex-col p-6"
-						enter={(node)=> {
+						enter={(node) => {
 							const duration = 0.4;
 							animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
 							return { duration: duration * 1000 };
 						}}
-						exit={(node)=> {
+						exit={(node) => {
 							const duration = 0.3;
 							animate(node, { opacity: [1, 0], y: [0, 0] }, { duration });
 							return { duration: duration * 1000 };
@@ -268,90 +268,87 @@
 
 <Story name="Vertical" args={{}}>
 	<Stepper.Root class="flex gap-4" step={1}>
-			{#snippet children({ stepper })}
-				<div class="flex gap-4">
-					<Stepper.Header class="">
-						{#each steps as stepData, i (i)}
-							<Step.Root
-								index={i}
-								header={stepData.header}
-								body={stepData.body}
-								completed={stepData.completed}
-								optional={stepData.optional ?? false}
-							>
-								{#snippet children()}
-									<Step.Header class="flex w-full">
-										<div class="flex gap-2">
-											<div class="flex flex-col">
-												<Step.Indicator class="" />
-												<Step.Separator class="w-0.5 min-h-10 translate-x-3.75" />
-											</div>
-											<div class="flex flex-col">
-												<Step.Title>
-													{stepData.header}
-													{#if stepData.optional}
-														<span class="text-xs">(Optional)</span>
-													{/if}
-												</Step.Title>
+		{#snippet children({ stepper })}
+			<div class="flex gap-4">
+				<Stepper.Header class="">
+					{#each steps as stepData, i (i)}
+						<Step.Root
+							index={i}
+							header={stepData.header}
+							body={stepData.body}
+							completed={stepData.completed}
+							optional={stepData.optional ?? false}
+						>
+							<Step.Header class="flex w-full">
+								<div class="flex gap-2">
+									<div class="flex flex-col">
+										<Step.Indicator class="" />
+										<Step.Separator class="w-0.5 min-h-10 translate-x-3.75" />
+									</div>
+									<div class="flex flex-col">
+										<Step.Title>
+											{stepData.header}
+											{#if stepData.optional}
+												<span class="text-xs">(Optional)</span>
+											{/if}
+										</Step.Title>
 
-												<Step.Description>
-													{stepData.body}
-												</Step.Description>
-											</div>
-										</div>
+										<Step.Description>
+											{stepData.body}
+										</Step.Description>
+									</div>
+								</div>
+							</Step.Header>
 
-									</Step.Header>
-
-									<!-- Step Content (shown in Stepper.Body when active) -->
-									<Step.Body
-										enter={(node)=> {
-											const duration = 0.4;
-											animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
-											return { duration: duration * 1000 };
-										}}
-										exit={(node)=> {
-											const duration = 0.2;
-											animate(node, { opacity: [1, 0], y: [0, 0] }, { duration });
-											return { duration: duration * 1000 };
-										}}
-									>
-										<h3 class="text-xl font-semibold mb-4">
-											Step {i + 1}: {stepData.header}
-										</h3>
-										<p class="text-muted-foreground mb-6">{stepData.body}</p>
-
-										<!-- Actual step content would go here -->
-										<div class="text-sm text-muted-foreground">
-											Content for {stepData.header} step...
-										</div>
-									</Step.Body>
-								{/snippet}
-							</Step.Root>
-						{/each}
-					</Stepper.Header>
-
-					<!-- Body: Automatically renders active step content -->
-					<Stepper.Body class="h-full">
-						<Textarea.Root base={Stack.Root} class="overflow-hidden h-full min-w-96">
-							<Stepper.Content
-								base={Stack.Item}
-								class="min-h-50 flex flex-col p-6"
-								enter={(node)=> {
+							<!-- Step Content (shown in Stepper.Body when active) -->
+							<Step.Body
+								enter={(node) => {
 									const duration = 0.4;
 									animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
-									return{duration: duration * 1000};
+									return { duration: duration * 1000 };
 								}}
-								exit={(node)=> {
-									const duration = 0.3;
+								exit={(node) => {
+									const duration = 0.2;
 									animate(node, { opacity: [1, 0], y: [0, 0] }, { duration });
 									return { duration: duration * 1000 };
 								}}
-							/>
-						</Textarea.Root>
-					</Stepper.Body>
-				</div>
+							>
+								<h3 class="text-xl font-semibold mb-4">
+									Step {i + 1}: {stepData.header}
+								</h3>
+								<p class="text-muted-foreground mb-6">{stepData.body}</p>
 
-				<Stepper.Footer>
+								<!-- Actual step content would go here -->
+								<div class="text-sm text-muted-foreground">
+									Content for {stepData.header} step...
+								</div>
+							</Step.Body>
+						</Step.Root>
+					{/each}
+				</Stepper.Header>
+
+				<!-- Body: Automatically renders active step content -->
+				<Stepper.Body class="h-full">
+					<Textarea.Root base={Stack.Root} class="overflow-hidden h-full min-w-96">
+						<Stepper.Content
+							base={Stack.Item}
+							class="min-h-50 flex flex-col p-6"
+							enter={(node) => {
+								const duration = 0.4;
+								animate(node, { opacity: [0, 1], y: [20, 0] }, { duration });
+								return { duration: duration * 1000 };
+							}}
+							exit={(node) => {
+								const duration = 0.3;
+								animate(node, { opacity: [1, 0], y: [0, 0] }, { duration });
+								return { duration: duration * 1000 };
+							}}
+						/>
+					</Textarea.Root>
+				</Stepper.Body>
+			</div>
+
+			<Stepper.Footer>
 				<div class="flex justify-between">
 					<Button
 						variant="outline"
@@ -372,6 +369,6 @@
 					</div>
 				</div>
 			</Stepper.Footer>
-			{/snippet}
+		{/snippet}
 	</Stepper.Root>
 </Story>

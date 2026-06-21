@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
@@ -10,7 +10,7 @@
 	let {
 		open = $bindable(false),
 		disabled = false,
-		"z-index": zindex = 0,
+		'z-index': zindex = 0,
 		overlay: asOverlay = false,
 		portal = undefined,
 		class: klass = '',
@@ -28,17 +28,18 @@
 	// svelte-ignore state_referenced_locally
 	const layer = asOverlay ? new ZLayer('modal', () => normalizedZIndex ?? 0).share() : undefined;
 
-	const binding = bindBond<SidebarBond>(
-		(props) => factory(props),
-		{
-			open: [() => open, (v) => { open = v; }],
-			disabled: () => disabled,
-			// Vestigial: element-less context root, no typed channel to forward restProps.
-			rest: () => restProps
-		}
-	);
+	const binding = bindBond<SidebarBond>((props) => factory(props), {
+		open: [
+			() => open,
+			(v) => {
+				open = v;
+			}
+		],
+		disabled: () => disabled,
+		// Vestigial: element-less context root, no typed channel to forward restProps.
+		rest: () => restProps
+	});
 	const bond = binding.bond.share();
-
 
 	export function getBond() {
 		return bond;

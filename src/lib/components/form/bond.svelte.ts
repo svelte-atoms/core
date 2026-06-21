@@ -4,7 +4,7 @@ import {
 	Bond,
 	BondState,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 
 export type FormProps<Extension extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {
@@ -43,7 +43,7 @@ export class FormBondState<Props extends FormProps = FormProps> extends BondStat
 	}
 
 	mountField(id: string, atom: FieldBond) {
-		// Collection.attach registers + returns the cleanup (see shared/collection.svelte.ts).
+		// Collection.attach registers + returns the cleanup (see shared/bond/collection.svelte.ts).
 		return this.collection<FieldBond>('field').attach(id, atom);
 	}
 

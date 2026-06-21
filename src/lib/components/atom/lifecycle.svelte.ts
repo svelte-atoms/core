@@ -1,5 +1,5 @@
 import { untrack } from 'svelte';
-import type { Bond } from '$svelte-atoms/core/shared/bond.svelte';
+import type { Bond } from '$svelte-atoms/core/shared/bond/bond.svelte';
 
 // Lifecycle key prefix — namespaced so isLifecycleKey can identify them among other
 // symbol-keyed props, and so the phase is recoverable from the symbol without a registry.

@@ -7,7 +7,9 @@
 	import { DatePickerBond } from './bond.svelte';
 	import type { DatePickerMonthsProps } from './types';
 
-	const datePicker = DatePickerBond.getOrThrow('<DatePicker.Months /> must be used within a <DatePicker.Root />');
+	const datePicker = DatePickerBond.getOrThrow(
+		'<DatePicker.Months /> must be used within a <DatePicker.Root />'
+	);
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
@@ -29,11 +31,7 @@
 		'Dec'
 	];
 
-	let {
-		class: klass = '',
-		preset = undefined,
-		...restProps
-	}: DatePickerMonthsProps = $props();
+	let { class: klass = '', preset = undefined, ...restProps }: DatePickerMonthsProps = $props();
 
 	const monthsProps = $derived(mergePresetProps(preset, 'datepicker.months', restProps));
 

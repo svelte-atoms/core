@@ -38,7 +38,11 @@
 				<ACollapsible.Body
 					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 						return { duration: 0.2 };
 					}}
 					exit={(node) => {
@@ -46,7 +50,11 @@
 						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="px-3 pb-3 text-sm text-muted-foreground">
@@ -73,7 +81,11 @@
 				<ACollapsible.Body
 					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 						return { duration: 0.2 };
 					}}
 					exit={(node) => {
@@ -81,7 +93,11 @@
 						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="px-3 pb-3 text-sm text-muted-foreground">
@@ -104,7 +120,11 @@
 				<ACollapsible.Body
 					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 						return { duration: 0.2 };
 					}}
 					exit={(node) => {
@@ -112,12 +132,16 @@
 						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="px-3 pb-3 text-sm text-muted-foreground">
-						Components are headless by default. Use the preset prop or add Tailwind classes
-						directly to control appearance without fighting opinionated defaults.
+						Components are headless by default. Use the preset prop or add Tailwind classes directly
+						to control appearance without fighting opinionated defaults.
 					</div>
 				</ACollapsible.Body>
 			{/snippet}
@@ -135,7 +159,11 @@
 				<ACollapsible.Body
 					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 					enter={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 						return { duration: 0.2 };
 					}}
 					exit={(node) => {
@@ -143,12 +171,16 @@
 						return { duration: 0.2 };
 					}}
 					animate={(node) => {
-						motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+						motion(
+							node,
+							{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+							{ duration: 0.2, ease: 'linear' }
+						);
 					}}
 				>
 					<div class="px-3 pb-3 text-sm text-muted-foreground">
-						Nest collapsibles, bind the open state externally, or supply a custom factory to
-						extend the bond with your own capabilities.
+						Nest collapsibles, bind the open state externally, or supply a custom factory to extend
+						the bond with your own capabilities.
 					</div>
 				</ACollapsible.Body>
 			{/snippet}
@@ -169,7 +201,11 @@
 			<ACollapsible.Body
 				class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 				enter={(node) => {
-					motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+					motion(
+						node,
+						{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+						{ duration: 0.2, ease: 'linear' }
+					);
 					return { duration: 0.2 };
 				}}
 				exit={(node) => {
@@ -177,7 +213,11 @@
 					return { duration: 0.2 };
 				}}
 				animate={(node) => {
-					motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+					motion(
+						node,
+						{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+						{ duration: 0.2, ease: 'linear' }
+					);
 				}}
 			>
 				<div class="px-3 pb-3 text-sm text-muted-foreground">
@@ -201,7 +241,11 @@
 			<ACollapsible.Body
 				class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 				enter={(node) => {
-					motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+					motion(
+						node,
+						{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+						{ duration: 0.2, ease: 'linear' }
+					);
 					return { duration: 0.2 };
 				}}
 				exit={(node) => {
@@ -209,12 +253,16 @@
 					return { duration: 0.2 };
 				}}
 				animate={(node) => {
-					motion(node, { opacity: +isOpen, height: isOpen ? 'auto' : 0 }, { duration: 0.2, ease: 'linear' });
+					motion(
+						node,
+						{ opacity: +isOpen, height: isOpen ? 'auto' : 0 },
+						{ duration: 0.2, ease: 'linear' }
+					);
 				}}
 			>
 				<div class="px-3 pb-3 text-sm text-muted-foreground">
-					This collapsible starts in the open state. Pass <code>open</code> to control initial
-					visibility without preventing the user from toggling it afterward.
+					This collapsible starts in the open state. Pass <code>open</code> to control initial visibility
+					without preventing the user from toggling it afterward.
 				</div>
 			</ACollapsible.Body>
 		{/snippet}

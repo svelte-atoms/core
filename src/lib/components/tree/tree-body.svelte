@@ -22,11 +22,6 @@
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['pl-4', '$preset', klass]}
-	{fallback}
-	{...bodyProps}
->
+<HtmlAtom {bond} class={['pl-4', '$preset', klass]} {fallback} {...bodyProps}>
 	{@render children?.({ tree: bond })}
 </HtmlAtom>

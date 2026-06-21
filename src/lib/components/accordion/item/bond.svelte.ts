@@ -1,15 +1,19 @@
 import { AccordionBond, type IAccordion } from '../bond.svelte';
-import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	createDisclosure,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
-import { triggerContentLink } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
+import { triggerContentLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
 export type AccordionItemBondProps = BondStateProps & {
-	value: string;
+	value?: string;
 	disabled: boolean;
 	multiple: boolean;
 	collapsible: boolean;

@@ -58,8 +58,10 @@ export interface DialogDescriptionProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DialogChildren> {}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface DialogCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B, DialogChildren> {}
+> extends HtmlAtomProps<E, B, DialogChildren> {
+	// Explicit so the close button can intercept it (HtmlAtomProps' index signature would type it `{}`).
+	onclick?: (event: MouseEvent) => void;
+}

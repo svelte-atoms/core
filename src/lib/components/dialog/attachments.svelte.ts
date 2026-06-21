@@ -1,7 +1,7 @@
 import { clickAction } from '$svelte-atoms/core/attachments/event.svelte';
 import { DialogBond } from './bond.svelte';
 
-export function dialog(callback: (node: HTMLElement, bond?: DialogBond) => any) {
+export function dialog(callback: (node: HTMLElement, bond?: DialogBond) => void | (() => void)) {
 	const bond = DialogBond.get();
 
 	return (node: HTMLElement) => callback(node, bond);

@@ -6,7 +6,7 @@ import {
 	type PopoverDomElements,
 	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type ViewOf, type BondOf } from '$svelte-atoms/core/shared';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { CalendarBondProps } from '../calendar/bond.svelte';

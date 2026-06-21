@@ -7,8 +7,7 @@ import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 export function useFocusRestore(bond: OverlayView | undefined): void {
 	if (!bond) return;
 
-	// Restore config lives on the focus capability surface (§13).
-	const focusSurface = bond.capability(FOCUS)?.surface;
+	const focusSurface = bond.surface(FOCUS);
 	let restoreTarget: HTMLElement | null = null;
 	let wasOpen = false;
 

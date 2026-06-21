@@ -24,8 +24,10 @@ export {
 	/** @deprecated Use `filterSelectData` instead. */
 	filterSelectData as filterDropdownData
 } from '../select/runes.svelte';
-// @deprecated Use `filterSelectData` instead.
-export { filterSelectData as filter } from '../select/runes.svelte';
+export {
+	/** @deprecated Use `filterSelectData` instead. */
+	filterSelectData as filter
+} from '../select/runes.svelte';
 
 // Types
 export type {

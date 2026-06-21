@@ -6,7 +6,7 @@
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal, ZLayer } from '../portal';
 	import { animateDrawerRoot } from './motion';
-	import { bondFactory,bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bondFactory, bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -19,15 +19,19 @@
 		disabled = false,
 		portal = undefined,
 		// +1 in the `modal` band so a Drawer wins over a sibling Dialog (+0); LAYER_BASE, ADR 0009 D5.
-		"z-index": zindex = 1,
+		'z-index': zindex = 1,
+		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		onclose = undefined,
 		factory = bondFactory(DrawerBondState, DrawerBond),
 		fallback = {
 			animate: animateDrawerRoot({}),
-			initial: animateDrawerRoot({ duration: 0 }),
+			initial: animateDrawerRoot({ duration: 0 })
 		},
 		...restProps
-	}: SlideoverRootProps<E, B> & HTMLAttributes<Element> = $props();
+		// Omit `children` from HTMLAttributes: it declares `children?: Snippet` (0-arg), which would
+		// intersect with SlideoverRootProps' 1-arg `DrawerChildren` into an unsatisfiable type.
+	}: SlideoverRootProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
 
 	const normalizedZIndex = $derived(
 		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
@@ -40,10 +44,11 @@
 			open: [() => open, (v) => (open = v)],
 			disabled: () => disabled,
 			side: () => side
-		}
+		},
+		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
-	
+
 	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
 	// setup() (ADR 0001 / ADR 0003, #5, ADR 0010).
 	useCapabilities(bond);
@@ -61,7 +66,6 @@
 			}
 		}
 	});
-
 
 	export function getBond() {
 		return bond;

@@ -1,4 +1,9 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import { tick, untrack } from 'svelte';
 
@@ -57,13 +62,15 @@ class StackBondBase extends Bond<StackStateProps, StackState> {
 }
 
 // StackBond — `defineBond` over `StackBondBase`; z-order lives on `StackState`.
-export const StackBond = defineBond<{ root: typeof StackRootAtom }, StackState, typeof StackBondBase>(
-	{
-		name: 'stack',
-		base: StackBondBase,
-		atoms: { root: StackRootAtom }
-	}
-);
+export const StackBond = defineBond<
+	{ root: typeof StackRootAtom },
+	StackState,
+	typeof StackBondBase
+>({
+	name: 'stack',
+	base: StackBondBase,
+	atoms: { root: StackRootAtom }
+});
 
 // Instance type of the stack bond — paired with the `const` above.
 export type StackBond = BondOf<typeof StackBond>;

@@ -4,7 +4,9 @@
 	import { animateCollapsibleBody } from './motion.svelte';
 	import type { CollapsibleBodyProps } from './types';
 
-	const bond = CollapsibleBond.get();
+	const bond = CollapsibleBond.getOrThrow(
+		'<Collapsible.Body /> must be used within a <Collapsible.Root />'
+	);
 
 	let {
 		class: klass = '',
@@ -22,11 +24,6 @@
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['border-border', '$preset', klass]}
-	{fallback}
-	{...bodyProps}
->
+<HtmlAtom {bond} class={['border-border', '$preset', klass]} {fallback} {...bodyProps}>
 	{@render children?.({ collapsible: bond })}
 </HtmlAtom>

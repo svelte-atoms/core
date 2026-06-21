@@ -25,8 +25,7 @@ export function zAnchor(name: string, value?: number | (() => number)) {
 			typeof value === 'function'
 				? value
 				: (() => {
-						const fixed =
-							value ?? (parseInt(getComputedStyle(node).zIndex, 10) || 0);
+						const fixed = value ?? (parseInt(getComputedStyle(node).zIndex, 10) || 0);
 						return () => fixed;
 					})();
 		return ZLayer.anchor(name, getter);

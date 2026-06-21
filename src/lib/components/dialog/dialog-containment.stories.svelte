@@ -111,7 +111,8 @@
 							<Popover.Trigger class="rounded border px-3 py-1">Behind header</Popover.Trigger>
 							<Popover.Content class="w-56" order={{ below: 'dialog-header' }}>
 								<p class="p-2 text-sm">
-									I render <strong>under</strong> the sticky header — scroll up and the header passes over me.
+									I render <strong>under</strong> the sticky header — scroll up and the header passes
+									over me.
 								</p>
 							</Popover.Content>
 						</Popover.Root>
@@ -119,8 +120,8 @@
 
 					{#each filler as n (n)}
 						<p class="text-muted-foreground">
-							Row {n}. Scroll the dialog body; an open popover stays within this
-							container (soft boundary) and never spills into the viewport.
+							Row {n}. Scroll the dialog body; an open popover stays within this container (soft
+							boundary) and never spills into the viewport.
 						</p>
 					{/each}
 				</ADialog.Body>

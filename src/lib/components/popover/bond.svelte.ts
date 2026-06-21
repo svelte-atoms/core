@@ -5,7 +5,7 @@ import {
 	bondContextKey,
 	type AtomRegistry,
 	type BondVirtualElement
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { BondAtom, type BondSpec } from '$svelte-atoms/core/shared';
 import { focus, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 import {
@@ -144,7 +144,10 @@ export class PopoverState<
 	}
 }
 
-export class PopoverArrowAtom<B extends OverlayView = PopoverBond> extends BondAtom<B, HTMLElement> {
+export class PopoverArrowAtom<B extends OverlayView = PopoverBond> extends BondAtom<
+	B,
+	HTMLElement
+> {
 	constructor(bond: B) {
 		super(bond, 'arrow');
 	}
@@ -158,7 +161,10 @@ export class PopoverArrowAtom<B extends OverlayView = PopoverBond> extends BondA
 	}
 }
 
-export class PopoverVirtualTriggerAtom<B extends OverlayView = PopoverBond> extends BondAtom<B, BondVirtualElement> {
+export class PopoverVirtualTriggerAtom<B extends OverlayView = PopoverBond> extends BondAtom<
+	B,
+	BondVirtualElement
+> {
 	constructor(bond: B) {
 		super(bond, 'virtual-trigger');
 	}
@@ -190,7 +196,10 @@ export class PopoverVirtualTriggerAtom<B extends OverlayView = PopoverBond> exte
 
 // Overlay container atom — owns the dialog ARIA contract and the focus-trap/escape
 // capabilities via `.role('surface')`.
-export class PopoverOverlayAtom<B extends OverlayView = PopoverBond> extends BondAtom<B, HTMLElement> {
+export class PopoverOverlayAtom<B extends OverlayView = PopoverBond> extends BondAtom<
+	B,
+	HTMLElement
+> {
 	constructor(bond: B) {
 		super(bond, 'overlay');
 		this.role('surface');
@@ -235,7 +244,10 @@ export class PopoverOverlayAtom<B extends OverlayView = PopoverBond> extends Bon
 	}
 }
 
-export class PopoverContentAtom<B extends OverlayView = PopoverBond> extends BondAtom<B, HTMLElement> {
+export class PopoverContentAtom<B extends OverlayView = PopoverBond> extends BondAtom<
+	B,
+	HTMLElement
+> {
 	constructor(bond: B) {
 		super(bond, 'content');
 	}
@@ -255,7 +267,10 @@ export class PopoverContentAtom<B extends OverlayView = PopoverBond> extends Bon
 	}
 }
 
-export class PopoverIndicatorAtom<B extends OverlayView = PopoverBond> extends BondAtom<B, HTMLElement> {
+export class PopoverIndicatorAtom<B extends OverlayView = PopoverBond> extends BondAtom<
+	B,
+	HTMLElement
+> {
 	constructor(bond: B) {
 		super(bond, 'indicator');
 	}

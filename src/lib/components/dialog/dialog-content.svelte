@@ -11,8 +11,8 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback={
-			animate: animateDialogContent(),
+		fallback = {
+			animate: animateDialogContent()
 		},
 		...restProps
 	}: DialogContentProps<E, B> = $props();
@@ -32,5 +32,5 @@
 	{fallback}
 	{...dialogProps}
 >
-		{@render children?.({ dialog: bond })}
+	{@render children?.({ dialog: bond })}
 </Overlay>

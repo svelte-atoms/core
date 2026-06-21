@@ -11,7 +11,7 @@
 	let {
 		class: klass = '',
 		preset = undefined,
-		id=ID,
+		id = ID,
 		value,
 		data = undefined,
 		children = undefined,
@@ -21,7 +21,9 @@
 
 	// `atom`'s name is value-specific (`item-<value>`), so read the shared
 	// `select.item` preset from the bond's canonical item atom instead.
-	const presentation = $derived({ preset: preset ?? select.item().preset });
+	// `atom('item')` == the auto-generated `item()` slot accessor at runtime, but typechecks: the
+	// 'item' slot comes via `parts:` composition so it isn't surfaced on the bond's typed map.
+	const presentation = $derived({ preset: preset ?? select.atom('item').preset });
 
 	const itemProps = $derived({
 		id,
@@ -76,5 +78,7 @@
 	{...itemAttrs}
 	onclick={handleClick}
 >
-	{@render children?.({ selectItem: atom as unknown as import('./controller.svelte').SelectItemController<D> })}
+	{@render children?.({
+		selectItem: atom as unknown as import('./controller.svelte').SelectItemController<D>
+	})}
 </List.Item>

@@ -38,7 +38,8 @@
 			},
 			overlay: {
 				control: 'boolean',
-				description: 'Render as a teleported overlay (modal ZLayer) instead of an in-flow rail. Structural — read once at mount, not toggled at runtime.'
+				description:
+					'Render as a teleported overlay (modal ZLayer) instead of an in-flow rail. Structural — read once at mount, not toggled at runtime.'
 			}
 		}
 	});
@@ -127,8 +128,8 @@
 								>
 									<Search size={15} />
 									<span class="flex-1">Search…</span>
-									<kbd
-										class="border-border bg-card rounded border px-1 text-[10px] font-medium">⌘K</kbd
+									<kbd class="border-border bg-card rounded border px-1 text-[10px] font-medium"
+										>⌘K</kbd
 									>
 								</div>
 							</div>
@@ -279,7 +280,9 @@
 									<div class="bg-foreground/10 h-3 w-16 rounded"></div>
 								</div>
 								{#each rowSlots as i (i)}
-									<div class="border-border flex items-center gap-4 border-b px-4 py-3.5 last:border-0">
+									<div
+										class="border-border flex items-center gap-4 border-b px-4 py-3.5 last:border-0"
+									>
 										<div class="bg-foreground/10 h-3.5 flex-3 rounded"></div>
 										<div class="bg-foreground/10 h-3.5 flex-2 rounded"></div>
 										<div class="bg-foreground/10 h-1.5 flex-2 rounded-full"></div>

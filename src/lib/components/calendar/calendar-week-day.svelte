@@ -15,7 +15,12 @@
 		...restProps
 	} = $props();
 
-	const weekDayProps = $derived(mergePresetProps(preset, 'calendar.weekday', { ...calendarBond?.weekDay(index).spread, ...restProps }));
+	const weekDayProps = $derived(
+		mergePresetProps(preset, 'calendar.weekday', {
+			...calendarBond?.weekDay(index).spread,
+			...restProps
+		})
+	);
 </script>
 
 <HtmlAtom

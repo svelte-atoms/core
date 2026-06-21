@@ -17,10 +17,6 @@
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['border-border px-4 py-2', '$preset', klass]}
-	{...bodyProps}
->
+<HtmlAtom {bond} class={['px-4 py-2', '$preset', klass]} {...bodyProps}>
 	{@render children?.({ dialog: bond })}
 </HtmlAtom>

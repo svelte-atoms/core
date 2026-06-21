@@ -12,7 +12,6 @@
 		...restProps
 	}: StepHeaderProps<E, B> = $props();
 
-
 	const atom = bond.atom('header');
 
 	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));

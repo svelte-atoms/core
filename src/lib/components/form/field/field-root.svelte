@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { onDestroy } from 'svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { FieldBond, FieldBondState, type FieldStateProps } from './bond.svelte';
 	import type { FieldRootProps } from '../types';
@@ -40,11 +40,9 @@
 	const unmount = formBond?.state.mountField(bond.id, bond) ?? (() => {});
 	onDestroy(() => unmount());
 
-
 	export function getBond() {
 		return bond;
 	}
-	
 </script>
 
 <HtmlAtom class={['flex flex-col', '$preset', klass]} {...binding.props} {...restProps}>

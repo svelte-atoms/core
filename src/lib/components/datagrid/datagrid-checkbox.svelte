@@ -38,7 +38,9 @@
 
 	function handleCallbacks(ev: Event, checked: boolean) {
 		const onInput = oninput as ((event: Event, options: { checked: boolean }) => void) | undefined;
-		const onChange = onchange as ((event: Event, options: { checked: boolean }) => void) | undefined;
+		const onChange = onchange as
+			| ((event: Event, options: { checked: boolean }) => void)
+			| undefined;
 		onInput?.(ev, { checked });
 		onChange?.(ev, { checked });
 	}
@@ -52,7 +54,7 @@
 
 		const allIds = [...(datagridBond?.state.rows.keys ?? [])];
 
-		if(checked === true){
+		if (checked === true) {
 			datagridBond?.state.select(allIds);
 		} else {
 			datagridBond?.state.unselect(allIds);
@@ -66,7 +68,7 @@
 		handleCallbacks(currentEvent, checked);
 		if (currentEvent.defaultPrevented || !rowId) return;
 
-		if(checked){
+		if (checked) {
 			datagridRowBond?.state.select();
 		} else {
 			datagridRowBond?.state.unselect();
@@ -76,8 +78,8 @@
 
 {#snippet headerCheckbox()}
 	<Checkbox
-		{...(value !== undefined ? { value: value as string } : {})}
-		{...(onclick ? { onclick: onclick as (ev?: Event) => void } : {})}
+		{...value !== undefined ? { value: value as string } : {}}
+		{...onclick ? { onclick: onclick as (ev?: Event) => void } : {}}
 		bond={datagridRowBond}
 		class={classNames}
 		checked={isAllSelected}
@@ -89,8 +91,8 @@
 
 {#snippet rowCheckbox()}
 	<Checkbox
-		{...(value !== undefined ? { value: value as string } : {})}
-		{...(onclick ? { onclick: onclick as (ev?: Event) => void } : {})}
+		{...value !== undefined ? { value: value as string } : {}}
+		{...onclick ? { onclick: onclick as (ev?: Event) => void } : {}}
 		bond={datagridRowBond}
 		class={classNames}
 		checked={isRowSelected}

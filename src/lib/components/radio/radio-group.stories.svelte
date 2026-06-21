@@ -98,11 +98,7 @@
 		<p class="text-sm font-semibold">Billing cycle</p>
 		<div class="flex gap-6">
 			<RadioGroupComponent name="billing-group" bind:value={horizontalValue}>
-				{#each [
-					{ value: 'monthly', label: 'Monthly' },
-					{ value: 'quarterly', label: 'Quarterly' },
-					{ value: 'annually', label: 'Annually' }
-				] as option}
+				{#each [{ value: 'monthly', label: 'Monthly' }, { value: 'quarterly', label: 'Quarterly' }, { value: 'annually', label: 'Annually' }] as option (option.value)}
 					<label class="flex cursor-pointer items-center gap-2">
 						<RadioComponent value={option.value} />
 						<span class="text-sm font-medium">{option.label}</span>
@@ -116,11 +112,7 @@
 
 <Story name="WithDescriptions">
 	<RadioGroupComponent class="gap-4 w-72" name="plan-group">
-		{#each [
-			{ value: 'starter', label: 'Starter', description: 'Up to 5 users and 10 projects' },
-			{ value: 'pro', label: 'Pro', description: 'Unlimited users and projects' },
-			{ value: 'enterprise', label: 'Enterprise', description: 'Custom limits and SLA' }
-		] as plan}
+		{#each [{ value: 'starter', label: 'Starter', description: 'Up to 5 users and 10 projects' }, { value: 'pro', label: 'Pro', description: 'Unlimited users and projects' }, { value: 'enterprise', label: 'Enterprise', description: 'Custom limits and SLA' }] as plan (plan.value)}
 			<label class="flex cursor-pointer items-start gap-3">
 				<RadioComponent value={plan.value} class="mt-0.5" />
 				<div class="flex flex-col gap-0.5">

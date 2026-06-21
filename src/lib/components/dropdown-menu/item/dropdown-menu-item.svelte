@@ -1,12 +1,12 @@
-<script
-	lang="ts"
->
+<script lang="ts">
 	import { DropdownMenuItemAtom, type DropdownMenuItemAtomProps } from './bond.svelte';
 	import { DropdownMenuBond } from '../bond.svelte';
 	import type { DropdownMenuItemProps } from './types';
 	import { List } from '../../list';
 
-	const menu = DropdownMenuBond.getOrThrow('<DropdownMenuItem> must be used within a <DropdownMenu>.');
+	const menu = DropdownMenuBond.getOrThrow(
+		'<DropdownMenuItem> must be used within a <DropdownMenu>.'
+	);
 
 	const ID = $props.id();
 	let {

@@ -20,7 +20,7 @@
 
 	function handlePointerEnter(event: PointerEvent) {
 		onpointerenter?.(event);
-		if(event.defaultPrevented) return;
+		if (event.defaultPrevented) return;
 
 		bond.state.tracking = true;
 	}
@@ -29,7 +29,7 @@
 <HtmlAtom
 	{as}
 	{bond}
-	class={['border-border flex w-fit cursor-pointer rounded-md p-2', '$preset', klass]}
+	class={['flex w-fit cursor-pointer rounded-md p-2', '$preset', klass]}
 	type={as === 'button' ? 'button' : undefined}
 	onpointerenter={handlePointerEnter}
 	{...triggerProps}

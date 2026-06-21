@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { PopoverDialogBond, PopoverDialogBondState, type PopoverDialogBondProps } from './bond.svelte';
+import {
+	PopoverDialogBond,
+	PopoverDialogBondState,
+	type PopoverDialogBondProps
+} from './bond.svelte';
 import { PopoverTriggerAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { DialogContentAtom, DialogTitleAtom } from '../dialog/bond.svelte';
 import { ModalRootAtom, FOCUS } from '$svelte-atoms/core/components/overlay';
@@ -21,9 +25,11 @@ describe('PopoverDialogBond — fuse(Popover, Dialog) (§9.4.1)', () => {
 
 	it('root/content/title come from dialog — the modal presentation (part-2 wins)', () => {
 		const bond = makeBond();
-		expect(bond.root()).toBeInstanceOf(ModalRootAtom);
+		// `!`: root/title come from the Dialog part; fuse()'s type doesn't surface every part-2 slot
+		// accessor as non-undefined (composed-parts typing gap), but they exist at runtime.
+		expect(bond.root!()).toBeInstanceOf(ModalRootAtom);
 		expect(bond.content()).toBeInstanceOf(DialogContentAtom);
-		expect(bond.title()).toBeInstanceOf(DialogTitleAtom);
+		expect(bond.title!()).toBeInstanceOf(DialogTitleAtom);
 	});
 
 	it('modal focus wins the slot: trappedFocus + restoreFocus "previous" (dialog, not popover)', () => {

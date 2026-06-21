@@ -12,7 +12,9 @@
 		...restProps
 	}: ScrollableContainerProps<E, B> = $props();
 
-	const bond = ScrollableBond.getOrThrow('ScrollableContainer must be used within a ScrollableRoot');
+	const bond = ScrollableBond.getOrThrow(
+		'ScrollableContainer must be used within a ScrollableRoot'
+	);
 
 	const atom = bond.atom('container');
 
@@ -33,7 +35,7 @@
 	{bond}
 	as="div"
 	class={[
-		'scrollable-container border-border h-full max-h-full w-full overflow-auto',
+		'scrollable-container h-full max-h-full w-full overflow-auto',
 		'$preset',
 		klass
 	]}

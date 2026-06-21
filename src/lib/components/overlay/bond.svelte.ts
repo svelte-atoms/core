@@ -1,5 +1,10 @@
 import { setContext } from 'svelte';
-import { Bond, BondState, BondAtom, bondContextKey } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	bondContextKey
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import type { OverlayStateProps, OverlayView } from './types';
 
 // Standalone state for OverlayPortal: isOpen delegates to the outer host so nested popovers are gated.
@@ -40,8 +45,7 @@ export class OverlayBond extends Bond {
 	}
 }
 
-// Base overlay state: open()/close()/toggle() over props.open (open gated by disabled).
-// Behaviour is composed from capabilities; this is the state shape OverlayView requires.
+// open gated by disabled; behavior composed from capabilities.
 export class OverlayState<
 	Props extends OverlayStateProps = OverlayStateProps
 > extends BondState<Props> {
@@ -68,7 +72,7 @@ export class OverlayState<
 	}
 }
 
-// Shared trigger atom. .role('trigger') folds in disclosure ARIA + gesture from the trigger policy.
+// .role('trigger') folds in disclosure ARIA + gesture from the trigger policy.
 export class OverlayTriggerAtom<B extends OverlayView = OverlayView> extends BondAtom<
 	B,
 	HTMLElement

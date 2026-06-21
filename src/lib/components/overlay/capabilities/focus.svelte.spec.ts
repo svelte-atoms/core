@@ -14,7 +14,7 @@ describe('focus policies', () => {
 		const surface = cap.behavior!('surface');
 		const content = cap.behavior!('content');
 		expect(typeof surface?.handlers).toBe('function');
-		expect('onkeydown' in (surface!.handlers!({} as never))).toBe(true);
+		expect('onkeydown' in surface!.handlers!({} as never)).toBe(true);
 		expect(typeof content?.onmount).toBe('function');
 	});
 
@@ -25,8 +25,10 @@ describe('focus policies', () => {
 	});
 
 	it('noFocus projects nothing on either role', () => {
-		expect(noFocus.behavior!('surface')).toBeUndefined();
-		expect(noFocus.behavior!('content')).toBeUndefined();
+		// noFocus is surface-only (no role map) — it carries no behavior projector at all.
+		expect(noFocus.behavior).toBeUndefined();
+		expect(noFocus.behavior?.('surface')).toBeUndefined();
+		expect(noFocus.behavior?.('content')).toBeUndefined();
 	});
 
 	it('projects nothing for unrelated roles', () => {

@@ -14,7 +14,10 @@
 		},
 		argTypes: {
 			checked: { control: 'boolean', description: 'Whether the checkbox is checked' },
-			indeterminate: { control: 'boolean', description: 'Whether the checkbox is in an indeterminate (mixed) state' },
+			indeterminate: {
+				control: 'boolean',
+				description: 'Whether the checkbox is in an indeterminate (mixed) state'
+			},
 			disabled: { control: 'boolean', description: 'Disable interaction with the checkbox' }
 		}
 	});
@@ -103,24 +106,29 @@
 		<!-- Task list with select-all (indeterminate) -->
 		<div class="border-border bg-card rounded-lg border">
 			<div class="border-border flex items-center gap-3 border-b px-4 py-3">
-				<CheckboxCmp
-					checked={allChecked}
-					indeterminate={someChecked}
-					onclick={toggleAll}
-				/>
+				<CheckboxCmp checked={allChecked} indeterminate={someChecked} onclick={toggleAll} />
 				<div>
 					<h3 class="text-foreground text-sm font-semibold">Sprint Tasks</h3>
-					<p class="text-muted-foreground text-xs">{tasks.filter((t) => t.done).length} of {tasks.length} completed</p>
+					<p class="text-muted-foreground text-xs">
+						{tasks.filter((t) => t.done).length} of {tasks.length} completed
+					</p>
 				</div>
 			</div>
 			<div class="flex flex-col gap-1 p-2">
 				{#each tasks as task (task.id)}
-					<label class={[
-						'flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors',
-						task.done ? 'bg-foreground/3' : 'hover:bg-foreground/5'
-					]}>
+					<label
+						class={[
+							'flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 transition-colors',
+							task.done ? 'bg-foreground/3' : 'hover:bg-foreground/5'
+						]}
+					>
 						<CheckboxCmp bind:checked={task.done} />
-						<span class={['text-sm transition-colors', task.done ? 'text-muted-foreground line-through' : 'text-foreground']}>
+						<span
+							class={[
+								'text-sm transition-colors',
+								task.done ? 'text-muted-foreground line-through' : 'text-foreground'
+							]}
+						>
 							{task.label}
 						</span>
 					</label>
@@ -137,7 +145,8 @@
 						<CheckboxCmp bind:checked={acceptTerms} />
 					</div>
 					<span class="text-foreground text-sm">
-						I agree to the <span class="text-primary underline">Terms of Service</span> and understand the usage guidelines.
+						I agree to the <span class="text-primary underline">Terms of Service</span> and understand
+						the usage guidelines.
 					</span>
 				</label>
 				<label class="flex cursor-pointer items-start gap-3">
@@ -145,7 +154,8 @@
 						<CheckboxCmp bind:checked={acceptPrivacy} />
 					</div>
 					<span class="text-foreground text-sm">
-						I accept the <span class="text-primary underline">Privacy Policy</span> and consent to data processing.
+						I accept the <span class="text-primary underline">Privacy Policy</span> and consent to data
+						processing.
 					</span>
 				</label>
 			</div>

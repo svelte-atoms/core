@@ -9,14 +9,13 @@
 
 	let { class: klass = '', preset = undefined, ...restProps } = $props();
 
-	const headerProps = $derived(mergePresetProps(preset, 'calendar.header', { ...calendarBond?.header().spread, ...restProps }));
+	const headerProps = $derived(
+		mergePresetProps(preset, 'calendar.header', { ...calendarBond?.header().spread, ...restProps })
+	);
 </script>
 
 <HtmlAtom
-	class={cn(
-		'calendar-header col-span-full grid h-fit grid-cols-subgrid',
-		klass
-	)}
+	class={cn('calendar-header col-span-full grid h-fit grid-cols-subgrid', klass)}
 	{...headerProps}
 >
 	{#each (currentMonth?.days ?? []).filter((d) => d.week == 1) as day, i (i)}

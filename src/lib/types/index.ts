@@ -1,4 +1,4 @@
-import type { Bond, BondState, BondStateProps } from '$lib/shared/bond.svelte';
+import type { Bond, BondState, BondStateProps } from '$lib/shared/bond/bond.svelte';
 
 // Override conflicting properties of T with U.
 export type Override<T, U> = Omit<T, keyof U> & U;

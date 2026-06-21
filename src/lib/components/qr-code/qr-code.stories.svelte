@@ -30,10 +30,7 @@
 
 <Story name="Basic">
 	{#snippet template(args)}
-		<QrCodeComponent
-			class="text-primary-foreground bg-primary size-64 rounded-2xl p-1"
-			{...args}
-		/>
+		<QrCodeComponent class="text-primary-foreground bg-primary size-64 rounded-2xl p-1" {...args} />
 	{/snippet}
 </Story>
 

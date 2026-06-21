@@ -4,7 +4,6 @@
 	import type { DialogTitleProps } from './types';
 
 	let {
-		class: klass = '',
 		preset = undefined,
 		as = 'h3' as E,
 		children = undefined,
@@ -18,11 +17,6 @@
 	const titleProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{as}
-	{bond}
-	class={['border-border', '$preset', klass]}
-	{...titleProps}
->
+<HtmlAtom {as} {bond} {...titleProps}>
 	{@render children?.({ dialog: bond })}
 </HtmlAtom>

@@ -8,7 +8,7 @@
 	let {
 		class: klass = '',
 		preset = undefined,
-		as="p",
+		as = 'p',
 		children = undefined,
 		...restProps
 	}: StepDescriptionProps<E, B> = $props();
@@ -18,10 +18,6 @@
 	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Atom
-	{as}
-	class={['text-xs text-muted-foreground', '$preset', klass]}
-	{...descriptionProps}
->
+<Atom {as} class={['text-xs text-muted-foreground', '$preset', klass]} {...descriptionProps}>
 	{@render children?.({ step: bond })}
 </Atom>

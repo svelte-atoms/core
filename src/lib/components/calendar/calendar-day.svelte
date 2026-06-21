@@ -21,7 +21,9 @@
 		...restProps
 	}: CalendarDayProps = $props();
 
-	const dayProps = $derived(mergePresetProps(preset, 'calendar.day', { ...calendarBond?.day(day).spread, ...restProps }));
+	const dayProps = $derived(
+		mergePresetProps(preset, 'calendar.day', { ...calendarBond?.day(day).spread, ...restProps })
+	);
 
 	const isSelected = $derived.by(() => {
 		if (selectedDateEnd && selectedDateStart) {
@@ -66,7 +68,7 @@
 		isSelected && [
 			'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-colors duration-100',
 			day.offmonth && 'bg-primary/80',
-			day.weekend && 'bg-primary/90',
+			day.weekend && 'bg-primary/90'
 		],
 		// Disabled state (applies opacity on top)
 		day.disabled && 'pointer-events-none opacity-25',
@@ -87,7 +89,12 @@
 			calendar: calendarBond!
 		})}
 	{:else}
-		<div class={cn("value flex items-center justify-center size-full transition-colors duration-100", day.today && ['outline-primary outline-2', isSelected && 'outline-offset-3'])}>
+		<div
+			class={cn(
+				'value flex items-center justify-center size-full transition-colors duration-100',
+				day.today && ['outline-primary outline-2', isSelected && 'outline-offset-3']
+			)}
+		>
 			<span>{day.dayOfMonth}</span>
 		</div>
 	{/if}

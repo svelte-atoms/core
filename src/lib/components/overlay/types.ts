@@ -1,5 +1,8 @@
-import type { BondStateProps, BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
-import type { ViewOf } from '$svelte-atoms/core/shared/define-bond.svelte';
+import type {
+	BondStateProps,
+	BondVirtualElement
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
+import type { ViewOf } from '$svelte-atoms/core/shared/authoring/define.svelte';
 import type { OverlayState } from './bond.svelte';
 
 // Minimal bond shape overlay capabilities depend on: any Bond whose state is an OverlayState.

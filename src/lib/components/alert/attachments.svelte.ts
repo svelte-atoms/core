@@ -1,6 +1,6 @@
 import { AlertBond } from './bond.svelte';
 
-export function alert(callback: (node: HTMLElement, bond?: AlertBond) => any) {
+export function alert(callback: (node: HTMLElement, bond?: AlertBond) => void | (() => void)) {
 	const bond = AlertBond.get();
 
 	return (node: HTMLElement) => callback(node, bond);

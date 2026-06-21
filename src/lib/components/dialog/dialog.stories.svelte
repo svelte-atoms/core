@@ -76,10 +76,26 @@
 									{language ?? 'Select a language…'}
 								</Select.Trigger>
 								<Select.List class="border-border bg-popover rounded-md border shadow-lg">
-									<Select.Item value="ar" class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5">Arabic</Select.Item>
-									<Select.Item value="en" class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5">English</Select.Item>
-									<Select.Item value="sp" class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5">Spanish</Select.Item>
-									<Select.Item value="it" class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5">Italian</Select.Item>
+									<Select.Item
+										value="ar"
+										class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5"
+										>Arabic</Select.Item
+									>
+									<Select.Item
+										value="en"
+										class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5"
+										>English</Select.Item
+									>
+									<Select.Item
+										value="sp"
+										class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5"
+										>Spanish</Select.Item
+									>
+									<Select.Item
+										value="it"
+										class="cursor-pointer px-3 py-2 text-sm hover:bg-foreground/5"
+										>Italian</Select.Item
+									>
 								</Select.List>
 							</Select.Root>
 						</div>

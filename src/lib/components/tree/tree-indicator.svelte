@@ -18,10 +18,6 @@
 	const indicatorProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['aspect-square h-fit', '$preset', klass]}
-	{...indicatorProps}
->
+<HtmlAtom {bond} class={['aspect-square h-fit', '$preset', klass]} {...indicatorProps}>
 	{@render children?.({ tree: bond })}
 </HtmlAtom>

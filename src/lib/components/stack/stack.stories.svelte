@@ -26,11 +26,36 @@
 
 	// Photo editing layers scenario
 	const layers = [
-		{ id: 'background', label: 'Background', bg: 'bg-gradient-to-br from-sky-300 to-blue-500', emoji: '🌄' },
-		{ id: 'shapes', label: 'Shapes', bg: 'bg-gradient-to-br from-pink-400 to-rose-500', emoji: '🔷' },
-		{ id: 'text', label: 'Text Layer', bg: 'bg-gradient-to-br from-amber-300 to-orange-500', emoji: '✏️' },
-		{ id: 'overlay', label: 'Overlay', bg: 'bg-gradient-to-br from-emerald-400 to-green-600', emoji: '🎨' },
-		{ id: 'effects', label: 'Effects', bg: 'bg-gradient-to-br from-violet-400 to-purple-600', emoji: '✨' }
+		{
+			id: 'background',
+			label: 'Background',
+			bg: 'bg-gradient-to-br from-sky-300 to-blue-500',
+			emoji: '🌄'
+		},
+		{
+			id: 'shapes',
+			label: 'Shapes',
+			bg: 'bg-gradient-to-br from-pink-400 to-rose-500',
+			emoji: '🔷'
+		},
+		{
+			id: 'text',
+			label: 'Text Layer',
+			bg: 'bg-gradient-to-br from-amber-300 to-orange-500',
+			emoji: '✏️'
+		},
+		{
+			id: 'overlay',
+			label: 'Overlay',
+			bg: 'bg-gradient-to-br from-emerald-400 to-green-600',
+			emoji: '🎨'
+		},
+		{
+			id: 'effects',
+			label: 'Effects',
+			bg: 'bg-gradient-to-br from-violet-400 to-purple-600',
+			emoji: '✨'
+		}
 	];
 
 	let selected = $state('background');
@@ -98,23 +123,45 @@
 					>
 						<span class="text-base">{getEmoji(item.id)}</span>
 						<span class="flex-1 font-medium">{getLabel(item.id)}</span>
-						<span class="text-muted-foreground tabular-nums text-xs">z{bond?.state.getZIndex(item.id)}</span>
+						<span class="text-muted-foreground tabular-nums text-xs"
+							>z{bond?.state.getZIndex(item.id)}</span
+						>
 					</button>
 				{/each}
 			</div>
 
 			<!-- Controls -->
 			<div class="border-border flex flex-wrap gap-1.5 border-t p-2">
-				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.bringToFront(selected)}>
+				<Button
+					variant="outline"
+					size="sm"
+					class="flex-1 text-xs"
+					onclick={() => bond?.state.bringToFront(selected)}
+				>
 					⬆ Front
 				</Button>
-				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.bringForward(selected)}>
+				<Button
+					variant="outline"
+					size="sm"
+					class="flex-1 text-xs"
+					onclick={() => bond?.state.bringForward(selected)}
+				>
 					↑ Up
 				</Button>
-				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.sendBackward(selected)}>
+				<Button
+					variant="outline"
+					size="sm"
+					class="flex-1 text-xs"
+					onclick={() => bond?.state.sendBackward(selected)}
+				>
 					↓ Down
 				</Button>
-				<Button variant="outline" size="sm" class="flex-1 text-xs" onclick={() => bond?.state.sendToBack(selected)}>
+				<Button
+					variant="outline"
+					size="sm"
+					class="flex-1 text-xs"
+					onclick={() => bond?.state.sendToBack(selected)}
+				>
 					⬇ Back
 				</Button>
 			</div>
@@ -122,7 +169,10 @@
 
 		<!-- Canvas (right) -->
 		<div class="flex flex-1 flex-col gap-3">
-			<div class="border-border bg-muted relative overflow-hidden rounded-lg border" style="height: 400px;">
+			<div
+				class="border-border bg-muted relative overflow-hidden rounded-lg border"
+				style="height: 400px;"
+			>
 				<Stack.Root bind:this={root} class="relative h-full w-full">
 					{#each layers as layer, i (layer.id)}
 						<Stack.Item
@@ -130,7 +180,9 @@
 							class={[
 								'absolute flex cursor-pointer flex-col items-center justify-center rounded-xl text-white shadow-lg transition-all',
 								layer.bg,
-								selected === layer.id ? 'ring-4 ring-white/80 ring-offset-2' : 'hover:brightness-110'
+								selected === layer.id
+									? 'ring-4 ring-white/80 ring-offset-2'
+									: 'hover:brightness-110'
 							]}
 							style="width: 180px; height: 120px; top: {30 + i * 40}px; left: {40 + i * 60}px;"
 							onclick={() => (selected = layer.id)}

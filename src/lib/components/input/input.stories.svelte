@@ -59,7 +59,10 @@
 	let today = $state(new Date());
 </script>
 
-<Story name="Basic" args={{ placeholder: 'Type something…', disabled: false, readonly: false, type: 'text' }}>
+<Story
+	name="Basic"
+	args={{ placeholder: 'Type something…', disabled: false, readonly: false, type: 'text' }}
+>
 	{#snippet template(args)}
 		<div class="flex w-72 flex-col gap-1">
 			<Label>Label</Label>
@@ -116,8 +119,17 @@
 			<Label>With leading icon</Label>
 			<MyInput.Root class="w-72">
 				<MyInput.Icon class="text-muted-foreground">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
-						<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="h-4 w-4"
+					>
+						<circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
 					</svg>
 				</MyInput.Icon>
 				<MyInput.TextControl placeholder="Search…" />
@@ -129,7 +141,8 @@
 			<MyInput.Root class="w-72">
 				<div class="relative flex-1">
 					<MyInput.TextControl class="pr-2" placeholder="" />
-					<MyInput.Placeholder class="text-foreground/30 pl-2">name@example.com</MyInput.Placeholder>
+					<MyInput.Placeholder class="text-foreground/30 pl-2">name@example.com</MyInput.Placeholder
+					>
 				</div>
 			</MyInput.Root>
 		</div>
@@ -142,7 +155,11 @@
 		<MyInput.Root>
 			<MyInput.Icon class="text-foreground box-content px-0">$</MyInput.Icon>
 			<div class="relative flex-1">
-				<MyInput.Control id="price-input" class="border-border box-content border-x px-2 py-2" type="currency" />
+				<MyInput.Control
+					id="price-input"
+					class="border-border box-content border-x px-2 py-2"
+					type="currency"
+				/>
 				<MyInput.Placeholder class="text-foreground/20 pl-2">Hello World</MyInput.Placeholder>
 			</div>
 			<MyInput.Icon class="text-foreground box-content px-2">.00</MyInput.Icon>
@@ -178,18 +195,14 @@
 			<MyInput.Root>
 				<MyInput.NumberControl number={0}>
 					{#snippet decrement({ action, disabled })}
-						<button
-							onclick={action}
-							{disabled}
-							class="px-3 text-lg font-bold disabled:opacity-30"
-						>−</button>
+						<button onclick={action} {disabled} class="px-3 text-lg font-bold disabled:opacity-30"
+							>−</button
+						>
 					{/snippet}
 					{#snippet increment({ action, disabled })}
-						<button
-							onclick={action}
-							{disabled}
-							class="px-3 text-lg font-bold disabled:opacity-30"
-						>+</button>
+						<button onclick={action} {disabled} class="px-3 text-lg font-bold disabled:opacity-30"
+							>+</button
+						>
 					{/snippet}
 				</MyInput.NumberControl>
 			</MyInput.Root>
@@ -265,12 +278,16 @@
 			</MyInput.Root>
 			<button
 				class="text-muted-foreground hover:text-foreground w-fit text-sm underline"
-				onclick={() => { dateValue = '2000-01-01'; }}
-			>Set Jan 1, 2000</button>
+				onclick={() => {
+					dateValue = '2000-01-01';
+				}}>Set Jan 1, 2000</button
+			>
 			<button
 				class="text-muted-foreground hover:text-foreground w-fit text-sm underline"
-				onclick={() => { dateValue = ''; }}
-			>Clear</button>
+				onclick={() => {
+					dateValue = '';
+				}}>Clear</button
+			>
 		</div>
 	</div>
 </Story>
@@ -344,7 +361,11 @@
 <Story name="Phone Control (UK)" parameters={{ layout: 'fullscreen' }}>
 	<div class="flex flex-col gap-4 p-4">
 		<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border">
-			<MyInput.PhoneControl bind:value={phoneValue} format="+44 #### ######" placeholder="7700 900000" />
+			<MyInput.PhoneControl
+				bind:value={phoneValue}
+				format="+44 #### ######"
+				placeholder="7700 900000"
+			/>
 		</MyInput.Root>
 	</div>
 </Story>
@@ -367,8 +388,15 @@
 
 		<div class="text-muted-foreground grid grid-cols-3 gap-x-4 text-sm">
 			<span>value: <span class="text-foreground font-mono">{locationValue || '(none)'}</span></span>
-			<span>lat: <span class="text-emerald-600 dark:text-emerald-400 font-mono">{locationLat ?? '—'}</span></span>
-			<span>lng: <span class="text-sky-600 dark:text-sky-400 font-mono">{locationLng ?? '—'}</span></span>
+			<span
+				>lat: <span class="text-emerald-600 dark:text-emerald-400 font-mono"
+					>{locationLat ?? '—'}</span
+				></span
+			>
+			<span
+				>lng: <span class="text-sky-600 dark:text-sky-400 font-mono">{locationLng ?? '—'}</span
+				></span
+			>
 		</div>
 	</div>
 </Story>
@@ -488,9 +516,17 @@
 			<Label>With leading icon</Label>
 			<MyInput.Root class="border-border flex h-10 w-96 items-center rounded-md border">
 				<MyInput.Icon class="py-2.5 text-muted-foreground">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-						<circle cx="12" cy="10" r="3"/>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+						<circle cx="12" cy="10" r="3" />
 					</svg>
 				</MyInput.Icon>
 				<MyInput.LocationControl
@@ -507,31 +543,42 @@
 <!-- OTP Control -->
 <Story name="OTP Control" parameters={{ layout: 'fullscreen' }}>
 	<div class="flex flex-col gap-6 p-4">
-
 		<div class="flex flex-col gap-2">
 			<Label>Inside Input.Root (integrated)</Label>
-			<MyInput.Root class="border-border flex h-10 w-72 items-center rounded-md border overflow-hidden">
+			<MyInput.Root
+				class="border-border flex h-10 w-72 items-center rounded-md border overflow-hidden"
+			>
 				<MyInput.OtpControl
 					bind:value={otpValue}
-					oncomplete={() => { otpCompleted = true; }}
+					oncomplete={() => {
+						otpCompleted = true;
+					}}
 				/>
 			</MyInput.Root>
 			<p class="text-muted-foreground text-sm">
 				Value: <span class="text-foreground font-mono">{otpValue || '(none)'}</span>
-				{#if otpCompleted} <span class="text-emerald-600 font-medium ml-2">✓ Complete</span>{/if}
+				{#if otpCompleted}
+					<span class="text-emerald-600 font-medium ml-2">✓ Complete</span>{/if}
 			</p>
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Inside Input.Root — grouped (3+3)</Label>
-			<MyInput.Root class="border-border flex h-10 w-64 items-center rounded-md border overflow-hidden">
+			<MyInput.Root
+				class="border-border flex h-10 w-64 items-center rounded-md border overflow-hidden"
+			>
 				<MyInput.OtpControl length={6} groupSize={3} />
 			</MyInput.Root>
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Standalone — individual boxes (default)</Label>
-			<OtpControl length={6} oncomplete={() => { otpCompleted = true; }} />
+			<OtpControl
+				length={6}
+				oncomplete={() => {
+					otpCompleted = true;
+				}}
+			/>
 		</div>
 
 		<div class="flex flex-col gap-2">
@@ -565,8 +612,8 @@
 				<MyInput.CurrencyControl bind:value={currencyValue} bind:amount={currencyAmount} />
 			</MyInput.Root>
 			<p class="text-muted-foreground text-sm">
-				Value: <span class="text-foreground font-mono">{currencyValue || '(none)'}</span> ·
-				Amount: <span class="text-foreground font-mono">{currencyAmount ?? '(none)'}</span>
+				Value: <span class="text-foreground font-mono">{currencyValue || '(none)'}</span> · Amount:
+				<span class="text-foreground font-mono">{currencyAmount ?? '(none)'}</span>
 			</p>
 		</div>
 
@@ -592,26 +639,31 @@
 			<div class="flex gap-2">
 				<button
 					class="text-muted-foreground hover:text-foreground text-sm underline"
-					onclick={() => { currencyAmount = 9999.99; }}
-				>Set $9,999.99</button>
+					onclick={() => {
+						currencyAmount = 9999.99;
+					}}>Set $9,999.99</button
+				>
 				<button
 					class="text-muted-foreground hover:text-foreground text-sm underline"
-					onclick={() => { currencyAmount = undefined; currencyValue = ''; }}
-				>Clear</button>
+					onclick={() => {
+						currencyAmount = undefined;
+						currencyValue = '';
+					}}>Clear</button
+				>
 			</div>
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Disabled</Label>
 			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
-				<MyInput.CurrencyControl amount={42.50} disabled />
+				<MyInput.CurrencyControl amount={42.5} disabled />
 			</MyInput.Root>
 		</div>
 
 		<div class="flex flex-col gap-2">
 			<Label>Readonly</Label>
 			<MyInput.Root class="border-border flex h-10 w-48 items-center rounded-md border">
-				<MyInput.CurrencyControl amount={42.50} readonly />
+				<MyInput.CurrencyControl amount={42.5} readonly />
 			</MyInput.Root>
 		</div>
 	</div>
@@ -622,23 +674,7 @@
 	<div class="flex flex-col gap-4 p-4">
 		<!-- Format grid -->
 		<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-			{#each [
-				{ label: 'Hex 6',                   value: '#1a2b3c' },
-				{ label: 'Hex 8 (alpha)',            value: '#1a2b3cff' },
-				{ label: 'RGB',                      value: 'rgb(26, 43, 60)' },
-				{ label: 'RGBA',                     value: 'rgba(26, 43, 60, 0.5)' },
-				{ label: 'HSL',                      value: 'hsl(210deg 40% 17%)' },
-				{ label: 'HSLA',                     value: 'hsla(210, 40%, 17%, 0.8)' },
-				{ label: 'HWB',                      value: 'hwb(210 10% 76%)' },
-				{ label: 'Lab',                      value: 'lab(17 -3.5 -12)' },
-				{ label: 'LCH',                      value: 'lch(17 12.5 253deg)' },
-				{ label: 'OKLab',                    value: 'oklab(0.27 -0.02 -0.06)' },
-				{ label: 'OKLCH',                    value: 'oklch(0.27 0.06 253deg)' },
-				{ label: 'display-p3',               value: 'color(display-p3 0.1 0.17 0.24)' },
-				{ label: 'Named — cornflowerblue',   value: 'cornflowerblue' },
-				{ label: 'Named — rebeccapurple',    value: 'rebeccapurple' },
-				{ label: 'Named — transparent',      value: 'transparent' },
-			] as item (item.label)}
+			{#each [{ label: 'Hex 6', value: '#1a2b3c' }, { label: 'Hex 8 (alpha)', value: '#1a2b3cff' }, { label: 'RGB', value: 'rgb(26, 43, 60)' }, { label: 'RGBA', value: 'rgba(26, 43, 60, 0.5)' }, { label: 'HSL', value: 'hsl(210deg 40% 17%)' }, { label: 'HSLA', value: 'hsla(210, 40%, 17%, 0.8)' }, { label: 'HWB', value: 'hwb(210 10% 76%)' }, { label: 'Lab', value: 'lab(17 -3.5 -12)' }, { label: 'LCH', value: 'lch(17 12.5 253deg)' }, { label: 'OKLab', value: 'oklab(0.27 -0.02 -0.06)' }, { label: 'OKLCH', value: 'oklch(0.27 0.06 253deg)' }, { label: 'display-p3', value: 'color(display-p3 0.1 0.17 0.24)' }, { label: 'Named — cornflowerblue', value: 'cornflowerblue' }, { label: 'Named — rebeccapurple', value: 'rebeccapurple' }, { label: 'Named — transparent', value: 'transparent' }] as item (item.label)}
 				<div class="flex flex-col gap-1">
 					<Label>{item.label}</Label>
 					<MyInput.Root class="border-border flex h-9 items-center gap-2 rounded-md border px-2">

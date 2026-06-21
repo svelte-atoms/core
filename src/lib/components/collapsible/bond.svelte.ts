@@ -1,14 +1,14 @@
-import { Bond, BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	createDisclosure,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
 import {
 	DisclosureState,
 	type DisclosureStateProps
-} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
-import { triggerContentLink } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
+import { triggerContentLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
 
 export type CollapsibleStateProps = DisclosureStateProps & {

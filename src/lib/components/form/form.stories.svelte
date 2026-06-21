@@ -106,14 +106,20 @@
 	>
 		<header class="space-y-1">
 			<h2 class="text-xl font-semibold">Team Profile</h2>
-			<p class="text-muted-foreground text-sm">Composed form with text, checkbox, and radio fields.</p>
+			<p class="text-muted-foreground text-sm">
+				Composed form with text, checkbox, and radio fields.
+			</p>
 		</header>
 
 		<div class="grid gap-4 md:grid-cols-2">
 			<Field.Root name="firstName" schema={profileSchema.shape.firstName} value={firstName}>
 				<Field.Label>First Name</Field.Label>
 				<Input.Root>
-					<Field.Control base={Input.Control as unknown as never} bind:value={firstName} placeholder="Maya" />
+					<Field.Control
+						base={Input.Control as unknown as never}
+						bind:value={firstName}
+						placeholder="Maya"
+					/>
 				</Input.Root>
 				<Field.HelperText>This will appear on your profile and team mentions.</Field.HelperText>
 			</Field.Root>
@@ -121,16 +127,32 @@
 			<Field.Root name="lastName" schema={profileSchema.shape.lastName} value={lastName}>
 				<Field.Label>Last Name</Field.Label>
 				<Input.Root>
-					<Field.Control base={Input.Control as unknown as never} bind:value={lastName} placeholder="Lopez" />
+					<Field.Control
+						base={Input.Control as unknown as never}
+						bind:value={lastName}
+						placeholder="Lopez"
+					/>
 				</Input.Root>
 			</Field.Root>
 
-			<Field.Root name="email" schema={profileSchema.shape.email} value={email} class="md:col-span-2">
+			<Field.Root
+				name="email"
+				schema={profileSchema.shape.email}
+				value={email}
+				class="md:col-span-2"
+			>
 				<Field.Label>Email</Field.Label>
 				<Input.Root>
-					<Field.Control base={Input.Control as unknown as never} type="email" bind:value={email} placeholder="maya@example.com" />
+					<Field.Control
+						base={Input.Control as unknown as never}
+						type="email"
+						bind:value={email}
+						placeholder="maya@example.com"
+					/>
 				</Input.Root>
-				<Field.HelperText>We will only use this for account and security notifications.</Field.HelperText>
+				<Field.HelperText
+					>We will only use this for account and security notifications.</Field.HelperText
+				>
 			</Field.Root>
 		</div>
 
@@ -145,7 +167,11 @@
 
 			<Field.Root name="theme" schema={profileSchema.shape.theme} value={theme}>
 				<Field.Label>Theme</Field.Label>
-				<Field.Control base={RadioGroup as unknown as never} class="mt-2 flex gap-4 text-sm" bind:value={theme}>
+				<Field.Control
+					base={RadioGroup as unknown as never}
+					class="mt-2 flex gap-4 text-sm"
+					bind:value={theme}
+				>
 					<label class="flex items-center gap-2">
 						<Radio value="light" />
 						<span>Light</span>
@@ -171,15 +197,15 @@
 			<Field.Root name="name" schema={signupSchema.shape.name} value={name}>
 				<Field.Label>Display Name</Field.Label>
 				<Input.Root>
-					<Field.Control base={Input.Control as unknown as never} placeholder="your-handle" bind:value={name} />
+					<Field.Control
+						base={Input.Control as unknown as never}
+						placeholder="your-handle"
+						bind:value={name}
+					/>
 				</Input.Root>
 			</Field.Root>
 
-			<Field.Root
-				name="agreeToTerms"
-				schema={signupSchema.shape.agreeToTerms}
-				value={agreeToTerms}
-			>
+			<Field.Root name="agreeToTerms" schema={signupSchema.shape.agreeToTerms} value={agreeToTerms}>
 				<div class="flex items-start gap-2">
 					<div class="pt-0.5">
 						<Field.Control base={Checkbox as unknown as never} bind:checked={agreeToTerms} />
@@ -190,7 +216,10 @@
 				</div>
 			</Field.Root>
 
-			<button type="button" class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-3 py-2 text-sm">
+			<button
+				type="button"
+				class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-3 py-2 text-sm"
+			>
 				Create account
 			</button>
 

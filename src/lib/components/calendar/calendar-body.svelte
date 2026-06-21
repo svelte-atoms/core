@@ -36,13 +36,12 @@
 		return weeks.filter((week) => week.some((day) => !day.offmonth)).flat();
 	});
 
-	const bodyProps = $derived(mergePresetProps(preset, 'calendar.body', { ...calendarBond?.body().spread, ...restProps }));
+	const bodyProps = $derived(
+		mergePresetProps(preset, 'calendar.body', { ...calendarBond?.body().spread, ...restProps })
+	);
 </script>
 
-<HtmlAtom
-	class={cn('col-span-full grid w-full grid-cols-subgrid', klass)}
-	{...bodyProps}
->
+<HtmlAtom class={cn('col-span-full grid w-full grid-cols-subgrid', klass)} {...bodyProps}>
 	{#each visibleDays as day (day.id)}
 		{#if !outsideDays && day.offmonth}
 			<div aria-hidden="true"></div>

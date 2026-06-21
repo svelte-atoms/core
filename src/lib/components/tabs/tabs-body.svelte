@@ -21,7 +21,7 @@
 </script>
 
 <Stack.Root
-	value={value}
+	{value}
 	{bond}
 	{as}
 	class={['tabs-body relative flex-1 flex flex-col', '$preset', klass]}

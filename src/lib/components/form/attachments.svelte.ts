@@ -1,6 +1,6 @@
 import { FormBond } from './bond.svelte';
 
-export function form(callback: (node: HTMLElement, bond?: FormBond) => any) {
+export function form(callback: (node: HTMLElement, bond?: FormBond) => void | (() => void)) {
 	const bond = FormBond.get();
 	return (node: HTMLElement) => callback(node, bond);
 }

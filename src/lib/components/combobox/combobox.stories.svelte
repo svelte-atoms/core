@@ -46,7 +46,8 @@
 	// Escape clears (`ClearThenClose`). We filter a derived view off it. `keys` stays the FULL
 	// list so a selected-but-filtered-out item keeps its chip/label.
 	const allKeys = languages.map((l) => l.value);
-	const match = (q: string) => (l: Option) => l.label.toLowerCase().includes(q.trim().toLowerCase());
+	const match = (q: string) => (l: Option) =>
+		l.label.toLowerCase().includes(q.trim().toLowerCase());
 
 	// Default story state
 	let defaultValue = $state<string>();
@@ -68,8 +69,7 @@
 
 	const itemClass =
 		'flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-foreground transition-colors hover:bg-foreground/5 data-[highlighted=true]:bg-foreground/5 data-[selected]:bg-primary/10 data-[selected]:font-medium data-[selected]:text-primary';
-	const contentClass =
-		'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-lg';
+	const contentClass = 'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-lg';
 	const inputClass =
 		'text-foreground placeholder:text-muted-foreground min-w-24 flex-1 bg-transparent text-sm outline-none';
 </script>
@@ -117,9 +117,15 @@
 								<ACombobox.Item value={item.value} class={itemClass}>
 									<span class="flex-1">{item.label}</span>
 									{#if args.multiple}
-										<span class="text-primary opacity-0 data-on:opacity-100" data-on={defaultValues.includes(item.value) ? '' : undefined}>✓</span>
+										<span
+											class="text-primary opacity-0 data-on:opacity-100"
+											data-on={defaultValues.includes(item.value) ? '' : undefined}>✓</span
+										>
 									{:else}
-										<span class="text-primary opacity-0 data-on:opacity-100" data-on={defaultValue === item.value ? '' : undefined}>✓</span>
+										<span
+											class="text-primary opacity-0 data-on:opacity-100"
+											data-on={defaultValue === item.value ? '' : undefined}>✓</span
+										>
 									{/if}
 								</ACombobox.Item>
 							</div>
@@ -208,7 +214,10 @@
 						<div animate:flip={{ duration: 150 }}>
 							<ACombobox.Item value={item.value} class={itemClass}>
 								<span class="flex-1" data-label>{item.label}</span>
-								<span class="text-primary opacity-0 data-on:opacity-100" data-on={split === item.value ? '' : undefined}>✓</span>
+								<span
+									class="text-primary opacity-0 data-on:opacity-100"
+									data-on={split === item.value ? '' : undefined}>✓</span
+								>
 							</ACombobox.Item>
 						</div>
 					{/each}
@@ -257,7 +266,10 @@
 						<div animate:flip={{ duration: 150 }}>
 							<ACombobox.Item value={item.value} class={itemClass}>
 								<span class="flex-1" data-label>{item.label}</span>
-								<span class="text-primary opacity-0 data-on:opacity-100" data-on={many.includes(item.value) ? '' : undefined}>✓</span>
+								<span
+									class="text-primary opacity-0 data-on:opacity-100"
+									data-on={many.includes(item.value) ? '' : undefined}>✓</span
+								>
 							</ACombobox.Item>
 						</div>
 					{/each}

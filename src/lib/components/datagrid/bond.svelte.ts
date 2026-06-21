@@ -3,15 +3,15 @@ import {
 	BondAtom,
 	type BondStateProps,
 	type Capability
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
-import type { Collection } from '$svelte-atoms/core/shared/collection.svelte';
+import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
 import {
 	createSelection,
 	selectionCapability,
 	SELECTION,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capabilities/selection.svelte';
+} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
 import { nanoid } from 'nanoid';
 import type { DataGridRowBond } from './row/bond.svelte';
 import type { DataGridColumnBond } from './column/bond.svelte';
@@ -121,9 +121,7 @@ export class DataGridBondState<T = unknown>
 			.filter((r): r is DataGridRowBond<T> => r !== undefined)
 	);
 
-	#sortableColumns = $derived(
-		[...this.columns.values].filter((col) => col.state.props.sortable)
-	);
+	#sortableColumns = $derived([...this.columns.values].filter((col) => col.state.props.sortable));
 
 	#template = $derived(
 		this.props.template ||

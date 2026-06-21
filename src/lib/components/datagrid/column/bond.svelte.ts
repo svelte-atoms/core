@@ -1,6 +1,11 @@
 import type { Direction, SortableType } from '$svelte-atoms/core/types';
 import { DataGridBond, type IDataGrid } from '../bond.svelte';
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 
 export type DataGridColumnBondProps = BondStateProps & {
@@ -99,7 +104,8 @@ interface DataGridColumnBondConstructor {
 	set<T = unknown>(bond: DataGridColumnBond<T>): DataGridColumnBond<T>;
 }
 
-export const DataGridColumnBond = DataGridColumnBondImpl as unknown as DataGridColumnBondConstructor;
+export const DataGridColumnBond =
+	DataGridColumnBondImpl as unknown as DataGridColumnBondConstructor;
 
 export class DataGridColumnBondState<T = unknown> extends BondState<DataGridColumnBondProps> {
 	constructor(props: DataGridColumnBondProps) {

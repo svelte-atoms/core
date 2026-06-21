@@ -1,4 +1,8 @@
-import { sharedCapabilityKey, type Capability } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	defineCapability,
+	sharedCapabilityKey,
+	type Capability
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
 
@@ -31,11 +35,10 @@ function triggerAttrs(o: OverlayView, ariaHasPopup: OverlayKnobs['ariaHasPopup']
 // Click trigger — click + Enter/Space toggles the overlay; projects ARIA attrs + gesture handlers onto `'trigger'`.
 export function clickTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return {
+	return defineCapability({
 		slot: TRIGGER,
-		behavior(role) {
-			if (role !== 'trigger') return undefined;
-			return {
+		roles: {
+			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup),
 				handlers: (bond) => {
 					const o = bond as OverlayView;
@@ -53,9 +56,9 @@ export function clickTrigger(opts: TriggerOptions = {}): Capability {
 						}) as (ev: Event) => void
 					};
 				}
-			};
+			})
 		}
-	};
+	});
 }
 
 // Hover trigger — open on pointer-enter/focusin (with delay), close on pointer-leave/focusout. Timer state is closure-local.
@@ -69,11 +72,10 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 		openT = undefined;
 		closeT = undefined;
 	};
-	return {
+	return defineCapability({
 		slot: TRIGGER,
-		behavior(role) {
-			if (role !== 'trigger') return undefined;
-			return {
+		roles: {
+			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView),
 				handlers: (bond) => {
 					const o = bond as OverlayView;
@@ -97,19 +99,18 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 					};
 				},
 				onmount: () => clear
-			};
+			})
 		}
-	};
+	});
 }
 
 // Context-menu trigger — opens on right-click (contextmenu event).
 export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return {
+	return defineCapability({
 		slot: TRIGGER,
-		behavior(role) {
-			if (role !== 'trigger') return undefined;
-			return {
+		roles: {
+			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup),
 				handlers: (bond) => {
 					const o = bond as OverlayView;
@@ -120,21 +121,20 @@ export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 						}) as (ev: Event) => void
 					};
 				}
-			};
+			})
 		}
-	};
+	});
 }
 
 // Manual trigger — ARIA attrs only, no gesture. Use when the consumer drives open/close programmatically.
 export function manualTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return {
+	return defineCapability({
 		slot: TRIGGER,
-		behavior(role) {
-			if (role !== 'trigger') return undefined;
-			return {
+		roles: {
+			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup)
-			};
+			})
 		}
-	};
+	});
 }

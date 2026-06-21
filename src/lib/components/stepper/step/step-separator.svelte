@@ -6,7 +6,9 @@
 
 	const bond = StepBond.getOrThrow('StepSeparator must be used within a Step component.');
 
-	const stepperBond = StepperBond.getOrThrow('StepSeparator must be used within a Stepper component.');
+	const stepperBond = StepperBond.getOrThrow(
+		'StepSeparator must be used within a Stepper component.'
+	);
 
 	let {
 		class: klass = '',
@@ -14,7 +16,6 @@
 		children = undefined,
 		...restProps
 	}: StepSeparatorProps<E, B> = $props();
-
 
 	const atom = bond.atom('separator');
 

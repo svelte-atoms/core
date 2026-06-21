@@ -2,7 +2,12 @@ import { untrack } from 'svelte';
 import { TabsBond, type ITabs } from '../bond.svelte';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import { portal } from '$svelte-atoms/core/attachments/portal.svelte';
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
 
 export type TabBondProps<
@@ -184,8 +189,7 @@ export class TabBondState<T = unknown> extends BondState<TabBondProps<T>> {
 
 	get isDisabled() {
 		return (
-			this.props.disabled ??
-			this.#parent?.headerElement?.getAttribute?.('aria-disabled') === 'true'
+			this.props.disabled ?? this.#parent?.headerElement?.getAttribute?.('aria-disabled') === 'true'
 		);
 	}
 

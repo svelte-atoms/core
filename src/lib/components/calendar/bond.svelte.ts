@@ -1,4 +1,4 @@
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	CalendarRootAtom,
@@ -129,6 +129,8 @@ export class CalendarBondState<
 	nextMonth() {
 		if (this.props.pivote) {
 			const current = this.props.pivote;
+			// Assigned wholesale to the reactive prop cell (never mutated in place) — a plain Date is correct here.
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			this.props.pivote = new Date(current.getFullYear(), current.getMonth() + 1, 1);
 		}
 	}
@@ -136,6 +138,8 @@ export class CalendarBondState<
 	previousMonth() {
 		if (this.props.pivote) {
 			const current = this.props.pivote;
+			// Assigned wholesale to the reactive prop cell (never mutated in place) — a plain Date is correct here.
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			this.props.pivote = new Date(current.getFullYear(), current.getMonth() - 1, 1);
 		}
 	}

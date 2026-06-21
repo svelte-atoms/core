@@ -5,7 +5,7 @@ import {
 	type DropdownMenuBondElements,
 	type DropdownMenuBondProps
 } from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import {
 	defineBond,
 	createInput,
@@ -17,7 +17,7 @@ import {
 	createSelection,
 	selectionCapability,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capabilities/selection.svelte';
+} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
 import { clickTrigger, clearThenClose } from '$svelte-atoms/core/components/overlay';
 import type { SelectItemAtom } from './item/bond.svelte';
 
@@ -168,16 +168,15 @@ export const SelectBond = defineBond<
 >({
 	parts: [DropdownMenuBond],
 	name: 'select',
+	// Explicit <A, SelectBondState>: generic State can't be inferred — inference collapses to the base.
+	state: SelectBondState,
 	atoms: {
 		content: { atom: SelectContentAtom, role: 'container' },
 		placeholder: SelectPlaceholderAtom,
 		value: SelectValueAtom,
 		query: SelectQueryAtom
 	},
-	capabilities: () => [
-		clickTrigger({ ariaHasPopup: 'listbox' }),
-		clearThenClose
-	]
+	capabilities: () => [clickTrigger({ ariaHasPopup: 'listbox' }), clearThenClose]
 });
 
 // Instance type paired with the `const`; item-data precision lives on `SelectBondState`/`SelectItemAtom` generics.

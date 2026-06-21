@@ -6,13 +6,15 @@
 	import { CollapsibleBond } from './bond.svelte';
 	import type { CollapsibleIndicatorProps } from './types';
 
-	const bond = CollapsibleBond.get();
+	const bond = CollapsibleBond.getOrThrow(
+		'<Collapsible.Indicator /> must be used within a <Collapsible.Root />'
+	);
 	const isOpen = $derived(bond?.state.props.open ?? false);
 
 	let {
 		class: klass = '',
 		preset = undefined,
-		animate=defaultAnimate,
+		animate = defaultAnimate,
 		children = undefined,
 		...restProps
 	}: CollapsibleIndicatorProps<E, B> = $props();

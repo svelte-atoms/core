@@ -22,8 +22,7 @@
 			type: {
 				control: 'select',
 				options: ['modal', 'non-modal'],
-				description:
-					'Presentation mode — modal closes on backdrop click; non-modal leaves it open'
+				description: 'Presentation mode — modal closes on backdrop click; non-modal leaves it open'
 			}
 		}
 	});
@@ -79,8 +78,8 @@
 				<PopoverDialog.Body>
 					<p>
 						This panel is opened by a Popover trigger but presented in Dialog (modal) style —
-						centered, backdropped, and focus-trapped. It is a single fused bond, and these atoms
-						are the very same Popover/Dialog components, reused.
+						centered, backdropped, and focus-trapped. It is a single fused bond, and these atoms are
+						the very same Popover/Dialog components, reused.
 					</p>
 				</PopoverDialog.Body>
 				<div class="flex justify-end gap-4 px-8 pt-2">

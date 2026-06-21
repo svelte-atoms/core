@@ -1,5 +1,8 @@
-<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+<script
+	lang="ts"
+	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
+>
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import {
 		DataGridColumnBond,
@@ -7,9 +10,9 @@
 		type DataGridColumnBondProps
 	} from './bond.svelte';
 	import type { DatagridColumnProps } from '../types';
-	
+
 	const ID = $props.id();
-	
+
 	let {
 		class: klass = '',
 		preset = undefined,
@@ -61,15 +64,10 @@
 				return;
 			}
 
-			if (isSortable) {
-				if (direction === 'asc') {
-					direction = 'desc';
-				} else {
-					direction = 'asc';
-				}
+			if (direction === 'asc') {
+				direction = 'desc';
 			} else {
-				if (!(typeof sortable === 'boolean')) {
-				}
+				direction = 'asc';
 			}
 
 			if (typeof sortable === 'string') {

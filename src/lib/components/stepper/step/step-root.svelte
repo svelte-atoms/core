@@ -5,29 +5,29 @@
 	import type { StepRootProps } from './types';
 	import { onDestroy } from 'svelte';
 
+	// Step.Root is renderless (registration-only — it renders `children`, not an element), so there is
+	// no host element to forward the inherited HtmlAtomProps (class/preset/…) onto; they're intentionally unused.
+	// eslint-disable-next-line svelte/no-unused-props
 	let {
 		index,
 		disabled = false,
 		completed = false,
 		optional = false,
 		children = undefined,
-		factory = bondFactory(StepBondState, StepBond),
+		factory = bondFactory(StepBondState, StepBond)
 	}: StepRootProps<E, B> = $props();
 
-	const binding = bindBond<StepBond>(
-		(props) => factory(props),
-		{
-			index: () => index,
-			disabled: () => disabled,
-			completed: () => completed,
-			optional: () => optional
-		}
-	);
+	const binding = bindBond<StepBond>((props) => factory(props), {
+		index: () => index,
+		disabled: () => disabled,
+		completed: () => completed,
+		optional: () => optional
+	});
 	const bond = binding.bond.share();
 
 	bond.state.mount();
-	
-	onDestroy(()=> {
+
+	onDestroy(() => {
 		bond.state.unmount();
 	});
 

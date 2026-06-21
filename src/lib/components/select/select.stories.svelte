@@ -99,8 +99,7 @@
 
 	const itemClass =
 		'flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-foreground transition-colors hover:bg-foreground/5 data-[highlighted=true]:bg-foreground/5 data-[selected]:bg-primary/10 data-[selected]:font-medium data-[selected]:text-primary';
-	const contentClass =
-		'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-sm';
+	const contentClass = 'border-border bg-popover z-50 overflow-hidden rounded-lg border shadow-sm';
 	const triggerClass =
 		'border-border flex h-11 w-full items-center gap-2 rounded-lg border px-3 transition-colors hover:border-foreground/30';
 </script>
@@ -157,7 +156,12 @@
 							{#each countries as item (item.value)}
 								<ASelect.Item value={item.value} class={itemClass}>
 									<span class="flex-1" data-label>{item.label}</span>
-									<span class="text-primary opacity-0 data-on:opacity-100" data-on={(select.state.props.values ?? []).includes(item.value) ? '' : undefined}>✓</span>
+									<span
+										class="text-primary opacity-0 data-on:opacity-100"
+										data-on={(select.state.props.values ?? []).includes(item.value)
+											? ''
+											: undefined}>✓</span
+									>
 								</ASelect.Item>
 							{/each}
 						</div>
@@ -202,7 +206,10 @@
 						{#each countries as item (item.value)}
 							<ASelect.Item value={item.value} class={itemClass}>
 								<span class="flex-1" data-label>{item.label}</span>
-								<span class="text-primary opacity-0 data-on:opacity-100" data-on={country === item.value ? '' : undefined}>✓</span>
+								<span
+									class="text-primary opacity-0 data-on:opacity-100"
+									data-on={country === item.value ? '' : undefined}>✓</span
+								>
 							</ASelect.Item>
 						{/each}
 					</div>
@@ -254,7 +261,10 @@
 						{#each team as item (item.value)}
 							<ASelect.Item value={item.value} class={itemClass}>
 								<span class="flex-1" data-label>{item.label}</span>
-								<span class="text-primary opacity-0 data-on:opacity-100" data-on={members.includes(item.value) ? '' : undefined}>✓</span>
+								<span
+									class="text-primary opacity-0 data-on:opacity-100"
+									data-on={members.includes(item.value) ? '' : undefined}>✓</span
+								>
 							</ASelect.Item>
 						{/each}
 					</div>
@@ -270,7 +280,11 @@
 <Story name="Searchable">
 	<div class="flex flex-col gap-2" style="width: 320px;">
 		<p class="text-foreground text-sm font-medium">Country (type to filter)</p>
-		<ASelect.Root keys={countries.map((c) => c.value)} bind:query={countrySearch} bind:value={country}>
+		<ASelect.Root
+			keys={countries.map((c) => c.value)}
+			bind:query={countrySearch}
+			bind:value={country}
+		>
 			{#snippet children({ select })}
 				<ASelect.Trigger
 					base={Input.Root}
@@ -307,7 +321,10 @@
 							<div animate:flip={{ duration: 150 }}>
 								<ASelect.Item value={item.value} class={itemClass}>
 									<span class="flex-1" data-label>{item.label}</span>
-									<span class="text-primary opacity-0 data-on:opacity-100" data-on={country === item.value ? '' : undefined}>✓</span>
+									<span
+										class="text-primary opacity-0 data-on:opacity-100"
+										data-on={country === item.value ? '' : undefined}>✓</span
+									>
 								</ASelect.Item>
 							</div>
 						{/each}
@@ -359,13 +376,18 @@
 								<ASelect.Divider class="bg-border my-1 h-px" />
 							{/if}
 							<ASelect.Group>
-								<ASelect.Title class="text-muted-foreground px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+								<ASelect.Title
+									class="text-muted-foreground px-3 py-1 text-xs font-semibold uppercase tracking-wide"
+								>
 									{section.group}
 								</ASelect.Title>
 								{#each section.items as item (item.value)}
 									<ASelect.Item value={item.value} class={itemClass}>
 										<span class="flex-1" data-label>{item.label}</span>
-										<span class="text-primary opacity-0 data-on:opacity-100" data-on={framework === item.value ? '' : undefined}>✓</span>
+										<span
+											class="text-primary opacity-0 data-on:opacity-100"
+											data-on={framework === item.value ? '' : undefined}>✓</span
+										>
 									</ASelect.Item>
 								{/each}
 							</ASelect.Group>

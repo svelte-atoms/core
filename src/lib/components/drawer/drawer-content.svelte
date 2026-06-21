@@ -8,7 +8,7 @@
 
 	type Element = HTMLElementTagNameMap[E];
 
-	const bond = DrawerBond.get();
+	const bond = DrawerBond.getOrThrow('<Drawer.Content /> must be used within a <Drawer.Root />');
 	const isOpen = $derived(bond?.state.props.open);
 
 	let {
@@ -16,8 +16,8 @@
 		preset = undefined,
 		children = undefined,
 		fallback = {
-			animate: animateDrawerContent({ }),
-			initial: animateDrawerContent({ duration: 0 }),
+			animate: animateDrawerContent({}),
+			initial: animateDrawerContent({ duration: 0 })
 		},
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();

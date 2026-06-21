@@ -12,7 +12,22 @@
 		argTypes: {
 			key: {
 				control: 'select',
-				options: ['Enter', 'Esc', 'Tab', 'Shift', 'Ctrl', 'Alt', '⌘', '↑', '↓', '←', '→', 'Backspace', 'Delete', 'Space'],
+				options: [
+					'Enter',
+					'Esc',
+					'Tab',
+					'Shift',
+					'Ctrl',
+					'Alt',
+					'⌘',
+					'↑',
+					'↓',
+					'←',
+					'→',
+					'Backspace',
+					'Delete',
+					'Space'
+				],
 				description: 'The key label to display inside the Kbd element'
 			},
 			separator: {
@@ -94,7 +109,8 @@
 <Story name="Inline Usage">
 	{#snippet template()}
 		<p class="text-sm leading-relaxed">
-			Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette, or use
+			Press <Kbd>⌘</Kbd>
+			<Kbd>K</Kbd> to open the command palette, or use
 			<Shortcut keys={['Ctrl', 'Shift', 'P']} /> to access all commands.
 		</p>
 	{/snippet}

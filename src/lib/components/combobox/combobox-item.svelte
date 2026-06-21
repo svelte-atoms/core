@@ -2,7 +2,9 @@
 	import { ComboboxBond } from './bond.svelte';
 	import { Item } from '$svelte-atoms/core/components/select/atoms';
 
-	const bond = ComboboxBond.getOrThrow('Combobox atom was not found') as ComboboxBond;
+	const bond = ComboboxBond.getOrThrow(
+		'ComboboxItem must be used within a Combobox'
+	) as ComboboxBond;
 
 	let {
 		class: klass = '',
@@ -12,7 +14,9 @@
 		...restProps
 	} = $props();
 
-	const atom = bond.item();
+	// `bond.atom('item')` == the auto-generated `item()` slot accessor at runtime, but typechecks:
+	// the 'item' slot comes via `parts:` composition so it isn't surfaced on the bond's typed map.
+	const atom = bond.atom('item');
 
 	const presentation = $derived({ preset: preset ?? atom.preset });
 

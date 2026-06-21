@@ -2,7 +2,7 @@ import type { Snippet } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import type { PortalBond } from '../bond.svelte';
 import type { Factory } from '$svelte-atoms/core/types';
-import { BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
 
 export type PortalsStateProps = BondStateProps & {

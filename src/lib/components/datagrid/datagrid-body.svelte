@@ -1,10 +1,13 @@
-<script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+<script
+	lang="ts"
+	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
+>
 	import { DataGridBond } from './bond.svelte';
 	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import type { DatagridBodyProps } from './types';
 	import { tick } from 'svelte';
 
-	const bond = (DataGridBond.get() as DataGridBond<T> | undefined);
+	const bond = DataGridBond.get() as DataGridBond<T> | undefined;
 
 	let {
 		class: klass = '',
@@ -26,10 +29,6 @@
 	const content = $derived(isTemplateReady ? children : undefined);
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['contents', '$preset', klass]}
-	{...bodyProps}
->
+<HtmlAtom {bond} class={['contents', '$preset', klass]} {...bodyProps}>
 	{@render content?.({ datagrid: bond })}
 </HtmlAtom>

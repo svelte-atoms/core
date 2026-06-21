@@ -134,7 +134,9 @@
 					</AContextMenu.Item>
 				</AContextMenu.Content>
 			</AContextMenu.Root>
-			<p class="text-sm text-muted-foreground">Last action: <strong>{basicAction || '—'}</strong></p>
+			<p class="text-sm text-muted-foreground">
+				Last action: <strong>{basicAction || '—'}</strong>
+			</p>
 		</div>
 	{/snippet}
 </Story>

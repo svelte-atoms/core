@@ -1,33 +1,33 @@
-import { sharedCapabilityKey, type Capability } from '$svelte-atoms/core/shared/bond.svelte';
-import { INPUT } from '$svelte-atoms/core/shared/capabilities/input.svelte';
+import {
+	defineCapability,
+	sharedCapabilityKey,
+	type Capability
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
+import { INPUT } from '$svelte-atoms/core/shared/capability/models/input.svelte';
 import { isTopOverlay, useEscapeStack } from './escape-stack.svelte';
 import type { OverlayView, EscapeOutcome } from '../types';
 
-// Public slot key for the escape policy.
 export const ESCAPE = sharedCapabilityKey<EscapeHandler>('@svelte-atoms/cap:escape');
 
 export type { EscapeOutcome };
 
-// Handler signature passed to escapePolicy.
 export type EscapeHandler = (bond: OverlayView, ev: KeyboardEvent) => void;
 
-// Low-level factory: gates `onEscape` behind the key check, `enabled` flag, and `isDisabled`, then projects onto `'surface'`.
 // Prefer the pre-built constants below for common cases.
 export function escapePolicy(
 	onEscape: EscapeHandler,
 	opts: { enabled?: boolean; requires?: readonly symbol[] } = {}
 ): Capability<EscapeHandler> {
 	const enabled = opts.enabled !== false;
-	return {
+	return defineCapability<EscapeHandler>({
 		slot: ESCAPE,
 		surface: onEscape,
 		...(opts.requires ? { requires: opts.requires } : {}),
 		// Whole-bond effect: enroll this overlay in the escape stack while open (ADR 0009 D2),
 		// run via `useCapabilities` like the focus capability's restore setup — no per-root hook.
 		setup: (bond) => useEscapeStack(bond as OverlayView),
-		behavior(role) {
-			if (role !== 'surface') return undefined;
-			return {
+		roles: {
+			surface: () => ({
 				handlers: (bond) => ({
 					onkeydown: (ev: Event) => {
 						const e = ev as KeyboardEvent;
@@ -43,26 +43,23 @@ export function escapePolicy(
 						onEscape(bond as OverlayView, e);
 					}
 				})
-			};
+			})
 		}
-	};
+	});
 }
 
-// Close the overlay on Escape. The common default.
 export const closeOnEscape: Capability<EscapeHandler> = escapePolicy((bond) => {
 	bond.state.close();
 });
 
-// Ignore Escape — for non-dismissible overlays.
 export const ignoreEscape: Capability<EscapeHandler> = escapePolicy(() => {
 	// no-op: Escape is still prevented but the overlay stays open.
 });
 
-// First Escape clears the overlay's `'input'` capability; second Escape closes. Used by Combobox and Select.
+// First Escape clears input; second Escape closes. For Combobox and Select.
 export const clearThenClose: Capability<EscapeHandler> = escapePolicy(
 	(bond) => {
-		const input = bond.capability(INPUT)?.surface;
-		if (input?.clear()) return;
+		if (bond.surface(INPUT)?.clear()) return;
 		bond.state.close();
 	},
 	{ requires: [INPUT] }

@@ -1,10 +1,11 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { nanoid } from 'nanoid';
 import type { DropdownMenuBond } from '../bond.svelte';
 
 export type DropdownMenuItemAtomProps = {
 	id: string;
-	disabled?: boolean;
+	// `| undefined`: callers pass an unset `disabled` prop; the atom treats undefined as not-disabled.
+	disabled?: boolean | undefined;
 };
 
 export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond> extends BondAtom<

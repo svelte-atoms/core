@@ -1,4 +1,4 @@
-import { animate, spring } from 'motion';
+import { animate } from 'motion';
 import { untrack } from 'svelte';
 import { PopoverBond } from '.';
 
@@ -70,8 +70,8 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 				node,
 				keyframes,
 				useSpring
-					? { easing: spring({ stiffness, damping }), delay }
-					: { duration, easing: [0.16, 1, 0.3, 1], delay }
+					? { type: 'spring' as const, stiffness, damping, delay }
+					: { duration, ease: [0.16, 1, 0.3, 1] as const, delay }
 			);
 
 			animation.finished.then(() => {

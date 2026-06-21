@@ -4,7 +4,7 @@
 
 <script lang="ts">
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { ActivePortal, Portal, Portals } from '$svelte-atoms/core/components/portal';
 	import { mergePresetProps, HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
@@ -52,10 +52,9 @@
 		})
 	]);
 
-	const binding = bindBond<RootBond>(
-		bondFactory(RootBondState, RootBond),
-		{ renderers: () => renderers }
-	);
+	const binding = bindBond<RootBond>(bondFactory(RootBondState, RootBond), {
+		renderers: () => renderers
+	});
 	const bond = binding.bond.share();
 </script>
 

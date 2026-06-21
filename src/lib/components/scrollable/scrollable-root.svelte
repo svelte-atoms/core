@@ -1,10 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { ScrollableBond, ScrollableState } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
-	
+
 	let {
 		scrollX = $bindable(0),
 		scrollY = $bindable(0),
@@ -40,7 +40,6 @@
 	);
 	const bond = binding.bond.share();
 
-
 	export function getBond() {
 		return bond;
 	}
@@ -48,7 +47,7 @@
 
 <HtmlAtom
 	as="div"
-	class={['scrollable-root border-border relative box-content overflow-hidden', '$preset', klass]}
+	class={['scrollable-root relative box-content overflow-hidden', '$preset', klass]}
 	{...binding.props}
 	{...restProps}
 >

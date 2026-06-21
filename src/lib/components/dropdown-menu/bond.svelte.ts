@@ -6,14 +6,14 @@ import {
 	type PopoverDomElements,
 	type PopoverStateProps
 } from '$svelte-atoms/core/components/popover/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type ViewOf, type BondOf } from '$svelte-atoms/core/shared';
 import {
 	createRovingFocus,
 	rovingCapability,
 	type RovingFocus
-} from '$svelte-atoms/core/shared/capabilities/roving-focus.svelte';
-import { navigationCapability } from '$svelte-atoms/core/shared/capabilities/navigation.svelte';
+} from '$svelte-atoms/core/shared/capability/models/roving.svelte';
+import { navigationCapability } from '$svelte-atoms/core/shared/capability/models/navigation.svelte';
 import { clickTrigger } from '$svelte-atoms/core/components/overlay';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
 

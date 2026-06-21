@@ -9,11 +9,7 @@
 	const datePickerBond = DatePickerBond.get();
 	const calendarBond = CalendarBond.get();
 
-	let {
-		class: klass = '',
-		preset = undefined,
-		...restProps
-	}: DatePickerHeaderProps = $props();
+	let { class: klass = '', preset = undefined, ...restProps }: DatePickerHeaderProps = $props();
 
 	const headerProps = $derived(mergePresetProps(preset, 'datepicker.header', restProps));
 

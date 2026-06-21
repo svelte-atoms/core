@@ -5,15 +5,15 @@ import {
 	BondAtom,
 	type BondStateProps,
 	type Capability
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import {
 	createSelection,
 	selectionCapability,
 	SELECTION,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capabilities/selection.svelte';
-import type { Collection } from '$svelte-atoms/core/shared/collection.svelte';
+} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
+import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
 import type { TabBond } from './tab/bond.svelte';
 
 export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
@@ -171,9 +171,11 @@ export class TabsBondState<T = unknown> extends BondState<TabsBondProps> {
 		super(props);
 	}
 
-	// The selection capability surface — the active tab value.
+	// The selection capability surface — the active tab value. Always present: a `SelectionModel`
+	// is passed to `selectionCapability(...)` at construction (the `surface?` on `Capability` is
+	// only optional because behavior-only capabilities have none).
 	get selection(): SelectionModel<string> {
-		return this.#selectionCap.surface;
+		return this.#selectionCap.surface!;
 	}
 
 	// Insertion-ordered reactive collection of mounted tab bonds.
@@ -208,7 +210,7 @@ export class TabsBondState<T = unknown> extends BondState<TabsBondProps> {
 		}
 
 		// Collection.attach registers + returns the cleanup (replaces the old
-		// set + `() => unmountItem`). See shared/collection.svelte.ts.
+		// set + `() => unmountItem`). See shared/bond/collection.svelte.ts.
 		return this.items.attach(id, item as unknown as TabBond<T>);
 	}
 

@@ -1,4 +1,4 @@
-import { BondAtom, type BondElements } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom, type BondElements } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import type { OverlayView } from './types';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 

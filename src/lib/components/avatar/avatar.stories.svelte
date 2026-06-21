@@ -39,14 +39,8 @@
 
 <Story name="With Image">
 	<div class="flex items-center gap-4">
-		<Avatar
-			src="https://picsum.photos/seed/avatar1/80/80"
-			alt="User photo"
-		/>
-		<Avatar
-			src="https://picsum.photos/seed/avatar2/80/80"
-			alt="Second user"
-		/>
+		<Avatar src="https://picsum.photos/seed/avatar1/80/80" alt="User photo" />
+		<Avatar src="https://picsum.photos/seed/avatar2/80/80" alt="Second user" />
 		<Avatar alt="Broken Image" src="https://example.com/does-not-exist.jpg" />
 	</div>
 </Story>

@@ -8,7 +8,9 @@
 	import { HtmlAtom } from '../atom';
 	import { Icon } from '../icon';
 
-	const datePicker = DatePickerBond.getOrThrow('<DatePicker.Years /> must be used within a <DatePicker.Root />');
+	const datePicker = DatePickerBond.getOrThrow(
+		'<DatePicker.Years /> must be used within a <DatePicker.Root />'
+	);
 
 	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
 
@@ -26,11 +28,7 @@
 		return years;
 	});
 
-	let {
-		class: klass = '',
-		preset = undefined,
-		...restProps
-	}: DatePickerYearsProps = $props();
+	let { class: klass = '', preset = undefined, ...restProps }: DatePickerYearsProps = $props();
 
 	const yearsProps = $derived(mergePresetProps(preset, 'datepicker.years', restProps));
 
@@ -149,8 +147,7 @@
 					</Icon>
 				</button>
 
-				<div class="flex-1">
-				</div>
+				<div class="flex-1"></div>
 
 				<button
 					type="button"

@@ -1,4 +1,7 @@
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'dialog', B extends Base = Base">
+<script
+	lang="ts"
+	generics="E extends keyof HTMLElementTagNameMap = 'dialog', B extends Base = Base"
+>
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 	import { PopoverDialogBond, PopoverDialogBondState } from './bond.svelte';

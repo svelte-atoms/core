@@ -6,7 +6,7 @@
 	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	import './calendar.css';
-	import { bondFactory,bindBond } from '$svelte-atoms/core/shared';
+	import { bondFactory, bindBond } from '$svelte-atoms/core/shared';
 
 	let {
 		class: klass = '',
@@ -19,6 +19,8 @@
 		min = undefined,
 		max = undefined,
 		type = 'single',
+		// swallowed: kept out of the props spread (not forwarded to the element)
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		extend = {},
 		onchange = undefined,
 		factory = bondFactory(CalendarBondState, CalendarBond),
@@ -161,14 +163,8 @@
 					onchange?.(new CustomEvent('change'), { range, pivote });
 				}
 			],
-			min: [
-				() => min,
-				(v: Date | undefined) => (min = v)
-			],
-			max: [
-				() => max,
-				(v: Date | undefined) => (max = v)
-			],
+			min: [() => min, (v: Date | undefined) => (min = v)],
+			max: [() => max, (v: Date | undefined) => (max = v)],
 			type: () => type ?? 'single',
 			nextMonth: () => monthNext,
 			currentMonth: () => monthCurrent,
@@ -178,8 +174,9 @@
 	);
 	const bond = binding.bond.share();
 
-	const rootProps = $derived(mergePresetProps(preset, 'calendar', { ...bond.root().spread, ...restProps }));
-
+	const rootProps = $derived(
+		mergePresetProps(preset, 'calendar', { ...bond.root().spread, ...restProps })
+	);
 
 	export function getBond() {
 		return bond;

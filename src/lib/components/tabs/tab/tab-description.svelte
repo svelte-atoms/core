@@ -6,7 +6,6 @@
 	const bond = TabBond.getOrThrow('TabDescription must be used within a Tab component.');
 
 	let {
-		class: klass = '',
 		preset = undefined,
 		as = 'p' as E,
 		children,
@@ -18,11 +17,6 @@
 	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Atom
-	{bond}
-	{as}
-	class={['border-border', '$preset', klass]}
-	{...descriptionProps}
->
+<Atom {bond} {as} {...descriptionProps}>
 	{@render children?.({ tab: bond })}
 </Atom>

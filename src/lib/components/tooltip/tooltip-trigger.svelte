@@ -5,7 +5,13 @@
 
 	const popoverBond = PopoverBond.get();
 
-	let { preset = undefined, onmount = undefined, children, onclick = undefined, ...restProps } = $props();
+	let {
+		preset = undefined,
+		onmount = undefined,
+		children,
+		onclick = undefined,
+		...restProps
+	} = $props();
 
 	const triggerProps = $derived(mergePresetProps(preset, 'tooltip.trigger', restProps));
 

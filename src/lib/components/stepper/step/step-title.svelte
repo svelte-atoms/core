@@ -12,16 +12,11 @@
 		...restProps
 	}: StepTitleProps<E, B> = $props();
 
-
 	const atom = bond.atom('title');
 
 	const titleProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Atom
-	as="div"
-	class={['font-medium text-sm', '$preset', klass]}
-	{...titleProps}
->
+<Atom as="div" class={['font-medium text-sm', '$preset', klass]} {...titleProps}>
 	{@render children?.({ step: bond })}
 </Atom>

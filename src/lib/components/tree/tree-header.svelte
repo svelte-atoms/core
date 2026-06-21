@@ -20,7 +20,7 @@
 
 	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
 
-	function handlePointerDown(ev: PointerEvent) {
+	function handlePointerDown(ev: PointerEvent & { currentTarget: EventTarget & Element }) {
 		onpointerdown?.(ev);
 
 		if (ev.defaultPrevented) {

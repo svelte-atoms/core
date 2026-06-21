@@ -1,14 +1,18 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
-import { defineBond, type ViewOf, type BondOf } from '$svelte-atoms/core/shared/define-bond.svelte';
+import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
+import {
+	defineBond,
+	type ViewOf,
+	type BondOf
+} from '$svelte-atoms/core/shared/authoring/define.svelte';
 import {
 	createDisclosure,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capabilities/disclosure.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
 import {
 	DisclosureState,
 	type DisclosureStateProps
-} from '$svelte-atoms/core/shared/capabilities/disclosure-state.svelte';
-import { labelledControl } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
+} from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
+import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 
 export type ToastBondProps = DisclosureStateProps;
 
@@ -65,7 +69,8 @@ export class ToastCloseAtom extends BondAtom<ToastBondView> {
 	}
 
 	override get attrs() {
-		const isButton = (this.element as any)?.tagName?.toLowerCase() === 'button';
+		const el = this.element;
+		const isButton = el instanceof Element && el.tagName.toLowerCase() === 'button';
 		return {
 			...super.attrs,
 			type: isButton ? 'button' : undefined,

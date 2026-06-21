@@ -1,4 +1,9 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
 import { clamp } from '$svelte-atoms/core/utils/math';
 
@@ -162,8 +167,10 @@ class ScrollableBondBase extends Bond<ScrollableBondProps, ScrollableState> {
 	}
 
 	// Narrows the inherited element registry to concrete HTMLElements (hides VirtualElement).
-	override get elements(): Partial<ScrollableBondElements> & Record<string, HTMLElement | undefined> {
-		return super.elements as Partial<ScrollableBondElements> & Record<string, HTMLElement | undefined>;
+	override get elements(): Partial<ScrollableBondElements> &
+		Record<string, HTMLElement | undefined> {
+		return super.elements as Partial<ScrollableBondElements> &
+			Record<string, HTMLElement | undefined>;
 	}
 
 	scrollTo(x: number, y: number) {

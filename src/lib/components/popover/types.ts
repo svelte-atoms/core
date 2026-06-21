@@ -40,7 +40,7 @@ export interface PopoverOverlayProps<
 	 * sticky header registered via `ZLayer.anchor(...)` puts the popover beneath it.
 	 */
 	order?: LayerRelation | undefined;
-	"z-index"?: number
+	'z-index'?: number | undefined;
 	children?: PopoverChildren;
 }
 
@@ -80,6 +80,8 @@ export interface PopoverContentProps<
 	layer?: LayerInput | undefined;
 	/** Order the content relative to a registered ZLayer anchor (ADR 0008 D3 — sticky-under). */
 	order?: LayerRelation | undefined;
+	/** Explicit z-index for the floating content, forwarded to the {@link Overlay}. */
+	'z-index'?: number | undefined;
 	/**
 	 * Fix the content's width. A CSS length, `'var(--sa-anchor-width)'` to match the trigger's
 	 * measured width exactly, or an {@link AnchorSizeFn} computed from the trigger.
@@ -111,8 +113,10 @@ export interface PopoverArrowProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, PopoverChildren> {}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface PopoverTriggerProps<
 	T extends keyof HTMLElementTagNameMap,
 	B extends Base = Base
-> extends HtmlAtomProps<T, B, PopoverChildren> {}
+> extends HtmlAtomProps<T, B, PopoverChildren> {
+	// Explicit so the trigger can intercept it (HtmlAtomProps' index signature would type it `{}`).
+	onpointerenter?: (event: PointerEvent) => void;
+}

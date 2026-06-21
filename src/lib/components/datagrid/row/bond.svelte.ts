@@ -1,4 +1,9 @@
-import { Bond, BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	Bond,
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 import { DataGridBond, type IDataGrid } from '../bond.svelte';
 import { getDatagridHeaderContext } from '../context';
@@ -92,9 +97,8 @@ export class DataGridRowBondState<
 	T = unknown,
 	Props extends DataGridRowBondProps<T> = DataGridRowBondProps<T>
 > extends BondState<Props> {
-	readonly #parent: IDataGrid<T> | undefined = (
-		DataGridBond.get() as DataGridBond<T> | undefined
-	)?.state;
+	readonly #parent: IDataGrid<T> | undefined = (DataGridBond.get() as DataGridBond<T> | undefined)
+		?.state;
 	// Captured at construction; read live via getter so header-ness tracks the context's reactive flag.
 	readonly #headerContext = getDatagridHeaderContext();
 

@@ -39,14 +39,7 @@
 			},
 			placement: {
 				control: 'select',
-				options: [
-					'bottom-start',
-					'bottom',
-					'bottom-end',
-					'top-start',
-					'top',
-					'top-end'
-				],
+				options: ['bottom-start', 'bottom', 'bottom-end', 'top-start', 'top', 'top-end'],
 				description: 'Preferred placement of the calendar popover relative to the trigger'
 			}
 		}

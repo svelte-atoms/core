@@ -33,28 +33,121 @@
 	let values = $state<string[]>([]);
 
 	const teamMembers = [
-		{ id: '1', name: 'Alice Chen',   email: 'alice@acme.io',  role: 'Product Designer',    department: 'Design',         initials: 'AC', color: 'bg-violet-500', status: 'active' as const },
-		{ id: '2', name: 'Bob Martinez', email: 'bob@acme.io',    role: 'Frontend Engineer',   department: 'Engineering',    initials: 'BM', color: 'bg-blue-500',   status: 'active' as const },
-		{ id: '3', name: 'Carol Kim',    email: 'carol@acme.io',  role: 'Engineering Manager', department: 'Engineering',    initials: 'CK', color: 'bg-emerald-500',status: 'busy'   as const },
-		{ id: '4', name: 'David Ross',   email: 'david@acme.io',  role: 'Backend Engineer',    department: 'Engineering',    initials: 'DR', color: 'bg-rose-500',   status: 'active' as const },
-		{ id: '5', name: 'Eva Wright',   email: 'eva@acme.io',    role: 'UX Researcher',       department: 'Design',         initials: 'EW', color: 'bg-amber-500',  status: 'away'   as const },
-		{ id: '6', name: 'Frank Garcia', email: 'frank@acme.io',  role: 'DevOps Engineer',     department: 'Infrastructure', initials: 'FG', color: 'bg-cyan-500',   status: 'active' as const },
-		{ id: '7', name: 'Grace Lee',    email: 'grace@acme.io',  role: 'Product Manager',     department: 'Product',        initials: 'GL', color: 'bg-pink-500',   status: 'busy'   as const }
+		{
+			id: '1',
+			name: 'Alice Chen',
+			email: 'alice@acme.io',
+			role: 'Product Designer',
+			department: 'Design',
+			initials: 'AC',
+			color: 'bg-violet-500',
+			status: 'active' as const
+		},
+		{
+			id: '2',
+			name: 'Bob Martinez',
+			email: 'bob@acme.io',
+			role: 'Frontend Engineer',
+			department: 'Engineering',
+			initials: 'BM',
+			color: 'bg-blue-500',
+			status: 'active' as const
+		},
+		{
+			id: '3',
+			name: 'Carol Kim',
+			email: 'carol@acme.io',
+			role: 'Engineering Manager',
+			department: 'Engineering',
+			initials: 'CK',
+			color: 'bg-emerald-500',
+			status: 'busy' as const
+		},
+		{
+			id: '4',
+			name: 'David Ross',
+			email: 'david@acme.io',
+			role: 'Backend Engineer',
+			department: 'Engineering',
+			initials: 'DR',
+			color: 'bg-rose-500',
+			status: 'active' as const
+		},
+		{
+			id: '5',
+			name: 'Eva Wright',
+			email: 'eva@acme.io',
+			role: 'UX Researcher',
+			department: 'Design',
+			initials: 'EW',
+			color: 'bg-amber-500',
+			status: 'away' as const
+		},
+		{
+			id: '6',
+			name: 'Frank Garcia',
+			email: 'frank@acme.io',
+			role: 'DevOps Engineer',
+			department: 'Infrastructure',
+			initials: 'FG',
+			color: 'bg-cyan-500',
+			status: 'active' as const
+		},
+		{
+			id: '7',
+			name: 'Grace Lee',
+			email: 'grace@acme.io',
+			role: 'Product Manager',
+			department: 'Product',
+			initials: 'GL',
+			color: 'bg-pink-500',
+			status: 'busy' as const
+		}
 	];
 
 	const statusConfig = {
 		active: { label: 'Active', dot: 'bg-green-500' },
-		busy:   { label: 'Busy',   dot: 'bg-amber-500' },
-		away:   { label: 'Away',   dot: 'bg-muted-foreground/40' }
+		busy: { label: 'Busy', dot: 'bg-amber-500' },
+		away: { label: 'Away', dot: 'bg-muted-foreground/40' }
 	};
 
 	const inventoryRows = [
-		{ id: 'sku-001', code: 'AMX-100', store: 'Downtown', name: 'Amoxicillin 500mg', category: 'Antibiotics' },
-		{ id: 'sku-002', code: 'ATR-220', store: 'Central', name: 'Atorvastatin 20mg', category: 'Cardio' },
-		{ id: 'sku-003', code: 'MET-500', store: 'Westside', name: 'Metformin 500mg', category: 'Diabetes' },
-		{ id: 'sku-004', code: 'IBP-200', store: 'North', name: 'Ibuprofen 200mg', category: 'Pain Relief' },
+		{
+			id: 'sku-001',
+			code: 'AMX-100',
+			store: 'Downtown',
+			name: 'Amoxicillin 500mg',
+			category: 'Antibiotics'
+		},
+		{
+			id: 'sku-002',
+			code: 'ATR-220',
+			store: 'Central',
+			name: 'Atorvastatin 20mg',
+			category: 'Cardio'
+		},
+		{
+			id: 'sku-003',
+			code: 'MET-500',
+			store: 'Westside',
+			name: 'Metformin 500mg',
+			category: 'Diabetes'
+		},
+		{
+			id: 'sku-004',
+			code: 'IBP-200',
+			store: 'North',
+			name: 'Ibuprofen 200mg',
+			category: 'Pain Relief'
+		},
 		{ id: 'sku-005', code: 'OMZ-040', store: 'East', name: 'Omeprazole 40mg', category: 'Gastro' },
-		{ id: 'sku-006', code: 'AZI-500', store: 'South', name: 'Azithromycin 500mg', category: 'Antibiotics' }
+		{
+			id: 'sku-006',
+			code: 'AZI-500',
+			store: 'South',
+			name: 'Azithromycin 500mg',
+			category: 'Antibiotics'
+		}
 	];
 
 	const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -203,7 +296,8 @@
 		{/snippet}
 
 		<code class="font-mono text-xs text-muted-foreground">
-			sort: {sortBy.field} {sortBy.direction === 'asc' ? '↑' : '↓'}
+			sort: {sortBy.field}
+			{sortBy.direction === 'asc' ? '↑' : '↓'}
 		</code>
 
 		<DataGridCmp.Root>
@@ -353,7 +447,9 @@
 			</div>
 		</DataGridCmp.Body>
 
-		<DataGridCmp.Footer class="col-span-full border-t border-border px-3 py-2 text-xs text-muted-foreground">
+		<DataGridCmp.Footer
+			class="col-span-full border-t border-border px-3 py-2 text-xs text-muted-foreground"
+		>
 			Row-spanning first column (A-Z rail) + subgrid-aligned content rows
 		</DataGridCmp.Footer>
 	</DataGridCmp.Root>

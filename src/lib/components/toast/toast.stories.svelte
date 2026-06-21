@@ -67,11 +67,33 @@
 <Story name="Custom toaster">
 	<div class="flex h-screen flex-col items-center justify-center gap-4">
 		<div class="flex flex-wrap justify-center gap-2">
-			<Button onclick={() => toaster.add('default', { data: { title: 'Hello!' } as ToastData })}>Default</Button>
-			<Button onclick={() => toaster.add('info', { data: { title: 'Heads up', description: 'Just a heads up.' } as ToastData })}>Info</Button>
-			<Button onclick={() => toaster.add('success', { data: { title: 'Saved!', description: 'Changes persisted.' } as ToastData })}>Success</Button>
-			<Button onclick={() => toaster.add('warning', { data: { title: 'Careful', description: 'Storage almost full.' } as ToastData })}>Warning</Button>
-			<Button onclick={() => toaster.add('error', { data: { title: 'Error', description: 'Something went wrong.' } as ToastData })}>Error</Button>
+			<Button onclick={() => toaster.add('default', { data: { title: 'Hello!' } as ToastData })}
+				>Default</Button
+			>
+			<Button
+				onclick={() =>
+					toaster.add('info', {
+						data: { title: 'Heads up', description: 'Just a heads up.' } as ToastData
+					})}>Info</Button
+			>
+			<Button
+				onclick={() =>
+					toaster.add('success', {
+						data: { title: 'Saved!', description: 'Changes persisted.' } as ToastData
+					})}>Success</Button
+			>
+			<Button
+				onclick={() =>
+					toaster.add('warning', {
+						data: { title: 'Careful', description: 'Storage almost full.' } as ToastData
+					})}>Warning</Button
+			>
+			<Button
+				onclick={() =>
+					toaster.add('error', {
+						data: { title: 'Error', description: 'Something went wrong.' } as ToastData
+					})}>Error</Button
+			>
 			<Button onclick={() => toaster.clear()}>Clear all</Button>
 		</div>
 	</div>
@@ -80,10 +102,7 @@
 	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
 		{#each toaster.toasts as item (item.id)}
 			{@const data = item.data as ToastData}
-			<Toast_.Root
-				open={true}
-				onclose={() => toaster.dismiss(item.id)}
-				>
+			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
 				<Toast_.Title>{data.title}</Toast_.Title>
 				{#if data.description}
 					<Toast_.Description>{data.description}</Toast_.Description>
@@ -97,7 +116,13 @@
 <!-- Auto-dismiss: manager removes toasts after the duration. -->
 <Story name="Auto-dismiss">
 	<div class="flex h-screen flex-col items-center justify-center gap-4">
-		<Button onclick={() => toaster.add('default', { duration: 3000, data: { title: 'Auto-dismiss', description: 'Gone in 3 seconds.' } as ToastData })}>
+		<Button
+			onclick={() =>
+				toaster.add('default', {
+					duration: 3000,
+					data: { title: 'Auto-dismiss', description: 'Gone in 3 seconds.' } as ToastData
+				})}
+		>
 			Trigger 3s toast
 		</Button>
 	</div>
@@ -105,10 +130,7 @@
 	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
 		{#each toaster.toasts as item (item.id)}
 			{@const data = item.data as ToastData}
-			<Toast_.Root
-				open={true}
-				onclose={() => toaster.dismiss(item.id)}
-				>
+			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
 				<Toast_.Title>{data.title}</Toast_.Title>
 				{#if data.description}
 					<Toast_.Description>{data.description}</Toast_.Description>
@@ -129,20 +151,17 @@
 			<Button onclick={() => (autoDismissOpen = true)}>Trigger 3s toast</Button>
 		</div>
 
-		<Toast_.Root
-			bind:open={declarativeOpen}
-			duration={0}		>
+		<Toast_.Root bind:open={declarativeOpen} duration={0}>
 			<Toast_.Title>Declarative toast</Toast_.Title>
-			<Toast_.Description>
-				Fully owned by markup — no manager required.
-			</Toast_.Description>
+			<Toast_.Description>Fully owned by markup — no manager required.</Toast_.Description>
 			<Toast_.Close />
 		</Toast_.Root>
 
 		<Toast_.Root
 			bind:open={autoDismissOpen}
 			duration={3000}
-			onclose={() => (autoDismissOpen = false)}		>
+			onclose={() => (autoDismissOpen = false)}
+		>
 			<Toast_.Title>Auto-dismiss</Toast_.Title>
 			<Toast_.Description>Disappears after 3 seconds.</Toast_.Description>
 			<Toast_.Close />

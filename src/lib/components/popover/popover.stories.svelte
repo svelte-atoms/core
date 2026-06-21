@@ -58,15 +58,32 @@
 
 	// Real data for the popover menus — the host pages around them are skeletons.
 	const options = ['Design', 'Engineering', 'Product', 'Marketing', 'Operations'];
-	const sortOptions = ['Name A → Z', 'Name Z → A', 'Date newest', 'Date oldest', 'Priority high → low'];
+	const sortOptions = [
+		'Name A → Z',
+		'Name Z → A',
+		'Date newest',
+		'Date oldest',
+		'Priority high → low'
+	];
 	let selectedSort = $state('Date newest');
-	const settingsOptions = ['Account settings', 'Appearance', 'Notifications', 'Security', 'Billing', 'Sign out'];
+	const settingsOptions = [
+		'Account settings',
+		'Appearance',
+		'Notifications',
+		'Security',
+		'Billing',
+		'Sign out'
+	];
 </script>
 
 <Story name="Basic">
 	{#snippet template(args)}
-		<div class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-7 p-8">
-			<p class="text-muted-foreground text-[11px] font-medium uppercase tracking-[0.25em]">Account</p>
+		<div
+			class="bg-background bg-dot-grid flex h-screen w-full flex-col items-center justify-center gap-7 p-8"
+		>
+			<p class="text-muted-foreground text-[11px] font-medium uppercase tracking-[0.25em]">
+				Account
+			</p>
 
 			<Popover_.Root bind:open {...args}>
 				<Popover_.Trigger
@@ -81,7 +98,10 @@
 					<Popover_.Indicator />
 				</Popover_.Trigger>
 
-				<Popover_.Content class="bg-card border-border w-64 rounded-lg border p-0 shadow-sm" autoClose>
+				<Popover_.Content
+					class="bg-card border-border w-64 rounded-lg border p-0 shadow-sm"
+					autoClose
+				>
 					<div class="border-border flex items-center gap-3 border-b px-4 py-3">
 						<span
 							class="bg-primary text-primary-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold"
@@ -131,7 +151,9 @@
 
 		<Dialog_.Root bind:open={isDialogOpen}>
 			<!-- Dialog Content Portal z-index = 10 -->
-			<Dialog_.Content class="relative flex max-h-[85svh] w-120 flex-col overflow-y-auto p-0 shadow-sm">
+			<Dialog_.Content
+				class="relative flex max-h-[85svh] w-120 flex-col overflow-y-auto p-0 shadow-sm"
+			>
 				<Dialog_.Header
 					class="bg-inherit border-border sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 border-b px-5"
 				>
@@ -157,7 +179,9 @@
 							<!-- z-index=12 lifts the portalled content above the sticky header. -->
 							<Popover_.Content class="min-w-60 p-1" z-index={12}>
 								{#each options as opt (opt)}
-									<button class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm">
+									<button
+										class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm"
+									>
 										{opt}
 									</button>
 								{/each}
@@ -175,7 +199,10 @@
 									<div class={['bg-muted h-3 rounded-full', w]}></div>
 									<div class="bg-muted/60 h-2.5 w-40 rounded-full"></div>
 								</div>
-								<Popover_.Root placement="bottom-end" placements={['bottom-end', 'top-end', 'left']}>
+								<Popover_.Root
+									placement="bottom-end"
+									placements={['bottom-end', 'top-end', 'left']}
+								>
 									<Popover_.Trigger
 										class="text-muted-foreground hover:text-foreground hover:bg-muted shrink-0 rounded-md p-1.5 opacity-0 transition group-hover:opacity-100"
 									>
@@ -183,7 +210,9 @@
 									</Popover_.Trigger>
 									<Popover_.Content class="min-w-40 p-1" autoClose>
 										{#each ['Edit', 'Duplicate', 'Archive'] as action (action)}
-											<button class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm">
+											<button
+												class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm"
+											>
 												{action}
 											</button>
 										{/each}
@@ -234,7 +263,9 @@
 				<div class="bg-muted mt-4 h-12 w-40 rounded-lg"></div>
 
 				<!-- Record grid: skeleton rows in a scrollable area, each with a real row-action popover -->
-				<div class="mt-8 grid min-h-0 flex-1 grid-cols-1 gap-x-10 overflow-y-auto pr-1 sm:grid-cols-2">
+				<div
+					class="mt-8 grid min-h-0 flex-1 grid-cols-1 gap-x-10 overflow-y-auto pr-1 sm:grid-cols-2"
+				>
 					{#each Array.from({ length: 18 }, (_, i) => i) as i (i)}
 						{@const w = ['w-28', 'w-36', 'w-24', 'w-32', 'w-40', 'w-20'][i % 6]}
 						<div class="group border-border flex items-center gap-3.5 border-b px-2 py-3">
@@ -251,7 +282,9 @@
 								</Popover_.Trigger>
 								<Popover_.Content class="min-w-40 p-1" autoClose>
 									{#each ['Open', 'Duplicate', 'Archive'] as action (action)}
-										<button class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm">
+										<button
+											class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm"
+										>
 											{action}
 										</button>
 									{/each}
@@ -292,7 +325,9 @@
 
 					<!-- Real Sort popover -->
 					<section>
-						<p class="text-muted-foreground mb-2 text-[11px] font-medium uppercase tracking-[0.18em]">
+						<p
+							class="text-muted-foreground mb-2 text-[11px] font-medium uppercase tracking-[0.18em]"
+						>
 							Sort
 						</p>
 						<Popover_.Root>
@@ -322,7 +357,9 @@
 					<!-- Skeleton filter sections -->
 					{#each ['Status', 'Range', 'Type', 'Labels', 'Assignee', 'Priority', 'Display', 'Saved views'] as title (title)}
 						<section>
-							<p class="text-muted-foreground mb-2 text-[11px] font-medium uppercase tracking-[0.18em]">
+							<p
+								class="text-muted-foreground mb-2 text-[11px] font-medium uppercase tracking-[0.18em]"
+							>
 								{title}
 							</p>
 							<div class="space-y-2.5">
@@ -410,8 +447,12 @@
 											JD
 										</div>
 										<div class="min-w-0 text-left">
-											<p class="text-foreground truncate text-sm font-medium leading-tight">Jane Doe</p>
-											<p class="text-muted-foreground truncate text-xs leading-tight">jane@example.com</p>
+											<p class="text-foreground truncate text-sm font-medium leading-tight">
+												Jane Doe
+											</p>
+											<p class="text-muted-foreground truncate text-xs leading-tight">
+												jane@example.com
+											</p>
 										</div>
 									</Popover_.Trigger>
 									<Popover_.Content class="min-w-52 p-1">

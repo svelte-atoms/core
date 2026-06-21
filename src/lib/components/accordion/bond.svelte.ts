@@ -1,10 +1,14 @@
 import type { AccordionItemBond } from './item/bond.svelte';
-import type { Collection } from '$svelte-atoms/core/shared/collection.svelte';
+import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
 import {
 	createSelection,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capabilities/selection.svelte';
-import { BondState, BondAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
+import {
+	BondState,
+	BondAtom,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 
 export type AccordionStateProps = BondStateProps & {

@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { CollapsibleBond, CollapsibleState, type CollapsibleStateProps } from './bond.svelte';
 	import type { CollapsibleRootProps } from './types';

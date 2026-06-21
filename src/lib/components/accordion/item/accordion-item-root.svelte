@@ -1,11 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bind-bond.svelte';
+	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import {
-		AccordionItemBond,
-		AccordionItemBondState
-	} from './bond.svelte';
+	import { AccordionItemBond, AccordionItemBondState } from './bond.svelte';
 	import type { AccordionItemRootProps } from './types';
 
 	let {
@@ -30,16 +27,11 @@
 	);
 	const bond = binding.bond.share();
 
-
 	export function getBond() {
 		return bond;
 	}
 </script>
 
-<HtmlAtom
-	class={['border-border', '$preset', klass]}
-	{...binding.props}
-	{...restProps}
->
+<HtmlAtom class={['border-border', '$preset', klass]} {...binding.props} {...restProps}>
 	{@render children?.({ accordionItem: bond })}
 </HtmlAtom>

@@ -1,6 +1,10 @@
-import { BondAtom, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import {
+	BondAtom,
+	BondState,
+	type BondStateProps
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
-import { labelledControl } from '$svelte-atoms/core/shared/capabilities/relationship.svelte';
+import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 
 export interface ValidationError {
 	path: (string | number)[];

@@ -24,7 +24,7 @@
 
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 
-	const content = $derived(bond && isOpen ? body: undefined);
+	const content = $derived(bond && isOpen ? body : undefined);
 </script>
 
 {#snippet body(accordionItem: AccordionItemBond)}

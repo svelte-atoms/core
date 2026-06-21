@@ -17,10 +17,7 @@
 	const footerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['border-border', 'flex px-4', '$preset', klass]}
-	{...footerProps}
->
+<HtmlAtom {bond} class={['flex px-4', '$preset', klass]} {...footerProps}>
 	{@render children?.({ dialog: bond })}
 </HtmlAtom>
+ 

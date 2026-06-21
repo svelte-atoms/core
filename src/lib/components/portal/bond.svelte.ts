@@ -4,7 +4,7 @@ import {
 	BondAtom,
 	type BondElements,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
 
 export type PortalStateProps = BondStateProps & {

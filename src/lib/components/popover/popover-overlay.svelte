@@ -1,27 +1,34 @@
 <script lang="ts">
-	import { Teleport, ZLayer } from "../portal";
-	import { PopoverBond } from "./bond.svelte";
-	import type { PopoverOverlayProps } from "./types";
+	import { Teleport, ZLayer } from '../portal';
+	import { PopoverBond } from './bond.svelte';
+	import type { PopoverOverlayProps } from './types';
 
-    const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
-    const isOpen = $derived(bond?.state.isOpen ?? false);
+	const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
+	const isOpen = $derived(bond?.state.isOpen ?? false);
 
 	const strategy = $derived(bond?.state.position?.strategy ?? 'absolute');
 
 	// CSS position matching the strategy's coordinate basis (ADR 0008 D1).
 	const positionStyle = $derived(strategy === 'fixed' ? 'position: fixed;' : 'position: absolute;');
 
-    let { portal, layer: layerName = 'positioned', order = undefined, children = undefined, "z-index": zIndex = undefined, ...restProps}: PopoverOverlayProps = $props();
+	let {
+		portal,
+		layer: layerName = 'positioned',
+		order = undefined,
+		children = undefined,
+		'z-index': zIndex = undefined,
+		...restProps
+	}: PopoverOverlayProps = $props();
 
 	// Stacking layer; captures parent elevation from context. `order` pins it relative
 	// to a ZLayer anchor (ADR 0008 D3). Both fixed for the overlay's lifetime.
 	// svelte-ignore state_referenced_locally
 	const layer = new ZLayer(layerName, () => 0, undefined, order).share();
 
-    const overlayProps = $derived({
-        ...bond?.atom('overlay').spread,
-        ...restProps
-    });
+	const overlayProps = $derived({
+		...bond?.atom('overlay').spread,
+		...restProps
+	});
 
 	// Transform + opacity from the current floating-ui position.
 	function calculatePosition() {
@@ -46,7 +53,7 @@
 		const directionX = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
 
 		// Arrow dimensions
-        const arrow = bond.element('arrow');
+		const arrow = bond.element('arrow');
 		const arrowEl = arrow instanceof Element ? arrow : null;
 		const arrowWidth = arrowEl?.clientWidth ?? 0;
 		const arrowHeight = arrowEl?.clientHeight ?? 0;
@@ -95,9 +102,9 @@
 	{portal}
 	as="div"
 	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
-	style="z-index: {zIndex?? layer.value}; {positionStyle}"
-	initial={initial}
-	animate={animate}
+	style="z-index: {zIndex ?? layer.value}; {positionStyle}"
+	{initial}
+	{animate}
 	{...overlayProps}
 >
 	{@render children?.({ popover: bond })}

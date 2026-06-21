@@ -24,10 +24,10 @@
 	let nextId = 0;
 
 	function logChange(_ev?: Event, detail?: { checked: boolean }) {
-		changeLog = [{ id: nextId++, text: `onchange → checked: ${detail?.checked}` }, ...changeLog].slice(
-			0,
-			4
-		);
+		changeLog = [
+			{ id: nextId++, text: `onchange → checked: ${detail?.checked}` },
+			...changeLog
+		].slice(0, 4);
 	}
 </script>
 

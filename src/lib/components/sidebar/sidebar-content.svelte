@@ -25,9 +25,9 @@
 
 <Overlay
 	{bond}
-	class={['bg-card border-border', 'max-h-screen overflow-visible', '$preset', klass]}
+	class={['bg-card max-h-screen overflow-visible', '$preset', klass]}
 	{fallback}
 	{...contentProps}
 >
-		{@render children?.({ sidebar: bond })}
+	{@render children?.({ sidebar: bond })}
 </Overlay>

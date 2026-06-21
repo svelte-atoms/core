@@ -4,7 +4,7 @@
 	import { PopoverBond } from './bond.svelte';
 	import type { PopoverArrowProps } from './types';
 
-	const bond = PopoverBond.getOrThrow('');
+	const bond = PopoverBond.getOrThrow('<Popover.Arrow /> must be used within a <Popover />');
 
 	let {
 		class: klass = '',

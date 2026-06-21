@@ -134,7 +134,9 @@
 				</AccordionItem.Header>
 
 				<AccordionItem.Body>
-					<div class="p-3 text-sm">This content is not reachable while the accordion is disabled.</div>
+					<div class="p-3 text-sm">
+						This content is not reachable while the accordion is disabled.
+					</div>
 				</AccordionItem.Body>
 			</AccordionItem.Root>
 
@@ -145,7 +147,9 @@
 				</AccordionItem.Header>
 
 				<AccordionItem.Body>
-					<div class="p-3 text-sm">All items are non-interactive when disabled is set on the root.</div>
+					<div class="p-3 text-sm">
+						All items are non-interactive when disabled is set on the root.
+					</div>
 				</AccordionItem.Body>
 			</AccordionItem.Root>
 		</AAccordion>

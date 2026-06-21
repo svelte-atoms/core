@@ -15,7 +15,7 @@
 		type = 'modal' as 'modal' | 'non-modal',
 		as = 'dialog' as E,
 		// Default +0 within the `modal` band; a sibling Drawer (+1) wins by convention (ADR 0009 D5). Override to reorder.
-		"z-index": zindex = 0,
+		'z-index': zindex = 0,
 		portal = undefined,
 		factory = bondFactory(DialogBondState, DialogBond),
 		children = undefined,
@@ -68,12 +68,11 @@
 	}
 </script>
 
-
 <Teleport
 	{as}
 	portal={portal ?? 'root.l0'}
 	class={[
-		'border-border pointer-events-none fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/0 transition-colors duration-200',
+		'pointer-events-none fixed top-0 left-0 flex h-full w-full items-center justify-center bg-neutral-900/0 transition-colors duration-200',
 		open && 'pointer-events-auto bg-neutral-900/10',
 		'$preset',
 		klass
