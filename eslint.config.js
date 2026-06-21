@@ -26,7 +26,20 @@ export default ts.config(
 		rules: {
 			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
 			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-			'no-undef': 'off'
+			'no-undef': 'off',
+			// Honor the `_`-prefix convention for intentionally-unused args/vars/caught errors
+			// (e.g. `(_ , value) => …`, `_index`), so deliberate placeholders aren't flagged.
+			// `ignoreRestSiblings` allows the idiomatic Svelte `$props()` swallow pattern — a prop
+			// destructured alongside `...restProps` to exclude it from the rest spread (e.g. `children`).
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+					ignoreRestSiblings: true
+				}
+			]
 		}
 	},
 	{
