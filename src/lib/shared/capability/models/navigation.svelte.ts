@@ -3,7 +3,7 @@ import { ROVING, type RovingFocus } from './roving.svelte';
 
 // Private slot key (process-unique Symbol, not exported from the public barrel): navigation is a
 // behavior-only policy that nobody retrieves by key, so it stays unforgeable — no consumer can name
-// the slot to replace it. The private seam (#2). ADR 0005 D6.
+// the slot to replace it. The private seam.
 export const NAVIGATION = capabilityKey('navigation');
 
 // Options for `navigationCapability`'s keydown projection.
@@ -20,7 +20,7 @@ export interface NavigationProjectionOptions {
 
 // Keyboard navigation as a projectable Capability (slot 'navigation') over a RovingFocus surface.
 // Projects an onkeydown that drives next/previous/first/last onto the configured roles, replacing
-// the per-component arrow handlers that each hand-rolled the same roving moves. (#2)
+// the per-component arrow handlers that each hand-rolled the same roving moves.
 export function navigationCapability(
 	roving: RovingFocus,
 	options: NavigationProjectionOptions = {}

@@ -133,7 +133,7 @@ class TabBondBase extends Bond<TabBondProps<unknown>, TabBondState> {
 	}
 }
 
-// TabBond — `defineBond` (§6) over TabBondBase via the generic facade (see TabsBond);
+// TabBond — `defineBond` over TabBondBase via the generic facade (see TabsBond);
 // T is carried by state/tabs.
 const TabBondImpl = defineBond<
 	{

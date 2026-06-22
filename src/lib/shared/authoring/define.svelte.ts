@@ -9,7 +9,7 @@ import {
 	type Capability
 } from '../bond/bond.svelte';
 
-// bond: any lets atoms declare a narrower view (§12.2) without variance errors.
+// bond: any lets atoms declare a narrower view without variance errors.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AtomConstructor = new (bond: any) => BondAtom<any, any>;
 
@@ -81,16 +81,16 @@ export interface BondSpec<
 	atoms: A;
 	// e.g. ModalOverlay for overlay machinery.
 	base?: Base;
-	// Registration-home rule (#1): state-owned models register in BondState ctor; stateless policies
-	// or overrides register here. Ordering is load-bearing: last registration wins per slot (#8).
+	// Registration-home rule: state-owned models register in BondState ctor; stateless policies
+	// or overrides register here. Ordering is load-bearing: last registration wins per slot.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	capabilities?: (state: any) => Capability[];
 	// Dotted preset override (e.g. accordion.item).
 	preset?: string;
-	// ADR 0012: adds static state + create(props), threads the State type from the spec.
+	// Adds static state + create(props), threads the State type from the spec.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	state?: StateCtor<any>;
-	// ADR 0004 D1: atoms union + capabilities concatenate (later wins); preferred over extends.
+	// atoms union + capabilities concatenate (later wins); preferred over extends.
 	parts?: readonly FusablePart[];
 	// Real subclass inheriting CONTEXT_KEY/instanceof/atoms; superseded by parts:.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -139,7 +139,7 @@ export type DefinedBondClass<
 	readonly state?: StateCtor<State>;
 	// Throws if the spec declared no state.
 	create(props: StatePropsOf<State>): DefinedBond<A, State, Base, M>;
-	// The seam Fusion composes over (§9).
+	// The seam Fusion composes over.
 	readonly spec: BondSpec<A, Base>;
 };
 
@@ -192,7 +192,7 @@ export function defineBond<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	M extends Record<string, (...args: any[]) => any> = Record<never, never>
 >(
-	// Omitted then re-added so capabilities is re-typed over THIS bond's State (#2) and state is an inference site (ADR 0012).
+	// Omitted then re-added so capabilities is re-typed over THIS bond's State and state is an inference site.
 	spec: Omit<BondSpec<A, Base>, 'extends' | 'methods' | 'capabilities' | 'state'> & {
 		extends?: DefinedBondClass<PAtoms, PState>;
 		methods?: M;
@@ -200,7 +200,7 @@ export function defineBond<
 		state?: StateCtor<State>;
 	}
 ): DefinedBondClass<Omit<PAtoms, keyof A> & A, State, Base, M> {
-	// ─── Flat composition path (`parts:`) — the compose operator (ADR 0004 Decision 1) ───
+	// ─── Flat composition path (`parts:`) — the compose operator ───
 	if (spec.parts && spec.parts.length > 0) {
 		const partsAtoms: Record<string, AtomSpec> = {};
 		const partsCapFns: ((state: BondState) => Capability[])[] = [];
@@ -292,7 +292,7 @@ export function defineBond<
 			attachMethod(Composed.prototype, name, fn);
 		}
 
-		// ADR 0012: attach static state + create(props).
+		// Attach static state + create(props).
 		attachStateFactory(Composed, spec.state as StateCtor | undefined);
 
 		return Composed as unknown as DefinedBondClass<Omit<PAtoms, keyof A> & A, State, Base, M>;

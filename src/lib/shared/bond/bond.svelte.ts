@@ -53,7 +53,7 @@ export {
 	type CapabilityDecoration
 } from '../capability/capability';
 
-// Symbol.for survives duplicate copies and HMR; forgeable by design, guards forks not adversaries. ADR 0005 D4.
+// Symbol.for survives duplicate copies and HMR; forgeable by design, guards forks not adversaries.
 const BOND_BRAND: unique symbol = Symbol.for('@svelte-atoms/bond:brand');
 
 // OrdinaryHasInstance: exact prototype semantics for subclass checks, bypassed only at base Bond.
@@ -82,7 +82,7 @@ export abstract class Bond<
 	#queue = new StagedMap<BondAtom>();
 	#name: string;
 
-	// Cross-copy identity brand; read by static [Symbol.hasInstance]. ADR 0005 D4.
+	// Cross-copy identity brand; read by static [Symbol.hasInstance].
 	readonly [BOND_BRAND] = true;
 
 	constructor(state: State, name?: string) {
@@ -108,7 +108,7 @@ export abstract class Bond<
 		return this.#name;
 	}
 
-	// Bonds print as [object <name>] in consoles and Object.prototype.toString. ADR 0005 D1.
+	// Bonds print as [object <name>] in consoles and Object.prototype.toString.
 	get [Symbol.toStringTag]() {
 		return this.name;
 	}
@@ -146,7 +146,7 @@ export abstract class Bond<
 		return newAtom;
 	}
 
-	// Find the atom playing role (e.g. for aria-controls cross-references). §11.3.
+	// Find the atom playing role (e.g. for aria-controls cross-references).
 	atomByRole(role: string): BondAtom | undefined {
 		const atom = this.#queue.find((a) => a.hasRole(role));
 		if (import.meta.env?.DEV && !atom) {
@@ -176,7 +176,7 @@ export abstract class Bond<
 		return this.#state.surface(key);
 	}
 
-	// For hard dependencies; throws with the slot name instead of returning undefined. (#4)
+	// For hard dependencies; throws with the slot name instead of returning undefined.
 	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
 		return this.#state.requireCapability(key);
 	}
@@ -185,7 +185,7 @@ export abstract class Bond<
 		return this.#state.requireSurface(key);
 	}
 
-	// Called by useCapabilities() when it runs setups — silences the DEV "setup() never ran" guard. (#5)
+	// Called by useCapabilities() when it runs setups — silences the DEV "setup() never ran" guard.
 	markSetupConsumed(): void {
 		this.#state.markSetupConsumed();
 	}
@@ -198,7 +198,7 @@ export abstract class Bond<
 		return this.#state.describeCapabilities();
 	}
 
-	// Answers "why does this atom have these attrs/handlers" — projection otherwise scatters across the chain. (#7)
+	// Answers "why does this atom have these attrs/handlers" — projection otherwise scatters across the chain.
 	explainRole(role: string, ctx?: unknown): RoleProjectionInfo[] {
 		const out: RoleProjectionInfo[] = [];
 		for (const cap of this.capabilities) {
@@ -240,7 +240,7 @@ export abstract class Bond<
 		return setContext(this.CONTEXT_KEY, bond);
 	}
 
-	// x instanceof Bond via BOND_BRAND (survives duplicate copies); subclass checks stay prototype-based. ADR 0005 D4.
+	// x instanceof Bond via BOND_BRAND (survives duplicate copies); subclass checks stay prototype-based.
 	static [Symbol.hasInstance](this: unknown, value: unknown): boolean {
 		if (this === Bond) {
 			return value != null && typeof value === 'object' && BOND_BRAND in value;
@@ -252,7 +252,7 @@ export abstract class Bond<
 export abstract class BondState<S extends BondStateProps = BondStateProps> {
 	#id: string;
 	#props: S;
-	// Single home for capabilities (ADR 0001 §11.1); collections also live here at slot collection:<kind>.
+	// Single home for capabilities; collections also live here at slot collection:<kind>.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	#capabilities: Capability<any>[] = [];
 
@@ -297,7 +297,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		// Last-wins-per-slot: re-registering a slot replaces the prior holder (lets a spec override a
 		// base default; `fuse` and the overlay capability stacks rely on it). A holder carrying a
 		// `compose` hook instead WRAPS the prior — the registry hands it the capability it supersedes
-		// so it can delegate (decorateCapability). DEV-logs either way so overrides aren't silent (#4).
+		// so it can delegate (decorateCapability). DEV-logs either way so overrides aren't silent.
 		// Slot identity is by symbol, not string.
 		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrKey.slot);
 		if (i >= 0) {
@@ -325,7 +325,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		return this.capability(key)?.surface;
 	}
 
-	// Throws with the slot name (skips the DEV warn). (#4)
+	// Throws with the slot name (skips the DEV warn).
 	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
 		const found = this.#findCapability(key) as Capability<S> | undefined;
 		if (!found) {
@@ -346,7 +346,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		return cap.surface;
 	}
 
-	// Set by useCapabilities() once it has run the registered setups (#5).
+	// Set by useCapabilities() once it has run the registered setups.
 	#setupConsumed = false;
 	markSetupConsumed(): void {
 		this.#setupConsumed = true;
@@ -445,7 +445,7 @@ export class BondAtom<
 		return this;
 	}
 
-	// item/input require a string ctx; structural roles take none; custom roles accept optional unknown. §4.2.
+	// item/input require a string ctx; structural roles take none; custom roles accept optional unknown.
 	role<R extends string>(role: R, ...args: RoleCtxArgs<R>): this {
 		const ctx = args[0] as unknown;
 		this.#roles.add(role);

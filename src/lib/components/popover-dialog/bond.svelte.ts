@@ -9,7 +9,7 @@ export class PopoverDialogBondState<
 	Props extends PopoverDialogBondProps = PopoverDialogBondProps
 > extends DialogBondState<Props> {}
 
-// Fusion of Popover + Dialog (§9.4.1): popover's trigger opens a modal dialog instead of a floating panel.
+// Fusion of Popover + Dialog: popover's trigger opens a modal dialog instead of a floating panel.
 // Dialog atoms/capabilities win per-slot (last-wins); floating atoms are inert at runtime.
 const PopoverDialogBondImpl = fuse({
 	name: 'popover-dialog',

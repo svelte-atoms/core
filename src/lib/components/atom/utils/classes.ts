@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cn, type ClassValue } from '$svelte-atoms/core/utils';
 
-// Generational trie memo for the class axis (ADR 0004 D5): walks (userClass, presetClass, variantClass)
+// Generational trie memo for the class axis: walks (userClass, presetClass, variantClass)
 // through nested Maps; hits are zero-allocation. Eviction is generational (hot→prev wholesale at TRIE_MAX).
 
 // Path-compressed (preset, variant) → result tail; `n` chains rare collisions.

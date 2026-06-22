@@ -23,7 +23,7 @@ export type ToastBondElements = {
 	close: HTMLElement;
 };
 
-// Minimal bond view for atoms — avoids atom↔bond circularity through defineBond. See §12.2.
+// Minimal bond view for atoms — avoids atom↔bond circularity through defineBond.
 type ToastBondView = ViewOf<ToastBondState>;
 
 export class ToastRootAtom extends BondAtom<ToastBondView> {
@@ -96,7 +96,7 @@ export class ToastCloseAtom extends BondAtom<ToastBondView> {
 	}
 }
 
-// Toast bond via defineBond (§12): roles, key alias dismiss↔close, labelledControl capability — all generated.
+// Toast bond via defineBond: roles, key alias dismiss↔close, labelledControl capability — all generated.
 export const ToastBond = defineBond<
 	{
 		root: { atom: typeof ToastRootAtom; role: 'control' };
@@ -113,11 +113,11 @@ export const ToastBond = defineBond<
 		description: { atom: ToastDescriptionAtom, role: 'description' },
 		dismiss: { atom: ToastCloseAtom, key: 'close' }
 	},
-	// a11y link (§11.3): root→aria-labelledby (title) + aria-describedby (description) via role registry.
+	// a11y link: root→aria-labelledby (title) + aria-describedby (description) via role registry.
 	capabilities: () => [labelledControl()]
 });
 
-// ToastBond works as both value (new ToastBond(state)) and type (ToastBond | undefined). See §12.2.
+// ToastBond works as both value (new ToastBond(state)) and type (ToastBond | undefined).
 export type ToastBond = BondOf<typeof ToastBond>;
 
 export class ToastBondState<

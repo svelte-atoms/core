@@ -52,7 +52,7 @@ export class StepperRootAtom extends BondAtom<StepperBondView> {
 	}
 }
 
-// StepperBond — `defineBond` (§6). Step orchestration lives on {@link StepperState}.
+// StepperBond — `defineBond`. Step orchestration lives on {@link StepperState}.
 export const StepperBond = defineBond<{ root: typeof StepperRootAtom }, StepperState>({
 	name: 'stepper',
 	atoms: { root: StepperRootAtom }

@@ -27,7 +27,7 @@ export type AccordionItemBondElements = {
 	indicator: HTMLElement;
 };
 
-// Breaks the atom↔bond cycle via defineBond (§12.2).
+// Breaks the atom↔bond cycle via defineBond.
 type AccordionItemBondView = ViewOf<AccordionItemBondState>;
 
 export class AccordionItemRootAtom extends BondAtom<AccordionItemBondView> {
@@ -127,7 +127,7 @@ export class AccordionItemIndicatorAtom extends BondAtom<AccordionItemBondView> 
 	}
 }
 
-// preset path `accordion.item` (dotted) is distinct from the DOM namespace `accordion-item` (§6).
+// preset path `accordion.item` (dotted) is distinct from the DOM namespace `accordion-item`.
 export const AccordionItemBond = defineBond<
 	{
 		root: typeof AccordionItemRootAtom;
@@ -164,7 +164,7 @@ export class AccordionItemBondState extends BondState<AccordionItemBondProps> {
 		if (!this.#parent) {
 			throw new Error('AccordionItemAtom must be used within an AccordionAtom context.');
 		}
-		// trigger↔content a11y link (§11.3): header gets aria-expanded/aria-controls, body gets aria-labelledby/role=region; ids resolved via the role registry.
+		// trigger↔content a11y link: header gets aria-expanded/aria-controls, body gets aria-labelledby/role=region; ids resolved via the role registry.
 		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'region' }));
 	}
 

@@ -26,7 +26,7 @@ export class SelectItemAtom<Data = unknown, B extends SelectBond = SelectBond> e
 		this.#id = props.id ?? nanoid();
 		// Fold in the selection capability's `item` projection (aria-selected +
 		// data-selected from the shared model). Attrs-only — the .svelte keeps its
-		// own click (select + close). See docs/extensibility-vision.md §11.3.
+		// own click (select + close).
 		this.role('item', props.value);
 	}
 

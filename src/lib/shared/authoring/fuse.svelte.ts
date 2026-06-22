@@ -29,7 +29,7 @@ export interface FuseSpec<
 	atoms?: Own;
 	capabilities?: (state: State) => Capability[];
 	preset?: string;
-	// ADR 0012: generic State keeps explicit args so State threads precisely (e.g. SelectBond).
+	// Generic State keeps explicit args so State threads precisely (e.g. SelectBond).
 	state?: StateCtor<State>;
 }
 

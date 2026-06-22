@@ -61,10 +61,10 @@
 
 	const bond = binding.bond.share();
 
-	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
-	// setup() (ADR 0001 / ADR 0003, ADR 0010).
+	// Activate the bond's capability setups: the focus capability captures activeElement on
+	// open and restores it on close, and the escape capability enrolls this overlay in the
+	// topmost-open-overlay stack so only the frontmost surface acts on Escape.
 	useCapabilities(bond);
-	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
 
 	export function getBond() {
 		return bond;

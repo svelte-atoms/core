@@ -3,7 +3,7 @@
 	import { PopoverDialog } from '.';
 	import { Button } from '../button';
 
-	// PopoverDialog is the first Fusion (§9.4.1): fuse(Popover, Dialog). Popover's
+	// PopoverDialog is the first Fusion: fuse(Popover, Dialog). Popover's
 	// trigger/disclosure opens Dialog's modal content (centered, backdrop, focus-trapped).
 	const { Story } = defineMeta({
 		title: 'Atoms/PopoverDialog',

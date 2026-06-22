@@ -124,7 +124,7 @@ export class TreeBondState<
 
 	constructor(props: Props) {
 		super(props);
-		// trigger↔content link (§11.3): header gets aria-expanded/controls; body gets aria-labelledby/group.
+		// trigger↔content link: header gets aria-expanded/controls; body gets aria-labelledby/group.
 		this.capability(triggerContentLink(this.disclosure, { contentRole: 'group' }));
 	}
 }

@@ -10,12 +10,12 @@ import type { Disclosure } from './disclosure.svelte';
 export const TRIGGER_CONTENT = sharedCapabilityKey<Disclosure>('@svelte-atoms/cap:trigger-content');
 
 // Private slot key (not exported from the public barrel): labelledControl is a behavior-only linkage
-// nobody retrieves by key, so it stays unforgeable — the private seam (#2). ADR 0005 D6.
+// nobody retrieves by key, so it stays unforgeable — the private seam.
 export const LABELLED = capabilityKey('labelled');
 
 // Reusable a11y linkage between roles. Where atoms must cross-reference each other's ids
 // (label/control, trigger/content, tab/tabpanel, …), the wiring resolves siblings via
-// `bond.atomByRole(role)`. See docs/extensibility-vision.md §11.3.
+// `bond.atomByRole(role)`.
 
 export interface TriggerContentOptions {
 	// `aria-haspopup` on the trigger (menus, listboxes, dialogs). Omitted by default.

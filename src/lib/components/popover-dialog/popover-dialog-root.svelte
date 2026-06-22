@@ -16,7 +16,7 @@
 
 	// The fused bond — Popover's trigger/disclosure + Dialog's modal presentation.
 	// Root only owns state + context; the trigger renders in flow (`<PopoverDialog.Trigger>`)
-	// and the modal self-portals from `<PopoverDialog.Content>` (§9.4.1).
+	// and the modal self-portals from `<PopoverDialog.Content>`.
 	const binding = bindBond<PopoverDialogBond>(
 		(props) => new PopoverDialogBond(new PopoverDialogBondState(props)),
 		{
@@ -28,10 +28,10 @@
 	);
 	const bond = binding.bond.share();
 
-	// Run capability setups — focus capture/restore reacts to `open`, restoring to the trigger's
-	// prior focus on close, via the focus capability's setup() (ADR 0010).
+	// Activate the bond's capability setups: the focus capability captures activeElement on open
+	// and restores it to the trigger's prior focus on close, and the escape capability enrolls
+	// this overlay in the topmost-open-overlay stack so only the frontmost surface acts on Escape.
 	useCapabilities(bond);
-	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
 
 	export function getBond() {
 		return bond;

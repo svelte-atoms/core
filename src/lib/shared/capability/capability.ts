@@ -11,19 +11,19 @@ export interface Behavior<
 	onmount?(node: E, bond: B): void | (() => void);
 }
 
-// Phantom type makes the key the registry: capability(key) returns Capability<Surface> without a cast. ADR 0005 D6.
+// Phantom type makes the key the registry: capability(key) returns Capability<Surface> without a cast.
 declare const SURFACE: unique symbol;
 export type CapabilityKey<Surface = unknown> = symbol & { readonly [SURFACE]?: Surface };
 
 export type SurfaceOf<K> = K extends CapabilityKey<infer S> ? S : unknown;
 
-// Unexported keys are unforgeable — the private seam. ADR 0005 D6.
+// Unexported keys are unforgeable — the private seam.
 export function capabilityKey<Surface = unknown>(description: string): CapabilityKey<Surface> {
 	return Symbol(description) as CapabilityKey<Surface>;
 }
 
 // Symbol.for survives duplicate library copies and HMR; forgeable by description — the public projection seam.
-// Namespace descriptions to avoid global registry collisions. ADR 0005 D6.
+// Namespace descriptions to avoid global registry collisions.
 export function sharedCapabilityKey<Surface = unknown>(
 	description: string
 ): CapabilityKey<Surface> {
@@ -55,7 +55,7 @@ export type RoleCtxArgs<R extends string> = R extends KnownRole
 		: [ctx: RoleContexts[R]]
 	: [ctx?: unknown];
 
-// Dual of the atom: slot = identity key, surface = stateful model, behavior() projects by role. §4.2.
+// Dual of the atom: slot = identity key, surface = stateful model, behavior() projects by role.
 export interface Capability<Surface = unknown> {
 	// CapabilityKey phantom drives typed retrieval via bond.capability(key) — not through this field.
 	readonly slot: symbol;
@@ -66,7 +66,7 @@ export interface Capability<Surface = unknown> {
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
 	// Whole-bond effect run via useCapabilities(); home for document listeners and focus/escape plumbing.
 	setup?(bond: Bond): Disposable | (() => void) | void;
-	// When a slot is already held, the registry calls compose(prior) instead of replacing — wrap/delegate rather than rewrite. Built by decorateCapability(). ADR 0005 D6.
+	// When a slot is already held, the registry calls compose(prior) instead of replacing — wrap/delegate rather than rewrite. Built by decorateCapability().
 	compose?(prior: Capability<Surface>): Capability<Surface>;
 }
 
@@ -77,7 +77,7 @@ export type RoleCtx<R extends string> = R extends KnownRole
 		: RoleContexts[R]
 	: unknown;
 
-// Typed role → projection map. ctx is typed per role; no `ctx as T` casts. §4.2.
+// Typed role → projection map. ctx is typed per role; no `ctx as T` casts.
 export type CapabilityRoleMap = {
 	[R in KnownRole]?: (ctx: RoleCtx<R>) => Behavior | undefined;
 } & {
@@ -98,7 +98,7 @@ export interface CapabilityConfig<Surface = unknown> {
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
 }
 
-// Canonical authoring entry point (§4.2). Folds roles/behavior into the Capability the registry projects.
+// Canonical authoring entry point. Folds roles/behavior into the Capability the registry projects.
 export function defineCapability<Surface = unknown>(
 	config: CapabilityConfig<Surface>
 ): Capability<Surface> {
@@ -124,7 +124,7 @@ export interface CapabilityInfo {
 	hasSetup: boolean;
 }
 
-// Per-role projection snapshot from one capability; produced by Bond.explainRole(). (#7)
+// Per-role projection snapshot from one capability; produced by Bond.explainRole().
 export interface RoleProjectionInfo {
 	slot: symbol;
 	description: string | undefined;
@@ -141,7 +141,7 @@ export interface CapabilityDecoration<S> {
 	setup?(base: Capability<S>['setup']): Capability<S>['setup'];
 }
 
-// Wrap a slot's current holder, delegating unmodified facets — register AFTER the base or compose fires on nothing. ADR 0005 D6.
+// Wrap a slot's current holder, delegating unmodified facets — register AFTER the base or compose fires on nothing.
 export function decorateCapability<S>(
 	slot: CapabilityKey<S>,
 	decoration: CapabilityDecoration<S>

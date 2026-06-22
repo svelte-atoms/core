@@ -12,7 +12,7 @@ function toTeardown(live: Disposable | (() => void)): () => void {
 // Run every registered capability's setup() once, at root component init, and aggregate their
 // teardowns into onDestroy. The single home for whole-bond effects (focus restore, document
 // listeners, subscriptions) that no individual atom owns. Call once from a bond's root component,
-// after the bond is constructed. Capabilities without a setup() are skipped. (#5)
+// after the bond is constructed. Capabilities without a setup() are skipped.
 //
 // Teardown runs LIFO — the last setup to run is the first torn down — mirroring `using`/DisposableStack
 // semantics, so a later capability that depends on an earlier one's effect unwinds in dependency order.
@@ -20,7 +20,7 @@ export function useCapabilities(bond: Bond | undefined): void {
 	if (!bond) return;
 
 	// Record that whole-bond effects are now live, so the DEV guard that fires when a setup()-bearing
-	// bond was never wired (#5) stays quiet for correctly-wired roots.
+	// bond was never wired stays quiet for correctly-wired roots.
 	bond.markSetupConsumed();
 
 	const teardowns: Array<() => void> = [];

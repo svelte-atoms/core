@@ -45,13 +45,13 @@
 	// `share()` publishes the bond under both the date-picker context key (read by
 	// `DatePickerBond.get()` in the calendar/header/sub-pickers) and the popover key
 	// (read by the re-exported `Trigger`/`Content`/`Arrow`/`Indicator`), via the
-	// flat-composition `share` override. ADR 0004 Decision 1.
+	// flat-composition `share` override.
 	const bond = binding.bond.share();
 
-	// Run capability setups — focus capture/restore reacts to `open` via the focus capability's
-	// setup() (ADR 0001 / ADR 0003, ADR 0010); the bond is shared directly here.
+	// Activate the bond's capability setups: the focus capability captures activeElement on
+	// open and restores it on close, and the escape capability enrolls this overlay in the
+	// topmost-open-overlay stack so only the frontmost surface acts on Escape.
 	useCapabilities(bond);
-	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2).
 </script>
 
 {@render children?.({ datePicker: bond })}

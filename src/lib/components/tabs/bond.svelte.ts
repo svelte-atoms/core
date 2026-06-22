@@ -120,7 +120,7 @@ class TabsBondBase extends Bond<TabsBondProps, TabsBondState> implements ITabs {
 	}
 }
 
-// TabsBond — `defineBond` (§6) over TabsBondBase via the generic facade:
+// TabsBond — `defineBond` over TabsBondBase via the generic facade:
 // non-generic impl re-exposed with T through a generic-constructor interface + `type TabsBond<T>`.
 const TabsBondImpl = defineBond<
 	{ root: typeof TabsRootAtom; header: typeof TabsHeaderAtom; body: typeof TabsBodyAtom },

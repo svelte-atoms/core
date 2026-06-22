@@ -153,7 +153,7 @@ class StepSeparatorAtom extends BondAtom<StepBondView, HTMLElement> {
 	}
 }
 
-// StepBond — `defineBond` (§6). `preset` is the dotted path (`stepper.step`), distinct
+// StepBond — `defineBond`. `preset` is the dotted path (`stepper.step`), distinct
 // from the DOM namespace (`step`); parent wiring lives on StepBondState.
 export const StepBond = defineBond<
 	{

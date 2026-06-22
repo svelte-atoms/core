@@ -24,7 +24,7 @@ export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond>
 		this.#menuBond = menuBond;
 		this.#id = props.id ?? nanoid();
 		// Fold in the roving capability's `item` projection (`data-highlighted`); attrs-only,
-		// the .svelte keeps its own click. See docs/extensibility-vision.md §11.3.
+		// the .svelte keeps its own click.
 		this.role('item', this.#id);
 	}
 

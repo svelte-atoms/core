@@ -25,7 +25,7 @@ export type AccordionElements = {
 	indicator: HTMLElement;
 };
 
-// Breaks the atom↔bond cycle via defineBond (§12.2).
+// Breaks the atom↔bond cycle via defineBond.
 type AccordionBondView = ViewOf<AccordionState>;
 
 export class AccordionRootAtom extends BondAtom<AccordionBondView> {
@@ -48,7 +48,7 @@ export class AccordionRootAtom extends BondAtom<AccordionBondView> {
 	}
 }
 
-// Selection lives on AccordionState (§6).
+// Selection lives on AccordionState.
 export const AccordionBond = defineBond<{ root: typeof AccordionRootAtom }, AccordionState>({
 	name: 'accordion',
 	atoms: { root: AccordionRootAtom }

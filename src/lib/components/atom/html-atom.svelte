@@ -42,8 +42,8 @@
 	const mergedVariants = $derived.by(() =>
 		resolvers.resolveVariants(preset, localVariants, bond, lifecycle.rest)
 	);
-	// The merge kernel: ONE walk over fallback → preset → variants → rest
-	// (ADR 0004 Decision 5). Class string and spread attrs both come from it.
+	// The merge kernel: ONE walk over fallback → preset → variants → rest.
+	// Class string and spread attrs both come from it.
 	const folded = $derived.by(() =>
 		resolvers.foldLayers(preset, mergedVariants, lifecycle.rest, fallback)
 	);

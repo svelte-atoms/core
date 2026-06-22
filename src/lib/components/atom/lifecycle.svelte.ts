@@ -20,7 +20,7 @@ function buildKey(type: LifecycleType) {
 declare const phaseBrand: unique symbol;
 declare const bondBrand: unique symbol;
 
-// A lifecycle key with phase T and bond B in the type system; a symbol at runtime. ADR 0005 D2.
+// A lifecycle key with phase T and bond B in the type system; a symbol at runtime.
 export type LifecycleKey<T extends LifecycleType = 'init', B extends Bond = Bond> = symbol & {
 	readonly [phaseBrand]: T;
 	readonly [bondBrand]: B;
