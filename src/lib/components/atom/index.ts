@@ -11,6 +11,5 @@ export {
 	runLifecycle,
 	type LifecycleType,
 	type LifecycleAttachment,
-	type LifecycleProps,
-	type LifecycleRunner
+	type LifecycleProps
 } from './lifecycle.svelte';

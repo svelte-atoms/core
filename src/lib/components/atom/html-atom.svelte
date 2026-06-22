@@ -27,9 +27,9 @@
 	}: HtmlAtomProps<E, B, C> = $props();
 
 	// Bond lifecycle attachments (createLifecycleKey): fire each phase's `(bond) => …` callbacks
-	// against the live bond and hand back the props with those symbol keys stripped, so they
-	// never reach the DOM (where a symbol-fn prop would be mistaken for a node attachment).
-	const lifecycle = runLifecycle(
+	// against the live bond. The lifecycle keys are symbol-keyed, so Svelte ignores them on the
+	// DOM spread downstream — `restProps` flows on untouched.
+	runLifecycle(
 		() => restProps,
 		() => bond
 	);
@@ -38,14 +38,14 @@
 	const preset = $derived.by(() =>
 		resolvers.resolvePreset(presetKey as PresetModuleName | PresetModuleName[], bond, getPreset)
 	);
-	const localVariants = $derived(resolvers.resolveLocalVariants(variants, bond, lifecycle.rest));
+	const localVariants = $derived(resolvers.resolveLocalVariants(variants, bond, restProps));
 	const mergedVariants = $derived.by(() =>
-		resolvers.resolveVariants(preset, localVariants, bond, lifecycle.rest)
+		resolvers.resolveVariants(preset, localVariants, bond, restProps)
 	);
 	// The merge kernel: ONE walk over fallback → preset → variants → rest.
 	// Class string and spread attrs both come from it.
 	const folded = $derived.by(() =>
-		resolvers.foldLayers(preset, mergedVariants, lifecycle.rest, fallback)
+		resolvers.foldLayers(preset, mergedVariants, restProps, fallback)
 	);
 	const finalKlass = $derived(resolvers.resolveClass(klass, folded));
 	const finalBase = $derived(resolvers.resolveBase(base, preset));
