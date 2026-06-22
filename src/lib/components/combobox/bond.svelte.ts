@@ -51,6 +51,22 @@ export class ComboboxBondState extends DropdownBondState<ComboboxBondProps> {
 		);
 	}
 
+	override select(ids: string[]) {
+		super.select(ids);
+		// In single mode, reflect the committed value back into the query box so the
+		// trigger input shows what was picked (not the stale filter text).
+		if (!this.props.multiple) {
+			this.props.query = ids[0] ?? '';
+		}
+	}
+
+	override unselect(ids: string[]) {
+		super.unselect(ids);
+		if (!this.props.multiple) {
+			this.props.query = '';
+		}
+	}
+
 	addSelection(label: string) {
 		const id = nanoid();
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity
