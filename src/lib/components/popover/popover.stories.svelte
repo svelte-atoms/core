@@ -169,7 +169,7 @@
 					<!-- Sticky toolbar under the header. -->
 					<div class="bg-inherit sticky top-16 z-10 flex items-center gap-2 px-5 pb-3 pt-4">
 						<div class="bg-muted/60 h-9 flex-1 rounded-lg"></div>
-						<Popover_.Root placement="bottom-start">
+						<Popover_.Root placement="bottom-start" position="fixed">
 							<Popover_.Trigger
 								class="border-border hover:border-foreground/40 gap-2 rounded-lg border px-3 py-2 text-sm font-normal transition-colors"
 							>
@@ -177,7 +177,7 @@
 								<Popover_.Indicator />
 							</Popover_.Trigger>
 							<!-- z-index=12 lifts the portalled content above the sticky header. -->
-							<Popover_.Content class="min-w-60 p-1" z-index={12}>
+							<Popover_.Content class="min-w-60 p-1" z-index={(z) => z + 2}>
 								{#each options as opt (opt)}
 									<button
 										class="hover:bg-muted block w-full rounded-md px-3 py-1.5 text-left text-sm"
