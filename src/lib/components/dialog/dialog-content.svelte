@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { Overlay } from '$svelte-atoms/core/components/overlay';
+	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
 	import { DialogBond } from './bond.svelte';
 	import type { DialogContentProps } from './types';
 	import { animateDialogContent } from './motion.svelte';
@@ -22,9 +22,9 @@
 	const dialogProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Overlay
+<PortalHost
 	class={[
-		'bg-card text-foreground border-border flex h-fit w-full max-w-[90svw] flex-col rounded-md border py-4 shadow-sm opacity-0',
+		'bg-card text-foreground flex h-fit w-full max-w-[90svw] flex-col rounded-md border py-4 shadow-sm opacity-0',
 		'$preset',
 		klass
 	]}
@@ -33,4 +33,4 @@
 	{...dialogProps}
 >
 	{@render children?.({ dialog: bond })}
-</Overlay>
+</PortalHost>

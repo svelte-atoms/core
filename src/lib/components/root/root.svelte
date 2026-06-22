@@ -6,7 +6,8 @@
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import { bondFactory } from '$svelte-atoms/core/shared';
-	import { ActivePortal, Portal, Portals } from '$svelte-atoms/core/components/portal';
+	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
+	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
 	import { mergePresetProps, HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
 	import { RootBond, RootBondState } from './bond.svelte';
@@ -73,15 +74,13 @@
 	>
 		{#if portal}
 			{@render portal?.()}
+			<ActivePortal portal="root.l0">
+				{@render children?.()}
+			</ActivePortal>
 		{:else}
-			<!-- Absolute surface over the root atom; the soft containment boundary for overlays. -->
-			<Portal.Outer id="root.l0">
-				<Portal.Inner />
-			</Portal.Outer>
+			<PortalHost id="root.l0" class="flex-1 flex flex-col w-full h-full">
+				{@render children?.()}
+			</PortalHost>
 		{/if}
-
-		<ActivePortal portal="root.l0">
-			{@render children?.()}
-		</ActivePortal>
 	</Atom>
 </Portals>

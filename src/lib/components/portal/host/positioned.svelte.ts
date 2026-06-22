@@ -6,5 +6,5 @@ export type PositionedOverlayElements = BondElements & {
 	content?: HTMLElement;
 };
 
-// Popover and subclasses author over Bond + positionedCapabilities() (docs/extensibility-vision.md §13);
+// Popover and subclasses author over Bond + positionedCapabilities();
 // only the element shape remains here.

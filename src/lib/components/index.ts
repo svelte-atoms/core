@@ -10,7 +10,7 @@ export * from './scrollable';
 export * from './tooltip';
 export * from './list';
 export * from './portal';
-export * from './overlay';
+export * from './portal/host';
 export * from './popover';
 export * from './popover-dialog';
 export * from './datagrid';

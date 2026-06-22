@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { bondFactory } from '$svelte-atoms/core/shared';
 	import type { PortalOuterProps } from './types';
-	import { PortalsBond, PortalBond, PortalState } from '.';
+	import { PortalsBond, PortalBond, PortalState, ZLayer } from '.';
 	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import type { Factory } from '$svelte-atoms/core/types';
@@ -27,6 +27,9 @@
 		},
 		{ preset: () => preset }
 	);
+
+	new ZLayer(0, () => 0, null).share();
+	
 	const bond = binding.bond.share();
 
 	// Eager register so descendants (e.g. ActivePortal) resolve this portal within the same render;

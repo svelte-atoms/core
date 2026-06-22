@@ -17,15 +17,18 @@
 		}
 	});
 
-	// Snippet-or-undefined: shares the portal into context from inside the rendered block, so local
-	// enter/exit transitions still play.
-	const content = $derived(activePortal ? proxy : undefined);
-
-	// Rendered via `{@render content?.()}` with no args, and `children` is a 0-arg Snippet.
-	function proxy() {
+	function proxy(...args) {
 		activePortal?.share();
-		return children?.();
+		return children?.(...args);
 	}
 </script>
 
-{@render content?.()}
+<!-- Snippet-or-undefined: shares the portal into context from inside the rendered block, so local
+     enter/exit transitions still play. {#snippet} is a proper Snippet type (no casting needed),
+     and {void share()} fires it synchronously before children render without emitting DOM text. -->
+<!-- {#snippet proxy()}
+	{void }
+	{@render children?.()}
+{/snippet} -->
+
+{@render (activePortal ? proxy : undefined)?.()}

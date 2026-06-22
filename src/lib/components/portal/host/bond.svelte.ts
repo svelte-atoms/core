@@ -30,10 +30,6 @@ export class OverlayBond extends Bond {
 		return new OverlayBond(new OverlayPortalState(() => outer?.isOpen ?? true));
 	}
 
-	get positionStrategy(): 'fixed' | 'absolute' {
-		return 'absolute';
-	}
-
 	get isOpen(): boolean {
 		return (this.state as unknown as { isOpen: boolean }).isOpen ?? false;
 	}

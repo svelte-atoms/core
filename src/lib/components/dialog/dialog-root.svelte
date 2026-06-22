@@ -14,7 +14,7 @@
 		disabled = false,
 		type = 'modal' as 'modal' | 'non-modal',
 		as = 'dialog' as E,
-		// Default +0 within the `modal` band; a sibling Drawer (+1) wins by convention (ADR 0009 D5). Override to reorder.
+		// Default +0 within the `modal` band; a sibling Drawer (+1) wins by convention. Override to reorder.
 		'z-index': zindex = 0,
 		portal = undefined,
 		factory = bondFactory(DialogBondState, DialogBond),
@@ -23,10 +23,15 @@
 		...restProps
 	}: DialogProps<E, B> = $props();
 
-	const normalizedZIndex = $derived(
-		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	const z = $derived(
+		typeof zindex === 'function'
+			? zindex(0)
+			: typeof zindex === 'number' && Number.isFinite(zindex)
+				? zindex
+				: 0
 	);
-	const layer = new ZLayer('modal', () => normalizedZIndex ?? 0).share();
+	const layer = new ZLayer('modal', () => z);
+	new ZLayer('base', () => 0).share();
 
 	const binding = bindBond<DialogBond>(
 		(props) => factory(props),
@@ -38,10 +43,10 @@
 	);
 	const bond = binding.bond.share();
 
-	// Run capability setups — focus capture/restore (ADR 0001 / ADR 0003) is owned by the focus
-	// capability's setup() and applies however the dialog closes (#5, ADR 0010).
+	// Activate the bond's capability setups: the focus capability captures activeElement on
+	// open and restores it however the dialog closes, and the escape capability enrolls this
+	// overlay in the topmost-open-overlay stack so a nested popover's Escape closes only it.
 	useCapabilities(bond);
-	// Topmost-open-overlay Escape coordination (ADR 0009 D1/D2): a nested popover's Escape closes only it.
 
 	const rootProps: Record<string, unknown> = $derived({
 		...binding?.props,

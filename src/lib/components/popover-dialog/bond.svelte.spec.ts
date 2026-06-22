@@ -6,7 +6,7 @@ import {
 } from './bond.svelte';
 import { PopoverTriggerAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { DialogContentAtom, DialogTitleAtom } from '../dialog/bond.svelte';
-import { ModalRootAtom, FOCUS } from '$svelte-atoms/core/components/overlay';
+import { ModalRootAtom, FOCUS } from '$svelte-atoms/core/components/portal/host';
 
 function makeBond(initial: Partial<PopoverDialogBondProps> = {}) {
 	const props = $state<PopoverDialogBondProps>({ open: false, disabled: false, ...initial });

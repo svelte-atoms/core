@@ -18,7 +18,7 @@ import {
 	selectionCapability,
 	type SelectionModel
 } from '$svelte-atoms/core/shared/capability/models/selection.svelte';
-import { clickTrigger, clearThenClose } from '$svelte-atoms/core/components/overlay';
+import { clickTrigger, clearThenClose } from '$svelte-atoms/core/components/portal/host';
 import type { SelectItemAtom } from './item/bond.svelte';
 
 export type SelectStateProps = DropdownMenuBondProps & {
@@ -57,7 +57,7 @@ export class SelectBondState<
 	constructor(props: Props) {
 		super(props); // DropdownMenuBondState registers the roving capability
 		// Option selection reflection (role:'item'): aria-selected + data-selected only.
-		// `interactive: false` — the item keeps its own click (select + close). See §11.3.
+		// `interactive: false` — the item keeps its own click (select + close).
 		this.capability(selectionCapability(this.#selection, { interactive: false }));
 		// Filter input (role 'input'/'query'): text is the bond-owned `query` prop (the
 		// `createBondFilter` source). Filter-only — no `value` field; Combobox adds one (last-wins).

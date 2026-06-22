@@ -10,7 +10,7 @@ import {
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
-} from '$svelte-atoms/core/components/overlay';
+} from '$svelte-atoms/core/components/portal/host';
 
 export type DialogBondProps = OverlayStateProps & {
 	disabled: boolean;
@@ -22,7 +22,7 @@ export type DialogBondElements = ModalOverlayElements & {
 	footer?: HTMLElement;
 };
 
-// Narrow view type breaks the atom↔bond cycle through defineBond; no base class — overlay behaviour from capabilities (§13).
+// Narrow view type breaks the atom↔bond cycle through defineBond; no base class — overlay behaviour from capabilities.
 type DialogBondView = OverlayView & { state: DialogBondState };
 
 // Adds role="document" on top of ModalContentAtom's focus-on-mount behaviour.

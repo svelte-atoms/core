@@ -2,7 +2,7 @@
 	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
 	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
 	import { type Base } from '$svelte-atoms/core/components/atom';
-	import { type OverlayState } from '$svelte-atoms/core/components/overlay';
+	import { type OverlayState } from '$svelte-atoms/core/components/portal/host';
 	import { ZLayer } from '../portal/zlayer.svelte';
 	import { Content as DialogContent } from '../dialog/atoms';
 	import { PopoverDialogBond } from './bond.svelte';
@@ -21,10 +21,13 @@
 
 	const bond = PopoverDialogBond.get();
 
-	const normalizedZIndex = $derived(
-		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
+	const baseLayer = new ZLayer('modal', () => 0);
+	const layerOffset = $derived(
+		typeof zindex === 'function'
+			? zindex(baseLayer.value) - baseLayer.value
+			: typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : 0
 	);
-	const layer = new ZLayer('modal', () => normalizedZIndex ?? 0).share();
+	const layer = new ZLayer('modal', () => layerOffset).share();
 
 	const open = $derived((bond?.state as OverlayState | undefined)?.isOpen ?? false);
 	const disabled = $derived(

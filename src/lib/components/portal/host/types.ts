@@ -16,7 +16,7 @@ export type OverlayStateProps = BondStateProps & {
 	readonly rest?: Record<string, unknown>;
 };
 
-// Canonical overlay config value-types; per-capability options pick from these via indexed access (§13 Stage 4).
+// Canonical overlay config value-types; per-capability options pick from these via indexed access.
 export type OverlayKnobs = {
 	// trigger's aria-haspopup value.
 	ariaHasPopup?: 'dialog' | 'menu' | 'listbox' | 'tree' | 'grid' | true | false;

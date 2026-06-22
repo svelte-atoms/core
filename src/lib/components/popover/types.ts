@@ -4,7 +4,7 @@ import type { Factory } from '$svelte-atoms/core/types';
 import type { PopoverBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
-import type { LayerInput, LayerRelation, PortalBond, TeleportProps } from '../portal';
+import type { LayerInput, LayerRelation, PortalBond, TeleportProps, ZIndexInput } from '../portal';
 
 export type PopoverChildren = Snippet<[{ popover: PopoverBond }]>;
 
@@ -14,6 +14,8 @@ export interface PopoverRootProps {
 	placements?: Placement[];
 	placement?: Placement;
 	offset?: number;
+	/** CSS positioning strategy for the floating content. Defaults to `'absolute'`. */
+	position?: 'fixed' | 'absolute';
 	portal?: string | PortalBond;
 	extend?: Record<string, unknown>;
 	factory?: Factory<PopoverBond>;
@@ -36,11 +38,11 @@ export interface PopoverOverlayProps<
 	/** Semantic z-index layer for the floating content. Defaults to `'popover'`. */
 	layer?: LayerInput | undefined;
 	/**
-	 * Order the content relative to a registered ZLayer anchor (ADR 0008 D3) — `below` a
+	 * Order the content relative to a registered ZLayer anchor — `below` a
 	 * sticky header registered via `ZLayer.anchor(...)` puts the popover beneath it.
 	 */
 	order?: LayerRelation | undefined;
-	'z-index'?: number | undefined;
+	'z-index'?: ZIndexInput | undefined;
 	children?: PopoverChildren;
 }
 
@@ -78,10 +80,10 @@ export interface PopoverContentProps<
 	overlay?: Component<PopoverOverlayProps>;
 	/** Semantic z-index layer for the floating content. Defaults to `'popover'`. */
 	layer?: LayerInput | undefined;
-	/** Order the content relative to a registered ZLayer anchor (ADR 0008 D3 — sticky-under). */
+	/** Order the content relative to a registered ZLayer anchor (sticky-under). */
 	order?: LayerRelation | undefined;
 	/** Explicit z-index for the floating content, forwarded to the {@link Overlay}. */
-	'z-index'?: number | undefined;
+	'z-index'?: ZIndexInput | undefined;
 	/**
 	 * Fix the content's width. A CSS length, `'var(--sa-anchor-width)'` to match the trigger's
 	 * measured width exactly, or an {@link AnchorSizeFn} computed from the trigger.

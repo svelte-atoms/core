@@ -7,7 +7,8 @@ export {
 	LAYER_BASE,
 	type LayerName,
 	type LayerInput,
-	type LayerRelation
+	type LayerRelation,
+	type ZIndexInput
 } from './zlayer.svelte';
 
 export { default as ActivePortal } from './active-portal.svelte';

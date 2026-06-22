@@ -5,4 +5,4 @@ export * from './policies';
 export * from './capabilities/bundles.svelte';
 export * from './types';
 
-export { default as Overlay } from './overlay.svelte';
+export { default as PortalHost } from './portal-host.svelte';

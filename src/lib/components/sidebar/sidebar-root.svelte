@@ -19,14 +19,17 @@
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
-	const normalizedZIndex = $derived(
-		typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : undefined
-	);
-
-	// ZLayer only on the teleported path (ADR 0009 D3): in-flow has no stacking context to order,
+	// ZLayer only on the teleported path: in-flow has no stacking context to order,
 	// so it carries no layer. `overlay` is structural — read once at mount.
 	// svelte-ignore state_referenced_locally
-	const layer = asOverlay ? new ZLayer('modal', () => normalizedZIndex ?? 0).share() : undefined;
+	const baseLayer = asOverlay ? new ZLayer('modal', () => 0) : undefined;
+	const layerOffset = $derived(
+		typeof zindex === 'function'
+			? zindex(baseLayer?.value ?? 0) - (baseLayer?.value ?? 0)
+			: typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : 0
+	);
+	// svelte-ignore state_referenced_locally
+	const layer = asOverlay ? new ZLayer('modal', () => layerOffset).share() : undefined;
 
 	const binding = bindBond<SidebarBond>((props) => factory(props), {
 		open: [
@@ -46,7 +49,7 @@
 	}
 </script>
 
-<!-- `layer` is truthy iff `overlay` was set at mount (ADR 0009 D3). -->
+<!-- `layer` is truthy iff `overlay` was set at mount. -->
 {#if layer}
 	<!-- Full-screen pointer-passthrough sink in the root Portal carrying the modal ZLayer;
 	     Sidebar.Content positions itself within it. -->

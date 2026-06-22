@@ -1,7 +1,7 @@
 import type { OverlayView } from '../types';
 
-// Focus-ordered registry of currently-open overlays (ADR 0009 D1). Under Portal containment
-// (ADR 0008) overlays DOM-nest, so one Escape keydown bubbles through both surfaces' handlers;
+// Focus-ordered registry of currently-open overlays. Under Portal containment
+// overlays DOM-nest, so one Escape keydown bubbles through both surfaces' handlers;
 // this stack coordinates so only the topmost overlay acts. Read synchronously in the keydown
 // handler, so a plain array (not a reactive store) is correct.
 const stack: OverlayView[] = [];
@@ -27,7 +27,7 @@ function remove(bond: OverlayView): void {
 	if (i !== -1) stack.splice(i, 1);
 }
 
-// State-reactive enrollment for an overlay (ADR 0009 D2): enroll on closed→open, unenroll on
+// State-reactive enrollment for an overlay: enroll on closed→open, unenroll on
 // open→close or unmount. Call once from the root component; not calling it opts out of coordination.
 export function useEscapeStack(bond: OverlayView | undefined): void {
 	if (!bond) return;

@@ -51,5 +51,5 @@ export type ModalOverlayElements = BondElements & {
 	description?: HTMLElement;
 };
 
-// Dialog/Drawer author via defineBond + modalCapabilities() (docs/extensibility-vision.md §13);
+// Dialog/Drawer author via defineBond + modalCapabilities();
 // only the shared modal atoms (root + content) and element shape remain here.

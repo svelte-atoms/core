@@ -14,7 +14,7 @@ import {
 	type RovingFocus
 } from '$svelte-atoms/core/shared/capability/models/roving.svelte';
 import { navigationCapability } from '$svelte-atoms/core/shared/capability/models/navigation.svelte';
-import { clickTrigger } from '$svelte-atoms/core/components/overlay';
+import { clickTrigger } from '$svelte-atoms/core/components/portal/host';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
 
 export type DropdownMenuBondProps = PopoverStateProps;
@@ -43,7 +43,7 @@ export class DropdownMenuBondState<
 		super(props);
 		// Project aria-activedescendant + aria-orientation onto the content (role:'container').
 		// `itemDomId` is overridable — subclasses (select) map the roving id to their own
-		// item DOM id scheme. See docs/extensibility-vision.md §11.3.
+		// item DOM id scheme.
 		this.capability(
 			rovingCapability(this.#roving, {
 				itemDomId: (id) => this.itemDomId(id),
@@ -173,7 +173,7 @@ export class DropdownMenuItemAtom<
 	}
 }
 
-// DropdownMenuBond — flat composition over PopoverBond (ADR 0004 D1).
+// DropdownMenuBond — flat composition over PopoverBond.
 // Adds roving-focus, overrides content/trigger roles, adds `item` slot.
 export const DropdownMenuBond = defineBond<
 	{

@@ -10,7 +10,7 @@ import {
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
-} from '$svelte-atoms/core/components/overlay';
+} from '$svelte-atoms/core/components/portal/host';
 
 export type DrawerBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	OverlayStateProps & {
@@ -27,7 +27,7 @@ export type DrawerBondElements = ModalOverlayElements & {
 	backdrop?: HTMLElement;
 };
 
-// Narrow view type breaks the atom↔bond cycle through defineBond (§13).
+// Narrow view type breaks the atom↔bond cycle through defineBond.
 type DrawerBondView = OverlayView & { state: DrawerBondState };
 
 // Overlays aria-hidden and data-active on the modal ARIA contract.

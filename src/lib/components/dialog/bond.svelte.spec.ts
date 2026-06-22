@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DialogBond, DialogBondState, type DialogBondProps } from './bond.svelte';
-import { ignoreEscape, FOCUS } from '$svelte-atoms/core/components/overlay';
+import { ignoreEscape, FOCUS } from '$svelte-atoms/core/components/portal/host';
 
 // Bond-seam specs: assert atom.spread, state methods, atom identity, strategy substitution. No DOM rendering.
 

@@ -19,7 +19,7 @@ function focusFirstOnOpen(bond: OverlayView, node: HTMLElement): void {
 	queueMicrotask(() => focus(node));
 }
 
-// trapTab is the only axis; both variants focus the first child on open (ADR 0003).
+// trapTab is the only axis; both variants focus the first child on open.
 function focusPolicy(opts: FocusPolicySurface, trapTab: boolean): Capability<FocusPolicySurface> {
 	return defineCapability<FocusPolicySurface>({
 		slot: FOCUS,

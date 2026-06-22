@@ -19,7 +19,7 @@
 
 <HtmlAtom
 	{bond}
-	class={['border-border', 'flex w-full px-4 text-xl', '$preset', klass]}
+	class={['flex w-full px-4 text-xl', '$preset', klass]}
 	{...headerProps}
 >
 	{@render children?.({ dialog: bond })}

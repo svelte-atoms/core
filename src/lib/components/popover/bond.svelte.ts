@@ -16,7 +16,7 @@ import {
 	type OverlayView,
 	type PositionedOverlayElements,
 	type OverlayStateProps
-} from '$svelte-atoms/core/components/overlay';
+} from '$svelte-atoms/core/components/portal/host';
 import type { PortalBond } from '../portal';
 import type { PopoverStrategy } from './strategy-types';
 
@@ -46,6 +46,9 @@ export type PopoverStateProps = OverlayStateProps & {
 	placements: Placement[];
 	placement: Placement | undefined;
 	offset: number;
+	// CSS positioning strategy for the floating content. Set explicitly by the consumer;
+	// always authoritative (a host overlay no longer forces it). Defaults to 'absolute'.
+	position: 'fixed' | 'absolute';
 	portal?: string | PortalBond;
 	strategy?: PopoverStrategy;
 };
@@ -89,7 +92,7 @@ export class PopoverBond<
 		indicator: (b) => new PopoverIndicatorAtom(b)
 	};
 
-	// Fusion seam (§13): exposes atoms + capabilities to fuse() via popoverSpec.
+	// Fusion seam: exposes atoms + capabilities to fuse() via popoverSpec.
 	// Getter form avoids the temporal dead zone — popoverSpec is declared below.
 	static get spec() {
 		return popoverSpec;
@@ -97,7 +100,7 @@ export class PopoverBond<
 
 	constructor(state: State) {
 		super(state, 'popover');
-		// Overlay behaviour via capabilities (§13). Subclasses customize by re-registering a
+		// Overlay behaviour via capabilities. Subclasses customize by re-registering a
 		// slot last-wins (dropdown-menu/select → trigger ariaHasPopup, combobox → escape).
 		for (const cap of popoverCapabilities()) this.capability(cap);
 	}

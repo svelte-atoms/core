@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { PortalBond } from '$svelte-atoms/core/components/portal';
+import type { PortalBond, ZIndexInput } from '$svelte-atoms/core/components/portal';
 import type { DialogBond, DialogBondProps } from './bond.svelte';
 
 export interface DialogSnippetProps extends SnippetProps {
@@ -15,6 +15,7 @@ export interface DialogProps<
 > extends HtmlAtomProps<E, B, DialogChildren> {
 	open?: boolean;
 	disabled?: boolean;
+	'z-index'?: ZIndexInput;
 	// 'modal' closes on backdrop click (default); 'non-modal' keeps it open.
 	type?: 'modal' | 'non-modal' | undefined;
 	portal?: string | PortalBond;

@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { mergeAtomProps, HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
-	import { Overlay } from '$svelte-atoms/core/components/overlay';
+	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
 	import type { SlideoverContentProps } from './types';
 	import { DrawerBond } from './bond.svelte';
 	import { animateDrawerContent, type DrawerSide } from './motion';
@@ -38,7 +38,7 @@
 	{fallback}
 	{...contentProps}
 >
-	<Overlay>
+	<PortalHost>
 		{@render children?.({ drawer: bond })}
-	</Overlay>
+	</PortalHost>
 </Atom>

@@ -34,7 +34,7 @@
 <HtmlAtom
 	{as}
 	{bond}
-	class={['border-border cursor-pointer', '$preset', klass]}
+	class={['cursor-pointer', '$preset', klass]}
 	onclick={onclick_}
 	{...closeProps}
 >

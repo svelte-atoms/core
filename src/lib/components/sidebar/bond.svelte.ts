@@ -1,6 +1,6 @@
 import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
 import { defineBond, type BondOf, type ViewOf } from '$svelte-atoms/core/shared';
-import { OverlayBond } from '$svelte-atoms/core/components/overlay';
+import { OverlayBond } from '$svelte-atoms/core/components/portal/host';
 import {
 	createDisclosure,
 	type Disclosure

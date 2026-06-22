@@ -8,7 +8,7 @@
 
 	const strategy = $derived(bond?.state.position?.strategy ?? 'absolute');
 
-	// CSS position matching the strategy's coordinate basis (ADR 0008 D1).
+	// CSS position matching the strategy's coordinate basis.
 	const positionStyle = $derived(strategy === 'fixed' ? 'position: fixed;' : 'position: absolute;');
 
 	let {
@@ -21,9 +21,12 @@
 	}: PopoverOverlayProps = $props();
 
 	// Stacking layer; captures parent elevation from context. `order` pins it relative
-	// to a ZLayer anchor (ADR 0008 D3). Both fixed for the overlay's lifetime.
+	// to a ZLayer anchor. Both fixed for the overlay's lifetime.
 	// svelte-ignore state_referenced_locally
-	const layer = new ZLayer(layerName, () => 0, undefined, order).share();
+	const parentLayer = ZLayer.tryGet();
+	const layer = new ZLayer(layerName, () => 0 ).share();
+
+	const z = $derived((parentLayer?.value ?? 0) + layer.value);
 
 	const overlayProps = $derived({
 		...bond?.atom('overlay').spread,
@@ -102,7 +105,7 @@
 	{portal}
 	as="div"
 	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
-	style="z-index: {zIndex ?? layer.value}; {positionStyle}"
+	style="z-index: {typeof zIndex === 'function' ? zIndex(z) : (zIndex ?? z)}; {positionStyle}"
 	{initial}
 	{animate}
 	{...overlayProps}
