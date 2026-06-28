@@ -2,6 +2,10 @@
 	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
+	import {
+		closeOverlay,
+		openOverlay
+	} from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
 
 	const popoverBond = PopoverBond.get();
 
@@ -18,12 +22,12 @@
 	function tooltip(node: HTMLElement) {
 		const onpointerenter = async () => {
 			requestAnimationFrame(() => {
-				popoverBond?.state.open();
+				if (popoverBond) openOverlay(popoverBond);
 			});
 			node.addEventListener('pointerleave', onpointerleave);
 		};
 		const onpointerleave = () => {
-			popoverBond?.state.close();
+			if (popoverBond) closeOverlay(popoverBond);
 			node.removeEventListener('pointerleave', onpointerleave);
 		};
 

@@ -1,6 +1,16 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
+import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+import { Atom } from '$svelte-atoms/core/shared/bond';
+import {
+	defineAtomCapability,
+	sharedCapabilityKey,
+	type AtomHost
+} from '$svelte-atoms/core/shared/capability';
 import { nanoid } from 'nanoid';
 import type { DropdownMenuBond } from '../bond.svelte';
+
+// -----------------------------------------------------------------------------
+// Public types
+// -----------------------------------------------------------------------------
 
 export type DropdownMenuItemAtomProps = {
 	id: string;
@@ -8,7 +18,17 @@ export type DropdownMenuItemAtomProps = {
 	disabled?: boolean | undefined;
 };
 
-export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond> extends BondAtom<
+// -----------------------------------------------------------------------------
+// Capability slots and shared helpers
+// -----------------------------------------------------------------------------
+
+const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@svelte-atoms/dropdown-menu:item-node');
+
+// -----------------------------------------------------------------------------
+// Atom definitions
+// -----------------------------------------------------------------------------
+
+export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond> extends Atom<
 	B,
 	HTMLElement
 > {
@@ -26,6 +46,7 @@ export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond>
 		// Fold in the roving capability's `item` projection (`data-highlighted`); attrs-only,
 		// the .svelte keeps its own click.
 		this.role('item', this.#id);
+		this.capability(dropdownMenuItemPresentation(() => this.#props.disabled));
 	}
 
 	get id() {
@@ -40,8 +61,12 @@ export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond>
 		return this.#props;
 	}
 
+	override get preset() {
+		return `${this.#menuBond.preset}.item`;
+	}
+
 	get isHighlighted() {
-		return this.#menuBond.state.roving.activeId === this.id;
+		return this.#menuBond.roving.activeId === this.id;
 	}
 
 	override get attrs() {
@@ -50,22 +75,41 @@ export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond>
 		// (folded via `.role('item', id)` in the constructor) — not hand-rolled here.
 		return {
 			...super.attrs,
-			id: itemId,
-			role: 'menuitem',
-			'aria-disabled': this.#props.disabled ? true : undefined,
-			tabIndex: this.#props.disabled ? -1 : 0
-		};
-	}
-
-	override get handlers() {
-		return {
-			onclick: () => {
-				this.#menuBond?.state.close();
-			}
+			id: itemId
 		};
 	}
 
 	close() {
-		this.#menuBond?.state.close();
+		closeOverlay(this.#menuBond);
 	}
+}
+
+// -----------------------------------------------------------------------------
+// Atom capabilities
+// -----------------------------------------------------------------------------
+
+function dropdownMenuItemPresentation<B extends DropdownMenuBond>(
+	disabled: () => boolean | undefined
+) {
+	return defineAtomCapability<void, AtomHost, B>({
+		slot: DROPDOWN_MENU_ITEM,
+		meta: {
+			layer: 1,
+			kind: 'policy',
+			projects: ['item'],
+			docs: 'Dropdown menu rendered item role, disabled projection, and close policy.'
+		},
+		behavior: {
+			attrs: () => ({
+				role: 'menuitem',
+				'aria-disabled': disabled() ? true : undefined,
+				tabIndex: disabled() ? -1 : 0
+			}),
+			handlers: (_node, bond) => ({
+				onclick: () => {
+					if (bond) closeOverlay(bond);
+				}
+			})
+		}
+	});
 }

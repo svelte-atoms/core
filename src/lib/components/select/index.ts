@@ -3,7 +3,7 @@ export * as Select from './atoms';
 export {
 	SelectBond,
 	type SelectBondElements,
-	SelectBondState,
+	SelectBondBase,
 	type SelectStateProps
 } from './bond.svelte';
 

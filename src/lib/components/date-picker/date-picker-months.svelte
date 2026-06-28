@@ -66,16 +66,16 @@
 		const current = datePicker.state.props.pivote;
 		datePicker.state.props.pivote = setMonth(current, monthIndex);
 
-		datePicker.state.closeMonthsPicker();
+		datePicker.closeMonthsPicker();
 	}
 
 	function handleYearPicker() {
 		if (!datePicker) return;
-		datePicker.state.openYearsPicker();
+		datePicker.openYearsPicker();
 	}
 </script>
 
-{#if datePicker.state.isMonthsPickerOpen}
+{#if datePicker.isMonthsPickerOpen}
 	<HtmlAtom
 		class={['absolute inset-0 z-1 flex flex-col gap-2 bg-inherit opacity-0', '$preset', klass]}
 		enter={(node) => {

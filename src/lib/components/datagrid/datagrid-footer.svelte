@@ -3,7 +3,8 @@
 	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
 	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { DataGridBond } from './bond.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { DataGridBond, DataGridFooterAtom } from './bond.svelte';
 	import type { DatagridFooterProps } from './types';
 
 	const bond = DataGridBond.getOrThrow(
@@ -17,7 +18,10 @@
 		...restProps
 	}: DatagridFooterProps<T, E, B> = $props();
 
-	const atom = bond.atom('footer');
+	const atom = createAtomInstance<DataGridFooterAtom, DataGridBond<T>>('footer', {
+		bond,
+		factory: (owner) => new DataGridFooterAtom(owner as DataGridBond<T>)
+	});
 	const footerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 

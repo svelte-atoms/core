@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$svelte-atoms/core/utils';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 	import { CalendarBond } from './bond.svelte';
 
@@ -14,10 +15,17 @@
 		children = undefined,
 		...restProps
 	} = $props();
+	const atom = calendarBond
+		? createAtomInstance(() => `weekday-${index}`, {
+				bond: calendarBond,
+				factory: (owner) => owner!.weekDay(index),
+				register: { key: `weekday-${index}` }
+			})
+		: undefined;
 
 	const weekDayProps = $derived(
 		mergePresetProps(preset, 'calendar.weekday', {
-			...calendarBond?.weekDay(index).spread,
+			...atom?.spread,
 			...restProps
 		})
 	);

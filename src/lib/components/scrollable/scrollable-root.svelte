@@ -1,8 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { ScrollableBond, ScrollableState } from './bond.svelte';
+	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
+	import { ScrollableBond } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
 
 	let {
@@ -16,22 +17,64 @@
 		preset = undefined,
 		disabled = false,
 		open = true,
-		factory = bondFactory(ScrollableState, ScrollableBond),
+		factory = (props) => ScrollableBond.create(props),
 		children,
 		...restProps
 	}: ScrollableRootProps<E, B> = $props();
 
+	let scrollXState = $derived(scrollX);
+	let scrollYState = $derived(scrollY);
+	let scrollWidthState = $derived(scrollWidth);
+	let scrollHeightState = $derived(scrollHeight);
+	let clientWidthState = $derived(clientWidth);
+	let clientHeightState = $derived(clientHeight);
 	let isScrolling = $state(false);
 
 	const binding = bindBond<ScrollableBond>(
 		(props) => factory(props),
 		{
-			scrollX: [() => scrollX, (v) => (scrollX = v)],
-			scrollY: [() => scrollY, (v) => (scrollY = v)],
-			scrollWidth: [() => scrollWidth, (v) => (scrollWidth = v)],
-			scrollHeight: [() => scrollHeight, (v) => (scrollHeight = v)],
-			clientWidth: [() => clientWidth, (v) => (clientWidth = v)],
-			clientHeight: [() => clientHeight, (v) => (clientHeight = v)],
+			scrollX: [
+				() => scrollXState,
+				(v) => {
+					scrollXState = v;
+					scrollX = scrollXState;
+				}
+			],
+			scrollY: [
+				() => scrollYState,
+				(v) => {
+					scrollYState = v;
+					scrollY = scrollYState;
+				}
+			],
+			scrollWidth: [
+				() => scrollWidthState,
+				(v) => {
+					scrollWidthState = v;
+					scrollWidth = scrollWidthState;
+				}
+			],
+			scrollHeight: [
+				() => scrollHeightState,
+				(v) => {
+					scrollHeightState = v;
+					scrollHeight = scrollHeightState;
+				}
+			],
+			clientWidth: [
+				() => clientWidthState,
+				(v) => {
+					clientWidthState = v;
+					clientWidth = clientWidthState;
+				}
+			],
+			clientHeight: [
+				() => clientHeightState,
+				(v) => {
+					clientHeightState = v;
+					clientHeight = clientHeightState;
+				}
+			],
 			disabled: () => disabled,
 			open: [() => open, (v) => (open = v)],
 			isScrolling: [() => isScrolling, (v) => (isScrolling = v ?? false)]
@@ -39,6 +82,13 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	const rootAtom = createAtomInstance('root', {
+		bond,
+		factory: (owner) => owner!.root()
+	});
+	const rootProps = $derived(
+		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
+	);
 
 	export function getBond() {
 		return bond;
@@ -48,8 +98,7 @@
 <HtmlAtom
 	as="div"
 	class={['scrollable-root relative box-content overflow-hidden', '$preset', klass]}
-	{...binding.props}
-	{...restProps}
+	{...rootProps}
 >
 	{@render children?.({ scrollable: bond })}
 </HtmlAtom>

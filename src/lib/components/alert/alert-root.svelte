@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bondFactory, bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond } from '$svelte-atoms/core/shared';
 	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { AlertBond, AlertBondState } from './bond.svelte';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertRootProps } from './types';
 	import './alert.css';
 
@@ -10,7 +10,7 @@
 		preset = undefined,
 		disabled = false,
 		extend = {},
-		factory = bondFactory(AlertBondState, AlertBond),
+		factory = (props) => new AlertBond(props),
 		children,
 		...restProps
 	}: AlertRootProps<E, B> = $props();

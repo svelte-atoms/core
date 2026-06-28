@@ -21,16 +21,16 @@
 
 	const checkboxProps = $derived(mergePresetProps(preset, 'datagrid.checkbox', restProps));
 
-	const isHeader = $derived(datagridRowBond?.state.isHeader ?? false);
-	const rowId = $derived(datagridRowBond?.state.id);
+	const isHeader = $derived(datagridRowBond?.isHeader ?? false);
+	const rowId = $derived(datagridRowBond?.id);
 
-	const selectedCount = $derived(datagridBond?.state.selectedRows.length ?? 0);
-	const rowCount = $derived(datagridBond?.state.rows.size ?? 0);
+	const selectedCount = $derived(datagridBond?.selectedRows.length ?? 0);
+	const rowCount = $derived(datagridBond?.rows.size ?? 0);
 
 	const isAllSelected = $derived(rowCount > 0 && selectedCount === rowCount);
 	const isHeaderIndeterminate = $derived(selectedCount > 0 && selectedCount < rowCount);
 
-	const isRowSelected = $derived(datagridRowBond?.state.isSelected ?? false);
+	const isRowSelected = $derived(datagridRowBond?.isSelected ?? false);
 
 	const classNames = $derived(['datagrid-cell-checkbox', '$preset', klass]);
 
@@ -45,23 +45,23 @@
 		onChange?.(ev, { checked });
 	}
 
-	function handleHeaderChange(ev?: Event) {
+	function handleHeaderChange(ev: Event | undefined = undefined) {
 		const checked = !isAllSelected;
 		// Fresh event for the cancellation protocol: incoming `ev` is already `defaultPrevented` by the Checkbox's label-forwarding guard, so it would reflect the checkbox's internals, not the consumer's intent.
 		const currentEvent = new Event(ev?.type ?? 'input');
 		handleCallbacks(currentEvent, checked);
 		if (currentEvent.defaultPrevented) return;
 
-		const allIds = [...(datagridBond?.state.rows.keys ?? [])];
+		const allIds = [...(datagridBond?.rows.keys ?? [])];
 
 		if (checked === true) {
-			datagridBond?.state.select(allIds);
+			datagridBond?.select(allIds);
 		} else {
-			datagridBond?.state.unselect(allIds);
+			datagridBond?.unselect(allIds);
 		}
 	}
 
-	function handleRowChange(ev?: Event) {
+	function handleRowChange(ev: Event | undefined = undefined) {
 		const checked = !isRowSelected;
 		// Fresh event — incoming `ev` is already `defaultPrevented`; see `handleHeaderChange`.
 		const currentEvent = new Event(ev?.type ?? 'input');
@@ -69,9 +69,9 @@
 		if (currentEvent.defaultPrevented || !rowId) return;
 
 		if (checked) {
-			datagridRowBond?.state.select();
+			datagridRowBond?.select();
 		} else {
-			datagridRowBond?.state.unselect();
+			datagridRowBond?.unselect();
 		}
 	}
 </script>

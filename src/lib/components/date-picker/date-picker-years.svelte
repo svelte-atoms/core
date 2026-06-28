@@ -73,7 +73,7 @@
 		const current = datePicker.state.props.pivote;
 		datePicker.state.props.pivote = setYear(current, year);
 
-		datePicker.state.closeYearsPicker();
+		datePicker.closeYearsPicker();
 	}
 
 	function handleWheel(event: WheelEvent) {
@@ -91,7 +91,7 @@
 	}
 </script>
 
-{#if datePicker.state.isYearsPickerOpen}
+{#if datePicker.isYearsPickerOpen}
 	<HtmlAtom
 		class={['absolute inset-0 z-2 flex flex-col gap-2 bg-inherit opacity-0', '$preset', klass]}
 		enter={(node) => {

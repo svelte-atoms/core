@@ -3,8 +3,9 @@
 	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
 	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { setDatagridHeaderContext } from './context';
-	import { DataGridBond } from './bond.svelte';
+	import { DataGridBond, DataGridHeaderAtom } from './bond.svelte';
 	import type { DatagridHeaderProps } from './types';
 
 	const bond = DataGridBond.getOrThrow(
@@ -20,7 +21,10 @@
 
 	setDatagridHeaderContext({ isHeader: true });
 
-	const atom = bond.atom('header');
+	const atom = createAtomInstance<DataGridHeaderAtom, DataGridBond<T>>('header', {
+		bond,
+		factory: (owner) => new DataGridHeaderAtom(owner as DataGridBond<T>)
+	});
 	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 

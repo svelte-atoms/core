@@ -1,6 +1,5 @@
 <script module lang="ts">
 	import type { Snippet } from 'svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import {
 		mergePresetProps,
@@ -10,7 +9,7 @@
 	} from '$svelte-atoms/core/components/atom';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
 	import type { Override, Factory } from '$svelte-atoms/core/types';
-	import { FormBond, FormBondState } from './bond.svelte';
+	import { FormBond, type FormProps } from './bond.svelte';
 	import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
 
 	// Available on both the renderless and renderfull branches (preset is otherwise only on the
@@ -43,7 +42,7 @@
 		class: klass = '',
 		renderless = false,
 		validator = undefined,
-		factory = bondFactory(FormBondState, FormBond),
+		factory = defaultFactory,
 		children = undefined,
 		preset = undefined,
 		...restProps
@@ -62,6 +61,10 @@
 	}
 
 	const content = $derived(renderless ? children : renderfull);
+
+	function defaultFactory(props: FormProps) {
+		return new FormBond(props);
+	}
 </script>
 
 {#snippet renderfull({ form }: { form: FormBond })}

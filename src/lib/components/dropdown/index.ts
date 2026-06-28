@@ -8,8 +8,6 @@ export {
 export {
 	/** @deprecated Use `SelectBond` instead. */
 	SelectBond as DropdownBond,
-	/** @deprecated Use `SelectBondState` instead. */
-	SelectBondState as DropdownBondState,
 	/** @deprecated Use `SelectBondElements` instead. */
 	type SelectBondElements as DropdownBondElements,
 	/** @deprecated Use `SelectStateProps` instead. */

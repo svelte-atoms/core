@@ -1,6 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { ScrollableBond } from './bond.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import type { ScrollableThumbProps } from './types';
 
 	let {
@@ -14,7 +15,10 @@
 
 	const bond = ScrollableBond.getOrThrow('ScrollableThumb must be used within a ScrollableRoot');
 
-	const atom = $derived(orientation === 'horizontal' ? bond.atom('thumbX') : bond.atom('thumbY'));
+	const atom = createAtomInstance(() => (orientation === 'horizontal' ? 'thumbX' : 'thumbY'), {
+		bond,
+		factory: (owner, key) => (key === 'thumbX' ? owner!.thumbX() : owner!.thumbY())
+	});
 
 	const thumbProps = $derived(
 		mergePresetProps(preset, 'scrollable.thumb', { ...atom.spread, ...restProps })

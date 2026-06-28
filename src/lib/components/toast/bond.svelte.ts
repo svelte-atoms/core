@@ -1,18 +1,17 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond/bond.svelte';
-import {
-	defineBond,
-	type ViewOf,
-	type BondOf
-} from '$svelte-atoms/core/shared/authoring/define.svelte';
+import { Bond, Atom } from '$svelte-atoms/core/shared/bond';
+import { defineBond, type BondOf } from '$svelte-atoms/core/shared/authoring/define.svelte';
 import {
 	createDisclosure,
+	disclosureCapability,
+	disclosureClose,
 	type Disclosure
 } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import {
-	DisclosureState,
-	type DisclosureStateProps
-} from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
+import type { DisclosureStateProps } from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
 import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+
+// -----------------------------------------------------------------------------
+// Public types
+// -----------------------------------------------------------------------------
 
 export type ToastBondProps = DisclosureStateProps;
 
@@ -24,9 +23,18 @@ export type ToastBondElements = {
 };
 
 // Minimal bond view for atoms — avoids atom↔bond circularity through defineBond.
-type ToastBondView = ViewOf<ToastBondState>;
 
-export class ToastRootAtom extends BondAtom<ToastBondView> {
+// -----------------------------------------------------------------------------
+// Internal types
+// -----------------------------------------------------------------------------
+
+type ToastBondView = ToastBondBase;
+
+// -----------------------------------------------------------------------------
+// Atom definitions
+// -----------------------------------------------------------------------------
+
+export class ToastRootAtom extends Atom<ToastBondView> {
 	constructor(bond: ToastBondView) {
 		super(bond, 'root');
 	}
@@ -49,21 +57,21 @@ export class ToastRootAtom extends BondAtom<ToastBondView> {
 	}
 }
 
-export class ToastTitleAtom extends BondAtom<ToastBondView> {
+export class ToastTitleAtom extends Atom<ToastBondView> {
 	constructor(bond: ToastBondView) {
 		super(bond, 'title');
 	}
 	// id is the default atom id (`toast-title-${bond.id}`), registered via .role('label').
 }
 
-export class ToastDescriptionAtom extends BondAtom<ToastBondView> {
+export class ToastDescriptionAtom extends Atom<ToastBondView> {
 	constructor(bond: ToastBondView) {
 		super(bond, 'description');
 	}
 	// id is the default atom id (`toast-description-${bond.id}`), registered via .role('description').
 }
 
-export class ToastCloseAtom extends BondAtom<ToastBondView> {
+export class ToastCloseAtom extends Atom<ToastBondView> {
 	constructor(bond: ToastBondView) {
 		super(bond, 'close');
 	}
@@ -79,55 +87,29 @@ export class ToastCloseAtom extends BondAtom<ToastBondView> {
 			'aria-label': 'Dismiss notification'
 		};
 	}
-
-	override get handlers() {
-		return {
-			onclick: (ev: MouseEvent) => {
-				ev.stopPropagation();
-				this.bond.state.close();
-			},
-			onkeydown: (ev: KeyboardEvent) => {
-				if (ev.key === 'Enter' || ev.key === ' ') {
-					ev.preventDefault();
-					this.bond.state.close();
-				}
-			}
-		};
-	}
 }
 
-// Toast bond via defineBond: roles, key alias dismiss↔close, labelledControl capability — all generated.
-export const ToastBond = defineBond<
-	{
-		root: { atom: typeof ToastRootAtom; role: 'control' };
-		title: { atom: typeof ToastTitleAtom; role: 'label' };
-		description: { atom: typeof ToastDescriptionAtom; role: 'description' };
-		dismiss: { atom: typeof ToastCloseAtom; key: 'close' };
-	},
-	ToastBondState
->({
-	name: 'toast',
-	atoms: {
-		root: { atom: ToastRootAtom, role: 'control' },
-		title: { atom: ToastTitleAtom, role: 'label' },
-		description: { atom: ToastDescriptionAtom, role: 'description' },
-		dismiss: { atom: ToastCloseAtom, key: 'close' }
-	},
-	// a11y link: root→aria-labelledby (title) + aria-describedby (description) via role registry.
-	capabilities: () => [labelledControl()]
-});
+// -----------------------------------------------------------------------------
+// Bond implementation
+// -----------------------------------------------------------------------------
 
-// ToastBond works as both value (new ToastBond(state)) and type (ToastBond | undefined).
-export type ToastBond = BondOf<typeof ToastBond>;
-
-export class ToastBondState<
-	Props extends ToastBondProps = ToastBondProps
-> extends DisclosureState<Props> {
-	// Storage stays in props.open. isOpen/close inherited; open/toggle override to add the disabled guard.
+class ToastBondBase extends Bond<ToastBondProps> {
+	// Storage stays in props.open.
 	readonly disclosure: Disclosure = createDisclosure({
 		get: () => this.props.open,
 		set: (v) => (this.props.open = v)
 	});
+
+	constructor(props: ToastBondProps, name = 'toast') {
+		super(props, name);
+		this.capability(disclosureCapability(this.disclosure));
+		this.capability(disclosureClose({ disabled: false, stopPropagation: true }));
+		this.capability(labelledControl());
+	}
+
+	get isOpen(): boolean {
+		return this.disclosure.isOpen;
+	}
 
 	get isDisabled() {
 		return this.props.disabled;
@@ -139,8 +121,54 @@ export class ToastBondState<
 		this.disclosure.open();
 	}
 
+	close() {
+		this.disclosure.close();
+	}
+
 	toggle() {
 		if (this.props.disabled) return;
 		this.disclosure.toggle();
 	}
 }
+
+// Toast bond via defineBond: roles and key alias dismiss↔close are generated.
+
+// -----------------------------------------------------------------------------
+// Bond spec and constructor facade
+// -----------------------------------------------------------------------------
+
+const ToastBondImpl = defineBond<
+	{
+		root: { atom: typeof ToastRootAtom; role: 'control' };
+		title: { atom: typeof ToastTitleAtom; role: 'label' };
+		description: { atom: typeof ToastDescriptionAtom; role: 'description' };
+		dismiss: { atom: typeof ToastCloseAtom; key: 'close'; role: 'close' };
+	},
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	any,
+	typeof ToastBondBase
+>({
+	name: 'toast',
+	base: ToastBondBase,
+	atoms: {
+		root: { atom: ToastRootAtom, role: 'control' },
+		title: { atom: ToastTitleAtom, role: 'label' },
+		description: { atom: ToastDescriptionAtom, role: 'description' },
+		dismiss: { atom: ToastCloseAtom, key: 'close', role: 'close' }
+	}
+});
+
+// ToastBond works as both value (new ToastBond(state)) and type (ToastBond | undefined).
+export type ToastBond = BondOf<typeof ToastBondImpl>;
+
+interface ToastBondConstructor {
+	new (props: ToastBondProps): ToastBond;
+	readonly CONTEXT_KEY: string;
+	readonly spec: (typeof ToastBondImpl)['spec'];
+	get(): ToastBond | undefined;
+	getOrThrow(message?: string): ToastBond;
+	set(bond: ToastBond): ToastBond;
+	create(props: ToastBondProps): ToastBond;
+}
+
+export const ToastBond = ToastBondImpl as unknown as ToastBondConstructor;

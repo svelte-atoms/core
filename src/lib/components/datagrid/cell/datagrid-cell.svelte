@@ -27,14 +27,14 @@
 		const index = Array.from(element.parentElement?.children ?? []).indexOf(element);
 		if (index === -1) return undefined;
 
-		for (const col of bond.state.columns.values) {
+		for (const col of bond.columns.values) {
 			if (col.index === index) return col;
 		}
 
 		return undefined;
 	});
 
-	const isHidden = $derived(column?.state.props.hidden ?? false);
+	const isHidden = $derived(column?.props.hidden ?? false);
 
 	function handleClick(ev: Event) {
 		onclick?.(ev, { ...(bond && { cell: bond }) });

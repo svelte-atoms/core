@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
 	import { Trigger } from '$svelte-atoms/core/components/select/atoms';
+	import { openOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
 
 	const bond = ComboboxBond.getOrThrow('ComboboxTrigger must be used within a Combobox');
 
@@ -12,9 +13,7 @@
 		...restProps
 	} = $props();
 
-	const atom = bond.atom('trigger');
-
-	const presentation = $derived({ preset: preset ?? atom.preset });
+	const presentation = $derived({ preset: preset ?? 'combobox.trigger' });
 </script>
 
 <Trigger
@@ -24,7 +23,7 @@
 	onclick={(ev: Event) => {
 		ev.preventDefault();
 
-		bond?.state?.open();
+		openOverlay(bond);
 	}}
 	{...presentation}
 	{...restProps}

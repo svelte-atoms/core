@@ -51,7 +51,7 @@
 			<CalendarDay
 				{day}
 				onclick={() => {
-					calendarBond?.state.selectStart(new Date(day.date));
+					calendarBond?.selectStart(new Date(day.date));
 				}}
 			/>
 		{/if}

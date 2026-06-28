@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ComboboxRootProps } from './types';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
-	import { ComboboxBond, ComboboxBondState, type ComboboxBondProps } from './bond.svelte';
+	import { ComboboxBond, type ComboboxBondProps } from './bond.svelte';
 
 	let {
 		open = $bindable(false),
@@ -20,23 +20,45 @@
 		...restProps
 	}: ComboboxRootProps = $props();
 
+	let openState = $derived(open);
+	let valueState = $derived(value);
+	let valuesState = $derived(values);
+	let labelState = $derived(label);
+	let labelsState = $derived(labels);
+	let queryState = $derived(query);
+
 	const binding = bindBond<ComboboxBond>((props) => factory(props), {
 		open: [
-			() => open,
+			() => openState,
 			(v) => {
-				open = v;
+				openState = v;
+				open = openState;
 			}
 		],
 		// The bond's props are string-keyed; the bindables are loosely typed — bridge with casts.
 		values: [
-			() => (multiple ? values : [value]) as ComboboxBondProps['values'],
+			() => (multiple ? valuesState : [valueState]) as ComboboxBondProps['values'],
 			(v) => {
-				values = v;
-				value = v?.[0];
+				valuesState = v;
+				valueState = valuesState?.[0];
+				values = valuesState;
+				value = valueState;
 			}
 		],
-		label: [() => label, (v) => (label = v)],
-		labels: [() => labels, (v) => (labels = v)],
+		label: [
+			() => labelState,
+			(v) => {
+				labelState = v;
+				label = labelState;
+			}
+		],
+		labels: [
+			() => labelsState,
+			(v) => {
+				labelsState = v;
+				labels = labelsState;
+			}
+		],
 		disabled: () => disabled,
 		multiple: () => multiple,
 		placement: () => placement as ComboboxBondProps['placement'],
@@ -45,9 +67,10 @@
 		// Bond-owned filter source (read by `createBondFilter`, cleared by `ClearThenClose`).
 		// Wired as an accessor so writes are reactive and `bind:query` works.
 		query: [
-			() => query,
+			() => queryState,
 			(v) => {
-				query = v ?? '';
+				queryState = v ?? '';
+				query = queryState;
 			}
 		],
 		// Vestigial: element-less context root, no typed channel to forward restProps.
@@ -58,9 +81,7 @@
 	useCapabilities(bond);
 
 	function defaultFactory(props: ComboboxBondProps) {
-		const bondState = new ComboboxBondState(props);
-
-		return new ComboboxBond(bondState).share();
+		return ComboboxBond.create(props).share();
 	}
 
 	export function getBond() {

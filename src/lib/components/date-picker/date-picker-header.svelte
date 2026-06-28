@@ -21,16 +21,16 @@
 	const year = $derived(pivote.getFullYear());
 
 	function handlePreviousMonth() {
-		calendarBond?.state?.previousMonth();
+		calendarBond?.previousMonth();
 	}
 
 	function handleNextMonth() {
-		calendarBond?.state?.nextMonth();
+		calendarBond?.nextMonth();
 	}
 
 	function handleMonthPicker() {
 		if (!datePickerBond) return;
-		datePickerBond.state.openMonthsPicker();
+		datePickerBond.openMonthsPicker();
 	}
 </script>
 

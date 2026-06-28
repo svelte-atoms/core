@@ -3,13 +3,14 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { TabHeaderProps } from '../types';
-	import { TabBond } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { TabBond, TabHeaderAtom } from './bond.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 
 	const bond = TabBond.getOrThrow('TabHeader must be used within a Tab component.');
 
-	const isActive = $derived(bond?.state.isActive);
-	const isDisabled = $derived(bond?.state.props.disabled);
+	const isActive = $derived(bond?.isActive);
+	const isDisabled = $derived(bond?.props.disabled);
 
 	let {
 		class: klass = '',
@@ -19,7 +20,10 @@
 		...restProps
 	}: TabHeaderProps<E, B> = $props();
 
-	const atom = bond.atom('header');
+	const atom = createAtomInstance<TabHeaderAtom, TabBond, HTMLElement>('header', {
+		bond,
+		factory: (owner) => new TabHeaderAtom(owner as TabBond)
+	});
 
 	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
 
@@ -32,11 +36,11 @@
 			return;
 		}
 
-		bond?.state.select();
+		bond?.select();
 	}
 </script>
 
-<Atom
+<HtmlAtom
 	{bond}
 	as="button"
 	class={[
@@ -52,4 +56,4 @@
 	{...headerProps}
 >
 	{@render children?.({ tab: bond })}
-</Atom>
+</HtmlAtom>

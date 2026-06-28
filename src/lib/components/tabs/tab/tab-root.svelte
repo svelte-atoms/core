@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
+	import { TabBond, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
 	import { type Snippet } from 'svelte';
 
@@ -33,9 +33,7 @@
 	$effect.pre(() => unmount);
 
 	function defaultFactory(props: TabBondProps<unknown>) {
-		const bondState = new TabBondState(props);
-
-		return new TabBond(bondState);
+		return TabBond.create(props);
 	}
 
 	export function getBond() {

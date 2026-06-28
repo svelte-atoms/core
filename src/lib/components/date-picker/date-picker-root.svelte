@@ -1,35 +1,83 @@
 <script lang="ts">
 	import { startOfDay } from 'date-fns';
 	import type { CalendarRange } from '../calendar/types';
-	import { DatePickerBond, DatePickerBondState } from './bond.svelte';
+	import { DatePickerBond, type DatePickerBondProps } from './bond.svelte';
 	import type { DatePickerRootProps } from './types';
-	import { bondFactory, bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	let {
 		open = $bindable(false),
-		value = $bindable(undefined),
+		value = $bindable<Date | undefined>(undefined),
 		range = $bindable([undefined, undefined]),
 		pivote = $bindable(new Date()),
-		start = $bindable(startOfDay(new Date())),
-		end = $bindable(undefined),
+		start = $bindable<Date | undefined>(startOfDay(new Date())),
+		end = $bindable<Date | undefined>(undefined),
 		min = undefined,
 		max = undefined,
 		type = 'single',
 		placement = 'bottom',
 		placements = ['bottom-start', 'bottom-end', 'top-start', 'top-end', 'bottom', 'top'],
 		offset = 2,
-		factory = bondFactory(DatePickerBondState, DatePickerBond),
+		factory = (props: DatePickerBondProps) => DatePickerBond.create(props),
 		children,
 		...restProps
 	}: DatePickerRootProps = $props();
 
+	let openState = $derived(open);
+	let rangeState = $derived<CalendarRange>(range);
+	let pivoteState = $derived(pivote);
+
 	const binding = bindBond<DatePickerBond>((props) => factory(props), {
-		open: [() => open, (v) => (open = v)],
-		range: [() => range, (v: CalendarRange) => (range = v)],
-		value: [() => range?.[0], (v) => (range[0] = v)],
-		pivote: [() => pivote, (v) => (pivote = v as Date)],
-		start: [() => range[0], (v) => (range[0] = v)],
-		end: [() => range[1], (v) => (range[1] = v)],
+		open: [
+			() => openState,
+			(v) => {
+				openState = v;
+				open = openState;
+			}
+		],
+		range: [
+			() => rangeState,
+			(v: CalendarRange) => {
+				rangeState = v;
+				range = rangeState;
+				value = rangeState[0];
+				start = rangeState[0];
+				end = rangeState[1];
+			}
+		],
+		value: [
+			() => rangeState?.[0],
+			(v) => {
+				rangeState = [v, rangeState[1]];
+				range = rangeState;
+				value = v;
+				start = v;
+			}
+		],
+		pivote: [
+			() => pivoteState,
+			(v) => {
+				pivoteState = v as Date;
+				pivote = pivoteState;
+			}
+		],
+		start: [
+			() => rangeState[0],
+			(v) => {
+				rangeState = [v, rangeState[1]];
+				range = rangeState;
+				start = v;
+				value = v;
+			}
+		],
+		end: [
+			() => rangeState[1],
+			(v) => {
+				rangeState = [rangeState[0], v];
+				range = rangeState;
+				end = v;
+			}
+		],
 		min: [() => min, (v) => (min = v)],
 		max: [() => max, (v) => (max = v)],
 		type: () => type ?? 'single',

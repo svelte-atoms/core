@@ -2,11 +2,11 @@
 	import { cn } from '$svelte-atoms/core/utils';
 	import { addMonths, format, isToday, startOfDay, subMonths } from 'date-fns';
 	import type { CalendarRange, CalendarRootProps, Day, Month } from './types';
-	import { CalendarBond, CalendarBondState } from './bond.svelte';
+	import { CalendarBond } from './bond.svelte';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	import './calendar.css';
-	import { bondFactory, bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond } from '$svelte-atoms/core/shared';
 
 	let {
 		class: klass = '',
@@ -14,21 +14,23 @@
 		value = $bindable(),
 		range = $bindable([undefined, undefined]),
 		pivote = $bindable(new Date()),
-		start = $bindable(startOfDay(new Date())),
+		start = $bindable<Date | undefined>(startOfDay(new Date())),
 		end = $bindable(),
 		min = undefined,
 		max = undefined,
 		type = 'single',
 		// swallowed: kept out of the props spread (not forwarded to the element)
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		extend = {},
+		extend: _extend = {},
 		onchange = undefined,
-		factory = bondFactory(CalendarBondState, CalendarBond),
+		factory = (props) => CalendarBond.create(props),
 		children = undefined,
 		...restProps
 	}: CalendarRootProps = $props();
 
-	const monthCurrentDays = $derived(generator(pivote));
+	let rangeState = $derived<CalendarRange>(range);
+	let pivoteState = $derived(pivote);
+
+	const monthCurrentDays = $derived(generator(pivoteState));
 
 	const monthCurrent: Month = $derived.by(() => {
 		const start = monthCurrentDays.at(0) as Day;
@@ -43,7 +45,7 @@
 		};
 	});
 
-	const monthPreviousDays = $derived(generator(subMonths(pivote, 1)));
+	const monthPreviousDays = $derived(generator(subMonths(pivoteState, 1)));
 	const monthPrevious: Month = $derived.by(() => {
 		const start = monthPreviousDays.at(0) as Day;
 		const end = monthPreviousDays.at(-1) as Day;
@@ -57,7 +59,7 @@
 		};
 	});
 
-	const monthNextDays = $derived(generator(addMonths(pivote, 1)));
+	const monthNextDays = $derived(generator(addMonths(pivoteState, 1)));
 
 	const monthNext: Month = $derived.by(() => {
 		const start = monthNextDays.at(0) as Day;
@@ -127,40 +129,51 @@
 		(props) => factory(props),
 		{
 			range: [
-				() => range,
+				() => rangeState,
 				(v: CalendarRange) => {
-					range = v;
-					onchange?.(new CustomEvent('change'), { range, pivote });
+					rangeState = v;
+					range = rangeState;
+					value = rangeState[0];
+					start = rangeState[0];
+					end = rangeState[1];
+					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
 				}
 			],
 			value: [
-				() => range?.[0],
+				() => rangeState?.[0],
 				(v) => {
-					if (range?.[0]) {
-						range[0] = v;
-					}
-					onchange?.(new CustomEvent('change'), { range, pivote });
+					rangeState = [v, rangeState[1]];
+					range = rangeState;
+					value = v;
+					start = v;
+					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
 				}
 			],
 			pivote: [
-				() => pivote,
+				() => pivoteState,
 				(v) => {
-					pivote = v as Date;
-					onchange?.(new CustomEvent('change'), { range, pivote });
+					pivoteState = v as Date;
+					pivote = pivoteState;
+					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
 				}
 			],
 			start: [
-				() => range?.[0],
+				() => rangeState?.[0],
 				(v) => {
-					range[0] = v;
-					onchange?.(new CustomEvent('change'), { range, pivote });
+					rangeState = [v, rangeState[1]];
+					range = rangeState;
+					start = v;
+					value = v;
+					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
 				}
 			],
 			end: [
-				() => range?.[1],
+				() => rangeState?.[1],
 				(v: Date | undefined) => {
-					range[1] = v;
-					onchange?.(new CustomEvent('change'), { range, pivote });
+					rangeState = [rangeState[0], v];
+					range = rangeState;
+					end = v;
+					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
 				}
 			],
 			min: [() => min, (v: Date | undefined) => (min = v)],

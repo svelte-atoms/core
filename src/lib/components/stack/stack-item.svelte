@@ -1,5 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { StackBond } from './bond.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { ElementType } from '$svelte-atoms/core/components/atom';
@@ -19,19 +20,22 @@
 
 	$effect.pre(() => {
 		if (!bond) return;
+		if (value == null) return;
 
-		bond.state.register(value);
+		bond.registerItem(value);
 
 		return () => {
-			bond.state.unregister(value);
+			bond.unregisterItem(value);
 		};
 	});
 
-	const zIndex = $derived(bond?.state.getZIndex(value) ?? 0);
+	const zIndex = $derived(bond?.getZIndex(value) ?? 0);
 
-	// `value` is reactive and `item(value)` is keyed by it, so the atom must be
-	// derived — a plain const would freeze it to the initial value's atom.
-	const atom = $derived(bond?.item(value));
+	const atom = createAtomInstance(() => `item:${value}`, {
+		bond,
+		factory: (owner) => owner!.item(value),
+		register: { key: `item:${value}` }
+	});
 
 	const itemProps = $derived({
 		preset: preset ?? 'stack.item',
@@ -41,7 +45,7 @@
 		style: userStyle ? `${userStyle}; z-index: ${zIndex}` : `z-index: ${zIndex}`
 	});
 
-	const isActive = $derived(bond?.state.props.value === value);
+	const isActive = $derived(bond?.props.value === value);
 </script>
 
 <HtmlAtom

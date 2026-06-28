@@ -1,6 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { CollapsibleBond } from './bond.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { CollapsibleBodyAtom, CollapsibleBond } from './bond.svelte';
 	import { animateCollapsibleBody } from './motion.svelte';
 	import type { CollapsibleBodyProps } from './types';
 
@@ -19,7 +20,11 @@
 		...restProps
 	}: CollapsibleBodyProps<E, B> = $props();
 
-	const atom = bond?.atom('body');
+	const atom = createAtomInstance<CollapsibleBodyAtom, CollapsibleBond>('body', {
+		bond,
+		required: true,
+		factory: (owner) => new CollapsibleBodyAtom(owner as CollapsibleBond).role('content')
+	});
 
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>

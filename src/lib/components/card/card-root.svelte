@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bondFactory, bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond } from '$svelte-atoms/core/shared';
 	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { CardBond, CardBondState } from './bond.svelte';
+	import { CardBond } from './bond.svelte';
 	import type { CardRootProps } from './types';
 	import './card.css';
 
@@ -9,7 +9,7 @@
 		class: klass = '',
 		preset = undefined,
 		disabled = false,
-		factory = bondFactory(CardBondState, CardBond),
+		factory = (props) => new CardBond(props),
 		children = undefined,
 		onclick = undefined,
 		onkeydown = undefined,

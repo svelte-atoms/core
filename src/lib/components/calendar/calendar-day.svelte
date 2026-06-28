@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { isBefore, isSameDay, isWithinInterval } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
 	import { mergePresetProps, HtmlAtom } from '../atom';
@@ -20,9 +21,16 @@
 		onclick = handleClick,
 		...restProps
 	}: CalendarDayProps = $props();
+	const atom = calendarBond
+		? createAtomInstance(() => `day-${day.id}`, {
+				bond: calendarBond,
+				factory: (owner) => owner!.day(day),
+				register: { key: `day-${day.id}` }
+			})
+		: undefined;
 
 	const dayProps = $derived(
-		mergePresetProps(preset, 'calendar.day', { ...calendarBond?.day(day).spread, ...restProps })
+		mergePresetProps(preset, 'calendar.day', { ...atom?.spread, ...restProps })
 	);
 
 	const isSelected = $derived.by(() => {
@@ -39,18 +47,18 @@
 		if (isRange) {
 			const start = calendarBond?.state.props.start;
 			if (!start) {
-				calendarBond?.state.selectStart(new Date(day.date));
+				calendarBond?.selectStart(new Date(day.date));
 				return;
 			}
 
 			if (isBefore(new Date(day.date), new Date(start))) {
-				calendarBond?.state.selectStart(new Date(day.date));
+				calendarBond?.selectStart(new Date(day.date));
 				return;
 			}
 
-			calendarBond?.state.selectEnd(new Date(day.date));
+			calendarBond?.selectEnd(new Date(day.date));
 		} else {
-			calendarBond?.state.selectStart(new Date(day.date));
+			calendarBond?.selectStart(new Date(day.date));
 		}
 	}
 </script>

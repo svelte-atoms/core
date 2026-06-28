@@ -10,8 +10,6 @@ export {
 export {
 	/** @deprecated Use `DropdownMenuBond` instead. */
 	DropdownMenuBond as MenuBond,
-	/** @deprecated Use `DropdownMenuBondState` instead. */
-	DropdownMenuBondState as MenuBondState,
 	/** @deprecated Use `DropdownMenuBondProps` instead. */
 	type DropdownMenuBondProps as MenuBondProps,
 	/** @deprecated Use `DropdownMenuBondElements` instead. */

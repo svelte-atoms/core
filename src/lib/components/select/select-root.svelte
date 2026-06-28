@@ -23,23 +23,48 @@
 		...restProps
 	}: SelectRootProps<T> = $props();
 
+	let openState = $derived(open);
+	let valueState = $derived<T | undefined>(value);
+	let valuesState = $derived<T[] | undefined>(values);
+	let labelState = $derived<string | undefined>(label);
+	let labelsState = $derived<string[] | undefined>(labels);
+	let queryState = $derived(query);
+
 	const binding = bindBond<SelectBond>((props) => factory(props), {
 		open: [
-			() => open,
+			() => openState,
 			(v) => {
-				open = v;
+				openState = v;
+				open = openState;
 			}
 		],
 		// Component is generic over `T`; the bond's props are string-keyed — bridge with casts.
 		values: [
-			() => (multiple ? values : ([value].filter(Boolean) as T[])) as SelectStateProps['values'],
+			() =>
+				(multiple
+					? valuesState
+					: ([valueState].filter(Boolean) as T[])) as SelectStateProps['values'],
 			(v) => {
-				values = v as T[];
-				value = v?.[0] as T;
+				valuesState = v as T[];
+				valueState = valuesState?.[0];
+				values = valuesState;
+				value = valueState as T;
 			}
 		],
-		label: [() => label, (v) => (label = v)],
-		labels: [() => labels, (v) => (labels = v)],
+		label: [
+			() => labelState,
+			(v) => {
+				labelState = v;
+				label = labelState;
+			}
+		],
+		labels: [
+			() => labelsState,
+			(v) => {
+				labelsState = v;
+				labels = labelsState;
+			}
+		],
 		multiple: () => multiple,
 		disabled: () => disabled,
 		placement: () => placement as SelectStateProps['placement'],
@@ -49,10 +74,11 @@
 		// Bond-owned filter source: accessor wiring makes writes reactive for `bind:query`
 		// and fires `onquerychange` (read by `createBondFilter`, cleared by `ClearThenClose`).
 		query: [
-			() => query,
+			() => queryState,
 			(v) => {
-				query = v ?? '';
-				onquerychange?.(v ?? '');
+				queryState = v ?? '';
+				query = queryState;
+				onquerychange?.(queryState);
 			}
 		],
 		// Vestigial: element-less context root, no typed channel to forward restProps.

@@ -1,8 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { InputBond, InputState, type InputStateProps } from './bond.svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
+	import { InputBond, type InputStateProps } from './bond.svelte';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
 	import type { Factory } from '$svelte-atoms/core/types';
 	import type { InputRootProps } from './types';
 
@@ -13,7 +14,7 @@
 		files = [],
 		preset = undefined,
 		children = undefined,
-		factory = bondFactory(InputState, InputBond),
+		factory = (props: InputStateProps) => InputBond.create(props),
 		...restProps
 	}: InputRootProps<E, B> = $props();
 
@@ -43,6 +44,13 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	const rootAtom = createAtomInstance('root', {
+		bond,
+		factory: (owner) => owner!.root()
+	});
+	const rootProps = $derived(
+		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
+	);
 
 	export function getBond() {
 		return bond;
@@ -55,8 +63,7 @@
 		'$preset',
 		klass
 	]}
-	{...binding.props}
-	{...restProps}
+	{...rootProps}
 >
 	{@render children?.({ input: bond })}
 </HtmlAtom>

@@ -1,25 +1,29 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
 	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Trigger } from '../popover/atoms';
-	import { DropdownMenuBond } from '../dropdown-menu/bond.svelte';
 	import { PopoverVirtualTriggerAtom } from '../popover';
+	import { openOverlay } from '../portal/host/policies/overlay-view';
+	import { ContextMenuBond } from './bond.svelte';
 	import type { ContextMenuTriggerProps } from './types';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond/bond.svelte';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond';
 
 	type ElementType = HTMLElementTagNameMap[E];
 
-	const bond = DropdownMenuBond.getOrThrow(
+	const bond = ContextMenuBond.getOrThrow(
 		'<ContextMenu.Trigger /> must be used within a <ContextMenu.Root />'
 	);
 
-	const dropdownMenuBond = bond;
-
-	// Composed from `parts: [PopoverBond]`, so the runtime atom is a PopoverVirtualTriggerAtom
-	// (which exposes a settable `element` for the cursor-anchored virtual trigger). The bond's
-	// declared atom map doesn't surface the inherited slot's class, so narrow it here.
-	const virtualTriggerAtom = dropdownMenuBond.atom('virtual-trigger') as PopoverVirtualTriggerAtom;
+	const virtualTriggerAtom = createAtomInstance<
+		PopoverVirtualTriggerAtom<ContextMenuBond>,
+		ContextMenuBond,
+		BondVirtualElement
+	>('virtual-trigger', {
+		bond,
+		factory: (owner) => new PopoverVirtualTriggerAtom(owner as ContextMenuBond)
+	});
 
 	let {
 		preset = undefined,
@@ -58,7 +62,7 @@
 
 		virtualTriggerAtom.element = virtualElement;
 
-		dropdownMenuBond.state.open();
+		openOverlay(bond);
 	}
 </script>
 

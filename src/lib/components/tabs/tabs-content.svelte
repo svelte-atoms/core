@@ -7,8 +7,8 @@
 
 	let { preset = undefined, ...restProps }: TabsContentProps<E, B> = $props();
 
-	const value = $derived(bond?.state?.props.value);
-	const items = $derived(Array.from(bond?.state?.tabContents ?? []));
+	const value = $derived(bond?.props.value);
+	const items = $derived(Array.from(bond?.tabContents ?? []));
 
 	const contentProps = $derived(mergePresetProps(preset, 'tabs.content', restProps));
 </script>

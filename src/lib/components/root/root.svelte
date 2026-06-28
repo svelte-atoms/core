@@ -5,12 +5,11 @@
 <script lang="ts">
 	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
 	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
-	import { mergePresetProps, HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
-	import { RootBond, RootBondState } from './bond.svelte';
+	import { RootBond } from './bond.svelte';
 	import type { RootProps } from './types';
 
 	let {
@@ -53,14 +52,14 @@
 		})
 	]);
 
-	const binding = bindBond<RootBond>(bondFactory(RootBondState, RootBond), {
+	const binding = bindBond<RootBond>((props) => new RootBond(props), {
 		renderers: () => renderers
 	});
 	const bond = binding.bond.share();
 </script>
 
 <Portals id="root">
-	<Atom
+	<HtmlAtom
 		{@attach (node: HTMLElement) => {
 			bond.rootElement = node;
 		}}
@@ -82,5 +81,5 @@
 				{@render children?.()}
 			</PortalHost>
 		{/if}
-	</Atom>
+	</HtmlAtom>
 </Portals>

@@ -14,8 +14,8 @@
 		...restProps
 	}: StepperContentProps<E, B> = $props();
 
-	const activeStep = $derived(bond?.state?.getStep(bond?.state?.props?.step));
-	const activeStepContent = $derived(bond?.state?.activeStepContent);
+	const activeStep = $derived(bond?.getStep(bond?.props?.step));
+	const activeStepContent = $derived(bond?.activeStepContent);
 
 	const contentKlass = $derived(activeStepContent?.props.class);
 	const contentProps = $derived.by(() => {

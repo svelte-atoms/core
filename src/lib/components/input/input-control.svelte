@@ -3,7 +3,8 @@
 	import { resolveControlPreset, INPUT_FIELD_CLASS, writeInputValue } from './shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { InputBond } from './bond.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { InputBond, InputControlAtom } from './bond.svelte';
 	import type { InputControlProps } from './types';
 
 	const bond = InputBond.get();
@@ -26,9 +27,16 @@
 	}: InputControlProps<B> = $props();
 
 	const preset = resolveControlPreset(() => presetKey, bond);
+	const atom = bond
+		? createAtomInstance<InputControlAtom, InputBond, HTMLInputElement>('input', {
+				bond,
+				register: { key: 'input' },
+				factory: (owner) => new InputControlAtom(owner!)
+			})
+		: undefined;
 
 	const valueProps = $derived({
-		...(bond?.atom('input').spread ?? {}),
+		...(atom?.spread ?? {}),
 		...restProps
 	});
 
