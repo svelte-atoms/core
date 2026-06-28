@@ -2,9 +2,5 @@
 // opens Dialog's modal content. Namespace `PopoverDialog`; the fused bond is
 // `PopoverDialogBond` (consistent with DialogBond/DrawerBond).
 export * as PopoverDialog from './atoms';
-export {
-	PopoverDialogBond,
-	PopoverDialogBondState,
-	type PopoverDialogBondProps
-} from './bond.svelte';
+export { PopoverDialogBond, type PopoverDialogBondProps } from './bond.svelte';
 export * from './types';

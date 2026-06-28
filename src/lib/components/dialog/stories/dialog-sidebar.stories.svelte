@@ -1,9 +1,16 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Dialog as ADialog } from '.';
-	import { Sidebar, animateSidebarContent } from '../sidebar';
-	import { Button } from '../button';
-	import { LayoutDashboard, Users, Settings2, Bell, PanelLeftClose, PanelLeftOpen } from 'lucide-svelte';
+	import { Dialog as ADialog } from '..';
+	import { Sidebar, animateSidebarContent } from '../../sidebar';
+	import { Button } from '../../button';
+	import {
+		LayoutDashboard,
+		Users,
+		Settings2,
+		Bell,
+		PanelLeftClose,
+		PanelLeftOpen
+	} from 'lucide-svelte';
 
 	// A Sidebar composed *inside* Dialog content — the collapsible rail lives in the dialog's
 	// own layout, so its in-flow width animation reflows the card body, not the viewport.
@@ -36,7 +43,7 @@
 				<div class="flex h-full">
 					<Sidebar.Root open>
 						{#snippet children({ sidebar })}
-							{@const isOpen = sidebar.state.isOpen}
+							{@const isOpen = sidebar.isOpen}
 							<Sidebar.Content
 								class="bg-card border-border flex h-full flex-col border-r whitespace-nowrap"
 								animate={animateSidebarContent({ axis: 'x', 0: '60px', 1: '200px' })}
@@ -48,7 +55,7 @@
 									{/if}
 									<button
 										class="text-muted-foreground hover:bg-foreground/5 hover:text-foreground rounded-md p-1.5 transition-colors"
-										onclick={() => sidebar.state.toggle()}
+										onclick={() => sidebar.toggle()}
 										title={isOpen ? 'Collapse' : 'Expand'}
 									>
 										{#if isOpen}

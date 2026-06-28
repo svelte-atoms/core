@@ -1,9 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
 	import { type Base } from '$svelte-atoms/core/components/atom';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
-	import { SidebarBond, SidebarBondState } from './bond.svelte';
+	import { SidebarBond } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';
 
@@ -14,10 +13,12 @@
 		overlay: asOverlay = false,
 		portal = undefined,
 		class: klass = '',
-		factory = bondFactory(SidebarBondState, SidebarBond),
+		factory = (props) => SidebarBond.create(props),
 		children = undefined,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
+
+	let openState = $derived(open);
 
 	// ZLayer only on the teleported path: in-flow has no stacking context to order,
 	// so it carries no layer. `overlay` is structural — read once at mount.
@@ -26,16 +27,19 @@
 	const layerOffset = $derived(
 		typeof zindex === 'function'
 			? zindex(baseLayer?.value ?? 0) - (baseLayer?.value ?? 0)
-			: typeof zindex === 'number' && Number.isFinite(zindex) ? zindex : 0
+			: typeof zindex === 'number' && Number.isFinite(zindex)
+				? zindex
+				: 0
 	);
 	// svelte-ignore state_referenced_locally
 	const layer = asOverlay ? new ZLayer('modal', () => layerOffset).share() : undefined;
 
 	const binding = bindBond<SidebarBond>((props) => factory(props), {
 		open: [
-			() => open,
+			() => openState,
 			(v) => {
-				open = v;
+				openState = v;
+				open = openState;
 			}
 		],
 		disabled: () => disabled,

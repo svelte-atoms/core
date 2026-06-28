@@ -1,10 +1,10 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Popover as Popover_ } from '.';
-	import { Dialog as Dialog_ } from '../dialog';
-	import { Drawer as Drawer_ } from '../drawer';
-	import { Sidebar as Sidebar_ } from '../sidebar';
-	import { Button } from '../button';
+	import { Popover as Popover_ } from '..';
+	import { Dialog as Dialog_ } from '../../dialog';
+	import { Drawer as Drawer_ } from '../../drawer';
+	import { Sidebar as Sidebar_ } from '../../sidebar';
+	import { Button } from '../../button';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Popover',
@@ -48,8 +48,8 @@
 </script>
 
 <script lang="ts">
-	import { animateDrawerContent } from '../drawer';
-	import { animateSidebarContent } from '../sidebar';
+	import { animateDrawerContent } from '../../drawer';
+	import { animateSidebarContent } from '../../sidebar';
 
 	let open = $state(false);
 	let isDialogOpen = $state(false);
@@ -407,7 +407,7 @@
 							>
 								<button
 									class="text-muted-foreground hover:text-foreground hover:bg-muted flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-sm leading-none transition-colors"
-									onclick={() => sidebar.state.toggle()}
+									onclick={() => sidebar.toggle()}
 									title={isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
 								>
 									{isSidebarOpen ? '◀' : '▶'}

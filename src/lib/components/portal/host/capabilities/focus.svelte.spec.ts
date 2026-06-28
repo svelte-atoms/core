@@ -7,6 +7,11 @@ describe('focus policies', () => {
 		expect(cap.slot).toBe(FOCUS);
 		expect(cap.surface?.restoreFocus).toBe('previous');
 		expect(cap.surface?.captureFocusOnOpen).toBe(true);
+		expect(cap.meta).toMatchObject({
+			layer: 1,
+			kind: 'policy',
+			projects: ['content', 'surface']
+		});
 	});
 
 	it('trappedFocus projects Tab-cycle handlers onto "surface" and onmount onto "content"', () => {
@@ -20,12 +25,14 @@ describe('focus policies', () => {
 
 	it('focusOnOpen projects only the content onmount (no Tab trap)', () => {
 		const cap = focusOnOpen();
+		expect(cap.meta).toMatchObject({ projects: ['content'] });
 		expect(cap.behavior!('surface')).toBeUndefined();
 		expect(typeof cap.behavior!('content')?.onmount).toBe('function');
 	});
 
 	it('noFocus projects nothing on either role', () => {
 		// noFocus is surface-only (no role map) — it carries no behavior projector at all.
+		expect(noFocus.meta).toMatchObject({ layer: 1, kind: 'policy' });
 		expect(noFocus.behavior).toBeUndefined();
 		expect(noFocus.behavior?.('surface')).toBeUndefined();
 		expect(noFocus.behavior?.('content')).toBeUndefined();

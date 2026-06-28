@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Dialog as ADialog } from '.';
-	import { Button } from '../button';
+	import { Dialog as ADialog } from '..';
+	import { Button } from '../../button';
 
 	// A Portal is a containment scope. The Popover opened inside the
 	// Dialog resolves to the Dialog's own Portal, whose container is the Dialog card.

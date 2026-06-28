@@ -10,8 +10,14 @@
 		type ComputePositionConfig,
 		type Strategy
 	} from '@floating-ui/dom';
-	import { PopoverBond, type PopoverParams } from '../bond.svelte';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond/bond.svelte';
+	import {
+		notifyPopoverComputed,
+		popoverNode,
+		PopoverBond,
+		shouldTrackPopoverPosition,
+		type PopoverParams
+	} from '../bond.svelte';
+	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond';
 	import { PortalBond } from '$svelte-atoms/core/components/portal';
 
 	const bond = PopoverBond.get();
@@ -20,14 +26,19 @@
 	const portalBond = PortalBond.get();
 	const boundary = $derived(portalBond?.boundaryElement);
 
-	const tracking = $derived(bond?.state.shouldTrackPosition ?? false);
+	const tracking = $derived(bond ? shouldTrackPopoverPosition(bond) : false);
 	const reference = $derived(
-		bond?.element<BondVirtualElement>('virtual-trigger') ?? bond?.element<Element>('trigger')
+		(bond
+			? (popoverNode(bond, 'virtual-trigger')?.element as BondVirtualElement | undefined)
+			: undefined) ??
+			(bond ? (popoverNode(bond, 'trigger')?.element as Element | undefined) : undefined)
 	);
-	const overlay = $derived(bond?.element<HTMLElement>('overlay'));
+	const overlay = $derived(
+		bond ? (popoverNode(bond, 'overlay')?.element as HTMLElement | undefined) : undefined
+	);
 
 	// CSS positioning strategy, set explicitly by the consumer via the `position` root prop.
-	const position = $derived<Strategy>(bond?.state.props.position ?? 'absolute');
+	const position = $derived<Strategy>(bond?.props.position ?? 'absolute');
 
 	$effect.pre(() => {
 		// Re-run once the Portal boundary resolves (it may mount after this popover).
@@ -42,10 +53,10 @@
 	});
 
 	function compute(bond: PopoverBond, strategy: Strategy) {
-		return (props: Record<string, unknown>, updater?: typeof autoUpdate) => {
-			const { offset: ofs, placements, placement } = bond.state.props;
+		return (props: Record<string, unknown>, updater: typeof autoUpdate | undefined = undefined) => {
+			const { offset: ofs, placements, placement } = bond.props;
 
-			const arrowElement = bond.element<HTMLElement>('arrow');
+			const arrowElement = popoverNode(bond, 'arrow')?.element as HTMLElement | undefined;
 
 			if (!reference || !overlay) {
 				return;
@@ -94,7 +105,7 @@
 				const x = Math.round((position.x ?? 0) * 100) / 100;
 				const y = Math.round((position.y ?? 0) * 100) / 100;
 
-				bond.state.notifyComputed({
+				notifyPopoverComputed(bond, {
 					middlewareData: position.middlewareData,
 					placement: position.placement,
 					strategy: position.strategy,

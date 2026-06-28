@@ -1,11 +1,12 @@
 import {
-	defineCapability,
+	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/bond/bond.svelte';
+} from '$svelte-atoms/core/shared/bond';
 import type { OverlayView, OverlayKnobs } from '../types';
 import { focus, focusTrap as tabTrap } from '$svelte-atoms/core/utils/dom.svelte';
 import { useFocusRestore } from './focus-restore.svelte';
+import { overlayIsOpen } from './overlay-view';
 
 export const FOCUS = sharedCapabilityKey<FocusPolicySurface>('@svelte-atoms/cap:focus');
 
@@ -15,15 +16,19 @@ export type FocusPolicySurface = {
 };
 
 function focusFirstOnOpen(bond: OverlayView, node: HTMLElement): void {
-	if (!bond.state.isOpen) return;
+	if (!overlayIsOpen(bond)) return;
 	queueMicrotask(() => focus(node));
 }
 
 // trapTab is the only axis; both variants focus the first child on open.
 function focusPolicy(opts: FocusPolicySurface, trapTab: boolean): Capability<FocusPolicySurface> {
-	return defineCapability<FocusPolicySurface>({
+	return definePolicyCapability<FocusPolicySurface>({
 		slot: FOCUS,
 		surface: opts,
+		meta: {
+			projects: trapTab ? ['content', 'surface'] : ['content'],
+			docs: 'Focus management policy with focus-restore setup and optional Tab trapping.'
+		},
 		setup: (bond) => useFocusRestore(bond as OverlayView),
 		roles: {
 			content: () => ({
@@ -53,7 +58,10 @@ export function focusOnOpen(opts: FocusPolicySurface = {}): Capability<FocusPoli
 }
 
 // No focus management — tooltips and other non-interactive overlays. Surface-only (no projection).
-export const noFocus: Capability<FocusPolicySurface> = defineCapability<FocusPolicySurface>({
+export const noFocus: Capability<FocusPolicySurface> = definePolicyCapability<FocusPolicySurface>({
 	slot: FOCUS,
-	surface: {}
+	surface: {},
+	meta: {
+		docs: 'Explicit no-op focus policy for non-interactive overlays.'
+	}
 });

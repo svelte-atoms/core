@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { escapePolicy, closeOnEscape, ESCAPE } from '../policies/escape.svelte';
+import { closeOverlay } from '../policies/overlay-view';
 import type { OverlayView } from '../types';
 
 // Minimal Overlay-ish stub: just what the escape behavior reads.
@@ -19,6 +20,11 @@ describe('escape policies', () => {
 	it('closeOnEscape lives in slot "escape" with the handler as surface', () => {
 		expect(closeOnEscape.slot).toBe(ESCAPE);
 		expect(typeof closeOnEscape.surface).toBe('function');
+		expect(closeOnEscape.meta).toMatchObject({
+			layer: 1,
+			kind: 'policy',
+			projects: ['surface']
+		});
 	});
 
 	it('projects only onto "surface"', () => {
@@ -46,7 +52,7 @@ describe('escape policies', () => {
 	it('enabled=false and disabled bonds short-circuit', () => {
 		const disabledPolicy = escapePolicy(
 			(b) => {
-				b.state.close();
+				closeOverlay(b);
 			},
 			{ enabled: false }
 		);

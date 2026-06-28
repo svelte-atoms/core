@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergeAtomProps, HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
 	import type { SlideoverContentProps } from './types';
 	import { DrawerBond } from './bond.svelte';
@@ -27,7 +27,7 @@
 	const contentProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<Atom
+<HtmlAtom
 	class={[
 		'bg-card text-foreground border-border pointer-events-none absolute',
 		isOpen && 'pointer-events-auto',
@@ -41,4 +41,4 @@
 	<PortalHost>
 		{@render children?.({ drawer: bond })}
 	</PortalHost>
-</Atom>
+</HtmlAtom>

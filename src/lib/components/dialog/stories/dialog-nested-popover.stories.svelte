@@ -1,8 +1,8 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Dialog as ADialog } from '.';
+	import { Dialog as ADialog } from '..';
 	import { Popover } from '$svelte-atoms/core/components/popover';
-	import { Button } from '../button';
+	import { Button } from '../../button';
 	import { zAnchor } from '$svelte-atoms/core/attachments';
 
 	// A Portal is a containment scope.

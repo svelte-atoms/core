@@ -1,6 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Sidebar as Sidebar_, animateSidebarContent } from '.';
+	import { Sidebar as Sidebar_, animateSidebarContent } from '..';
 	import {
 		LayoutDashboard,
 		ChartLine,
@@ -102,7 +102,7 @@
 								<span class="text-foreground text-base font-semibold tracking-tight">Atoms UI</span>
 								<button
 									class="text-muted-foreground hover:bg-foreground/5 hover:text-foreground ml-auto rounded-md p-1.5 transition-colors"
-									onclick={() => sidebar.state.toggle()}
+									onclick={() => sidebar.toggle()}
 									title="Collapse sidebar"
 								>
 									<PanelLeftClose size={18} />
@@ -113,7 +113,7 @@
 						{#if !isOpen}
 							<button
 								class="text-muted-foreground hover:bg-foreground/5 hover:text-foreground mx-3 mt-3 flex items-center justify-center rounded-md p-1.5 transition-colors"
-								onclick={() => sidebar.state.toggle()}
+								onclick={() => sidebar.toggle()}
 								title="Expand sidebar"
 							>
 								<PanelLeftOpen size={18} />

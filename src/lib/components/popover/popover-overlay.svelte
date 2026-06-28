@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { Teleport, ZLayer } from '../portal';
-	import { PopoverBond } from './bond.svelte';
+	import {
+		createPopoverAtom,
+		getPopoverPosition,
+		PopoverBond,
+		PopoverOverlayAtom,
+		popoverNode
+	} from './bond.svelte';
+	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
+	import { overlayIsOpen } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
 	import type { PopoverOverlayProps } from './types';
 
 	const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
-	const isOpen = $derived(bond?.state.isOpen ?? false);
+	const isOpen = $derived(overlayIsOpen(bond));
 
-	const strategy = $derived(bond?.state.position?.strategy ?? 'absolute');
+	const strategy = $derived(getPopoverPosition(bond)?.strategy ?? 'absolute');
 
 	// CSS position matching the strategy's coordinate basis.
 	const positionStyle = $derived(strategy === 'fixed' ? 'position: fixed;' : 'position: absolute;');
@@ -24,18 +32,32 @@
 	// to a ZLayer anchor. Both fixed for the overlay's lifetime.
 	// svelte-ignore state_referenced_locally
 	const parentLayer = ZLayer.tryGet();
-	const layer = new ZLayer(layerName, () => 0 ).share();
+	// svelte-ignore state_referenced_locally
+	const layer = new ZLayer(layerName, () => 0).share();
 
 	const z = $derived((parentLayer?.value ?? 0) + layer.value);
 
+	const overlayAtom = createAtomInstance<Atom<PopoverBond, HTMLElement>, PopoverBond, HTMLElement>(
+		'overlay',
+		{
+			bond,
+			factory: (owner) =>
+				createPopoverAtom(
+					owner as PopoverBond,
+					'overlay',
+					(popover) => new PopoverOverlayAtom(popover)
+				)
+		}
+	);
+
 	const overlayProps = $derived({
-		...bond?.atom('overlay').spread,
+		...(overlayAtom.spread as Record<string, unknown>),
 		...restProps
-	});
+	} as Record<string, unknown>);
 
 	// Transform + opacity from the current floating-ui position.
 	function calculatePosition() {
-		const position = bond.state.position;
+		const position = getPopoverPosition(bond);
 
 		if (!position) {
 			return null;
@@ -48,7 +70,7 @@
 			return { opacity: '0' };
 		}
 
-		const offset = bond.state.props.offset;
+		const offset = bond.props.offset;
 		const openState = +isOpen;
 
 		// Offset direction per placement
@@ -56,7 +78,7 @@
 		const directionX = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
 
 		// Arrow dimensions
-		const arrow = bond.element('arrow');
+		const arrow = popoverNode(bond, 'arrow')?.element;
 		const arrowEl = arrow instanceof Element ? arrow : null;
 		const arrowWidth = arrowEl?.clientWidth ?? 0;
 		const arrowHeight = arrowEl?.clientHeight ?? 0;
@@ -72,7 +94,7 @@
 		};
 	}
 
-	function initial(this: typeof bond.state, node: HTMLElement) {
+	function initial(node: HTMLElement) {
 		const styles = calculatePosition();
 
 		// Hide until positioned to avoid ghosting
@@ -86,8 +108,8 @@
 		if (styles.transform) node.style.transform = styles.transform;
 	}
 
-	function animate(this: typeof bond.state, node: HTMLElement) {
-		void bond.state.props.open; // track open state for reactivity
+	function animate(node: HTMLElement) {
+		void bond.props.open; // track open state for reactivity
 
 		const styles = calculatePosition();
 

@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
 	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
-	import { DialogBond } from './bond.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { DialogBond, DialogContentAtom } from './bond.svelte';
 	import type { DialogContentProps } from './types';
 	import { animateDialogContent } from './motion.svelte';
 
@@ -17,7 +18,10 @@
 		...restProps
 	}: DialogContentProps<E, B> = $props();
 
-	const atom = bond.atom('content');
+	const atom = createAtomInstance<DialogContentAtom, DialogBond, HTMLElement>('content', {
+		bond,
+		factory: (owner) => new DialogContentAtom(owner as DialogBond)
+	});
 
 	const dialogProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>

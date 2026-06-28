@@ -1,6 +1,13 @@
 export * from './types';
 export * as Portal from './atoms';
-export { PortalBond, PortalState, type PortalStateProps } from './bond.svelte';
+export {
+	PortalBond,
+	PortalBondBase,
+	PortalInnerAtom,
+	PortalRootAtom,
+	type PortalBondProps,
+	type PortalStateProps
+} from './bond.svelte';
 export { port } from './port';
 export {
 	ZLayer,

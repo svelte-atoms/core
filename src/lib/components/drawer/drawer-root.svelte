@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
 	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { DrawerBond, DrawerBondState } from './bond.svelte';
+	import { DrawerBond } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
 	import {
 		ActivePortal,
@@ -13,7 +13,7 @@
 		type ZIndexInput
 	} from '../portal';
 	import { animateDrawerRoot } from './motion';
-	import { bondFactory, bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -29,9 +29,8 @@
 		// +1 in the `modal` band so a Drawer wins over a sibling Dialog (+0).
 		'z-index': zindex = 1,
 		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		onclose = undefined,
-		factory = bondFactory(DrawerBondState, DrawerBond),
+		onclose: _onclose = undefined,
+		factory = (props) => DrawerBond.create(props),
 		fallback = {
 			animate: animateDrawerRoot({}),
 			initial: animateDrawerRoot({ duration: 0 })
@@ -40,6 +39,8 @@
 		// Omit `children` from HTMLAttributes: it declares `children?: Snippet` (0-arg), which would
 		// intersect with SlideoverRootProps' 1-arg `DrawerChildren` into an unsatisfiable type.
 	}: SlideoverRootProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
+
+	let openState = $derived(open);
 
 	// Resolve the configured portal (id or bond); fall back to the ambient PortalBond when
 	// none is configured or the id is unknown.
@@ -58,7 +59,13 @@
 	const binding = bindBond<DrawerBond>(
 		(props) => factory(props),
 		{
-			open: [() => open, (v) => (open = v)],
+			open: [
+				() => openState,
+				(v) => {
+					openState = v;
+					open = openState;
+				}
+			],
 			disabled: () => disabled,
 			side: () => side
 		},
@@ -78,7 +85,7 @@
 
 	$effect(() => {
 		if (bond.elements.root instanceof HTMLDialogElement) {
-			if (open) {
+			if (openState) {
 				bond.elements.root?.show?.();
 			}
 		}
@@ -93,7 +100,7 @@
 	portal={activePortalBond ?? 'root.l0'}
 	class={[
 		'pointer-events-none inset-0 h-full w-full overflow-hidden bg-transparent',
-		!open && 'pointer-events-none',
+		!openState && 'pointer-events-none',
 		'$preset',
 		klass
 	]}

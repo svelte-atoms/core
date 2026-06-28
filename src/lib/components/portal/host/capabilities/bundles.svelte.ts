@@ -1,8 +1,9 @@
-import type { Capability } from '$svelte-atoms/core/shared/bond/bond.svelte';
+import type { Capability } from '$svelte-atoms/core/shared/bond';
+import { disclosureClose } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
 import type { OverlayKnobs } from '../types';
 import { clickTrigger } from '../policies/trigger.svelte';
 import { trappedFocus, focusOnOpen } from '../policies/focus.svelte';
-import { closeOnEscape } from '../policies/escape.svelte';
+import { dismissPolicy } from './dismissible-surface.svelte';
 
 // Individual slots can be overridden via last-wins registration.
 
@@ -10,7 +11,8 @@ export function modalCapabilities(knobs: Pick<OverlayKnobs, 'ariaHasPopup'> = {}
 	return [
 		clickTrigger({ ariaHasPopup: knobs.ariaHasPopup ?? 'dialog' }),
 		trappedFocus({ restoreFocus: 'previous', captureFocusOnOpen: true }),
-		closeOnEscape
+		...dismissPolicy({ outsidePress: false }),
+		disclosureClose()
 	];
 }
 
@@ -20,6 +22,7 @@ export function positionedCapabilities(
 	return [
 		clickTrigger({ ariaHasPopup: knobs.ariaHasPopup ?? 'dialog' }),
 		focusOnOpen({ restoreFocus: 'trigger', captureFocusOnOpen: false }),
-		closeOnEscape
+		...dismissPolicy({ outsidePress: { event: 'click' }, backdropPress: false }),
+		disclosureClose()
 	];
 }

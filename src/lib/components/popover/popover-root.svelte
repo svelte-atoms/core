@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { PopoverState, PopoverBond } from './bond.svelte';
-	import { bondFactory } from '$svelte-atoms/core/shared';
+	import { PopoverBond, type PopoverBondProps } from './bond.svelte';
 	import { OverlayBond } from '$svelte-atoms/core/components/portal/host';
 	import { useCapabilities } from '$svelte-atoms/core/shared/capability/use.svelte';
 	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
@@ -16,16 +15,23 @@
 		offset = 2,
 		position = 'absolute',
 		portal = undefined,
-		factory = bondFactory(PopoverState, PopoverBond),
+		factory = defaultFactory,
 		children = undefined,
 		...restProps
 	}: PopoverRootProps = $props();
 
+	function defaultFactory(props: PopoverBondProps): PopoverBond {
+		return PopoverBond.create(props);
+	}
+
+	let openState = $derived(open);
+
 	const binding = bindBond<PopoverBond>((props) => factory(props), {
 		open: [
-			() => open && (owner?.isOpen ?? true),
+			() => openState && (owner?.isOpen ?? true),
 			(v) => {
-				open = v;
+				openState = v;
+				open = openState;
 			}
 		],
 		disabled: () => disabled,

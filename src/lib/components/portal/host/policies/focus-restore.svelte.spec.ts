@@ -26,17 +26,17 @@ function mockOverlay(
 	trigger?: HTMLElement
 ) {
 	let open = $state(false);
+	const focusSurface = { strategy: undefined, ...focus };
 	const bond = {
-		// Restore config lives on the focus capability's surface — read via the canonical surface() accessor (#3).
-		capability: (slot: symbol) =>
-			slot === FOCUS ? { slot, surface: { strategy: undefined, ...focus } } : undefined,
-		surface: (slot: symbol) => (slot === FOCUS ? { strategy: undefined, ...focus } : undefined),
 		state: {
 			get isOpen() {
 				return open;
-			}
+			},
+			// Restore config lives on the focus capability's surface — read via the canonical
+			// state.surface() accessor (#3).
+			surface: (slot: symbol) => (slot === FOCUS ? focusSurface : undefined)
 		},
-		element: (key: string) => (key === 'trigger' ? trigger : undefined)
+		node: (key: string) => ({ element: key === 'trigger' ? trigger : undefined })
 	} as unknown as OverlayView;
 	return {
 		bond,

@@ -4,12 +4,13 @@ import { INPUT } from '$svelte-atoms/core/shared';
 import type { OverlayView } from '../types';
 
 function mockBond(input?: { clear: () => boolean }) {
-	const state = { close: vi.fn() };
-	return {
-		state,
-		capability: (slot: symbol) => (slot === INPUT && input ? { surface: input } : undefined),
-		// clearThenClose now reads via the canonical surface() accessor (#3).
+	const state = {
+		close: vi.fn(),
+		// clearThenClose now reads via the canonical state.surface() accessor (#3).
 		surface: (slot: symbol) => (slot === INPUT && input ? input : undefined)
+	};
+	return {
+		state
 	} as unknown as OverlayView & { state: typeof state };
 }
 

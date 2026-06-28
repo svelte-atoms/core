@@ -1,4 +1,4 @@
-import { type BondElements } from '$svelte-atoms/core/shared/bond/bond.svelte';
+import { type BondElements } from '$svelte-atoms/core/shared/bond';
 
 export type PositionedOverlayElements = BondElements & {
 	trigger?: HTMLElement;

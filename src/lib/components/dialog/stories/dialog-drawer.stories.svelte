@@ -1,8 +1,8 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { Dialog as ADialog } from '.';
-	import { clickoutDrawer, Drawer, animateDrawerContent } from '../drawer';
-	import { Button } from '../button';
+	import { Dialog as ADialog } from '..';
+	import { clickoutDrawer, Drawer, animateDrawerContent } from '../../drawer';
+	import { Button } from '../../button';
 
 	// A Drawer opened *inside* Dialog content resolves to the Dialog's own
 	// Portal scope, so its backdrop and panel slide in over the dialog card rather than the
@@ -22,9 +22,7 @@
 	let selected = $state<string[]>(['Active']);
 
 	const toggle = (item: string) => {
-		selected = selected.includes(item)
-			? selected.filter((f) => f !== item)
-			: [...selected, item];
+		selected = selected.includes(item) ? selected.filter((f) => f !== item) : [...selected, item];
 	};
 </script>
 
@@ -46,8 +44,8 @@
 
 				<ADialog.Body class="flex-1">
 					<ADialog.Description>
-						Open the filters drawer — it slides in from the right edge of <strong>this card</strong>,
-						bounded by the dialog's own Portal rather than the page viewport.
+						Open the filters drawer — it slides in from the right edge of <strong>this card</strong
+						>, bounded by the dialog's own Portal rather than the page viewport.
 					</ADialog.Description>
 					<Button class="mt-4" variant="outline" onclick={() => (drawerOpen = true)}>
 						Open filters

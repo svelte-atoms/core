@@ -1,10 +1,17 @@
 import {
-	defineCapability,
+	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/bond/bond.svelte';
+} from '$svelte-atoms/core/shared/bond';
 import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
+import {
+	closeOverlay,
+	openOverlay,
+	overlayIsDisabled,
+	overlayIsOpen,
+	toggleOverlay
+} from './overlay-view';
 
 // Public slot key for trigger gesture policies (click/hover/contextmenu/manual share the slot, last-wins).
 export const TRIGGER = sharedCapabilityKey('@svelte-atoms/cap:trigger');
@@ -23,20 +30,25 @@ type TriggerOptions = {
 // ARIA disclosure attrs shared by all trigger policies.
 function triggerAttrs(o: OverlayView, ariaHasPopup: OverlayKnobs['ariaHasPopup'] = 'dialog') {
 	const contentId = getElementId(o.id, `${o.namespace}-content`);
+	const isDisabled = overlayIsDisabled(o);
 	return {
-		'aria-expanded': o.state.isOpen,
-		'aria-disabled': o.state.isDisabled,
+		'aria-expanded': overlayIsOpen(o),
+		'aria-disabled': isDisabled,
 		'aria-haspopup': ariaHasPopup,
 		'aria-controls': contentId,
-		tabindex: o.state.isDisabled ? -1 : 0
+		tabindex: isDisabled ? -1 : 0
 	};
 }
 
 // Click trigger — click + Enter/Space toggles the overlay; projects ARIA attrs + gesture handlers onto `'trigger'`.
 export function clickTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return defineCapability({
+	return definePolicyCapability({
 		slot: TRIGGER,
+		meta: {
+			projects: ['trigger'],
+			docs: 'Click and keyboard activation policy for overlay triggers.'
+		},
 		roles: {
 			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup),
@@ -46,12 +58,12 @@ export function clickTrigger(opts: TriggerOptions = {}): Capability {
 						onclick: ((ev: MouseEvent) => {
 							if (ev.button === 2) return;
 							if (ev.defaultPrevented) return;
-							o.state.toggle();
+							toggleOverlay(o);
 						}) as (ev: Event) => void,
 						onkeydown: ((ev: KeyboardEvent) => {
 							if (ev.key === 'Enter' || ev.key === ' ') {
 								ev.preventDefault();
-								o.state.toggle();
+								toggleOverlay(o);
 							}
 						}) as (ev: Event) => void
 					};
@@ -72,8 +84,12 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 		openT = undefined;
 		closeT = undefined;
 	};
-	return defineCapability({
+	return definePolicyCapability({
 		slot: TRIGGER,
+		meta: {
+			projects: ['trigger'],
+			docs: 'Hover and focus activation policy for overlay triggers.'
+		},
 		roles: {
 			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView),
@@ -82,19 +98,19 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 					return {
 						onpointerenter: () => {
 							clear();
-							openT = setTimeout(() => o.state.open(), openDelay);
+							openT = setTimeout(() => openOverlay(o), openDelay);
 						},
 						onpointerleave: () => {
 							clear();
-							closeT = setTimeout(() => o.state.close(), closeDelay);
+							closeT = setTimeout(() => closeOverlay(o), closeDelay);
 						},
 						onfocusin: () => {
 							clear();
-							o.state.open();
+							openOverlay(o);
 						},
 						onfocusout: () => {
 							clear();
-							o.state.close();
+							closeOverlay(o);
 						}
 					};
 				},
@@ -107,8 +123,12 @@ export function hoverTrigger(opts: HoverTriggerOptions = {}): Capability {
 // Context-menu trigger — opens on right-click (contextmenu event).
 export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return defineCapability({
+	return definePolicyCapability({
 		slot: TRIGGER,
+		meta: {
+			projects: ['trigger'],
+			docs: 'Context-menu activation policy for overlay triggers.'
+		},
 		roles: {
 			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup),
@@ -117,7 +137,7 @@ export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 					return {
 						oncontextmenu: ((ev: MouseEvent) => {
 							ev.preventDefault();
-							o.state.open();
+							openOverlay(o);
 						}) as (ev: Event) => void
 					};
 				}
@@ -129,8 +149,12 @@ export function contextMenuTrigger(opts: TriggerOptions = {}): Capability {
 // Manual trigger — ARIA attrs only, no gesture. Use when the consumer drives open/close programmatically.
 export function manualTrigger(opts: TriggerOptions = {}): Capability {
 	const ariaHasPopup = opts.ariaHasPopup ?? 'dialog';
-	return defineCapability({
+	return definePolicyCapability({
 		slot: TRIGGER,
+		meta: {
+			projects: ['trigger'],
+			docs: 'ARIA-only overlay trigger policy for externally controlled overlays.'
+		},
 		roles: {
 			trigger: () => ({
 				attrs: (bond) => triggerAttrs(bond as OverlayView, ariaHasPopup)

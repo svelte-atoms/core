@@ -1,4 +1,5 @@
 import type { OverlayView } from '../types';
+import { overlayIsOpen } from './overlay-view';
 
 // Focus-ordered registry of currently-open overlays. Under Portal containment
 // overlays DOM-nest, so one Escape keydown bubbles through both surfaces' handlers;
@@ -33,7 +34,7 @@ export function useEscapeStack(bond: OverlayView | undefined): void {
 	if (!bond) return;
 
 	$effect(() => {
-		if (!bond.state.isOpen) return;
+		if (!overlayIsOpen(bond)) return;
 		return enrollOverlay(bond);
 	});
 }

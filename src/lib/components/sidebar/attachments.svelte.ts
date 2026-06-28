@@ -10,5 +10,5 @@ export function slideover(
 
 export function toggleSidebar(onclick?: (ev: MouseEvent) => void) {
 	const bond = SidebarBond.get();
-	return clickAction(() => bond?.state.toggle(), onclick);
+	return clickAction(() => bond?.toggle(), onclick);
 }

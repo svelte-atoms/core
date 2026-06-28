@@ -1,6 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { clickoutDrawer, Drawer as Drawer_ } from '.';
+	import { clickoutDrawer, Drawer as Drawer_ } from '..';
 
 	// https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({
@@ -33,7 +33,7 @@
 </script>
 
 <script lang="ts">
-	import { animateDrawerContent } from './motion';
+	import { animateDrawerContent } from '../motion';
 
 	let isOpen = $state(false);
 </script>

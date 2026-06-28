@@ -16,6 +16,11 @@ describe('clickTrigger — trigger policy', () => {
 		const cap = clickTrigger();
 		expect(cap.slot).toBe(TRIGGER);
 		expect(cap.surface).toBeUndefined();
+		expect(cap.meta).toMatchObject({
+			layer: 1,
+			kind: 'policy',
+			projects: ['trigger']
+		});
 	});
 
 	it('projects disclosure ARIA + gesture handlers onto "trigger"', () => {
