@@ -1,107 +1,61 @@
-import { nanoid } from 'nanoid';
 import { getContext, setContext } from 'svelte';
-import { getElementId } from '../../utils/dom.svelte';
-import { createAttachmentKey } from 'svelte/attachments';
-import { Collection } from './collection.svelte';
-import { collectionCapability, collectionSlot } from '../capability/models/collection.svelte';
+import { nanoid } from 'nanoid';
 import { StagedMap } from './staged-map.svelte';
 import { bondContextKey } from './context';
+import { Atom } from './atom.svelte';
+import { BOND_BRAND, ordinaryHasInstance } from './identity';
+import { collectionCapability, collectionSlot } from '../capability/models/collection.svelte';
 import { slotName } from '../capability/capability';
 import type {
-	AtomFactory,
-	AtomRegistry,
 	BondClass,
-	BondStateProps,
-	BondVirtualElement
-} from './types';
-import type {
-	Behavior,
-	Capability,
-	CapabilityInfo,
-	CapabilityKey,
-	RoleCtxArgs,
-	RoleProjectionInfo
-} from '../capability/capability';
-
-// Re-exports so bond.svelte stays the single import surface; implementations live in sibling modules.
-export { bondContextKey } from './context';
-export type {
+	BondStateProps as BondPropsBase,
 	BondVirtualElement,
-	BondStateProps,
-	BondElements,
-	BondClass,
-	AtomFactory,
-	AtomRegistry
+	NodeRegistration,
+	NodeRegistrationOptions
 } from './types';
-export {
-	capabilityKey,
-	sharedCapabilityKey,
-	defineCapability,
-	decorateCapability,
-	type Behavior,
-	type CapabilityKey,
-	type SurfaceOf,
-	type RoleContexts,
-	type KnownRole,
-	type RoleCtxArgs,
-	type Capability,
-	type RoleCtx,
-	type CapabilityRoleMap,
-	type CapabilityConfig,
-	type CapabilityInfo,
-	type RoleProjectionInfo,
-	type CapabilityDecoration
-} from '../capability/capability';
+import type { Behavior, Capability, CapabilityInfo, CapabilityKey } from '../capability';
+import type { Collection } from './collection.svelte';
 
-// Symbol.for survives duplicate copies and HMR; forgeable by design, guards forks not adversaries.
-const BOND_BRAND: unique symbol = Symbol.for('@svelte-atoms/bond:brand');
-
-// OrdinaryHasInstance: exact prototype semantics for subclass checks, bypassed only at base Bond.
-function ordinaryHasInstance(ctor: unknown, value: unknown): boolean {
-	if (typeof ctor !== 'function') return false;
-	const proto = (ctor as { prototype?: unknown }).prototype;
-	if (proto === null || typeof proto !== 'object') return false;
-	return (
-		value !== null &&
-		(typeof value === 'object' || typeof value === 'function') &&
-		Object.prototype.isPrototypeOf.call(proto, value as object)
-	);
-}
-
-export abstract class Bond<
-	Props extends BondStateProps = BondStateProps,
-	State extends BondState<Props> = BondState<Props>
-> {
+export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	static CONTEXT_KEY = bondContextKey('bond');
 
-	// Class-level registry of fixed atom factories, shared by the family.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static atoms: AtomRegistry<any> = {};
-
-	#state: State;
-	#queue = new StagedMap<BondAtom>();
+	#id: string;
+	#props: Props;
+	#nodes = new StagedMap<NodeRegistration>();
 	#name: string;
+	// Single home for capabilities; collections also live here at slot collection:<kind>.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	#capabilities: Capability<any>[] = [];
+	// Slot index mirrors #capabilities for O(1) lookup while preserving projection order.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	#capabilitySlots = new Map<symbol, number>();
+	#setupConsumed = false;
+	#validated = false;
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	#nodeRegistrations = new Map<Atom, string>();
+	#nodeRegistrationId = 0;
 
 	// Cross-copy identity brand; read by static [Symbol.hasInstance].
 	readonly [BOND_BRAND] = true;
 
-	constructor(state: State, name?: string) {
-		this.#state = state;
+	constructor(props: Props = {} as Props, name?: string) {
+		this.#props = (props ?? {}) as Props;
+		this.#id = this.#props.id ?? nanoid(8);
 		this.#name = name ?? '';
 	}
 
-	get elements() {
-		const obj: Record<string, Element | BondVirtualElement | undefined> = {};
-		this.#queue.forEach((key, atom) => (obj[key] = atom.element));
-		return obj;
-	}
-
 	get id() {
-		return this.state.id;
+		return this.props?.id ?? this.#id;
 	}
 
-	get state() {
-		return this.#state;
+	// Compatibility alias while older internals migrate from `bond.state.*` to `bond.*`.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	get state(): any {
+		return this;
+	}
+
+	get props() {
+		return this.#props;
 	}
 
 	get name() {
@@ -113,166 +67,93 @@ export abstract class Bond<
 		return this.name;
 	}
 
-	// DOM-identity namespace (data-bond, kind, ids); hyphenated, defaults to name.
 	get namespace(): string {
 		return this.name;
 	}
 
-	// Dotted preset path (e.g. accordion.item), source of truth for atom preset keys; defaults to namespace.
 	get preset(): string {
 		return this.namespace;
 	}
 
-	// Per-instance atom factories (dynamic atoms + overrides), checked before the shared class registry.
-	#instanceAtoms?: AtomRegistry;
-
-	protected registerAtom(key: string, factory: AtomFactory): void {
-		(this.#instanceAtoms ??= {})[key] = factory;
-	}
-
 	share(): this {
-		setContext((this.constructor as typeof Bond).CONTEXT_KEY, this);
-		return this;
+		const key = (this.constructor as typeof Bond).CONTEXT_KEY;
+		return setContext(key, this);
 	}
 
-	// Resolution order: #instanceAtoms → Bond.atoms → DefaultAtom.
-	atom(key: string): BondAtom {
-		const existing = this.#queue.get(key);
-		if (existing) return existing;
+	get elements() {
+		const obj: Record<string, Element | BondVirtualElement | undefined> = {};
+		for (const registration of this.#nodes.values()) {
+			obj[registration.key] = registration.node.element;
+		}
+		return obj;
+	}
 
-		const registered = this.#instanceAtoms?.[key] ?? (this.constructor as typeof Bond).atoms[key];
-		const newAtom = registered ? registered(this) : new DefaultAtom(this, key);
-		this.#queue.stage(key, newAtom);
-		return newAtom;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	register<N extends Atom<any, any>>(node: N, options: NodeRegistrationOptions = {}): () => void {
+		const key = options.key ?? node.name;
+		const cardinality = options.cardinality ?? 'single';
+		const existingId = this.#nodeRegistrations.get(node);
+
+		if (existingId) {
+			return () => this.unregister(node);
+		}
+
+		if (import.meta.env?.DEV && cardinality === 'single') {
+			const duplicate = this.#nodes.values().find((registration) => registration.key === key)?.node;
+			if (duplicate && duplicate !== node) {
+				console.warn(
+					`[svelte-atoms] Bond("${this.name}").register("${key}") received multiple nodes for a single-node slot. Use { cardinality: 'many' } when this is intentional.`
+				);
+			}
+		}
+
+		const id = `${key}:${++this.#nodeRegistrationId}`;
+		this.#nodeRegistrations.set(node, id);
+		this.#nodes.stage(id, { id, key, cardinality, node });
+
+		let live = true;
+		return () => {
+			if (!live) return;
+			live = false;
+			this.unregister(node);
+		};
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	unregister(node: Atom<any, any>): void {
+		const id = this.#nodeRegistrations.get(node);
+		if (!id) return;
+		this.#nodeRegistrations.delete(node);
+		this.#nodes.delete(id);
+	}
+
+	node<N extends Atom = Atom>(key: string): N | undefined {
+		return this.nodes<N>(key)[0];
+	}
+
+	nodes<N extends Atom = Atom>(kind?: string): N[] {
+		return this.#nodes
+			.values()
+			.filter((registration) => {
+				if (!kind) return true;
+				const node = registration.node;
+				return (
+					registration.key === kind ||
+					node.name === kind ||
+					node.kind === kind ||
+					node.hasRole(kind)
+				);
+			})
+			.map((registration) => registration.node as N);
 	}
 
 	// Find the atom playing role (e.g. for aria-controls cross-references).
-	atomByRole(role: string): BondAtom | undefined {
-		const atom = this.#queue.find((a) => a.hasRole(role));
-		if (import.meta.env?.DEV && !atom) {
-			console.warn(
-				`[svelte-atoms] Bond("${this.name}").atomByRole("${role}"): no atom plays this role.`
-			);
-		}
-		return atom;
-	}
-
-	element<T extends Element | BondVirtualElement = Element | BondVirtualElement>(
-		key: string
-	): T | undefined {
-		return this.atom(key)?.element as T | undefined;
-	}
-
-	// Surface type travels with the key (no cast, no parallel slot→type map).
-	capability<C extends Capability>(capability: C): C;
-	capability<S>(key: CapabilityKey<S>): Capability<S> | undefined;
-	capability<S = unknown>(
-		capabilityOrKey: Capability | CapabilityKey<S>
-	): Capability<S> | undefined {
-		return this.#state.capability(capabilityOrKey as CapabilityKey<S>);
-	}
-
-	surface<S>(key: CapabilityKey<S>): S | undefined {
-		return this.#state.surface(key);
-	}
-
-	// For hard dependencies; throws with the slot name instead of returning undefined.
-	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
-		return this.#state.requireCapability(key);
-	}
-
-	requireSurface<S>(key: CapabilityKey<S>): S {
-		return this.#state.requireSurface(key);
-	}
-
-	// Called by useCapabilities() when it runs setups — silences the DEV "setup() never ran" guard.
-	markSetupConsumed(): void {
-		this.#state.markSetupConsumed();
-	}
-
-	get capabilities(): readonly Capability[] {
-		return this.#state.capabilities;
-	}
-
-	describeCapabilities(): CapabilityInfo[] {
-		return this.#state.describeCapabilities();
-	}
-
-	// Answers "why does this atom have these attrs/handlers" — projection otherwise scatters across the chain.
-	explainRole(role: string, ctx?: unknown): RoleProjectionInfo[] {
-		const out: RoleProjectionInfo[] = [];
-		for (const cap of this.capabilities) {
-			const b = cap.behavior?.(role, ctx);
-			if (!b) continue;
-			out.push({
-				slot: cap.slot,
-				description: cap.slot.description,
-				...(b.attrs ? { attrs: b.attrs(this) } : {}),
-				...(b.handlers ? { handlers: b.handlers(this) } : {}),
-				hasOnmount: typeof b.onmount === 'function'
-			});
-		}
-		return out;
-	}
-
-	destroy() {
-		this.#queue.clear();
-	}
-
-	// Polymorphic this: FooBond.get() returns Foo | undefined.
-	static get<T extends Bond>(this: BondClass<T>): T | undefined {
-		return getContext(this.CONTEXT_KEY);
-	}
-
-	// Returns a non-optional bond — call sites stay narrowed inside closures/$derived. Pass a component-specific message.
-	static getOrThrow<T extends Bond>(this: BondClass<T>, message?: string): T {
-		const bond = getContext<T | undefined>(this.CONTEXT_KEY);
-		if (!bond) {
-			throw new Error(
-				message ??
-					'[svelte-atoms] Bond context missing: component must be used within its provider.'
-			);
-		}
-		return bond;
-	}
-
-	static set<T extends Bond>(this: BondClass<T>, bond: T): T {
-		return setContext(this.CONTEXT_KEY, bond);
-	}
-
-	// x instanceof Bond via BOND_BRAND (survives duplicate copies); subclass checks stay prototype-based.
-	static [Symbol.hasInstance](this: unknown, value: unknown): boolean {
-		if (this === Bond) {
-			return value != null && typeof value === 'object' && BOND_BRAND in value;
-		}
-		return ordinaryHasInstance(this, value);
-	}
-}
-
-export abstract class BondState<S extends BondStateProps = BondStateProps> {
-	#id: string;
-	#props: S;
-	// Single home for capabilities; collections also live here at slot collection:<kind>.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	#capabilities: Capability<any>[] = [];
-
-	constructor(props: S, id: string = nanoid(8)) {
-		this.#props = props;
-		this.#id = id;
-	}
-
-	get id() {
-		return this.props?.id ?? this.#id;
-	}
-
-	get props() {
-		return this.#props;
+	atomByRole(role: string): Atom | undefined {
+		return this.node(role);
 	}
 
 	collection<T>(kind: string): Collection<T> {
 		const slot = collectionSlot(kind);
-		// Read the registry directly (not via `capability(slot)`) so a first, cache-priming
-		// access doesn't trip the "no capability at this slot" DEV warning.
 		const existing = this.#findCapability(slot);
 		if (existing) return existing.surface as Collection<T>;
 		const cap = collectionCapability<T>(kind);
@@ -289,18 +170,14 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 			const found = this.#findCapability(capabilityOrKey) as Capability<S> | undefined;
 			if (import.meta.env?.DEV && !found) {
 				console.warn(
-					`[svelte-atoms] BondState.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
+					`[svelte-atoms] Bond.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
 				);
 			}
 			return found;
 		}
-		// Last-wins-per-slot: re-registering a slot replaces the prior holder (lets a spec override a
-		// base default; `fuse` and the overlay capability stacks rely on it). A holder carrying a
-		// `compose` hook instead WRAPS the prior — the registry hands it the capability it supersedes
-		// so it can delegate (decorateCapability). DEV-logs either way so overrides aren't silent.
-		// Slot identity is by symbol, not string.
-		const i = this.#capabilities.findIndex((c) => c.slot === capabilityOrKey.slot);
-		if (i >= 0) {
+
+		const i = this.#capabilitySlots.get(capabilityOrKey.slot);
+		if (i !== undefined) {
 			const prior = this.#capabilities[i]!;
 			const next = capabilityOrKey.compose ? capabilityOrKey.compose(prior) : capabilityOrKey;
 			if (import.meta.env?.DEV) {
@@ -310,30 +187,24 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 				);
 			}
 			this.#capabilities[i] = next;
+			return next as Capability<S>;
 		} else {
+			this.#capabilitySlots.set(capabilityOrKey.slot, this.#capabilities.length);
 			this.#capabilities.push(capabilityOrKey);
+			return capabilityOrKey as Capability<S>;
 		}
-		return capabilityOrKey as Capability<S>;
 	}
 
-	// Bare registry lookup by slot identity — no DEV warn. Shared by capability()/collection()/require*.
-	#findCapability(slot: symbol): Capability | undefined {
-		return this.#capabilities.find((c) => c.slot === slot);
+	get<S>(key: CapabilityKey<S>): S | undefined {
+		return this.surface(key);
 	}
 
 	surface<S>(key: CapabilityKey<S>): S | undefined {
 		return this.capability(key)?.surface;
 	}
 
-	// Throws with the slot name (skips the DEV warn).
-	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
-		const found = this.#findCapability(key) as Capability<S> | undefined;
-		if (!found) {
-			throw new Error(
-				`[svelte-atoms] required capability "${slotName(key)}" is not registered in "${this.id}".`
-			);
-		}
-		return found;
+	require<S>(key: CapabilityKey<S>): S {
+		return this.requireSurface(key);
 	}
 
 	requireSurface<S>(key: CapabilityKey<S>): S {
@@ -346,10 +217,14 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		return cap.surface;
 	}
 
-	// Set by useCapabilities() once it has run the registered setups.
-	#setupConsumed = false;
-	markSetupConsumed(): void {
-		this.#setupConsumed = true;
+	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
+		const found = this.#findCapability(key) as Capability<S> | undefined;
+		if (!found) {
+			throw new Error(
+				`[svelte-atoms] required capability "${slotName(key)}" is not registered in "${this.id}".`
+			);
+		}
+		return found;
 	}
 
 	get capabilities(): readonly Capability[] {
@@ -360,40 +235,21 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		return this.#capabilities.map((c) => ({
 			slot: c.slot,
 			description: c.slot.description,
+			...(c.meta ? { meta: c.meta } : {}),
 			hasSurface: c.surface !== undefined,
 			requires: c.requires ?? [],
 			hasSetup: typeof c.setup === 'function'
 		}));
 	}
 
-	// Deferred to first projection so the full constructor-time registration order is complete.
-	// Checks: (a) requires slots are registered, (b) useCapabilities ran if any cap has setup().
-	// Timing: real roots call useCapabilities before children project, so (b) only fires when genuinely missing.
-	#validated = false;
-	#validate() {
-		// Plain local Set: built once for membership lookup below, never reactive state.
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const slots = new Set(this.#capabilities.map((c) => c.slot));
-		for (const cap of this.#capabilities) {
-			for (const need of cap.requires ?? []) {
-				if (!slots.has(need)) {
-					console.warn(
-						`[svelte-atoms] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`
-					);
-				}
-			}
-		}
-		if (!this.#setupConsumed && this.#capabilities.some((c) => c.setup)) {
-			console.warn(
-				`[svelte-atoms] "${this.id}" registered capabilities with setup() (focus/escape/…) but useCapabilities(bond) was never called — their whole-bond effects will not run.`
-			);
-		}
+	markSetupConsumed(): void {
+		this.#setupConsumed = true;
 	}
 
 	behaviorsForRole(role: string, ctx?: unknown): Behavior[] {
 		if (import.meta.env?.DEV && !this.#validated) {
 			this.#validated = true;
-			this.#validate();
+			this.#validateCapabilities();
 		}
 		const out: Behavior[] = [];
 		for (const capability of this.#capabilities) {
@@ -402,151 +258,103 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		}
 		return out;
 	}
-}
 
-export class BondAtom<
-	B extends Bond<BondStateProps, BondState<BondStateProps>> = Bond,
-	E extends Element | BondVirtualElement = Element | BondVirtualElement
-> {
-	#id = $derived.by(() => getElementId(this.bond.id, this.kind));
-	#element = $state<E | undefined>();
-	#behaviors: Behavior<B, E>[] = [];
-	// Minted ONCE: Svelte keys attachments by symbol identity, so a fresh key per spread access would re-fire onmount/ondestroy.
-	#attachKey = createAttachmentKey();
-	// Pre-bound under stable keys at behavior() time — same reasoning as #attachKey.
-	#behaviorAttachments: Record<symbol, (node: E) => void | (() => void)> = {};
-	// Bound once: a fresh closure under a stable key still re-runs. Dispatches to this.onmount/ondestroy so overrides win.
-	#ownAttach = (node: E): void | (() => void) => {
-		this.setElement(node);
-		const cleanup = this.onmount(node);
-		return () => {
-			cleanup?.();
-			this.ondestroy?.();
-		};
-	};
-	// Written once at declaration; reactivity rides the queue, not this set.
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	#roles = new Set<string>();
-	protected bond: B;
-	protected key: string;
-
-	constructor(bond: B, key: string) {
-		this.bond = bond;
-		this.key = key;
+	destroy() {
+		this.#nodes.clear();
+		this.#nodeRegistrations.clear();
 	}
 
-	behavior(behavior: Behavior<B, E>): this {
-		this.#behaviors.push(behavior);
-		if (behavior.onmount) {
-			const onmount = behavior.onmount;
-			// Bound here, not in the spread getter — Svelte keys attachments by symbol, so a new key per read re-runs the attachment.
-			this.#behaviorAttachments[createAttachmentKey()] = (node: E) => onmount(node, this.bond);
+	#findCapability(slot: symbol): Capability | undefined {
+		const i = this.#capabilitySlots.get(slot);
+		return i === undefined ? undefined : this.#capabilities[i];
+	}
+
+	#validateCapabilities() {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const slots = new Set(this.#capabilities.map((c) => c.slot));
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const slotOwners = new Map(this.#capabilities.map((c) => [c.slot, c]));
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity
+		const roleOwners = new Map<string, Capability[]>();
+		for (const cap of this.#capabilities) {
+			for (const role of cap.meta?.projects ?? []) {
+				const owners = roleOwners.get(role);
+				if (owners) owners.push(cap);
+				else roleOwners.set(role, [cap]);
+			}
 		}
-		return this;
-	}
+		for (const cap of this.#capabilities) {
+			for (const need of cap.requires ?? []) {
+				if (!slots.has(need)) {
+					console.warn(
+						`[svelte-atoms] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`
+					);
+				}
+			}
+			for (const conflict of cap.meta?.conflicts ?? []) {
+				if (typeof conflict === 'symbol') {
+					const owner = slotOwners.get(conflict);
+					if (owner && owner !== cap) {
+						console.warn(
+							`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with registered capability slot "${slotName(conflict)}" in "${this.id}".`
+						);
+					}
+					continue;
+				}
 
-	// item/input require a string ctx; structural roles take none; custom roles accept optional unknown.
-	role<R extends string>(role: R, ...args: RoleCtxArgs<R>): this {
-		const ctx = args[0] as unknown;
-		this.#roles.add(role);
-		const behaviors = this.bond.state.behaviorsForRole(role, ctx);
-		if (import.meta.env?.DEV && behaviors.length === 0) {
+				const owners = roleOwners.get(conflict)?.filter((owner) => owner !== cap) ?? [];
+				if (owners.length > 0) {
+					console.warn(
+						`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with role "${conflict}" projected by ${owners.map((owner) => `"${slotName(owner.slot)}"`).join(', ')} in "${this.id}".`
+					);
+				}
+			}
+		}
+		if (!this.#setupConsumed && this.#capabilities.some((c) => c.setup)) {
 			console.warn(
-				`[svelte-atoms] BondAtom("${this.bond.name}/${this.name}").role("${role}"): no capability responds to this role. If intentional, ignore.`
+				`[svelte-atoms] "${this.id}" registered capabilities with setup() (focus/escape/...) but useCapabilities(bond) was never called — their whole-bond effects will not run.`
 			);
 		}
-		for (const b of behaviors) this.behavior(b as Behavior<B, E>);
-		return this;
 	}
 
-	hasRole(role: string): boolean {
-		return this.#roles.has(role);
+	static get<T extends Bond>(this: BondClass<T>): T | undefined {
+		return getBondContext(this);
 	}
 
-	get id() {
-		return this.#id;
+	static getOrThrow<T extends Bond>(this: BondClass<T>, message?: string): T {
+		return requireBondContext(this, message);
 	}
 
-	get element() {
-		return this.#element;
+	static optional<T extends Bond>(this: BondClass<T>): T | undefined {
+		return getBondContext(this);
 	}
 
-	get name() {
-		return this.key;
+	static required<T extends Bond>(this: BondClass<T>, message?: string): T {
+		return requireBondContext(this, message);
 	}
 
-	get kind() {
-		return `${this.bond.namespace}-${this.name}`;
+	static set<T extends Bond>(this: BondClass<T>, bond: T): T {
+		return setContext(this.CONTEXT_KEY, bond);
 	}
 
-	// Default preset key: root → bare bond.preset, others append name. Read as: preset ?? atom.preset.
-	get preset(): string {
-		const base = this.bond.preset;
-		return this.name === 'root' ? base : `${base}.${this.name}`;
-	}
-
-	get attrs(): Record<string, unknown> {
-		return {
-			id: this.id,
-			'data-bond': this.bond.namespace,
-			'data-kind': this.kind
-		};
-	}
-
-	get handlers(): Record<string, unknown> {
-		return {};
-	}
-
-	get attachments(): Record<string, (node: E) => void | (() => void)> {
-		return { [this.#attachKey]: this.#ownAttach };
-	}
-
-	get spread(): Record<string | symbol, unknown> {
-		if (this.#behaviors.length === 0) {
-			return { ...this.attrs, ...this.handlers, ...this.attachments };
+	static [Symbol.hasInstance](this: unknown, value: unknown): boolean {
+		if (this === Bond) {
+			return value != null && typeof value === 'object' && BOND_BRAND in value;
 		}
-
-		let attrs: Record<string, unknown> = { ...this.attrs };
-		let handlers: Record<string, unknown> = { ...this.handlers };
-
-		for (const behavior of this.#behaviors) {
-			if (behavior.attrs) attrs = { ...attrs, ...behavior.attrs(this.bond) };
-			if (behavior.handlers) handlers = composeHandlers(handlers, behavior.handlers(this.bond));
-		}
-
-		return { ...attrs, ...handlers, ...this.attachments, ...this.#behaviorAttachments };
-	}
-
-	onmount(node: E): void | (() => void) {
-		void node;
-	}
-	ondestroy?(): void {}
-
-	protected setElement(element: E | undefined) {
-		this.#element = element;
+		return ordinaryHasInstance(this, value);
 	}
 }
 
-// Fallback atom with no overrides, used by Bond.atom() for any unregistered key.
-export class DefaultAtom extends BondAtom {}
+function getBondContext<T extends Bond>(cls: BondClass<T>): T | undefined {
+	return getContext(cls.CONTEXT_KEY);
+}
 
-// Merge two handler maps: chain colliding functions (base then extra), last-wins for non-functions.
-function composeHandlers(
-	base: Record<string, unknown>,
-	extra: Record<string, unknown>
-): Record<string, unknown> {
-	const out: Record<string, unknown> = { ...base };
-	for (const key in extra) {
-		const a = out[key];
-		const b = extra[key];
-		if (typeof a === 'function' && typeof b === 'function') {
-			out[key] = (...args: unknown[]) => {
-				(a as (...a: unknown[]) => unknown)(...args);
-				(b as (...a: unknown[]) => unknown)(...args);
-			};
-		} else {
-			out[key] = b;
-		}
+function requireBondContext<T extends Bond>(cls: BondClass<T>, message?: string): T {
+	const bond = getBondContext(cls);
+	if (!bond) {
+		throw new Error(
+			message ?? '[svelte-atoms] Bond context missing: component must be used within its provider.'
+		);
 	}
-	return out;
+	return bond;
 }

@@ -7,7 +7,7 @@ import {
 	type Behavior,
 	type Capability,
 	type BondStateProps
-} from '../bond/bond.svelte';
+} from '../bond';
 
 // decorateCapability lets a later registration WRAP the prior holder at a slot (delegate the rest)
 // instead of the default blind last-wins replace — the capability-layer dual of atom behavior chaining.
@@ -23,6 +23,7 @@ class S extends BondState<BondStateProps> {
 function baseCapability(): Capability<{ name: string }> {
 	return {
 		slot: SLOT,
+		meta: { layer: 1, kind: 'policy', projects: ['trigger', 'label'] },
 		surface: { name: 'base' },
 		requires: [SLOT],
 		behavior(role): Behavior | undefined {
@@ -77,6 +78,7 @@ describe('decorateCapability', () => {
 		state.capability(decorateCapability(SLOT, { behavior: (_r, _c, base) => base }));
 
 		const live = state.capability(SLOT)!;
+		expect(live.meta).toEqual({ layer: 1, kind: 'policy', projects: ['trigger', 'label'] });
 		expect(live.surface).toEqual({ name: 'base' });
 		expect(live.requires).toEqual([SLOT]);
 	});

@@ -1,11 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import {
-	Bond,
-	BondState,
-	BondAtom,
-	bondContextKey,
-	type BondStateProps
-} from '../../bond/bond.svelte';
+import { Bond, BondState, Atom, bondContextKey, type BondStateProps } from '../../bond';
 import { createRovingFocus, rovingCapability, ROVING } from './roving.svelte';
 import { navigationCapability, NAVIGATION } from './navigation.svelte';
 
@@ -17,13 +11,17 @@ class NavState extends BondState<BondStateProps> {
 		super({});
 	}
 }
-class NavBond extends Bond<BondStateProps, NavState> {
+class NavBond extends Bond<BondStateProps> {
 	static CONTEXT_KEY = bondContextKey('test-nav');
 	constructor(state: NavState) {
 		super(state, 'test-nav');
 	}
+
+	override get state(): NavState {
+		return super.state as NavState;
+	}
 }
-class NavAtom extends BondAtom<NavBond> {
+class NavAtom extends Atom<NavBond> {
 	constructor(bond: NavBond, key = 'content') {
 		super(bond, key);
 	}
@@ -42,8 +40,8 @@ function key(handlers: Record<string, unknown>, k: string) {
 describe('navigationCapability', () => {
 	it('vertical (default): ArrowDown → next, ArrowUp → previous on the container', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving));
 		const content = new NavAtom(bond).role('container');
 
 		key(content.spread, 'ArrowDown');
@@ -56,8 +54,8 @@ describe('navigationCapability', () => {
 
 	it('does not act when the event was already handled (defaultPrevented)', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving));
 		const content = new NavAtom(bond).role('container');
 
 		const ev = {
@@ -71,8 +69,8 @@ describe('navigationCapability', () => {
 
 	it('horizontal orientation maps Left/Right instead of Up/Down', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving, { orientation: 'horizontal' }));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving, { orientation: 'horizontal' }));
 		const content = new NavAtom(bond).role('container');
 
 		key(content.spread, 'ArrowDown'); // ignored on horizontal
@@ -85,8 +83,8 @@ describe('navigationCapability', () => {
 
 	it('Home/End are opt-in and jump to first/last', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving, { homeEnd: true }));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving, { homeEnd: true }));
 		const content = new NavAtom(bond).role('container');
 
 		key(content.spread, 'End');
@@ -97,8 +95,8 @@ describe('navigationCapability', () => {
 
 	it('projects onto only the configured roles', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving, { roles: ['trigger'] }));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving, { roles: ['trigger'] }));
 
 		const content = new NavAtom(bond, 'content').role('container');
 		expect(content.spread.onkeydown).toBeUndefined(); // not a configured role
@@ -110,8 +108,8 @@ describe('navigationCapability', () => {
 
 	it('preventScroll calls preventDefault on a handled key', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving, { preventScroll: true }));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving, { preventScroll: true }));
 		const content = new NavAtom(bond).role('container');
 
 		const ev = key(content.spread, 'ArrowDown');
@@ -124,15 +122,20 @@ describe('navigationCapability', () => {
 describe('capability introspection + requires (#6, #3)', () => {
 	it('describeCapabilities() reports slot / surface / requires / setup', () => {
 		const bond = new NavBond(new NavState());
-		bond.capability(rovingCapability(bond.state.roving));
-		bond.capability(navigationCapability(bond.state.roving));
+		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving));
 
-		const info = bond.describeCapabilities();
+		const info = bond.state.describeCapabilities();
 		const nav = info.find((c) => c.slot === NAVIGATION);
 		expect(nav).toBeDefined();
 		expect(nav!.hasSurface).toBe(true);
 		expect(nav!.requires).toEqual([ROVING]);
 		expect(nav!.hasSetup).toBe(false);
+		expect(nav!.meta).toMatchObject({
+			layer: 1,
+			kind: 'policy',
+			projects: ['container']
+		});
 
 		const roving = info.find((c) => c.slot === ROVING);
 		expect(roving!.requires).toEqual([]);
@@ -142,7 +145,7 @@ describe('capability introspection + requires (#6, #3)', () => {
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const bond = new NavBond(new NavState());
 		// navigation requires 'roving', but it is never registered
-		bond.capability(navigationCapability(bond.state.roving));
+		bond.state.capability(navigationCapability(bond.state.roving));
 		new NavAtom(bond).role('container'); // first projection triggers the check
 
 		expect(warn).toHaveBeenCalledWith(

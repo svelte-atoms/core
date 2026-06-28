@@ -1,4 +1,4 @@
-import { BondState, type BondStateProps } from '../../bond/bond.svelte';
+import { BondState, type BondStateProps } from '../../bond';
 import type { Disclosure } from './disclosure.svelte';
 
 // Props shared by every disclosure-backed bond state (pairs with DisclosureState): open/disabled plus

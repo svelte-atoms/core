@@ -2,13 +2,21 @@ import { describe, it, expect, vi } from 'vitest';
 import {
 	Bond,
 	BondState,
-	BondAtom,
+	Atom,
 	defineCapability,
+	defineModelCapability,
+	defineProjectionCapability,
+	defineRelationshipCapability,
+	definePolicyCapability,
+	defineEffectCapability,
+	defineFocusedCapability,
+	defineArchetypeCapabilities,
+	explainBondRole,
 	sharedCapabilityKey,
 	capabilityKey,
 	type BondStateProps,
 	type Capability
-} from '../bond/bond.svelte';
+} from '../bond';
 import { useCapabilities } from './use.svelte';
 
 // defineCapability is the canonical authoring entry point: a typed role-map (or a raw behavior
@@ -90,51 +98,145 @@ describe('defineCapability — typed role map', () => {
 		expect(behaviors).toHaveLength(1);
 		expect(behaviors[0]!.attrs?.(mkBond())).toEqual({ id: 'x' });
 	});
+
+	it('carries inert metadata into describeCapabilities()', () => {
+		const state = new S();
+		const cap = defineCapability({
+			slot: MODEL,
+			meta: {
+				layer: 1,
+				kind: 'policy',
+				projects: ['trigger'],
+				requiresRoles: ['trigger', 'content'],
+				conflicts: [DEP],
+				docs: 'test policy'
+			}
+		});
+
+		state.capability(cap);
+
+		expect(cap.meta?.kind).toBe('policy');
+		expect(state.describeCapabilities()[0]!.meta).toEqual(cap.meta);
+	});
+});
+
+describe('faceted capability helpers', () => {
+	it('defines a Layer 1 model capability without projection behavior', () => {
+		const cap = defineModelCapability({ slot: MODEL, surface: { value: 1 } });
+
+		expect(cap.surface).toEqual({ value: 1 });
+		expect(cap.behavior).toBeUndefined();
+		expect(cap.meta).toMatchObject({ layer: 1, kind: 'model' });
+	});
+
+	it('defines a Layer 1 projection capability from a typed role map', () => {
+		const cap = defineProjectionCapability({
+			slot: capabilityKey('projection'),
+			roles: {
+				trigger: () => ({ attrs: () => ({ 'data-trigger': true }) })
+			}
+		});
+
+		expect(cap.meta).toMatchObject({
+			layer: 1,
+			kind: 'projection',
+			projects: ['trigger']
+		});
+		expect(cap.behavior?.('trigger')?.attrs?.(mkBond())).toEqual({ 'data-trigger': true });
+	});
+
+	it('defines relationship, policy, and effect facets with explicit intent metadata', () => {
+		const relationship = defineRelationshipCapability({
+			slot: capabilityKey('relationship'),
+			meta: { projects: ['trigger', 'content'], requiresRoles: ['trigger', 'content'] }
+		});
+		const policy = definePolicyCapability({
+			slot: capabilityKey('policy'),
+			meta: { projects: ['trigger'] },
+			behavior: (role) =>
+				role === 'trigger' ? { handlers: () => ({ onclick: () => {} }) } : undefined
+		});
+		const effect = defineEffectCapability({
+			slot: capabilityKey('effect'),
+			setup: () => {},
+			meta: { docs: 'installs a whole-bond listener' }
+		});
+
+		expect(relationship.meta).toMatchObject({
+			layer: 1,
+			kind: 'relationship',
+			requiresRoles: ['trigger', 'content']
+		});
+		expect(policy.meta).toMatchObject({ layer: 1, kind: 'policy', projects: ['trigger'] });
+		expect(policy.behavior?.('trigger')).toBeDefined();
+		expect(effect.meta).toMatchObject({ layer: 1, kind: 'effect' });
+		expect(effect.setup).toBeTypeOf('function');
+	});
+
+	it('labels focused capabilities and archetype bundles without changing member capabilities', () => {
+		const model = defineModelCapability({ slot: MODEL, surface: { value: 2 } });
+		const focused = defineFocusedCapability({
+			slot: capabilityKey('focused'),
+			capabilities: [model],
+			meta: { docs: 'selectable collection kit' }
+		});
+		const archetype = defineArchetypeCapabilities([model], { docs: 'listbox recipe' });
+
+		expect(focused.surface).toEqual([model]);
+		expect(focused.meta).toMatchObject({ layer: 2, kind: 'focused' });
+		expect(archetype).toHaveLength(1);
+		expect(archetype[0]).toBe(model);
+		expect(archetype.meta).toMatchObject({ layer: 3, kind: 'archetype' });
+	});
 });
 
 describe('surface / requireCapability / requireSurface — typed access (#3/#4)', () => {
 	it('surface() returns the held model, undefined when the slot is empty', () => {
 		const bond = mkBond();
-		expect(bond.surface(MODEL)).toBeUndefined();
-		bond.capability(defineCapability<{ value: number }>({ slot: MODEL, surface: { value: 42 } }));
-		expect(bond.surface(MODEL)).toEqual({ value: 42 });
+		expect(bond.state.surface(MODEL)).toBeUndefined();
+		bond.state.capability(
+			defineCapability<{ value: number }>({ slot: MODEL, surface: { value: 42 } })
+		);
+		expect(bond.state.surface(MODEL)).toEqual({ value: 42 });
 	});
 
 	it('requireCapability() throws (no warn) when the slot is empty', () => {
 		const bond = mkBond();
-		expect(() => bond.requireCapability(MODEL)).toThrowError(/required capability/);
+		expect(() => bond.state.requireCapability(MODEL)).toThrowError(/required capability/);
 	});
 
 	it('requireSurface() returns the model, throws when slot or surface is absent', () => {
 		const bond = mkBond();
-		expect(() => bond.requireSurface(MODEL)).toThrowError(/required capability/);
+		expect(() => bond.state.requireSurface(MODEL)).toThrowError(/required capability/);
 		// Registered but surface-less.
-		bond.capability(defineCapability({ slot: MODEL, roles: {} }));
-		expect(() => bond.requireSurface(MODEL)).toThrowError(/no surface/);
+		bond.state.capability(defineCapability({ slot: MODEL, roles: {} }));
+		expect(() => bond.state.requireSurface(MODEL)).toThrowError(/no surface/);
 	});
 });
 
 describe('explainRole — projection introspection (#7)', () => {
 	it('reports each capability that contributes to a role, with resolved attrs', () => {
 		const bond = mkBond();
-		bond.capability(
+		bond.state.capability(
 			defineCapability({
 				slot: capabilityKey('a'),
+				meta: { layer: 1, kind: 'projection', projects: ['item'] },
 				roles: { item: (id) => ({ attrs: () => ({ a: id }) }) }
 			})
 		);
-		bond.capability(
+		bond.state.capability(
 			defineCapability({
 				slot: capabilityKey('b'),
 				roles: { item: () => ({ attrs: () => ({ b: 1 }) }) }
 			})
 		);
-		const info = bond.explainRole('item', 'q');
+		const info = explainBondRole(bond, 'item', 'q');
 		expect(info).toHaveLength(2);
+		expect(info[0]!.meta).toMatchObject({ kind: 'projection', projects: ['item'] });
 		expect(info[0]!.attrs).toEqual({ a: 'q' });
 		expect(info[1]!.attrs).toEqual({ b: 1 });
 		// A capability that doesn't handle the role is absent from the report.
-		expect(bond.explainRole('surface')).toHaveLength(0);
+		expect(explainBondRole(bond, 'surface')).toHaveLength(0);
 	});
 });
 
@@ -143,9 +245,9 @@ describe('setup guard (#5)', () => {
 		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const bond = mkBond();
 		// setup returns void so useCapabilities (not called here anyway) wouldn't need a component context.
-		bond.capability(defineCapability({ slot: capabilityKey('fx'), setup: () => {} }));
+		bond.state.capability(defineCapability({ slot: capabilityKey('fx'), setup: () => {} }));
 		// Trigger the deferred DEV validation via a projection ('surface' is a void role — no ctx).
-		new (class extends BondAtom {})(bond, 'probe').role('surface');
+		new (class extends Atom {})(bond, 'probe').role('surface');
 		expect(warn).toHaveBeenCalledWith(
 			expect.stringContaining('useCapabilities(bond) was never called')
 		);
@@ -157,11 +259,85 @@ describe('setup guard (#5)', () => {
 		const bond = mkBond();
 		// Void teardown so useCapabilities does not register an onDestroy (no component here).
 		const cap: Capability = defineCapability({ slot: capabilityKey('fx2'), setup: () => {} });
-		bond.capability(cap);
+		bond.state.capability(cap);
 		useCapabilities(bond); // marks setup consumed before any projection
-		new (class extends BondAtom {})(bond, 'probe').role('surface');
+		new (class extends Atom {})(bond, 'probe').role('surface');
 		expect(warn).not.toHaveBeenCalledWith(
 			expect.stringContaining('useCapabilities(bond) was never called')
+		);
+		warn.mockRestore();
+	});
+});
+
+describe('deferred capability validation', () => {
+	it('validates each registered capability in a multi-level requires chain', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const state = new S();
+		const a = capabilityKey('requires:a');
+		const b = capabilityKey('requires:b');
+		const c = capabilityKey('requires:c');
+
+		state.capability(defineCapability({ slot: a, requires: [b], roles: { item: () => ({}) } }));
+		state.capability(defineCapability({ slot: b, requires: [c], roles: { item: () => ({}) } }));
+
+		state.behaviorsForRole('item');
+
+		expect(warn).toHaveBeenCalledTimes(1);
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringContaining('capability "requires:b" requires slot "requires:c"')
+		);
+		warn.mockRestore();
+	});
+
+	it('does not re-run validation for capabilities registered after the first projection', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const state = new S();
+		const ready = capabilityKey('late:ready');
+		const late = capabilityKey('late:capability');
+		const missing = capabilityKey('late:missing');
+
+		state.capability(
+			defineCapability({ slot: ready, roles: { item: () => ({ attrs: () => ({ ready: true }) }) } })
+		);
+		state.behaviorsForRole('item');
+
+		state.capability(
+			defineCapability({ slot: late, requires: [missing], roles: { item: () => ({}) } })
+		);
+		state.behaviorsForRole('item');
+
+		expect(warn).not.toHaveBeenCalledWith(expect.stringContaining('requires slot'));
+		warn.mockRestore();
+	});
+
+	it('warns when capability metadata declares a conflict with a registered slot or projected role', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const state = new S();
+		const primary = capabilityKey('conflict:primary');
+		const competing = capabilityKey('conflict:competing');
+
+		state.capability(
+			defineCapability({
+				slot: primary,
+				meta: { conflicts: [competing, 'trigger'] },
+				roles: { item: () => ({}) }
+			})
+		);
+		state.capability(
+			defineCapability({
+				slot: competing,
+				meta: { projects: ['trigger'] },
+				roles: { trigger: () => ({}) }
+			})
+		);
+
+		state.behaviorsForRole('item');
+
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringContaining('conflicts with registered capability slot "conflict:competing"')
+		);
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringContaining('conflicts with role "trigger" projected by "conflict:competing"')
 		);
 		warn.mockRestore();
 	});

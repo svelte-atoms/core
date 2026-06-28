@@ -1,4 +1,4 @@
-import { defineCapability, sharedCapabilityKey, type Capability } from '../capability';
+import { defineProjectionCapability, sharedCapabilityKey, type Capability } from '../capability';
 import { ROVING } from './roving.svelte';
 
 // Surface type travels with the key — capability(INPUT) is typed without a cast.
@@ -60,14 +60,17 @@ export function inputCapability(
 	const isExpanded = options.expanded;
 	const isDisabled = options.disabled ?? (() => false);
 
-	return defineCapability<InputModel>({
+	return defineProjectionCapability<InputModel>({
 		slot: INPUT,
 		requires: [ROVING],
 		surface: model,
+		meta: {
+			docs: 'Input text model surface with combobox control projection.'
+		},
 		roles: {
 			input: (field) => ({
 				attrs: (bond) => {
-					const active = bond.requireSurface(ROVING).activeId;
+					const active = bond.state.requireSurface(ROVING).activeId;
 					const disabled = isDisabled();
 					return {
 						role: 'combobox',

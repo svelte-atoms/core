@@ -1,4 +1,4 @@
-import type { BondState, Capability } from '../bond/bond.svelte';
+import type { BondState, Capability } from '../bond';
 import {
 	defineBond,
 	type AtomSpec,

@@ -30,8 +30,14 @@ export class StagedMap<V> {
 
 	// Finds a just-staged (not yet flushed) value synchronously.
 	find(predicate: (value: V, key: string) => boolean): V | undefined {
-		for (const [key, value] of this.#committed) if (predicate(value, key)) return value;
-		for (const [key, value] of this.#pending) if (predicate(value, key)) return value;
+		for (const [key, value] of this.#committed) {
+			const current = this.#pending.get(key) ?? value;
+			if (predicate(current, key)) return current;
+		}
+		for (const [key, value] of this.#pending) {
+			if (this.#committed.has(key)) continue;
+			if (predicate(value, key)) return value;
+		}
 		return undefined;
 	}
 
@@ -40,14 +46,30 @@ export class StagedMap<V> {
 		this.#scheduleFlush();
 	}
 
+	delete(key: string): boolean {
+		const pendingDeleted = this.#pending.delete(key);
+		const committedDeleted = this.#committed.delete(key);
+		return pendingDeleted || committedDeleted;
+	}
+
 	clear(): void {
 		this.#pending.clear();
 		this.#committed.clear();
 	}
 
 	forEach(cb: (key: string, value: V) => void): void {
-		// Committed first, then pending so a re-staged key's newest value wins.
-		for (const [key, value] of this.#committed) cb(key, value);
-		for (const [key, value] of this.#pending) cb(key, value);
+		for (const [key, value] of this.#committed) {
+			cb(key, this.#pending.get(key) ?? value);
+		}
+		for (const [key, value] of this.#pending) {
+			if (this.#committed.has(key)) continue;
+			cb(key, value);
+		}
+	}
+
+	values(): V[] {
+		const out: V[] = [];
+		this.forEach((_, value) => out.push(value));
+		return out;
 	}
 }

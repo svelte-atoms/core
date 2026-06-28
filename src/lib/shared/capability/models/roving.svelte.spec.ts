@@ -1,13 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
 import { createRovingFocus, rovingCapability, type RovingBacking } from './roving.svelte';
-import {
-	Bond,
-	BondState,
-	BondAtom,
-	bondContextKey,
-	type BondStateProps
-} from '../../bond/bond.svelte';
+import { Bond, BondState, Atom, bondContextKey, type BondStateProps } from '../../bond';
 
 // Reactive ordered-id list standing in for a bond's Collection.
 function makeBacking(initial: string[] = [], wrap = true) {
@@ -110,21 +104,34 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 			super({});
 		}
 	}
-	class TBond extends Bond<BondStateProps, TState> {
+	class TBond extends Bond<BondStateProps> {
 		static CONTEXT_KEY = bondContextKey('test-roving');
 		constructor(state: TState) {
 			super(state, 'test');
 		}
+
+		override get state(): TState {
+			return super.state as TState;
+		}
 	}
-	class TAtom extends BondAtom<TBond> {
+	class TAtom extends Atom<TBond> {
 		constructor(bond: TBond, key: string) {
 			super(bond, key);
 		}
 	}
 
+	it('is annotated as a Layer 1 projection over the roving focus model surface', () => {
+		const cap = rovingCapability(createRovingFocus(makeBacking(['a', 'b']).backing));
+		expect(cap.meta).toMatchObject({
+			layer: 1,
+			kind: 'projection',
+			projects: ['container', 'item']
+		});
+	});
+
 	it('container reflects the active item id (mapped to a DOM id)', () => {
 		const bond = new TBond(new TState());
-		bond.capability(
+		bond.state.capability(
 			rovingCapability(bond.state.roving, {
 				itemDomId: (id) => `item-${id}`,
 				orientation: 'vertical'
@@ -143,7 +150,7 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 
 	it('defaults itemDomId to identity', () => {
 		const bond = new TBond(new TState());
-		bond.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(rovingCapability(bond.state.roving));
 		const container = new TAtom(bond, 'list').role('container');
 		bond.state.roving.goto('c');
 		expect(container.spread['aria-activedescendant']).toBe('c');
@@ -151,7 +158,7 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 
 	it('item reflects whether it is the highlighted one (boolean data-highlighted)', () => {
 		const bond = new TBond(new TState());
-		bond.capability(rovingCapability(bond.state.roving));
+		bond.state.capability(rovingCapability(bond.state.roving));
 		const itemB = new TAtom(bond, 'b').role('item', 'b');
 
 		expect(itemB.spread['data-highlighted']).toBe(false); // nothing active
@@ -163,6 +170,20 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 });
 
 describe('RovingFocus — reactive over the injected list', () => {
+	it('preserves the active id when earlier items are removed or reordered', () => {
+		const { backing, setIds } = makeBacking(['a', 'b', 'c']);
+		const r = createRovingFocus(backing);
+		r.goto('b');
+
+		setIds(['b', 'c']);
+		expect(r.activeId).toBe('b');
+		expect(r.activeIndex).toBe(0);
+
+		setIds(['c', 'b']);
+		expect(r.activeId).toBe('b');
+		expect(r.activeIndex).toBe(1);
+	});
+
 	it('activeId follows the injected ids (Collection-driven)', () => {
 		const { backing, setIds } = makeBacking(['a', 'b', 'c']);
 		const r = createRovingFocus(backing);

@@ -3,15 +3,14 @@ import { render } from 'vitest-browser-svelte';
 import {
 	Bond,
 	BondState,
-	BondAtom,
 	sharedCapabilityKey,
 	type Behavior,
 	type Capability,
 	type BondStateProps
-} from './bond.svelte';
+} from './index';
 import Comp, { tally, resetTally } from './probe.svelte';
 
-// Regression for the spread attachment-key churn: BondAtom.spread must NOT re-mint attachment keys
+// Regression for the spread attachment-key churn: Atom.spread must NOT re-mint attachment keys
 // on each access, or Svelte tears down and re-runs every onmount on every reactive update that
 // re-reads spread. We probe via a capability that projects an onmount onto role 'item'.
 const SLOT = sharedCapabilityKey('@svelte-atoms/test:mount-probe');
@@ -39,22 +38,14 @@ class ProbeState extends BondState<BondStateProps> {
 	}
 }
 
-class ItemAtom extends BondAtom {
-	constructor(bond: Bond) {
-		super(bond, 'item');
-		this.role('item', 'x'); // folds in the probe's onmount behavior
-	}
-}
-
 class ProbeBond extends Bond {
-	static atoms = { item: (bond: Bond) => new ItemAtom(bond) };
 	constructor(state: ProbeState) {
 		super(state, 'probe');
-		this.capability(probeCapability());
+		this.state.capability(probeCapability());
 	}
 }
 
-describe('BondAtom.spread attachment stability', () => {
+describe('Atom.spread attachment stability', () => {
 	beforeEach(resetTally);
 
 	it('runs the atom onmount once across re-derived spread (no remount churn)', async () => {

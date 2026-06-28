@@ -1,8 +1,6 @@
 // UI-side filtering over a reactive source list — source is never mutated, `current` is a $derived view.
 // createFilter: standalone (owns query). createBondFilter: spreads filter.props onto a list bond's Root.
 
-import { createLifecycleKey } from '../components';
-
 // Text accessor (case-insensitive substring) or { match } predicate receiving the normalised query.
 export type FilterMatcher<T> =
 	| ((item: T) => string)
@@ -156,10 +154,12 @@ export function createBondFilter<T>(
 
 	const filter = buildFilter(data, matcher, options, source);
 
-	// Stable lifecycle props for `<Select.Root {...filter.props}>` — minted once to avoid symbol churn.
+	// Stable lifecycle props for `<Select.Root {...filter.props}>`.
 	// On init: captures bond (query→bond.query prop) and keeps bond.keys in sync with the key universe.
-	const props: Record<symbol, (bond: KeyedListBond) => void> = {
-		[createLifecycleKey('init')]: (bond) => {
+	// Uses the string-keyed `oninit` hook (the symbol `init` phase was dropped); the inner
+	// `$effect.pre` is a no-op during SSR, so server-side it only captures the bond (harmless).
+	const props: { oninit: (bond: KeyedListBond) => void } = {
+		oninit: (bond) => {
 			boundBond = bond;
 			$effect.pre(() => {
 				bond.state.props.keys = filter.keys as string[];

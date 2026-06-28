@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
 	Bond,
 	BondState,
-	BondAtom,
+	Atom,
 	bondContextKey,
 	capabilityKey,
 	type BondStateProps
-} from '../../bond/bond.svelte';
+} from '../../bond';
 import { createSelection, selectionCapability, SELECTION } from './selection.svelte';
 
 // End-to-end proof of the role stitch: atom declares .role(...), bond folds in capability
@@ -26,14 +26,18 @@ class TestState extends BondState<BondStateProps> {
 	}
 }
 
-class TestBond extends Bond<BondStateProps, TestState> {
+class TestBond extends Bond<BondStateProps> {
 	static CONTEXT_KEY = bondContextKey('test-stitch');
 	constructor(state: TestState) {
 		super(state, 'test');
 	}
+
+	override get state(): TestState {
+		return super.state as TestState;
+	}
 }
 
-class TestAtom extends BondAtom<TestBond> {
+class TestAtom extends Atom<TestBond> {
 	constructor(bond: TestBond, key = 'item') {
 		super(bond, key);
 	}
@@ -41,7 +45,7 @@ class TestAtom extends BondAtom<TestBond> {
 
 function makeBond() {
 	const bond = new TestBond(new TestState());
-	bond.capability(selectionCapability(bond.state.selection));
+	bond.state.capability(selectionCapability(bond.state.selection));
 	return bond;
 }
 
@@ -85,7 +89,7 @@ describe('role stitch — selection projected onto an atom', () => {
 	});
 
 	it('a bond holding no capability makes .role() a harmless no-op', () => {
-		const bond = new TestBond(new TestState()); // no bond.capability(...)
+		const bond = new TestBond(new TestState()); // no bond.state.capability(...)
 		const atom = new TestAtom(bond).role('item', 'a');
 		expect(atom.spread['aria-selected']).toBeUndefined();
 		expect(atom.spread.onclick).toBeUndefined();
@@ -94,7 +98,7 @@ describe('role stitch — selection projected onto an atom', () => {
 	it('respects projection options (commit: select, custom aria)', () => {
 		const bond = new TestBond(new TestState());
 		bond.state.multiple = false;
-		bond.capability(
+		bond.state.capability(
 			selectionCapability(bond.state.selection, { commit: 'select', aria: 'aria-checked' })
 		);
 		const a = new TestAtom(bond).role('item', 'a');
@@ -108,10 +112,10 @@ describe('role stitch — selection projected onto an atom', () => {
 		expect(b.spread['aria-selected']).toBeUndefined();
 	});
 
-	it('bond.capability(key) retrieves the held surface', () => {
+	it('bond.state.capability(key) retrieves the held surface', () => {
 		const bond = makeBond();
-		expect(bond.capability(SELECTION)?.surface).toBe(bond.state.selection);
-		expect(bond.capability(capabilityKey('nope'))).toBeUndefined();
+		expect(bond.state.capability(SELECTION)?.surface).toBe(bond.state.selection);
+		expect(bond.state.capability(capabilityKey('nope'))).toBeUndefined();
 	});
 });
 
@@ -127,9 +131,9 @@ describe('slot resolution — use() is last-wins-per-slot (§13.1)', () => {
 
 	it('re-registering a slot REPLACES the prior capability (override seam)', () => {
 		const bond = new TestBond(new TestState());
-		bond.capability(cap(SLOT_A, 'first'));
-		bond.capability(cap(SLOT_A, 'second'));
-		expect(bond.capability(SLOT_A)?.surface).toBe('second');
+		bond.state.capability(cap(SLOT_A, 'first'));
+		bond.state.capability(cap(SLOT_A, 'second'));
+		expect(bond.state.capability(SLOT_A)?.surface).toBe('second');
 		// only the survivor projects onto an atom
 		const atom = new TestAtom(bond, 'a').role('surface');
 		expect(atom.spread['data-tag']).toBe('second');
@@ -137,9 +141,9 @@ describe('slot resolution — use() is last-wins-per-slot (§13.1)', () => {
 
 	it('distinct slots both register (no-op for non-collisions)', () => {
 		const bond = new TestBond(new TestState());
-		bond.capability(cap(SLOT_A, 'T'));
-		bond.capability(cap(SLOT_B, 'E'));
-		expect(bond.capability(SLOT_A)?.surface).toBe('T');
-		expect(bond.capability(SLOT_B)?.surface).toBe('E');
+		bond.state.capability(cap(SLOT_A, 'T'));
+		bond.state.capability(cap(SLOT_B, 'E'));
+		expect(bond.state.capability(SLOT_A)?.surface).toBe('T');
+		expect(bond.state.capability(SLOT_B)?.surface).toBe('E');
 	});
 });

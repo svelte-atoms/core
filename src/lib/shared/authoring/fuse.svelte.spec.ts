@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { BondState, BondAtom, type BondStateProps } from '../bond/bond.svelte';
+import { describe, expect, it, vi } from 'vitest';
+import { BondState, Atom, type BondStateProps } from '../bond';
 import { Collection } from '../bond/collection.svelte';
 import { defineBond } from './define.svelte';
 import { fuse } from './fuse.svelte';
@@ -30,18 +30,18 @@ class FState extends BondState<BondStateProps> {
 	}
 }
 
-class TriggerAtom extends BondAtom {
-	constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+class TriggerAtom extends Atom {
+	constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 		super(bond, 'trigger');
 	}
 }
-class ListAtom extends BondAtom {
-	constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+class ListAtom extends Atom {
+	constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 		super(bond, 'list');
 	}
 }
-class OptionAtom extends BondAtom {
-	constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+class OptionAtom extends Atom {
+	constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 		super(bond, 'option');
 	}
 }
@@ -70,8 +70,8 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 
 	it('concatenates capabilities from every part', () => {
 		const bond = new Fused(new FState());
-		expect(bond.capability(ROVING)).toBeDefined(); // from Triggerable
-		expect(bond.capability(SELECTION)).toBeDefined(); // from Listbox
+		expect(bond.state.capability(ROVING)).toBeDefined(); // from Triggerable
+		expect(bond.state.capability(SELECTION)).toBeDefined(); // from Listbox
 	});
 
 	it('takes a fresh rebrand identity (namespace / CONTEXT_KEY)', () => {
@@ -83,8 +83,8 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 	});
 
 	it('the fused bond is itself fusable (closure)', () => {
-		class ExtraAtom extends BondAtom {
-			constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+		class ExtraAtom extends Atom {
+			constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 				super(bond, 'extra');
 			}
 		}
@@ -96,7 +96,7 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		const bond = new Refused(new FState());
 		expect(bond.trigger()).toBeInstanceOf(TriggerAtom); // inherited through Fused
 		expect(bond.extra()).toBeInstanceOf(ExtraAtom);
-		expect(bond.capability(SELECTION)).toBeDefined(); // carried through
+		expect(bond.state.capability(SELECTION)).toBeDefined(); // carried through
 	});
 
 	it('later parts win on capability-SLOT collision (the PopoverDialog focus resolution)', () => {
@@ -114,7 +114,7 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		});
 		const Fused2 = fuse({ name: 'positioned-modal', parts: [PositionedLike, ModalLike] });
 		const bond = new Fused2(new FState());
-		const focus = bond.capability(FOCUS)?.surface;
+		const focus = bond.state.capability(FOCUS)?.surface;
 		expect(focus?.restoreFocus).toBe('previous'); // modal (later) won the slot
 	});
 
@@ -122,25 +122,27 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		// The genuinely new property: a collection on the fused bond is addressable via the
 		// unified capability seam — same instance the lazy `collection()` getter returns.
 		const bond = new Fused(new FState());
-		const items = bond.state.collection<{ id: string }>('item');
+		const items = bond.collection<{ id: string }>('item');
 		expect(items).toBeInstanceOf(Collection);
-		expect(bond.capability(collectionSlot('item'))?.surface).toBe(items);
+		expect(bond.state.capability(collectionSlot('item'))?.surface).toBe(items);
 	});
 
-	it('parts share one collection instance — unchanged: it lives on the one shared State', () => {
+	it('parts share one collection instance on the fused Bond', () => {
 		const state = new FState();
 		const bond = new Fused(state);
-		// Reached via the raw state and via the bond's state: the same Collection.
-		expect(bond.state.collection('item')).toBe(state.collection('item'));
+		// Reached via the Bond facade and through the capability seam: the same Collection.
+		const items = bond.collection<{ id: string }>('item');
 		const item = { id: 'x' };
-		state.collection<{ id: string }>('item').attach('x', item);
-		const surface = bond.capability(collectionSlot('item'))?.surface as Collection<{ id: string }>;
+		items.set('x', item);
+		const surface = bond.capability(collectionSlot('item'))?.surface as Collection<{
+			id: string;
+		}>;
 		expect(surface.get('x')).toBe(item); // visible across parts, as it always was
 	});
 
 	it('re-fusing (closure) preserves collection addressability', () => {
-		class ExtraAtom extends BondAtom {
-			constructor(b: ConstructorParameters<typeof BondAtom>[0]) {
+		class ExtraAtom extends Atom {
+			constructor(b: ConstructorParameters<typeof Atom>[0]) {
 				super(b, 'extra');
 			}
 		}
@@ -151,27 +153,28 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		const Refused = fuse({ name: 'refused-coll', parts: [Fused, Extra] });
 		const bond = new Refused(new FState());
 		const items = bond.state.collection('item');
-		expect(bond.capability(collectionSlot('item'))?.surface).toBe(items);
+		expect(bond.state.capability(collectionSlot('item'))?.surface).toBe(items);
 	});
 
 	it('a fused bond can declare its State and self-construct via create() (ADR 0012)', () => {
 		const Stateful = fuse({ name: 'fused-state', parts: [Triggerable, Listbox], state: FState });
 		expect(Stateful.state).toBe(FState); // static ref carried onto the fusion
 		const bond = Stateful.create({});
-		expect(bond.state).toBeInstanceOf(FState);
+		expect(bond.state).toBe(bond);
 		expect(bond.trigger()).toBeInstanceOf(TriggerAtom); // atoms from parts still resolve
-		expect(bond.capability(SELECTION)).toBeDefined(); // capabilities from parts still register
+		expect(bond.state.capability(SELECTION)).toBeDefined(); // capabilities from parts still register
 	});
 
 	it('later parts win on atom-key collision (resolve)', () => {
-		class A1 extends BondAtom {
-			constructor(b: ConstructorParameters<typeof BondAtom>[0]) {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		class A1 extends Atom {
+			constructor(b: ConstructorParameters<typeof Atom>[0]) {
 				super(b, 'root');
 			}
 			tag = 'A';
 		}
-		class A2 extends BondAtom {
-			constructor(b: ConstructorParameters<typeof BondAtom>[0]) {
+		class A2 extends Atom {
+			constructor(b: ConstructorParameters<typeof Atom>[0]) {
 				super(b, 'root');
 			}
 			tag = 'B';
@@ -180,5 +183,26 @@ describe('fuse — bond + bond = bond (the closure property)', () => {
 		const P2 = defineBond<{ root: typeof A2 }, FState>({ name: 'p2', atoms: { root: A2 } });
 		const Resolved = fuse({ name: 'resolved', parts: [P1, P2] });
 		expect((new Resolved(new FState()).root() as A2).tag).toBe('B'); // P2 wins
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('duplicate atom method "root"'));
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('duplicate atom key "root"'));
+		warn.mockRestore();
+	});
+
+	it('warns when a method collides with a composed atom accessor', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const WithMethodCollision = defineBond({
+			name: 'method-collision',
+			parts: [Triggerable],
+			atoms: {},
+			methods: {
+				trigger() {
+					return 'method';
+				}
+			}
+		});
+
+		expect(new WithMethodCollision(new FState()).trigger() as unknown as string).toBe('method');
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('duplicate method "trigger"'));
+		warn.mockRestore();
 	});
 });

@@ -1,14 +1,21 @@
 import { untrack } from 'svelte';
-import type { Bond, BondState, BondStateProps } from './bond.svelte';
+import type { Bond } from './bond.svelte';
+import type { BondState } from './state.svelte';
+import type { BondStateProps } from './types';
 import { defineProperty, defineState, type StateDefiner } from '../../utils/state';
 import type { PresetKey } from '../../context/preset.svelte';
 
-// Extracts the state-props type from a Bond; reads state first so defineBond bonds resolve, then falls back to Bond<P>.
-type PropsOf<B extends Bond> = B extends { state: BondState<infer P> }
+// Extracts the props type from a Bond; props-owned defineBond bases should not need the
+// BondState compatibility slot for component binding.
+type PropsOf<B extends Bond> = B extends { readonly __props?: infer P }
 	? P
-	: B extends Bond<infer P>
+	: B extends { readonly props: infer P }
 		? P
-		: BondStateProps;
+		: B extends Bond<infer P>
+			? P
+			: B extends { state: BondState<infer P> }
+				? P
+				: BondStateProps;
 
 // Builds a bond from its assembled props cell object (the component's factory).
 export type BondFactory<B extends Bond> = (props: PropsOf<B>) => B;
@@ -28,8 +35,6 @@ export type PropsSpec<P extends object> = {
 };
 
 export type BondBindingOptions<B extends Bond = Bond> = {
-	// Atom key to resolve (default: 'root').
-	atomKey?: string;
 	// Getter for the component's preset prop; wins over atom.preset when non-nullish.
 	preset?: () => PresetKey | undefined;
 	// Static defaults / restProps spread once into the props base. Reactive props belong in the props spec (see ADR 0002).
@@ -54,7 +59,6 @@ function specToDefiners<P extends object>(spec: PropsSpec<P>): StateDefiner<Part
 export class BondBinding<B extends Bond = Bond> {
 	readonly bond: B;
 	readonly #props: PropsOf<B>;
-	readonly #atomKey: string;
 	readonly #presetGetter: (() => PresetKey | undefined) | undefined;
 
 	constructor(
@@ -65,21 +69,20 @@ export class BondBinding<B extends Bond = Bond> {
 		const assembled = defineState<PropsOf<B>>(specToDefiners(props), options?.base);
 		this.#props = assembled;
 		this.bond = untrack(() => factory(assembled));
-		this.#atomKey = options?.atomKey ?? 'root';
 		this.#presetGetter = options?.preset;
 	}
 
 	get preset() {
-		return this.#presetGetter?.() ?? this.atom.preset;
-	}
-
-	get atom() {
-		return this.bond.atom(this.#atomKey);
+		return this.#presetGetter?.();
 	}
 
 	get props() {
 		const preset = this.preset;
-		return { preset, bond: this.bond, ...this.#props, ...this.atom.spread };
+		return { preset, bond: this.bond, ...this.#props };
+	}
+
+	get stateProps() {
+		return { bond: this.bond, ...this.#props };
 	}
 }
 

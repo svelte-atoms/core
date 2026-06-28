@@ -1,5 +1,6 @@
 import {
-	defineCapability,
+	defineModelCapability,
+	defineProjectionCapability,
 	sharedCapabilityKey,
 	type Capability,
 	type CapabilityKey
@@ -33,26 +34,35 @@ export function collectionCapability<T>(
 	const positional = options.positional ?? false;
 
 	// Positional ARIA is opt-in: without it the collection is a surface-only capability (no projection).
-	return defineCapability<Collection<T>>({
+	if (!positional) {
+		return defineModelCapability<Collection<T>>({
+			slot: collectionSlot(kind),
+			surface: collection,
+			meta: {
+				docs: 'Ordered child/item registry model.'
+			}
+		}) as CollectionCapability<T>;
+	}
+
+	return defineProjectionCapability<Collection<T>>({
 		slot: collectionSlot(kind),
 		surface: collection,
-		...(positional
-			? {
-					roles: {
-						item: (id) => ({
-							attrs: () => {
-								const index = collection.indexOf(id);
-								// aria-* 1-based, data-index 0-based; both omitted until the id registers.
-								return {
-									'aria-posinset': index < 0 ? undefined : index + 1,
-									'aria-setsize': collection.size,
-									'data-index': index < 0 ? undefined : index
-								};
-							}
-						}),
-						container: () => ({ attrs: () => ({ 'aria-setsize': collection.size }) })
-					}
+		meta: {
+			docs: 'Ordered child/item registry model with optional positional ARIA projection.'
+		},
+		roles: {
+			item: (id) => ({
+				attrs: () => {
+					const index = collection.indexOf(id);
+					// aria-* 1-based, data-index 0-based; both omitted until the id registers.
+					return {
+						'aria-posinset': index < 0 ? undefined : index + 1,
+						'aria-setsize': collection.size,
+						'data-index': index < 0 ? undefined : index
+					};
 				}
-			: {})
+			}),
+			container: () => ({ attrs: () => ({ 'aria-setsize': collection.size }) })
+		}
 	}) as CollectionCapability<T>;
 }

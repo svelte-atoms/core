@@ -1,4 +1,4 @@
-import { defineCapability, sharedCapabilityKey, type Capability } from '../capability';
+import { defineProjectionCapability, sharedCapabilityKey, type Capability } from '../capability';
 
 // Surface type travels with the key — capability(ROVING) is typed without a cast.
 export const ROVING = sharedCapabilityKey<RovingFocus>('@svelte-atoms/cap:roving');
@@ -36,32 +36,35 @@ export interface RovingBacking<T = unknown> {
 }
 
 // Build a RovingFocus over an injected ordered id list.
-// Owns its own reactive active index; reads the list live so it tracks insertions/removals.
+// Owns the active id; derives the index live so insertions/removals preserve identity when possible.
 export function createRovingFocus<T = unknown>(backing: RovingBacking<T>): RovingFocus<T> {
 	const wrap = backing.wrap ?? true;
-	let index = $state(-1);
+	let active = $state<string | null>(null);
 
 	const ids = (): readonly string[] => backing.ids();
 	const idAt = (i: number): string | null => ids()[i] ?? null;
+	const indexOfActive = (): number => (active === null ? -1 : ids().indexOf(active));
+	const activeId = (): string | null => (indexOfActive() < 0 ? null : active);
 	const set = (i: number): string | null => {
-		index = i;
-		return idAt(i);
+		active = idAt(i);
+		return active;
 	};
 
 	return {
 		get activeIndex() {
-			return index;
+			return indexOfActive();
 		},
 		get activeId() {
-			return idAt(index);
+			return activeId();
 		},
 		get activeItem() {
-			const id = idAt(index);
+			const id = activeId();
 			return id !== null && backing.item ? (backing.item(id) ?? null) : null;
 		},
 		next() {
 			const n = ids().length;
 			if (n === 0) return set(-1);
+			const index = indexOfActive();
 			if (index < 0) return set(0);
 			const i = index + 1;
 			return set(i >= n ? (wrap ? 0 : n - 1) : i);
@@ -69,6 +72,7 @@ export function createRovingFocus<T = unknown>(backing: RovingBacking<T>): Rovin
 		previous() {
 			const n = ids().length;
 			if (n === 0) return set(-1);
+			const index = indexOfActive();
 			if (index <= 0) return set(wrap ? n - 1 : 0);
 			return set(index - 1);
 		},
@@ -80,7 +84,8 @@ export function createRovingFocus<T = unknown>(backing: RovingBacking<T>): Rovin
 			return set(n ? n - 1 : -1);
 		},
 		goto(id: string) {
-			return set(ids().indexOf(id)); // -1 when absent → activeId null
+			active = ids().includes(id) ? id : null;
+			return active;
 		},
 		clear() {
 			set(-1);
@@ -104,9 +109,12 @@ export function rovingCapability<T = unknown>(
 	options: RovingProjectionOptions = {}
 ): Capability<RovingFocus<T>> {
 	const toDomId = options.itemDomId ?? ((id: string) => id);
-	return defineCapability<RovingFocus<T>>({
+	return defineProjectionCapability<RovingFocus<T>>({
 		slot: ROVING,
 		surface: roving,
+		meta: {
+			docs: 'Roving focus model surface with active-descendant and highlighted-item projections.'
+		},
 		roles: {
 			container: () => ({
 				attrs: () => {

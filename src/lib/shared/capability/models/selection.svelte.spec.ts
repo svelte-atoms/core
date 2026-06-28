@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { flushSync } from 'svelte';
-import { createSelection, type SelectionBacking } from './selection.svelte';
+import {
+	createSelection,
+	selectionCapability,
+	type SelectionBacking,
+	type SelectionModel
+} from './selection.svelte';
 
 // Reactive backing store standing in for a bond's bindable props.
 // `values` is the array store; `mode` flips single/multiple.
@@ -159,5 +164,42 @@ describe('SelectionModel<T> — iterable protocol (#4)', () => {
 		sel.select('a');
 		sel.select('b');
 		expect([...sel]).toEqual(['a', 'b']);
+	});
+});
+
+describe('selectionCapability', () => {
+	it('is annotated as a Layer 1 projection over the selection model surface', () => {
+		const cap = selectionCapability(createSelection(makeBacking<string>().backing));
+		expect(cap.meta).toMatchObject({
+			layer: 1,
+			kind: 'projection',
+			projects: ['item', 'container']
+		});
+	});
+
+	it('checks item selectedness once per attrs projection', () => {
+		let reads = 0;
+		const model: SelectionModel<string> = {
+			mode: 'multiple',
+			values: ['a'],
+			isSelected: (value) => {
+				reads++;
+				return value === 'a';
+			},
+			select: () => {},
+			deselect: () => {},
+			toggle: () => {},
+			clear: () => {},
+			[Symbol.iterator]: function* () {
+				yield 'a';
+			}
+		};
+		const behavior = selectionCapability(model).behavior?.('item', 'a');
+
+		expect(behavior?.attrs?.({} as never)).toMatchObject({
+			'aria-selected': true,
+			'data-selected': ''
+		});
+		expect(reads).toBe(1);
 	});
 });

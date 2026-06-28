@@ -8,17 +8,19 @@
 </script>
 
 <script lang="ts">
+	import { createAtomInstance } from './use-atom.svelte';
 	import type { Bond } from './bond.svelte';
 
 	type ProbeProps = { bond: Bond; tick?: number };
 
 	let { bond, tick = 0 }: ProbeProps = $props();
 
+	const atom = createAtomInstance('item', { bond }).role('item', 'x');
+
 	// `tick` (a prop) forces the derived to re-run, re-reading atom.spread — the same trigger a real
-	// consumer hits whenever any projected state (selection, isOpen, …) changes. The regression is that
-	// re-reading spread used to re-mint attachment keys and remount the element. bond.atom('item') is
-	// cached, so reading it inside the derived returns the same atom each pass.
-	const attrs = $derived({ 'data-tick': tick, ...bond.atom('item').spread });
+	// consumer hits whenever any projected state (selection, isOpen, ...) changes. The node is created
+	// once by the rendered part, so reading spread keeps attachment identity stable across passes.
+	const attrs = $derived({ 'data-tick': tick, ...atom.spread });
 </script>
 
 <div {...attrs} data-testid="el">x</div>

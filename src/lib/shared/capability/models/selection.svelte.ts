@@ -1,5 +1,5 @@
 import {
-	defineCapability,
+	defineProjectionCapability,
 	sharedCapabilityKey,
 	type Behavior,
 	type Capability
@@ -35,10 +35,24 @@ export interface SelectionBacking<T> {
 	mode(): 'single' | 'multiple';
 }
 
+const EMPTY_VALUES: readonly never[] = [];
+
 // Pure controller — every read/write goes through the backing.
 export function createSelection<T>(backing: SelectionBacking<T>): SelectionModel<T> {
-	const list = (): T[] => [...(backing.get() ?? [])];
-	const has = (value: T): boolean => list().includes(value);
+	let cachedValues: readonly T[] | undefined;
+	let cachedSet: Set<T> | undefined;
+	const values = (): readonly T[] => backing.get() ?? EMPTY_VALUES;
+	const list = (): T[] => [...values()];
+	const selectedSet = (): Set<T> => {
+		const current = values();
+		if (current !== cachedValues) {
+			cachedValues = current;
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
+			cachedSet = new Set(current);
+		}
+		return cachedSet!;
+	};
+	const has = (value: T): boolean => selectedSet().has(value);
 
 	const select = (value: T | T[]): void => {
 		const incoming = Array.isArray(value) ? value : [value];
@@ -70,7 +84,7 @@ export function createSelection<T>(backing: SelectionBacking<T>): SelectionModel
 			return backing.mode();
 		},
 		get values() {
-			return backing.get() ?? [];
+			return values();
 		},
 		isSelected: has,
 		select,
@@ -100,19 +114,25 @@ export function selectionCapability<T>(
 	const commit = options.commit ?? 'toggle';
 	const interactive = options.interactive ?? true;
 
-	return defineCapability<SelectionModel<T>>({
+	return defineProjectionCapability<SelectionModel<T>>({
 		slot: SELECTION,
 		surface: model,
+		meta: {
+			docs: 'Selection model surface with selectedness and optional commit projections.'
+		},
 		roles: {
 			item: (id) => {
 				const value = id as T;
 				const projection: Behavior = {
-					attrs: () => ({
-						// aria-* is a boolean state; data-selected is a present-only CSS hook
-						// (absent when unselected) so `[data-selected]` selectors work.
-						...(aria ? { [aria]: model.isSelected(value) } : {}),
-						'data-selected': model.isSelected(value) ? '' : undefined
-					})
+					attrs: () => {
+						const selected = model.isSelected(value);
+						return {
+							// aria-* is a boolean state; data-selected is a present-only CSS hook
+							// (absent when unselected) so `[data-selected]` selectors work.
+							...(aria ? { [aria]: selected } : {}),
+							'data-selected': selected ? '' : undefined
+						};
+					}
 				};
 				if (interactive) {
 					projection.handlers = () => ({

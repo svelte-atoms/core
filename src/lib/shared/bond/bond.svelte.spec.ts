@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { Bond, BondAtom, BondState } from './bond.svelte';
+import { describe, expect, it, vi } from 'vitest';
+import { Bond, Atom, BondState, capabilityKey, defineCapability } from './index';
 
-// Specs for Bond.namespace and BondAtom.preset — the seam for <namespace>.<atom> preset key resolution. See CONTEXT.md §preset.
+// Specs for Bond.namespace and Atom.preset — the seam for <namespace>.<atom> preset key resolution. See CONTEXT.md §preset.
 
 class TestState extends BondState {}
 
@@ -11,9 +11,16 @@ class TestBond extends Bond {
 	}
 }
 
-class TestAtom extends BondAtom {
+class TestAtom extends Atom {
 	constructor(bond: Bond, key: string) {
 		super(bond, key);
+	}
+}
+
+class RoleAtom extends Atom {
+	constructor(bond: Bond, key: string, role: string) {
+		super(bond, key);
+		this.role(role);
 	}
 }
 
@@ -50,7 +57,7 @@ describe('Bond.namespace', () => {
 	});
 });
 
-describe('BondAtom.preset', () => {
+describe('Atom.preset', () => {
 	it('builds the preset key from the default namespace (name)', () => {
 		const bond = new TestBond(makeState(), 'popover');
 		expect(new TestAtom(bond, 'content').preset).toBe('popover.content');
@@ -86,9 +93,9 @@ describe('BondAtom.preset', () => {
 	});
 });
 
-// Fixtures: fixed static atoms (class registry) + dynamic per-value atoms (registerAtom).
-class RootAtom extends BondAtom {}
-class ItemAtom extends BondAtom {
+// Fixtures: registered component-owned atoms.
+class RootAtom extends Atom {}
+class ItemAtom extends Atom {
 	value: string;
 	constructor(bond: Bond, key: string, value: string) {
 		super(bond, key);
@@ -96,49 +103,81 @@ class ItemAtom extends BondAtom {
 	}
 }
 class RegistryBond extends TestBond {
-	static atoms = {
-		root: (b: Bond) => new RootAtom(b, 'root')
-	};
-
 	item(value: string): ItemAtom {
 		const key = `item:${value}`;
-		this.registerAtom(key, (b) => new ItemAtom(b, key, value));
-		return this.atom(key) as ItemAtom;
+		const atom = new ItemAtom(this, key, value);
+		this.register(atom, { key });
+		return atom;
 	}
 }
 
-describe('Bond atom registry resolution', () => {
-	it('builds a fixed atom from the shared static class registry', () => {
+describe('Bond node registry resolution', () => {
+	it('registers and resolves a fixed atom by key', () => {
 		const bond = new RegistryBond(makeState(), 'stack');
-		expect(bond.atom('root')).toBeInstanceOf(RootAtom);
+		const root = new RootAtom(bond, 'root');
+		bond.register(root);
+
+		expect(bond.node('root')).toBe(root);
+		expect(bond.node('nope')).toBeUndefined();
 	});
 
-	it('caches per key — repeat access returns the same atom instance', () => {
-		const bond = new RegistryBond(makeState(), 'stack');
-		expect(bond.atom('root')).toBe(bond.atom('root'));
-	});
-
-	it('falls back to DefaultAtom for an unregistered key', () => {
-		const bond = new RegistryBond(makeState(), 'stack');
-		const atom = bond.atom('nope');
-		expect(atom).toBeInstanceOf(BondAtom);
-		expect(atom).not.toBeInstanceOf(RootAtom);
-	});
-
-	it('resolves a dynamic per-value atom registered via registerAtom', () => {
+	it('resolves a dynamic per-value atom registered by the component', () => {
 		const bond = new RegistryBond(makeState(), 'stack');
 		const apple = bond.item('apple');
+		expect(bond.node('item:apple')).toBe(apple);
 		expect(apple).toBeInstanceOf(ItemAtom);
 		expect(apple.value).toBe('apple');
 	});
 
-	it('keeps dynamic atoms per-instance and never mutates the shared class registry', () => {
+	it('keeps dynamic atoms per-instance', () => {
 		const a = new RegistryBond(makeState(), 'stack');
 		const b = new RegistryBond(makeState(), 'stack');
 		expect(a.item('apple').value).toBe('apple');
 		expect(b.item('banana').value).toBe('banana');
-		// the class registry stays fixed — dynamic atoms live on the instance, not the class
-		expect(Object.keys((RegistryBond as unknown as typeof Bond).atoms)).toEqual(['root']);
+		expect(b.node('item:apple')).toBeUndefined();
+	});
+});
+
+describe('Bond.atomByRole', () => {
+	it('returns the first registered atom when multiple atoms play the same role', () => {
+		const bond = new TestBond(makeState(), 'roles');
+		bond.state.capability(
+			defineCapability({ slot: capabilityKey('role-test'), roles: { trigger: () => ({}) } })
+		);
+		const first = new RoleAtom(bond, 'first', 'trigger');
+		const second = new RoleAtom(bond, 'second', 'trigger');
+
+		bond.register(first);
+		bond.register(second);
+
+		expect(bond.node('first')).toBe(first);
+		expect(bond.node('second')).toBe(second);
+		expect(bond.atomByRole('trigger')).toBe(first);
+	});
+});
+
+describe('Atom.role', () => {
+	it('does not duplicate projected behaviors for the same role/context on a cached atom', () => {
+		const debug = vi.spyOn(console, 'debug').mockImplementation(() => {});
+		let clicks = 0;
+		const bond = new TestBond(makeState(), 'roles');
+		bond.state.capability(
+			defineCapability({
+				slot: capabilityKey('role-idempotent'),
+				roles: {
+					trigger: () => ({
+						handlers: () => ({ onclick: () => clicks++ })
+					})
+				}
+			})
+		);
+
+		const atom = new TestAtom(bond, 'trigger').role('trigger').role('trigger');
+		(atom.spread.onclick as () => void)();
+
+		expect(clicks).toBe(1);
+		expect(debug).toHaveBeenCalledWith(expect.stringContaining('already projected'));
+		debug.mockRestore();
 	});
 });
 

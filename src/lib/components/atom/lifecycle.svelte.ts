@@ -1,13 +1,15 @@
 import { untrack } from 'svelte';
-import type { Bond } from '$svelte-atoms/core/shared/bond/bond.svelte';
+import type { Bond } from '$svelte-atoms/core/shared/bond';
 
 // Lifecycle key prefix — namespaced so isLifecycleKey can identify them among other
 // symbol-keyed props, and so the phase is recoverable from the symbol without a registry.
 const LIFECYCLE_PREFIX = '@svelte-atoms/lifecycle';
 
-// Phase a lifecycle callback fires at: `init` (sync, before mount), `mount` (in DOM),
-// `destroy` (teardown). Client-only — symbol props are dropped during SSR.
-export type LifecycleType = 'init' | 'mount' | 'destroy';
+// Phase a symbol-keyed lifecycle callback fires at: `mount` (in DOM) or `destroy` (teardown).
+// Both are client-only — Svelte's server rest_props drops symbol props during SSR. Init-time
+// logic is no longer a symbol phase: use HtmlAtom's string-keyed `oninit` prop, which survives
+// server rest_props and fires synchronously before mount on both server and client (see runLifecycle).
+export type LifecycleType = 'mount' | 'destroy';
 
 // A lifecycle callback: receives the atom's bond; `init`/`mount` may return a cleanup.
 export type LifecycleAttachment<B extends Bond = Bond> = (bond?: B) => void | (() => void);
@@ -21,16 +23,16 @@ declare const phaseBrand: unique symbol;
 declare const bondBrand: unique symbol;
 
 // A lifecycle key with phase T and bond B in the type system; a symbol at runtime.
-export type LifecycleKey<T extends LifecycleType = 'init', B extends Bond = Bond> = symbol & {
+export type LifecycleKey<T extends LifecycleType = 'mount', B extends Bond = Bond> = symbol & {
 	readonly [phaseBrand]: T;
 	readonly [bondBrand]: B;
 };
 
-export function createLifecycleKey<T extends LifecycleType = 'init', B extends Bond = Bond>(
+export function createLifecycleKey<T extends LifecycleType = 'mount', B extends Bond = Bond>(
 	type?: T
 ): LifecycleKey<T, B> {
 	bumpMintedCount();
-	const key = buildKey(type ?? 'init');
+	const key = buildKey(type ?? 'mount');
 	return Symbol(key) as LifecycleKey<T, B>;
 }
 
@@ -48,7 +50,7 @@ function hasMintedKeys(): boolean {
 	return (GLOBAL[MINTED_COUNT] ?? 0) > 0;
 }
 
-const LIFECYCLE_TYPES = ['init', 'mount', 'destroy'] as const satisfies readonly LifecycleType[];
+const LIFECYCLE_TYPES = ['mount', 'destroy'] as const satisfies readonly LifecycleType[];
 
 // Description → phase map built once so lifecycleType (run per symbol prop) is an O(1) lookup.
 const TYPE_BY_DESCRIPTION = new Map<string, LifecycleType>(
@@ -72,7 +74,6 @@ const EMPTY_CALLBACKS = Object.freeze([]) as unknown as LifecycleAttachment[];
 
 // Shared result for the no-callbacks case (vast majority of atoms) — avoids allocations per mount.
 const NO_LIFECYCLE: LifecycleProps = Object.freeze({
-	init: EMPTY_CALLBACKS,
 	mount: EMPTY_CALLBACKS,
 	destroy: EMPTY_CALLBACKS
 });
@@ -88,7 +89,7 @@ export function getLifecycleProps<B extends Bond = Bond>(
 	const symbols = Object.getOwnPropertySymbols(props);
 	if (symbols.length === 0) return NO_LIFECYCLE as LifecycleProps<B>;
 
-	const phases: LifecycleProps<B> = { init: [], mount: [], destroy: [] };
+	const phases: LifecycleProps<B> = { mount: [], destroy: [] };
 	let found = false;
 	for (const key of symbols) {
 		const type = lifecycleType(key);
@@ -117,19 +118,26 @@ export function getLifecyclePropsByType<B extends Bond = Bond>(
 // HtmlAtom is the sole caller.
 export function runLifecycle<P extends Record<PropertyKey, unknown>, B extends Bond = Bond>(
 	getProps: () => P,
-	getBond: () => B | undefined
+	getBond: () => B | undefined,
+	getOninit?: () => LifecycleAttachment<B> | undefined
 ): void {
 	// Classify once — lifecycle keys are fixed at init, so this never re-runs per prop change.
-	const { init, mount, destroy } = getLifecycleProps<B>(getProps());
+	const { mount, destroy } = getLifecycleProps<B>(getProps());
+
+	// `oninit` is the sole init hook (the symbol `init` phase was dropped). A plain string-keyed
+	// prop, so it survives Svelte's server rest_props (which copies Object.keys() only) and fires
+	// synchronously before mount on the server AND again on the client during hydration. The
+	// callback must be idempotent; its returned cleanup is honored only on the client (no server
+	// teardown). One-shot read — no reactive tracking.
+	const oninit = getOninit?.();
 
 	// Nothing to fire (the vast majority of atoms): skip the bond read and effect registration.
-	if (init.length === 0 && mount.length === 0 && destroy.length === 0) return;
+	if (!oninit && mount.length === 0 && destroy.length === 0) return;
 
-	// `init` — fires once, synchronously, before mount; bond read untracked. Keep returned cleanups.
+	// `oninit` — fires once, synchronously, before mount; bond read untracked. Keep returned cleanup.
 	const initialBond = untrack(getBond);
-	const initCleanups = init
-		.map((fn) => fn(initialBond))
-		.filter((cleanup): cleanup is () => void => typeof cleanup === 'function');
+	const initCleanup = oninit?.(initialBond);
+	const initCleanups = typeof initCleanup === 'function' ? [initCleanup] : [];
 
 	// `mount` — just before the element is committed to the DOM. Callbacks run untracked so
 	// state they read can't re-fire the hooks; only the bond read is tracked.

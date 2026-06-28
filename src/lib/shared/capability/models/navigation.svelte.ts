@@ -1,4 +1,4 @@
-import { capabilityKey, defineCapability, type Capability } from '../capability';
+import { capabilityKey, definePolicyCapability, type Capability } from '../capability';
 import { ROVING, type RovingFocus } from './roving.svelte';
 
 // Private slot key (process-unique Symbol, not exported from the public barrel): navigation is a
@@ -47,10 +47,14 @@ export function navigationCapability(
 
 	// Roles are configured at runtime (options.roles), so this uses defineCapability's raw `behavior`
 	// escape hatch rather than the static typed `roles` map — the same projection on each configured role.
-	return defineCapability<RovingFocus>({
+	return definePolicyCapability<RovingFocus>({
 		slot: NAVIGATION,
 		surface: roving,
 		requires: [ROVING],
+		meta: {
+			projects: roles,
+			docs: 'Keyboard navigation policy that drives a roving focus surface.'
+		},
 		behavior(role) {
 			if (!roles.includes(role)) return undefined;
 			return {

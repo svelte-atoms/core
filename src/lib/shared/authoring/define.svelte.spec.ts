@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Bond, BondState, BondAtom, type BondStateProps } from '../bond/bond.svelte';
+import { Atom, Bond, BondState, type BondStateProps } from '../bond';
 import { defineBond } from './define.svelte';
 import {
 	createSelection,
@@ -19,13 +19,23 @@ class TState extends BondState<BondStateProps> {
 	}
 }
 
-class RootAtom extends BondAtom {
-	constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+class RootAtom extends Atom {
+	constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 		super(bond, 'root');
 	}
 }
-class ItemAtom extends BondAtom {
-	constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+class ItemAtom extends Atom {
+	constructor(bond: ConstructorParameters<typeof Atom>[0]) {
+		super(bond, 'item');
+	}
+}
+class NodeRootAtom extends Atom {
+	constructor(bond: Bond) {
+		super(bond, 'root');
+	}
+}
+class NodeItemAtom extends Atom {
+	constructor(bond: Bond) {
 		super(bond, 'item');
 	}
 }
@@ -37,11 +47,10 @@ const Defined = defineBond<{ root: typeof RootAtom; item: typeof ItemAtom }, TSt
 });
 
 describe('defineBond', () => {
-	it('generates typed, cached atom factory methods', () => {
+	it('generates typed atom factory methods', () => {
 		const bond = new Defined(new TState());
 		expect(bond.root()).toBeInstanceOf(RootAtom);
 		expect(bond.item()).toBeInstanceOf(ItemAtom);
-		expect(bond.root()).toBe(bond.root()); // cached (atom queue)
 		expect(bond.root()).not.toBe(bond.item());
 	});
 
@@ -59,7 +68,7 @@ describe('defineBond', () => {
 
 	it('registers the spec capabilities on the bond', () => {
 		const bond = new Defined(new TState());
-		const selection = bond.capability(SELECTION);
+		const selection = bond.state.capability(SELECTION);
 		expect(selection).toBeDefined();
 		// the surface is the same instance the state holds
 		expect(selection?.surface).toBe((bond.state as TState).selection);
@@ -83,11 +92,27 @@ describe('defineBond', () => {
 		});
 		const bond = new Plain(new TState());
 		expect(bond.root()).toBeInstanceOf(RootAtom);
-		expect(bond.capability(SELECTION)).toBeUndefined();
+		expect(bond.state.capability(SELECTION)).toBeUndefined();
 	});
 });
 
 describe('defineBond v2 — atom spec affordances', () => {
+	it('accepts Atom constructors for generated atom methods', () => {
+		const NodeDefined = defineBond<
+			{ root: typeof NodeRootAtom; item: typeof NodeItemAtom },
+			TState
+		>({
+			name: 'node-defined',
+			atoms: { root: NodeRootAtom, item: NodeItemAtom }
+		});
+		const bond = new NodeDefined(new TState());
+
+		expect(bond.root()).toBeInstanceOf(NodeRootAtom);
+		expect(bond.item()).toBeInstanceOf(NodeItemAtom);
+		expect(bond.root()).toBeInstanceOf(Atom);
+		expect(bond.root().spread['data-kind']).toBe('node-defined-root');
+	});
+
 	it('method alias: method name differs from the atom cache key', () => {
 		const Aliased = defineBond<{ dismiss: { atom: typeof RootAtom; key: 'close' } }, TState>({
 			name: 'aliased',
@@ -95,7 +120,6 @@ describe('defineBond v2 — atom spec affordances', () => {
 		});
 		const bond = new Aliased(new TState());
 		expect(bond.dismiss()).toBeInstanceOf(RootAtom);
-		expect(bond.dismiss()).toBe(bond.dismiss()); // cached under 'close'
 		expect(bond.dismiss().spread['data-kind']).toBe('aliased-root'); // atom's own name
 	});
 
@@ -156,11 +180,22 @@ describe('defineBond v2 — atom spec affordances', () => {
 		const bond = new WithMethods(new TState());
 		expect(bond.ping()).toBe('pong');
 	});
+
+	it('atomMethods: false omits generated atom factory methods', () => {
+		const WithoutAtomMethods = defineBond({
+			name: 'without-atom-methods',
+			atoms: { root: RootAtom },
+			atomMethods: false
+		});
+		const bond = new WithoutAtomMethods(new TState());
+
+		expect((bond as unknown as Record<string, unknown>).root).toBeUndefined();
+	});
 });
 
 describe('defineBond v3 — `extends` (single-parent spec inheritance)', () => {
-	class ChildItemAtom extends BondAtom {
-		constructor(bond: ConstructorParameters<typeof BondAtom>[0]) {
+	class ChildItemAtom extends Atom {
+		constructor(bond: ConstructorParameters<typeof Atom>[0]) {
 			super(bond, 'item');
 		}
 	}
@@ -196,7 +231,7 @@ describe('defineBond v3 — `extends` (single-parent spec inheritance)', () => {
 
 	it('inherits parent capabilities (registered by the parent ctor via super)', () => {
 		const bond = new Child(new TState());
-		expect(bond.capability(SELECTION)).toBeDefined();
+		expect(bond.state.capability(SELECTION)).toBeDefined();
 	});
 
 	it('inherits + can override parent methods', () => {
@@ -226,6 +261,20 @@ describe('defineBond v3 — `extends` (single-parent spec inheritance)', () => {
 		const spec = (Child as unknown as { spec: { atoms: Record<string, unknown> } }).spec;
 		expect(Object.keys(spec.atoms).sort()).toEqual(['item', 'root']); // merged
 	});
+
+	it('atomMethods: false shadows inherited generated atom methods', () => {
+		const ChildWithoutAtomMethods = defineBond({
+			extends: Parent,
+			name: 'child-without-atom-methods',
+			atoms: {},
+			atomMethods: false
+		});
+		const bond = new ChildWithoutAtomMethods(new TState());
+
+		expect((bond as unknown as Record<string, unknown>).root).toBeUndefined();
+		expect((bond as unknown as Record<string, unknown>).item).toBeUndefined();
+		expect((bond as unknown as { kind(): string }).kind()).toBe('parent-kind');
+	});
 });
 
 describe('defineBond v4 — state co-location (`state` + `create`)', () => {
@@ -234,7 +283,7 @@ describe('defineBond v4 — state co-location (`state` + `create`)', () => {
 		expect(Stateful.state).toBe(TState); // static ref to the declared State class
 		const bond = Stateful.create({});
 		expect(bond).toBeInstanceOf(Stateful);
-		expect(bond.state).toBeInstanceOf(TState); // new Bond(new State(props))
+		expect(bond.state).toBe(bond); // state is the Bond-owned compatibility facade
 		expect(bond.root()).toBeInstanceOf(RootAtom); // generated atom factory still works
 	});
 
@@ -247,14 +296,15 @@ describe('defineBond v4 — state co-location (`state` + `create`)', () => {
 			capabilities: (state) => [selectionCapability(state.selection)]
 		});
 		const bond = Stateful.create({});
-		expect(bond.capability(SELECTION)?.surface).toBe((bond.state as TState).selection);
+		expect(bond.state.capability(SELECTION)?.surface).toBe((bond.state as TState).selection);
 	});
 
-	it('create() throws a directed error when the spec declares no state', () => {
+	it('create() constructs a Bond-owned props model when the spec declares no state', () => {
 		const Stateless = defineBond({ name: 'stateless', atoms: { root: RootAtom } });
-		expect(() => (Stateless as unknown as { create(p: unknown): unknown }).create({})).toThrow(
-			/no `state` class declared/
-		);
+		const bond = Stateless.create({ id: 'owned' });
+		expect(bond).toBeInstanceOf(Stateless);
+		expect(bond.id).toBe('owned');
+		expect(bond.root()).toBeInstanceOf(RootAtom);
 	});
 
 	it('create() respects subclass identity (this-based self-construction)', () => {

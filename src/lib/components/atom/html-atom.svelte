@@ -1,15 +1,20 @@
 <script
 	lang="ts"
-	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base, C extends AnySnippet = Snippet"
+	generics="Tag extends keyof HTMLElementTagNameMap = 'div', BaseComponent extends Base = Base, Children extends AnySnippet = Snippet"
 >
-	import { type Component, type Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import type { AnySnippet, Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
 	import { getPreset } from '$svelte-atoms/core/context';
 	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import SnippetRenderer from './snippet-renderer.svelte';
+	import SnippetAdapter from './snippet.svelte';
 	import * as resolvers from './resolvers';
+	import {
+		resolveRendererComponent,
+		resolveRendererProps,
+		resolveRenderTarget
+	} from './render-target';
 	import { runLifecycle } from './lifecycle.svelte';
 
 	const rootBond = RootBond.get();
@@ -22,16 +27,18 @@
 		bond = undefined,
 		variants = undefined,
 		fallback = undefined,
+		oninit = undefined,
 		children: children = undefined,
 		...restProps
-	}: HtmlAtomProps<E, B, C> = $props();
+	}: HtmlAtomProps<Tag, BaseComponent, Children> = $props();
 
 	// Bond lifecycle attachments (createLifecycleKey): fire each phase's `(bond) => …` callbacks
 	// against the live bond. The lifecycle keys are symbol-keyed, so Svelte ignores them on the
 	// DOM spread downstream — `restProps` flows on untouched.
 	runLifecycle(
 		() => restProps,
-		() => bond
+		() => bond,
+		() => oninit
 	);
 
 	// One $derived per cascade stage so each tracks only the props its stage reads.
@@ -54,25 +61,13 @@
 
 	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
 
-	const baseIsSnippet = $derived(resolvers.isSnippetBase(finalBase));
-
-	// Component identity and props as independent signals — identity only flips when base/atom change.
-	const RendererComponent = $derived(
-		baseIsSnippet ? (SnippetRenderer as unknown as Component) : ((finalBase ?? atom) as Component)
+	// Render-target normalization names the component/snippet decision in one place.
+	const renderTarget = $derived(resolveRenderTarget(finalBase, atom));
+	// Component identity and props are separate signals so prop changes do not remount the renderer.
+	const RendererComponent = $derived(resolveRendererComponent(renderTarget, SnippetAdapter));
+	const rendererProps = $derived.by(() =>
+		resolveRendererProps(renderTarget, finalKlass, finalAs, finalRestProps)
 	);
-
-	const rendererProps = $derived.by((): Record<string, unknown> => {
-		if (baseIsSnippet) {
-			return {
-				snippet: finalBase,
-				class: finalKlass,
-				as: finalAs,
-				children: children,
-				...finalRestProps
-			};
-		}
-		return { class: finalKlass, as: finalAs, ...finalRestProps };
-	});
 
 	function forwardChildren(...args: unknown[]) {
 		return (children as ((...args: unknown[]) => unknown) | undefined)?.(...args);

@@ -1,5 +1,6 @@
 import type { VirtualElement } from '@floating-ui/dom';
-import type { Bond, BondAtom } from './bond.svelte';
+import type { Bond } from './bond.svelte';
+import type { Atom } from './atom.svelte';
 
 export type BondVirtualElement = VirtualElement;
 
@@ -9,10 +10,16 @@ export type BondElements = Record<string, Element | BondVirtualElement | undefin
 // Types the polymorphic static get/set.
 export type BondClass<T extends Bond> = { prototype: T; CONTEXT_KEY: string };
 
-export type AtomFactory<
-	B extends Bond = Bond,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	A extends BondAtom<any, any> = BondAtom<any, any>
-> = (bond: B) => A;
+export type NodeCardinality = 'single' | 'many';
 
-export type AtomRegistry<B extends Bond = Bond> = Record<string, AtomFactory<B>>;
+export type NodeRegistrationOptions = {
+	key?: string;
+	cardinality?: NodeCardinality;
+};
+
+export type NodeRegistration<N extends Atom = Atom> = {
+	id: string;
+	key: string;
+	cardinality: NodeCardinality;
+	node: N;
+};

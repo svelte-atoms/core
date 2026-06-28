@@ -1,21 +1,19 @@
-import { describe, expect, it } from 'vitest';
-import { Bond, BondState, BondAtom, type Behavior, type BondStateProps } from './bond.svelte';
+import { describe, expect, it, vi } from 'vitest';
+import { Bond, Atom, type Behavior, type BondStateProps } from './index';
 import { clickTrigger } from '$svelte-atoms/core/components/portal/host/policies/trigger.svelte';
 
-// Specs for BondAtom.behavior() — the generic behavior-composition seam.
+// Specs for Atom.behavior() — the generic behavior-composition seam.
 // The last describe proves the real ClickTrigger policy works through use() and coexists with the atom's own handler.
 
-class TestState extends BondState {
-	// toggle() lands here when the strategy calls bond.state.toggle(); counter exposed for the proof.
+class TestBond extends Bond<BondStateProps> {
 	toggles = 0;
+
+	constructor() {
+		super({ id: 'test' }, 'test');
+	}
+
 	toggle() {
 		this.toggles++;
-	}
-}
-
-class TestBond extends Bond<BondStateProps, TestState> {
-	constructor() {
-		super(new TestState({ id: 'test' }), 'test');
 	}
 
 	share(): this {
@@ -23,7 +21,7 @@ class TestBond extends Bond<BondStateProps, TestState> {
 	}
 }
 
-class TestAtom extends BondAtom<TestBond> {
+class TestAtom extends Atom<TestBond> {
 	clicks = 0;
 
 	constructor(bond: TestBond) {
@@ -34,7 +32,7 @@ class TestAtom extends BondAtom<TestBond> {
 		return { ...super.attrs, role: 'button', 'data-own': 'atom' };
 	}
 
-	override get handlers() {
+	override get handlers(): Record<string, unknown> {
 		return {
 			onclick: () => {
 				this.clicks++;
@@ -43,10 +41,22 @@ class TestAtom extends BondAtom<TestBond> {
 	}
 }
 
+class PreventingAtom extends TestAtom {
+	override get handlers() {
+		return {
+			onclick: (event: MouseEvent) => {
+				this.clicks++;
+				event.preventDefault();
+			}
+		};
+	}
+}
+
 const newAtom = () => new TestAtom(new TestBond());
 
-describe('BondAtom.use — attrs', () => {
-	it('merges behaviour attrs over the atom (last wins), keeping the rest', () => {
+describe('Atom.use — attrs', () => {
+	it('merges behaviour attrs over the atom with a dev conflict diagnostic', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 		const atom = newAtom().behavior({
 			attrs: () => ({ 'data-own': 'behavior', 'data-extra': '1' })
 		});
@@ -55,10 +65,12 @@ describe('BondAtom.use — attrs', () => {
 		expect(s['data-own']).toBe('behavior'); // behaviour overrode the atom's value
 		expect(s['data-extra']).toBe('1'); // behaviour-only attr present
 		expect(s.role).toBe('button'); // untouched atom attr survives
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('data attribute "data-own"'));
+		warn.mockRestore();
 	});
 });
 
-describe('BondAtom.use — handlers', () => {
+describe('Atom.use — handlers', () => {
 	it('CHAINS a colliding handler — atom first, then behaviour; both run', () => {
 		const atom = newAtom();
 		let behaviorClicks = 0;
@@ -82,9 +94,22 @@ describe('BondAtom.use — handlers', () => {
 		expect(order).toEqual(['a', 'b']);
 		expect(atom.clicks).toBe(1);
 	});
+
+	it('skips internal behaviour handlers once the atom handler prevents default', () => {
+		const atom = new PreventingAtom(new TestBond());
+		let behaviorClicks = 0;
+		atom.behavior({ handlers: () => ({ onclick: () => behaviorClicks++ }) });
+
+		(atom.spread.onclick as (event: MouseEvent) => void)(
+			new MouseEvent('click', { cancelable: true })
+		);
+
+		expect(atom.clicks).toBe(1);
+		expect(behaviorClicks).toBe(0);
+	});
 });
 
-describe('BondAtom.use — onmount', () => {
+describe('Atom.use — onmount', () => {
 	it('runs the behaviour onmount via a spread attachment and honours cleanup', () => {
 		let mounted = 0;
 		let cleaned = 0;
@@ -106,7 +131,7 @@ describe('BondAtom.use — onmount', () => {
 	});
 });
 
-describe('BondAtom.use — reuse across atoms', () => {
+describe('Atom.use — reuse across atoms', () => {
 	it('the same behaviour object applies to unrelated atoms', () => {
 		const tag: Behavior<TestBond> = { attrs: () => ({ 'data-reused': 'yes' }) };
 		const a1 = newAtom().behavior(tag);
@@ -129,7 +154,7 @@ describe('proof: clickTrigger behavior re-expressed through use()', () => {
 			defaultPrevented: false
 		} as MouseEvent);
 
-		expect(bond.state.toggles).toBe(1); // strategy ran through the generic seam (via state)
+		expect(bond.toggles).toBe(1); // strategy ran through the generic seam
 		expect(atom.clicks).toBe(1); // atom's own onclick was NOT clobbered
 	});
 });

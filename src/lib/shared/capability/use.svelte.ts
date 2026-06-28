@@ -1,5 +1,5 @@
 import { onDestroy } from 'svelte';
-import type { Bond } from '../bond/bond.svelte';
+import type { Bond } from '../bond';
 
 // Normalize a capability's setup() return — a teardown function or a Disposable (Symbol.dispose) —
 // into a plain teardown thunk. A Disposable lets a capability hand back a `using`-managed resource
@@ -21,12 +21,28 @@ export function useCapabilities(bond: Bond | undefined): void {
 
 	// Record that whole-bond effects are now live, so the DEV guard that fires when a setup()-bearing
 	// bond was never wired stays quiet for correctly-wired roots.
-	bond.markSetupConsumed();
+	bond.state.markSetupConsumed();
 
 	const teardowns: Array<() => void> = [];
-	for (const capability of bond.capabilities) {
-		const live = capability.setup?.(bond);
-		if (live) teardowns.push(toTeardown(live));
+	try {
+		for (const capability of bond.state.capabilities) {
+			const live = capability.setup?.(bond);
+			if (live) teardowns.push(toTeardown(live));
+		}
+	} catch (error) {
+		for (let i = teardowns.length - 1; i >= 0; i--) {
+			try {
+				teardowns[i]!();
+			} catch (teardownError) {
+				if (import.meta.env?.DEV) {
+					console.error(
+						'[svelte-atoms] capability setup failed, and a previously registered teardown also failed.',
+						teardownError
+					);
+				}
+			}
+		}
+		throw error;
 	}
 
 	if (teardowns.length > 0) {
