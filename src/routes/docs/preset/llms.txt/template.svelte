@@ -145,29 +145,20 @@ multiple themes or design variations ## Key Features
 	'typescript'
 )}
 
-## Reactive Presets (Dynamic Styling) Access component bond state for dynamic styling:
+## Reactive Presets (Dynamic Styling) Access component Bond values for dynamic styling:
 
 {codeBlock(
 	`import { setPreset } from '@svelte-atoms/core/context';
-import { defineState, defineProperty } from '@svelte-atoms/core/utils';
 
 setPreset({
   'accordion.item.header': (bond) => {
-    const isOpen = defineState([
-      defineProperty(
-        () => bond?.state?.isOpen,
-        (v) => (bond.state.isOpen = v),
-        'isOpen'
-      )
-    ]);
-    
     return () => ({
-      class: isOpen ? 'bg-accent' : 'bg-background'
+      class: bond?.isOpen ? 'bg-accent' : 'bg-background'
     });
   },
   
   'collapsible.trigger': (bond) => ({
-    class: bond?.state?.isOpen ? 'rotate-180' : 'rotate-0'
+    class: bond?.isOpen ? 'rotate-180' : 'rotate-0'
   })
 });`,
 	'typescript'
@@ -324,7 +315,7 @@ const _klass = $derived.by(() => {
 
 ## Best Practices ### ✅ DO - Set global presets at app root for base theme - Override at route
 level for section-specific theming - Use dot notation for compound component specificity - Access
-bond state for reactive styling - Keep preset logic simple and focused - Use presets for common
+Bond values for reactive styling - Keep preset logic simple and focused - Use presets for common
 patterns ### ❌ DON'T - Override presets for one-off styling (use component props instead) - Create
 overly complex preset functions - Rely on presets for critical functionality - Duplicate logic
 across preset levels - Use presets for layout (use component composition) ## Examples ###

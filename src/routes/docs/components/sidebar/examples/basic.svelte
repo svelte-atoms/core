@@ -34,7 +34,7 @@
 				</Sidebar.Content>
 				<main class="flex flex-1 flex-col gap-3 p-4">
 					<p class="text-muted-foreground text-sm">Main content area</p>
-					<button onclick={() => sidebar?.state.toggle?.()} class="text-sm underline">
+					<button onclick={() => sidebar?.toggle?.()} class="text-sm underline">
 						{sidebarOpen ? 'Collapse' : 'Expand'} sidebar
 					</button>
 				</main>

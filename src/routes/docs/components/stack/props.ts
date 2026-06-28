@@ -34,7 +34,7 @@ export const stackItemProps: PropDefinition[] = [
 		type: 'string',
 		default: '$props.id()',
 		description:
-			'Unique identifier for this item within the stack. Used to reference it in bond.state z-order methods (bringToFront, sendToBack, etc.). Auto-generated if omitted.'
+			'Unique identifier for this item within the stack. Used by Bond z-order methods such as bringToFront and sendToBack. Auto-generated if omitted.'
 	},
 	{
 		name: '...atomProps',

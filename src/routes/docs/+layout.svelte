@@ -51,7 +51,8 @@
 			children: [
 				{ title: 'Introduction', href: '/docs' },
 				{ title: 'Quick Start', href: '/docs/quick-start' },
-				{ title: 'Philosophy', href: '/docs/philosophy' }
+				{ title: 'Philosophy', href: '/docs/philosophy' },
+				{ title: 'Migration Guide', href: '/docs/migration' }
 			]
 		},
 		{

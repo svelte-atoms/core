@@ -21,8 +21,8 @@
 				</p>
 			</Dialog.Body>
 			<Dialog.Footer class="flex justify-end gap-2">
-				<Button variant="outline" onclick={() => dialog.state.close()}>Cancel</Button>
-				<Button variant="destructive" onclick={() => dialog.state.close()}>Delete account</Button>
+				<Button variant="outline" onclick={() => dialog.close()}>Cancel</Button>
+				<Button variant="destructive" onclick={() => dialog.close()}>Delete account</Button>
 			</Dialog.Footer>
 		</Dialog.Content>
 	{/snippet}

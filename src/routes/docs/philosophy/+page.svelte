@@ -6,7 +6,7 @@
 		`<script>
   import { Accordion, AccordionItem } from '@svelte-atoms/core';
 
-  // Surface the Bond's internal state through a bindable prop
+  // Surface the Bond's shared value through a bindable prop
   let activeItem = $state('getting-started');
 <` +
 		`/script>
@@ -66,7 +66,7 @@
 				<path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
 			</svg>
 		</Button>
-		<Button href="/docs/bonds" as="a" variant="outline" class="px-5">Master Bonds</Button>
+		<Button href="/docs/bonds" as="a" variant="outline" class="px-5">Understand Bonds</Button>
 	</div>
 </div>
 
@@ -75,10 +75,10 @@
 	<Section.Header>
 		<Section.Title>Three composable primitives</Section.Title>
 		<Section.Subtitle>
-			Every component in the library is an expression of the same three-layer model.
+			Every component in the library is an expression of the same small model.
 		</Section.Subtitle>
 	</Section.Header>
-	<div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 mb-8">
+	<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-8">
 		<!-- Atom -->
 		<div class="border-border rounded-lg border p-5 bg-card">
 			<div
@@ -105,8 +105,8 @@
 			</div>
 			<p class="text-foreground mb-1 text-sm font-semibold">01 — Atom</p>
 			<p class="text-muted-foreground text-sm leading-relaxed">
-				A thin wrapper around any HTML element that injects preset classes and bond state. Zero
-				hardcoded styles — infinite flexibility.
+				A composable rendered part backed by an Atom for spreads, element refs, and local
+				capabilities. Zero hardcoded styles — infinite flexibility.
 			</p>
 		</div>
 		<!-- Bond -->
@@ -136,6 +136,35 @@
 				stores — state lives exactly where it's needed.
 			</p>
 		</div>
+		<!-- Capability -->
+		<div class="border-border rounded-lg border p-5 bg-card">
+			<div
+				class="bg-primary/10 text-primary mb-4 inline-flex h-9 w-9 items-center justify-center rounded-lg"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path
+						d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+					/>
+					<circle cx="12" cy="12" r="3" />
+				</svg>
+			</div>
+			<p class="text-foreground mb-1 text-sm font-semibold">03 — Capability</p>
+			<p class="text-muted-foreground text-sm leading-relaxed">
+				Reusable behavior installed on a Bond or Atom. Capabilities handle shared state,
+				relationships, effects, and local DOM behavior without repeating code in every component.
+			</p>
+		</div>
 		<!-- Preset -->
 		<div class="border-border rounded-lg border p-5 bg-card">
 			<div
@@ -159,7 +188,7 @@
 					<circle cx="12" cy="12" r="3" />
 				</svg>
 			</div>
-			<p class="text-foreground mb-1 text-sm font-semibold">03 — Preset</p>
+			<p class="text-foreground mb-1 text-sm font-semibold">04 — Preset</p>
 			<p class="text-muted-foreground text-sm leading-relaxed">
 				One <code class="font-mono text-xs">setPreset()</code> call defines your entire design system.
 				Override globally or per-instance without specificity battles.
@@ -178,9 +207,9 @@
 	</Section.Header>
 
 	<p class="text-muted-foreground mb-5 text-sm leading-relaxed">
-		A Bond is a class that holds the reactive state and behavior of a compound component. The root
-		component creates its Bond internally, calls <code class="font-mono text-xs">.share()</code> to
-		place it in Svelte context, and every descendant retrieves it automatically via
+		A Bond is a class that holds the shared state and behavior of a compound component. The root
+		component creates its Bond, calls <code class="font-mono text-xs">.share()</code> to place it in
+		Svelte context, and every descendant retrieves it automatically via
 		<code class="font-mono text-xs">getContext</code> — no props passed between them.
 	</p>
 

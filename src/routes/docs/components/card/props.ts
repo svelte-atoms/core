@@ -45,7 +45,7 @@ export const cardSubPartProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'CardBond',
 		default: 'undefined',
-		description: 'Bond object passed down from Card.Root for internal state communication'
+		description: 'Bond object passed down from Card.Root for shared component coordination'
 	},
 	{
 		name: 'preset',

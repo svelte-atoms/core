@@ -9,14 +9,14 @@
 			{
 				title: 'Atoms',
 				description:
-					'HtmlAtom wraps any HTML element with preset classes, variants, and bond state — zero hardcoded styles, infinite flexibility.',
+					'Atom Components render flexible parts; Atoms provide runtime spreads, element refs, and local capabilities.',
 				href: '/docs/atoms',
 				iconKey: 'atoms'
 			},
 			{
-				title: 'Bond System',
+				title: 'Bonds',
 				description:
-					'Shared reactive state flows through component trees via Svelte context — no prop drilling, no store boilerplate.',
+					'Shared state, context, registered Atoms, and compound coordination without prop drilling.',
 				href: '/docs/bonds',
 				iconKey: 'bonds'
 			},
@@ -30,7 +30,7 @@
 			{
 				title: 'TypeScript',
 				description:
-					'Full type inference for variants, slots, and bond state. Catch mistakes at author time, not at runtime.',
+					'Full type inference for variants, Atoms, capabilities, and Bond props. Catch mistakes at author time.',
 				href: '/docs/quick-start',
 				iconKey: 'typescript'
 			},
@@ -65,7 +65,7 @@
 		},
 		{
 			title: 'Philosophy',
-			description: 'Understand the Atom → Bond → Preset architecture.',
+			description: 'Understand Atoms, Bonds, capabilities, and presets.',
 			href: '/docs/philosophy',
 			badge: 'Concepts'
 		},
@@ -73,6 +73,12 @@
 			title: 'Styling',
 			description: 'Own every pixel via the Preset system.',
 			href: '/docs/styling',
+			badge: 'Guide'
+		},
+		{
+			title: 'Migration',
+			description: 'Move older BondState and Bond-owned Atom code to the current model.',
+			href: '/docs/migration',
 			badge: 'Guide'
 		}
 	];
@@ -207,7 +213,7 @@
 	<Section.Header>
 		<Section.Title>Core concepts</Section.Title>
 		<Section.Subtitle
-			>Three composable primitives that give you complete control over behaviour, state, and style</Section.Subtitle
+			>Atoms, Bonds, capabilities, and presets give you control over behavior, state, and style</Section.Subtitle
 		>
 	</Section.Header>
 	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -288,13 +294,14 @@
 		<p class="text-primary mb-2 text-xs font-medium uppercase tracking-wide">Next steps</p>
 		<h2 class="text-foreground mb-1.5 text-lg font-semibold">Ready to go deeper?</h2>
 		<p class="text-muted-foreground mb-5 text-sm leading-relaxed">
-			Learn the architecture, master the styling system, and understand what makes Svelte Atoms
+			Learn the architecture, use the styling system, and understand what makes Svelte Atoms
 			different from other component libraries.
 		</p>
 		<div class="flex flex-wrap gap-2">
 			<Button href="/docs/philosophy" as="a" variant="primary">Learn the Philosophy</Button>
 			<Button href="/docs/atoms" as="a" variant="outline">Understand Atoms</Button>
-			<Button href="/docs/bonds" as="a" variant="outline">Master Bonds</Button>
+			<Button href="/docs/bonds" as="a" variant="outline">Understand Bonds</Button>
+			<Button href="/docs/migration" as="a" variant="outline">Migration Guide</Button>
 			<Button href="/docs/preset" as="a" variant="outline">Explore Presets</Button>
 		</div>
 	</div>

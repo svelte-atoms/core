@@ -85,7 +85,7 @@ export const accordionItemHeaderProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
+		description: 'Bond object passed down from AccordionItem.Root for shared item coordination'
 	},
 	{
 		name: 'preset',
@@ -113,7 +113,7 @@ export const accordionItemBodyProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
+		description: 'Bond object passed down from AccordionItem.Root for shared item coordination'
 	},
 	{
 		name: 'preset',
@@ -141,7 +141,7 @@ export const accordionItemIndicatorProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'AccordionItemBond',
 		default: 'undefined',
-		description: 'Bond object passed down from AccordionItem.Root for internal state communication'
+		description: 'Bond object passed down from AccordionItem.Root for shared item coordination'
 	},
 	{
 		name: 'preset',

@@ -33,8 +33,7 @@ understand the basics and get your first component running.
 
 {formatList(metadata.documentation.fundamentals)}
 
-### Styling & Theming Master the powerful variants and preset systems for flexible component
-styling.
+### Styling & Theming Learn the powerful variants and preset systems for flexible component styling.
 
 {formatList(metadata.documentation.styling)}
 

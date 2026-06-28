@@ -32,7 +32,7 @@ export const collapsibleHeaderProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'CollapsibleBond',
 		default: 'undefined',
-		description: 'Bond object passed down from Collapsible.Root for internal state communication'
+		description: 'Bond object passed down from Collapsible.Root for shared component coordination'
 	},
 	{
 		name: 'preset',
@@ -60,7 +60,7 @@ export const collapsibleBodyProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'CollapsibleBond',
 		default: 'undefined',
-		description: 'Bond object passed down from Collapsible.Root for internal state communication'
+		description: 'Bond object passed down from Collapsible.Root for shared component coordination'
 	},
 	{
 		name: 'preset',

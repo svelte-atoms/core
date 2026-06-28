@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { FrontMatter } from '$docs/md/components';
-	import { codeBlock, list } from '$docs/md/template';
+	import { codeBlock, list, newLine } from '$docs/md/template';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
@@ -13,11 +13,19 @@
 {metadata.pageDescription}
 
 ## What Are Atoms? In chemistry, atoms are the basic units that combine to form molecules. In Svelte
-Atoms, the same principle applies: atoms are the fundamental components that combine to create more
-complex UI patterns. Unlike traditional component libraries that provide fully-featured components,
-atoms give you the raw building blocks. They handle the hard parts (accessibility, keyboard
-navigation, state management) while giving you complete control over structure and styling. ## Core
-Concepts
+Atoms, the same principle applies: atom UI components are the fundamental pieces that combine to
+create more complex UI patterns. Unlike traditional component libraries that only provide
+fully-featured components, atom UI primitives give you raw building blocks. Runtime Atom classes
+handle node-level behavior and integration while the UI component keeps you in control of structure
+and styling.{newLine(2)}## Atom UI vs Atom Class
+
+{#each metadata.terminology as item, i (i)}
+	### {item.term}
+
+	{item.description}
+{/each}
+
+{newLine()}## Core Concepts
 
 {#each metadata.concepts as concept, i (i)}
 	### {concept.title}

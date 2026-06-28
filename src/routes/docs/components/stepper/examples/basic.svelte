@@ -41,13 +41,13 @@
 			{#snippet children({ stepper })}
 				<Button
 					variant="outline"
-					onclick={() => stepper.state.navigation.previous()}
+					onclick={() => stepper.navigation.previous()}
 					disabled={activeStep === 0}
 				>
 					Previous
 				</Button>
 				<Button
-					onclick={() => stepper.state.navigation.next()}
+					onclick={() => stepper.navigation.next()}
 					disabled={activeStep === steps.length - 1}
 				>
 					Next

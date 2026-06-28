@@ -58,7 +58,7 @@ export const metadata = {
 		},
 		{
 			title: 'Styling Guide',
-			description: 'Master the styling system with Tailwind, variants, and presets',
+			description: 'Learn the styling system with Tailwind, variants, and presets',
 			link: '/docs/styling'
 		},
 		{

@@ -47,7 +47,7 @@ const useCases = [
 	{
 		title: 'Layer Panels',
 		description:
-			'Build interactive layer managers (like in design tools) using bond.state z-order methods.'
+			'Build interactive layer managers (like in design tools) using Bond z-order methods.'
 	},
 	{
 		title: 'Card Stacks',

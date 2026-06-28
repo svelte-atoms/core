@@ -7,8 +7,8 @@ its own barrel and README; [`index.ts`](./index.ts) composes them into one stabl
 shared/
   index.ts        public barrel — composes the three layers below
   motion.ts       DURATION token
-  bond/           the runtime core: Bond / BondState / BondAtom (+ bind, factory, collection)
-  capability/     cross-cutting behavior registered onto a BondState
+  bond/           the runtime core: Bond / Atom registry (+ compatibility, bind, factory, collection)
+  capability/     cross-cutting behavior registered onto Bond or Atom hosts
     models/        the concrete capabilities (disclosure, selection, roving, …)
   authoring/      the declarative DSL that generates bond families (defineBond, fuse)
 ```
@@ -29,10 +29,9 @@ which re-exports the full surface. Each layer also has its own barrel
 ([`bond`](./bond/index.ts), [`capability`](./capability/index.ts),
 [`authoring`](./authoring/index.ts)) if you want to import from a single concern.
 
-**Internal** cross-module imports use deep file paths (e.g. `../capability/capability`), _not_ the
-barrels — this keeps the module graph explicit and cycle-free. `bond/bond.svelte.ts` additionally
-re-exports the capability and type seams so it remains the single import surface for its ~40 deep
-consumers.
+**Internal** cross-module imports use concrete files when they need implementation details and a
+layer barrel when they need that layer's public surface. `bond/bond.svelte.ts` exports only the
+`Bond` class; `bond/index.ts` owns the public bond re-export surface.
 
 See [`CONTEXT.md`](../../../CONTEXT.md) for vocabulary and [`docs/adr/`](../../../docs/adr) for the
 binding decisions.

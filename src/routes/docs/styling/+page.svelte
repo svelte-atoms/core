@@ -130,7 +130,7 @@ ${'<'}/HtmlAtom>`;
   ]
 });`;
 
-	const reactiveVariantsExample = `// Pass a function to access component bond state
+	const reactiveVariantsExample = `// Pass a function to access component Bond values
 const accordionVariants = defineVariants((bond) => ({
   class: 'border rounded-md transition-all',
   variants: {
@@ -465,7 +465,7 @@ ${'<'}/div>`;
 	<Section.Header>
 		<Section.Title>Variant system</Section.Title>
 		<Section.Subtitle>
-			Define reusable, type-safe component variants with full TypeScript inference and bond state
+			Define reusable, type-safe component variants with full TypeScript inference and Bond value
 			access.
 		</Section.Subtitle>
 	</Section.Header>
@@ -536,7 +536,7 @@ ${'<'}/div>`;
 	<Section.Header>
 		<Section.Title>Reactive variants</Section.Title>
 		<Section.Subtitle>
-			Access component bond state for variants that update automatically when internal state
+			Access component Bond values for variants that update automatically when internal state
 			changes.
 		</Section.Subtitle>
 	</Section.Header>

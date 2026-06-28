@@ -234,7 +234,7 @@ const componentsSummary = [
 	{
 		name: 'Input.ColorSwatch',
 		description:
-			'Color swatch preview inside an Input.Root, reads the current color value from bond state.'
+			'Color swatch preview inside an Input.Root, reads the current color value from the Bond.'
 	},
 	{
 		name: 'Input.CurrencyControl',

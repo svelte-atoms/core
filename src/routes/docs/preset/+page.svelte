@@ -79,14 +79,14 @@ setPreset({
 	const dynamicPresetCode = `import { setPreset } from '@svelte-atoms/core/context';
 
 setPreset({
-  // Returning a function makes the preset reactive to bond state
+  // Returning a function makes the preset reactive to Bond values
   'accordion.item.header': (bond) => {
     return () => ({
       class: ['', bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
     });
   },
 
-  // Static preset — no bond state needed
+  // Static preset — no Bond values needed
   'accordion.item.body': () => ({
     class: 'overflow-hidden mt-2'
   })
@@ -186,7 +186,7 @@ setPreset({
     defaults: { size: 'md' }
   }),
 
-  // Reactive — returns a factory so classes recompute with bond state
+  // Reactive — returns a factory so classes recompute with Bond values
   'accordion.item.header': (bond) => () => ({
     class: bond?.state?.isActive ? 'text-primary font-semibold' : 'text-muted-foreground'
   }),
@@ -229,7 +229,7 @@ setPreset({
 			num: '05',
 			title: 'Return a factory for reactive styles',
 			description:
-				'Returning () => ({...}) instead of a plain object makes the preset recompute when bond state changes.'
+				'Returning () => ({...}) instead of a plain object makes the preset recompute when Bond values change.'
 		},
 		{
 			num: '06',
@@ -463,14 +463,14 @@ setPreset({
 	<Section.Header>
 		<Section.Title>Reactive state-based styling</Section.Title>
 		<Section.Subtitle
-			>Access component bond state for dynamic presets that update automatically.</Section.Subtitle
+			>Access component Bond values for dynamic presets that update automatically.</Section.Subtitle
 		>
 	</Section.Header>
 
 	<p class="text-muted-foreground mb-6 text-sm leading-relaxed">
 		Preset functions receive the component's bond as a parameter. To make styles reactive, return a <em
 			>factory function</em
-		> instead of a plain object — the factory is re-evaluated whenever bond state changes.
+		> instead of a plain object — the factory is re-evaluated whenever Bond values change.
 	</p>
 
 	<div class="overflow-hidden rounded-lg mb-6">
@@ -493,7 +493,7 @@ setPreset({
 				<p class="text-muted-foreground text-xs leading-relaxed">
 					Return a factory: <code class="bg-primary/10 text-primary font-mono text-xs"
 						>(bond) => () => (&lbrace;class: '...'&rbrace;)</code
-					>. Re-evaluated on every render when bond state changes.
+					>. Re-evaluated on every render when Bond values change.
 				</p>
 			</div>
 		</div>

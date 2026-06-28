@@ -61,7 +61,7 @@
 				<path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
 			</svg>
 		</Button>
-		<Button href="/docs/bonds" as="a" variant="outline" class="px-5">Master Bonds</Button>
+		<Button href="/docs/bonds" as="a" variant="outline" class="px-5">Understand Bonds</Button>
 	</div>
 </div>
 
@@ -77,6 +77,25 @@
 	<div class="space-y-3">
 		{#each metadata.whatAreAtoms as paragraph, i (i)}
 			<p class="text-muted-foreground leading-relaxed">{paragraph}</p>
+		{/each}
+	</div>
+</Section.Root>
+
+<!-- Atom UI vs Atom Class -->
+<Section.Root>
+	<Section.Header>
+		<Section.Title>Atom UI vs Atom class</Section.Title>
+		<Section.Subtitle>
+			The docs use "atom" in two related ways. Keep these roles separate when reading examples.
+		</Section.Subtitle>
+	</Section.Header>
+
+	<div class="grid gap-4 md:grid-cols-3">
+		{#each metadata.terminology as item (item.term)}
+			<div class="border-border rounded-lg border p-5">
+				<p class="text-foreground mb-2 text-sm font-semibold">{item.term}</p>
+				<p class="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+			</div>
 		{/each}
 	</div>
 </Section.Root>

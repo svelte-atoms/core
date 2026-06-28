@@ -355,7 +355,7 @@ cases 6. **Customize Gradually**: Start with defaults and customize as you under
 **Use Dev Tools**: Browser DevTools help debug styles and component structure ## Resources -
 [Component Library](/docs/components) - Browse all available components -
 [Philosophy](/docs/philosophy) - Understand the design principles - [Styling Guide](/docs/styling) -
-Master the styling system - [Preset System](/docs/preset) - Learn about global theming -
+Learn the styling system - [Preset System](/docs/preset) - Learn about global theming -
 [Accessibility](/docs/accessibility) - Build accessible applications - [GitHub
 Repository](https://github.com/svelte-atoms/core) - Source code and issues ## Get Help If you run
 into issues: 1. Check the [Component Documentation](/docs/components) 2. Search [GitHub

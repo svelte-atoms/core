@@ -272,7 +272,7 @@ What we won't do:
 	[
 		'**Start with Atoms**: Understand the basic building blocks',
 		'**Learn Composition**: Practice combining primitives',
-		'**Master Bonds**: Understand state management patterns',
+		'**Understand Bonds**: Learn shared state, registered Atoms, and capabilities',
 		'**Explore Presets**: Set up global theming',
 		'**Build Real Components**: Apply knowledge to real projects',
 		'**Contribute Back**: Share patterns and improvements'

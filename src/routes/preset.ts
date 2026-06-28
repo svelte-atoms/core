@@ -36,8 +36,9 @@ export const preset: Partial<Preset> = {
 		class: 'mb-2 last:mb-0 rounded-md border border-border bg-popover px-2 py-2'
 	}),
 	'accordion.item.header': (bond) => {
+		const itemBond = bond as { isActive?: boolean } | undefined;
 		return () => ({
-			class: ['', bond?.state?.isActive ? 'text-foreground/100' : 'text-foreground/50']
+			class: ['', itemBond?.isActive ? 'text-foreground/100' : 'text-foreground/50']
 		});
 	},
 	'accordion.item.body': () => ({
@@ -75,8 +76,15 @@ export const preset: Partial<Preset> = {
 		class: 'bg-background/25 py-0'
 	}),
 	'datagrid.row': (bond) => {
-		const isSelected = bond?.state?.isSelected ?? false;
-		const isHeader = bond?.state?.isHeader ?? false;
+		const row = bond as
+			| {
+					isSelected?: boolean;
+					isHeader?: boolean;
+					state?: { isSelected?: boolean; isHeader?: boolean };
+			  }
+			| undefined;
+		const isSelected = row?.isSelected ?? row?.state?.isSelected ?? false;
+		const isHeader = row?.isHeader ?? row?.state?.isHeader ?? false;
 
 		return {
 			class: [
@@ -97,7 +105,7 @@ export const preset: Partial<Preset> = {
 		};
 	},
 	'datagrid.footer': () => ({}),
-	'datagrid.column-sort-icon': () => ({}),
+	'datagrid.sort-icon': () => ({}),
 	'dialog.content': () => ({
 		class:
 			'bg-card rounded-lg shadow-lg border border-border max-w-3xl w-full max-w-[calc(100svw-8px)] md:max-w-3xl lg:max-w-4xl xl:max-w-[50svw] p-0'
@@ -114,7 +122,7 @@ export const preset: Partial<Preset> = {
 	'drawer.content': () => ({
 		class: 'z-20',
 		[createAttachmentKey()]: clickoutDrawer((_, bond) => {
-			bond?.state.close?.();
+			bond?.close?.();
 		})
 	}),
 	'drawer.backdrop': () => ({

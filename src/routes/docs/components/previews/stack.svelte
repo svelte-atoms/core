@@ -34,11 +34,11 @@
 	<div class="flex flex-col gap-1">
 		<button
 			class="text-xs text-primary hover:underline text-left"
-			onclick={() => stackBond?.state.bringToFront(stackSelected)}>↑ Front</button
+			onclick={() => stackBond?.bringToFront(stackSelected)}>↑ Front</button
 		>
 		<button
 			class="text-xs text-muted-foreground hover:text-foreground text-left"
-			onclick={() => stackBond?.state.sendToBack(stackSelected)}>↓ Back</button
+			onclick={() => stackBond?.sendToBack(stackSelected)}>↓ Back</button
 		>
 	</div>
 </div>

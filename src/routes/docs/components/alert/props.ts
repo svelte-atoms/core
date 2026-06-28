@@ -44,7 +44,7 @@ export const alertSubPartProps: PropDefinition[] = [
 		name: 'bond',
 		type: 'AlertBond',
 		default: 'undefined',
-		description: 'Bond object passed down from Alert.Root for internal state communication'
+		description: 'Bond object passed down from Alert.Root for shared component coordination'
 	},
 	{
 		name: 'preset',

@@ -577,7 +577,7 @@ Remove unused styles in production ## Migrating from Other Systems ### From CSS 
 
 ## Resources - [Tailwind CSS Documentation](https://tailwindcss.com/docs) - [Preset
 System](/docs/preset) - Global theming guide - [Component Examples](/docs/components) - See styling
-in action - [Color Tokens Reference](/docs/theming) - Complete token list ## Next Steps - Master the
+in action - [Color Tokens Reference](/docs/theming) - Complete token list ## Next Steps - Learn the
 [Preset System](/docs/preset) for global theming - Learn about [Variants](/docs/variants) for
 reusable patterns - Explore [Component Examples](/docs/components) to see styling techniques - Read
 about [Accessibility](/docs/accessibility) for inclusive design

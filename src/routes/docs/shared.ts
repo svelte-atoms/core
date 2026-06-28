@@ -21,8 +21,7 @@ export const metadata = {
 		},
 		{
 			title: 'Styling & Theming',
-			description:
-				'Master the variants and preset systems for powerful, flexible component styling.'
+			description: 'Learn the variants and preset systems for powerful, flexible component styling.'
 		},
 		{
 			title: 'Components',
@@ -56,6 +55,11 @@ export const metadata = {
 				title: 'Quick Reference',
 				href: '/docs/quick-reference/llms.txt',
 				description: 'Common patterns and shortcuts'
+			},
+			{
+				title: 'Migration Guide',
+				href: '/docs/migration/llms.txt',
+				description: 'Move older BondState and Bond-owned Atom code to the current model'
 			}
 		],
 		fundamentals: [

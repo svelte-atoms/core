@@ -5,7 +5,8 @@
 		DocSection,
 		DocExample,
 		DocCode,
-		DocPropsTabs
+		DocPropsTabs,
+		DocCalloutBlock
 	} from '$docs/components';
 	import type { PropsSection } from '$docs/components';
 	import { htmlAtomProps } from './props';
@@ -58,6 +59,17 @@
 	{/snippet}
 
 	{#snippet extra()}
+		<DocSection title="Terminology">
+			<DocCalloutBlock title="HtmlAtom renders UI. Atom owns runtime behavior.">
+				Use <code class="font-mono text-xs">HtmlAtom</code> when you need a polymorphic Svelte
+				component that renders HTML with presets, variants, classes, and HTML attributes. Use the
+				<code class="font-mono text-xs">Atom</code> class when you are extending component behavior
+				with
+				<code class="font-mono text-xs">createAtomInstance</code>, node registration, capabilities,
+				or Bond coordination.
+			</DocCalloutBlock>
+		</DocSection>
+
 		<DocSection title="Component Composition">
 			<DocCode code={metadata.examples.composition} lang="svelte" />
 		</DocSection>
