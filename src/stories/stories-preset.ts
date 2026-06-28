@@ -1,4 +1,5 @@
 import { clickoutDrawer, clickoutPopover, Input } from '$lib';
+import { closeOverlay } from '$lib/components/portal/host/policies/overlay-view';
 import type { Preset } from '$lib/context';
 import { createAttachmentKey } from 'svelte/attachments';
 import type { PopoverBond } from '../../dist';
@@ -26,11 +27,15 @@ import type { PopoverBond } from '../../dist';
 // Shared minimalist building blocks ------------------------------------------------
 
 /** A floating surface: menu / popover / dropdown / select content panels. */
-const SURFACE = 'overflow-hidden rounded-lg border border-border bg-popover shadow-sm';
+const SURFACE =
+	'z-50 overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-md outline-none ring-1 ring-foreground/5 backdrop-blur-sm';
+
+/** A compact command surface for menus and searchable option lists. */
+const MENU_SURFACE = `${SURFACE} min-w-44 p-1`;
 
 /** A selectable row inside a surface. */
 const ITEM =
-	'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-foreground transition-colors hover:bg-foreground/5 data-[highlighted=true]:bg-foreground/5 data-[selected]:bg-foreground/5 data-[selected]:font-medium';
+	'group flex min-h-9 w-full cursor-pointer select-none items-center gap-2 rounded-md [border-bottom-width:0] px-2.5 py-1.5 text-sm text-foreground outline-none transition-colors duration-100 hover:bg-muted hover:text-foreground active:bg-muted/80 focus-visible:bg-muted aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-45 data-[highlighted=true]:bg-muted data-[highlighted=true]:text-foreground data-[selected]:bg-primary/10 data-[selected]:font-medium data-[selected]:text-primary';
 
 export const storiesPreset: Partial<Preset> = {
 	root: () => ({
@@ -45,11 +50,11 @@ export const storiesPreset: Partial<Preset> = {
 	}),
 	'accordion.item': () => ({ as: 'li' }),
 	'accordion.item.header': (bond) => {
-		const itemBond = bond as { state?: { isActive?: boolean } } | undefined;
+		const itemBond = bond as { isActive?: boolean } | undefined;
 		return () => ({
 			class: [
 				'justify-between gap-3 px-3 py-3 text-sm font-medium transition-colors hover:bg-foreground/5',
-				itemBond?.state?.isActive ? 'text-foreground' : 'text-muted-foreground'
+				itemBond?.isActive ? 'text-foreground' : 'text-muted-foreground'
 			]
 		});
 	},
@@ -135,19 +140,21 @@ export const storiesPreset: Partial<Preset> = {
 	'popover.content': (bond) => {
 		const isAutoClosable = (bond as unknown as PopoverBond)?.state?.props?.rest?.autoClose ?? false;
 		return {
-			class: `${SURFACE} p-1`,
+			class: `${SURFACE} max-w-sm p-3 text-sm leading-relaxed`,
 			[createAttachmentKey()]: (node: HTMLElement) => {
 				if (!isAutoClosable) return;
 				return clickoutPopover((_, atom) => {
-					atom.state.close();
+					closeOverlay(atom);
 				})(node);
 			}
 		};
 	},
+	'popover.arrow': () => ({ class: 'text-popover drop-shadow-sm' }),
+	'popover.indicator': () => ({ class: 'size-4 shrink-0 text-muted-foreground' }),
 	'menu.content': () => ({
-		class: `${SURFACE} p-1`,
+		class: MENU_SURFACE,
 		[createAttachmentKey()]: clickoutPopover((_, atom) => {
-			atom.state.close();
+			closeOverlay(atom);
 		})
 	}),
 	'dropdown.trigger': () => ({ base: Input.Root }),
@@ -160,13 +167,13 @@ export const storiesPreset: Partial<Preset> = {
 	// Overlay menu families resolve their content/item preset as `<bond>.content` / `<bond>.item`
 	// (e.g. `dropdown-menu.content`). These keys are component-specific, so a class-less menu
 	// would otherwise render surface-less — give them the shared minimalist surface + row style.
-	'dropdown-menu.content': () => ({ class: `${SURFACE} p-1` }),
+	'dropdown-menu.content': () => ({ class: MENU_SURFACE }),
 	'dropdown-menu.item': () => ({ class: ITEM }),
-	'context-menu.content': () => ({ class: `${SURFACE} p-1` }),
+	'context-menu.content': () => ({ class: MENU_SURFACE }),
 	'context-menu.item': () => ({ class: ITEM }),
-	'select.content': () => ({ class: SURFACE }),
+	'select.content': () => ({ class: `${MENU_SURFACE} max-h-72 overflow-y-auto` }),
 	'select.item': () => ({ class: ITEM }),
-	'combobox.content': () => ({ class: SURFACE }),
+	'combobox.content': () => ({ class: `${MENU_SURFACE} max-h-72 overflow-y-auto` }),
 
 	// Dialog ------------------------------------------------------------------------
 	'dialog.content': () => ({
