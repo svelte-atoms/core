@@ -2,7 +2,6 @@
 	import { Toast, Toaster } from '$lib/components/toast';
 	import { Button } from '$lib/components/button';
 	import { DocExample } from '$docs/components';
-	import type { DocMode } from '$docs/context/doc-mode.svelte';
 
 	interface ToastData {
 		title: string;
@@ -10,12 +9,10 @@
 	}
 
 	let {
-		contentType,
 		basicCode,
 		declarativeCode,
 		autoDismissCode
 	}: {
-		contentType: DocMode;
 		basicCode: string;
 		declarativeCode: string;
 		autoDismissCode: string;
@@ -28,7 +25,6 @@
 </script>
 
 <DocExample
-	{contentType}
 	title="Toast Variants"
 	description="Trigger different toast types using the Toaster manager."
 	code={basicCode}
@@ -66,7 +62,6 @@
 </DocExample>
 
 <DocExample
-	{contentType}
 	title="Declarative"
 	description="Toast.Root owned entirely by markup — no manager required."
 	code={declarativeCode}
@@ -103,7 +98,6 @@
 </DocExample>
 
 <DocExample
-	{contentType}
 	title="Auto-dismiss"
 	description="Pass duration to auto-close after the given number of milliseconds."
 	code={autoDismissCode}

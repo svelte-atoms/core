@@ -1,5 +1,6 @@
 import { createAttachmentKey } from 'svelte/attachments';
 import { nanoid } from 'nanoid';
+import { DEV } from 'esm-env';
 import { getElementId } from '../../utils/dom.svelte';
 import type { Bond } from './bond.svelte';
 import type { BondVirtualElement } from './types';
@@ -95,7 +96,7 @@ export class Atom<
 	}
 
 	behavior(behavior: Behavior<B, E>): this {
-		if (import.meta.env?.DEV && !this.bond) {
+		if (DEV && !this.bond) {
 			console.warn(
 				`[svelte-atoms] Atom("${this.name}").behavior(...) was registered without a Bond. Bond-dependent behavior will be skipped until the node is bonded.`
 			);
@@ -114,7 +115,7 @@ export class Atom<
 			const found = this.#findCapability(capabilityOrKey) as
 				| AtomCapability<S, Atom<B, E>, B, E>
 				| undefined;
-			if (import.meta.env?.DEV && !found) {
+			if (DEV && !found) {
 				console.warn(
 					`[svelte-atoms] Atom("${this.name}").capability("${slotName(capabilityOrKey)}"): no atom capability registered.`
 				);
@@ -262,7 +263,7 @@ export class Atom<
 			this.#capabilityAttachments.delete(prior);
 			this.#capabilities[existing] = capability;
 			this.#registerCapabilityAttachment(capability);
-			if (import.meta.env?.DEV) {
+			if (DEV) {
 				console.debug(
 					`[svelte-atoms] Atom("${this.name}") atom capability "${slotName(capability.slot)}" replaced.`
 				);
@@ -332,7 +333,7 @@ export class Atom<
 	}
 
 	#debugDuplicateRole(role: string): void {
-		if (!import.meta.env?.DEV) return;
+		if (!DEV) return;
 		const owner = this.bond ? `${this.bond.name}/${this.name}` : this.name;
 		console.debug(
 			`[svelte-atoms] Atom("${owner}").role("${role}") was already projected for this context; skipping duplicate projection.`
@@ -340,7 +341,7 @@ export class Atom<
 	}
 
 	#warnIfRoleHasNoBehavior(role: string, behaviors: readonly Behavior<B, E>[]): void {
-		if (!import.meta.env?.DEV || behaviors.length > 0) return;
+		if (!DEV || behaviors.length > 0) return;
 		const owner = this.bond ? `${this.bond.name}/${this.name}` : this.name;
 		console.warn(
 			`[svelte-atoms] Atom("${owner}").role("${role}"): no capability responds to this role. If intentional, ignore.`

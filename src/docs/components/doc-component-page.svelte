@@ -9,7 +9,7 @@
 	import type { DocMode } from '$docs/context/doc-mode.svelte';
 	import type { Frontmatter } from '$docs/md/frontmatter';
 	import { newLine } from '$docs/md/template';
-	import type { ComponentDocMeta, UseCase, ComponentSummary } from '$docs/types';
+	import type { ComponentDocMeta } from '$docs/types';
 
 	let {
 		contentType = 'html',

@@ -6,12 +6,12 @@
 		importCode: string;
 	};
 
-	let { importCode }: Props = $props();
+	let { packageName, importCode }: Props = $props();
 
 	let importCopySuccess = $state(false);
 	let installCopySuccess = $state(false);
 
-	const installCmd = 'npm install @svelte-atoms/core';
+	const installCmd = `npm install ${packageName}`;
 
 	function copy(text: string, setter: (v: boolean) => void) {
 		navigator.clipboard.writeText(text);

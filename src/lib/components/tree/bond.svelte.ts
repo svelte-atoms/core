@@ -31,7 +31,7 @@ export type TreeBondElements = {
 
 type TreeBondView = TreeBondBase;
 
-class TreeRootAtom extends Atom<TreeBondView, HTMLElement> {
+export class TreeRootAtom extends Atom<TreeBondView, HTMLElement> {
 	constructor(bond: TreeBondView) {
 		super(bond, 'root');
 	}

@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { DEV } from 'esm-env';
 import type { BondVirtualElement } from './types';
 
 type Handler = (...args: unknown[]) => unknown;
@@ -299,7 +300,7 @@ function warnConflict(
 	options: MergeLayerOptions,
 	resolution: string
 ): void {
-	if (!import.meta.env?.DEV) return;
+	if (!DEV) return;
 	const warn = options.warn ?? console.warn;
 	const source = options.source ? ` in ${options.source}` : '';
 	const nextSource = options.nextSource ? ` from ${options.nextSource}` : '';

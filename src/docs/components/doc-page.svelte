@@ -23,7 +23,7 @@
 		contentType?: DocMode;
 		title: string;
 		description: string;
-		status?: string;
+		status?: 'stable' | 'beta' | 'experimental' | 'deprecated' | undefined;
 		llms?: boolean;
 		breadcrumbs?: { label: string; href?: string }[];
 		prev?: { label: string; href: string };

@@ -5,7 +5,7 @@
 	type Props = {
 		title: string;
 		description: string;
-		status?: 'stable' | 'beta' | 'experimental' | 'deprecated';
+		status?: 'stable' | 'beta' | 'experimental' | 'deprecated' | undefined;
 		llms?: boolean;
 		children?: Snippet;
 	};

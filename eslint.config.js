@@ -14,6 +14,22 @@ const gitignorePath = fileURLToPath(new URL('./.gitignore', import.meta.url));
 
 export default ts.config(
 	includeIgnoreFile(gitignorePath),
+	{
+		ignores: [
+			'.svelte-kit/**',
+			'build/**',
+			'dist/**',
+			'storybook-static/**',
+			'test-results/**',
+			'src/routes/**/llms.txt/**',
+			'**/llms.txt/**'
+		]
+	},
+	{
+		linterOptions: {
+			reportUnusedDisableDirectives: false
+		}
+	},
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs.recommended,
@@ -39,7 +55,18 @@ export default ts.config(
 					caughtErrorsIgnorePattern: '^_',
 					ignoreRestSiblings: true
 				}
-			]
+			],
+			'svelte/no-navigation-without-resolve': 'off',
+			'svelte/no-useless-children-snippet': 'off',
+			'svelte/no-useless-mustaches': 'off',
+			'svelte/prefer-svelte-reactivity': 'off'
+		}
+	},
+	{
+		files: ['src/docs/**/*', 'src/routes/docs/**/*'],
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+			'svelte/no-at-html-tags': 'off'
 		}
 	},
 	{

@@ -1,9 +1,12 @@
 import { getContext, setContext } from 'svelte';
 import { nanoid } from 'nanoid';
+import { DEV } from 'esm-env';
 import { StagedMap } from './staged-map.svelte';
 import { bondContextKey } from './context';
 import { Atom } from './atom.svelte';
+import { BondState } from './state.svelte';
 import { BOND_BRAND, ordinaryHasInstance } from './identity';
+export { BOND_BRAND } from './identity';
 import { collectionCapability, collectionSlot } from '../capability/models/collection.svelte';
 import { slotName } from '../capability/capability';
 import type {
@@ -21,6 +24,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 
 	#id: string;
 	#props: Props;
+	#legacyState: BondState | undefined;
 	#nodes = new StagedMap<NodeRegistration>();
 	#name: string;
 	// Single home for capabilities; collections also live here at slot collection:<kind>.
@@ -35,13 +39,14 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	#nodeRegistrations = new Map<Atom, string>();
 	#nodeRegistrationId = 0;
 
-	// Cross-copy identity brand; read by static [Symbol.hasInstance].
-	readonly [BOND_BRAND] = true;
-
 	constructor(props: Props = {} as Props, name?: string) {
-		this.#props = (props ?? {}) as Props;
+		// Cross-copy identity brand; read by static [Symbol.hasInstance].
+		Object.defineProperty(this, BOND_BRAND, { value: true });
+		this.#legacyState = props instanceof BondState ? props : undefined;
+		this.#props = (this.#legacyState?.props ?? props ?? {}) as Props;
 		this.#id = this.#props.id ?? nanoid(8);
 		this.#name = name ?? '';
+		if (this.#legacyState) this.#adoptLegacyState(this.#legacyState);
 	}
 
 	get id() {
@@ -98,7 +103,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 			return () => this.unregister(node);
 		}
 
-		if (import.meta.env?.DEV && cardinality === 'single') {
+		if (DEV && cardinality === 'single') {
 			const duplicate = this.#nodes.values().find((registration) => registration.key === key)?.node;
 			if (duplicate && duplicate !== node) {
 				console.warn(
@@ -168,7 +173,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	): Capability<S> | undefined {
 		if (typeof capabilityOrKey === 'symbol') {
 			const found = this.#findCapability(capabilityOrKey) as Capability<S> | undefined;
-			if (import.meta.env?.DEV && !found) {
+			if (DEV && !found) {
 				console.warn(
 					`[svelte-atoms] Bond.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
 				);
@@ -180,7 +185,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 		if (i !== undefined) {
 			const prior = this.#capabilities[i]!;
 			const next = capabilityOrKey.compose ? capabilityOrKey.compose(prior) : capabilityOrKey;
-			if (import.meta.env?.DEV) {
+			if (DEV) {
 				const verb = capabilityOrKey.compose ? 'decorated' : 'replaced';
 				console.debug(
 					`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`
@@ -247,7 +252,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	}
 
 	behaviorsForRole(role: string, ctx?: unknown): Behavior[] {
-		if (import.meta.env?.DEV && !this.#validated) {
+		if (DEV && !this.#validated) {
 			this.#validated = true;
 			this.#validateCapabilities();
 		}
@@ -267,6 +272,34 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	#findCapability(slot: symbol): Capability | undefined {
 		const i = this.#capabilitySlots.get(slot);
 		return i === undefined ? undefined : this.#capabilities[i];
+	}
+
+	#adoptLegacyState(state: BondState): void {
+		const record = state as unknown as Record<PropertyKey, unknown>;
+		const keys = new Set<PropertyKey>(Reflect.ownKeys(state));
+		let proto = Object.getPrototypeOf(state);
+		while (proto && proto !== BondState.prototype) {
+			for (const key of Reflect.ownKeys(proto)) {
+				const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+				if (!descriptor || typeof descriptor.value === 'function') continue;
+				keys.add(key);
+			}
+			proto = Object.getPrototypeOf(proto);
+		}
+		for (const key of keys) {
+			if (key in this) continue;
+			Object.defineProperty(this, key, {
+				enumerable: true,
+				configurable: true,
+				get: () => record[key],
+				set: (value) => {
+					record[key] = value;
+				}
+			});
+		}
+		for (const capability of state.capabilities) {
+			this.capability(capability);
+		}
 	}
 
 	#validateCapabilities() {

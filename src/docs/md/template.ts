@@ -1,7 +1,7 @@
 // Tagged template literal for markdown strings; dedents common leading whitespace.
 export function md(strings: TemplateStringsArray, ...values: any[]): string {
 	// Combine template parts
-	let result = strings.reduce((acc, str, i) => {
+	const result = strings.reduce((acc, str, i) => {
 		return acc + str + (values[i] ?? '');
 	}, '');
 

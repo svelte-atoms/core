@@ -73,10 +73,10 @@ export interface HtmlAtomProps<
 	oninit?: LifecycleAttachment | undefined;
 }
 
-export interface HtmlAtomParams<T> {
+export interface HtmlAtomParams<T extends unknown[] = []> {
 	tagName?: HtmlElementTagName | undefined;
 	base?: Base<T> | undefined;
-	snippet?: Snippet<[T]> | undefined;
+	snippet?: Snippet<T> | undefined;
 }
 
 export type { ElementType };

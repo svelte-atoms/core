@@ -29,7 +29,7 @@
 	const trianglePath =
 		trianglePoints
 			.map((p, i) => {
-				const nextP = trianglePoints[(i + 1) % 3];
+				const nextP = trianglePoints[(i + 1) % 3]!;
 				// Calculate control point between vertices for subtle rounding
 				const controlX = p.x + (nextP.x - p.x) * roundness;
 				const controlY = p.y + (nextP.y - p.y) * roundness;
@@ -42,7 +42,7 @@
 				return `Q${p.x},${p.y} ${controlX},${controlY} L${endX},${endY}`;
 			})
 			.join(' ') +
-		` Q${trianglePoints[0].x},${trianglePoints[0].y} ${trianglePoints[0].x + (trianglePoints[1].x - trianglePoints[0].x) * roundness},${trianglePoints[0].y + (trianglePoints[1].y - trianglePoints[0].y) * roundness} Z`;
+		` Q${trianglePoints[0]!.x},${trianglePoints[0]!.y} ${trianglePoints[0]!.x + (trianglePoints[1]!.x - trianglePoints[0]!.x) * roundness},${trianglePoints[0]!.y + (trianglePoints[1]!.y - trianglePoints[0]!.y) * roundness} Z`;
 
 	// Calculate small triangles in the gaps (pointing outward)
 	const smallTriangles = [0, 120, 240].map((angle) => {

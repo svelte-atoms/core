@@ -62,6 +62,7 @@ export interface PresetModuleMap {
 	'combobox.content': PresetEntry;
 	'select.content': PresetEntry;
 	'select.item': PresetEntry;
+	'select.trigger': PresetEntry;
 	'dropdown-menu.content': PresetEntry;
 	'dropdown-menu.item': PresetEntry;
 	'context-menu.content': PresetEntry;
@@ -100,6 +101,7 @@ export interface PresetModuleMap {
 	'list.group': PresetEntry;
 	'list.item': PresetEntry;
 	'menu.content': PresetEntry;
+	'menu.list': PresetEntry;
 	'popover.arrow': PresetEntry;
 	'popover.indicator': PresetEntry;
 	'popover.content': PresetEntry;

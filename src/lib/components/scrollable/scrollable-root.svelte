@@ -3,7 +3,7 @@
 	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
 	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
-	import { ScrollableBond } from './bond.svelte';
+	import { ScrollableBond, type ScrollableRootAtom } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
 
 	let {
@@ -81,16 +81,16 @@
 		},
 		{ preset: () => preset }
 	);
-	const bond = binding.bond.share();
-	const rootAtom = createAtomInstance('root', {
+	const bond: ScrollableBond = binding.bond.share();
+	const rootAtom = createAtomInstance<ScrollableRootAtom, ScrollableBond, HTMLElement>('root', {
 		bond,
-		factory: (owner) => owner!.root()
+		factory: (owner) => owner!.root() as ScrollableRootAtom
 	});
 	const rootProps = $derived(
 		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
 	);
 
-	export function getBond() {
+	export function getBond(): ScrollableBond {
 		return bond;
 	}
 </script>

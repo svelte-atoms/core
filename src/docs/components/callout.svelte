@@ -5,7 +5,7 @@
 
 	interface Props {
 		variant?: Variant;
-		title?: string;
+		title?: string | undefined;
 		class?: string;
 		children: Snippet;
 	}

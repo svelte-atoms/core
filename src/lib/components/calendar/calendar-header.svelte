@@ -18,7 +18,7 @@
 	class={cn('calendar-header col-span-full grid h-fit grid-cols-subgrid', klass)}
 	{...headerProps}
 >
-	{#each (currentMonth?.days ?? []).filter((d) => d.week == 1) as day, i (i)}
+	{#each (currentMonth?.days ?? []).filter((d: NonNullable<typeof currentMonth>['days'][number]) => d.week == 1) as day, i (i)}
 		<CalendarWeekDay index={i} isWeekend={day.weekend}>{day.name}</CalendarWeekDay>
 	{/each}
 </HtmlAtom>

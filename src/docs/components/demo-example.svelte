@@ -5,10 +5,10 @@
 
 	type Props = {
 		title: string;
-		description?: string;
-		code?: string;
+		description?: string | undefined;
+		code?: string | undefined;
 		// Lazy component file loader — renders the example .svelte file in the preview area
-		component?: ExampleLoader;
+		component?: ExampleLoader | undefined;
 		children?: Snippet;
 	};
 

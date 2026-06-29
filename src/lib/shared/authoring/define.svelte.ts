@@ -1,4 +1,5 @@
 import { setContext } from 'svelte';
+import { DEV } from 'esm-env';
 import {
 	Bond,
 	BondState,
@@ -290,7 +291,7 @@ function warnCompositionConflict(
 	prior: string,
 	next: string
 ): void {
-	if (!import.meta.env?.DEV) return;
+	if (!DEV) return;
 	console.warn(
 		`[svelte-atoms] defineBond("${bondName}") parts composition has duplicate ${kind} "${name}" from ${prior} and ${next}; later definition wins.`
 	);
@@ -303,7 +304,7 @@ function warnPartCompositionConflicts(
 	methods: Record<string, unknown> | undefined,
 	atomMethods: boolean
 ): void {
-	if (!import.meta.env?.DEV) return;
+	if (!DEV) return;
 
 	// Plain Maps: local DEV-only bookkeeping, not reactive state.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity

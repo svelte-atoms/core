@@ -16,13 +16,13 @@
 
 	// Close mobile nav on route change
 	$effect(() => {
-		$page.url.pathname;
+		void $page.url.pathname;
 		mobileNavOpen = false;
 		mobileTocOpen = false;
 	});
 
 	$effect(() => {
-		$page.url.pathname;
+		void $page.url.pathname;
 		requestAnimationFrame(() => {
 			if (!mainEl) return;
 			const headings = Array.from(mainEl.querySelectorAll('h2[id]'));

@@ -1,4 +1,5 @@
 import { onDestroy } from 'svelte';
+import { DEV } from 'esm-env';
 import type { Bond } from '../bond';
 
 // Normalize a capability's setup() return — a teardown function or a Disposable (Symbol.dispose) —
@@ -34,7 +35,7 @@ export function useCapabilities(bond: Bond | undefined): void {
 			try {
 				teardowns[i]!();
 			} catch (teardownError) {
-				if (import.meta.env?.DEV) {
+				if (DEV) {
 					console.error(
 						'[svelte-atoms] capability setup failed, and a previously registered teardown also failed.',
 						teardownError

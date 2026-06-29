@@ -26,10 +26,11 @@
 	// 7-day alignment intact. Boundary off-month days are kept here and rendered as
 	// blank placeholders below so the columns stay put.
 	const visibleDays = $derived.by(() => {
-		const days = currentMonth?.days ?? [];
+		type Day = NonNullable<typeof currentMonth>['days'][number];
+		const days: Day[] = currentMonth?.days ?? [];
 		if (outsideDays) return days;
 
-		const weeks = [];
+		const weeks: Day[][] = [];
 		for (let i = 0; i < days.length; i += 7) {
 			weeks.push(days.slice(i, i + 7));
 		}

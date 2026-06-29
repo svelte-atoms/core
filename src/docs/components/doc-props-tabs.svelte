@@ -18,10 +18,11 @@
 	}
 
 	const resolved = $derived(sections.map((s) => ({ ...s, value: s.value ?? toValue(s.label) })));
+	const initialValue = $derived(resolved[0]?.value ?? '');
 </script>
 
 {#if mode === 'html'}
-	<Tabs.Root value={resolved[0]?.value} class="mt-2">
+	<Tabs.Root value={initialValue} class="mt-2">
 		<Tabs.Header class="border-b overflow-x-auto scrollbar-none">
 			{#each resolved as section (section.value)}
 				<Tab.Root value={section.value}>

@@ -30,7 +30,7 @@
 				disabled={item.disabled === true}
 				onpointerdown={(ev) => {
 					ev.preventDefault();
-					item.href && goto(item.href);
+					if (item.href) goto(item.href);
 				}}>{item.title}</Tree.Header
 			>
 			<Tree.Body class="flex flex-col">

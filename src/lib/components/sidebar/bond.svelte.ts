@@ -26,7 +26,7 @@ export type SidebarElements = {
 
 type SidebarBondView = SidebarBondBase;
 
-class SidebarContentAtom extends Atom<SidebarBondView, HTMLElement> {
+export class SidebarContentAtom extends Atom<SidebarBondView, HTMLElement> {
 	constructor(bond: SidebarBondView) {
 		super(bond, 'content');
 	}

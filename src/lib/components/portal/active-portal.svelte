@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { DEV } from 'esm-env';
 	import type { ActivePortalProps } from './types';
 	import { PortalsBond, resolvePortal } from './portals';
 
@@ -10,14 +11,14 @@
 
 	// Warn (in an effect, after registration settles) when a string id never resolves.
 	$effect(() => {
-		if (import.meta.env?.DEV && typeof portal === 'string' && !activePortal) {
+		if (DEV && typeof portal === 'string' && !activePortal) {
 			console.warn(
 				`[svelte-atoms] <ActivePortal portal="${portal}">: no portal registered with this id; rendering nothing.`
 			);
 		}
 	});
 
-	function proxy(...args) {
+	function proxy(...args: []): ReturnType<NonNullable<typeof children>> | undefined {
 		activePortal?.share();
 		return children?.(...args);
 	}

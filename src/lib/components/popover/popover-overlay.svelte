@@ -22,7 +22,7 @@
 	let {
 		portal,
 		layer: layerName = 'positioned',
-		order = undefined,
+		order: _order = undefined,
 		children = undefined,
 		'z-index': zIndex = undefined,
 		...restProps
@@ -30,9 +30,7 @@
 
 	// Stacking layer; captures parent elevation from context. `order` pins it relative
 	// to a ZLayer anchor. Both fixed for the overlay's lifetime.
-	// svelte-ignore state_referenced_locally
 	const parentLayer = ZLayer.tryGet();
-	// svelte-ignore state_referenced_locally
 	const layer = new ZLayer(layerName, () => 0).share();
 
 	const z = $derived((parentLayer?.value ?? 0) + layer.value);

@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { DEV } from 'esm-env';
 import { Collection } from './collection.svelte';
 import { collectionCapability, collectionSlot } from '../capability/models/collection.svelte';
 import { slotName } from '../capability/capability';
@@ -53,7 +54,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 	): Capability<S> | undefined {
 		if (typeof capabilityOrKey === 'symbol') {
 			const found = this.#findCapability(capabilityOrKey) as Capability<S> | undefined;
-			if (import.meta.env?.DEV && !found) {
+			if (DEV && !found) {
 				console.warn(
 					`[svelte-atoms] BondState.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
 				);
@@ -69,7 +70,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 		if (i >= 0) {
 			const prior = this.#capabilities[i]!;
 			const next = capabilityOrKey.compose ? capabilityOrKey.compose(prior) : capabilityOrKey;
-			if (import.meta.env?.DEV) {
+			if (DEV) {
 				const verb = capabilityOrKey.compose ? 'decorated' : 'replaced';
 				console.debug(
 					`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`
@@ -189,7 +190,7 @@ export abstract class BondState<S extends BondStateProps = BondStateProps> {
 	}
 
 	behaviorsForRole(role: string, ctx?: unknown): Behavior[] {
-		if (import.meta.env?.DEV && !this.#validated) {
+		if (DEV && !this.#validated) {
 			this.#validated = true;
 			this.#validate();
 		}

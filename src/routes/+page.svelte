@@ -12,7 +12,6 @@
 	import PopoverDemo from './demos/popover-demo.svelte';
 	import DialogDemo from './demos/dialog-demo.svelte';
 	import DrawerDemo from './demos/drawer-demo.svelte';
-	import { mergePreset } from '$svelte-atoms/core/context/preset.svelte';
 
 	let tabValue = $state('account');
 	let selectOpen = $state(false);
@@ -38,7 +37,7 @@
 			`import { setPreset } from '@svelte-atoms/core';\n\nsetPreset({\n  button: () => ({\n    class: 'px-4 py-2 rounded-lg',\n    variants: { ... }\n  })\n});`,
 			`import { Button } from '@svelte-atoms/core/components/button';`
 		];
-		navigator.clipboard.writeText(snippets[activeStep]);
+		navigator.clipboard.writeText(snippets[activeStep] ?? '');
 		copied = true;
 		setTimeout(() => (copied = false), 2000);
 	}

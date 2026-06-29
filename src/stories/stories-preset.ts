@@ -1,8 +1,8 @@
 import { clickoutDrawer, clickoutPopover, Input } from '$lib';
 import { closeOverlay } from '$lib/components/portal/host/policies/overlay-view';
+import type { PopoverBond } from '$lib/components/popover';
 import type { Preset } from '$lib/context';
 import { createAttachmentKey } from 'svelte/attachments';
-import type { PopoverBond } from '../../dist';
 
 /**
  * Minimalist preset for Storybook stories.

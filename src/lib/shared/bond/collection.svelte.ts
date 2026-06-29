@@ -1,5 +1,6 @@
 import { untrack } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
+import { DEV } from 'esm-env';
 
 // Typed, insertion-ordered, reactive collection of child bonds (cached per kind, registered as a collection:<kind> Capability).
 // Sorting/selection are $derived views on the parent. Duplicate-id set throws in dev.
@@ -56,7 +57,7 @@ export class Collection<T> {
 
 	set(id: string, value: T): () => void {
 		// Runs inside the child's mount effect: read #items untracked to avoid effect_update_depth_exceeded.
-		if (import.meta.env?.DEV && untrack(() => this.#items.has(id))) {
+		if (DEV && untrack(() => this.#items.has(id))) {
 			throw new Error(
 				`Collection<${this.kind}>: duplicate id '${id}'. Each child must have a unique id within its parent.`
 			);
