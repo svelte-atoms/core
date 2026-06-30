@@ -1,15 +1,6 @@
 <script lang="ts">
-	import {
-		autoUpdate,
-		computePosition,
-		arrow,
-		flip,
-		shift,
-		offset,
-		hide,
-		type ComputePositionConfig,
-		type Strategy
-	} from '@floating-ui/dom';
+	import * as floating from '@floating-ui/dom';
+	import type { ComputePositionConfig, Strategy } from '@floating-ui/dom';
 	import {
 		notifyPopoverComputed,
 		popoverNode,
@@ -21,6 +12,8 @@
 	import { PortalBond } from '$svelte-atoms/core/components/portal';
 
 	const bond = PopoverBond.get();
+
+	type AutoUpdate = typeof floating.autoUpdate;
 
 	// In-scope Portal; its boundary clips the overlay to this Portal.
 	const portalBond = PortalBond.get();
@@ -47,13 +40,13 @@
 		if (!bond || !reference || !overlay || !tracking) return;
 
 		// Re-runs if the `position` strategy changes: tears down auto-update, recomputes.
-		const cleanup = compute(bond, position)({}, autoUpdate);
+		const cleanup = compute(bond, position)({}, floating.autoUpdate);
 
 		return () => cleanup?.();
 	});
 
 	function compute(bond: PopoverBond, strategy: Strategy) {
-		return (props: Record<string, unknown>, updater: typeof autoUpdate | undefined = undefined) => {
+		return (props: Record<string, unknown>, updater: AutoUpdate | undefined = undefined) => {
 			const { offset: ofs, placements, placement } = bond.props;
 
 			const arrowElement = popoverNode(bond, 'arrow')?.element as HTMLElement | undefined;
@@ -65,15 +58,15 @@
 			// Middleware stack. flip/shift/hide measure overflow against `boundary` — the in-scope
 			// Portal's clip box — so the overlay stays inside it, not the viewport.
 			const middleware: ComputePositionConfig['middleware'] = [
-				offset(ofs),
-				flip({
+				floating.offset(ofs),
+				floating.flip({
 					fallbackPlacements: placements,
 					padding: 8,
 					crossAxis: true,
 					fallbackStrategy: 'bestFit',
 					boundary: boundary ?? 'clippingAncestors'
 				}),
-				shift({
+				floating.shift({
 					padding: 8,
 					boundary: boundary ?? 'clippingAncestors',
 					limiter: {
@@ -86,16 +79,16 @@
 			];
 
 			if (arrowElement) {
-				middleware.push(arrow({ element: arrowElement }));
+				middleware.push(floating.arrow({ element: arrowElement }));
 			}
 
 			// Hide the overlay when the anchor scrolls out of view, skipping layout work.
-			middleware.push(hide());
+			middleware.push(floating.hide());
 
 			const onchangeCallback = props.onchange as PopoverParams['onchange'];
 
 			const compute = async () => {
-				const position = await computePosition(reference, overlay, {
+				const position = await floating.computePosition(reference, overlay, {
 					placement: placement ?? 'bottom',
 					middleware,
 					strategy
