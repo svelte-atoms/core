@@ -10,6 +10,7 @@
 	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
 	import { overlayIsOpen } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
 	import type { PopoverOverlayProps } from './types';
+	import { untrack } from 'svelte';
 
 	const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
 	const isOpen = $derived(overlayIsOpen(bond));
@@ -31,7 +32,10 @@
 	// Stacking layer; captures parent elevation from context. `order` pins it relative
 	// to a ZLayer anchor. Both fixed for the overlay's lifetime.
 	const parentLayer = ZLayer.tryGet();
-	const layer = new ZLayer(layerName, () => 0).share();
+	const layer = new ZLayer(
+		untrack(() => layerName),
+		() => 0
+	).share();
 
 	const z = $derived((parentLayer?.value ?? 0) + layer.value);
 

@@ -3,6 +3,7 @@
 	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 	import { CalendarBond } from './bond.svelte';
+	import { untrack } from 'svelte';
 
 	const calendarBond = CalendarBond.get();
 
@@ -19,7 +20,7 @@
 		? createAtomInstance(() => `weekday-${index}`, {
 				bond: calendarBond,
 				factory: (owner) => owner!.weekDay(index),
-				register: { key: `weekday-${index}` }
+				register: { key: untrack(() => `weekday-${index}`) }
 			})
 		: undefined;
 

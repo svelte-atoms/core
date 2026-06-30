@@ -4,6 +4,7 @@
 	import { StackBond } from './bond.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { ElementType } from '$svelte-atoms/core/components/atom';
+	import { untrack } from 'svelte';
 
 	type Element = ElementType<E>;
 
@@ -34,7 +35,7 @@
 	const atom = createAtomInstance(() => `item:${value}`, {
 		bond,
 		factory: (owner) => owner!.item(value),
-		register: { key: `item:${value}` }
+		register: { key: untrack(() => `item:${value}`) }
 	});
 
 	const itemProps = $derived({

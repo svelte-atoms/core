@@ -5,6 +5,7 @@
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
 	import { mergePresetProps, HtmlAtom } from '../atom';
+	import { untrack } from 'svelte';
 
 	const calendarBond = CalendarBond.get();
 
@@ -25,7 +26,7 @@
 		? createAtomInstance(() => `day-${day.id}`, {
 				bond: calendarBond,
 				factory: (owner) => owner!.day(day),
-				register: { key: `day-${day.id}` }
+				register: { key: untrack(() => `day-${day.id}`) }
 			})
 		: undefined;
 
