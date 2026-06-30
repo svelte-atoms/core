@@ -28,8 +28,8 @@
 		note: 'Note'
 	};
 
-	const resolvedTitle = title ?? defaultTitles[variant];
-	const variantClass = variantStyles[variant];
+	const resolvedTitle = $derived(title ?? defaultTitles[variant]);
+	const variantClass = $derived(variantStyles[variant]);
 </script>
 
 <div class={['border-l-2 pl-4 py-2 my-4', variantClass, klass].filter(Boolean).join(' ')}>

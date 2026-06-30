@@ -12,7 +12,7 @@
 	} = $props();
 
 	const mode = getDocMode();
-	const installCmd = `npm install ${packageName}`;
+	const installCmd = $derived(`npm install ${packageName}`);
 </script>
 
 {#if mode === 'html'}

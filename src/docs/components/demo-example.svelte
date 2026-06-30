@@ -69,7 +69,8 @@
 					{#await component()}
 						<div class="bg-muted h-8 w-32 animate-pulse rounded"></div>
 					{:then mod}
-						<svelte:component this={mod.default} />
+						{@const Example = mod.default}
+						<Example />
 					{/await}
 				{:else if children}
 					{@render children()}

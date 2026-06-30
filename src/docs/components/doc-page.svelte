@@ -32,7 +32,9 @@
 		children: Snippet;
 	} = $props();
 
-	setDocMode(contentType);
+	$effect(() => {
+		setDocMode(contentType);
+	});
 </script>
 
 {#if contentType === 'html'}

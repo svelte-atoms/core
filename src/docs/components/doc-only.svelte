@@ -12,7 +12,7 @@
 	} = $props();
 
 	const mode = getDocMode();
-	const visible = target === 'both' || target === mode;
+	const visible = $derived(target === 'both' || target === mode);
 </script>
 
 {#if visible}
