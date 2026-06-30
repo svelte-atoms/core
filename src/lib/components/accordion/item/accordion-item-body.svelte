@@ -36,7 +36,7 @@
 {#snippet body(accordionItem: AccordionItemBond)}
 	<HtmlAtom
 		bond={accordionItem}
-		class={['border-border box-content h-0 opacity-0', '$preset', klass]}
+		class={['box-content h-0 opacity-0', '$preset', klass]}
 		onmount={onmount?.bind(accordionItem)}
 		ondestroy={ondestroy?.bind(accordionItem)}
 		{fallback}
