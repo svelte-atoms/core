@@ -141,6 +141,18 @@ why-comment, design tokens, `{#key}` for round-trip demos. **Never `console.log`
 If Storybook throws "component annotation is missing from the default export" after you add a
 `<Story>`, the build is fine — it's a stale dev server; restart with cache cleared.
 
+### Test-only Svelte files
+
+**Hard rule:** any `.svelte` file used only by tests must live under `src/lib/test/` and must
+be named `*.test.svelte`.
+
+- Put probes, fixtures, harness components, and regression-only components in
+  `src/lib/test/<domain>/...`, mirroring the production domain when useful.
+- Import those helpers from specs via `$svelte-atoms/core/test/...`.
+- Do not leave test-only Svelte files colocated in `src/lib/components/**` or
+  `src/lib/shared/**`.
+- Do not move real product, docs, demo, or Storybook `.svelte` files into `src/lib/test/`.
+
 ### Don't churn known-dead code
 
 Some code is intentionally vestigial or pending removal — leave it unless the task is

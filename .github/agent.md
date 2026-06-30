@@ -4,6 +4,7 @@
 - Use `../docs/naming-convention.md`
 - Use `../docs/philosophy.md`.
 - Use `../docs/components/*.md`
+- Hard rule: any `.svelte` file used only by tests must live under `src/lib/test/` and be named `*.test.svelte`; import it from specs via `$svelte-atoms/core/test/...`.
 
 # Git
 

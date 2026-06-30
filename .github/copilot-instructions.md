@@ -6,6 +6,7 @@
 
 - Files, components & Directories: use kebab-case (e.g. `my-component.svelte`, `my-component.stories.svelte`)
 - Variables & Functions: use camelCase (e.g. `myVariable`, `myFunction()`)
+- Hard rule: any `.svelte` file used only by tests must live under `src/lib/test/` and be named `*.test.svelte`; import it from specs via `$svelte-atoms/core/test/...`.
 
 # Projects
 
