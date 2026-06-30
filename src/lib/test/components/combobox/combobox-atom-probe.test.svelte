@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { ComboboxBond } from './bond.svelte';
+	import type { ComboboxBond } from '$svelte-atoms/core/components/combobox/bond.svelte';
 
 	export let capturedBond: ComboboxBond | undefined;
 
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { Root } from '$svelte-atoms/core/components/root';
-	import { Combobox } from './index';
+	import { Combobox } from '$svelte-atoms/core/components/combobox';
 
 	function capture(bond: ComboboxBond | undefined): string {
 		capturedBond = bond;

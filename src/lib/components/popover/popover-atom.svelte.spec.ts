@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import Probe, { capturedBond, resetCapturedBond } from './popover-atom-probe.svelte';
+import Probe, {
+	capturedBond,
+	resetCapturedBond
+} from '$svelte-atoms/core/test/components/popover/popover-atom-probe.test.svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import {
 	PopoverArrowAtom,

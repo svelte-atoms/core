@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { page } from '@vitest/browser/context';
-import ComboboxTest from './combobox-test.svelte';
+import ComboboxTest from '$svelte-atoms/core/test/components/combobox/combobox.test.svelte';
 
 // Regression: item click must commit a selection. The old combobox-item preventDefaulted the
 // click and toggled a never-set controller; it now commits via the combobox bond.

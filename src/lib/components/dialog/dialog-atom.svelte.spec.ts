@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import Probe, { capturedBond, resetCapturedBond } from './dialog-atom-probe.svelte';
+import Probe, {
+	capturedBond,
+	resetCapturedBond
+} from '$svelte-atoms/core/test/components/dialog/dialog-atom-probe.test.svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import {
 	DialogBodyAtom,

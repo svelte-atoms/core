@@ -16,7 +16,7 @@ import {
 	pressable,
 	type BondStateProps
 } from './index';
-import AtomProbe from './atom-probe.svelte';
+import AtomProbe from '$svelte-atoms/core/test/shared/bond/atom-probe.test.svelte';
 
 const MODEL = capabilityKey<{ value: number }>('atom-test-model');
 

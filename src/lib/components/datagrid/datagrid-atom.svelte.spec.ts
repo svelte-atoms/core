@@ -9,7 +9,7 @@ import Probe, {
 	capturedGrid,
 	capturedHeaderRow,
 	resetCapturedDatagridBonds
-} from './datagrid-atom-probe.svelte';
+} from '$svelte-atoms/core/test/components/datagrid/datagrid-atom-probe.test.svelte';
 import {
 	DataGridBodyAtom,
 	DataGridBond,

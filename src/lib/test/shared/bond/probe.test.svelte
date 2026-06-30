@@ -8,9 +8,9 @@
 </script>
 
 <script lang="ts">
-	import { createAtomInstance } from './use-atom.svelte';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond/use-atom.svelte';
 	import { untrack } from 'svelte';
-	import type { Bond } from './bond.svelte';
+	import type { Bond } from '$svelte-atoms/core/shared/bond/bond.svelte';
 
 	type ProbeProps = { bond: Bond; tick?: number };
 

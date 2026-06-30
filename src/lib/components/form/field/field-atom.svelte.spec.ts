@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
-import Probe, { capturedBond, resetCapturedBond } from './field-atom-probe.svelte';
+import Probe, {
+	capturedBond,
+	resetCapturedBond
+} from '$svelte-atoms/core/test/components/form/field/field-atom-probe.test.svelte';
 import {
 	FieldBond,
 	FieldControlAtom,

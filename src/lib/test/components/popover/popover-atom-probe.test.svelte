@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { PopoverBond } from './bond.svelte';
+	import type { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
 
 	export let capturedBond: PopoverBond | undefined;
 
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { Root } from '$svelte-atoms/core/components/root';
-	import { Popover } from './index';
+	import { Popover } from '$svelte-atoms/core/components/popover';
 
 	function capture(bond: PopoverBond | undefined): string {
 		capturedBond = bond;

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { SelectBond } from './bond.svelte';
+	import type { SelectBond } from '$svelte-atoms/core/components/select/bond.svelte';
 
 	export let capturedBond: SelectBond | undefined;
 
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { Root } from '$svelte-atoms/core/components/root';
-	import { Select } from './index';
+	import { Select } from '$svelte-atoms/core/components/select';
 
 	function capture(bond: SelectBond | undefined): string {
 		capturedBond = bond;

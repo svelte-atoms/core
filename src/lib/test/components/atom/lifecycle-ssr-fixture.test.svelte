@@ -1,5 +1,5 @@
 <script lang="ts">
-	import HtmlAtom from './html-atom.svelte';
+	import HtmlAtom from '$svelte-atoms/core/components/atom/html-atom.svelte';
 
 	let { lifecycleProps = {}, ...rest } = $props();
 </script>

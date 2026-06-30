@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'svelte/server';
 import { createLifecycleKey } from './lifecycle.svelte';
-import Fixture from './lifecycle-ssr-fixture.svelte';
+import Fixture from '$svelte-atoms/core/test/components/atom/lifecycle-ssr-fixture.test.svelte';
 
 // SSR contract: no symbol-keyed phase fires during server render. Svelte's server rest_props
 // copies Object.keys() only, so symbol-keyed props are dropped before reaching the atom (same as

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Bond } from '../bond';
-	import { useCapabilities } from './use.svelte';
+	import type { Bond } from '$svelte-atoms/core/shared/bond';
+	import { useCapabilities } from '$svelte-atoms/core/shared/capability/use.svelte';
 
 	type Props = { bond: Bond };
 

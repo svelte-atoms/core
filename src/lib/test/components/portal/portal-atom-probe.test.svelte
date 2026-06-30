@@ -1,5 +1,8 @@
 <script lang="ts" module>
-	import { PortalBond, type PortalBondProps } from './bond.svelte';
+	import {
+		PortalBond,
+		type PortalBondProps
+	} from '$svelte-atoms/core/components/portal/bond.svelte';
 
 	export let capturedBond: PortalBond | undefined;
 
@@ -9,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { Portal, Portals } from './index';
+	import { Portal, Portals } from '$svelte-atoms/core/components/portal';
 
 	function captureFactory(props: PortalBondProps): PortalBond {
 		capturedBond = PortalBond.create(props);

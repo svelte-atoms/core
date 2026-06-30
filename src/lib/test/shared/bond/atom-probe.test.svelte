@@ -1,5 +1,9 @@
 <script lang="ts">
-	import { createAtomInstance, type AtomCapabilityEntry, type Bond } from './index';
+	import {
+		createAtomInstance,
+		type AtomCapabilityEntry,
+		type Bond
+	} from '$svelte-atoms/core/shared/bond';
 
 	let {
 		bond,

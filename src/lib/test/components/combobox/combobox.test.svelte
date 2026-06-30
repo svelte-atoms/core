@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Combobox from './atoms';
+	import * as Combobox from '$svelte-atoms/core/components/combobox/atoms';
 
 	let { multiple = false, values = $bindable([]) }: { multiple?: boolean; values?: string[] } =
 		$props();

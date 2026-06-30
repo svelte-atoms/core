@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { FieldBond } from './bond.svelte';
+	import type { FieldBond } from '$svelte-atoms/core/components/form/field/bond.svelte';
 
 	export let capturedBond: FieldBond | undefined;
 
@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { Field } from './index';
+	import { Field } from '$svelte-atoms/core/components/form/field';
 
 	function capture(bond: FieldBond | undefined): string {
 		capturedBond = bond;

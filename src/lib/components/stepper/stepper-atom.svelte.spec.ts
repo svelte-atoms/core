@@ -4,7 +4,7 @@ import Probe, {
 	capturedStepBond,
 	capturedStepperBond,
 	resetCapturedBonds
-} from './stepper-atom-probe.svelte';
+} from '$svelte-atoms/core/test/components/stepper/stepper-atom-probe.test.svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import { StepperBond, StepperRootAtom } from './bond.svelte';
 import {

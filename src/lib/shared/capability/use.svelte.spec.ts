@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { Bond, BondState, defineCapability, capabilityKey, type BondStateProps } from '../bond';
-import UseProbe from './use-probe.svelte';
+import UseProbe from '$svelte-atoms/core/test/shared/capability/use-probe.test.svelte';
 
 class S extends BondState<BondStateProps> {
 	constructor() {

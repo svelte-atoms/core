@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Input from './atoms';
+	import * as Input from '$svelte-atoms/core/components/input/atoms';
 
 	let { value = $bindable('') }: { value?: string } = $props();
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts" module>
-	import type { TabsBond } from './bond.svelte';
-	import type { TabBond } from './tab/bond.svelte';
+	import type { TabsBond } from '$svelte-atoms/core/components/tabs/bond.svelte';
+	import type { TabBond } from '$svelte-atoms/core/components/tabs/tab/bond.svelte';
 
 	export let capturedTabsBond: TabsBond | undefined;
 	export let capturedTabBond: TabBond | undefined;
@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { Tab, Tabs } from './index';
+	import { Tab, Tabs } from '$svelte-atoms/core/components/tabs';
 
 	function captureTabs(bond: TabsBond): string {
 		capturedTabsBond = bond;

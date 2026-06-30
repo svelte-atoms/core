@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { CollapsibleBond } from './bond.svelte';
+	import type { CollapsibleBond } from '$svelte-atoms/core/components/collapsible/bond.svelte';
 
 	export let capturedBond: CollapsibleBond | undefined;
 
@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { Collapsible } from './index';
+	import { Collapsible } from '$svelte-atoms/core/components/collapsible';
 
 	function capture(bond: CollapsibleBond): string {
 		capturedBond = bond;

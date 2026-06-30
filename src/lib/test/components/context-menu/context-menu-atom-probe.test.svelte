@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { ContextMenuBond } from './bond.svelte';
+	import type { ContextMenuBond } from '$svelte-atoms/core/components/context-menu/bond.svelte';
 
 	export let capturedBond: ContextMenuBond | undefined;
 
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { Root } from '$svelte-atoms/core/components/root';
-	import { ContextMenu } from './index';
+	import { ContextMenu } from '$svelte-atoms/core/components/context-menu';
 
 	function capture(bond: unknown): string {
 		capturedBond = bond as ContextMenuBond;

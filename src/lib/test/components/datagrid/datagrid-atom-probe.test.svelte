@@ -1,7 +1,16 @@
 <script lang="ts" module>
-	import { DataGridBond, type DataGridBondProps } from './bond.svelte';
-	import { DataGridColumnBond, type DataGridColumnBondProps } from './column/bond.svelte';
-	import { DataGridRowBond, type DataGridRowBondProps } from './row/bond.svelte';
+	import {
+		DataGridBond,
+		type DataGridBondProps
+	} from '$svelte-atoms/core/components/datagrid/bond.svelte';
+	import {
+		DataGridColumnBond,
+		type DataGridColumnBondProps
+	} from '$svelte-atoms/core/components/datagrid/column/bond.svelte';
+	import {
+		DataGridRowBond,
+		type DataGridRowBondProps
+	} from '$svelte-atoms/core/components/datagrid/row/bond.svelte';
 
 	export let capturedGrid: DataGridBond | undefined;
 	export let capturedHeaderRow: DataGridRowBond | undefined;
@@ -19,7 +28,7 @@
 </script>
 
 <script lang="ts">
-	import { DataGrid } from './index';
+	import { DataGrid } from '$svelte-atoms/core/components/datagrid';
 
 	function captureGrid(props: DataGridBondProps): DataGridBond {
 		capturedGrid = DataGridBond.create(props);

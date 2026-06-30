@@ -4,7 +4,7 @@ import Probe, {
 	capturedTabBond,
 	capturedTabsBond,
 	resetCapturedBonds
-} from './tabs-atom-probe.svelte';
+} from '$svelte-atoms/core/test/components/tabs/tabs-atom-probe.test.svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import { TabsBodyAtom, TabsBond, TabsHeaderAtom, TabsRootAtom } from './bond.svelte';
 import { TabBodyAtom, TabBond, TabDescriptionAtom, TabHeaderAtom } from './tab/bond.svelte';

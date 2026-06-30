@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { DialogBond } from './bond.svelte';
+	import type { DialogBond } from '$svelte-atoms/core/components/dialog/bond.svelte';
 
 	export let capturedBond: DialogBond | undefined;
 
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { Root } from '$svelte-atoms/core/components/root';
-	import { Dialog } from './index';
+	import { Dialog } from '$svelte-atoms/core/components/dialog';
 
 	function capture(bond: DialogBond | undefined): string {
 		capturedBond = bond;

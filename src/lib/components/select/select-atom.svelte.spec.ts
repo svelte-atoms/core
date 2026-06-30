@@ -3,7 +3,10 @@ import { render } from 'vitest-browser-svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import { PopoverArrowAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { SelectItemAtom } from './item/bond.svelte';
-import Probe, { capturedBond, resetCapturedBond } from './select-atom-probe.svelte';
+import Probe, {
+	capturedBond,
+	resetCapturedBond
+} from '$svelte-atoms/core/test/components/select/select-atom-probe.test.svelte';
 import { SelectBond, SelectPlaceholderAtom, SelectQueryAtom } from './bond.svelte';
 
 describe('Select component-owned Atoms', () => {

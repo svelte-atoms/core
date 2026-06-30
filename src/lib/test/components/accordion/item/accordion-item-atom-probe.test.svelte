@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { AccordionItemBond } from './bond.svelte';
+	import type { AccordionItemBond } from '$svelte-atoms/core/components/accordion/item/bond.svelte';
 
 	export let capturedBond: AccordionItemBond | undefined;
 
@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { Accordion, AccordionItem } from '../index';
+	import { Accordion, AccordionItem } from '$svelte-atoms/core/components/accordion';
 
 	function capture(bond: AccordionItemBond): string {
 		capturedBond = bond;
