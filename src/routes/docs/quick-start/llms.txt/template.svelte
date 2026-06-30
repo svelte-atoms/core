@@ -1,7 +1,7 @@
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	import { inlineCode, codeBlock } from '$docs/md/template';
-	import { FrontMatter, List } from '$docs/md/components';
+	import { FrontMatter } from '$docs/md/components';
 
 	let { data } = $props();
 	const { metadata, frontmatter } = $derived(data);
