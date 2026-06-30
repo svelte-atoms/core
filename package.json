@@ -32,9 +32,20 @@
 	},
 	"files": [
 		"dist",
+		"!dist/**/*.md",
+		"!dist/**/*.MD",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"!dist/**/*.stories.*"
+		"!dist/**/*.stories.*",
+		"!dist/**/*-fixture.svelte",
+		"!dist/**/*-fixture.svelte.d.ts",
+		"!dist/**/*-probe.svelte",
+		"!dist/**/*-probe.svelte.d.ts",
+		"!dist/**/*-test.svelte",
+		"!dist/**/*-test.svelte.d.ts",
+		"!dist/**/probe.svelte",
+		"!dist/**/probe.svelte.d.ts",
+		"!dist/**/*.bench.*"
 	],
 	"sideEffects": [
 		"**/*.css"
