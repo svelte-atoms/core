@@ -140,7 +140,7 @@
 
 			<div class="space-y-4">
 				<div>
-					<label class="mb-2 block text-sm font-medium text-gray-700">Variant</label>
+					<div class="mb-2 block text-sm font-medium text-gray-700">Variant</div>
 					<Select.Root>
 						<Select.Trigger
 							class="border-border block w-full rounded-md border px-3 py-2 text-sm"
@@ -160,8 +160,11 @@
 				</div>
 
 				<div>
-					<label class="mb-2 block text-sm font-medium text-gray-700">Size</label>
+					<label for="form-playground-size" class="mb-2 block text-sm font-medium text-gray-700"
+						>Size</label
+					>
 					<select
+						id="form-playground-size"
 						bind:value={selectedSize}
 						class="border-border w-full rounded-md border px-3 py-2 text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 focus:outline-none"
 					>
@@ -173,11 +176,12 @@
 
 				<div class="flex items-center space-x-2">
 					<input
+						id="form-playground-disabled"
 						type="checkbox"
 						bind:checked={isDisabled}
 						class="border-border rounded text-purple-600 focus:ring-purple-500"
 					/>
-					<label class="text-sm text-gray-700">Disabled</label>
+					<label for="form-playground-disabled" class="text-sm text-gray-700">Disabled</label>
 				</div>
 			</div>
 
