@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolveControlPreset } from '../shared';
+	import { resolveControlPreset, writeInputValue } from '../shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import { clamp } from '$svelte-atoms/core/utils/math';
 	import { untrack } from 'svelte';
@@ -82,7 +82,7 @@
 		value = v;
 		date = new Date(isDateOnly ? v + 'T00:00:00' : v);
 		if (isNaN(date.getTime())) date = null;
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 
 		const detail = { value, date };
 		if (ev) onchange?.(ev, detail);

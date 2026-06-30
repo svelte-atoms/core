@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { InputBond } from './bond.svelte';
+	import { writeInputNumber } from './shared';
 	import type { InputNumberControlProps } from './types';
 
 	const bond = InputBond.get();
@@ -35,14 +36,14 @@
 		if (!canDecrement) return;
 		number = parseFloat((number - step).toPrecision(10));
 		onchange?.(undefined, { number });
-		if (bond?.state?.props) bond.state.props.value = number;
+		writeInputNumber(bond, number);
 	}
 
 	function handleIncrement() {
 		if (!canIncrement) return;
 		number = parseFloat((number + step).toPrecision(10));
 		onchange?.(undefined, { number });
-		if (bond?.state?.props) bond.state.props.value = number;
+		writeInputNumber(bond, number);
 	}
 
 	function handleInput(ev: Event) {
@@ -51,7 +52,7 @@
 		if (!isNaN(parsed)) {
 			number = parsed;
 			onchange?.(ev, { number });
-			if (bond?.state?.props) bond.state.props.value = number;
+			writeInputNumber(bond, number);
 		}
 	}
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolveControlPreset } from '../shared';
+	import { resolveControlPreset, writeInputValue } from '../shared';
 	import { clamp } from '$svelte-atoms/core/utils/math';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import { InputBond } from '../bond.svelte';
@@ -58,18 +58,18 @@
 
 	// Mirror the bindable value onto the bond state.
 	$effect(() => {
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 	});
 
 	function emitLive(built: string) {
 		value = built;
-		if (bond) bond.state.props.value = built;
+		writeInputValue(bond, built);
 		oninput?.(new Event('input'), { value: built });
 	}
 
 	function emitCommit(ev: Event, built: string) {
 		value = built;
-		if (bond) bond.state.props.value = built;
+		writeInputValue(bond, built);
 		onchange?.(ev, { value: built });
 	}
 

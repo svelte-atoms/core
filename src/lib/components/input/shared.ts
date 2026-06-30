@@ -23,7 +23,23 @@ export const INPUT_FIELD_CLASS =
 // Single source of truth for writing a text control's value back to the input bond. Routes through
 // the bond's InputModel (`bond.value.set`) — the documented general approach — rather than poking
 // `bond.state.props.value` directly, so any coercion/notification the model adds stays centralized.
-// (The typed number-control writes a numeric `props.value` and intentionally bypasses this.)
 export function writeInputValue(bond: InputBond | undefined, value: string): void {
 	bond?.value.set(value);
+}
+
+// Typed controls keep richer values on the bindable props surface. These helpers make the
+// intentional storage shape explicit and keep direct state writes out of the controls.
+export function writeInputRawValue(
+	bond: InputBond | undefined,
+	value: string | number | Date | undefined
+): void {
+	if (bond) bond.state.props.value = value;
+}
+
+export function writeInputNumber(bond: InputBond | undefined, value: number): void {
+	writeInputRawValue(bond, value);
+}
+
+export function writeInputFiles(bond: InputBond | undefined, files: File[]): void {
+	if (bond) bond.state.props.files = files;
 }

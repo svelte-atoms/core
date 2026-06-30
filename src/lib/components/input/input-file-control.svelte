@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import { InputBond } from './bond.svelte';
+	import { writeInputFiles } from './shared';
 	import type { InputFileControlProps } from './types';
 
 	const bond = InputBond.get();
@@ -34,7 +35,7 @@
 	function handleChange(ev: Event) {
 		const input = ev.currentTarget as HTMLInputElement;
 		files = Array.from(input.files ?? []);
-		if (bond) bond.state.props.files = files;
+		writeInputFiles(bond, files);
 		onchange?.(ev, { files });
 	}
 
@@ -46,7 +47,7 @@
 		ev.stopPropagation();
 		files = [];
 		if (inputEl) inputEl.value = '';
-		if (bond) bond.state.props.files = [];
+		writeInputFiles(bond, []);
 		onchange?.(ev, { files: [] });
 	}
 </script>

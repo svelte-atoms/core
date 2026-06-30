@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolveControlPreset } from '../shared';
+	import { resolveControlPreset, writeInputValue } from '../shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import { untrack } from 'svelte';
 	import { InputBond } from '../bond.svelte';
@@ -74,7 +74,7 @@
 		if (raw === value) return;
 
 		value = raw;
-		if (bond) bond.state.props.value = value;
+		writeInputValue(bond, value);
 
 		const detail = { value: raw };
 		if (ev) onchange?.(ev, detail);

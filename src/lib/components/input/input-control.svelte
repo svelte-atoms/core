@@ -1,6 +1,11 @@
 <script lang="ts" generics="B extends Base = Base">
 	import { on } from '$svelte-atoms/core/attachments/event.svelte';
-	import { resolveControlPreset, INPUT_FIELD_CLASS, writeInputValue } from './shared';
+	import {
+		resolveControlPreset,
+		INPUT_FIELD_CLASS,
+		writeInputFiles,
+		writeInputValue
+	} from './shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
 	import type { Base } from '$svelte-atoms/core/components/atom';
 	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
@@ -84,7 +89,7 @@
 		if (type === 'file') {
 			return on('input', () => {
 				files = Array.from(node.files || []);
-				bond!.state.props.files = files;
+				writeInputFiles(bond, files);
 			})(node);
 		}
 	}}
