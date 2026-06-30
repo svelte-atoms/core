@@ -1,9 +1,4 @@
+import { createBondAttachment } from '$svelte-atoms/core/components/internal/attachments.svelte';
 import { CollapsibleBond } from './bond.svelte';
 
-export function collapsible(
-	callback: (node: HTMLElement, bond?: CollapsibleBond) => void | (() => void)
-) {
-	const bond = CollapsibleBond.get();
-
-	return (node: HTMLElement) => callback(node, bond);
-}
+export const collapsible = createBondAttachment<CollapsibleBond>(CollapsibleBond);

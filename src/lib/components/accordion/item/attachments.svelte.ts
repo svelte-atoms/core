@@ -1,5 +1,8 @@
+import { createBondTupleAttachment } from '$svelte-atoms/core/components/internal/attachments.svelte';
 import { AccordionBond } from '../bond.svelte';
 import { AccordionItemBond } from './bond.svelte';
+
+const accordionItemAttachment = createBondTupleAttachment([AccordionItemBond, AccordionBond]);
 
 export function accordionItem(
 	callback: (
@@ -8,8 +11,5 @@ export function accordionItem(
 		accordion?: AccordionBond
 	) => void | (() => void)
 ) {
-	const item = AccordionItemBond.get();
-	const accordion = AccordionBond.get();
-
-	return (node: HTMLElement) => callback(node, item, accordion);
+	return accordionItemAttachment((node, item, accordion) => callback(node, item, accordion));
 }
