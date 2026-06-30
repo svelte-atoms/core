@@ -1,12 +1,23 @@
 <script lang="ts">
-	import { resolveControlPreset, writeInputValue } from './shared';
+	import {
+		resolveControlPreset,
+		writeInputValue
+	} from '$svelte-atoms/core/components/input/shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import { InputBond } from './bond.svelte';
+	import { InputBond } from '$svelte-atoms/core/components/input/bond.svelte';
+	import {
+		buildPhoneMasked,
+		deletePhoneDigitsFromCursor,
+		nextPhoneCursorPos,
+		parsePhoneFormat,
+		phoneDigitSlotKinds,
+		phoneMaskMaxDigits,
+		phoneOverlaySpans
+	} from '$svelte-atoms/core/components/input/phone-mask';
 	import type {
 		InputPhoneControlProps,
-		PhoneSpan as Span,
-		PhoneSpanType as SpanType
-	} from './types';
+		PhoneSpan as Span
+	} from '$svelte-atoms/core/components/input/types';
 
 	const bond = InputBond.get();
 
@@ -31,169 +42,20 @@
 	let scrollLeft = $state(0);
 	let isFocused = $state(false);
 
-	// Format token parser
-	// `#` = required digit, `[#]` = optional digit, anything else = literal.
-	// A literal is "optional" when bounded by optional digits on both sides;
-	// optional literals/digits render only once an optional digit in the group is filled.
+	const tokens = $derived(format ? parsePhoneFormat(format) : []);
+	const maxDigits = $derived(phoneMaskMaxDigits(tokens));
 
-	type Token =
-		| { type: 'digit'; optional: boolean; slotIndex: number }
-		| { type: 'lit'; char: string; optional: boolean };
-
-	function parseFormat(fmt: string): Token[] {
-		const tokens: Token[] = [];
-		let i = 0;
-		let slotIndex = 0;
-		// lex tokens
-		while (i < fmt.length) {
-			if (fmt[i] === '[' && fmt[i + 1] === '#' && fmt[i + 2] === ']') {
-				tokens.push({ type: 'digit', optional: true, slotIndex: slotIndex++ });
-				i += 3;
-			} else if (fmt[i] === '#') {
-				tokens.push({ type: 'digit', optional: false, slotIndex: slotIndex++ });
-				i++;
-			} else {
-				tokens.push({ type: 'lit', char: fmt[i]!, optional: false });
-				i++;
-			}
-		}
-
-		// a literal is optional iff the nearest digit on both sides is optional
-		for (let j = 0; j < tokens.length; j++) {
-			const t = tokens[j]!;
-			if (t.type !== 'lit') continue;
-			let leftOpt = false;
-			for (let k = j - 1; k >= 0; k--) {
-				const tk = tokens[k]!;
-				if (tk.type === 'digit') {
-					leftOpt = tk.optional;
-					break;
-				}
-			}
-			let rightOpt = false;
-			for (let k = j + 1; k < tokens.length; k++) {
-				const tk = tokens[k]!;
-				if (tk.type === 'digit') {
-					rightOpt = tk.optional;
-					break;
-				}
-			}
-			t.optional = leftOpt && rightOpt;
-		}
-
-		return tokens;
-	}
-
-	const tokens = $derived(format ? parseFormat(format) : []);
-	const maxDigits = $derived(tokens.filter((t) => t.type === 'digit').length);
-
-	// Build masked string from digits + tokens
-	// empty: filler for an unfilled required slot ('_' to display, '' to measure)
 	function buildMasked(digits: string, empty = '_'): string {
-		let out = '';
-		for (const t of tokens) {
-			if (t.type === 'digit') {
-				const ch = digits[t.slotIndex];
-				if (ch !== undefined) {
-					out += ch;
-				} else if (!t.optional) {
-					out += empty;
-				}
-				// optional + unfilled = emit nothing
-			} else {
-				if (!t.optional) {
-					out += t.char;
-				} else {
-					// optional literal shows only if any optional slot is filled
-					const adjacentFilled = tokens.some(
-						(tok) => tok.type === 'digit' && tok.optional && digits[tok.slotIndex] !== undefined
-					);
-					if (adjacentFilled) out += t.char;
-				}
-			}
-		}
-		return out;
+		return buildPhoneMasked(tokens, digits, empty);
 	}
-
-	// Position of the next empty slot in the masked string
-	function nextCursorPos(digits: string): number {
-		const anyOptFilled = tokens.some(
-			(t) => t.type === 'digit' && t.optional && digits[t.slotIndex] !== undefined
-		);
-		let pos = 0;
-		for (const t of tokens) {
-			if (t.type === 'digit') {
-				const filled = digits[t.slotIndex] !== undefined;
-				if (t.optional && !filled && !anyOptFilled) continue; // not rendered, skip
-				if (!filled) return pos; // next empty slot in rendered string
-				pos++;
-			} else {
-				const willRender = !t.optional || anyOptFilled;
-				if (willRender) pos++;
-			}
-		}
-		return pos; // all filled
-	}
-
-	// Segment color map
-	const segmentColors: Record<string, string> = {
-		country: 'var(--input-hl-accent, var(--foreground))',
-		area: 'var(--foreground)',
-		prefix: 'var(--input-hl-secondary, var(--foreground))',
-		line: 'var(--foreground)',
-		other: 'var(--foreground)'
-	};
 
 	const digitSlotKind = $derived.by<string[]>(() => {
-		const kinds: string[] = [];
-		if (segmentMap) {
-			for (const [kind, count] of Object.entries(segmentMap)) {
-				for (let i = 0; i < (count as number); i++) kinds.push(kind);
-			}
-		}
-		while (kinds.length < maxDigits) kinds.push('other');
-		return kinds;
+		return phoneDigitSlotKinds(tokens, segmentMap);
 	});
-
-	// Overlay spans — PhoneSpan/PhoneSpanType are the single source of truth in ./types.
 
 	const overlaySpans = $derived.by<Span[]>(() => {
 		if (!format) return [];
-		const spans: Span[] = [];
-
-		for (const t of tokens) {
-			if (t.type === 'digit') {
-				const filled = value[t.slotIndex] !== undefined;
-				if (!filled && t.optional) continue;
-				const ch = filled ? value[t.slotIndex]! : '_';
-				const kind = (digitSlotKind[t.slotIndex] ?? 'other') as SpanType;
-				const spanType: SpanType = filled ? kind : 'empty';
-				const spanStyle = filled
-					? segmentMap
-						? `color: ${segmentColors[kind] ?? segmentColors['other']}`
-						: 'color: var(--foreground)'
-					: 'color: color-mix(in oklch, var(--muted-foreground) 40%, transparent)';
-				spans.push({ text: ch, class: '', style: spanStyle, type: spanType });
-			} else {
-				if (t.optional) {
-					const anyOptFilled = tokens.some(
-						(tok) => tok.type === 'digit' && tok.optional && value[tok.slotIndex] !== undefined
-					);
-					if (!anyOptFilled) continue;
-				}
-				spans.push({ text: t.char, class: 'text-muted-foreground', type: 'lit' });
-			}
-		}
-
-		// merge consecutive same-type spans (keeps type for the snippet)
-		return spans.reduce<Span[]>((acc, s) => {
-			const last = acc[acc.length - 1];
-			if (last && last.type === s.type) {
-				last.text += s.text;
-				return acc;
-			}
-			return [...acc, { ...s }];
-		}, []);
+		return phoneOverlaySpans({ tokens, value, digitSlotKind, segments: segmentMap });
 	});
 
 	// Sync external value → display + caret
@@ -203,7 +65,7 @@
 		if (inputEl.value !== masked) inputEl.value = masked;
 		// re-place caret via rAF to beat the browser's own placement
 		if (isFocused) {
-			const pos = nextCursorPos(value);
+			const pos = nextPhoneCursorPos(tokens, value);
 			requestAnimationFrame(() => inputEl?.setSelectionRange(pos, pos));
 		}
 	});
@@ -242,29 +104,12 @@
 			// clear forward from the digit slot at/after the cursor
 			if (!value || !inputEl) return;
 			const pos = inputEl.selectionStart ?? 0;
-			let charPos = 0;
-			for (const t of tokens) {
-				if (t.type === 'digit') {
-					const filled = value[t.slotIndex] !== undefined;
-					if (!filled && t.optional) continue;
-					if (charPos >= pos) {
-						const next = value.slice(0, t.slotIndex);
-						if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
-						value = next;
-						writeInputValue(bond, value);
-						oninput?.(undefined as unknown as Event, { value });
-						return;
-					}
-					charPos++;
-				} else {
-					const willRender =
-						!t.optional ||
-						tokens.some(
-							(tok) => tok.type === 'digit' && tok.optional && value[tok.slotIndex] !== undefined
-						);
-					if (willRender) charPos++;
-				}
-			}
+			const next = deletePhoneDigitsFromCursor(tokens, value, pos);
+			if (next === value) return;
+			if (inputEl) inputEl.value = next ? buildMasked(next) : buildMasked('');
+			value = next;
+			writeInputValue(bond, value);
+			oninput?.(undefined as unknown as Event, { value });
 		} else if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !/\d/.test(ev.key)) {
 			// block non-digit printable keys: no input event, caret stays put
 			ev.preventDefault();
