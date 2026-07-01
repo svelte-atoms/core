@@ -1,8 +1,19 @@
 <script lang="ts">
-	import { resolveControlPreset, writeInputValue } from './shared';
+	import {
+		buildLocationSegments,
+		isValidLatitude,
+		isValidLongitude,
+		locationCoordsValid,
+		LOCATION_SEGMENT_STYLES,
+		parseLocationCoords
+	} from '$svelte-atoms/core/components/input/location';
+	import {
+		resolveControlPreset,
+		writeInputValue
+	} from '$svelte-atoms/core/components/input/shared';
 	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import { InputBond } from './bond.svelte';
-	import type { InputLocationControlProps } from './types';
+	import { InputBond } from '$svelte-atoms/core/components/input/bond.svelte';
+	import type { InputLocationControlProps } from '$svelte-atoms/core/components/input/types';
 
 	const bond = InputBond.get();
 
@@ -31,132 +42,14 @@
 	let locationError = $state<string | undefined>(undefined);
 	let isFocused = $state(false);
 
-	// Coord parsing
-	type ParsedCoords = { lat: number; lng: number } | null;
-
-	// Accepts: "lat, lng" | "lat lng" | "lat;lng" — signed decimals or N/S/E/W suffix.
-	function parseCoords(raw: string): ParsedCoords {
-		if (!raw.trim()) return null;
-
-		// Strip degree/minute/second symbols so pasted DMS parses too.
-		const clean = raw.replace(/[°'"]/g, ' ').trim();
-		const parts = clean.split(/[\s,;]+/).filter(Boolean);
-		if (parts.length < 2) return null;
-
-		function parsePart(s: string): number | null {
-			const dir = /[NSEWnsew]$/.exec(s)?.[0]?.toUpperCase();
-			const numeric = parseFloat(s.replace(/[NSEWnsew]$/i, ''));
-			if (isNaN(numeric)) return null;
-			if (dir === 'S' || dir === 'W') return -numeric;
-			return numeric;
-		}
-
-		const parsedLat = parsePart(parts[0]!);
-		const parsedLng = parsePart(parts[1]!);
-		if (parsedLat === null || parsedLng === null) return null;
-		return { lat: parsedLat, lng: parsedLng };
-	}
-
-	const isValidLat = (v: number) => v >= -90 && v <= 90;
-	const isValidLng = (v: number) => v >= -180 && v <= 180;
-
-	// Overlay segment types
-	type SegmentKind =
-		| 'lat-val'
-		| 'lat-min'
-		| 'lat-sec'
-		| 'lat-dir'
-		| 'lng-val'
-		| 'lng-min'
-		| 'lng-sec'
-		| 'lng-dir'
-		| 'sep'
-		| 'symbol'
-		| 'error';
-
-	type Segment = { text: string; kind: SegmentKind };
-
-	const kindStyle: Record<SegmentKind, string> = {
-		'lat-val': 'color: var(--input-hl-positive, var(--foreground)); font-weight: 500',
-		'lat-min': 'color: var(--input-hl-positive, var(--foreground))',
-		'lat-sec': 'color: var(--input-hl-dim, var(--foreground))',
-		'lat-dir': 'color: var(--input-hl-positive, var(--foreground)); font-weight: 600',
-		'lng-val': 'color: var(--input-hl-primary, var(--foreground)); font-weight: 500',
-		'lng-min': 'color: var(--input-hl-primary, var(--foreground))',
-		'lng-sec': 'color: var(--input-hl-dim, var(--foreground))',
-		'lng-dir': 'color: var(--input-hl-primary, var(--foreground)); font-weight: 600',
-		sep: 'color: var(--input-hl-muted, var(--foreground))',
-		symbol: 'color: var(--input-hl-muted, var(--foreground)); opacity: 0.6',
-		error: 'color: var(--input-hl-error, var(--destructive))'
-	};
-
-	// DMS helpers
-	function toDms(deg: number, hemi: 'lat' | 'lng') {
-		const abs = Math.abs(deg);
-		const d = Math.floor(abs);
-		const mFull = (abs - d) * 60;
-		const m = Math.floor(mFull);
-		const s = (mFull - m) * 60;
-		const pos = hemi === 'lat' ? 'N' : 'E';
-		const neg = hemi === 'lat' ? 'S' : 'W';
-		return { d, m, s, dir: deg >= 0 ? pos : neg };
-	}
-
-	// Build overlay segments
-	function buildSegments(raw: string): Segment[] {
-		if (!raw.trim()) return [];
-
-		const coords = parseCoords(raw);
-		if (!coords) return [{ text: raw, kind: 'error' }];
-
-		const { lat: lt, lng: ln } = coords;
-		const latOk = isValidLat(lt);
-		const lngOk = isValidLng(ln);
-
-		const segs: Segment[] = [];
-
-		if (format === 'dms') {
-			const ld = toDms(lt, 'lat');
-			const nd = toDms(ln, 'lng');
-
-			segs.push({ text: String(ld.d), kind: latOk ? 'lat-val' : 'error' });
-			segs.push({ text: '°', kind: 'symbol' });
-			segs.push({ text: String(ld.m).padStart(2, '0'), kind: 'lat-min' });
-			segs.push({ text: "'", kind: 'symbol' });
-			segs.push({ text: ld.s.toFixed(2).padStart(5, '0'), kind: 'lat-sec' });
-			segs.push({ text: '"', kind: 'symbol' });
-			segs.push({ text: ld.dir, kind: 'lat-dir' });
-
-			segs.push({ text: ',  ', kind: 'sep' });
-
-			segs.push({ text: String(nd.d), kind: lngOk ? 'lng-val' : 'error' });
-			segs.push({ text: '°', kind: 'symbol' });
-			segs.push({ text: String(nd.m).padStart(2, '0'), kind: 'lng-min' });
-			segs.push({ text: "'", kind: 'symbol' });
-			segs.push({ text: nd.s.toFixed(2).padStart(5, '0'), kind: 'lng-sec' });
-			segs.push({ text: '"', kind: 'symbol' });
-			segs.push({ text: nd.dir, kind: 'lng-dir' });
-		} else {
-			segs.push({ text: lt.toFixed(precision), kind: latOk ? 'lat-val' : 'error' });
-			segs.push({ text: '°', kind: 'symbol' });
-			segs.push({ text: ',  ', kind: 'sep' });
-			segs.push({ text: ln.toFixed(precision), kind: lngOk ? 'lng-val' : 'error' });
-			segs.push({ text: '°', kind: 'symbol' });
-		}
-
-		return segs;
-	}
-
-	const segments = $derived(buildSegments(value));
-	const parsedCoords = $derived(parseCoords(value));
-	const coordsValid = $derived(
-		parsedCoords !== null && isValidLat(parsedCoords.lat) && isValidLng(parsedCoords.lng)
-	);
+	const segments = $derived(buildLocationSegments(value, { format, precision }));
+	const parsedCoords = $derived(parseLocationCoords(value));
+	const coordsValid = $derived(locationCoordsValid(parsedCoords));
 
 	// Sync value → lat/lng props
 	$effect(() => {
-		const coords = parseCoords(value);
-		if (coords && isValidLat(coords.lat) && isValidLng(coords.lng)) {
+		const coords = parseLocationCoords(value);
+		if (coords && isValidLatitude(coords.lat) && isValidLongitude(coords.lng)) {
 			lat = coords.lat;
 			lng = coords.lng;
 		} else if (!value.trim()) {
@@ -168,7 +61,7 @@
 	// Sync lat/lng props → value string (external writes)
 	$effect(() => {
 		if (lat !== undefined && lng !== undefined) {
-			const current = parseCoords(value);
+			const current = parseLocationCoords(value);
 			if (current?.lat !== lat || current?.lng !== lng) {
 				value = `${lat}, ${lng}`;
 				writeInputValue(bond, value);
@@ -229,7 +122,7 @@
 	function handlePaste(ev: ClipboardEvent) {
 		ev.preventDefault();
 		const pasted = ev.clipboardData?.getData('text') ?? '';
-		const coords = parseCoords(pasted);
+		const coords = parseLocationCoords(pasted);
 		if (coords) {
 			value = `${coords.lat}, ${coords.lng}`;
 		} else {
@@ -255,7 +148,7 @@
 			<span style="transform: translateX(-{scrollLeft}px)">
 				{#if segments.length}
 					{#each segments as seg, i (i)}
-						<span style={kindStyle[seg.kind]}>{seg.text}</span>
+						<span style={LOCATION_SEGMENT_STYLES[seg.kind]}>{seg.text}</span>
 					{/each}
 				{:else}
 					<span class="text-muted-foreground">{placeholder}</span>
