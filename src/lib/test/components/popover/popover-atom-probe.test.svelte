@@ -24,7 +24,7 @@
 			{capture(popover)}
 			<Popover.Trigger>Open</Popover.Trigger>
 			<Popover.Content>
-				<Popover.Arrow />
+				<Popover.Tail />
 				<Popover.Indicator />
 				Panel
 			</Popover.Content>

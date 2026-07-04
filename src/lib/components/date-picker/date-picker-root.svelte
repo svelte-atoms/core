@@ -92,7 +92,7 @@
 	});
 	// `share()` publishes the bond under both the date-picker context key (read by
 	// `DatePickerBond.get()` in the calendar/header/sub-pickers) and the popover key
-	// (read by the re-exported `Trigger`/`Content`/`Arrow`/`Indicator`), via the
+	// (read by the re-exported `Trigger`/`Content`/`Tail`/`Indicator`), via the
 	// flat-composition `share` override.
 	const bond = binding.bond.share();
 

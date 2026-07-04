@@ -6,7 +6,7 @@ export { default as Input } from './combobox-control.svelte';
 export { default as Control } from './combobox-control.svelte';
 export { default as Selections } from './combobox-selections.svelte';
 export {
-	Arrow,
+	Tail,
 	Indicator,
 	Content,
 	List,

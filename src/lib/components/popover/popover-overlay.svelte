@@ -79,16 +79,19 @@
 		const directionY = placement?.startsWith('top') ? -1 : placement?.startsWith('bottom') ? 1 : 0;
 		const directionX = placement?.startsWith('left') ? -1 : placement?.startsWith('right') ? 1 : 0;
 
-		// Arrow dimensions
-		const arrow = popoverNode(bond, 'arrow')?.element;
-		const arrowEl = arrow instanceof Element ? arrow : null;
-		const arrowWidth = arrowEl?.clientWidth ?? 0;
-		const arrowHeight = arrowEl?.clientHeight ?? 0;
-		const arrowDelta = middlewareData?.arrow ? 1 : 0;
+		// Tail dimensions. The default tail overlaps the content by a small square cap, so
+		// only the protruding depth should push the floating overlay away from the trigger.
+		const tail = popoverNode(bond, 'tail')?.element;
+		const tailEl = tail instanceof HTMLElement ? tail : null;
+		const tailOverlap = Number(tailEl?.dataset.tailOverlap ?? 0) || 0;
+		const tailWidth = Math.max(0, (tailEl?.clientWidth ?? 0) - (directionX ? tailOverlap : 0));
+		const tailHeight = Math.max(0, (tailEl?.clientHeight ?? 0) - (directionY ? tailOverlap : 0));
+		// `middlewareData.arrow` is floating-ui's own `arrow()` middleware output — not our naming.
+		const tailDelta = middlewareData?.arrow ? 1 : 0;
 
-		// Apply offset and arrow adjustment to the base coordinates
-		const finalX = x + directionX * offset * openState + arrowDelta * directionX * arrowWidth;
-		const finalY = y + directionY * offset * openState + arrowDelta * directionY * arrowHeight;
+		// Apply offset and tail adjustment to the base coordinates
+		const finalX = x + directionX * offset * openState + tailDelta * directionX * tailWidth;
+		const finalY = y + directionY * offset * openState + tailDelta * directionY * tailHeight;
 
 		return {
 			transform: `translate3d(${finalX}px, ${finalY}px, 1px)`,

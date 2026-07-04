@@ -49,7 +49,7 @@
 		return (props: Record<string, unknown>, updater: AutoUpdate | undefined = undefined) => {
 			const { offset: ofs, placements, placement } = bond.props;
 
-			const arrowElement = popoverNode(bond, 'arrow')?.element as HTMLElement | undefined;
+			const tailElement = popoverNode(bond, 'tail')?.element as HTMLElement | undefined;
 
 			if (!reference || !overlay) {
 				return;
@@ -78,8 +78,9 @@
 				})
 			];
 
-			if (arrowElement) {
-				middleware.push(floating.arrow({ element: arrowElement }));
+			if (tailElement) {
+				// floating-ui's own `arrow()` middleware — not our naming.
+				middleware.push(floating.arrow({ element: tailElement }));
 			}
 
 			// Hide the overlay when the anchor scrolls out of view, skipping layout work.

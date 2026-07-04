@@ -13,7 +13,7 @@ import {
 import type { PortalBond } from '$svelte-atoms/core/components/portal';
 import type { PopoverStrategy } from '$svelte-atoms/core/components/popover/strategy-types';
 import {
-	popoverArrowPresentation,
+	popoverTailPresentation,
 	popoverContentPresentation,
 	popoverIndicatorPresentation,
 	popoverOverlayPresentation,
@@ -77,7 +77,7 @@ export type PopoverDomElements = PositionedOverlayElements & {
 	overlay?: HTMLElement;
 	content?: HTMLElement;
 	indicator?: HTMLElement;
-	arrow?: HTMLElement;
+	tail?: HTMLElement;
 };
 
 // -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ function popoverCapabilities() {
 // Bond implementation
 // -----------------------------------------------------------------------------
 
-// Floating-positioned disclosure with optional arrow/indicator/virtual-trigger.
+// Floating-positioned disclosure with optional tail/indicator/virtual-trigger.
 // Overlay behaviour via capabilities; adds Tab->focus-content and Tab-trap within content.
 export class PopoverBondBase<
 	Props extends PopoverBondProps = PopoverBondProps
@@ -155,10 +155,10 @@ export function createPopoverAtom<N extends PopoverHTMLElementNode>(
 // Atom definitions
 // -----------------------------------------------------------------------------
 
-export const PopoverArrowAtom = defineAtom<OverlayView, HTMLElement>('arrow', (atom) => {
-	atom.capability(popoverArrowPresentation());
+export const PopoverTailAtom = defineAtom<OverlayView, HTMLElement>('tail', (atom) => {
+	atom.capability(popoverTailPresentation());
 });
-export type PopoverArrowAtom = InstanceType<typeof PopoverArrowAtom>;
+export type PopoverTailAtom = InstanceType<typeof PopoverTailAtom>;
 
 export class PopoverVirtualTriggerAtom<B extends OverlayView = PopoverBondView> extends Atom<
 	B,
@@ -234,7 +234,7 @@ export const popoverSpec = {
 		'virtual-trigger': PopoverVirtualTriggerAtom,
 		overlay: PopoverOverlayAtom,
 		content: PopoverContentAtom,
-		arrow: PopoverArrowAtom,
+		tail: PopoverTailAtom,
 		indicator: PopoverIndicatorAtom
 	},
 	capabilities: popoverCapabilities
@@ -244,7 +244,7 @@ export const popoverSpec = {
 		'virtual-trigger': typeof PopoverVirtualTriggerAtom;
 		overlay: typeof PopoverOverlayAtom;
 		content: typeof PopoverContentAtom;
-		arrow: typeof PopoverArrowAtom;
+		tail: typeof PopoverTailAtom;
 		indicator: typeof PopoverIndicatorAtom;
 	},
 	typeof PopoverBondBase
@@ -256,7 +256,7 @@ const PopoverBondImpl = defineBond<
 		'virtual-trigger': typeof PopoverVirtualTriggerAtom;
 		overlay: typeof PopoverOverlayAtom;
 		content: typeof PopoverContentAtom;
-		arrow: typeof PopoverArrowAtom;
+		tail: typeof PopoverTailAtom;
 		indicator: typeof PopoverIndicatorAtom;
 	},
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

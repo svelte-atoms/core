@@ -28,7 +28,7 @@
 			</Select.Trigger>
 			<Select.Content>
 				<Select.Item value="alpha">Alpha</Select.Item>
-				<Select.Arrow />
+				<Select.Tail />
 				<Select.Indicator />
 			</Select.Content>
 		{/snippet}

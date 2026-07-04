@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
-import { PopoverArrowAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
+import { PopoverTailAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { SelectPlaceholderAtom, SelectQueryAtom } from '../select/bond.svelte';
 import { SelectItemAtom } from '../select/item/bond.svelte';
 import Probe, {
@@ -28,7 +28,7 @@ describe('Combobox component-owned Atoms', () => {
 		const control = combobox?.node('control');
 		const query = combobox?.node('query');
 		const item = combobox?.node('item');
-		const arrow = combobox?.node('arrow');
+		const tail = combobox?.node('tail');
 		const indicator = combobox?.node('indicator');
 
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
@@ -36,7 +36,7 @@ describe('Combobox component-owned Atoms', () => {
 		expect(control).toBeInstanceOf(ComboboxControlAtom);
 		expect(query).toBeInstanceOf(SelectQueryAtom);
 		expect(item).toBeInstanceOf(SelectItemAtom);
-		expect(arrow).toBeInstanceOf(PopoverArrowAtom);
+		expect(tail).toBeInstanceOf(PopoverTailAtom);
 		expect(indicator).toBeInstanceOf(PopoverIndicatorAtom);
 		for (const node of [
 			trigger,
@@ -46,7 +46,7 @@ describe('Combobox component-owned Atoms', () => {
 			control,
 			query,
 			item,
-			arrow,
+			tail,
 			indicator
 		]) {
 			expect(node).toBeInstanceOf(Atom);
@@ -66,7 +66,7 @@ describe('Combobox component-owned Atoms', () => {
 			| 'control'
 			| 'query'
 			| 'item'
-			| 'arrow'
+			| 'tail'
 			| 'indicator',
 			() => Atom
 		>;
@@ -78,7 +78,7 @@ describe('Combobox component-owned Atoms', () => {
 			generated.control(),
 			generated.query(),
 			generated.item(),
-			generated.arrow(),
+			generated.tail(),
 			generated.indicator()
 		];
 		expect(generatedNodes[1]).toBeInstanceOf(PopoverOverlayAtom);

@@ -109,11 +109,18 @@ export interface PopoverIndicatorProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, PopoverChildren> {}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface PopoverArrowProps<
+export interface PopoverTailProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B, PopoverChildren> {}
+> extends HtmlAtomProps<E, B, PopoverChildren> {
+	/** Minimum distance, in px, between the tail wrapper and the content edge. Defaults to `0`. */
+	padding?: number | undefined;
+	/**
+	 * Base thickness of the tail, in px. Drives the whole shape and stays consistent across
+	 * placements. Defaults to the content's shorter side.
+	 */
+	size?: number | undefined;
+}
 
 export interface PopoverTriggerProps<
 	T extends keyof HTMLElementTagNameMap,

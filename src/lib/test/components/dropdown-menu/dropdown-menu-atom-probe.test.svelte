@@ -26,7 +26,7 @@
 			<DropdownMenu.Trigger>Open</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
 				<DropdownMenu.Item id="alpha">Alpha</DropdownMenu.Item>
-				<DropdownMenu.Arrow />
+				<DropdownMenu.Tail />
 				<DropdownMenu.Indicator />
 			</DropdownMenu.Content>
 		{/snippet}

@@ -29,7 +29,7 @@
 			</Combobox.Trigger>
 			<Combobox.Content>
 				<Combobox.Item value="alpha">Alpha</Combobox.Item>
-				<Combobox.Arrow />
+				<Combobox.Tail />
 				<Combobox.Indicator />
 			</Combobox.Content>
 		{/snippet}

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
-import { PopoverArrowAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
+import { PopoverTailAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { SelectItemAtom } from './item/bond.svelte';
 import Probe, {
 	capturedBond,
@@ -26,16 +26,16 @@ describe('Select component-owned Atoms', () => {
 		const placeholder = select?.node('placeholder');
 		const query = select?.node('query');
 		const item = select?.node('item');
-		const arrow = select?.node('arrow');
+		const tail = select?.node('tail');
 		const indicator = select?.node('indicator');
 
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
 		expect(placeholder).toBeInstanceOf(SelectPlaceholderAtom);
 		expect(query).toBeInstanceOf(SelectQueryAtom);
 		expect(item).toBeInstanceOf(SelectItemAtom);
-		expect(arrow).toBeInstanceOf(PopoverArrowAtom);
+		expect(tail).toBeInstanceOf(PopoverTailAtom);
 		expect(indicator).toBeInstanceOf(PopoverIndicatorAtom);
-		for (const node of [trigger, overlay, content, placeholder, query, item, arrow, indicator]) {
+		for (const node of [trigger, overlay, content, placeholder, query, item, tail, indicator]) {
 			expect(node).toBeInstanceOf(Atom);
 		}
 
@@ -46,7 +46,7 @@ describe('Select component-owned Atoms', () => {
 		expect(select?.items.get('alpha')).toBe(item);
 
 		const generated = select as unknown as Record<
-			'trigger' | 'overlay' | 'content' | 'placeholder' | 'query' | 'item' | 'arrow' | 'indicator',
+			'trigger' | 'overlay' | 'content' | 'placeholder' | 'query' | 'item' | 'tail' | 'indicator',
 			() => Atom
 		>;
 		const generatedNodes = [
@@ -56,7 +56,7 @@ describe('Select component-owned Atoms', () => {
 			generated.placeholder(),
 			generated.query(),
 			generated.item(),
-			generated.arrow(),
+			generated.tail(),
 			generated.indicator()
 		];
 		expect(generatedNodes[1]).toBeInstanceOf(PopoverOverlayAtom);

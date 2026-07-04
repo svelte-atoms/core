@@ -6,7 +6,7 @@ import Probe, {
 } from '$svelte-atoms/core/test/components/popover/popover-atom-probe.test.svelte';
 import { Atom } from '$svelte-atoms/core/shared/bond';
 import {
-	PopoverArrowAtom,
+	PopoverTailAtom,
 	PopoverBond,
 	PopoverContentAtom,
 	PopoverIndicatorAtom,
@@ -29,15 +29,15 @@ describe('Popover component-owned Atoms', () => {
 		const trigger = popover?.node('trigger');
 		const overlay = popover?.node('overlay');
 		const content = popover?.node('content');
-		const arrow = popover?.node('arrow');
+		const tail = popover?.node('tail');
 		const indicator = popover?.node('indicator');
 
 		expect(trigger).toBeInstanceOf(PopoverTriggerAtom);
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
 		expect(content).toBeInstanceOf(PopoverContentAtom);
-		expect(arrow).toBeInstanceOf(PopoverArrowAtom);
+		expect(tail).toBeInstanceOf(PopoverTailAtom);
 		expect(indicator).toBeInstanceOf(PopoverIndicatorAtom);
-		for (const node of [trigger, overlay, content, arrow, indicator]) {
+		for (const node of [trigger, overlay, content, tail, indicator]) {
 			expect(node).toBeInstanceOf(Atom);
 		}
 		expect(popover?.nodes()).toHaveLength(5);
@@ -45,14 +45,14 @@ describe('Popover component-owned Atoms', () => {
 		expect(overlay?.spread.role).toBe('dialog');
 		expect(overlay?.spread['data-active']).toBe(true);
 		expect(content?.spread['data-active']).toBe(true);
-		expect(arrow?.spread.role).toBe('presentation');
+		expect(tail?.spread.role).toBe('presentation');
 		expect(indicator?.spread['aria-hidden']).toBe(true);
 
 		const legacyNodes = [
 			popover?.trigger(),
 			popover?.overlay(),
 			popover?.content(),
-			popover?.arrow(),
+			popover?.tail(),
 			popover?.indicator()
 		];
 		for (const node of legacyNodes) {

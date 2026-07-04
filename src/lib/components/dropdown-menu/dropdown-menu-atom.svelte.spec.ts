@@ -7,7 +7,7 @@ import Probe, {
 } from '$svelte-atoms/core/test/components/dropdown-menu/dropdown-menu-atom-probe.test.svelte';
 import { DropdownMenuBond, DropdownMenuItemAtom as DropdownMenuSlotItemAtom } from './bond.svelte';
 import { DropdownMenuItemAtom as DropdownMenuRenderedItemAtom } from './item/bond.svelte';
-import { PopoverArrowAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
+import { PopoverTailAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 
 describe('DropdownMenu component-owned Atoms', () => {
 	beforeEach(resetCapturedBond);
@@ -24,14 +24,14 @@ describe('DropdownMenu component-owned Atoms', () => {
 		const overlay = dropdown?.node('overlay');
 		const content = dropdown?.node('content');
 		const item = dropdown?.node('item');
-		const arrow = dropdown?.node('arrow');
+		const tail = dropdown?.node('tail');
 		const indicator = dropdown?.node('indicator');
 
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
 		expect(item).toBeInstanceOf(DropdownMenuRenderedItemAtom);
-		expect(arrow).toBeInstanceOf(PopoverArrowAtom);
+		expect(tail).toBeInstanceOf(PopoverTailAtom);
 		expect(indicator).toBeInstanceOf(PopoverIndicatorAtom);
-		for (const node of [trigger, overlay, content, item, arrow, indicator]) {
+		for (const node of [trigger, overlay, content, item, tail, indicator]) {
 			expect(node).toBeInstanceOf(Atom);
 		}
 
@@ -41,7 +41,7 @@ describe('DropdownMenu component-owned Atoms', () => {
 		expect(dropdown?.items.get('alpha')).toBe(item);
 
 		const generated = dropdown as unknown as Record<
-			'trigger' | 'overlay' | 'content' | 'item' | 'arrow' | 'indicator',
+			'trigger' | 'overlay' | 'content' | 'item' | 'tail' | 'indicator',
 			() => Atom
 		>;
 		const generatedNodes = [
@@ -49,7 +49,7 @@ describe('DropdownMenu component-owned Atoms', () => {
 			generated.overlay(),
 			generated.content(),
 			generated.item(),
-			generated.arrow(),
+			generated.tail(),
 			generated.indicator()
 		];
 		expect(generatedNodes[1]).toBeInstanceOf(PopoverOverlayAtom);
