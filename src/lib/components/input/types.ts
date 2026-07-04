@@ -222,8 +222,6 @@ export interface InputLocationControlProps {
 	format?: 'dd' | 'dms';
 	// decimal places in 'dd' mode (default 6)
 	precision?: number;
-	// crosshair "locate me" button via navigator.geolocation (default true)
-	locate?: boolean;
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;

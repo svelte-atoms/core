@@ -318,6 +318,5 @@ export const locationControlProps: PropDefinition[] = [
 		default: "'dd'",
 		description: 'Decimal degrees or degrees/minutes/seconds.'
 	},
-	{ name: 'precision', type: 'number', default: '6', description: 'Decimal places for DD format.' },
-	{ name: 'locate', type: 'boolean', default: 'false', description: 'Show a geolocation button.' }
+	{ name: 'precision', type: 'number', default: '6', description: 'Decimal places for DD format.' }
 ];

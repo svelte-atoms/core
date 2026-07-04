@@ -62,10 +62,10 @@ const specializedControls = [
 		name: 'Location',
 		preset: 'input.location',
 		description:
-			'Coordinate input (lat, lng). Displays in decimal degrees (`"dd"`) or DMS (`"dms"`) format with an optional geolocation button.',
+			'Coordinate input (lat, lng). Displays in decimal degrees (`"dd"`) or DMS (`"dms"`) format.',
 		code: `<Input.Root>\n  <Input.LocationControl bind:value={coords} format="dd" />\n</Input.Root>`,
 		props:
-			'`value` (bindable `"lat, lng"` string), `lat` (bindable), `lng` (bindable), `format` (`"dd"` | `"dms"`), `precision` (default 6), `locate` (geolocation button, default true), `disabled`, `readonly`, `onchange`, `oninput`.'
+			'`value` (bindable `"lat, lng"` string), `lat` (bindable), `lng` (bindable), `format` (`"dd"` | `"dms"`), `precision` (default 6), `disabled`, `readonly`, `onchange`, `oninput`.'
 	},
 	{
 		name: 'Phone',

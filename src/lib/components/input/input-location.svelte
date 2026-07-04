@@ -3,7 +3,6 @@
 		buildLocationSegments,
 		isValidLatitude,
 		isValidLongitude,
-		locationCoordsValid,
 		LOCATION_SEGMENT_STYLES,
 		parseLocationCoords
 	} from '$svelte-atoms/core/components/input/location';
@@ -24,7 +23,6 @@
 		lng = $bindable<number | undefined>(undefined),
 		format = 'dd',
 		precision = 6,
-		locate = true,
 		placeholder = 'lat, lng',
 		disabled = false,
 		readonly = false,
@@ -38,13 +36,9 @@
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
-	let locating = $state(false);
-	let locationError = $state<string | undefined>(undefined);
 	let isFocused = $state(false);
 
 	const segments = $derived(buildLocationSegments(value, { format, precision }));
-	const parsedCoords = $derived(parseLocationCoords(value));
-	const coordsValid = $derived(locationCoordsValid(parsedCoords));
 
 	// Sync value → lat/lng props
 	$effect(() => {
@@ -68,30 +62,6 @@
 			}
 		}
 	});
-
-	// Geolocation
-	function handleLocate() {
-		if (!navigator?.geolocation || locating || disabled || readonly) return;
-		locating = true;
-		locationError = undefined;
-		navigator.geolocation.getCurrentPosition(
-			(pos) => {
-				locating = false;
-				const lt = parseFloat(pos.coords.latitude.toFixed(precision));
-				const ln = parseFloat(pos.coords.longitude.toFixed(precision));
-				lat = lt;
-				lng = ln;
-				value = `${lt}, ${ln}`;
-				writeInputValue(bond, value);
-				onchange?.(new Event('change'), { lat, lng, value });
-			},
-			(err) => {
-				locating = false;
-				locationError = err.message;
-			},
-			{ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-		);
-	}
 
 	// Input / change handlers
 	function handleInput(ev: Event) {
@@ -185,43 +155,4 @@
 		onblur={handleBlur}
 		{...restProps}
 	/>
-
-	<!-- Locate-me button (Geolocation API) -->
-	{#if locate && !readonly && !disabled}
-		<button
-			type="button"
-			title={locating ? 'Locating…' : (locationError ?? 'Use current location')}
-			aria-label="Use current location"
-			class={cn(
-				'mr-1.5 flex shrink-0 cursor-pointer items-center justify-center rounded p-0.5 transition-colors',
-				'text-muted-foreground hover:text-foreground focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-1',
-				locating && 'animate-pulse text-sky-500 dark:text-sky-400',
-				locationError && !locating && 'text-destructive hover:text-destructive',
-				coordsValid && !locating && !locationError && 'text-emerald-600 dark:text-emerald-400'
-			)}
-			onclick={handleLocate}
-			tabindex={-1}
-		>
-			<!-- Crosshair icon -->
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				width="14"
-				height="14"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
-			>
-				<circle cx="12" cy="12" r="10" />
-				<circle cx="12" cy="12" r="3" />
-				<line x1="12" y1="2" x2="12" y2="5" />
-				<line x1="12" y1="19" x2="12" y2="22" />
-				<line x1="2" y1="12" x2="5" y2="12" />
-				<line x1="19" y1="12" x2="22" y2="12" />
-			</svg>
-		</button>
-	{/if}
 </span>
