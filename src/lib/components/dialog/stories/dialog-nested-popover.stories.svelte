@@ -40,10 +40,7 @@
 					header") and above the `{ below }` popover (5−1=4, "behind header"). The anchor value
 					must equal the header's CSS z so computed order matches paint order.
 				-->
-				<ADialog.Header
-					class="bg-card sticky top-0 z-5 flex items-center"
-					{@attach zAnchor('dialog-header', 5)}
-				>
+				<ADialog.Header class="bg-card sticky top-0 z-5" {@attach zAnchor('dialog-header', 5)}>
 					<div class="font-semibold">Containment demo</div>
 					<ADialog.CloseButton class="ml-auto" />
 				</ADialog.Header>

@@ -187,7 +187,7 @@
 	{#snippet template(args)}
 		<div class="flex w-xl flex-col gap-2">
 			<code class="font-mono text-xs text-muted-foreground">
-				bind:values → [{values.map((v) => `"${v}"`).join(', ')}]
+				bind:values -> [{values.map((v) => `"${v}"`).join(', ')}]
 			</code>
 
 			<DataGridCmp.Root bind:values {@attach datagridContainer.attach} {...args}>
@@ -296,8 +296,7 @@
 		{/snippet}
 
 		<code class="font-mono text-xs text-muted-foreground">
-			sort: {sortBy.field}
-			{sortBy.direction === 'asc' ? '↑' : '↓'}
+			sort: {sortBy.field} ({sortBy.direction})
 		</code>
 
 		<DataGridCmp.Root>
@@ -364,7 +363,7 @@
 				{:else}
 					{#each inventoryView as item (item.id)}
 						<DataGridCmp.Row value={item.id}>
-							<DataGridCmp.Cell class="font-mono text-xs font-semibold text-primary">
+							<DataGridCmp.Cell variant="code">
 								{item.code}
 							</DataGridCmp.Cell>
 							<DataGridCmp.Cell class="font-medium text-foreground">{item.name}</DataGridCmp.Cell>
@@ -430,7 +429,7 @@
 			<div class="col-[2/-1] grid h-min grid-cols-subgrid gap-x-2">
 				{#each inventoryRows as item (item.id)}
 					<DataGridCmp.Row>
-						<DataGridCmp.Cell class="font-mono text-xs font-semibold text-primary">
+						<DataGridCmp.Cell variant="code">
 							{item.code}
 						</DataGridCmp.Cell>
 						<DataGridCmp.Cell>{item.store}</DataGridCmp.Cell>

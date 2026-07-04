@@ -192,6 +192,43 @@
 	</div>
 {/snippet}
 
+<!--
+	Shared start-to-end readout. Reused by every range story so each one shows
+	its live selection without repeating ~30 lines of near-identical markup.
+-->
+{#snippet rangeReadout(range: CalendarRange)}
+	<div class="flex items-center gap-2 text-sm">
+		<div class="flex flex-col items-center gap-1">
+			<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
+				>Start</span
+			>
+			<span
+				class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
+			>
+				{range[0] ? format(range[0], 'MMM d, yyyy') : '—'}
+			</span>
+		</div>
+		<svg
+			viewBox="0 0 24 24"
+			class="w-4 h-4 text-muted-foreground mt-5"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg
+		>
+		<div class="flex flex-col items-center gap-1">
+			<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
+				>End</span
+			>
+			<span
+				class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
+			>
+				{range[1] ? format(range[1], 'MMM d, yyyy') : '—'}
+			</span>
+		</div>
+	</div>
+{/snippet}
+
 <!-- ─── Default: configurable via Storybook controls ─────────────────────── -->
 <Story name="Basic">
 	{#snippet template(args: { type: 'single' | 'range'; outsideDays: boolean })}
@@ -212,36 +249,7 @@
 				</CalendarModule.Root>
 			</div>
 			{#if args.type === 'range'}
-				<div class="flex items-center gap-2 text-sm mt-4">
-					<div class="flex flex-col items-center gap-1">
-						<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-							>Start</span
-						>
-						<span
-							class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-						>
-							{defaultRange[0] ? format(defaultRange[0], 'MMM d, yyyy') : '—'}
-						</span>
-					</div>
-					<svg
-						viewBox="0 0 24 24"
-						class="w-4 h-4 text-muted-foreground mt-5"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg
-					>
-					<div class="flex flex-col items-center gap-1">
-						<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-							>End</span
-						>
-						<span
-							class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-						>
-							{defaultRange[1] ? format(defaultRange[1], 'MMM d, yyyy') : '—'}
-						</span>
-					</div>
-				</div>
+				<div class="mt-4">{@render rangeReadout(defaultRange)}</div>
 			{/if}
 		</div>
 	{/snippet}
@@ -266,36 +274,7 @@
 			</CalendarModule.Root>
 		</div>
 
-		<div class="flex items-center gap-2 text-sm">
-			<div class="flex flex-col items-center gap-1">
-				<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-					>Start</span
-				>
-				<span
-					class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-				>
-					{rangePicker[0] ? format(rangePicker[0], 'MMM d, yyyy') : '—'}
-				</span>
-			</div>
-			<svg
-				viewBox="0 0 24 24"
-				class="w-4 h-4 text-muted-foreground mt-5"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg
-			>
-			<div class="flex flex-col items-center gap-1">
-				<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-					>End</span
-				>
-				<span
-					class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-				>
-					{rangePicker[1] ? format(rangePicker[1], 'MMM d, yyyy') : '—'}
-				</span>
-			</div>
-		</div>
+		{@render rangeReadout(rangePicker)}
 
 		{#if rangePicker[0] && rangePicker[1]}
 			<div class="flex items-center gap-2">
@@ -457,34 +436,7 @@
 		</div>
 
 		<div class="flex items-center gap-2 text-sm">
-			<div class="flex flex-col items-center gap-1">
-				<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-					>Start</span
-				>
-				<span
-					class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-				>
-					{twoMonthRange[0] ? format(twoMonthRange[0], 'MMM d, yyyy') : '—'}
-				</span>
-			</div>
-			<svg
-				viewBox="0 0 24 24"
-				class="w-4 h-4 text-muted-foreground mt-5"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg
-			>
-			<div class="flex flex-col items-center gap-1">
-				<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
-					>End</span
-				>
-				<span
-					class="px-4 py-2 rounded-lg border border-border bg-muted/50 font-medium min-w-32 text-center"
-				>
-					{twoMonthRange[1] ? format(twoMonthRange[1], 'MMM d, yyyy') : '—'}
-				</span>
-			</div>
+			{@render rangeReadout(twoMonthRange)}
 			{#if twoMonthRange[0] && twoMonthRange[1]}
 				<div class="flex flex-col items-center gap-1">
 					<span class="text-[10px] text-muted-foreground uppercase tracking-widest font-medium"
@@ -595,7 +547,7 @@
 						class="flex-1 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40"
 						disabled={!bookingRange[0] || !bookingRange[1]}
 					>
-						Reserve →
+						Reserve
 					</button>
 				</div>
 			</div>
@@ -1019,7 +971,7 @@
 						<span class="text-sm text-muted-foreground">
 							{format(plannerRange[0], 'MMM d')}
 							{#if plannerRange[1]}
-								→ {format(plannerRange[1], 'MMM d')} · {differenceInCalendarDays(
+								– {format(plannerRange[1], 'MMM d')} · {differenceInCalendarDays(
 									plannerRange[1],
 									plannerRange[0]
 								)}d

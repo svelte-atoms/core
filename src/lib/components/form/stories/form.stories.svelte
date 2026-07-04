@@ -61,10 +61,7 @@
 
 <Story name="Basic">
 	{#snippet template(args)}
-		<FormRoot
-			class="bg-card border-border flex w-full max-w-sm flex-col gap-4 rounded-xl border p-6"
-			{validator}
-		>
+		<FormRoot class="flex w-full max-w-sm flex-col gap-4 p-6" {validator}>
 			<header class="space-y-1">
 				<h2 class="text-xl font-semibold">Contact</h2>
 				<p class="text-muted-foreground text-sm">A simple single-field form.</p>
@@ -100,10 +97,7 @@
 </Story>
 
 <Story name="Profile Editor">
-	<FormRoot
-		class="bg-card border-border flex w-full max-w-4xl flex-col gap-6 rounded-xl border p-6"
-		{validator}
-	>
+	<FormRoot class="flex w-full max-w-4xl flex-col gap-6 p-6" {validator}>
 		<header class="space-y-1">
 			<h2 class="text-xl font-semibold">Team Profile</h2>
 			<p class="text-muted-foreground text-sm">
@@ -193,7 +187,7 @@
 
 <Story name="Signup Gate">
 	<div class="w-full max-w-xl">
-		<FormRoot class="bg-card border-border flex flex-col gap-4 rounded-xl border p-5" {validator}>
+		<FormRoot class="flex flex-col gap-4 p-5" {validator}>
 			<Field.Root name="name" schema={signupSchema.shape.name} value={name}>
 				<Field.Label>Display Name</Field.Label>
 				<Input.Root>

@@ -36,7 +36,7 @@
 						undone.
 					</p>
 				</ADialog.Body>
-				<ADialog.Footer class="flex justify-end gap-2">
+				<ADialog.Footer>
 					<Button
 						variant="outline"
 						onclick={() => {

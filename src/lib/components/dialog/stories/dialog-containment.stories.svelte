@@ -41,7 +41,7 @@
 
 			<ADialog.Root class="bg-neutral-900/20" z-index={10} bind:open {...args}>
 				<ADialog.Content class="max-w-120">
-					<ADialog.Header class="flex items-center">
+					<ADialog.Header>
 						<ADialog.Title>Dialog title</ADialog.Title>
 						<ADialog.CloseButton class="ml-auto" />
 					</ADialog.Header>

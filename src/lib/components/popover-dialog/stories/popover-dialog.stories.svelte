@@ -66,27 +66,35 @@
 	{/snippet}
 </Story>
 
-<Story name="PopoverDialog" args={{}}>
-	<div class="flex flex-col items-start justify-center p-8">
-		<PopoverDialog.Root bind:open={demoOpen}>
-			<!-- Reused <Popover.Trigger>: click toggles open, ARIA = dialog. -->
-			<PopoverDialog.Trigger base={Button} variant="primary">Open Dialog</PopoverDialog.Trigger>
+<!--
+	Real-world: a destructive-action confirmation. The trigger sits in a settings row,
+	and the fused Dialog presents a focus-trapped confirm step before deleting.
+-->
+<Story name="Delete Confirmation">
+	<div class="mx-auto flex max-w-md flex-col p-8">
+		<div class="border-border flex items-center justify-between rounded-lg border px-4 py-3">
+			<div>
+				<p class="text-foreground text-sm font-medium">Delete project</p>
+				<p class="text-muted-foreground text-xs">This permanently removes all data.</p>
+			</div>
 
-			<!-- Content self-portals the modal; Header/Body are reused <Dialog.*> atoms. -->
-			<PopoverDialog.Content>
-				<PopoverDialog.Header>Modal title</PopoverDialog.Header>
-				<PopoverDialog.Body>
-					<p>
-						This panel is opened by a Popover trigger but presented in Dialog (modal) style —
-						centered, backdropped, and focus-trapped. It is a single fused bond, and these atoms are
-						the very same Popover/Dialog components, reused.
-					</p>
-				</PopoverDialog.Body>
-				<div class="flex justify-end gap-4 px-8 pt-2">
-					<Button variant="ghost" onclick={() => (demoOpen = false)}>Cancel</Button>
-					<Button variant="primary" onclick={() => (demoOpen = false)}>Confirm</Button>
-				</div>
-			</PopoverDialog.Content>
-		</PopoverDialog.Root>
+			<PopoverDialog.Root bind:open={demoOpen}>
+				<PopoverDialog.Trigger base={Button} variant="ghost">Delete</PopoverDialog.Trigger>
+
+				<PopoverDialog.Content>
+					<PopoverDialog.Header>Delete this project?</PopoverDialog.Header>
+					<PopoverDialog.Body>
+						<p class="text-muted-foreground text-sm">
+							This action cannot be undone. All boards, tasks, and files will be permanently
+							deleted.
+						</p>
+					</PopoverDialog.Body>
+					<div class="flex justify-end gap-3 px-8 pt-2">
+						<Button variant="ghost" onclick={() => (demoOpen = false)}>Cancel</Button>
+						<Button variant="destructive" onclick={() => (demoOpen = false)}>Delete</Button>
+					</div>
+				</PopoverDialog.Content>
+			</PopoverDialog.Root>
+		</div>
 	</div>
 </Story>

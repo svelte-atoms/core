@@ -4,7 +4,23 @@
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Lazy',
-		parameters: { layout: 'centered' }
+		parameters: { layout: 'centered' },
+		// Args flow through Lazy's restProps to the resolved component (a Button here).
+		args: {
+			variant: 'primary',
+			disabled: false
+		},
+		argTypes: {
+			variant: {
+				control: 'select',
+				options: ['primary', 'secondary', 'ghost'],
+				description: 'Forwarded to the lazily-loaded Button once it resolves'
+			},
+			disabled: {
+				control: 'boolean',
+				description: 'Forwarded to the resolved component'
+			}
+		}
 	});
 </script>
 
@@ -14,8 +30,9 @@
 
 <!-- Primary story: simulates a 2-second async load of a Button component -->
 <Story name="Basic">
-	{#snippet template()}
+	{#snippet template(args)}
 		<Lazy
+			{...args}
 			promise={import('../../button/button.svelte').then(async (res) => {
 				await delay(1000 * 2);
 				return res.default;

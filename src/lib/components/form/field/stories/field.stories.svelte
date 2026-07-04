@@ -105,10 +105,7 @@
 </Story>
 
 <Story name="Field Inside Form">
-	<FormRoot
-		class="bg-card border-border flex w-140 flex-col gap-4 rounded-xl border p-5"
-		{validator}
-	>
+	<FormRoot class="flex w-140 flex-col gap-4 p-5" {validator}>
 		<Field.Root
 			disabled={false}
 			readonly={false}

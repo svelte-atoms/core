@@ -63,6 +63,25 @@
 	{/snippet}
 </Story>
 
+<!--
+	Shared render loop: the Toaster manager owns the list; each item becomes a
+	Toast.Root that dismisses itself on close. Reused by the stories below.
+-->
+{#snippet toastList()}
+	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
+		{#each toaster.toasts as item (item.id)}
+			{@const data = item.data as ToastData}
+			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
+				<Toast_.Title>{data.title}</Toast_.Title>
+				{#if data.description}
+					<Toast_.Description>{data.description}</Toast_.Description>
+				{/if}
+				<Toast_.Close />
+			</Toast_.Root>
+		{/each}
+	</ol>
+{/snippet}
+
 <!-- Wires the Toaster manager's item list to Toast.Root. -->
 <Story name="Custom toaster">
 	<div class="flex h-screen flex-col items-center justify-center gap-4">
@@ -99,18 +118,7 @@
 	</div>
 
 	<!-- Custom toaster: position + render loop are fully in user-land -->
-	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
-		{#each toaster.toasts as item (item.id)}
-			{@const data = item.data as ToastData}
-			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
-				<Toast_.Title>{data.title}</Toast_.Title>
-				{#if data.description}
-					<Toast_.Description>{data.description}</Toast_.Description>
-				{/if}
-				<Toast_.Close />
-			</Toast_.Root>
-		{/each}
-	</ol>
+	{@render toastList()}
 </Story>
 
 <!-- Auto-dismiss: manager removes toasts after the duration. -->
@@ -127,18 +135,7 @@
 		</Button>
 	</div>
 
-	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
-		{#each toaster.toasts as item (item.id)}
-			{@const data = item.data as ToastData}
-			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
-				<Toast_.Title>{data.title}</Toast_.Title>
-				{#if data.description}
-					<Toast_.Description>{data.description}</Toast_.Description>
-				{/if}
-				<Toast_.Close />
-			</Toast_.Root>
-		{/each}
-	</ol>
+	{@render toastList()}
 </Story>
 
 <!-- Declarative: Toast.Root owned by markup, no manager. -->
