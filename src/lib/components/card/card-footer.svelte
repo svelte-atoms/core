@@ -1,6 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { CardBond } from './bond.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { CardBond, CardFooterAtom } from './bond.svelte';
 	import type { CardFooterProps } from './types';
 
 	const bond = CardBond.get();
@@ -13,9 +14,12 @@
 		...restProps
 	}: CardFooterProps<E, B> = $props();
 
-	const footerProps = $derived(
-		mergePresetProps(preset, 'card.footer', { ...bond?.footer(), ...restProps })
-	);
+	const atom = createAtomInstance<CardFooterAtom, CardBond>('footer', {
+		bond,
+		factory: (owner) => new CardFooterAtom(owner)
+	});
+
+	const footerProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom

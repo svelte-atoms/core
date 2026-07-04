@@ -15,8 +15,6 @@ export interface AlertRootProps<
 	E extends keyof HTMLElementTagNameMap = 'div',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, AlertChildren> {
-	dismissible?: boolean;
-	dismissed?: boolean;
 	disabled?: boolean;
 	extend?: Record<string, unknown>;
 	factory?: Factory<AlertBond>;
@@ -56,6 +54,6 @@ export interface AlertActionsProps<
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface AlertCloseButtonProps<
-	E extends keyof HTMLElementTagNameMap = 'div',
+	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, AlertChildren> {}

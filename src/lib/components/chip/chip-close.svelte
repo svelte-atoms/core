@@ -12,7 +12,7 @@
 		...restProps
 	}: ChipCloseButtonProps = $props();
 
-	const chipCloseButtonProps = $derived(mergePresetProps(preset, 'chip.close-button', restProps));
+	const chipCloseButtonProps = $derived(mergePresetProps(preset, 'chip.close', restProps));
 </script>
 
 <HtmlAtom

@@ -1,5 +1,6 @@
-import { bondContextKey, Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { createAttachmentKey } from 'svelte/attachments';
+import { Atom, Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
+import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -17,96 +18,139 @@ export type AlertBondElements = {
 	description: HTMLElement;
 	content: HTMLElement;
 	actions: HTMLElement;
-	closeButton: HTMLElement;
+	close: HTMLElement;
 };
+
+// -----------------------------------------------------------------------------
+// Internal types
+// -----------------------------------------------------------------------------
+
+type AlertBondView = AlertBondBase;
+
+// -----------------------------------------------------------------------------
+// Atom definitions
+// -----------------------------------------------------------------------------
+
+export class AlertRootAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'root', { namespace: 'alert' });
+	}
+
+	override get attrs() {
+		const disabled = this.bond?.props.disabled ?? false;
+
+		return {
+			...super.attrs,
+			role: 'alert',
+			'aria-disabled': disabled ? 'true' : 'false'
+		};
+	}
+}
+
+export class AlertIconAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'icon', { namespace: 'alert' });
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'aria-hidden': true
+		};
+	}
+}
+
+export class AlertTitleAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'title', { namespace: 'alert' });
+	}
+}
+
+export class AlertDescriptionAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'description', { namespace: 'alert' });
+	}
+}
+
+export class AlertContentAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'content', { namespace: 'alert' });
+	}
+}
+
+export class AlertActionsAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'actions', { namespace: 'alert' });
+	}
+}
+
+export class AlertCloseAtom extends Atom<AlertBondView> {
+	constructor(bond: AlertBondView | undefined) {
+		super(bond, 'close', { namespace: 'alert' });
+	}
+
+	override get attrs() {
+		return {
+			...super.attrs,
+			'aria-label': 'Dismiss alert'
+		};
+	}
+}
 
 // -----------------------------------------------------------------------------
 // Bond implementation
 // -----------------------------------------------------------------------------
 
-export class AlertBond extends Bond<AlertBondProps> {
-	static CONTEXT_KEY = bondContextKey('alert');
-
-	constructor(props: AlertBondProps) {
-		super(props);
-	}
-
-	root(props: Record<string, unknown> = {}) {
-		const disabled = this.state.props.disabled ?? false;
-
-		return {
-			id: `alert-root-${this.id}`,
-			role: 'alert',
-			'aria-labelledby': `alert-title-${this.id}`,
-			'aria-describedby': `alert-description-${this.id}`,
-			'aria-disabled': disabled,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
-	}
-
-	icon(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-icon-${this.id}`,
-			'aria-hidden': true,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.icon = node;
-			}
-		};
-	}
-
-	title(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-title-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.title = node;
-			}
-		};
-	}
-
-	description(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-description-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		};
-	}
-
-	content(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-content-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
-		};
-	}
-
-	actions(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-actions-${this.id}`,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.actions = node;
-			}
-		};
-	}
-
-	closeButton(props: Record<string, unknown> = {}) {
-		return {
-			id: `alert-close-button-${this.id}`,
-			type: 'button',
-			'aria-label': 'Dismiss alert',
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.closeButton = node;
-			}
-		};
+class AlertBondBase extends Bond<AlertBondProps> {
+	constructor(props: AlertBondProps, name = 'alert') {
+		super(props, name);
+		this.capability(labelledControl());
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Bond spec and constructor facade
+// -----------------------------------------------------------------------------
+
+const AlertBondImpl = defineBond<
+	{
+		root: { atom: typeof AlertRootAtom; role: 'control' };
+		icon: typeof AlertIconAtom;
+		title: { atom: typeof AlertTitleAtom; role: 'label' };
+		description: { atom: typeof AlertDescriptionAtom; role: 'description' };
+		content: typeof AlertContentAtom;
+		actions: typeof AlertActionsAtom;
+		closeButton: { atom: typeof AlertCloseAtom; key: 'close' };
+	},
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	any,
+	typeof AlertBondBase
+>({
+	name: 'alert',
+	base: AlertBondBase,
+	atoms: {
+		root: { atom: AlertRootAtom, role: 'control' },
+		icon: AlertIconAtom,
+		title: { atom: AlertTitleAtom, role: 'label' },
+		description: { atom: AlertDescriptionAtom, role: 'description' },
+		content: AlertContentAtom,
+		actions: AlertActionsAtom,
+		closeButton: { atom: AlertCloseAtom, key: 'close' }
+	}
+});
+
+export type AlertBond = BondOf<typeof AlertBondImpl>;
+
+interface AlertBondConstructor {
+	new (props: AlertBondProps): AlertBond;
+	readonly CONTEXT_KEY: string;
+	readonly spec: (typeof AlertBondImpl)['spec'];
+	get(): AlertBond | undefined;
+	getOrThrow(message?: string): AlertBond;
+	optional(): AlertBond | undefined;
+	required(message?: string): AlertBond;
+	set(bond: AlertBond): AlertBond;
+	create(props: AlertBondProps): AlertBond;
+}
+
+export const AlertBond = AlertBondImpl as unknown as AlertBondConstructor;

@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { AlertBond } from './bond.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { AlertBond, AlertContentAtom } from './bond.svelte';
 	import type { AlertContentProps } from './types';
 
 	type Element = HTMLElementTagNameMap[E];
@@ -15,9 +16,12 @@
 		...restProps
 	}: AlertContentProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const contentProps = $derived(
-		mergePresetProps(preset, 'alert.content', { ...bond?.content(), ...restProps })
-	);
+	const atom = createAtomInstance<AlertContentAtom, AlertBond>('content', {
+		bond,
+		factory: (owner) => new AlertContentAtom(owner)
+	});
+
+	const contentProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom

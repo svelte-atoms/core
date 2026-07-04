@@ -1,6 +1,6 @@
-import { createAttachmentKey } from 'svelte/attachments';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { bondContextKey, Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
+import { Atom, Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
+import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -23,145 +23,140 @@ export type CardBondElements = {
 	footer: HTMLElement;
 };
 
-const CARD_ELEMENTS_KIND = {
-	root: 'card-root',
-	header: 'card-header',
-	title: 'card-title',
-	subtitle: 'card-subtitle',
-	description: 'card-description',
-	content: 'card-content',
-	media: 'card-media',
-	actions: 'card-actions',
-	footer: 'card-footer'
-};
+// -----------------------------------------------------------------------------
+// Internal types
+// -----------------------------------------------------------------------------
+
+type CardBondView = CardBondBase;
+
+// -----------------------------------------------------------------------------
+// Atom definitions
+// -----------------------------------------------------------------------------
+
+export class CardRootAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'root', { namespace: 'card' });
+	}
+
+	override get attrs() {
+		const isClickable = this.bond?.props.clickable ?? false;
+		const isDisabled = this.bond?.props.disabled ?? false;
+
+		return {
+			...super.attrs,
+			role: isClickable ? 'button' : undefined,
+			tabindex: isClickable && !isDisabled ? 0 : undefined,
+			'aria-disabled': isDisabled
+		};
+	}
+}
+
+export class CardHeaderAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'header', { namespace: 'card' });
+	}
+}
+
+export class CardTitleAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'title', { namespace: 'card' });
+	}
+}
+
+export class CardSubtitleAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'subtitle', { namespace: 'card' });
+	}
+}
+
+export class CardDescriptionAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'description', { namespace: 'card' });
+	}
+}
+
+export class CardContentAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'content', { namespace: 'card' });
+	}
+}
+
+export class CardMediaAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'media', { namespace: 'card' });
+	}
+}
+
+export class CardActionsAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'actions', { namespace: 'card' });
+	}
+}
+
+export class CardFooterAtom extends Atom<CardBondView> {
+	constructor(bond: CardBondView | undefined) {
+		super(bond, 'footer', { namespace: 'card' });
+	}
+}
 
 // -----------------------------------------------------------------------------
 // Bond implementation
 // -----------------------------------------------------------------------------
 
-export class CardBond extends Bond<CardBondProps> {
-	static CONTEXT_KEY = bondContextKey('card');
-
-	constructor(props: CardBondProps) {
-		super(props);
-	}
-
-	root(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.root);
-		const titleId = getElementId(this.id, CARD_ELEMENTS_KIND.title);
-		const descriptionId = getElementId(this.id, CARD_ELEMENTS_KIND.description);
-
-		const isClickable = this.state.props.clickable ?? false;
-		const isDisabled = this.state.props.disabled ?? false;
-
-		return {
-			id,
-			role: isClickable ? 'button' : undefined,
-			tabindex: isClickable && !isDisabled ? 0 : undefined,
-			'aria-labelledby': titleId,
-			'aria-describedby': descriptionId,
-			'aria-disabled': isDisabled,
-			'data-kind': CARD_ELEMENTS_KIND.root,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.root = node;
-			}
-		};
-	}
-
-	header(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.header);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.header,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.header = node;
-			}
-		};
-	}
-
-	title(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.title);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.title,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.title = node;
-			}
-		};
-	}
-
-	subtitle(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.subtitle);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.subtitle,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.subtitle = node;
-			}
-		};
-	}
-
-	description(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.description);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.description,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.description = node;
-			}
-		};
-	}
-
-	content(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.content);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.content,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.content = node;
-			}
-		};
-	}
-
-	media(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.media);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.media,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.media = node;
-			}
-		};
-	}
-
-	actions(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.actions);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.actions,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.actions = node;
-			}
-		};
-	}
-
-	footer(props: Record<string, unknown> = {}) {
-		const id = getElementId(this.id, CARD_ELEMENTS_KIND.footer);
-		return {
-			id,
-			'data-kind': CARD_ELEMENTS_KIND.footer,
-			...props,
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				this.elements.footer = node;
-			}
-		};
+class CardBondBase extends Bond<CardBondProps> {
+	constructor(props: CardBondProps, name = 'card') {
+		super(props, name);
+		this.capability(labelledControl());
 	}
 }
+
+// -----------------------------------------------------------------------------
+// Bond spec and constructor facade
+// -----------------------------------------------------------------------------
+
+const CardBondImpl = defineBond<
+	{
+		root: { atom: typeof CardRootAtom; role: 'control' };
+		header: typeof CardHeaderAtom;
+		title: { atom: typeof CardTitleAtom; role: 'label' };
+		subtitle: typeof CardSubtitleAtom;
+		description: { atom: typeof CardDescriptionAtom; role: 'description' };
+		content: typeof CardContentAtom;
+		media: typeof CardMediaAtom;
+		actions: typeof CardActionsAtom;
+		footer: typeof CardFooterAtom;
+	},
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	any,
+	typeof CardBondBase
+>({
+	name: 'card',
+	base: CardBondBase,
+	atoms: {
+		root: { atom: CardRootAtom, role: 'control' },
+		header: CardHeaderAtom,
+		title: { atom: CardTitleAtom, role: 'label' },
+		subtitle: CardSubtitleAtom,
+		description: { atom: CardDescriptionAtom, role: 'description' },
+		content: CardContentAtom,
+		media: CardMediaAtom,
+		actions: CardActionsAtom,
+		footer: CardFooterAtom
+	}
+});
+
+export type CardBond = BondOf<typeof CardBondImpl>;
+
+interface CardBondConstructor {
+	new (props: CardBondProps): CardBond;
+	readonly CONTEXT_KEY: string;
+	readonly spec: (typeof CardBondImpl)['spec'];
+	get(): CardBond | undefined;
+	getOrThrow(message?: string): CardBond;
+	optional(): CardBond | undefined;
+	required(message?: string): CardBond;
+	set(bond: CardBond): CardBond;
+	create(props: CardBondProps): CardBond;
+}
+
+export const CardBond = CardBondImpl as unknown as CardBondConstructor;

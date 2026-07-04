@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import type { ChipProps } from './types';
-	import ChipCloseButton from './chip-close-button.svelte';
+	import ChipCloseButton from './chip-close.svelte';
 
 	let {
 		class: klass = '',

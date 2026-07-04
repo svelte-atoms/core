@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared';
-	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { AlertBond } from './bond.svelte';
+	import { bindBond, createAtomInstance } from '$svelte-atoms/core/shared';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { AlertBond, AlertRootAtom } from './bond.svelte';
 	import type { AlertRootProps } from './types';
 	import './alert.css';
 
@@ -21,7 +21,12 @@
 	});
 	const bond = binding.bond.share();
 
-	const rootProps = $derived(mergePresetProps(preset, 'alert', { ...bond.root(), ...restProps }));
+	const rootAtom = createAtomInstance<AlertRootAtom, AlertBond>('root', {
+		bond,
+		factory: (owner) => new AlertRootAtom(owner).role('control')
+	});
+
+	const rootProps = $derived(mergeAtomProps(rootAtom, preset, restProps));
 
 	export function getBond() {
 		return bond;

@@ -16,6 +16,7 @@ export interface CardRootProps<
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, CardChildren> {
 	disabled?: boolean;
+	clickable?: boolean;
 	factory?: Factory<CardBond>;
 	onclick?: (event: MouseEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
