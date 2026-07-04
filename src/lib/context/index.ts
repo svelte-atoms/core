@@ -5,5 +5,6 @@ export {
 	type PresetEntryRecord,
 	type PresetEntry,
 	getPreset,
-	setPreset
+	setPreset,
+	mergePreset
 } from './preset.svelte';

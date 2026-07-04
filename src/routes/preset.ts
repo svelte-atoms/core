@@ -205,7 +205,7 @@ export const preset: Partial<Preset> = {
 	'alert.actions': () => ({
 		class: 'mt-3 flex items-center gap-2'
 	}),
-	'alert.close-button': () => ({
+	'alert.close': () => ({
 		class:
 			'rounded-md p-0.5 size-6 opacity-70 transition-all hover:opacity-100 hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-1'
 	}),
