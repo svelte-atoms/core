@@ -78,6 +78,9 @@
 			"default": "./dist/components/root/root.css"
 		},
 		"./overlay/policies": null,
+		"./portal/host": null,
+		"./portal/host/*": null,
+		"./internal": null,
 		"./virtual": null,
 		"./*/atoms": {
 			"types": "./dist/components/*/atoms.d.ts",
@@ -177,7 +180,6 @@
 		"date-fns": "^4.1.0",
 		"esm-env": "^1.2.2",
 		"es-toolkit": "^1.45.1",
-		"motion": "^12.38.0",
 		"nanoid": "^5.1.9",
 		"tailwind-merge": "^3.5.0"
 	}

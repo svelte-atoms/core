@@ -8,7 +8,7 @@ import * as utils from './utils';
 
 // Presentation cascade for HtmlAtom. Each exported function resolves one stage so the
 // .svelte's $derived wrappers track minimal dependencies. Merge order (last wins):
-//     fallback → preset → variants → restProps
+//     defaults → preset → variants → restProps
 // Pinned by resolvers.spec.ts + fold.spec.ts. The cascade runs via ONE foldPresentation
 // kernel call — foldLayers walks all four layers once.
 
@@ -73,16 +73,16 @@ export function resolveVariants(
 	);
 }
 
-// Run the merge kernel — ONE walk over fallback → preset → variants → rest layers,
+// Run the merge kernel — ONE walk over defaults → preset → variants → rest layers,
 // producing spread-ready attrs plus captured class-axis inputs.
 export function foldLayers(
 	preset: PresetEntryRecord | undefined,
 	variants: ResolvedProps | undefined,
 	restProps: Record<string, unknown>,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	fallback: Record<string, any> | undefined
+	defaults: Record<string, any> | undefined
 ): FoldedPresentation {
-	return utils.foldPresentation(fallback, preset, variants, restProps);
+	return utils.foldPresentation(defaults, preset, variants, restProps);
 }
 
 // Resolve the final class string: user class + fold's preset/variant classes (honoring $preset).
@@ -101,21 +101,21 @@ export function resolveAs(as: unknown, preset: PresetEntryRecord | undefined): u
 	return as ?? preset?.as;
 }
 
-// Resolve spread-ready rest props via cascade fallback → preset → variants → restProps (last wins).
+// Resolve spread-ready rest props via cascade defaults → preset → variants → restProps (last wins).
 // Internal atom keys (class, base, as, …) are stripped; symbol-keyed attachments are preserved.
 export function resolveRestProps(
 	preset: PresetEntryRecord | undefined,
 	variants: ResolvedProps | undefined,
 	restProps: Record<string, unknown>,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	fallback: Record<string, any> | undefined
+	defaults: Record<string, any> | undefined
 ): Record<string, unknown> {
 	return utils.extractRestProps(
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		preset as Record<string, any> | undefined,
 		variants,
 		restProps,
-		fallback
+		defaults
 	);
 }
 

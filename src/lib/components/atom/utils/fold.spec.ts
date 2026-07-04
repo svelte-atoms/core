@@ -2,26 +2,26 @@ import { describe, expect, it } from 'vitest';
 import { foldPresentation } from './fold';
 
 // Pins the merge kernel's contract (ADR 0004 D5):
-//     fallback → preset → variants → restProps   (each later layer wins)
+//     defaults → preset → variants → restProps   (each later layer wins)
 // for string and symbol keys, plus per-layer skip sets and class-axis capture.
 // resolvers.spec.ts pins the same order through the stage facade; this pins the kernel directly.
 
 describe('foldPresentation — cascade precedence', () => {
-	it('applies fallback < preset < variants < rest for string keys', () => {
+	it('applies defaults < preset < variants < rest for string keys', () => {
 		const out = foldPresentation(
-			{ 'data-tier': 'fallback', 'data-fb': 'kept' },
+			{ 'data-tier': 'defaults', 'data-default': 'kept' },
 			{ 'data-tier': 'preset' },
 			{ 'data-tier': 'variant' },
 			{ 'data-tier': 'rest' }
 		);
 		expect(out.attrs['data-tier']).toBe('rest');
-		expect(out.attrs['data-fb']).toBe('kept'); // un-overridden keys survive
+		expect(out.attrs['data-default']).toBe('kept'); // un-overridden keys survive
 	});
 
 	it('applies the SAME precedence to symbol keys (documented, not incidental)', () => {
 		const sym = Symbol('attachment');
 		const out = foldPresentation(
-			{ [sym]: 'fallback' } as Record<string, unknown>,
+			{ [sym]: 'defaults' } as Record<string, unknown>,
 			{ [sym]: 'preset' } as Record<string, unknown>,
 			{ [sym]: 'variant' } as Record<string, unknown>,
 			{ [sym]: 'rest' } as Record<string, unknown>
@@ -42,7 +42,7 @@ describe('foldPresentation — cascade precedence', () => {
 });
 
 describe('foldPresentation — skip sets', () => {
-	it('strips internal config keys from preset and fallback (PRESET_SKIP)', () => {
+	it('strips internal config keys from preset and defaults (PRESET_SKIP)', () => {
 		const layer = {
 			class: 'x',
 			base: 'x',

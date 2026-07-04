@@ -1,4 +1,4 @@
-import { animate, type Easing } from 'motion';
+import { animate, type Easing } from '$svelte-atoms/core/shared';
 import { DrawerBond } from '.';
 import { untrack } from 'svelte';
 
@@ -22,7 +22,7 @@ type AnimateDrawerContentParams = {
 	inert?: boolean;
 };
 
-// Drawer content animation: directional slide from edge + opacity fade. Auto-reads side from bond; optional spring physics.
+// Drawer content animation: directional slide from edge + opacity fade. Auto-reads side from bond; optional spring-like timing.
 export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
 	const {
 		duration = 0.3,

@@ -77,13 +77,8 @@ export class ToastCloseAtom extends Atom<ToastBondView> {
 	}
 
 	override get attrs() {
-		const el = this.element;
-		const isButton = el instanceof Element && el.tagName.toLowerCase() === 'button';
 		return {
 			...super.attrs,
-			type: isButton ? 'button' : undefined,
-			role: isButton ? undefined : 'button',
-			tabindex: isButton ? undefined : 0,
 			'aria-label': 'Dismiss notification'
 		};
 	}

@@ -25,7 +25,13 @@
 		factory: (owner) => new DialogCloseAtom(owner as DialogBond)
 	});
 
-	const closeProps = $derived(mergeAtomProps(atom, preset ?? 'dialog.close-button', restProps));
+	const closePreset = $derived(preset ?? `${bond.preset}.close`);
+	const defaults = $derived({
+		type: as === 'button' ? 'button' : undefined,
+		role: as === 'button' ? undefined : 'button',
+		tabindex: as === 'button' ? undefined : 0
+	});
+	const closeProps = $derived(mergeAtomProps(atom, closePreset, restProps));
 
 	function onclick_(ev: MouseEvent) {
 		onclick?.(ev);
@@ -38,6 +44,7 @@
 <HtmlAtom
 	{as}
 	{bond}
+	{defaults}
 	class={['cursor-pointer', '$preset', klass]}
 	{...closeProps}
 	onclick={onclick_}

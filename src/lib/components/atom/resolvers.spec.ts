@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import * as resolvers from './resolvers';
 
 // Pins the documented cascade order:
-//     fallback → preset → variants → restProps   (each later wins)
+//     defaults → preset → variants → restProps   (each later wins)
 // Load-bearing contract for resolvers.ts — change merge order → update these + CONTEXT.md.
 
 describe('presentation stages — precedence contract', () => {
 	it('restProps overrides variants (variants → restProps)', () => {
-		// No preset, no fallback — just variants vs restProps.
+		// No preset, no defaults — just variants vs restProps.
 		const out = resolvers.resolveRestProps(
 			undefined,
 			{ class: [], 'data-color': 'variant-blue' } as never,
@@ -24,28 +24,28 @@ describe('presentation stages — precedence contract', () => {
 		expect(out['data-color']).toBe('variant-blue');
 	});
 
-	it('preset overrides fallback (fallback → preset)', () => {
+	it('preset overrides defaults (defaults → preset)', () => {
 		const preset = { 'data-color': 'preset-green' } as never;
-		const fallback = { 'data-color': 'fallback-grey' };
-		const out = resolvers.resolveRestProps(preset, undefined, {}, fallback);
+		const defaults = { 'data-color': 'default-grey' };
+		const out = resolvers.resolveRestProps(preset, undefined, {}, defaults);
 		expect(out['data-color']).toBe('preset-green');
 	});
 
-	it('full cascade: fallback < preset < variants < restProps', () => {
-		const fallback = { 'data-tier': 'fallback' };
+	it('full cascade: defaults < preset < variants < restProps', () => {
+		const defaults = { 'data-tier': 'defaults' };
 		const preset = { 'data-tier': 'preset' } as never;
 		const merged = { class: [], 'data-tier': 'variant' } as never;
 		const rest = { 'data-tier': 'rest' };
 
-		const out = resolvers.resolveRestProps(preset, merged, rest, fallback);
+		const out = resolvers.resolveRestProps(preset, merged, rest, defaults);
 		expect(out['data-tier']).toBe('rest');
 	});
 
-	it('fallback is preserved for keys not overridden later', () => {
-		const fallback = { 'data-fb-only': 'present' };
+	it('defaults are preserved for keys not overridden later', () => {
+		const defaults = { 'data-default-only': 'present' };
 		const preset = { 'data-other': 'preset' } as never;
-		const out = resolvers.resolveRestProps(preset, undefined, {}, fallback);
-		expect(out['data-fb-only']).toBe('present');
+		const out = resolvers.resolveRestProps(preset, undefined, {}, defaults);
+		expect(out['data-default-only']).toBe('present');
 		expect(out['data-other']).toBe('preset');
 	});
 });

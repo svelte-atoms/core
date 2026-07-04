@@ -15,12 +15,13 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback = {
-			animate: animateDrawerContent({}),
-			initial: animateDrawerContent({ duration: 0 })
-		},
 		...restProps
 	}: SlideoverContentProps<E, B> & HTMLAttributes<Element> & { side?: DrawerSide } = $props();
+
+	const defaults = {
+		animate: animateDrawerContent({}),
+		initial: animateDrawerContent({ duration: 0 })
+	};
 
 	const atom = bond?.content();
 
@@ -35,7 +36,7 @@
 		klass
 	]}
 	{bond}
-	{fallback}
+	{defaults}
 	{...contentProps}
 >
 	<PortalHost>

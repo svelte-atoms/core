@@ -1,4 +1,4 @@
-import { animate, type Easing } from 'motion';
+import { animate, DURATION, type Easing } from '$svelte-atoms/core/shared';
 import { TreeBond } from './bond.svelte';
 
 export type AnimateTreeBodyParams = {
@@ -10,8 +10,8 @@ export type AnimateTreeBodyParams = {
 export function animateTreeBody(params: AnimateTreeBodyParams = {}) {
 	const bond = TreeBond.get();
 	return (node: HTMLElement) => {
-		const { delay = 0, duration = 0.1, ease } = params;
-		const isOpen = bond?.state.props.open ?? false;
+		const { delay = 0, duration = DURATION.normal / 1000, ease = 'circOut' } = params;
+		const isOpen = bond?.isOpen ?? false;
 
 		animate(
 			node,
@@ -20,7 +20,7 @@ export function animateTreeBody(params: AnimateTreeBodyParams = {}) {
 				opacity: +isOpen,
 				pointerEvents: isOpen ? '' : 'none'
 			},
-			{ duration, delay, ...(ease ? { ease } : {}) }
+			{ duration, delay, ease }
 		);
 	};
 }

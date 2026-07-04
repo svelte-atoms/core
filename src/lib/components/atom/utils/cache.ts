@@ -88,7 +88,7 @@ export function getCachedOwnKeys(obj: object | null | undefined): readonly strin
 	return keys;
 }
 
-// Cached Object.getOwnPropertySymbols() for stable presentation objects (preset, variants, fallbacks).
+// Cached Object.getOwnPropertySymbols() for stable presentation objects (defaults, preset, variants).
 // Do NOT use for per-render-fresh objects like rest props — cache insert with no future hit.
 const ownSymbolsCache = new WeakMap<object, readonly symbol[]>();
 

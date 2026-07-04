@@ -11,12 +11,13 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback = {
-			animate: animateTreeBody(),
-			initial: animateTreeBody({ duration: 0 })
-		},
 		...restProps
 	}: TreeBodyProps<E, B> = $props();
+
+	const defaults = {
+		animate: animateTreeBody(),
+		initial: animateTreeBody({ duration: 0 })
+	};
 
 	const atom = createAtomInstance('body', {
 		bond,
@@ -26,6 +27,6 @@
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom {bond} class={['pl-4', '$preset', klass]} {fallback} {...bodyProps}>
+<HtmlAtom {bond} class={['overflow-hidden pl-4', '$preset', klass]} {defaults} {...bodyProps}>
 	{@render children?.({ tree: bond })}
 </HtmlAtom>

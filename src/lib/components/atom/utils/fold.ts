@@ -2,7 +2,7 @@ import type { ClassValue } from 'svelte/elements';
 import { PRESET_SKIP, VARIANTS_SKIP } from './constants';
 import { getCachedOwnSymbols } from './cache';
 
-// Presentation merge kernel: one fold over fallback → preset → variants → rest,
+// Presentation merge kernel: one fold over defaults → preset → variants → rest,
 // each later layer winning. Class axis captured separately for `mergeClassesWithPreset`.
 export type FoldedPresentation = {
 	// preset.class captured during the walk (before variants in cascade).
@@ -38,18 +38,18 @@ function copySymbolKeys(
 	for (const s of syms) result[s] = src[s];
 }
 
-// Fold four presentation layers (fallback → preset → variants → rest) into a spread-ready shape.
+// Fold four presentation layers (defaults → preset → variants → rest) into a spread-ready shape.
 export function foldPresentation(
-	fallback: Record<string, unknown> | undefined,
+	defaults: Record<string, unknown> | undefined,
 	preset: Record<string, unknown> | undefined,
 	variants: Record<string, unknown> | undefined,
 	rest: Record<string, unknown>
 ): FoldedPresentation {
 	const attrs: Record<string | symbol, unknown> = {};
 
-	if (fallback) {
-		copyStringKeys(fallback, PRESET_SKIP, attrs);
-		copySymbolKeys(fallback, attrs, true);
+	if (defaults) {
+		copyStringKeys(defaults, PRESET_SKIP, attrs);
+		copySymbolKeys(defaults, attrs, true);
 	}
 	if (preset) {
 		copyStringKeys(preset, PRESET_SKIP, attrs);

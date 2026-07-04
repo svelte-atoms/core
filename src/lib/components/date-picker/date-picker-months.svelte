@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import { animate } from 'motion';
+	import { animate } from '$svelte-atoms/core/shared';
 	import { getYear, getMonth, setMonth } from 'date-fns';
 	import { cn } from '$svelte-atoms/core/utils';
 	import { HtmlAtom } from '../atom';

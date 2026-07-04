@@ -1,5 +1,5 @@
 import { DURATION } from '$svelte-atoms/core/shared';
-import { animate, type Easing } from 'motion';
+import { animate, type Easing } from '$svelte-atoms/core/shared';
 
 export type EnterAccordionItemBodyParams = {
 	duration?: number;

@@ -40,12 +40,17 @@
 		minWidth = undefined,
 		maxWidth = undefined,
 		style = undefined,
-		fallback = {
-			animate: animatePopoverContent()
-		},
 		'z-index': zIndex = undefined,
+		// swallowed: defaults is an internal HtmlAtom layer for this part.
+		defaults: _defaults = undefined,
+		// swallowed: old fallback prop is removed; keep it off the DOM spread.
+		fallback: _fallback = undefined,
 		...restProps
 	}: PopoverContentProps<E, B> = $props();
+
+	const defaults = {
+		animate: animatePopoverContent()
+	};
 
 	const atom = createAtomInstance<Atom<PopoverBond, HTMLElement>, PopoverBond, HTMLElement>(
 		'content',
@@ -121,9 +126,9 @@
 <Overlay portal={activePortalBond ?? 'root.l0'} {layer} {order} as="div" z-index={zIndex}>
 	<HtmlAtom
 		{bond}
-		{fallback}
+		{defaults}
 		class={[
-			'popover-content bg-popover text-popover-foreground rounded-md border p-2 opacity-0 shadow-lg outline-none',
+			'popover-content bg-popover text-popover-foreground relative rounded-md border p-2 opacity-0 shadow-lg outline-none',
 			'$preset',
 			klass
 		]}

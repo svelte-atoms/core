@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { animate as motion } from 'motion';
+	import { animate } from '$svelte-atoms/core/shared';
 	import { Icon } from '$svelte-atoms/core/components/icon';
 	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
 	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
@@ -27,7 +27,7 @@
 	const indicatorProps = $derived(mergeAtomProps(atom, preset, restProps));
 
 	function _animate(node: HTMLElement) {
-		return motion(node, { rotate: 180 * +isOpen }, { duration: 0.3, ease: 'anticipate' });
+		return animate(node, { rotate: 180 * +isOpen }, { duration: 0.3, ease: 'anticipate' });
 	}
 </script>
 

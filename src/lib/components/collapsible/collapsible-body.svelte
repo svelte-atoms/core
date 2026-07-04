@@ -13,12 +13,13 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback = {
-			animate: animateCollapsibleBody(),
-			initial: animateCollapsibleBody({ duration: 0 })
-		},
 		...restProps
 	}: CollapsibleBodyProps<E, B> = $props();
+
+	const defaults = {
+		animate: animateCollapsibleBody(),
+		initial: animateCollapsibleBody({ duration: 0 })
+	};
 
 	const atom = createAtomInstance<CollapsibleBodyAtom, CollapsibleBond>('body', {
 		bond,
@@ -29,6 +30,6 @@
 	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom {bond} class={['border-border', '$preset', klass]} {fallback} {...bodyProps}>
+<HtmlAtom {bond} class={['border-border', '$preset', klass]} {defaults} {...bodyProps}>
 	{@render children?.({ collapsible: bond })}
 </HtmlAtom>

@@ -49,13 +49,13 @@ const fmt = (b: number) => `${b.toFixed(1)} B/op`;
 
 // Fixtures — same shapes as presentation.bench.ts.
 
-const ROOT_FALLBACK = 'bg-card border-border flex list-none flex-col rounded-md shadow-sm';
-const ARRAY_CLASS: ClassValue = [ROOT_FALLBACK, '$preset', 'my-custom-class p-6'];
+const ROOT_BASE = 'bg-card border-border flex list-none flex-col rounded-md shadow-sm';
+const ARRAY_CLASS: ClassValue = [ROOT_BASE, '$preset', 'my-custom-class p-6'];
 const PRESET_CLASS = 'w-full max-w-md rounded-md p-4 accordion-preset';
 const VARIANT_CLASS = 'bg-primary text-primary-foreground hover:bg-primary/80';
 
 const VARIED: ClassValue[] = [];
-for (let i = 0; i < 1000; i++) VARIED.push([ROOT_FALLBACK, '$preset', `unique-${i} p-${i % 12}`]);
+for (let i = 0; i < 1000; i++) VARIED.push([ROOT_BASE, '$preset', `unique-${i} p-${i % 12}`]);
 
 const PRESET_PROPS = {
 	class: PRESET_CLASS,
@@ -71,7 +71,7 @@ const VARIANT_PROPS: ResolvedProps = {
 	'data-state': 'active'
 };
 const REST_PROPS = { id: 'atom-1', 'data-testid': 'root', onclick: () => {}, tabindex: 0 };
-const FALLBACK_PROPS = { animate: () => {}, 'data-fb': '1' };
+const DEFAULT_PROPS = { animate: () => {}, 'data-default': '1' };
 
 describe.skipIf(!hasGc)('presentation memory — transient allocations (GC pressure)', () => {
 	it('class merge, hot $preset array path (repeated inputs)', () => {
@@ -108,10 +108,10 @@ describe.skipIf(!hasGc)('presentation memory — transient allocations (GC press
 
 	it('rest-props cascade: extractRestProps vs kernel fold', () => {
 		const legacy = transientBytesPerOp(() => {
-			legacyExtractRestProps(PRESET_PROPS, VARIANT_PROPS, REST_PROPS, FALLBACK_PROPS);
+			legacyExtractRestProps(PRESET_PROPS, VARIANT_PROPS, REST_PROPS, DEFAULT_PROPS);
 		});
 		const kernel = transientBytesPerOp(() => {
-			extractRestProps(PRESET_PROPS, VARIANT_PROPS, REST_PROPS, FALLBACK_PROPS);
+			extractRestProps(PRESET_PROPS, VARIANT_PROPS, REST_PROPS, DEFAULT_PROPS);
 		});
 		console.info(`[mem] rest-props cascade  legacy ${fmt(legacy)}  kernel ${fmt(kernel)}`);
 		expect(kernel).toBeLessThan(Math.max(legacy * 2, 2000));
@@ -125,7 +125,7 @@ describe.skipIf(!hasGc)('presentation memory — retained footprint', () => {
 		const retained = retainedBytes(() => {
 			for (let i = 0; i < 1100; i++) {
 				mergeClassesWithPreset(
-					[ROOT_FALLBACK, '$preset', `retained-${i} px-${i % 16} text-${i % 7}xl`],
+					[ROOT_BASE, '$preset', `retained-${i} px-${i % 16} text-${i % 7}xl`],
 					PRESET_CLASS,
 					VARIANT_CLASS
 				);

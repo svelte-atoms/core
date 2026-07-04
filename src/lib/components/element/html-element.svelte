@@ -43,7 +43,9 @@
 		if (!hasEntered) return;
 		if (!node) return;
 
-		animate?.(node);
+		const currentNode = node;
+		const cleanup = animate?.(currentNode);
+		return () => stopAnimation(cleanup, currentNode);
 	});
 
 	const attachFunction = (n: Element) => {
@@ -90,6 +92,17 @@
 		if (hasInitialized) return;
 		hasInitialized = true;
 		untrack(() => initial?.(node!));
+	}
+
+	function stopAnimation(cleanup: unknown, currentNode: Element) {
+		if (typeof cleanup === 'function') {
+			cleanup(currentNode);
+			return;
+		}
+
+		if (!cleanup || typeof cleanup !== 'object' || !('stop' in cleanup)) return;
+		const stop = cleanup.stop;
+		if (typeof stop === 'function') stop.call(cleanup);
 	}
 </script>
 

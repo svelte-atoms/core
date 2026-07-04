@@ -12,12 +12,13 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback = {
-			animate: animateSidebarContent({ '0': '0px', '1': 'auto' }),
-			initial: animateSidebarContent({ '0': '0px', '1': 'auto', duration: 0 })
-		},
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
+
+	const defaults = {
+		animate: animateSidebarContent({ '0': '0px', '1': 'auto' }),
+		initial: animateSidebarContent({ '0': '0px', '1': 'auto', duration: 0 })
+	};
 
 	const atom = createAtomInstance('content', {
 		bond,
@@ -30,7 +31,7 @@
 <PortalHost
 	{bond}
 	class={['bg-card max-h-screen overflow-visible', '$preset', klass]}
-	{fallback}
+	{defaults}
 	{...contentProps}
 >
 	{@render children?.({ sidebar: bond })}

@@ -30,11 +30,11 @@
 		'z-index': zindex = 1,
 		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
 		onclose: _onclose = undefined,
+		// swallowed: defaults is an internal HtmlAtom layer, not a public Drawer.Root override.
+		defaults: _defaults = undefined,
+		// swallowed: old fallback prop is removed; keep it off the DOM spread.
+		fallback: _fallback = undefined,
 		factory = (props) => DrawerBond.create(props),
-		fallback = {
-			animate: animateDrawerRoot({}),
-			initial: animateDrawerRoot({ duration: 0 })
-		},
 		...restProps
 		// Omit `children` from HTMLAttributes: it declares `children?: Snippet` (0-arg), which would
 		// intersect with SlideoverRootProps' 1-arg `DrawerChildren` into an unsatisfiable type.
@@ -78,6 +78,11 @@
 	// topmost-open-overlay stack so only the frontmost surface acts on Escape.
 	useCapabilities(bond);
 
+	const defaults = {
+		animate: animateDrawerRoot({}),
+		initial: animateDrawerRoot({ duration: 0 })
+	};
+
 	const rootProps = $derived({
 		...binding?.props,
 		...restProps
@@ -106,7 +111,7 @@
 	]}
 	style="position: {position}; z-index: {layer.value};"
 	closeby="none"
-	{fallback}
+	{defaults}
 	{...rootProps}
 >
 	<ActivePortal portal={activePortalBond ?? 'root.l0'}>

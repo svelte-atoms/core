@@ -1,4 +1,4 @@
-import { animate, type Easing } from 'motion';
+import { animate, type Easing } from '$svelte-atoms/core/shared';
 import { DURATION } from '$svelte-atoms/core/shared';
 import { SidebarBond } from '.';
 

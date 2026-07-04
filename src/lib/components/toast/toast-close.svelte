@@ -21,6 +21,11 @@
 
 	const atom = bond?.dismiss();
 
+	const defaults = $derived({
+		type: as === 'button' ? 'button' : undefined,
+		role: as === 'button' ? undefined : 'button',
+		tabindex: as === 'button' ? undefined : 0
+	});
 	const closeProps = $derived(mergeAtomProps(atom, preset, restProps));
 
 	function onclick_(ev: MouseEvent) {
@@ -33,6 +38,7 @@
 <HtmlAtom
 	{as}
 	{bond}
+	{defaults}
 	class={['cursor-pointer text-current h-6', '$preset', klass]}
 	{...closeProps}
 	onclick={onclick_}

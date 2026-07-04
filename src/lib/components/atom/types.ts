@@ -61,11 +61,6 @@ export interface HtmlAtomProps<
 	// Variant definition (static VariantDefinition or dynamic function receiving bond + props).
 	variants?: Variants;
 
-	// Fallback props applied before the preset so user/preset config overrides them.
-	// Merge order (last wins): fallback → preset → variants → restProps.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	fallback?: Record<string, any> | undefined;
-
 	// SSR-capable init hook. Unlike symbol-keyed lifecycle keys (which Svelte's server
 	// rest_props drops), this string-keyed prop survives SSR, so it fires synchronously on the
 	// server AND on the client during hydration — keep it idempotent. Returned cleanup runs on

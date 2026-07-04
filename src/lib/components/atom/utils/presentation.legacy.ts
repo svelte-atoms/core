@@ -66,12 +66,12 @@ export function legacyExtractRestProps(
 	preset: Record<string, unknown> | undefined,
 	mergedVariants: ResolvedProps | undefined,
 	restProps: Record<string, unknown>,
-	fallback?: Record<string, unknown> | undefined
+	defaults?: Record<string, unknown> | undefined
 ): Record<string, unknown> {
 	const result: Record<string | symbol, unknown> = {};
-	if (fallback) {
-		legacyCopyStringKeys(fallback, PRESET_SKIP, result);
-		legacyCopySymbolKeys(fallback, result);
+	if (defaults) {
+		legacyCopyStringKeys(defaults, PRESET_SKIP, result);
+		legacyCopySymbolKeys(defaults, result);
 	}
 	if (preset) {
 		legacyCopyStringKeys(preset, PRESET_SKIP, result);

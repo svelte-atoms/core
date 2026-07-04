@@ -12,11 +12,12 @@
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
-		fallback = {
-			animate: animateDialogContent()
-		},
 		...restProps
 	}: DialogContentProps<E, B> = $props();
+
+	const defaults = {
+		animate: animateDialogContent()
+	};
 
 	const atom = createAtomInstance<DialogContentAtom, DialogBond, HTMLElement>('content', {
 		bond,
@@ -33,7 +34,7 @@
 		klass
 	]}
 	{bond}
-	{fallback}
+	{defaults}
 	{...dialogProps}
 >
 	{@render children?.({ dialog: bond })}

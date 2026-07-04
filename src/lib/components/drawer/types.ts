@@ -37,9 +37,9 @@ export interface DrawerSnippetProps extends SnippetProps {
 export type DrawerChildren = Snippet<[DrawerSnippetProps]>;
 
 // Plain `extends` (not `Override<...>`): an Omit-based Override over HtmlAtomProps' `[key: string]:
-// unknown` index signature collapses every un-overridden named prop (children, fallback, …) to
+// unknown` index signature collapses every un-overridden named prop (children, transition hooks, …) to
 // `unknown`. The transition hooks (initial/enter/exit) are the standard 1-arg element signatures —
-// the drawer's animation comes from `fallback`/`animateDrawerRoot`, and they forward to <Teleport>.
+// the drawer's default animation is passed internally via HtmlAtom's `defaults` layer, and they forward to <Teleport>.
 export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
 	extends HtmlAtomProps<E, B, DrawerChildren>, DrawerExtendProps {
 	'z-index'?: ZIndexInput;

@@ -19,6 +19,19 @@
 
 	const rootBond = RootBond.get();
 
+	type HtmlAtomInternalProps<
+		Tag extends keyof HTMLElementTagNameMap,
+		BaseComponent extends Base,
+		Children extends AnySnippet
+	> = HtmlAtomProps<Tag, BaseComponent, Children> & {
+		// Internal defaults layer: applied before preset/variants/rest so presets and users can override.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		defaults?: Record<string, any> | undefined;
+		// Deprecated direct-HtmlAtom alias for `defaults`; ordinary component parts strip it.
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		fallback?: Record<string, any> | undefined;
+	};
+
 	let {
 		class: klass = '',
 		as = undefined,
@@ -26,11 +39,12 @@
 		preset: presetKey = undefined,
 		bond = undefined,
 		variants = undefined,
+		defaults = undefined,
 		fallback = undefined,
 		oninit = undefined,
 		children: children = undefined,
 		...restProps
-	}: HtmlAtomProps<Tag, BaseComponent, Children> = $props();
+	}: HtmlAtomInternalProps<Tag, BaseComponent, Children> = $props();
 
 	// Bond lifecycle attachments (createLifecycleKey): fire each phase's `(bond) => …` callbacks
 	// against the live bond. The lifecycle keys are symbol-keyed, so Svelte ignores them on the
@@ -49,10 +63,11 @@
 	const mergedVariants = $derived.by(() =>
 		resolvers.resolveVariants(preset, localVariants, bond, restProps)
 	);
-	// The merge kernel: ONE walk over fallback → preset → variants → rest.
+	const defaultsLayer = $derived(defaults ?? fallback);
+	// The merge kernel: ONE walk over defaults → preset → variants → rest.
 	// Class string and spread attrs both come from it.
 	const folded = $derived.by(() =>
-		resolvers.foldLayers(preset, mergedVariants, restProps, fallback)
+		resolvers.foldLayers(preset, mergedVariants, restProps, defaultsLayer)
 	);
 	const finalKlass = $derived(resolvers.resolveClass(klass, folded));
 	const finalBase = $derived(resolvers.resolveBase(base, preset));

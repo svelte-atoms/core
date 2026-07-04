@@ -2,29 +2,29 @@ import { describe, expect, it, vi } from 'vitest';
 import { extractRestProps, mergeAtomProps } from './props';
 
 describe('extractRestProps', () => {
-	it('fallback is lowest priority — preset overrides it', () => {
-		const fallbackAnimate = vi.fn();
+	it('defaults are lowest priority — preset overrides them', () => {
+		const defaultAnimate = vi.fn();
 		const presetAnimate = vi.fn();
 
 		const result = extractRestProps(
 			{ animate: presetAnimate },
 			undefined,
 			{},
-			{ animate: fallbackAnimate }
+			{ animate: defaultAnimate }
 		);
 
 		expect(result.animate).toBe(presetAnimate);
 	});
 
-	it('fallback is used when neither preset nor restProps provide the prop', () => {
-		const fallbackAnimate = vi.fn();
+	it('defaults are used when neither preset nor restProps provide the prop', () => {
+		const defaultAnimate = vi.fn();
 
-		const result = extractRestProps(undefined, undefined, {}, { animate: fallbackAnimate });
+		const result = extractRestProps(undefined, undefined, {}, { animate: defaultAnimate });
 
-		expect(result.animate).toBe(fallbackAnimate);
+		expect(result.animate).toBe(defaultAnimate);
 	});
 
-	it('restProps is highest priority — overrides preset and fallback', () => {
+	it('restProps is highest priority — overrides preset and defaults', () => {
 		const presetAnimate = vi.fn();
 		const userAnimate = vi.fn();
 
@@ -59,12 +59,12 @@ describe('extractRestProps', () => {
 
 	it('preserves Symbol-keyed props from every layer', () => {
 		const sym = Symbol('attach');
-		const fallbackVal = vi.fn();
+		const defaultVal = vi.fn();
 		const presetVal = vi.fn();
 		const restVal = vi.fn();
 
-		const fallback = {} as Record<symbol, unknown>;
-		fallback[sym] = fallbackVal;
+		const defaults = {} as Record<symbol, unknown>;
+		defaults[sym] = defaultVal;
 
 		const preset = {} as Record<symbol, unknown>;
 		preset[sym] = presetVal;
@@ -77,7 +77,7 @@ describe('extractRestProps', () => {
 			preset as Record<string, unknown>,
 			undefined,
 			rest as Record<string, unknown>,
-			fallback as Record<string, unknown>
+			defaults as Record<string, unknown>
 		);
 
 		expect((result as Record<symbol, unknown>)[sym]).toBe(restVal);
@@ -123,5 +123,17 @@ describe('mergeAtomProps', () => {
 
 		expect(props.preset).toBe('fallback');
 		expect(Object.getOwnPropertySymbols(props)).toEqual([atomKey, userKey]);
+	});
+
+	it('strips defaults-layer props from ordinary component rest props', () => {
+		const props = mergeAtomProps(undefined, 'test.root', {
+			defaults: { animate: vi.fn() },
+			fallback: { animate: vi.fn() },
+			'data-kept': 'yes'
+		});
+
+		expect(props).not.toHaveProperty('defaults');
+		expect(props).not.toHaveProperty('fallback');
+		expect(props['data-kept']).toBe('yes');
 	});
 });

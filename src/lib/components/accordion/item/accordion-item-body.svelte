@@ -13,13 +13,14 @@
 		children = undefined,
 		onmount = undefined,
 		ondestroy = undefined,
-		fallback = {
-			enter: enterAccordionItemBody(),
-			exit: exitAccordionItemBody()
-		},
 		preset = undefined,
 		...restProps
 	}: AccordionItemBodyProps<E, B> = $props();
+
+	const defaults = {
+		enter: enterAccordionItemBody(),
+		exit: exitAccordionItemBody()
+	};
 
 	const atom = bond
 		? createAtomInstance<AccordionItemBodyAtom, AccordionItemBond>('body', {
@@ -39,7 +40,7 @@
 		class={['box-content h-0 opacity-0', '$preset', klass]}
 		onmount={onmount?.bind(accordionItem)}
 		ondestroy={ondestroy?.bind(accordionItem)}
-		{fallback}
+		{defaults}
 		{...bodyProps}
 	>
 		{@render children?.({ accordionItem })}
