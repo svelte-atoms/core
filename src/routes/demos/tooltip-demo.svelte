@@ -40,6 +40,6 @@
 	<Tooltip.Content class="bg-popover border-border rounded-md border px-3 py-2 text-xs shadow-md">
 		<p class="font-medium">Unsaved changes</p>
 		<p class="text-muted-foreground mt-0.5">Save your draft before publishing.</p>
-		<Tooltip.Arrow />
+		<Tooltip.Tail />
 	</Tooltip.Content>
 </Tooltip.Root>

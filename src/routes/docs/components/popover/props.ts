@@ -231,7 +231,7 @@ export const popoverIndicatorProps: PropDefinition[] = [
 	}
 ];
 
-export const popoverArrowProps: PropDefinition[] = [
+export const popoverTailProps: PropDefinition[] = [
 	{
 		name: 'bond',
 		type: 'Bond',

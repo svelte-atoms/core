@@ -82,6 +82,6 @@
 				Clear filters
 			</button>
 		</div>
-		<Popover.Arrow />
+		<Popover.Tail />
 	</Popover.Content>
 </Popover.Root>

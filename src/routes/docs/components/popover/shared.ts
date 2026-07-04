@@ -76,9 +76,9 @@ const componentsSummary = [
 			"Optional visual indicator (e.g., chevron icon) that reflects the popover's open/closed state."
 	},
 	{
-		name: 'Popover.Arrow',
+		name: 'Popover.Tail',
 		description:
-			'Optional arrow pointer that visually connects the popover content to its trigger element.'
+			'Optional tail pointer that visually connects the popover content to its trigger element.'
 	}
 ];
 

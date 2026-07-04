@@ -80,7 +80,7 @@ const componentsSummary = [
 	},
 	{
 		name: 'Alert.CloseButton',
-		description: 'Optional dismissal button that allows users to close or hide the alert.'
+		description: 'Optional button surface for user-managed dismissal or custom actions.'
 	},
 	{
 		name: 'Alert.Actions',

@@ -35,7 +35,7 @@
 		{ label: 'Dialog.Footer', presetKey: 'dialog.footer', props: dialogFooterProps },
 		{ label: 'Dialog.Title', presetKey: 'dialog.title', props: dialogTitleProps },
 		{ label: 'Dialog.Description', presetKey: 'dialog.description', props: dialogDescriptionProps },
-		{ label: 'Dialog.CloseButton', presetKey: 'dialog.close-button', props: dialogCloseButtonProps }
+		{ label: 'Dialog.CloseButton', presetKey: 'dialog.close', props: dialogCloseButtonProps }
 	];
 
 	const _loaders = import.meta.glob('./examples/*.svelte');

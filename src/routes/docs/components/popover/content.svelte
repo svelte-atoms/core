@@ -6,7 +6,7 @@
 		popoverRootProps,
 		popoverContentProps,
 		popoverIndicatorProps,
-		popoverArrowProps,
+		popoverTailProps,
 		popoverTriggerProps
 	} from './props';
 	import { metadata } from './shared';
@@ -28,7 +28,7 @@
 		{ label: 'Popover.Root', presetKey: 'popover', props: popoverRootProps },
 		{ label: 'Popover.Trigger', props: popoverTriggerProps },
 		{ label: 'Popover.Content', presetKey: 'popover.content', props: popoverContentProps },
-		{ label: 'Popover.Arrow', presetKey: 'popover.arrow', props: popoverArrowProps },
+		{ label: 'Popover.Tail', presetKey: 'popover.tail', props: popoverTailProps },
 		{ label: 'Popover.Indicator', presetKey: 'popover.indicator', props: popoverIndicatorProps }
 	];
 
@@ -60,9 +60,9 @@
 		/>
 
 		<DocExample
-			title="Popover with Arrow"
-			description="Popover with directional arrow indicator"
-			{...ex('./examples/arrow.svelte')}
+			title="Popover with Tail"
+			description="Popover with directional tail indicator"
+			{...ex('./examples/tail.svelte')}
 		/>
 
 		<DocExample

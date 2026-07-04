@@ -91,7 +91,7 @@ const componentsSummary = [
 		description: 'Placeholder element shown when no item is selected. Re-exported from Dropdown.'
 	},
 	{
-		name: 'Combobox.Arrow / Combobox.Indicator',
+		name: 'Combobox.Tail / Combobox.Indicator',
 		description:
 			'Visual indicator elements for the dropdown trigger (e.g., chevron icon). Re-exported from Dropdown.'
 	},

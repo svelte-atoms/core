@@ -233,7 +233,7 @@
 		},
 		{
 			name: 'Popover',
-			description: 'Floating content panel with smart positioning and arrow',
+			description: 'Floating content panel with smart positioning and tail',
 			category: 'Overlay',
 			status: 'Beta',
 			href: '/docs/components/popover'
