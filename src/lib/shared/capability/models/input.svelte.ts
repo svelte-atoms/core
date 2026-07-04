@@ -70,7 +70,7 @@ export function inputCapability(
 		roles: {
 			input: (field) => ({
 				attrs: (bond) => {
-					const active = bond.state.requireSurface(ROVING).activeId;
+					const active = bond.requireSurface(ROVING).activeId;
 					const disabled = isDisabled();
 					return {
 						role: 'combobox',

@@ -4,14 +4,17 @@ import {
 	DISCLOSURE_CLOSE,
 	DISCLOSURE_TRIGGER
 } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import { CollapsibleBond } from './collapsible/bond.svelte';
-import { TreeBond } from './tree/bond.svelte';
-import { ToastBond } from './toast/bond.svelte';
-import { DialogBond } from './dialog/bond.svelte';
-import { DrawerBond } from './drawer/bond.svelte';
-import { PopoverBond, type PopoverStateProps } from './popover/bond.svelte';
-import { SidebarBond } from './sidebar/bond.svelte';
-import { BACKDROP_PRESS, OUTSIDE_PRESS } from './portal/host';
+import { CollapsibleBond } from '$svelte-atoms/core/components/collapsible/bond.svelte';
+import { TreeBond } from '$svelte-atoms/core/components/tree/bond.svelte';
+import { ToastBond } from '$svelte-atoms/core/components/toast/bond.svelte';
+import { DialogBond } from '$svelte-atoms/core/components/dialog/bond.svelte';
+import { DrawerBond } from '$svelte-atoms/core/components/drawer/bond.svelte';
+import {
+	PopoverBond,
+	type PopoverStateProps
+} from '$svelte-atoms/core/components/popover/bond.svelte';
+import { SidebarBond } from '$svelte-atoms/core/components/sidebar/bond.svelte';
+import { BACKDROP_PRESS, OUTSIDE_PRESS } from '$svelte-atoms/core/components/portal/host';
 
 function popoverProps(initial: Partial<PopoverStateProps> = {}): PopoverStateProps {
 	return {

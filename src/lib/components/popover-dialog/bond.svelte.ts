@@ -2,6 +2,7 @@ import { fuse, type BondOf } from '$svelte-atoms/core/shared';
 import { popoverSpec, PopoverTriggerAtom } from '../popover/bond.svelte';
 import {
 	DialogBond,
+	DialogBondBase,
 	type DialogBond as DialogBondInstance,
 	type DialogBondProps
 } from '../dialog/bond.svelte';
@@ -21,6 +22,7 @@ export type PopoverDialogBondProps = DialogBondProps;
 
 const PopoverDialogBondImpl = fuse({
 	name: 'popover-dialog',
+	base: DialogBondBase,
 	parts: [{ spec: popoverSpec }, DialogBond],
 	atoms: { trigger: PopoverTriggerAtom }
 });

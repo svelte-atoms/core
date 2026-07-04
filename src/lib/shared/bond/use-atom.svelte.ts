@@ -77,10 +77,10 @@ export function createAtomInstance<
 		}
 
 		node.capability(capability as AtomCapability<unknown, Atom, Bond, E>);
-
-		const live = capability.setup?.(node, bond);
-		if (live) teardowns.push(toTeardown(live));
 	}
+
+	const capabilityTeardown = node.setupCapabilities(bond);
+	if (capabilityTeardown) teardowns.push(capabilityTeardown);
 
 	if (bond && options.register !== false) {
 		const registrationOptions = options.register === true ? undefined : options.register;

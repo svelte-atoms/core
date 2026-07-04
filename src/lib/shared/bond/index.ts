@@ -45,6 +45,7 @@ export {
 	defineFocusedCapability,
 	defineArchetypeCapabilities,
 	decorateCapability,
+	decorateAtomCapability,
 	type AtomBehavior,
 	type AtomCapability,
 	type AtomCapabilityConfig,
@@ -59,6 +60,8 @@ export {
 	type KnownRole,
 	type RoleCtxArgs,
 	type Capability,
+	type CapabilityEnvelope,
+	type CapabilitySetupResult,
 	type RoleCtx,
 	type CapabilityRoleMap,
 	type CapabilityConfig,
@@ -74,7 +77,8 @@ export {
 	type ArchetypeCapabilities,
 	type CapabilityInfo,
 	type RoleProjectionInfo,
-	type CapabilityDecoration
+	type CapabilityDecoration,
+	type AtomCapabilityDecoration
 } from '../capability/capability';
 export {
 	elementRef,

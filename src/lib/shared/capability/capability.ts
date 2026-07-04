@@ -78,6 +78,8 @@ export type RoleCtxArgs<R extends string> = R extends KnownRole
 
 export type CapabilityLayer = 1 | 2 | 3;
 
+export type CapabilitySetupResult = Disposable | (() => void) | void;
+
 export type CapabilityKind =
 	| 'model'
 	| 'projection'
@@ -101,20 +103,23 @@ export interface CapabilityMetadata {
 	readonly docs?: string;
 }
 
+// Common Layer 0 capability protocol: shared identity/metadata/surface/dependency envelope.
+// Bond and Atom capabilities keep host-specific behavior/setup signatures below.
+export interface CapabilityEnvelope<Surface = unknown> {
+	readonly slot?: symbol;
+	readonly meta?: CapabilityMetadata;
+	readonly surface?: Surface;
+	readonly requires?: readonly symbol[];
+}
+
 // Bond-hosted capabilities own shared state, coordination, role projection, and whole-bond setup.
 // They are the existing Capability runtime shape under an explicit host name.
-export interface BondCapability<Surface = unknown> {
-	// CapabilityKey phantom drives typed retrieval via bond.state.capability(key) — not through this field.
+export interface BondCapability<Surface = unknown> extends CapabilityEnvelope<Surface> {
+	// CapabilityKey phantom drives typed retrieval via bond.capability(key) — not through this field.
 	readonly slot: symbol;
-	// Inert authoring/diagnostic metadata. It does not affect registry, projection, or setup semantics.
-	readonly meta?: CapabilityMetadata;
-	// Present on stateful models (Disclosure, SelectionModel…); omitted on stateless policies.
-	readonly surface?: Surface;
-	// DEV validates these slots are registered before this capability projects.
-	readonly requires?: readonly symbol[];
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
 	// Whole-bond effect run via useCapabilities(); home for document listeners and focus/escape plumbing.
-	setup?(bond: Bond): Disposable | (() => void) | void;
+	setup?(bond: Bond): CapabilitySetupResult;
 	// When a slot is already held, the registry calls compose(prior) instead of replacing — wrap/delegate rather than rewrite. Built by decorateCapability().
 	compose?(prior: BondCapability<Surface>): BondCapability<Surface>;
 }
@@ -128,13 +133,10 @@ export interface AtomCapability<
 	N = AtomHost,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
-> {
-	readonly slot?: symbol;
-	readonly meta?: CapabilityMetadata;
-	readonly surface?: Surface;
-	readonly requires?: readonly symbol[];
+> extends CapabilityEnvelope<Surface> {
 	readonly behavior?: AtomBehavior<N, B, E>;
-	setup?(node: N, bond: B | undefined): Disposable | (() => void) | void;
+	setup?(node: N, bond: B | undefined): CapabilitySetupResult;
+	compose?(prior: AtomCapability<Surface, N, B, E>): AtomCapability<Surface, N, B, E>;
 }
 
 // void roles → no ctx; ctx-bearing → typed; custom → unknown. Drives defineCapability's typed dispatch.
@@ -158,7 +160,7 @@ export interface CapabilityConfig<Surface = unknown> {
 	meta?: CapabilityMetadata;
 	surface?: Surface;
 	requires?: readonly symbol[];
-	setup?(bond: Bond): Disposable | (() => void) | void;
+	setup?(bond: Bond): CapabilitySetupResult;
 	compose?(prior: Capability<Surface>): Capability<Surface>;
 	// Preferred: typed role → projection map.
 	roles?: CapabilityRoleMap;
@@ -179,7 +181,8 @@ export interface AtomCapabilityConfig<
 	surface?: Surface;
 	requires?: readonly symbol[];
 	behavior?: AtomBehavior<N, B, E>;
-	setup?(node: N, bond: B | undefined): Disposable | (() => void) | void;
+	setup?(node: N, bond: B | undefined): CapabilitySetupResult;
+	compose?(prior: AtomCapability<Surface, N, B, E>): AtomCapability<Surface, N, B, E>;
 }
 
 // Canonical authoring entry point. Folds roles/behavior into the Capability the registry projects.
@@ -214,7 +217,8 @@ export function defineAtomCapability<
 		...(config.surface !== undefined ? { surface: config.surface } : {}),
 		...(config.requires ? { requires: config.requires } : {}),
 		...(config.behavior ? { behavior: config.behavior } : {}),
-		...(config.setup ? { setup: config.setup } : {})
+		...(config.setup ? { setup: config.setup } : {}),
+		...(config.compose ? { compose: config.compose } : {})
 	};
 }
 
@@ -379,6 +383,17 @@ export interface CapabilityDecoration<S> {
 	setup?(base: Capability<S>['setup']): Capability<S>['setup'];
 }
 
+export interface AtomCapabilityDecoration<
+	S,
+	N = AtomHost,
+	B extends Bond = Bond,
+	E extends Element | BondVirtualElement = Element | BondVirtualElement
+> {
+	behavior?(base: AtomBehavior<N, B, E> | undefined): AtomBehavior<N, B, E> | undefined;
+	surface?(base: S | undefined): S;
+	setup?(base: AtomCapability<S, N, B, E>['setup']): AtomCapability<S, N, B, E>['setup'];
+}
+
 // Wrap a slot's current holder, delegating unmodified facets — register AFTER the base or compose fires on nothing.
 export function decorateCapability<S>(
 	slot: CapabilityKey<S>,
@@ -399,6 +414,33 @@ export function decorateCapability<S>(
 				...(prior.meta ? { meta: prior.meta } : {}),
 				...(surface !== undefined ? { surface } : {}),
 				...(prior.requires ? { requires: prior.requires } : {}),
+				...(setup ? { setup } : {})
+			};
+		}
+	};
+}
+
+export function decorateAtomCapability<
+	S,
+	N = AtomHost,
+	B extends Bond = Bond,
+	E extends Element | BondVirtualElement = Element | BondVirtualElement
+>(
+	slot: CapabilityKey<S>,
+	decoration: AtomCapabilityDecoration<S, N, B, E>
+): AtomCapability<S, N, B, E> {
+	return {
+		slot,
+		compose(prior) {
+			const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
+			const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
+			const behavior = decoration.behavior ? decoration.behavior(prior.behavior) : prior.behavior;
+			return {
+				slot,
+				...(prior.meta ? { meta: prior.meta } : {}),
+				...(surface !== undefined ? { surface } : {}),
+				...(prior.requires ? { requires: prior.requires } : {}),
+				...(behavior ? { behavior } : {}),
 				...(setup ? { setup } : {})
 			};
 		}

@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { enrollOverlay, isTopOverlay } from '../policies/escape-stack.svelte';
+import {
+	enrollOverlay,
+	isTopOverlay,
+	resetEscapeStackForTest
+} from '../policies/escape-stack.svelte';
 import { closeOnEscape } from '../policies/escape.svelte';
 import type { OverlayView } from '../types';
 
@@ -16,15 +20,11 @@ function press(handlers: Record<string, unknown>, key: string) {
 	return ev;
 }
 
-// Drain the stack between tests (it is module-global).
-const enrolled: Array<() => void> = [];
 function enroll(bond: OverlayView) {
-	const off = enrollOverlay(bond);
-	enrolled.push(off);
-	return off;
+	return enrollOverlay(bond);
 }
 afterEach(() => {
-	enrolled.splice(0).forEach((off) => off());
+	resetEscapeStackForTest();
 });
 
 describe('escape stack', () => {
@@ -53,6 +53,18 @@ describe('escape stack', () => {
 		enroll(a);
 		const offB = enroll(b);
 		offB();
+		expect(isTopOverlay(a)).toBe(true);
+	});
+
+	it('resetEscapeStackForTest clears leaked test state', () => {
+		const a = fakeBond();
+		const b = fakeBond();
+		enroll(a);
+		enroll(b);
+		expect(isTopOverlay(a)).toBe(false);
+
+		resetEscapeStackForTest();
+
 		expect(isTopOverlay(a)).toBe(true);
 	});
 });

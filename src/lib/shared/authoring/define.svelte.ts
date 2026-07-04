@@ -129,6 +129,8 @@ export type DefinedBondClass<
 	readonly CONTEXT_KEYS?: readonly string[];
 	get(): DefinedBond<A, State, Base, M, AtomMethods> | undefined;
 	getOrThrow(message?: string): DefinedBond<A, State, Base, M, AtomMethods>;
+	optional(): DefinedBond<A, State, Base, M, AtomMethods> | undefined;
+	required(message?: string): DefinedBond<A, State, Base, M, AtomMethods>;
 	set(
 		bond: DefinedBond<A, State, Base, M, AtomMethods>
 	): DefinedBond<A, State, Base, M, AtomMethods>;
@@ -205,7 +207,7 @@ export function defineBond<
 				super(state ? (state.props as StatePropsOf<State>) : stateProps(stateOrProps), spec.name);
 				if (state) adoptStateHost(this, state);
 				for (const cap of mergedCapabilities((state ?? this.state) as BondState)) {
-					this.state.capability(cap);
+					this.capability(cap);
 				}
 			}
 
@@ -310,7 +312,7 @@ export function defineBond<
 				if (state) adoptStateHost(this, state);
 			}
 			for (const capability of spec.capabilities?.((state ?? this.state) as State) ?? []) {
-				this.state.capability(capability);
+				this.capability(capability);
 			}
 		}
 

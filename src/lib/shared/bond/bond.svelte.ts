@@ -5,10 +5,9 @@ import { StagedMap } from './staged-map.svelte';
 import { bondContextKey } from './context';
 import { Atom } from './atom.svelte';
 import { BondState } from './state.svelte';
+import { CapabilityRegistry } from './capability-registry';
 import { BOND_BRAND, ordinaryHasInstance } from './identity';
 export { BOND_BRAND } from './identity';
-import { collectionCapability, collectionSlot } from '../capability/models/collection.svelte';
-import { slotName } from '../capability/capability';
 import type {
 	BondClass,
 	BondStateProps as BondPropsBase,
@@ -16,10 +15,9 @@ import type {
 	NodeRegistration,
 	NodeRegistrationOptions
 } from './types';
-import type { Behavior, Capability, CapabilityInfo, CapabilityKey } from '../capability';
-import type { Collection } from './collection.svelte';
+import type { CapabilityKey } from '../capability';
 
-export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
+export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends CapabilityRegistry {
 	static CONTEXT_KEY = bondContextKey('bond');
 
 	#id: string;
@@ -27,19 +25,12 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 	#legacyState: BondState | undefined;
 	#nodes = new StagedMap<NodeRegistration>();
 	#name: string;
-	// Single home for capabilities; collections also live here at slot collection:<kind>.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	#capabilities: Capability<any>[] = [];
-	// Slot index mirrors #capabilities for O(1) lookup while preserving projection order.
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	#capabilitySlots = new Map<symbol, number>();
-	#setupConsumed = false;
-	#validated = false;
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	#nodeRegistrations = new Map<Atom, string>();
 	#nodeRegistrationId = 0;
 
 	constructor(props: Props = {} as Props, name?: string) {
+		super();
 		// Cross-copy identity brand; read by static [Symbol.hasInstance].
 		Object.defineProperty(this, BOND_BRAND, { value: true });
 		this.#legacyState = props instanceof BondState ? props : undefined;
@@ -157,121 +148,18 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 		return this.node(role);
 	}
 
-	collection<T>(kind: string): Collection<T> {
-		const slot = collectionSlot(kind);
-		const existing = this.#findCapability(slot);
-		if (existing) return existing.surface as Collection<T>;
-		const cap = collectionCapability<T>(kind);
-		this.capability(cap);
-		return cap.surface;
-	}
-
-	capability<C extends Capability>(capability: C): C;
-	capability<S>(key: CapabilityKey<S>): Capability<S> | undefined;
-	capability<S = unknown>(
-		capabilityOrKey: Capability | CapabilityKey<S>
-	): Capability<S> | undefined {
-		if (typeof capabilityOrKey === 'symbol') {
-			const found = this.#findCapability(capabilityOrKey) as Capability<S> | undefined;
-			if (DEV && !found) {
-				console.warn(
-					`[svelte-atoms] Bond.capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
-				);
-			}
-			return found;
-		}
-
-		const i = this.#capabilitySlots.get(capabilityOrKey.slot);
-		if (i !== undefined) {
-			const prior = this.#capabilities[i]!;
-			const next = capabilityOrKey.compose ? capabilityOrKey.compose(prior) : capabilityOrKey;
-			if (DEV) {
-				const verb = capabilityOrKey.compose ? 'decorated' : 'replaced';
-				console.debug(
-					`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`
-				);
-			}
-			this.#capabilities[i] = next;
-			return next as Capability<S>;
-		} else {
-			this.#capabilitySlots.set(capabilityOrKey.slot, this.#capabilities.length);
-			this.#capabilities.push(capabilityOrKey);
-			return capabilityOrKey as Capability<S>;
-		}
-	}
-
+	// Thin aliases kept for Bond's public API; CapabilityRegistry owns surface()/requireSurface().
 	get<S>(key: CapabilityKey<S>): S | undefined {
 		return this.surface(key);
-	}
-
-	surface<S>(key: CapabilityKey<S>): S | undefined {
-		return this.capability(key)?.surface;
 	}
 
 	require<S>(key: CapabilityKey<S>): S {
 		return this.requireSurface(key);
 	}
 
-	requireSurface<S>(key: CapabilityKey<S>): S {
-		const cap = this.requireCapability(key);
-		if (cap.surface === undefined) {
-			throw new Error(
-				`[svelte-atoms] capability "${slotName(key)}" has no surface in "${this.id}".`
-			);
-		}
-		return cap.surface;
-	}
-
-	requireCapability<S>(key: CapabilityKey<S>): Capability<S> {
-		const found = this.#findCapability(key) as Capability<S> | undefined;
-		if (!found) {
-			throw new Error(
-				`[svelte-atoms] required capability "${slotName(key)}" is not registered in "${this.id}".`
-			);
-		}
-		return found;
-	}
-
-	get capabilities(): readonly Capability[] {
-		return this.#capabilities;
-	}
-
-	describeCapabilities(): CapabilityInfo[] {
-		return this.#capabilities.map((c) => ({
-			slot: c.slot,
-			description: c.slot.description,
-			...(c.meta ? { meta: c.meta } : {}),
-			hasSurface: c.surface !== undefined,
-			requires: c.requires ?? [],
-			hasSetup: typeof c.setup === 'function'
-		}));
-	}
-
-	markSetupConsumed(): void {
-		this.#setupConsumed = true;
-	}
-
-	behaviorsForRole(role: string, ctx?: unknown): Behavior[] {
-		if (DEV && !this.#validated) {
-			this.#validated = true;
-			this.#validateCapabilities();
-		}
-		const out: Behavior[] = [];
-		for (const capability of this.#capabilities) {
-			const behavior = capability.behavior?.(role, ctx);
-			if (behavior) out.push(behavior);
-		}
-		return out;
-	}
-
 	destroy() {
 		this.#nodes.clear();
 		this.#nodeRegistrations.clear();
-	}
-
-	#findCapability(slot: symbol): Capability | undefined {
-		const i = this.#capabilitySlots.get(slot);
-		return i === undefined ? undefined : this.#capabilities[i];
 	}
 
 	#adoptLegacyState(state: BondState): void {
@@ -299,54 +187,6 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> {
 		}
 		for (const capability of state.capabilities) {
 			this.capability(capability);
-		}
-	}
-
-	#validateCapabilities() {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const slots = new Set(this.#capabilities.map((c) => c.slot));
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const slotOwners = new Map(this.#capabilities.map((c) => [c.slot, c]));
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity
-		const roleOwners = new Map<string, Capability[]>();
-		for (const cap of this.#capabilities) {
-			for (const role of cap.meta?.projects ?? []) {
-				const owners = roleOwners.get(role);
-				if (owners) owners.push(cap);
-				else roleOwners.set(role, [cap]);
-			}
-		}
-		for (const cap of this.#capabilities) {
-			for (const need of cap.requires ?? []) {
-				if (!slots.has(need)) {
-					console.warn(
-						`[svelte-atoms] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`
-					);
-				}
-			}
-			for (const conflict of cap.meta?.conflicts ?? []) {
-				if (typeof conflict === 'symbol') {
-					const owner = slotOwners.get(conflict);
-					if (owner && owner !== cap) {
-						console.warn(
-							`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with registered capability slot "${slotName(conflict)}" in "${this.id}".`
-						);
-					}
-					continue;
-				}
-
-				const owners = roleOwners.get(conflict)?.filter((owner) => owner !== cap) ?? [];
-				if (owners.length > 0) {
-					console.warn(
-						`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with role "${conflict}" projected by ${owners.map((owner) => `"${slotName(owner.slot)}"`).join(', ')} in "${this.id}".`
-					);
-				}
-			}
-		}
-		if (!this.#setupConsumed && this.#capabilities.some((c) => c.setup)) {
-			console.warn(
-				`[svelte-atoms] "${this.id}" registered capabilities with setup() (focus/escape/...) but useCapabilities(bond) was never called — their whole-bond effects will not run.`
-			);
 		}
 	}
 

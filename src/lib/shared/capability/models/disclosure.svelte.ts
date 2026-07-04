@@ -173,14 +173,14 @@ function isDisclosureActivationDisabled(
 	if (typeof guard === 'boolean') return guard;
 	if (typeof guard === 'function') return guard(bond);
 
-	const state = bond.state as { isDisabled?: boolean; props?: { disabled?: boolean } };
+	const state = bond as unknown as { isDisabled?: boolean; props?: { disabled?: boolean } };
 	return Boolean(state.isDisabled ?? state.props?.disabled ?? false);
 }
 
 function activateDisclosure(bond: Bond, event: Event, options: DisclosureActivationDefaults): void {
 	if (options.stopPropagation) event.stopPropagation();
 
-	const disclosure = bond.state.requireSurface(DISCLOSURE);
+	const disclosure = bond.requireSurface(DISCLOSURE);
 	const action = options.action;
 	if (typeof action === 'function') {
 		action(disclosure, bond, event);

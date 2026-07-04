@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { DropdownMenuBond, type DropdownMenuItem } from './dropdown-menu/bond.svelte';
-import { SelectBond } from './select/bond.svelte';
-import { TYPEAHEAD, type TypeaheadSurface } from '../shared/capability/models/typeahead.svelte';
+import {
+	DropdownMenuBond,
+	type DropdownMenuItem
+} from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
+import { SelectBond } from '$svelte-atoms/core/components/select/bond.svelte';
+import {
+	TYPEAHEAD,
+	type TypeaheadSurface
+} from '$svelte-atoms/core/shared/capability/models/typeahead.svelte';
 
 function key(surface: TypeaheadSurface, value: string) {
 	return surface.handleKeydown({

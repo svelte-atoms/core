@@ -63,7 +63,7 @@ export function resizeObserverCapability(
 					if (currentKey) {
 						const rect = domRectToGeometry(entry.contentRect);
 						rects.set(currentKey, rect);
-						bondRef?.state.surface(GEOMETRY)?.setRect(currentKey, rect);
+						bondRef?.surface(GEOMETRY)?.setRect(currentKey, rect);
 					}
 					if (bondRef) options.onResize?.(entry, bondRef);
 				}
@@ -76,7 +76,7 @@ export function resizeObserverCapability(
 				const currentKey = keys.get(element);
 				if (currentKey) {
 					rects.delete(currentKey);
-					bondRef?.state.surface(GEOMETRY)?.clear(currentKey);
+					bondRef?.surface(GEOMETRY)?.clear(currentKey);
 				}
 				keys.delete(element);
 				observed = observed.filter((item) => item !== element);

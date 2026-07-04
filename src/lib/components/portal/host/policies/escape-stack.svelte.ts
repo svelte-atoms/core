@@ -23,6 +23,12 @@ export function isTopOverlay(bond: OverlayView): boolean {
 	return i === stack.length - 1;
 }
 
+// Test seam for the module-global stack. Production code should unenroll via the cleanup returned
+// by enrollOverlay(); tests can reset leaked state without depending on private array identity.
+export function resetEscapeStackForTest(): void {
+	stack.splice(0);
+}
+
 function remove(bond: OverlayView): void {
 	const i = stack.indexOf(bond);
 	if (i !== -1) stack.splice(i, 1);

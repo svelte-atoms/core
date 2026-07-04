@@ -45,10 +45,10 @@ export function shouldSkipPolicy(
 }
 
 export function clearKnownSurfaces(bond: Bond, field: string | undefined): void {
-	const input = bond.state.surface(INPUT);
+	const input = bond.surface(INPUT);
 	if (input?.clear(field)) return;
 
-	const selection = bond.state.surface(SELECTION) as SelectionModel<unknown> | undefined;
+	const selection = bond.surface(SELECTION) as SelectionModel<unknown> | undefined;
 	if (selection && selection.values.length > 0) selection.clear();
 }
 

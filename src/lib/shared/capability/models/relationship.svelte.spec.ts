@@ -402,7 +402,7 @@ describe('labelledControl — label/description → control (field pattern)', ()
 		expect(labelledControl().meta).toMatchObject({
 			layer: 1,
 			kind: 'relationship',
-			projects: ['control', 'description'],
+			projects: ['control', 'label', 'description'],
 			requiresRoles: ['control', 'label']
 		});
 		expect(labelledControl({ nativeFor: true }).meta).toMatchObject({

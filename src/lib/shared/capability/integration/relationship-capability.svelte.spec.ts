@@ -4,8 +4,8 @@ import {
 	FieldControlAtom,
 	FieldDescriptionAtom,
 	type ValidationAdapter
-} from './form/field/bond.svelte';
-import { TreeBond } from './tree/bond.svelte';
+} from '$svelte-atoms/core/components/form/field/bond.svelte';
+import { TreeBond } from '$svelte-atoms/core/components/tree/bond.svelte';
 import {
 	ERROR_MESSAGE,
 	TREE_ITEM_GROUP

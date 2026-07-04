@@ -12,6 +12,7 @@ import type {
 	AtomCapabilityInfo,
 	Behavior,
 	CapabilityKey,
+	CapabilitySetupResult,
 	RoleCtxArgs
 } from '../capability/capability';
 
@@ -49,6 +50,9 @@ export class Atom<
 	#capabilities: AtomCapability<unknown, Atom<B, E>, B, E>[] = [];
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	#capabilitySlots = new Map<symbol, number>();
+	#setupConsumed = false;
+	#validated = false;
+	#setupTeardowns: Array<() => void> = [];
 	// Keeps role projection idempotent for cached atoms.
 	#roleApplications: RoleApplication[] = [];
 	// Written once at declaration; reactivity rides the queue, not this set.
@@ -123,8 +127,7 @@ export class Atom<
 			return found;
 		}
 
-		this.#registerCapability(capabilityOrKey);
-		return capabilityOrKey as AtomCapability<S, Atom<B, E>, B, E>;
+		return this.#registerCapability(capabilityOrKey) as AtomCapability<S, Atom<B, E>, B, E>;
 	}
 
 	get<S>(key: CapabilityKey<S>): S | undefined {
@@ -161,6 +164,29 @@ export class Atom<
 		}));
 	}
 
+	setupCapabilities(bond: B | undefined = this.bond): (() => void) | undefined {
+		if (this.#setupConsumed) return undefined;
+		this.#setupConsumed = true;
+		this.#validateCapabilities();
+
+		try {
+			for (const capability of this.#capabilities) {
+				const live = capability.setup?.(this, bond);
+				if (live) this.#setupTeardowns.push(toTeardown(live));
+			}
+		} catch (error) {
+			this.teardownCapabilities();
+			throw error;
+		}
+
+		return this.#setupTeardowns.length > 0 ? () => this.teardownCapabilities() : undefined;
+	}
+
+	teardownCapabilities(): void {
+		for (let i = this.#setupTeardowns.length - 1; i >= 0; i--) this.#setupTeardowns[i]!();
+		this.#setupTeardowns = [];
+	}
+
 	// item/input require a string ctx; structural roles take none; custom roles accept optional unknown.
 	role<R extends string>(role: R, ...args: RoleCtxArgs<R>): this {
 		const ctx = args[0] as unknown;
@@ -174,7 +200,7 @@ export class Atom<
 
 		if (!this.bond) return this;
 
-		const behaviors = this.bond.state.behaviorsForRole(role, ctx);
+		const behaviors = this.bond.behaviorsForRole(role, ctx);
 		this.#warnIfRoleHasNoBehavior(role, behaviors);
 		for (const behavior of behaviors) this.behavior(behavior as Behavior<B, E>);
 		return this;
@@ -206,6 +232,7 @@ export class Atom<
 	}
 
 	get spread(): AtomSpread<E> {
+		this.#validateCapabilities();
 		const nodeBehaviors = this.#nodeBehaviors();
 		if (this.#behaviors.length === 0 && nodeBehaviors.length === 0) {
 			return this.#baseSpread();
@@ -250,35 +277,56 @@ export class Atom<
 		return this.bond?.id ?? this.#standaloneId;
 	}
 
-	#registerCapability(capability: AtomCapability<unknown, Atom<B, E>, B, E>): void {
+	#registerCapability(
+		capability: AtomCapability<unknown, Atom<B, E>, B, E>
+	): AtomCapability<unknown, Atom<B, E>, B, E> {
 		if (!capability.slot) {
+			this.#validated = false;
 			this.#capabilities.push(capability);
 			this.#registerCapabilityAttachment(capability);
-			return;
+			return capability;
 		}
 
 		const existing = this.#capabilitySlots.get(capability.slot);
 		if (existing !== undefined) {
 			const prior = this.#capabilities[existing]!;
+			const next = capability.compose ? capability.compose(prior) : capability;
 			this.#capabilityAttachments.delete(prior);
-			this.#capabilities[existing] = capability;
-			this.#registerCapabilityAttachment(capability);
+			this.#capabilities[existing] = next;
+			this.#registerCapabilityAttachment(next);
+			this.#validated = false;
 			if (DEV) {
+				const verb = capability.compose ? 'decorated' : 'replaced';
 				console.debug(
-					`[svelte-atoms] Atom("${this.name}") atom capability "${slotName(capability.slot)}" replaced.`
+					`[svelte-atoms] Atom("${this.name}") atom capability "${slotName(capability.slot)}" ${verb}.`
 				);
 			}
-			return;
+			return next;
 		}
+
+		this.#validated = false;
 
 		this.#capabilitySlots.set(capability.slot, this.#capabilities.length);
 		this.#capabilities.push(capability);
 		this.#registerCapabilityAttachment(capability);
+		return capability;
 	}
 
 	#findCapability(slot: symbol): AtomCapability<unknown, Atom<B, E>, B, E> | undefined {
 		const i = this.#capabilitySlots.get(slot);
 		return i === undefined ? undefined : this.#capabilities[i];
+	}
+
+	#validateCapabilities(): void {
+		if (!DEV || this.#validated) return;
+		this.#validated = true;
+		for (const message of atomCapabilityValidationMessages(
+			this.#capabilities,
+			this.name,
+			this.#setupConsumed
+		)) {
+			console.warn(message);
+		}
 	}
 
 	#nodeBehaviors(): AtomBehavior<Atom<B, E>, B, E>[] {
@@ -349,6 +397,8 @@ export class Atom<
 	}
 }
 
+// Generated atom class helpers.
+
 export type DefineAtomSetup<N extends Atom, B> = (atom: N, bond: B) => void;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -388,6 +438,176 @@ export function defineAtom(
 	} as AnyAtomClass;
 }
 
+// Atom capability validation.
+
+type RuntimeAtomCapability<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+> = AtomCapability<unknown, N, B, E>;
+
+type SlottedRuntimeAtomCapability<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+> = RuntimeAtomCapability<N, B, E> & { readonly slot: symbol };
+
+function atomCapabilityValidationMessages<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+>(
+	capabilities: readonly RuntimeAtomCapability<N, B, E>[],
+	atomName: string,
+	setupConsumed: boolean
+): string[] {
+	const slots = atomCapabilitySlots(capabilities);
+	const slotOwners = atomCapabilitySlotOwners(capabilities);
+	const projectOwners = atomCapabilityProjectOwners(capabilities);
+	const messages: string[] = [];
+
+	for (const capability of capabilities) {
+		messages.push(
+			...atomCapabilityRequirementMessages(capability, slots, atomName),
+			...atomCapabilityConflictMessages(capability, slotOwners, projectOwners, atomName)
+		);
+	}
+
+	if (!setupConsumed && capabilities.some((capability) => capability.setup)) {
+		messages.push(
+			`[svelte-atoms] Atom("${atomName}") registered atom capabilities with setup() but setupCapabilities() was never called — their atom setup effects will not run.`
+		);
+	}
+
+	return messages;
+}
+
+function atomCapabilitySlots<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capabilities: readonly RuntimeAtomCapability<N, B, E>[]
+): Set<symbol> {
+	// Plain Set: built per validation pass for membership lookup, never reactive state.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	return new Set(capabilities.filter(hasAtomCapabilitySlot).map((capability) => capability.slot));
+}
+
+function atomCapabilitySlotOwners<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capabilities: readonly RuntimeAtomCapability<N, B, E>[]
+): Map<symbol, SlottedRuntimeAtomCapability<N, B, E>> {
+	// Plain Map: built per validation pass for diagnostics, never reactive state.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	return new Map(
+		capabilities.filter(hasAtomCapabilitySlot).map((capability) => [capability.slot, capability])
+	);
+}
+
+function atomCapabilityProjectOwners<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capabilities: readonly RuntimeAtomCapability<N, B, E>[]
+): Map<string, RuntimeAtomCapability<N, B, E>[]> {
+	// Plain Map: built per validation pass for diagnostics, never reactive state.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	let owners = new Map<string, RuntimeAtomCapability<N, B, E>[]>();
+	for (const capability of capabilities) {
+		for (const project of capability.meta?.projects ?? []) {
+			owners = mapWithValue(owners, project, capability);
+		}
+	}
+	return owners;
+}
+
+function atomCapabilityRequirementMessages<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+>(
+	capability: RuntimeAtomCapability<N, B, E>,
+	slots: ReadonlySet<symbol>,
+	atomName: string
+): string[] {
+	const messages: string[] = [];
+	for (const need of capability.requires ?? []) {
+		if (!slots.has(need)) {
+			messages.push(
+				`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" requires slot "${slotName(need)}", which is not registered.`
+			);
+		}
+	}
+	return messages;
+}
+
+function atomCapabilityConflictMessages<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capability: RuntimeAtomCapability<N, B, E>,
+	slotOwners: ReadonlyMap<symbol, RuntimeAtomCapability<N, B, E>>,
+	projectOwners: ReadonlyMap<string, RuntimeAtomCapability<N, B, E>[]>,
+	atomName: string
+): string[] {
+	const messages: string[] = [];
+	for (const conflict of capability.meta?.conflicts ?? []) {
+		messages.push(
+			...(typeof conflict === 'symbol'
+				? atomCapabilitySlotConflictMessages(capability, conflict, slotOwners, atomName)
+				: atomCapabilityProjectConflictMessages(capability, conflict, projectOwners, atomName))
+		);
+	}
+	return messages;
+}
+
+function atomCapabilitySlotConflictMessages<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+>(
+	capability: RuntimeAtomCapability<N, B, E>,
+	conflict: symbol,
+	slotOwners: ReadonlyMap<symbol, RuntimeAtomCapability<N, B, E>>,
+	atomName: string
+): string[] {
+	const owner = slotOwners.get(conflict);
+	if (!owner || owner === capability) return [];
+	return [
+		`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with registered atom capability slot "${slotName(conflict)}".`
+	];
+}
+
+function atomCapabilityProjectConflictMessages<
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+>(
+	capability: RuntimeAtomCapability<N, B, E>,
+	conflict: string,
+	projectOwners: ReadonlyMap<string, RuntimeAtomCapability<N, B, E>[]>,
+	atomName: string
+): string[] {
+	const owners = projectOwners.get(conflict)?.filter((owner) => owner !== capability) ?? [];
+	if (owners.length === 0) return [];
+	const ownerNames = owners.map((owner) => `"${atomCapabilityLabel(owner)}"`).join(', ');
+	return [
+		`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with projection "${conflict}" from ${ownerNames}.`
+	];
+}
+
+function hasAtomCapabilitySlot<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capability: RuntimeAtomCapability<N, B, E>
+): capability is SlottedRuntimeAtomCapability<N, B, E> {
+	return capability.slot !== undefined;
+}
+
+function atomCapabilityLabel<N, B extends Bond, E extends Element | BondVirtualElement>(
+	capability: RuntimeAtomCapability<N, B, E>
+): string {
+	return capability.slot ? slotName(capability.slot) : '<slotless>';
+}
+
+function mapWithValue<K, V>(map: ReadonlyMap<K, readonly V[]>, key: K, value: V): Map<K, V[]> {
+	// Plain Map: cloned from a local diagnostic map, never reactive state.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const next = new Map<K, V[]>(Array.from(map, ([entryKey, values]) => [entryKey, [...values]]));
+	next.set(key, [...(next.get(key) ?? []), value]);
+	return next;
+}
+
+// Spread merging.
+
 function mergeBehaviors<B extends Bond, E extends Element | BondVirtualElement>(
 	bond: B,
 	baseAttrs: Record<string, unknown>,
@@ -413,6 +633,11 @@ function mergeBehaviors<B extends Bond, E extends Element | BondVirtualElement>(
 	}
 
 	return { attrs, handlers };
+}
+
+function toTeardown(live: Exclude<CapabilitySetupResult, void>): () => void {
+	if (typeof live === 'function') return live;
+	return () => live[Symbol.dispose]();
 }
 
 function mergeNodeBehaviors<

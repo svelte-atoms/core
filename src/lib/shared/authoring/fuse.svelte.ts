@@ -2,6 +2,7 @@ import type { BondState, Capability } from '../bond';
 import {
 	defineBond,
 	type AtomSpec,
+	type BondBaseClass,
 	type BondSpec,
 	type DefinedBondClass,
 	type FusablePart,
@@ -29,6 +30,7 @@ export interface FuseSpec<
 	atoms?: Own;
 	capabilities?: (state: State) => Capability[];
 	preset?: string;
+	base?: BondBaseClass;
 	// Generic State keeps explicit args so State threads precisely (e.g. SelectBond).
 	state?: StateCtor<State>;
 }
@@ -38,7 +40,7 @@ export function fuse<
 	Own extends Record<string, AtomSpec> = Record<string, never>,
 	State extends BondState = BondState
 >(spec: FuseSpec<Parts, Own, State>): DefinedBondClass<MergeAtoms<Parts> & Own, State> {
-	return defineBond<MergeAtoms<Parts> & Own, State>({
+	return defineBond<MergeAtoms<Parts> & Own, State, BondBaseClass>({
 		name: spec.name,
 		parts: spec.parts as readonly FusablePart[],
 		atoms: (spec.atoms ?? {}) as MergeAtoms<Parts> & Own,
@@ -46,6 +48,7 @@ export function fuse<
 			? { capabilities: spec.capabilities as (state: BondState) => Capability[] }
 			: {}),
 		...(spec.preset ? { preset: spec.preset } : {}),
+		...(spec.base ? { base: spec.base } : {}),
 		...(spec.state ? { state: spec.state as StateCtor<State> } : {})
 	}) as unknown as DefinedBondClass<MergeAtoms<Parts> & Own, State>;
 }

@@ -11,6 +11,7 @@ import {
 	dataState,
 	defineCapability,
 	defineAtomCapability,
+	decorateAtomCapability,
 	elementRef,
 	focusable,
 	pressable,
@@ -158,6 +159,100 @@ describe('Atom', () => {
 		expect(node.get(SLOT)).toEqual({ value: 'second' });
 		expect(node.spread['data-first']).toBeUndefined();
 		expect(node.spread['data-second']).toBe('');
+	});
+
+	it('decorates atom capabilities by slot', () => {
+		const SLOT = capabilityKey<{ value: string }>('decoratable-atom-capability');
+		const node = new Atom(undefined, 'root');
+
+		node.capability(
+			defineAtomCapability({
+				slot: SLOT,
+				surface: { value: 'base' },
+				behavior: { attrs: () => ({ 'data-base': 'yes' }) }
+			})
+		);
+		const decorated = node.capability(
+			decorateAtomCapability(SLOT, {
+				surface: (base) => ({ value: `${base?.value ?? 'missing'}+decorated` }),
+				behavior: (base) => ({
+					attrs: (atom, bond) => ({
+						...base?.attrs?.(atom, bond),
+						'data-decorated': 'yes'
+					})
+				})
+			})
+		);
+
+		expect(decorated.surface).toEqual({ value: 'base+decorated' });
+		expect(node.get(SLOT)).toEqual({ value: 'base+decorated' });
+		expect(node.spread['data-base']).toBe('yes');
+		expect(node.spread['data-decorated']).toBe('yes');
+	});
+
+	it('validates atom capability requirements and conflicts', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const NEED = capabilityKey('required-atom-capability');
+		const SLOT = capabilityKey('requires-atom-capability');
+		const PROJECT = capabilityKey('projecting-atom-capability');
+		const CONFLICT = capabilityKey('conflicting-atom-capability');
+		const node = new Atom(undefined, 'root');
+
+		node.capability(
+			defineAtomCapability({
+				slot: SLOT,
+				requires: [NEED],
+				behavior: { attrs: () => ({ 'data-ready': '' }) }
+			})
+		);
+		node.capability(
+			defineAtomCapability({
+				slot: PROJECT,
+				meta: { projects: ['data-ready'] },
+				behavior: { attrs: () => ({ 'data-project': '' }) }
+			})
+		);
+		node.capability(
+			defineAtomCapability({
+				slot: CONFLICT,
+				meta: { conflicts: ['data-ready'] },
+				behavior: { attrs: () => ({ 'data-conflict': '' }) }
+			})
+		);
+
+		void node.spread;
+
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('requires slot'));
+		expect(warn).toHaveBeenCalledWith(expect.stringContaining('conflicts with projection'));
+		warn.mockRestore();
+	});
+
+	it('runs atom capability setup through the common atom protocol', () => {
+		const node = new Atom(undefined, 'root');
+		const cleanup = vi.fn();
+		const setup = vi.fn(() => cleanup);
+
+		node.capability(defineAtomCapability({ setup }));
+		const teardown = node.setupCapabilities();
+
+		expect(setup).toHaveBeenCalledWith(node, undefined);
+
+		teardown?.();
+
+		expect(cleanup).toHaveBeenCalledTimes(1);
+	});
+
+	it('warns when atom capability setup is registered but never activated', () => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		const node = new Atom(undefined, 'root');
+
+		node.capability(defineAtomCapability({ setup: () => {} }));
+		void node.spread;
+
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringContaining('setupCapabilities() was never called')
+		);
+		warn.mockRestore();
 	});
 
 	it('runs atom capability mount callbacks with cleanup', () => {

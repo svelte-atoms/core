@@ -106,14 +106,14 @@ export function focusTrigger(options: FocusTriggerOptions = {}): Capability<void
 								clearClose();
 								if (shouldSkipPolicy(options.disabled, bond, event)) return;
 								if (options.open) options.open(bond, event);
-								else bond.state.requireSurface(DISCLOSURE).open();
+								else bond.requireSurface(DISCLOSURE).open();
 							},
 							onfocusout: (event: FocusEvent) => {
 								clearClose();
 								if (shouldSkipPolicy(options.disabled, bond, event)) return;
 								const close = () => {
 									if (options.close) options.close(bond, event);
-									else bond.state.requireSurface(DISCLOSURE).close();
+									else bond.requireSurface(DISCLOSURE).close();
 								};
 								if (closeDelay > 0) closeTimer = setTimeout(close, closeDelay);
 								else close();

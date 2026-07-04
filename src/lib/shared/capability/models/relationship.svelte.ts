@@ -79,9 +79,7 @@ export function labelledControl(options: LabelledControlOptions = {}): Capabilit
 	return defineRelationshipCapability<void>({
 		slot: LABELLED,
 		meta: {
-			projects: options.nativeFor
-				? ['control', 'label', 'description']
-				: ['control', 'description'],
+			projects: ['control', 'label', 'description'],
 			requiresRoles: ['control', 'label'],
 			docs: 'ARIA and optional native linkage between labels, descriptions, and controls.'
 		},
@@ -96,11 +94,9 @@ export function labelledControl(options: LabelledControlOptions = {}): Capabilit
 					};
 				}
 			}),
-			// nativeFor emits the real `for` attr only when opted in; otherwise the label projects nothing.
+			// nativeFor emits the real `for` attr only when opted in; otherwise the label role is a no-op.
 			label: () =>
-				options.nativeFor
-					? { attrs: (bond) => ({ for: bond.atomByRole('control')?.id }) }
-					: undefined,
+				options.nativeFor ? { attrs: (bond) => ({ for: bond.atomByRole('control')?.id }) } : {},
 			description: () => ({})
 		}
 	});
