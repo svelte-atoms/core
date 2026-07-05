@@ -1,6 +1,6 @@
 {
 	"name": "@ixirjs/ui",
-	"version": "1.0.0-alpha.46",
+	"version": "1.0.0-alpha.47",
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
