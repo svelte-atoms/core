@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 	import { CalendarBond } from './bond.svelte';
 	import CalendarWeekDay from './calendar-week-day.svelte';

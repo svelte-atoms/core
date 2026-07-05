@@ -2,7 +2,7 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { SlideoverHeaderProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	type Element = HTMLElementTagNameMap[E];
 

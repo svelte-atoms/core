@@ -1,6 +1,6 @@
 import type { Component, Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { Factory } from '$ixirjs/ui/types';
 import type { PopoverBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';

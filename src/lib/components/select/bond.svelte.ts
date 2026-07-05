@@ -4,9 +4,9 @@ import {
 	DropdownMenuContentAtom,
 	type DropdownMenuBondElements,
 	type DropdownMenuBondProps
-} from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
-import { defineAtom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
+import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import { defineAtom } from '$ixirjs/ui/shared/bond';
 import {
 	ariaRole,
 	defineBond,
@@ -17,13 +17,13 @@ import {
 	type BondOf,
 	type BondSpec,
 	type AtomHost
-} from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/shared';
 import {
 	createSelection,
 	selectionCapability,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
-import { clickTrigger, clearThenClose } from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/shared/capability/models/selection.svelte';
+import { clickTrigger, clearThenClose } from '$ixirjs/ui/components/portal/host';
 import type { SelectItemAtom } from './item/bond.svelte';
 
 // -----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ type SelectBondView = SelectBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const SELECT_CONTENT = sharedCapabilityKey<void>('@svelte-atoms/select:content');
+const SELECT_CONTENT = sharedCapabilityKey<void>('@ixirjs/select:content');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { ScrollableContentProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	const bond = ScrollableBond.getOrThrow('ScrollableContent must be used within a ScrollableRoot');
 

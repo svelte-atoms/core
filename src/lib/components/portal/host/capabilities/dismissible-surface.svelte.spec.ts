@@ -4,7 +4,7 @@ import {
 	ESCAPE,
 	OUTSIDE_PRESS,
 	dismissPolicy
-} from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/components/portal/host';
 
 describe('dismissPolicy', () => {
 	it('composes Escape, outside press, and backdrop press as a Layer 2 focused bundle', () => {

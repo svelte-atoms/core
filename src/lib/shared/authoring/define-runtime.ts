@@ -1,11 +1,11 @@
 import { DEV } from 'esm-env';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond';
+import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond';
 import type {
 	AtomSpec,
 	FusablePart,
 	StateCtor,
 	StatePropsOf
-} from '$svelte-atoms/core/shared/authoring/define.svelte';
+} from '$ixirjs/ui/shared/authoring/define.svelte';
 
 // this.state lets subclasses self-construct under their own identity.
 function bondCreate(
@@ -214,6 +214,6 @@ function warnCompositionConflict(
 ): void {
 	if (!DEV) return;
 	console.warn(
-		`[svelte-atoms] defineBond("${bondName}") parts composition has duplicate ${kind} "${name}" from ${prior} and ${next}; later definition wins.`
+		`[ixirjs] defineBond("${bondName}") parts composition has duplicate ${kind} "${name}" from ${prior} and ${next}; later definition wins.`
 	);
 }

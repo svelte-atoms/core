@@ -1,4 +1,4 @@
-import type { HtmlAtomProps, SnippetProps } from '$svelte-atoms/core/components/atom/types';
+import type { HtmlAtomProps, SnippetProps } from '$ixirjs/ui/components/atom/types';
 import type { Snippet } from 'svelte';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

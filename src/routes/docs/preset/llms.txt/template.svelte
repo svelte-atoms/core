@@ -39,7 +39,7 @@ multiple themes or design variations ## Key Features
 {codeBlock(
 	`// src/routes/+layout.svelte
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
 
   const theme = {
     button: () => ({
@@ -66,7 +66,7 @@ multiple themes or design variations ## Key Features
 {codeBlock(
 	`// src/routes/dashboard/+layout.svelte
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
 
   // Extends and overrides the global preset
   setPreset({
@@ -88,7 +88,7 @@ multiple themes or design variations ## Key Features
 {codeBlock(
 	`// components/Settings.svelte
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
 
   // Component-level preset for this subtree
   setPreset({
@@ -148,7 +148,7 @@ multiple themes or design variations ## Key Features
 ## Reactive Presets (Dynamic Styling) Access component Bond values for dynamic styling:
 
 {codeBlock(
-	`import { setPreset } from '@svelte-atoms/core/context';
+	`import { setPreset } from '@ixirjs/ui/context';
 
 setPreset({
   'accordion.item.header': (bond) => {
@@ -261,7 +261,7 @@ const _klass = $derived.by(() => {
 
 {codeBlock(
 	`<script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
   
   let theme = $state('light');
   
@@ -344,7 +344,7 @@ export const darkTheme = {
 
 // +layout.svelte
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
   import { lightTheme } from './themes/light';
   
   setPreset(lightTheme);
@@ -357,7 +357,7 @@ export const darkTheme = {
 {codeBlock(
 	`// routes/dashboard/+layout.svelte
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
   
   setPreset({
     card: () => ({
@@ -392,7 +392,7 @@ export const componentPresets = {
 ## Debugging Presets
 
 {codeBlock(
-	`import { getPreset } from '@svelte-atoms/core/context';
+	`import { getPreset } from '@ixirjs/ui/context';
 
 // Check what preset is active
 const buttonPreset = getPreset('button');
@@ -454,7 +454,7 @@ const Dialog.Root preset="dialog" class="debug">
 ## TypeScript Support ### Basic Preset Typing
 
 {codeBlock(
-	`import type { Preset } from '@svelte-atoms/core/types';
+	`import type { Preset } from '@ixirjs/ui/types';
 
 const myPreset: Preset = {
   button: () => ({
@@ -473,8 +473,8 @@ extend the component prop types in your {inlineCode('app.d.ts')} file to get ful
 {codeBlock(
 	`// app.d.ts
 
-// Extend @svelte-atoms/core types globally
-declare module '@svelte-atoms/core' {
+// Extend @ixirjs/ui types globally
+declare module '@ixirjs/ui' {
   // Add custom variants to Button
   export interface ButtonProps {
     variant?: 'ghost' | 'primary' | 'secondary' | 'destructive' | 'outline';
@@ -522,7 +522,7 @@ Usage with Full Type Safety
 
 {codeBlock(
 	`// app.d.ts
-declare module '@svelte-atoms/core' {
+declare module '@ixirjs/ui' {
   export interface ButtonProps {
     variant?: 'ghost' | 'primary' | 'secondary' | 'destructive' | 'outline';
     size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -542,8 +542,8 @@ export {};`,
 ### Type-Safe Reactive Presets
 
 {codeBlock(
-	`import type { Preset } from '@svelte-atoms/core/types';
-import type { Bond } from '@svelte-atoms/core/types/bond';
+	`import type { Preset } from '@ixirjs/ui/types';
+import type { Bond } from '@ixirjs/ui/types/bond';
 
 const accordionPresets: Preset = {
   'accordion.item.header': (bond?: Bond) => {

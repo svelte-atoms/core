@@ -1,6 +1,6 @@
 <script lang="ts" module>
-	import type { StepperBond } from '$svelte-atoms/core/components/stepper/bond.svelte';
-	import type { StepBond } from '$svelte-atoms/core/components/stepper/step/bond.svelte';
+	import type { StepperBond } from '$ixirjs/ui/components/stepper/bond.svelte';
+	import type { StepBond } from '$ixirjs/ui/components/stepper/step/bond.svelte';
 
 	export let capturedStepperBond: StepperBond | undefined;
 	export let capturedStepBond: StepBond | undefined;
@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { Step, Stepper } from '$svelte-atoms/core/components/stepper';
+	import { Step, Stepper } from '$ixirjs/ui/components/stepper';
 
 	function captureStepper(bond: StepperBond): string {
 		capturedStepperBond = bond;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	DialogBodyAtom,
 	DialogBond,
@@ -12,7 +12,7 @@ import {
 	DialogTitleAtom,
 	type DialogBondProps
 } from './bond.svelte';
-import { ignoreEscape, FOCUS } from '$svelte-atoms/core/components/portal/host';
+import { ignoreEscape, FOCUS } from '$ixirjs/ui/components/portal/host';
 
 // Bond-seam specs: assert atom.spread, state methods, atom identity, strategy substitution. No DOM rendering.
 

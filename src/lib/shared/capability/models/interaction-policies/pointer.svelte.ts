@@ -2,8 +2,8 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
 	capturePointer,
 	dragDetail,
@@ -13,11 +13,11 @@ import {
 	type DragPolicyDetail,
 	type PolicyGuard,
 	type TrackPressDetail
-} from '$svelte-atoms/core/shared/capability/models/interaction-policies/shared';
+} from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const THUMB_DRAG_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:thumb-drag');
-export const TRACK_PRESS_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:track-press');
-export const RESIZE_HANDLE_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:resize-handle');
+export const THUMB_DRAG_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:thumb-drag');
+export const TRACK_PRESS_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:track-press');
+export const RESIZE_HANDLE_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:resize-handle');
 
 export interface ThumbDragPolicyOptions {
 	role?: string;

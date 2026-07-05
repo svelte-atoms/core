@@ -10,7 +10,7 @@ describe('collectionCapability — identity & surface', () => {
 	it('slots at `collection:<kind>` and surfaces the Collection', () => {
 		const cap = collectionCapability<string>('item');
 		expect(cap.slot).toBe(collectionSlot('item'));
-		expect(cap.slot.description).toBe('@svelte-atoms/cap:collection:item');
+		expect(cap.slot.description).toBe('@ixirjs/cap:collection:item');
 		expect(cap.surface).toBeInstanceOf(Collection);
 		expect(cap.surface.kind).toBe('item');
 		expect(cap.meta).toMatchObject({ layer: 1, kind: 'model' });

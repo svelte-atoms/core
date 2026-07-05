@@ -238,7 +238,7 @@ export const metadata = {
 </Dialog.Root>`,
 
 		focusManagement: `<script>
-  import { Popover } from '@svelte-atoms/core/components/popover';
+  import { Popover } from '@ixirjs/ui/components/popover';
   
   let open = $state(false);
 </script>
@@ -316,7 +316,7 @@ export const metadata = {
 </Form.Field>`,
 
 		customAttributes: `<script>
-  import { defineVariants } from '@svelte-atoms/core/utils';
+  import { defineVariants } from '@ixirjs/ui/utils';
   
   const alertVariants = defineVariants({
     class: 'rounded-lg p-4 border',
@@ -396,7 +396,7 @@ export const metadata = {
 </Button>`,
 
 		reducedMotion: `<script>
-  import { Accordion } from '@svelte-atoms/core/components/accordion';
+  import { Accordion } from '@ixirjs/ui/components/accordion';
   
   // Components respect prefers-reduced-motion
 </script>
@@ -414,7 +414,7 @@ export const metadata = {
 
 <!-- Custom animations should check preference -->
 <script>
-  import { animate } from '@svelte-atoms/vibra';
+  import { animate } from '@ixirjs/vibra';
   
   function handleEnter(element) {
     const prefersReducedMotion = window.matchMedia(
@@ -461,7 +461,7 @@ export const metadata = {
 
 <!-- Use presets to apply test IDs globally -->
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
+  import { setPreset } from '@ixirjs/ui/context';
   
   setPreset({
     button: () => ({

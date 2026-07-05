@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
+	import { HtmlAtom, mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
 	import {
 		createPopoverAtom,
 		PopoverBond,

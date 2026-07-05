@@ -1,5 +1,5 @@
-import type { Bond } from '$svelte-atoms/core/shared';
-import { type ClassValue, type VariantDefinition, VARIANT_DEF_TAG } from '$svelte-atoms/core/utils';
+import type { Bond } from '$ixirjs/ui/shared';
+import { type ClassValue, type VariantDefinition, VARIANT_DEF_TAG } from '$ixirjs/ui/utils';
 import {
 	type ResolvedProps,
 	getDefCacheMap,

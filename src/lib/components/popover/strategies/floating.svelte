@@ -8,8 +8,8 @@
 		shouldTrackPopoverPosition,
 		type PopoverParams
 	} from '../bond.svelte';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond';
-	import { PortalBond } from '$svelte-atoms/core/components/portal';
+	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond';
+	import { PortalBond } from '$ixirjs/ui/components/portal';
 
 	const bond = PopoverBond.get();
 

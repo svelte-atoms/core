@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond, createAtomInstance } from '$svelte-atoms/core/shared';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { bindBond, createAtomInstance } from '$ixirjs/ui/shared';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { CardBond, CardRootAtom } from './bond.svelte';
 	import type { CardRootProps } from './types';
 	import './card.css';

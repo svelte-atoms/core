@@ -1,14 +1,14 @@
 <script lang="ts" generics="B extends Base = Base">
-	import { on } from '$svelte-atoms/core/attachments/event.svelte';
+	import { on } from '$ixirjs/ui/attachments/event.svelte';
 	import {
 		resolveControlPreset,
 		INPUT_FIELD_CLASS,
 		writeInputFiles,
 		writeInputValue
 	} from './shared';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import type { Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { InputBond, InputControlAtom } from './bond.svelte';
 	import type { InputControlProps } from './types';
 

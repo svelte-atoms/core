@@ -1,4 +1,4 @@
-import { animate, DURATION, type Easing } from '$svelte-atoms/core/shared';
+import { animate, DURATION, type Easing } from '$ixirjs/ui/shared';
 import { DialogBond } from './bond.svelte';
 
 type AnimateDialogContentParams = {

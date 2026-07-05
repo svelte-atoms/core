@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { animate } from '$svelte-atoms/core/shared';
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
+	import { animate } from '$ixirjs/ui/shared';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import IconArrowDown from '$ixirjs/ui/icons/icon-arrow-down.svelte';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
 	import { createPopoverAtom, PopoverBond, PopoverIndicatorAtom } from './bond.svelte';
-	import { overlayIsOpen } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { overlayIsOpen } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const bond = PopoverBond.getOrThrow('<Popover.Indicator /> must be used within a <Popover />');
 

@@ -1,9 +1,9 @@
 import { untrack } from 'svelte';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
+import type { Bond } from '$ixirjs/ui/shared/bond';
 
 // Lifecycle key prefix — namespaced so isLifecycleKey can identify them among other
 // symbol-keyed props, and so the phase is recoverable from the symbol without a registry.
-const LIFECYCLE_PREFIX = '@svelte-atoms/lifecycle';
+const LIFECYCLE_PREFIX = '@ixirjs/lifecycle';
 
 // Phase a symbol-keyed lifecycle callback fires at: `mount` (in DOM) or `destroy` (teardown).
 // Both are client-only — Svelte's server rest_props drops symbol props during SSR. Init-time
@@ -38,7 +38,7 @@ export function createLifecycleKey<T extends LifecycleType = 'mount', B extends 
 
 // Minted-key count on globalThis so it survives HMR reloads while consumers hold
 // symbols minted by the previous module copy.
-const MINTED_COUNT = Symbol.for('@svelte-atoms/lifecycle/minted-count');
+const MINTED_COUNT = Symbol.for('@ixirjs/lifecycle/minted-count');
 const GLOBAL = globalThis as { [MINTED_COUNT]?: number };
 
 function bumpMintedCount() {

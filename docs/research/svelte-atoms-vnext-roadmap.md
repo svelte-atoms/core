@@ -4,7 +4,7 @@ Derived from `docs/research/svelte-atoms-vnext-concept.md`.
 
 **Status:** Phases 0-10 runtime host split, component-owned Atoms, deterministic merge rules, core family migration, public vNext naming docs, and compatibility deprecation markers implemented  
 **Date:** 2026-06-28  
-**Goal:** Move `@svelte-atoms/core` from the current `Atom / Bond / BondState / legacy Bond-owned Atom` model to a smaller public runtime model:
+**Goal:** Move `@ixirjs/ui` from the current `Atom / Bond / BondState / legacy Bond-owned Atom` model to a smaller public runtime model:
 
 ```text
 Atom Component

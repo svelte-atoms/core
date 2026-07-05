@@ -1,18 +1,18 @@
 import { AccordionBond, type IAccordion } from '../bond.svelte';
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import {
 	createDisclosure,
 	disclosureCapability,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import { triggerContentLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
+import { triggerContentLink } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -107,11 +107,11 @@ type AccordionItemBondView = AccordionItemBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const ACCORDION_ITEM_ROOT = sharedCapabilityKey<void>('@svelte-atoms/accordion-item:root');
-const ACCORDION_ITEM_HEADER = sharedCapabilityKey<void>('@svelte-atoms/accordion-item:header');
-const ACCORDION_ITEM_BODY = sharedCapabilityKey<void>('@svelte-atoms/accordion-item:body');
+const ACCORDION_ITEM_ROOT = sharedCapabilityKey<void>('@ixirjs/accordion-item:root');
+const ACCORDION_ITEM_HEADER = sharedCapabilityKey<void>('@ixirjs/accordion-item:header');
+const ACCORDION_ITEM_BODY = sharedCapabilityKey<void>('@ixirjs/accordion-item:body');
 const ACCORDION_ITEM_INDICATOR = sharedCapabilityKey<void>(
-	'@svelte-atoms/accordion-item:indicator'
+	'@ixirjs/accordion-item:indicator'
 );
 
 // -----------------------------------------------------------------------------

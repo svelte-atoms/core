@@ -1,5 +1,5 @@
-import { Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	CalendarRootAtom,
 	CalendarBodyAtom,

@@ -13,7 +13,7 @@
 	$effect(() => {
 		if (DEV && typeof portal === 'string' && !activePortal) {
 			console.warn(
-				`[svelte-atoms] <ActivePortal portal="${portal}">: no portal registered with this id; rendering nothing.`
+				`[ixirjs] <ActivePortal portal="${portal}">: no portal registered with this id; rendering nothing.`
 			);
 		}
 	});

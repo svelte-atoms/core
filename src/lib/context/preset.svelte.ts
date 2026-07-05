@@ -1,11 +1,11 @@
 import { getContext, setContext } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
-import { mergePresetRecords, resolvePreset } from '$svelte-atoms/core/components/atom/utils/preset';
-import type { Base } from '$svelte-atoms/core/components/atom';
+import { mergePresetRecords, resolvePreset } from '$ixirjs/ui/components/atom/utils/preset';
+import type { Base } from '$ixirjs/ui/components/atom';
 import type { Bond } from '../shared';
 import type { Attachment } from 'svelte/attachments';
 
-const CONTEXT_KEY = '@svelte-atoms/context/preset';
+const CONTEXT_KEY = '@ixirjs/context/preset';
 
 export interface PresetEntryRecord {
 	[key: string]: unknown;

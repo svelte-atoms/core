@@ -41,7 +41,7 @@ export abstract class CapabilityRegistry {
 			const found = this.#findCapability(capabilityOrKey) as Capability<S> | undefined;
 			if (DEV && !found) {
 				console.warn(
-					`[svelte-atoms] capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
+					`[ixirjs] capability("${slotName(capabilityOrKey)}"): no capability registered at this slot in "${this.id}".`
 				);
 			}
 			return found;
@@ -59,7 +59,7 @@ export abstract class CapabilityRegistry {
 			if (DEV) {
 				const verb = capabilityOrKey.compose ? 'decorated' : 'replaced';
 				console.debug(
-					`[svelte-atoms] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`
+					`[ixirjs] capability slot "${slotName(capabilityOrKey.slot)}" ${verb} in "${this.id}" (last-wins).`
 				);
 			}
 			this.#capabilities[i] = next;
@@ -79,7 +79,7 @@ export abstract class CapabilityRegistry {
 		const found = this.#findCapability(key) as Capability<S> | undefined;
 		if (!found) {
 			throw new Error(
-				`[svelte-atoms] required capability "${slotName(key)}" is not registered in "${this.id}".`
+				`[ixirjs] required capability "${slotName(key)}" is not registered in "${this.id}".`
 			);
 		}
 		return found;
@@ -89,7 +89,7 @@ export abstract class CapabilityRegistry {
 		const cap = this.requireCapability(key);
 		if (cap.surface === undefined) {
 			throw new Error(
-				`[svelte-atoms] capability "${slotName(key)}" has no surface in "${this.id}".`
+				`[ixirjs] capability "${slotName(key)}" has no surface in "${this.id}".`
 			);
 		}
 		return cap.surface;
@@ -156,7 +156,7 @@ export abstract class CapabilityRegistry {
 			for (const need of cap.requires ?? []) {
 				if (!slots.has(need)) {
 					console.warn(
-						`[svelte-atoms] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`
+						`[ixirjs] capability "${slotName(cap.slot)}" requires slot "${slotName(need)}", which is not registered in "${this.id}".`
 					);
 				}
 			}
@@ -165,7 +165,7 @@ export abstract class CapabilityRegistry {
 					const owner = slotOwners.get(conflict);
 					if (owner && owner !== cap) {
 						console.warn(
-							`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with registered capability slot "${slotName(conflict)}" in "${this.id}".`
+							`[ixirjs] capability "${slotName(cap.slot)}" conflicts with registered capability slot "${slotName(conflict)}" in "${this.id}".`
 						);
 					}
 					continue;
@@ -174,14 +174,14 @@ export abstract class CapabilityRegistry {
 				const owners = roleOwners.get(conflict)?.filter((owner) => owner !== cap) ?? [];
 				if (owners.length > 0) {
 					console.warn(
-						`[svelte-atoms] capability "${slotName(cap.slot)}" conflicts with role "${conflict}" projected by ${owners.map((owner) => `"${slotName(owner.slot)}"`).join(', ')} in "${this.id}".`
+						`[ixirjs] capability "${slotName(cap.slot)}" conflicts with role "${conflict}" projected by ${owners.map((owner) => `"${slotName(owner.slot)}"`).join(', ')} in "${this.id}".`
 					);
 				}
 			}
 		}
 		if (!this.#setupConsumed && this.#capabilities.some((c) => c.setup)) {
 			console.warn(
-				`[svelte-atoms] "${this.id}" registered capabilities with setup() (focus/escape/...) but useCapabilities(bond) was never called — their whole-bond effects will not run.`
+				`[ixirjs] "${this.id}" registered capabilities with setup() (focus/escape/...) but useCapabilities(bond) was never called — their whole-bond effects will not run.`
 			);
 		}
 	}

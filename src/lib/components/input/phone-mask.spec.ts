@@ -7,7 +7,7 @@ import {
 	phoneDigitSlotKinds,
 	phoneMaskMaxDigits,
 	phoneOverlaySpans
-} from '$svelte-atoms/core/components/input/phone-mask';
+} from '$ixirjs/ui/components/input/phone-mask';
 
 describe('phone mask helpers', () => {
 	it('parses required and optional digit slots and renders optional literals after optional input', () => {

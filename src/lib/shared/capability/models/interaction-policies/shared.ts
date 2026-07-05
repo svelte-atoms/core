@@ -1,9 +1,9 @@
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { INPUT } from '$svelte-atoms/core/shared/capability/models/input.svelte';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { INPUT } from '$ixirjs/ui/shared/capability/models/input.svelte';
 import {
 	SELECTION,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
+} from '$ixirjs/ui/shared/capability/models/selection.svelte';
 
 export type PolicyGuard = boolean | ((bond: Bond, event?: Event) => boolean);
 export type PolicyAction<E extends Event = Event> = (bond: Bond, event: E) => void;

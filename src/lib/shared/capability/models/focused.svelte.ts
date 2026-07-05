@@ -41,19 +41,19 @@ export type FocusedCapabilityBundle = readonly Capability[] & {
 };
 
 export const SELECTABLE_COLLECTION = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:selectable-collection'
+	'@ixirjs/cap:focused:selectable-collection'
 );
 export const NAVIGABLE_COLLECTION = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:navigable-collection'
+	'@ixirjs/cap:focused:navigable-collection'
 );
 export const FILTERABLE_COLLECTION = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:filterable-collection'
+	'@ixirjs/cap:focused:filterable-collection'
 );
 export const LABELLED_FIELD = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:labelled-field'
+	'@ixirjs/cap:focused:labelled-field'
 );
 export const VALIDATED_CONTROL = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:validated-control'
+	'@ixirjs/cap:focused:validated-control'
 );
 
 interface CollectionSource<T> {
@@ -189,7 +189,7 @@ function resolveCollection<T>(options: CollectionSource<T>): CollectionCapabilit
 	if (options.collection) return options.collection;
 	if (!options.kind) {
 		throw new Error(
-			'[svelte-atoms] focused collection capability requires either `kind` or `collection`.'
+			'[ixirjs] focused collection capability requires either `kind` or `collection`.'
 		);
 	}
 	return collectionCapability<T>(options.kind, options.collectionOptions);

@@ -1,6 +1,6 @@
 import { type ComputePositionReturn, type Placement } from '@floating-ui/dom';
-import { Atom, defineAtom, type BondVirtualElement } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf, type BondSpec } from '$svelte-atoms/core/shared';
+import { Atom, defineAtom, type BondVirtualElement } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
 import {
 	OverlayBond,
 	OverlayTriggerAtom,
@@ -9,16 +9,16 @@ import {
 	type OverlayStateProps,
 	type OverlayView,
 	type PositionedOverlayElements
-} from '$svelte-atoms/core/components/portal/host';
-import type { PortalBond } from '$svelte-atoms/core/components/portal';
-import type { PopoverStrategy } from '$svelte-atoms/core/components/popover/strategy-types';
+} from '$ixirjs/ui/components/portal/host';
+import type { PortalBond } from '$ixirjs/ui/components/portal';
+import type { PopoverStrategy } from '$ixirjs/ui/components/popover/strategy-types';
 import {
 	popoverTailPresentation,
 	popoverContentPresentation,
 	popoverIndicatorPresentation,
 	popoverOverlayPresentation,
 	popoverTriggerPresentation
-} from '$svelte-atoms/core/components/popover/presentation.svelte';
+} from '$ixirjs/ui/components/popover/presentation.svelte';
 
 export {
 	getPopoverPosition,
@@ -26,7 +26,7 @@ export {
 	popoverNode,
 	setPopoverTracking,
 	shouldTrackPopoverPosition
-} from '$svelte-atoms/core/components/popover/legacy-state';
+} from '$ixirjs/ui/components/popover/legacy-state';
 
 // -----------------------------------------------------------------------------
 // Public types

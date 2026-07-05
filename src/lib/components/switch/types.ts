@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps } from '$ixirjs/ui/components/atom';
 
 // Extend to add custom switch properties in your application.
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

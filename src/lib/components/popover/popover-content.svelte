@@ -1,13 +1,13 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { PortalBond, PortalsBond, resolvePortal } from '$svelte-atoms/core/components/portal';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
-	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
+	import { PortalBond, PortalsBond, resolvePortal } from '$ixirjs/ui/components/portal';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
+	import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
 	import {
 		OUTSIDE_PRESS,
 		type DismissPressEvent,
 		type OverlayView
-	} from '$svelte-atoms/core/components/portal/host';
+	} from '$ixirjs/ui/components/portal/host';
 	import {
 		createPopoverAtom,
 		getPopoverPosition,

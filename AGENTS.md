@@ -88,7 +88,7 @@ focus/escape/animation — that pattern was deliberately removed.
 ### defineBond & context keys
 
 - New bonds use `defineBond({ name, base, atoms })`, declaring `role: 'trigger'` / `'content'` where a relationship applies (see `CollapsibleBond`). Type alias: `BondOf<typeof X>`.
-- A subclass only declares `static CONTEXT_KEY = bondContextKey('<name>')`; it never re-implements `share()`/`get()`/`set()`. Keys are canonical (`@svelte-atoms/context/<name>`) — don't hand-write them. Overlay-family bonds (menu, dropdown-menu, select, combobox) intentionally share `PopoverBond`'s context slot.
+- A subclass only declares `static CONTEXT_KEY = bondContextKey('<name>')`; it never re-implements `share()`/`get()`/`set()`. Keys are canonical (`@ixirjs/context/<name>`) — don't hand-write them. Overlay-family bonds (menu, dropdown-menu, select, combobox) intentionally share `PopoverBond`'s context slot.
 
 ### Filtering / derived views
 
@@ -100,7 +100,7 @@ House style (`story-interactivity-convention`): live readout `<code>` line, inli
 
 ### Test-only Svelte files
 
-**Hard rule:** any `.svelte` used only by tests lives under `src/lib/test/`, named `*.test.svelte`. Put probes/fixtures/harness/regression components in `src/lib/test/<domain>/...` (mirror the production domain when useful); import via `$svelte-atoms/core/test/...`. Never colocate test-only Svelte in `src/lib/components/**` or `src/lib/shared/**`; never move product/docs/demo/Storybook `.svelte` into `src/lib/test/`.
+**Hard rule:** any `.svelte` used only by tests lives under `src/lib/test/`, named `*.test.svelte`. Put probes/fixtures/harness/regression components in `src/lib/test/<domain>/...` (mirror the production domain when useful); import via `$ixirjs/ui/test/...`. Never colocate test-only Svelte in `src/lib/components/**` or `src/lib/shared/**`; never move product/docs/demo/Storybook `.svelte` into `src/lib/test/`.
 
 ### Don't churn known-dead code
 

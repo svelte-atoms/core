@@ -305,7 +305,7 @@ function warnConflict(
 	const source = options.source ? ` in ${options.source}` : '';
 	const nextSource = options.nextSource ? ` from ${options.nextSource}` : '';
 	warn(
-		`[svelte-atoms] ${kind} "${key}" conflict${source}${nextSource}: ${formatValue(base)} -> ${formatValue(next)}; ${resolution}.`
+		`[ixirjs] ${kind} "${key}" conflict${source}${nextSource}: ${formatValue(base)} -> ${formatValue(next)}; ${resolution}.`
 	);
 }
 

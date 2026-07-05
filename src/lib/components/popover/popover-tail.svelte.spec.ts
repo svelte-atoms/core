@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import TailPlacementProbe from '$svelte-atoms/core/test/components/popover/popover-tail-placement.test.svelte';
+import TailPlacementProbe from '$ixirjs/ui/test/components/popover/popover-tail-placement.test.svelte';
 
 const settle = () => new Promise((resolve) => setTimeout(resolve, 100));
 

@@ -5,7 +5,7 @@
 		HtmlAtom,
 		type ElementType,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
+	} from '$ixirjs/ui/components/atom';
 	import type { LabelProps } from './types';
 
 	type Element = ElementType<E>;

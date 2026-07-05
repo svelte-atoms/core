@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getPreset, mergePreset, setPreset, type Preset } from '$svelte-atoms/core/context';
-	import type { PresetEntryRecord } from '$svelte-atoms/core/context/preset.svelte';
+	import { getPreset, mergePreset, setPreset, type Preset } from '$ixirjs/ui/context';
+	import type { PresetEntryRecord } from '$ixirjs/ui/context/preset.svelte';
 
 	setPreset({
 		'alert.close': () => ({ 'data-source': 'base' })

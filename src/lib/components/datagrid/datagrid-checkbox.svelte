@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
+	import { Checkbox } from '$ixirjs/ui/components/checkbox';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
 	import { DataGridBond } from './bond.svelte';
 	import { DataGridRowBond } from './row/bond.svelte';
 	import type { DatagridCheckboxProps } from './types';

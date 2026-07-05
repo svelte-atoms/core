@@ -1,13 +1,13 @@
 import { TabsBond, type ITabs } from '../bond.svelte';
-import { portal } from '$svelte-atoms/core/attachments/portal.svelte';
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { portal } from '$ixirjs/ui/attachments/portal.svelte';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
-import { tabPanelLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+} from '$ixirjs/ui/shared/capability';
+import { tabPanelLink } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -33,8 +33,8 @@ export type TabBondElement = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const TAB_HEADER = sharedCapabilityKey<void>('@svelte-atoms/tab:header');
-const TAB_BODY = sharedCapabilityKey<void>('@svelte-atoms/tab:body');
+const TAB_HEADER = sharedCapabilityKey<void>('@ixirjs/tab:header');
+const TAB_BODY = sharedCapabilityKey<void>('@ixirjs/tab:body');
 
 // Atoms type `this.bond` against TabBondBase to break the atom<->bond cycle.
 

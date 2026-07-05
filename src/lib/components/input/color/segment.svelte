@@ -4,7 +4,7 @@
 	// caret position on every keystroke. The no-dom-manipulating rule doesn't fit this pattern.
 	/* eslint-disable svelte/no-dom-manipulating */
 	import { untrack } from 'svelte';
-	import { clamp as clampRange } from '$svelte-atoms/core/utils/math';
+	import { clamp as clampRange } from '$ixirjs/ui/utils/math';
 	import type { ColorSegmentProps } from './types';
 
 	let {

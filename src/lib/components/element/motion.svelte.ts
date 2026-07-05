@@ -1,5 +1,5 @@
 import type { EasingFunction } from 'svelte/transition';
-import { prefersReducedMotion } from '$svelte-atoms/core/utils/dom.svelte';
+import { prefersReducedMotion } from '$ixirjs/ui/utils/dom.svelte';
 import type { TransitionFunction } from './types';
 
 export type ScaleFadeParams = {

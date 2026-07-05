@@ -17,7 +17,7 @@ export interface CheckedModel {
 	toggle(): void;
 }
 
-export const CHECKED = sharedCapabilityKey<CheckedModel>('@svelte-atoms/cap:checked');
+export const CHECKED = sharedCapabilityKey<CheckedModel>('@ixirjs/cap:checked');
 
 export function createChecked(backing: CheckedBacking): CheckedModel {
 	return {

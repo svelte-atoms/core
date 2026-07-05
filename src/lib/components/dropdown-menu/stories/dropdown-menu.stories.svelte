@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { DropdownMenu as ADropdownMenu } from '..';
-	import { Button } from '$svelte-atoms/core/components/button';
+	import { Button } from '$ixirjs/ui/components/button';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/DropdownMenu',

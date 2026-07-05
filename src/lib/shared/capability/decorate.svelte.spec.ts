@@ -11,7 +11,7 @@ import {
 
 // decorateCapability lets a later registration WRAP the prior holder at a slot (delegate the rest)
 // instead of the default blind last-wins replace — the capability-layer dual of atom behavior chaining.
-const SLOT = sharedCapabilityKey<{ name: string }>('@svelte-atoms/test:decorate');
+const SLOT = sharedCapabilityKey<{ name: string }>('@ixirjs/test:decorate');
 
 class S extends BondState<BondStateProps> {
 	constructor() {

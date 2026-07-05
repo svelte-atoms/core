@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import { PortalBond, PortalInnerAtom, PortalRootAtom, type PortalBondProps } from './bond.svelte';
 
 function makePortal(initial: Partial<PortalBondProps> = {}) {

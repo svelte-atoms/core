@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import type { ClassValue } from 'svelte/elements';
 
 	let {

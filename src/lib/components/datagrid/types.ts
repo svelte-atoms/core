@@ -1,13 +1,13 @@
 import type { Snippet } from 'svelte';
 import type { DataGridBond } from './bond.svelte';
 import type { CheckboxProps } from '../checkbox/types';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { Factory } from '$ixirjs/ui/types';
 import type { DataGridRowBond } from './row/bond.svelte';
 import type { DataGridColumnBond } from './column/bond.svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '../atom';
-import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
+import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
 import type { HtmlElementTagName } from '../element';
-import type { Direction, SortableType, Override } from '$svelte-atoms/core/types';
+import type { Direction, SortableType, Override } from '$ixirjs/ui/types';
 
 // Shared types
 

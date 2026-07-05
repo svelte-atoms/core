@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { SelectBond, SelectQueryAtom } from './bond.svelte';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { Input } from '$ixirjs/ui/components/input';
 	import type { SelectQueryProps } from './types';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	const bond = SelectBond.getOrThrow('SelectQuery must be used within a Select');
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { ComboboxBond } from './bond.svelte';
-import { INPUT } from '$svelte-atoms/core/shared';
+import { INPUT } from '$ixirjs/ui/shared';
 
 // Verifies that query (filter box) and value (trigger box) are independent stores — editing one
 // must not affect the other. They were a single shared store before this fix.

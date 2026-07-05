@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { PopoverBond, type PopoverBondProps } from './bond.svelte';
-	import { OverlayBond } from '$svelte-atoms/core/components/portal/host';
-	import { useCapabilities } from '$svelte-atoms/core/shared/capability/use.svelte';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
+	import { OverlayBond } from '$ixirjs/ui/components/portal/host';
+	import { useCapabilities } from '$ixirjs/ui/shared/capability/use.svelte';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
 	import type { PopoverRootProps } from './types';
 
 	const owner = OverlayBond.get() ?? null;

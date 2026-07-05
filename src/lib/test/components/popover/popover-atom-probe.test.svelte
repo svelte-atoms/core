@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
+	import type { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
 
 	export let capturedBond: PopoverBond | undefined;
 
@@ -9,8 +9,8 @@
 </script>
 
 <script lang="ts">
-	import { Root } from '$svelte-atoms/core/components/root';
-	import { Popover } from '$svelte-atoms/core/components/popover';
+	import { Root } from '$ixirjs/ui/components/root';
+	import { Popover } from '$ixirjs/ui/components/popover';
 
 	function capture(bond: PopoverBond | undefined): string {
 		capturedBond = bond;

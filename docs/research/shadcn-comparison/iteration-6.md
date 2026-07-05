@@ -18,7 +18,7 @@ _Date: 2026-06-22 · Focus: SSR/hydration safety, the FOUC story, test infrastru
 
 ### shadcn strength to adopt
 
-- **Ship the FOUC-prevention snippet as a documented, copy-paste `<head>` script** (and/or a tiny `@svelte-atoms/core/theme-script` export). Pair it with the exported `ThemeProvider` from iter 4. _Low effort, removes a real flash-of-wrong-theme bug for every consumer._ ⭐
+- **Ship the FOUC-prevention snippet as a documented, copy-paste `<head>` script** (and/or a tiny `@ixirjs/ui/theme-script` export). Pair it with the exported `ThemeProvider` from iter 4. _Low effort, removes a real flash-of-wrong-theme bug for every consumer._ ⭐
 
 ## Part B — Testing story
 
@@ -44,7 +44,7 @@ The two share the **exact oklch token contract** (`root.css` ≈ shadcn's), so t
 | ----------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | CSS tokens / colors     | 🟢 ~none  | same `--background/--primary/--ring/--radius` vars; paste your existing theme                                                     |
 | Tailwind setup          | 🟢 low    | both Tailwind; svelte-atoms is v4                                                                                                 |
-| Component imports       | 🟡 medium | shadcn: vendored local paths → svelte-atoms: `@svelte-atoms/core` imports                                                         |
+| Component imports       | 🟡 medium | shadcn: vendored local paths → svelte-atoms: `@ixirjs/ui` imports                                                         |
 | **Customization model** | 🔴 high   | shadcn: edit the component's `cva` + JSX → svelte-atoms: override **preset entries** by slot key. Totally different mental model. |
 | Variant names           | 🟡 medium | map shadcn's `variant`/`size` to your preset `variants`/`defaults`                                                                |
 | Form code               | 🟡 medium | formsnap+superforms → svelte-atoms Field set (iter 3)                                                                             |

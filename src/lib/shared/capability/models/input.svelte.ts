@@ -2,7 +2,7 @@ import { defineProjectionCapability, sharedCapabilityKey, type Capability } from
 import { ROVING } from './roving.svelte';
 
 // Surface type travels with the key — capability(INPUT) is typed without a cast.
-export const INPUT = sharedCapabilityKey<InputModel>('@svelte-atoms/cap:input');
+export const INPUT = sharedCapabilityKey<InputModel>('@ixirjs/cap:input');
 
 export interface InputField {
 	get(): string;

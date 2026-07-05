@@ -4,12 +4,12 @@ import {
 	bondContextKey,
 	defineAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/bond';
 import {
 	createDisclosure,
 	disclosureCapability,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
+} from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
 import type { OverlayView } from './types';
 
 // Bond base for any overlay that can host nested popovers. Concrete bonds (Dialog, Drawer,

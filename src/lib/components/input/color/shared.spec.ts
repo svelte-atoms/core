@@ -3,7 +3,7 @@ import {
 	buildColor,
 	detectFormat,
 	parseColor
-} from '$svelte-atoms/core/components/input/color/shared';
+} from '$ixirjs/ui/components/input/color/shared';
 
 describe('color parsing and building', () => {
 	it('parses short hex with alpha and builds normalized hex', () => {

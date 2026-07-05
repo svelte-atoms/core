@@ -1,4 +1,4 @@
-import { createBondAttachment } from '$svelte-atoms/core/components/internal/attachments.svelte';
+import { createBondAttachment } from '$ixirjs/ui/components/internal/attachments.svelte';
 import { ToastBond } from './bond.svelte';
 
 // Attachment: provides the nearest ToastBond to a node callback.

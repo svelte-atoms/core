@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolveControlPreset, writeInputValue } from './shared';
-	import { clamp } from '$svelte-atoms/core/utils/math';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { clamp } from '$ixirjs/ui/utils/math';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import { InputBond } from './bond.svelte';
 	import type { InputOtpControlProps } from './types';
 

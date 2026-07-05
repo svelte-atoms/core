@@ -6,7 +6,7 @@
   `parseSegments`-derived `segments` and per-kind `kindStyle`.
 -->
 <script lang="ts">
-	import { cn, toClassValue, type ClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue, type ClassValue } from '$ixirjs/ui/utils';
 	import { writeInputValue } from './shared';
 	import type { InputBond } from './bond.svelte';
 

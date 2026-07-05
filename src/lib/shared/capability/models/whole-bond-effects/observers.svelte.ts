@@ -2,27 +2,27 @@ import {
 	defineEffectCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 import {
 	GEOMETRY,
 	type GeometryRect
-} from '$svelte-atoms/core/shared/capability/models/geometry.svelte';
+} from '$ixirjs/ui/shared/capability/models/geometry.svelte';
 import {
 	domRectToGeometry,
 	noop,
 	observerKey
-} from '$svelte-atoms/core/shared/capability/models/whole-bond-effects/shared';
+} from '$ixirjs/ui/shared/capability/models/whole-bond-effects/shared';
 
 export const RESIZE_OBSERVER = sharedCapabilityKey<ResizeObserverSurface>(
-	'@svelte-atoms/cap:resize-observer'
+	'@ixirjs/cap:resize-observer'
 );
 export const INTERSECTION_OBSERVER = sharedCapabilityKey<IntersectionObserverSurface>(
-	'@svelte-atoms/cap:intersection-observer'
+	'@ixirjs/cap:intersection-observer'
 );
 export const MUTATION_OBSERVER = sharedCapabilityKey<MutationObserverSurface>(
-	'@svelte-atoms/cap:mutation-observer'
+	'@ixirjs/cap:mutation-observer'
 );
 
 export interface ObserverProjectionOptions {

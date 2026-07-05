@@ -27,7 +27,7 @@ _Date: 2026-06-22 · Focus: the real cost of svelte-atoms's dependency surface (
 
 - `src/lib/index.ts` is a **flat `export *` barrel** of all 54 components → the root barrel statically references everything.
 - **BUT** `"sideEffects": ["**/*.css"]` is set correctly, so modern bundlers (Vite/Rollup/esbuild) DCE unused re-exports. Traced: `import { Button }` pulls only `clsx + tailwind-merge + nanoid` — **does NOT reach motion/date-fns/floating-ui/qrcode.**
-- **Bulletproof path:** `import { Button } from '@svelte-atoms/core/button'` (per-component subpath export) bypasses the barrel entirely.
+- **Bulletproof path:** `import { Button } from '@ixirjs/ui/button'` (per-component subpath export) bypasses the barrel entirely.
 
 **shadcn comparison:** shadcn's "zero runtime deps" is structurally why a vendored Button is tiny. svelte-atoms can't hit zero (it owns behavior via runtime classes), but the diet above + documenting the deep-import path closes most of the perceived gap. **Action: add a docs note recommending `/<component>` deep imports for bundle-sensitive consumers.**
 

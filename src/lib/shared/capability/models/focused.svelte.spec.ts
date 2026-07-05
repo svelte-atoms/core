@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Atom, Bond, BondState } from '$svelte-atoms/core/shared/bond';
+import { Atom, Bond, BondState } from '$ixirjs/ui/shared/bond';
 import {
 	ERROR_MESSAGE,
 	INPUT,

@@ -3,7 +3,7 @@
 	import type { CalendarRange } from '../calendar/types';
 	import { DatePickerBond, type DatePickerBondProps } from './bond.svelte';
 	import type { DatePickerRootProps } from './types';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$ixirjs/ui/shared';
 
 	let {
 		open = $bindable(false),

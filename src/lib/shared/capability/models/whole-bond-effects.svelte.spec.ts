@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { Bond, BondState, bondContextKey, type BondStateProps } from '../../bond';
-import UseProbe from '$svelte-atoms/core/test/shared/capability/use-probe.test.svelte';
+import UseProbe from '$ixirjs/ui/test/shared/capability/use-probe.test.svelte';
 import {
 	bodyScrollLock,
 	createGeometry,

@@ -2,8 +2,8 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/bond';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
 import type { OverlayView, OverlayKnobs } from '../types';
 import {
 	closeOverlay,
@@ -14,7 +14,7 @@ import {
 } from './overlay-view';
 
 // Public slot key for trigger gesture policies (click/hover/contextmenu/manual share the slot, last-wins).
-export const TRIGGER = sharedCapabilityKey('@svelte-atoms/cap:trigger');
+export const TRIGGER = sharedCapabilityKey('@ixirjs/cap:trigger');
 
 export type HoverTriggerOptions = {
 	// Delay before opening on pointer-enter, ms. Default 200.

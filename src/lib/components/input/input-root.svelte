@@ -1,10 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { InputBond, type InputStateProps } from './bond.svelte';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
-	import type { Factory } from '$svelte-atoms/core/types';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
+	import type { Factory } from '$ixirjs/ui/types';
 	import type { InputRootProps } from './types';
 
 	let {

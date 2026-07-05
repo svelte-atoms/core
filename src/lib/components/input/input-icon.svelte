@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Icon, type IconProps } from '$svelte-atoms/core/components/icon';
+	import { Icon, type IconProps } from '$ixirjs/ui/components/icon';
 
 	let {
 		class: klass = '',

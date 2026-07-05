@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
-	import { Trigger } from '$svelte-atoms/core/components/select/atoms';
-	import { openOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { Trigger } from '$ixirjs/ui/components/select/atoms';
+	import { openOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const bond = ComboboxBond.getOrThrow('ComboboxTrigger must be used within a Combobox');
 

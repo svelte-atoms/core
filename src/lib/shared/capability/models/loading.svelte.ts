@@ -14,7 +14,7 @@ export interface LoadingModel {
 	readonly error: unknown;
 }
 
-export const LOADING = sharedCapabilityKey<LoadingModel>('@svelte-atoms/cap:loading');
+export const LOADING = sharedCapabilityKey<LoadingModel>('@ixirjs/cap:loading');
 
 export function createLoading(backing: LoadingBacking): LoadingModel {
 	return {

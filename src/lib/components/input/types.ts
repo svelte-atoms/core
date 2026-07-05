@@ -1,7 +1,7 @@
 import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { Snippet } from 'svelte';
-import type { Override } from '$svelte-atoms/core/types';
-import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { Override } from '$ixirjs/ui/types';
+import type { ClassValue } from '$ixirjs/ui/utils';
 import type { InputBond } from './bond.svelte';
 
 // Input Snippet Props

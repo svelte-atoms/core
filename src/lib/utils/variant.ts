@@ -7,10 +7,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { ClassValue } from 'svelte/elements';
-import type { Bond } from '$svelte-atoms/core/shared';
+import type { Bond } from '$ixirjs/ui/shared';
 
 // Tags functions returned by defineVariants so resolveLocalVariants can route through the cached engine.
-export const VARIANT_DEF_TAG = Symbol('svelte-atoms/variant-def');
+export const VARIANT_DEF_TAG = Symbol('ixirjs/variant-def');
 
 export type TaggedVariantFn<V extends Record<string, Record<string, any>>> = ((
 	bond: Bond,

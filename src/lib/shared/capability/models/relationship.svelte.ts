@@ -7,16 +7,16 @@ import {
 import type { Bond } from '../../bond';
 import { DISCLOSURE, type Disclosure } from './disclosure.svelte';
 
-export const TRIGGER_CONTENT = sharedCapabilityKey<void>('@svelte-atoms/cap:trigger-content');
-export const TAB_PANEL = sharedCapabilityKey<void>('@svelte-atoms/cap:tab-panel');
-export const ERROR_MESSAGE = sharedCapabilityKey<void>('@svelte-atoms/cap:error-message');
-export const ROW_COLUMN_CELL = sharedCapabilityKey<void>('@svelte-atoms/cap:row-column-cell');
-export const TREE_ITEM_GROUP = sharedCapabilityKey<void>('@svelte-atoms/cap:tree-item-group');
-export const ACTIVE_DESCENDANT = sharedCapabilityKey<void>('@svelte-atoms/cap:active-descendant');
-export const MENU_SUBMENU = sharedCapabilityKey<void>('@svelte-atoms/cap:menu-submenu');
-export const OPTION_COLLECTION = sharedCapabilityKey<void>('@svelte-atoms/cap:option-collection');
-export const HEADING_SECTION = sharedCapabilityKey<void>('@svelte-atoms/cap:heading-section');
-export const LIVE_REGION = sharedCapabilityKey<void>('@svelte-atoms/cap:live-region');
+export const TRIGGER_CONTENT = sharedCapabilityKey<void>('@ixirjs/cap:trigger-content');
+export const TAB_PANEL = sharedCapabilityKey<void>('@ixirjs/cap:tab-panel');
+export const ERROR_MESSAGE = sharedCapabilityKey<void>('@ixirjs/cap:error-message');
+export const ROW_COLUMN_CELL = sharedCapabilityKey<void>('@ixirjs/cap:row-column-cell');
+export const TREE_ITEM_GROUP = sharedCapabilityKey<void>('@ixirjs/cap:tree-item-group');
+export const ACTIVE_DESCENDANT = sharedCapabilityKey<void>('@ixirjs/cap:active-descendant');
+export const MENU_SUBMENU = sharedCapabilityKey<void>('@ixirjs/cap:menu-submenu');
+export const OPTION_COLLECTION = sharedCapabilityKey<void>('@ixirjs/cap:option-collection');
+export const HEADING_SECTION = sharedCapabilityKey<void>('@ixirjs/cap:heading-section');
+export const LIVE_REGION = sharedCapabilityKey<void>('@ixirjs/cap:live-region');
 
 // Private slot key (not exported from the public barrel): labelledControl is a behavior-only linkage
 // nobody retrieves by key, so it stays unforgeable — the private seam.

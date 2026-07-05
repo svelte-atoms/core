@@ -2,12 +2,12 @@ import { describe, expect, it, vi } from 'vitest';
 import {
 	DropdownMenuBond,
 	type DropdownMenuItem
-} from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import { SelectBond } from '$svelte-atoms/core/components/select/bond.svelte';
+} from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
+import { SelectBond } from '$ixirjs/ui/components/select/bond.svelte';
 import {
 	TYPEAHEAD,
 	type TypeaheadSurface
-} from '$svelte-atoms/core/shared/capability/models/typeahead.svelte';
+} from '$ixirjs/ui/shared/capability/models/typeahead.svelte';
 
 function key(surface: TypeaheadSurface, value: string) {
 	return surface.handleKeydown({

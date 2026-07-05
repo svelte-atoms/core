@@ -3,7 +3,7 @@ import { Collection } from '../../bond/collection.svelte';
 import { collectionSlot } from './collection.svelte';
 import { ROVING, type RovingFocus } from './roving.svelte';
 
-export const TYPEAHEAD = sharedCapabilityKey<TypeaheadSurface>('@svelte-atoms/cap:typeahead');
+export const TYPEAHEAD = sharedCapabilityKey<TypeaheadSurface>('@ixirjs/cap:typeahead');
 
 export interface TypeaheadOptions<T = unknown> {
 	// Roles that receive printable-key search. Default ['container'].

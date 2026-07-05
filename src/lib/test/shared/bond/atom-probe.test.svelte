@@ -3,7 +3,7 @@
 		createAtomInstance,
 		type AtomCapabilityEntry,
 		type Bond
-	} from '$svelte-atoms/core/shared/bond';
+	} from '$ixirjs/ui/shared/bond';
 
 	let {
 		bond,

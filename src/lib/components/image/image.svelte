@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
+	import { toClassValue } from '$ixirjs/ui/utils';
 	import { HtmlAtom } from '../atom';
 
 	let {

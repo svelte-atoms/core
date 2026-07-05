@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import { PortalHost } from '$ixirjs/ui/components/portal/host';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { DialogBond, DialogContentAtom } from './bond.svelte';
 	import type { DialogContentProps } from './types';
 	import { animateDialogContent } from './motion.svelte';

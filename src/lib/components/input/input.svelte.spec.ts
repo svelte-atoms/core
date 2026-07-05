@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { page } from '@vitest/browser/context';
-import InputTest from '$svelte-atoms/core/test/components/input/input.test.svelte';
+import InputTest from '$ixirjs/ui/test/components/input/input.test.svelte';
 
 // Input.Control routes its value through the bond's InputModel: writes via bond.value.set, reads via bond.value.get().
 describe('Input — value flows through the InputModel', () => {

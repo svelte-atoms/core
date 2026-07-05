@@ -29,7 +29,7 @@ In 13 of 15 investigative iterations the gap was _"the capability exists but isn
 - [ ] **0.2 — Enable Home/End** for select / combobox / menu. Model already implements it; pure config flip. _T · iter 2,11_
 - [ ] **0.3 — Demote memo-engine internals** out of `./utils` (mark `@internal`). Shrinks the public API surface; the engine is a liability if exposed. _L · iter 10_
 - [ ] **0.4 — Normalize off-convention error messages** (~10%). Consistency of the "must be used within" misuse story. _L · iter 13_
-- [ ] **0.5 — Docs:** recommend `@svelte-atoms/core/<component>` deep imports + document the `<Icon src>` BYO convention. Bundle-sensitive consumers; clarifies lucide is optional. _L · iter 5,7_
+- [ ] **0.5 — Docs:** recommend `@ixirjs/ui/<component>` deep imports + document the `<Icon src>` BYO convention. Bundle-sensitive consumers; clarifies lucide is optional. _L · iter 5,7_
 
 ## Tier 1 — high impact, low/medium effort (the DX + correctness unlock)
 

@@ -1,7 +1,7 @@
 import { untrack } from 'svelte';
-import { getPreset } from '$svelte-atoms/core/context';
-import { resolvePreset } from '$svelte-atoms/core/components/atom';
-import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+import { getPreset } from '$ixirjs/ui/context';
+import { resolvePreset } from '$ixirjs/ui/components/atom';
+import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
 import type { InputBond } from './bond.svelte';
 
 // Resolve an input control's preset record from its preset key. Single source of truth for the

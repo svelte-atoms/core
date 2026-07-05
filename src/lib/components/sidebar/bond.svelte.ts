@@ -1,7 +1,7 @@
-import { Atom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
-import { OverlayBond } from '$svelte-atoms/core/components/portal/host';
-import type { DisclosureStateProps } from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { OverlayBond } from '$ixirjs/ui/components/portal/host';
+import type { DisclosureStateProps } from '$ixirjs/ui/shared/capability/models/disclosure-state.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types

@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'h3', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { DrawerBond } from './bond.svelte';
 	import type { SlideoverTitleProps } from './types';
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'svelte/server';
-import PresetAliasProbe from '$svelte-atoms/core/test/context/preset-alias.test.svelte';
+import PresetAliasProbe from '$ixirjs/ui/test/context/preset-alias.test.svelte';
 
 describe('preset aliases', () => {
 	it('canonicalizes deprecated close-button overrides so canonical lookups see them', () => {

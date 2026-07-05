@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$ixirjs/ui/shared';
 	import { SelectBond, type SelectStateProps } from './bond.svelte';
 	import type { SelectRootProps } from './types';
 

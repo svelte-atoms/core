@@ -53,7 +53,7 @@ export function createAtomInstance<
 	if (required && !bond) {
 		throw new Error(
 			requiredMessage ??
-				`[svelte-atoms] Atom("${resolvedKey}") requires a Bond context but none was provided.`
+				`[ixirjs] Atom("${resolvedKey}") requires a Bond context but none was provided.`
 		);
 	}
 

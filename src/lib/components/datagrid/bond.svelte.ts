@@ -3,15 +3,15 @@ import {
 	defineAtom,
 	type BondStateProps,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
-import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
+} from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import type { Collection } from '$ixirjs/ui/shared/bond/collection.svelte';
 import {
 	createSelection,
 	selectionCapability,
 	SELECTION,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
+} from '$ixirjs/ui/shared/capability/models/selection.svelte';
 import { nanoid } from 'nanoid';
 
 // -----------------------------------------------------------------------------

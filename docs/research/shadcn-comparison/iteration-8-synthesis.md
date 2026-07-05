@@ -4,7 +4,7 @@ _Date: 2026-06-22 · Focus: consolidate every finding into one ranked, actionabl
 
 ## TL;DR — the thesis
 
-shadcn-svelte and @svelte-atoms/core share the **same visual DNA** (oklch token contract, Tailwind, cva-style variants) but opposite philosophies:
+shadcn-svelte and @ixirjs/ui share the **same visual DNA** (oklch token contract, Tailwind, cva-style variants) but opposite philosophies:
 
 - **shadcn = vendored source you own.** Strength: ownership, zero deps, frictionless `add` CLI, theme generator. Weakness: no upgrade path, logic outsourced to bits-ui, per-project duplication, global-token-only theming.
 - **svelte-atoms = installed package with a Bond/atom/capability runtime.** Strength: real upgrade path, single owned behavior model, per-slot state-reactive presets, `fuse` stateful composition, broader tests + `llms.txt`. Weakness: heavier deps, no CLI, theming runtime stranded in the docs app, discoverability of the preset surface.
@@ -26,7 +26,7 @@ shadcn-svelte and @svelte-atoms/core share the **same visual DNA** (oklch token 
 | --- | ------------------------------------------------------------------------------------------------- | ----------- | ------- |
 | 0.1 | Move `@modelcontextprotocol/sdk`, `mcp-handler`, `lucide-svelte` → `devDependencies`              | 5, 7        | trivial |
 | 0.2 | Enable **Home/End** for select/combobox (config flip; model already implements it)                | 2           | trivial |
-| 0.3 | Docs note: recommend `@svelte-atoms/core/<component>` deep imports for bundle-sensitive consumers | 5           | trivial |
+| 0.3 | Docs note: recommend `@ixirjs/ui/<component>` deep imports for bundle-sensitive consumers | 5           | trivial |
 | 0.4 | Document the `<Icon src={...} />` BYO convention; clarify lucide is optional                      | 7           | low     |
 
 ### Tier 1 — high impact, low/medium effort (the DX unlock)

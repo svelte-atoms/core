@@ -1,5 +1,5 @@
-import type { Bond } from '$svelte-atoms/core/shared';
-import type { PresetEntryRecord } from '$svelte-atoms/core/context/preset.svelte';
+import type { Bond } from '$ixirjs/ui/shared';
+import type { PresetEntryRecord } from '$ixirjs/ui/context/preset.svelte';
 
 // Preset entries are factories returning fresh object graphs on every call, defeating all
 // downstream reference-keyed caches. stabilizePresetRecord restores reference identity after

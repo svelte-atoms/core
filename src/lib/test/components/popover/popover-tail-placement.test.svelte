@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Placement } from '@floating-ui/dom';
-	import { Root } from '$svelte-atoms/core/components/root';
-	import { Popover } from '$svelte-atoms/core/components/popover';
+	import { Root } from '$ixirjs/ui/components/root';
+	import { Popover } from '$ixirjs/ui/components/popover';
 
 	let {
 		placement = 'right',

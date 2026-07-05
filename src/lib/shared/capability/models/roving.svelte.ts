@@ -1,7 +1,7 @@
 import { defineProjectionCapability, sharedCapabilityKey, type Capability } from '../capability';
 
 // Surface type travels with the key — capability(ROVING) is typed without a cast.
-export const ROVING = sharedCapabilityKey<RovingFocus>('@svelte-atoms/cap:roving');
+export const ROVING = sharedCapabilityKey<RovingFocus>('@ixirjs/cap:roving');
 
 // RovingFocus — "which item is highlighted": a moving active index with next/previous/first/last/goto.
 // Distinct from SelectionModel (what's committed). Owns its own $state for the index;

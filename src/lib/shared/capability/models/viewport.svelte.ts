@@ -29,7 +29,7 @@ export interface ViewportModel {
 	readonly visibleRange: ViewportRange | undefined;
 }
 
-export const VIEWPORT = sharedCapabilityKey<ViewportModel>('@svelte-atoms/cap:viewport');
+export const VIEWPORT = sharedCapabilityKey<ViewportModel>('@ixirjs/cap:viewport');
 
 export function createViewport(backing: ViewportBacking): ViewportModel {
 	return {

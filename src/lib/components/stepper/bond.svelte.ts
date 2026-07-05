@@ -1,7 +1,7 @@
 import type { StepBond } from './step/bond.svelte';
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
-import { ariaRole } from '$svelte-atoms/core/shared/capability';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { ariaRole } from '$ixirjs/ui/shared/capability';
 import type { Snippet } from 'svelte';
 
 // -----------------------------------------------------------------------------

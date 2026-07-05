@@ -2,8 +2,8 @@ import {
 	defineEffectCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
 	clamp,
 	isEnabled,
@@ -15,19 +15,19 @@ import {
 	type EffectGuard,
 	type ElementSource,
 	type WindowSource
-} from '$svelte-atoms/core/shared/capability/models/whole-bond-effects/shared';
+} from '$ixirjs/ui/shared/capability/models/whole-bond-effects/shared';
 
 export const SCROLL_MEASUREMENT = sharedCapabilityKey<ScrollMeasurementSurface>(
-	'@svelte-atoms/cap:scroll-measurement'
+	'@ixirjs/cap:scroll-measurement'
 );
 export const VIRTUAL_WINDOW = sharedCapabilityKey<VirtualWindowSurface>(
-	'@svelte-atoms/cap:virtual-window'
+	'@ixirjs/cap:virtual-window'
 );
 export const DOCUMENT_DRAG = sharedCapabilityKey<DocumentDragSurface>(
-	'@svelte-atoms/cap:document-drag'
+	'@ixirjs/cap:document-drag'
 );
 export const PORTAL_LAYER = sharedCapabilityKey<PortalLayerSurface>(
-	'@svelte-atoms/cap:portal-layer'
+	'@ixirjs/cap:portal-layer'
 );
 
 export interface ScrollGeometry {
@@ -308,7 +308,7 @@ export function portalLayerCapability(
 		setup: () => {
 			const doc = resolveDocument(options.document);
 			if (!doc?.body) return;
-			const id = options.id ?? 'svelte-atoms-portal-layer';
+			const id = options.id ?? 'ixirjs-portal-layer';
 			const existing = doc.getElementById(id) as HTMLElement | null;
 			const created = !existing;
 			host = existing ?? doc.createElement('div');

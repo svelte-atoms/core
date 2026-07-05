@@ -1,14 +1,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
+	import type { Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Trigger } from '../popover/atoms';
 	import { PopoverVirtualTriggerAtom } from '../popover';
 	import { openOverlay } from '../portal/host/policies/overlay-view';
 	import { ContextMenuBond } from './bond.svelte';
 	import type { ContextMenuTriggerProps } from './types';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond';
+	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond';
 
 	type ElementType = HTMLElementTagNameMap[E];
 

@@ -1,4 +1,4 @@
-import type { Atom } from '$svelte-atoms/core/shared/bond';
+import type { Atom } from '$ixirjs/ui/shared/bond';
 import type { OverlayView } from '../types';
 
 type LegacyOverlayState = {

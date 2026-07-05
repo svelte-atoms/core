@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolveControlPreset, writeInputValue } from '../shared';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import { untrack } from 'svelte';
 	import { InputBond } from '../bond.svelte';
 	import type {

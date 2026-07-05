@@ -1,8 +1,8 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Field } from '..';
-	import { Input } from '$svelte-atoms/core/components/input';
-	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
+	import { Input } from '$ixirjs/ui/components/input';
+	import { Checkbox } from '$ixirjs/ui/components/checkbox';
 	import FormRoot from '../../form-root.svelte';
 
 	const { Story } = defineMeta({

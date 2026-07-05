@@ -319,7 +319,7 @@ export function datePickerCapabilities<T = unknown>(
 function resolveCollection<T>(options: CollectionRecipe<T>): CollectionCapability<T> {
 	if (options.collection) return options.collection;
 	if (!options.kind) {
-		throw new Error('[svelte-atoms] archetype capability requires either `kind` or `collection`.');
+		throw new Error('[ixirjs] archetype capability requires either `kind` or `collection`.');
 	}
 	return collectionCapability<T>(options.kind, options.collectionOptions);
 }

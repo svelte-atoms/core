@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
-	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { Teleport, ActivePortal } from '$ixirjs/ui/components/portal';
+	import { containsTarget } from '$ixirjs/ui/utils/dom.svelte';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { ZLayer } from '../portal/zlayer.svelte';
 	import { Content as DialogContent } from '../dialog/atoms';
 	import { PopoverDialogBond } from './bond.svelte';

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { tick } from 'svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import Probe, {
 	capturedBodyRow,
 	capturedColumn,
@@ -9,7 +9,7 @@ import Probe, {
 	capturedGrid,
 	capturedHeaderRow,
 	resetCapturedDatagridBonds
-} from '$svelte-atoms/core/test/components/datagrid/datagrid-atom-probe.test.svelte';
+} from '$ixirjs/ui/test/components/datagrid/datagrid-atom-probe.test.svelte';
 import {
 	DataGridBodyAtom,
 	DataGridBond,

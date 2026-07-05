@@ -1,6 +1,6 @@
-import { Bond, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
-import { clamp } from '$svelte-atoms/core/utils/math';
+import { Bond, Atom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { clamp } from '$ixirjs/ui/utils/math';
 
 // -----------------------------------------------------------------------------
 // Public types

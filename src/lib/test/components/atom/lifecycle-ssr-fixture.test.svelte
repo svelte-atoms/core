@@ -1,5 +1,5 @@
 <script lang="ts">
-	import HtmlAtom from '$svelte-atoms/core/components/atom/html-atom.svelte';
+	import HtmlAtom from '$ixirjs/ui/components/atom/html-atom.svelte';
 
 	let { lifecycleProps = {}, ...rest } = $props();
 </script>

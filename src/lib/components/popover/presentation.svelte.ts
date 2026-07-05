@@ -3,25 +3,25 @@ import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
-import { focus, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
-import type { OverlayView } from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/shared/capability';
+import { focus, getElementId, isBrowser } from '$ixirjs/ui/utils/dom.svelte';
+import type { OverlayView } from '$ixirjs/ui/components/portal/host';
 import {
 	closeOverlay,
 	overlayIsDisabled,
 	overlayIsOpen
-} from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+} from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 import {
 	getPopoverPosition,
 	popoverNode
-} from '$svelte-atoms/core/components/popover/legacy-state';
+} from '$ixirjs/ui/components/popover/legacy-state';
 
-const POPOVER_TAIL = sharedCapabilityKey<void>('@svelte-atoms/popover:tail');
-const POPOVER_TAIL_GEOMETRY = sharedCapabilityKey<void>('@svelte-atoms/popover:tail-geometry');
-const POPOVER_OVERLAY = sharedCapabilityKey<void>('@svelte-atoms/popover:overlay');
-const POPOVER_CONTENT = sharedCapabilityKey<void>('@svelte-atoms/popover:content');
-const POPOVER_INDICATOR = sharedCapabilityKey<void>('@svelte-atoms/popover:indicator');
-const POPOVER_TRIGGER = sharedCapabilityKey<void>('@svelte-atoms/popover:trigger');
+const POPOVER_TAIL = sharedCapabilityKey<void>('@ixirjs/popover:tail');
+const POPOVER_TAIL_GEOMETRY = sharedCapabilityKey<void>('@ixirjs/popover:tail-geometry');
+const POPOVER_OVERLAY = sharedCapabilityKey<void>('@ixirjs/popover:overlay');
+const POPOVER_CONTENT = sharedCapabilityKey<void>('@ixirjs/popover:content');
+const POPOVER_INDICATOR = sharedCapabilityKey<void>('@ixirjs/popover:indicator');
+const POPOVER_TRIGGER = sharedCapabilityKey<void>('@ixirjs/popover:trigger');
 
 type PopoverSide = 'top' | 'bottom' | 'left' | 'right';
 export interface PopoverTailPresentationOptions {

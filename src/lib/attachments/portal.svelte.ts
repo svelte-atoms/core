@@ -1,5 +1,5 @@
-import { port } from '$svelte-atoms/core/components/portal/port';
-import { ZLayer } from '$svelte-atoms/core/components/portal/zlayer.svelte';
+import { port } from '$ixirjs/ui/components/portal/port';
+import { ZLayer } from '$ixirjs/ui/components/portal/zlayer.svelte';
 
 // Curried teleport attachment: re-parent `node` into `target` on attach, remove on
 // cleanup. Thin wrapper over the canonical `port` primitive (see portal/port.ts).

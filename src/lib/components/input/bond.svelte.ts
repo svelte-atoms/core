@@ -1,5 +1,5 @@
-import { Bond, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { createInput, defineBond, type BondOf, type InputModel } from '$svelte-atoms/core/shared';
+import { Bond, Atom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { createInput, defineBond, type BondOf, type InputModel } from '$ixirjs/ui/shared';
 import { SvelteDate } from 'svelte/reactivity';
 
 // -----------------------------------------------------------------------------

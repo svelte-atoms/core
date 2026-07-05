@@ -7,8 +7,8 @@
 		type ElementType,
 		type HtmlAtomProps,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	} from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	type Element = ElementType<E>;
 

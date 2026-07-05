@@ -14,7 +14,7 @@ import {
 	trappedFocus,
 	focusOnOpen,
 	FOCUS
-} from '$svelte-atoms/core/components/portal/host/policies/focus.svelte';
+} from '$ixirjs/ui/components/portal/host/policies/focus.svelte';
 
 class FState extends BondState<BondStateProps> {
 	values = $state<string[]>([]);

@@ -15,7 +15,7 @@ Runtime engine for Bonds, Atoms, capabilities, and authoring helpers.
 
 ## Importing
 
-Consumers usually import from `$svelte-atoms/core/shared`. Internal code can import a layer barrel
+Consumers usually import from `$ixirjs/ui/shared`. Internal code can import a layer barrel
 for public surface or a concrete file for implementation details.
 
 See [`CONTEXT.md`](../../../CONTEXT.md) for vocabulary.

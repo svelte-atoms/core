@@ -4,21 +4,21 @@ import {
 	defineAtom,
 	type BondStateProps,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	ariaRole,
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import {
 	createSelection,
 	selectionCapability,
 	SELECTION,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
-import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
+} from '$ixirjs/ui/shared/capability/models/selection.svelte';
+import type { Collection } from '$ixirjs/ui/shared/bond/collection.svelte';
 import type { TabBond } from './tab/bond.svelte';
 
 // -----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ type TabsBondView = TabsBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const TABS_ROOT = sharedCapabilityKey<void>('@svelte-atoms/tabs:root');
+const TABS_ROOT = sharedCapabilityKey<void>('@ixirjs/tabs:root');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

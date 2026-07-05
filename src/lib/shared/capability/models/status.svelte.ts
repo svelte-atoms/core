@@ -18,7 +18,7 @@ export interface StatusModel {
 	is(name: StatusName): boolean;
 }
 
-export const STATUS = sharedCapabilityKey<StatusModel>('@svelte-atoms/cap:status');
+export const STATUS = sharedCapabilityKey<StatusModel>('@ixirjs/cap:status');
 
 export function createStatus(accessors: StatusAccessors): StatusModel {
 	const names = Object.keys(accessors) as StatusName[];

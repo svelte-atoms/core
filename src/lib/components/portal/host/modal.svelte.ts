@@ -1,14 +1,14 @@
-import { Atom, type BondElements } from '$svelte-atoms/core/shared/bond';
+import { Atom, type BondElements } from '$ixirjs/ui/shared/bond';
 import type { OverlayView } from './types';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
 import { overlayIsDisabled, overlayIsOpen } from './policies/overlay-view';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 
-const MODAL_ROOT = sharedCapabilityKey<void>('@svelte-atoms/modal:root');
+const MODAL_ROOT = sharedCapabilityKey<void>('@ixirjs/modal:root');
 
 // Root atom for modal overlays. Wires the ARIA dialog contract; .role('surface') folds in escape + focus handlers.
 export class ModalRootAtom<B extends OverlayView = OverlayView> extends Atom<B, HTMLElement> {

@@ -4,12 +4,12 @@ import {
 	FieldControlAtom,
 	FieldDescriptionAtom,
 	type ValidationAdapter
-} from '$svelte-atoms/core/components/form/field/bond.svelte';
-import { TreeBond } from '$svelte-atoms/core/components/tree/bond.svelte';
+} from '$ixirjs/ui/components/form/field/bond.svelte';
+import { TreeBond } from '$ixirjs/ui/components/tree/bond.svelte';
 import {
 	ERROR_MESSAGE,
 	TREE_ITEM_GROUP
-} from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+} from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 
 describe('relationship capability call sites', () => {
 	it('field controls use a real helper/error message atom for descriptions and errors', () => {

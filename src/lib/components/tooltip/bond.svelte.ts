@@ -2,8 +2,8 @@ import {
 	PopoverBond,
 	PopoverBondBase,
 	type PopoverBondProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
-import { defineBond, type BondOf, type BondSpec } from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/components/popover/bond.svelte';
+import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
 
 // -----------------------------------------------------------------------------
 // Public types

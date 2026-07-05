@@ -1,11 +1,11 @@
-import { defineAtom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { defineAtom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	ariaRole,
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import {
 	OverlayBond,
 	ModalContentAtom,
@@ -14,7 +14,7 @@ import {
 	TRIGGER,
 	type ModalOverlayElements,
 	type OverlayStateProps
-} from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/components/portal/host';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -53,8 +53,8 @@ type DialogBondView = DialogBondBase<DialogBondProps>;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DIALOG_TITLE = sharedCapabilityKey<void>('@svelte-atoms/dialog:title');
-const DIALOG_BODY = sharedCapabilityKey<void>('@svelte-atoms/dialog:body');
+const DIALOG_TITLE = sharedCapabilityKey<void>('@ixirjs/dialog:title');
+const DIALOG_BODY = sharedCapabilityKey<void>('@ixirjs/dialog:body');
 
 // Root atom for modal overlays. The shared modal capability wires ARIA, inert, focus, and escape.
 

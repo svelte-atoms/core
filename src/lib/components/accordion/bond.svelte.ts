@@ -1,15 +1,15 @@
-import type { Collection } from '$svelte-atoms/core/shared/bond/collection.svelte';
+import type { Collection } from '$ixirjs/ui/shared/bond/collection.svelte';
 import {
 	createSelection,
 	type SelectionModel
-} from '$svelte-atoms/core/shared/capability/models/selection.svelte';
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/shared/capability/models/selection.svelte';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -37,7 +37,7 @@ export type AccordionItemHandle = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const ACCORDION_ROOT = sharedCapabilityKey<void>('@svelte-atoms/accordion:root');
+const ACCORDION_ROOT = sharedCapabilityKey<void>('@ixirjs/accordion:root');
 
 // Narrow parent contract an item child depends on; keeps the child→parent seam stub-testable.
 

@@ -7,7 +7,7 @@ import {
 
 // Surface type travels with the key — capability(SELECTION) is typed without a cast.
 export const SELECTION = sharedCapabilityKey<SelectionModel<unknown>>(
-	'@svelte-atoms/cap:selection'
+	'@ixirjs/cap:selection'
 );
 
 // Owns selection logic but not storage — state lives in the bond props the consumer bindables.

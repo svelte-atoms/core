@@ -1,13 +1,13 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Teleport, ActivePortal } from '$svelte-atoms/core/components/portal';
-	import type { Base } from '$svelte-atoms/core/components/atom';
-	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
+	import { Teleport, ActivePortal } from '$ixirjs/ui/components/portal';
+	import type { Base } from '$ixirjs/ui/components/atom';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { DialogBond, DialogRootAtom, type DialogBondProps } from './bond.svelte';
 	import type { DialogProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import { BACKDROP_PRESS } from '$svelte-atoms/core/components/portal/host';
+	import { bindBond, useCapabilities } from '$ixirjs/ui/shared';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { BACKDROP_PRESS } from '$ixirjs/ui/components/portal/host';
 
 	let {
 		class: klass = '',

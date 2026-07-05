@@ -1,5 +1,5 @@
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Atom, defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
+import { Atom, defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	ModalRootAtom,
 	ModalContentAtom,
@@ -9,7 +9,7 @@ import {
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
-} from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/components/portal/host';
 
 // -----------------------------------------------------------------------------
 // Public types

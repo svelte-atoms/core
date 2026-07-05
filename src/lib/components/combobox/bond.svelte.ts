@@ -1,10 +1,10 @@
-import { type PopoverDomElements } from '$svelte-atoms/core/components/popover/bond.svelte';
+import { type PopoverDomElements } from '$ixirjs/ui/components/popover/bond.svelte';
 import {
 	SelectBond as DropdownBond,
 	SelectBondBase as DropdownBondBase,
 	type SelectStateProps as DropdownStateProps
-} from '$svelte-atoms/core/components/select/bond.svelte';
-import { defineAtom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/components/select/bond.svelte';
+import { defineAtom } from '$ixirjs/ui/shared/bond';
 import {
 	defineBond,
 	type BondOf,
@@ -14,7 +14,7 @@ import {
 	sharedCapabilityKey,
 	type BondSpec,
 	type AtomHost
-} from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/shared';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';
@@ -137,7 +137,7 @@ type ComboboxBondView = ComboboxBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const COMBOBOX_CONTROL = sharedCapabilityKey<void>('@svelte-atoms/combobox:control');
+const COMBOBOX_CONTROL = sharedCapabilityKey<void>('@ixirjs/combobox:control');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

@@ -2,7 +2,7 @@
 	import { Section, CodeBlock, DocCallout } from '$docs/components';
 
 	// ── Extend an existing component ───────────────────────────────────────────
-	const extendCode = `import { defineBond, DropdownMenuBond } from '@svelte-atoms/core';
+	const extendCode = `import { defineBond, DropdownMenuBond } from '@ixirjs/ui';
 
 // A command-palette flavour of dropdown-menu.
 // parts: reuses the parent Bond's atoms, capabilities, and behavior.
@@ -16,7 +16,7 @@ export const CommandMenuBond = defineBond({
 export type CommandMenuBond = InstanceType<typeof CommandMenuBond>;`;
 
 	// ── Fuse two components into one ───────────────────────────────────────────
-	const fuseCode = `import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@svelte-atoms/core';
+	const fuseCode = `import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@ixirjs/ui';
 
 // PopoverDialog — a Popover trigger that opens Dialog's MODAL content.
 // \`fuse\` is the closure property of the composition model: bond + bond = bond.
@@ -46,7 +46,7 @@ export type PopoverDialogBond = InstanceType<typeof PopoverDialogBond>;`;
   createAtomInstance,
   defineAtomCapability,
   bondContextKey
-} from '@svelte-atoms/core';
+} from '@ixirjs/ui';
 import { getContext, setContext } from 'svelte';
 
 export type TilesBondProps = { id?: string; value?: string };
@@ -95,7 +95,7 @@ const item = createAtomInstance('item', {
 	const builtinsCode = `import {
   createRovingFocus, rovingCapability,
   createSelection, selectionCapability,
-} from '@svelte-atoms/core';
+} from '@ixirjs/ui';
 
 // "Which item is highlighted" (keyboard nav) — owns its own active index;
 // the item list + id→item resolution are injected.
@@ -122,7 +122,7 @@ capabilities: () => [
   capabilityKey,
   defineBondCapability,
   defineAtomCapability
-} from '@svelte-atoms/core';
+} from '@ixirjs/ui';
 
 export const BUSY = capabilityKey<{ readonly busy: boolean }>('@acme/cap:busy');
 

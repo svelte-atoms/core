@@ -1,20 +1,20 @@
-import { Bond, defineAtom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondSpec } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondSpec } from '$ixirjs/ui/shared';
 import {
 	ariaRole,
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import {
 	createDisclosure,
 	disclosureCapability,
 	disclosureTrigger,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import type { DisclosureStateProps } from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
-import { triggerContentLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
+import type { DisclosureStateProps } from '$ixirjs/ui/shared/capability/models/disclosure-state.svelte';
+import { triggerContentLink } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -42,8 +42,8 @@ type CollapsibleBondView = CollapsibleBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const COLLAPSIBLE_HEADER = sharedCapabilityKey<void>('@svelte-atoms/collapsible:header');
-const COLLAPSIBLE_BODY = sharedCapabilityKey<void>('@svelte-atoms/collapsible:body');
+const COLLAPSIBLE_HEADER = sharedCapabilityKey<void>('@ixirjs/collapsible:header');
+const COLLAPSIBLE_BODY = sharedCapabilityKey<void>('@ixirjs/collapsible:body');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

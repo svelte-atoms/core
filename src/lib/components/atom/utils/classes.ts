@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { cn, type ClassValue } from '$svelte-atoms/core/utils';
+import { cn, type ClassValue } from '$ixirjs/ui/utils';
 
 // Generational trie memo for the class axis: walks (userClass, presetClass, variantClass)
 // through nested Maps; hits are zero-allocation. Eviction is generational (hot→prev wholesale at TRIE_MAX).

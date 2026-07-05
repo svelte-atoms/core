@@ -4,9 +4,9 @@ _Date: 2026-06-22 · Focus: how the two libraries are shipped, authored, and the
 
 ## Side-by-side
 
-| Axis                | shadcn-svelte                                                                      | @svelte-atoms/core                                                                                        |
+| Axis                | shadcn-svelte                                                                      | @ixirjs/ui                                                                                        |
 | ------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **Distribution**    | Copy-paste source you own (CLI vendors files into your repo via `components.json`) | Installed, versioned npm package (`@svelte-atoms/core`, ships compiled `dist/`)                           |
+| **Distribution**    | Copy-paste source you own (CLI vendors files into your repo via `components.json`) | Installed, versioned npm package (`@ixirjs/ui`, ships compiled `dist/`)                           |
 | **CLI**             | `shadcn-svelte` CLI: `init`, `add <component>`, registry/MCP                       | None                                                                                                      |
 | **Ownership**       | Consumer owns + edits the source freely                                            | Consumer consumes the public API; source stays in the package                                             |
 | **Theming**         | shadcn oklch CSS-variable tokens + Tailwind                                        | **Same** oklch token DNA (`root.css`) + Tailwind v4 — _plus_ a context-driven preset registry layer       |

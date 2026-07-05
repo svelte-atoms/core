@@ -1,5 +1,5 @@
-import type { Capability } from '$svelte-atoms/core/shared/bond';
-import { disclosureClose } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
+import type { Capability } from '$ixirjs/ui/shared/bond';
+import { disclosureClose } from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
 import type { OverlayKnobs } from '../types';
 import { clickTrigger } from '../policies/trigger.svelte';
 import { trappedFocus, focusOnOpen } from '../policies/focus.svelte';

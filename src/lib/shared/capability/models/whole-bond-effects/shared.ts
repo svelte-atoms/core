@@ -1,6 +1,6 @@
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { containsTarget, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
-import type { GeometryRect } from '$svelte-atoms/core/shared/capability/models/geometry.svelte';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { containsTarget, isBrowser } from '$ixirjs/ui/utils/dom.svelte';
+import type { GeometryRect } from '$ixirjs/ui/shared/capability/models/geometry.svelte';
 
 export type EffectGuard = boolean | ((bond: Bond) => boolean);
 export type ElementSource =

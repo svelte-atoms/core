@@ -1,8 +1,8 @@
-import { clickout } from '$svelte-atoms/core/attachments/clickout.svelte';
-import { clickAction } from '$svelte-atoms/core/attachments/event.svelte';
-import { createBondAttachment } from '$svelte-atoms/core/components/internal/attachments.svelte';
-import { DISCLOSURE } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
+import { clickout } from '$ixirjs/ui/attachments/clickout.svelte';
+import { clickAction } from '$ixirjs/ui/attachments/event.svelte';
+import { createBondAttachment } from '$ixirjs/ui/components/internal/attachments.svelte';
+import { DISCLOSURE } from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
+import { containsTarget } from '$ixirjs/ui/utils/dom.svelte';
 import { DrawerBond } from './bond.svelte';
 
 export const drawer = createBondAttachment<DrawerBond>(DrawerBond);

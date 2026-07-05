@@ -2,7 +2,7 @@
 	import { Section, CodeBlock, DocCallout } from '$docs/components';
 	import { Button } from '$lib/components/button';
 
-	const bondCode = `import { Bond, bondContextKey } from '@svelte-atoms/core';
+	const bondCode = `import { Bond, bondContextKey } from '@ixirjs/ui';
 import { getContext, setContext } from 'svelte';
 
 export type TilesBondProps = {
@@ -42,7 +42,7 @@ export class TilesBond extends Bond<TilesBondProps> {
 }`;
 
 	const rootCode = `<script lang="ts">
-  import { defineProperty, defineState } from '@svelte-atoms/core';
+  import { defineProperty, defineState } from '@ixirjs/ui';
   import { TilesBond, type TilesBondProps } from './bond.svelte';
 
   let { value = $bindable(), disabled = false, children } = $props();
@@ -70,7 +70,7 @@ export class TilesBond extends Bond<TilesBondProps> {
     pressable,
     dataState,
     ariaRole
-  } from '@svelte-atoms/core';
+  } from '@ixirjs/ui';
   import { TilesBond } from './bond.svelte';
 
   let { value, children, ...props } = $props();
@@ -111,7 +111,7 @@ createAtomInstance('item', {
   capabilityKey,
   defineBondCapability,
   defineAtomCapability
-} from '@svelte-atoms/core';
+} from '@ixirjs/ui';
 
 export const SELECTION = capabilityKey<{ select(value: string): void }>(
   '@acme/tiles/selection'

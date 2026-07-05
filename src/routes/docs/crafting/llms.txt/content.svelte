@@ -21,7 +21,7 @@ improves UX. ## Minimal component skeleton
 
 {codeBlock(
 	`<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
+  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
 
   const badgeVariants = defineVariants({
     class: 'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium',
@@ -62,7 +62,7 @@ improves UX. ## Minimal component skeleton
 	'Keep each child usable with base={...} composition.'
 ])}
 
-## Import and naming guidelines - Export public APIs from {inlineCode('@svelte-atoms/core')}. - Use
+## Import and naming guidelines - Export public APIs from {inlineCode('@ixirjs/ui')}. - Use
 kebab-case filenames. - Use PascalCase component symbols and camelCase helpers. ## Common pitfalls
 
 {list([

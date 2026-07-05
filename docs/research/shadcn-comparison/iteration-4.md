@@ -4,7 +4,7 @@ _Date: 2026-06-22 · Focus: theming/multi-theme, dark-mode ergonomics, `defineVa
 
 ## Theming & dark mode
 
-| Aspect                     | shadcn-svelte                                                      | @svelte-atoms/core                                                                                                                                                             |
+| Aspect                     | shadcn-svelte                                                      | @ixirjs/ui                                                                                                                                                             |
 | -------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Token contract             | oklch CSS vars, `.dark` block                                      | **Identical vocabulary** (`root.css`) + small shadow/spacing extension                                                                                                         |
 | Dark-mode util             | ships pointer to `mode-watcher`                                    | ⚠️ only a `colorScheme()` media-query rune is **exported**; the actual provider/persist/toggle (`Theme` class) is **demo code in `src/routes/theme.svelte.ts`, not in `$lib`** |

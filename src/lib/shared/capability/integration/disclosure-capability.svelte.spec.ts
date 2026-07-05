@@ -3,18 +3,18 @@ import {
 	DISCLOSURE,
 	DISCLOSURE_CLOSE,
 	DISCLOSURE_TRIGGER
-} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import { CollapsibleBond } from '$svelte-atoms/core/components/collapsible/bond.svelte';
-import { TreeBond } from '$svelte-atoms/core/components/tree/bond.svelte';
-import { ToastBond } from '$svelte-atoms/core/components/toast/bond.svelte';
-import { DialogBond } from '$svelte-atoms/core/components/dialog/bond.svelte';
-import { DrawerBond } from '$svelte-atoms/core/components/drawer/bond.svelte';
+} from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
+import { CollapsibleBond } from '$ixirjs/ui/components/collapsible/bond.svelte';
+import { TreeBond } from '$ixirjs/ui/components/tree/bond.svelte';
+import { ToastBond } from '$ixirjs/ui/components/toast/bond.svelte';
+import { DialogBond } from '$ixirjs/ui/components/dialog/bond.svelte';
+import { DrawerBond } from '$ixirjs/ui/components/drawer/bond.svelte';
 import {
 	PopoverBond,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
-import { SidebarBond } from '$svelte-atoms/core/components/sidebar/bond.svelte';
-import { BACKDROP_PRESS, OUTSIDE_PRESS } from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/components/popover/bond.svelte';
+import { SidebarBond } from '$ixirjs/ui/components/sidebar/bond.svelte';
+import { BACKDROP_PRESS, OUTSIDE_PRESS } from '$ixirjs/ui/components/portal/host';
 
 function popoverProps(initial: Partial<PopoverStateProps> = {}): PopoverStateProps {
 	return {

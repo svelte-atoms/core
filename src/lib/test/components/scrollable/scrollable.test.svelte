@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Scrollable from '$svelte-atoms/core/components/scrollable/atoms';
+	import * as Scrollable from '$ixirjs/ui/components/scrollable/atoms';
 
 	let scrollY = $state(0);
 	let scrollHeight = $state(0);

@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   alert: () => ({
@@ -96,8 +96,8 @@ export const metadata = {
 		'Contextual feedback component for notifications, errors, and warnings with icons and action buttons.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Alert } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Alert } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Alert' }],
 	useCases,
 	componentsSummary,

@@ -1,4 +1,4 @@
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 
 // Reactive rune tracking a CSS media query. Returns { current: boolean }.
 // Single source of truth for matchMedia-based runes (color scheme, reduced motion, …).

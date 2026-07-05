@@ -2,9 +2,9 @@
 	lang="ts"
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import Close from '$svelte-atoms/core/icons/icon-close.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import Close from '$ixirjs/ui/icons/icon-close.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { ToastBond } from './bond.svelte';
 	import type { ToastCloseProps } from './types';
 

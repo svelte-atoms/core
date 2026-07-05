@@ -102,7 +102,7 @@ export class Atom<
 	behavior(behavior: Behavior<B, E>): this {
 		if (DEV && !this.bond) {
 			console.warn(
-				`[svelte-atoms] Atom("${this.name}").behavior(...) was registered without a Bond. Bond-dependent behavior will be skipped until the node is bonded.`
+				`[ixirjs] Atom("${this.name}").behavior(...) was registered without a Bond. Bond-dependent behavior will be skipped until the node is bonded.`
 			);
 		}
 		this.#behaviors.push(behavior);
@@ -121,7 +121,7 @@ export class Atom<
 				| undefined;
 			if (DEV && !found) {
 				console.warn(
-					`[svelte-atoms] Atom("${this.name}").capability("${slotName(capabilityOrKey)}"): no atom capability registered.`
+					`[ixirjs] Atom("${this.name}").capability("${slotName(capabilityOrKey)}"): no atom capability registered.`
 				);
 			}
 			return found;
@@ -142,7 +142,7 @@ export class Atom<
 		const surface = this.get(key);
 		if (surface === undefined) {
 			throw new Error(
-				`[svelte-atoms] required atom capability "${slotName(key)}" has no surface on Atom("${this.name}").`
+				`[ixirjs] required atom capability "${slotName(key)}" has no surface on Atom("${this.name}").`
 			);
 		}
 		return surface;
@@ -298,7 +298,7 @@ export class Atom<
 			if (DEV) {
 				const verb = capability.compose ? 'decorated' : 'replaced';
 				console.debug(
-					`[svelte-atoms] Atom("${this.name}") atom capability "${slotName(capability.slot)}" ${verb}.`
+					`[ixirjs] Atom("${this.name}") atom capability "${slotName(capability.slot)}" ${verb}.`
 				);
 			}
 			return next;
@@ -384,7 +384,7 @@ export class Atom<
 		if (!DEV) return;
 		const owner = this.bond ? `${this.bond.name}/${this.name}` : this.name;
 		console.debug(
-			`[svelte-atoms] Atom("${owner}").role("${role}") was already projected for this context; skipping duplicate projection.`
+			`[ixirjs] Atom("${owner}").role("${role}") was already projected for this context; skipping duplicate projection.`
 		);
 	}
 
@@ -392,7 +392,7 @@ export class Atom<
 		if (!DEV || behaviors.length > 0) return;
 		const owner = this.bond ? `${this.bond.name}/${this.name}` : this.name;
 		console.warn(
-			`[svelte-atoms] Atom("${owner}").role("${role}"): no capability responds to this role. If intentional, ignore.`
+			`[ixirjs] Atom("${owner}").role("${role}"): no capability responds to this role. If intentional, ignore.`
 		);
 	}
 }
@@ -475,7 +475,7 @@ function atomCapabilityValidationMessages<
 
 	if (!setupConsumed && capabilities.some((capability) => capability.setup)) {
 		messages.push(
-			`[svelte-atoms] Atom("${atomName}") registered atom capabilities with setup() but setupCapabilities() was never called — their atom setup effects will not run.`
+			`[ixirjs] Atom("${atomName}") registered atom capabilities with setup() but setupCapabilities() was never called — their atom setup effects will not run.`
 		);
 	}
 
@@ -527,7 +527,7 @@ function atomCapabilityRequirementMessages<
 	for (const need of capability.requires ?? []) {
 		if (!slots.has(need)) {
 			messages.push(
-				`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" requires slot "${slotName(need)}", which is not registered.`
+				`[ixirjs] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" requires slot "${slotName(need)}", which is not registered.`
 			);
 		}
 	}
@@ -564,7 +564,7 @@ function atomCapabilitySlotConflictMessages<
 	const owner = slotOwners.get(conflict);
 	if (!owner || owner === capability) return [];
 	return [
-		`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with registered atom capability slot "${slotName(conflict)}".`
+		`[ixirjs] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with registered atom capability slot "${slotName(conflict)}".`
 	];
 }
 
@@ -582,7 +582,7 @@ function atomCapabilityProjectConflictMessages<
 	if (owners.length === 0) return [];
 	const ownerNames = owners.map((owner) => `"${atomCapabilityLabel(owner)}"`).join(', ');
 	return [
-		`[svelte-atoms] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with projection "${conflict}" from ${ownerNames}.`
+		`[ixirjs] Atom("${atomName}") capability "${atomCapabilityLabel(capability)}" conflicts with projection "${conflict}" from ${ownerNames}.`
 	];
 }
 

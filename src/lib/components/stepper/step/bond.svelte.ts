@@ -1,11 +1,11 @@
 import { StepperBond, type IStepper } from '../bond.svelte';
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 
 // -----------------------------------------------------------------------------
 // Internal types
@@ -39,11 +39,11 @@ export type StepBondElements = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const STEP_ROOT = sharedCapabilityKey<void>('@svelte-atoms/step:root');
-const STEP_INDICATOR = sharedCapabilityKey<void>('@svelte-atoms/step:indicator');
-const STEP_HEADER = sharedCapabilityKey<void>('@svelte-atoms/step:header');
-const STEP_BODY = sharedCapabilityKey<void>('@svelte-atoms/step:body');
-const STEP_SEPARATOR = sharedCapabilityKey<void>('@svelte-atoms/step:separator');
+const STEP_ROOT = sharedCapabilityKey<void>('@ixirjs/step:root');
+const STEP_INDICATOR = sharedCapabilityKey<void>('@ixirjs/step:indicator');
+const STEP_HEADER = sharedCapabilityKey<void>('@ixirjs/step:header');
+const STEP_BODY = sharedCapabilityKey<void>('@ixirjs/step:body');
+const STEP_SEPARATOR = sharedCapabilityKey<void>('@ixirjs/step:separator');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

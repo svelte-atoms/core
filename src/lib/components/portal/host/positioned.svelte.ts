@@ -1,4 +1,4 @@
-import { type BondElements } from '$svelte-atoms/core/shared/bond';
+import { type BondElements } from '$ixirjs/ui/shared/bond';
 
 export type PositionedOverlayElements = BondElements & {
 	trigger?: HTMLElement;

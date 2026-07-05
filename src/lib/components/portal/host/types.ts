@@ -1,4 +1,4 @@
-import type { Bond, BondStateProps, BondVirtualElement } from '$svelte-atoms/core/shared/bond';
+import type { Bond, BondStateProps, BondVirtualElement } from '$ixirjs/ui/shared/bond';
 
 // Minimal bond shape overlay capabilities depend on. Migrated overlays expose lifecycle on the
 // Bond; legacy overlays can satisfy this by delegating to their state during their migration slice.

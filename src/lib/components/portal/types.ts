@@ -1,9 +1,9 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
+import type { Factory } from '$ixirjs/ui/types';
 import type { PortalBond } from './bond.svelte';
-import type { RootPortals } from '$svelte-atoms/core/components/root/root.svelte';
-import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
+import type { RootPortals } from '$ixirjs/ui/components/root/root.svelte';
+import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
 
 export interface PortalSnippetProps extends SnippetProps {
 	portal: PortalBond;

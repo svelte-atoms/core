@@ -1,9 +1,9 @@
 import type { Component, Snippet } from 'svelte';
-import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
+import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
 import type { HtmlElementProps, ElementType } from '../element/types';
-import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
-import type { Bond } from '$svelte-atoms/core/shared';
-import type { VariantDefinition } from '$svelte-atoms/core/utils';
+import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
+import type { Bond } from '$ixirjs/ui/shared';
+import type { VariantDefinition } from '$ixirjs/ui/utils';
 import type { LifecycleAttachment } from './lifecycle.svelte';
 import type { ExplicitBase } from './render-target';
 

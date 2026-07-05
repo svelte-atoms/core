@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { Stack } from '../stack';
 	import { TabsBodyAtom, TabsBond } from './bond.svelte';
 	import type { TabsBodyProps } from './types';

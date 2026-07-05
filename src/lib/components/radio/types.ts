@@ -1,5 +1,5 @@
 import { type Component, type Snippet } from 'svelte';
-import { type HtmlAtomProps, type SnippetProps } from '$svelte-atoms/core/components/atom';
+import { type HtmlAtomProps, type SnippetProps } from '$ixirjs/ui/components/atom';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface RadioSnippetProps extends SnippetProps {}

@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { clickout } from '$svelte-atoms/core/attachments';
-	import { containsTarget } from '$svelte-atoms/core/utils/dom.svelte';
+	import { clickout } from '$ixirjs/ui/attachments';
+	import { containsTarget } from '$ixirjs/ui/utils/dom.svelte';
 	import type { Base } from '../atom';
 	import type { HtmlElementTagName } from '../element';
 	import { popoverNode, type PopoverBond, type PopoverContentProps } from '../popover';

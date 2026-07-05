@@ -1,6 +1,6 @@
-import { Atom } from '$svelte-atoms/core/shared';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+import { Atom } from '$ixirjs/ui/shared';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
 import type { CalendarBondProps } from './bond.svelte';
 import type { Day } from './types';
 

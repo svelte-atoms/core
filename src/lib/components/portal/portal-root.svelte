@@ -7,10 +7,10 @@
 		mergeAtomProps,
 		type ElementType,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import type { Factory } from '$svelte-atoms/core/types';
+	} from '$ixirjs/ui/components/atom';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import type { Factory } from '$ixirjs/ui/types';
 	import type { PortalBondProps } from './bond.svelte';
 
 	type Element = ElementType<E>;

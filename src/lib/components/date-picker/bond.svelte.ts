@@ -5,10 +5,10 @@ import {
 	PopoverContentAtom,
 	type PopoverDomElements,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/components/popover/bond.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
 import type { CalendarBondProps } from '../calendar/bond.svelte';
 
 // -----------------------------------------------------------------------------

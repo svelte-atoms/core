@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { isBefore, isSameDay, isWithinInterval } from 'date-fns';
-	import { cn } from '$svelte-atoms/core/utils';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { cn } from '$ixirjs/ui/utils';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
 	import { mergePresetProps, HtmlAtom } from '../atom';

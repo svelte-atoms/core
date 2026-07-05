@@ -2,17 +2,17 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
 	shouldSkipPolicy,
 	type PolicyGuard,
 	type SwipeDirection
-} from '$svelte-atoms/core/shared/capability/models/interaction-policies/shared';
+} from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const REORDER_DRAG_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:reorder-drag');
-export const LONG_PRESS_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:long-press');
-export const SWIPE_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:swipe');
+export const REORDER_DRAG_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:reorder-drag');
+export const LONG_PRESS_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:long-press');
+export const SWIPE_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:swipe');
 
 export interface ReorderDragPolicyOptions {
 	role?: string;

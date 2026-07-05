@@ -4,8 +4,8 @@ import Probe, {
 	capturedStepBond,
 	capturedStepperBond,
 	resetCapturedBonds
-} from '$svelte-atoms/core/test/components/stepper/stepper-atom-probe.test.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/test/components/stepper/stepper-atom-probe.test.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import { StepperBond, StepperRootAtom } from './bond.svelte';
 import {
 	StepBodyAtom,

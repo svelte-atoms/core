@@ -2,13 +2,13 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
-import { INPUT } from '$svelte-atoms/core/shared/capability/models/input.svelte';
+} from '$ixirjs/ui/shared/bond';
+import { INPUT } from '$ixirjs/ui/shared/capability/models/input.svelte';
 import { isTopOverlay, useEscapeStack } from './escape-stack.svelte';
 import type { OverlayView, EscapeOutcome } from '../types';
 import { closeOverlay, overlayIsDisabled } from './overlay-view';
 
-export const ESCAPE = sharedCapabilityKey<EscapeHandler>('@svelte-atoms/cap:escape');
+export const ESCAPE = sharedCapabilityKey<EscapeHandler>('@ixirjs/cap:escape');
 
 export type { EscapeOutcome };
 

@@ -1,6 +1,6 @@
-# shadcn-svelte ↔ @svelte-atoms/core comparison
+# shadcn-svelte ↔ @ixirjs/ui comparison
 
-A running, iterative comparison (one summary per loop run) that mines shadcn-svelte for strengths to adopt and limitations to avoid, in order to improve @svelte-atoms/core.
+A running, iterative comparison (one summary per loop run) that mines shadcn-svelte for strengths to adopt and limitations to avoid, in order to improve @ixirjs/ui.
 
 ## Index
 

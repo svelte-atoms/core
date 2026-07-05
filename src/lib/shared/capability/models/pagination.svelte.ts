@@ -23,7 +23,7 @@ export interface PaginationModel {
 	previousPage(): void;
 }
 
-export const PAGINATION = sharedCapabilityKey<PaginationModel>('@svelte-atoms/cap:pagination');
+export const PAGINATION = sharedCapabilityKey<PaginationModel>('@ixirjs/cap:pagination');
 
 export function createPagination(backing: PaginationBacking): PaginationModel {
 	const model: PaginationModel = {

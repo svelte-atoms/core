@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CalendarDay from './calendar-day.svelte';
 	import { CalendarBond } from './bond.svelte';
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	const calendarBond = CalendarBond.get();

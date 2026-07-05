@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   'date-picker': () => ({ class: 'inline-block' }),
@@ -38,8 +38,8 @@ export const metadata = {
 		'A composed overlay that anchors a Calendar to a trigger. Supports single-date and range selection, min/max bounds, and configurable placement.',
 	componentType: 'compound' as const,
 	status: 'beta' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { DatePicker } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { DatePicker } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'DatePicker' }],
 	useCases,
 	examples: {

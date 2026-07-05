@@ -4,7 +4,7 @@ _Date: 2026-06-22 · Focus: svelte-atoms's JS-driven `motion` (Framer Motion van
 
 ## The two philosophies
 
-|                       | shadcn-svelte                                                                           | @svelte-atoms/core                                                                                   |
+|                       | shadcn-svelte                                                                           | @ixirjs/ui                                                                                   |
 | --------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Engine                | **CSS-only**: `tailwindcss-animate` utilities + `data-state="open\|closed"` + keyframes | **JS**: `motion ^12` (Framer Motion `animate`) at 17 sites; 6 component `motion.svelte.ts` factories |
 | Runtime cost          | ~0 JS                                                                                   | ships Framer Motion (~tens of KB), paid even if unused                                               |

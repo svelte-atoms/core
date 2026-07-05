@@ -2,15 +2,15 @@
 	import {
 		DataGridBond,
 		type DataGridBondProps
-	} from '$svelte-atoms/core/components/datagrid/bond.svelte';
+	} from '$ixirjs/ui/components/datagrid/bond.svelte';
 	import {
 		DataGridColumnBond,
 		type DataGridColumnBondProps
-	} from '$svelte-atoms/core/components/datagrid/column/bond.svelte';
+	} from '$ixirjs/ui/components/datagrid/column/bond.svelte';
 	import {
 		DataGridRowBond,
 		type DataGridRowBondProps
-	} from '$svelte-atoms/core/components/datagrid/row/bond.svelte';
+	} from '$ixirjs/ui/components/datagrid/row/bond.svelte';
 
 	export let capturedGrid: DataGridBond | undefined;
 	export let capturedHeaderRow: DataGridRowBond | undefined;
@@ -28,7 +28,7 @@
 </script>
 
 <script lang="ts">
-	import { DataGrid } from '$svelte-atoms/core/components/datagrid';
+	import { DataGrid } from '$ixirjs/ui/components/datagrid';
 
 	function captureGrid(props: DataGridBondProps): DataGridBond {
 		capturedGrid = DataGridBond.create(props);

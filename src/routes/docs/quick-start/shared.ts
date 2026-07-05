@@ -27,7 +27,7 @@ export const metadata = {
 			step: 1,
 			title: 'Install Package',
 			description:
-				'Install @svelte-atoms/core using your preferred package manager (npm, pnpm, yarn, or bun)'
+				'Install @ixirjs/ui using your preferred package manager (npm, pnpm, yarn, or bun)'
 		},
 		{
 			step: 2,

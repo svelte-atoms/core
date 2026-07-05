@@ -1,25 +1,25 @@
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import {
 	errorMessageLink,
 	labelledControl
-} from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+} from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 import {
 	createValidation,
 	validationCapability,
 	type ValidationError,
 	type ValidationModel,
 	type ValidationResult
-} from '$svelte-atoms/core/shared/capability/models/validation.svelte';
+} from '$ixirjs/ui/shared/capability/models/validation.svelte';
 import {
 	createStatus,
 	statusCapability
-} from '$svelte-atoms/core/shared/capability/models/status.svelte';
+} from '$ixirjs/ui/shared/capability/models/status.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -253,7 +253,7 @@ type FieldBondView = FieldBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const FIELD_ROOT = sharedCapabilityKey<void>('@svelte-atoms/field:root');
+const FIELD_ROOT = sharedCapabilityKey<void>('@ixirjs/field:root');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
 	import { TabBond, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
 	import { type Snippet } from 'svelte';

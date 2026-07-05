@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { setRadioGroupContext, type RadioGroupContext } from './context';
-	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 
 	let {
 		class: klass = '',

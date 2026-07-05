@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { Factory } from '$ixirjs/ui/types';
 import type { SidebarBond } from './bond.svelte';
 import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { ZIndexInput } from '../portal';

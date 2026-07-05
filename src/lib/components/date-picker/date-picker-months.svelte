@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import { animate } from '$svelte-atoms/core/shared';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
+	import { animate } from '$ixirjs/ui/shared';
 	import { getYear, getMonth, setMonth } from 'date-fns';
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { HtmlAtom } from '../atom';
 	import { DatePickerBond } from './bond.svelte';
 	import type { DatePickerMonthsProps } from './types';

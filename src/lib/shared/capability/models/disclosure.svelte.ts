@@ -22,10 +22,10 @@ export interface DisclosureBacking {
 	set(open: boolean): void;
 }
 
-export const DISCLOSURE = sharedCapabilityKey<Disclosure>('@svelte-atoms/cap:disclosure');
-export const DISCLOSURE_TRIGGER = sharedCapabilityKey<void>('@svelte-atoms/cap:disclosure-trigger');
-export const DISCLOSURE_CLOSE = sharedCapabilityKey<void>('@svelte-atoms/cap:disclosure-close');
-export const DISCLOSURE_TOGGLE = sharedCapabilityKey<void>('@svelte-atoms/cap:disclosure-toggle');
+export const DISCLOSURE = sharedCapabilityKey<Disclosure>('@ixirjs/cap:disclosure');
+export const DISCLOSURE_TRIGGER = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-trigger');
+export const DISCLOSURE_CLOSE = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-close');
+export const DISCLOSURE_TOGGLE = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-toggle');
 
 export type DisclosureActivationAction = 'open' | 'close' | 'toggle';
 export type DisclosureActivationEvent = 'click' | 'pointerdown' | false;

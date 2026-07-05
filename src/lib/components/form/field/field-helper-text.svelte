@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { FieldBond, FieldDescriptionAtom } from './bond.svelte';
 	import type { FieldTextProps } from '../types';
 

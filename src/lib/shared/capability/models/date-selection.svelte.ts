@@ -25,7 +25,7 @@ export interface DateSelectionModel {
 }
 
 export const DATE_SELECTION = sharedCapabilityKey<DateSelectionModel>(
-	'@svelte-atoms/cap:date-selection'
+	'@ixirjs/cap:date-selection'
 );
 
 export function createDateSelection(backing: DateSelectionBacking): DateSelectionModel {

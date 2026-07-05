@@ -2,8 +2,8 @@
 	lang="ts"
 	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { setDatagridHeaderContext } from './context';
 	import { DataGridBond, DataGridHeaderAtom } from './bond.svelte';
 	import type { DatagridHeaderProps } from './types';

@@ -3,7 +3,7 @@ import {
 	sharedCapabilityKey,
 	type Capability,
 	type CapabilityMetadata
-} from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/bond';
 import { closeOnEscape, type EscapeHandler } from '../policies/escape.svelte';
 import {
 	backdropPressPolicy,
@@ -17,7 +17,7 @@ export type DismissibleSurfaceCapabilityBundle = readonly Capability[] & {
 };
 
 export const DISMISSIBLE_SURFACE = sharedCapabilityKey<readonly Capability[]>(
-	'@svelte-atoms/cap:focused:dismissible-surface'
+	'@ixirjs/cap:focused:dismissible-surface'
 );
 
 export interface DismissibleSurfaceCapabilityOptions {

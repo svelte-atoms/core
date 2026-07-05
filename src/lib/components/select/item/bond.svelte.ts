@@ -1,10 +1,10 @@
-import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import { nanoid } from 'nanoid';
 import type { SelectBond } from '../bond.svelte';
 
@@ -23,7 +23,7 @@ export type SelectItemAtomProps<T = unknown> = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const SELECT_ITEM = sharedCapabilityKey<void>('@svelte-atoms/select:item-node');
+const SELECT_ITEM = sharedCapabilityKey<void>('@ixirjs/select:item-node');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

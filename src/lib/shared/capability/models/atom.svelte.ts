@@ -10,12 +10,12 @@ export type AtomValue<T> = T | ((node: AtomHost, bond: Bond | undefined) => T);
 export type AtomElement = Element | BondVirtualElement;
 export type AtomTeardown = Disposable | (() => void) | void;
 
-export const ELEMENT_REF = sharedCapabilityKey<void>('@svelte-atoms/atom:element-ref');
-export const PRESSABLE = sharedCapabilityKey<void>('@svelte-atoms/atom:pressable');
-export const FOCUSABLE = sharedCapabilityKey<void>('@svelte-atoms/atom:focusable');
-export const DATA_STATE = sharedCapabilityKey<void>('@svelte-atoms/atom:data-state');
-export const ARIA_ROLE = sharedCapabilityKey<void>('@svelte-atoms/atom:aria-role');
-export const MOTION = sharedCapabilityKey<void>('@svelte-atoms/atom:motion');
+export const ELEMENT_REF = sharedCapabilityKey<void>('@ixirjs/atom:element-ref');
+export const PRESSABLE = sharedCapabilityKey<void>('@ixirjs/atom:pressable');
+export const FOCUSABLE = sharedCapabilityKey<void>('@ixirjs/atom:focusable');
+export const DATA_STATE = sharedCapabilityKey<void>('@ixirjs/atom:data-state');
+export const ARIA_ROLE = sharedCapabilityKey<void>('@ixirjs/atom:aria-role');
+export const MOTION = sharedCapabilityKey<void>('@ixirjs/atom:motion');
 
 export type ElementRefCallback = (
 	element: AtomElement | undefined,

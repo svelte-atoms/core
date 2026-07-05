@@ -1,4 +1,4 @@
-import { prefersReducedMotion } from '$svelte-atoms/core/utils/dom.svelte';
+import { prefersReducedMotion } from '$ixirjs/ui/utils/dom.svelte';
 
 export type Easing = string | readonly [number, number, number, number];
 

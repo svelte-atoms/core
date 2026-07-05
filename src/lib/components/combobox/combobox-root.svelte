@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ComboboxRootProps } from './types';
-	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
+	import { bindBond, useCapabilities } from '$ixirjs/ui/shared';
 	import { ComboboxBond, type ComboboxBondProps } from './bond.svelte';
 
 	let {

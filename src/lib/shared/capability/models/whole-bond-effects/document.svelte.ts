@@ -2,9 +2,9 @@ import {
 	defineEffectCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 import {
 	firstElement,
 	isEnabled,
@@ -15,16 +15,16 @@ import {
 	type DocumentSource,
 	type EffectGuard,
 	type ElementSource
-} from '$svelte-atoms/core/shared/capability/models/whole-bond-effects/shared';
+} from '$ixirjs/ui/shared/capability/models/whole-bond-effects/shared';
 
 export const OUTSIDE_PRESS_LISTENER = sharedCapabilityKey<OutsidePressListenerSurface>(
-	'@svelte-atoms/cap:outside-press-listener'
+	'@ixirjs/cap:outside-press-listener'
 );
 export const BODY_SCROLL_LOCK = sharedCapabilityKey<BodyScrollLockSurface>(
-	'@svelte-atoms/cap:body-scroll-lock'
+	'@ixirjs/cap:body-scroll-lock'
 );
 export const INERT_SIBLINGS = sharedCapabilityKey<InertSiblingsSurface>(
-	'@svelte-atoms/cap:inert-siblings'
+	'@ixirjs/cap:inert-siblings'
 );
 
 export interface OutsidePressListenerOptions {

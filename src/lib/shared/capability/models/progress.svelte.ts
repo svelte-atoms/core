@@ -17,7 +17,7 @@ export interface ProgressValueModel {
 }
 
 export const PROGRESS_VALUE = sharedCapabilityKey<ProgressValueModel>(
-	'@svelte-atoms/cap:progress-value'
+	'@ixirjs/cap:progress-value'
 );
 
 export function createProgressValue(backing: ProgressValueBacking): ProgressValueModel {

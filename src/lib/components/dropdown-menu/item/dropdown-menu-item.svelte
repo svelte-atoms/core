@@ -3,7 +3,7 @@
 	import { DropdownMenuBond } from '../bond.svelte';
 	import type { DropdownMenuItemProps } from './types';
 	import { List } from '../../list';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	const menu = DropdownMenuBond.getOrThrow(
 		'<DropdownMenuItem> must be used within a <DropdownMenu>.'

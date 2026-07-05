@@ -4,8 +4,8 @@ import Probe, {
 	capturedTabBond,
 	capturedTabsBond,
 	resetCapturedBonds
-} from '$svelte-atoms/core/test/components/tabs/tabs-atom-probe.test.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/test/components/tabs/tabs-atom-probe.test.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import { TabsBodyAtom, TabsBond, TabsHeaderAtom, TabsRootAtom } from './bond.svelte';
 import { TabBodyAtom, TabBond, TabDescriptionAtom, TabHeaderAtom } from './tab/bond.svelte';
 

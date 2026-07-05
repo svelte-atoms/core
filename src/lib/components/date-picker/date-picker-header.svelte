@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
 	import { HtmlAtom } from '../atom';
 	import { DatePickerBond } from './bond.svelte';
 	import { CalendarBond } from '../calendar/bond.svelte';

@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import Probe, {
 	capturedBond,
 	resetCapturedBond
-} from '$svelte-atoms/core/test/components/portal/portal-atom-probe.test.svelte';
+} from '$ixirjs/ui/test/components/portal/portal-atom-probe.test.svelte';
 import { PortalBond, PortalInnerAtom, PortalRootAtom } from './bond.svelte';
 
 describe('Portal component-owned Atoms', () => {

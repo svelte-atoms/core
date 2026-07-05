@@ -3,12 +3,12 @@
 </script>
 
 <script lang="ts">
-	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { ActivePortal, Portals } from '$svelte-atoms/core/components/portal';
-	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
-	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
+	import { cn, defineState, defineProperty } from '$ixirjs/ui/utils';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { ActivePortal, Portals } from '$ixirjs/ui/components/portal';
+	import { PortalHost } from '$ixirjs/ui/components/portal/host';
+	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { HtmlElement, SvgElement } from '$ixirjs/ui/components/element';
 	import { RootBond } from './bond.svelte';
 	import type { RootProps } from './types';
 
@@ -34,7 +34,7 @@
 	const renderers = defineState<Renderers>([
 		defineProperty('html', () => {
 			if (!html) {
-				import('$svelte-atoms/core/components/element/html-element.svelte').then((mod) => {
+				import('$ixirjs/ui/components/element/html-element.svelte').then((mod) => {
 					html = mod.default;
 				});
 			}
@@ -43,7 +43,7 @@
 		}),
 		defineProperty('svg', () => {
 			if (!svg) {
-				import('$svelte-atoms/core/components/element/svg-element.svelte').then((mod) => {
+				import('$ixirjs/ui/components/element/svg-element.svelte').then((mod) => {
 					svg = mod.default;
 				});
 			}

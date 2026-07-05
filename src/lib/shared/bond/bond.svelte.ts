@@ -98,7 +98,7 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 			const duplicate = this.#nodes.values().find((registration) => registration.key === key)?.node;
 			if (duplicate && duplicate !== node) {
 				console.warn(
-					`[svelte-atoms] Bond("${this.name}").register("${key}") received multiple nodes for a single-node slot. Use { cardinality: 'many' } when this is intentional.`
+					`[ixirjs] Bond("${this.name}").register("${key}") received multiple nodes for a single-node slot. Use { cardinality: 'many' } when this is intentional.`
 				);
 			}
 		}
@@ -226,7 +226,7 @@ function requireBondContext<T extends Bond>(cls: BondClass<T>, message?: string)
 	const bond = getBondContext(cls);
 	if (!bond) {
 		throw new Error(
-			message ?? '[svelte-atoms] Bond context missing: component must be used within its provider.'
+			message ?? '[ixirjs] Bond context missing: component must be used within its provider.'
 		);
 	}
 	return bond;

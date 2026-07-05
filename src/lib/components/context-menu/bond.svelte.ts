@@ -2,8 +2,8 @@ import {
 	DropdownMenuBond,
 	DropdownMenuBondBase,
 	type DropdownMenuBondProps
-} from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import { defineBond, type BondOf, type BondSpec } from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
+import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
 
 // -----------------------------------------------------------------------------
 // Public types

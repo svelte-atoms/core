@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { PopoverDialogBond, type PopoverDialogBondProps } from './bond.svelte';
 import { PopoverTriggerAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
 import { DialogContentAtom, DialogRootAtom, DialogTitleAtom } from '../dialog/bond.svelte';
-import { FOCUS } from '$svelte-atoms/core/components/portal/host';
-import type { Preset } from '$svelte-atoms/core/context';
+import { FOCUS } from '$ixirjs/ui/components/portal/host';
+import type { Preset } from '$ixirjs/ui/context';
 
 function makeBond(initial: Partial<PopoverDialogBondProps> = {}) {
 	const props = $state<PopoverDialogBondProps>({ open: false, disabled: false, ...initial });

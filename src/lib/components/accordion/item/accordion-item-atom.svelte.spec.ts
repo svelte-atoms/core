@@ -3,8 +3,8 @@ import { render } from 'vitest-browser-svelte';
 import Probe, {
 	capturedBond,
 	resetCapturedBond
-} from '$svelte-atoms/core/test/components/accordion/item/accordion-item-atom-probe.test.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/test/components/accordion/item/accordion-item-atom-probe.test.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	AccordionItemBodyAtom,
 	AccordionItemBond,
@@ -44,13 +44,13 @@ describe('AccordionItem component-owned Atoms', () => {
 		expect(parent?.items.get('one')).toBe(bond);
 
 		expect(header?.describeCapabilities().map((cap) => cap.description)).toContain(
-			'@svelte-atoms/accordion-item:header'
+			'@ixirjs/accordion-item:header'
 		);
 		expect(body?.describeCapabilities().map((cap) => cap.description)).toContain(
-			'@svelte-atoms/accordion-item:body'
+			'@ixirjs/accordion-item:body'
 		);
 		expect(indicator?.describeCapabilities().map((cap) => cap.description)).toContain(
-			'@svelte-atoms/accordion-item:indicator'
+			'@ixirjs/accordion-item:indicator'
 		);
 
 		expect(header?.spread['aria-expanded']).toBe(true);

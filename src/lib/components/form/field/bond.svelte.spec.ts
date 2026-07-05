@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	FieldBond,
 	FieldControlAtom,
@@ -11,8 +11,8 @@ import {
 import {
 	VALIDATION,
 	type ValidationResult
-} from '$svelte-atoms/core/shared/capability/models/validation.svelte';
-import { STATUS } from '$svelte-atoms/core/shared/capability/models/status.svelte';
+} from '$ixirjs/ui/shared/capability/models/validation.svelte';
+import { STATUS } from '$ixirjs/ui/shared/capability/models/status.svelte';
 
 // Unit verification of the role stitch; FieldBond avoids getContext so it's constructable in tests.
 function makeField() {

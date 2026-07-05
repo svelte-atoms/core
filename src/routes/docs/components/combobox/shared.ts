@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   combobox: () => ({
@@ -111,8 +111,8 @@ export const metadata = {
 		'Flexible combobox with text input, dropdown list, single/multiple selection, filtering, and keyboard navigation.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Combobox } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Combobox } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Combobox' }],
 	useCases,
 	componentsSummary,

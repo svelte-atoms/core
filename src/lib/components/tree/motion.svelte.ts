@@ -1,4 +1,4 @@
-import { animate, DURATION, type Easing } from '$svelte-atoms/core/shared';
+import { animate, DURATION, type Easing } from '$ixirjs/ui/shared';
 import { TreeBond } from './bond.svelte';
 
 export type AnimateTreeBodyParams = {

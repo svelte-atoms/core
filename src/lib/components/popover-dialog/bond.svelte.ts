@@ -1,4 +1,4 @@
-import { fuse, type BondOf } from '$svelte-atoms/core/shared';
+import { fuse, type BondOf } from '$ixirjs/ui/shared';
 import { popoverSpec, PopoverTriggerAtom } from '../popover/bond.svelte';
 import {
 	DialogBond,

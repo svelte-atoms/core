@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
 	import type { SwitchProps } from './types';
 
 	let {

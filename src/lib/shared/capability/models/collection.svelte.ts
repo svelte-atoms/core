@@ -8,7 +8,7 @@ import {
 import { Collection } from '../../bond/collection.svelte';
 
 // Slot-key prefix for collections; collection('item') registers at slot key for 'collection:item'.
-const COLLECTION_SLOT_PREFIX = '@svelte-atoms/cap:collection:';
+const COLLECTION_SLOT_PREFIX = '@ixirjs/cap:collection:';
 
 // Parametric slot key per kind — Symbol.for so repeated calls (and duplicate library copies) resolve
 // to one key by identity, preserving find/last-wins semantics across the family.

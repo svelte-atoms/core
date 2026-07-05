@@ -1,7 +1,7 @@
 import { merge } from 'es-toolkit';
 import type { ClassValue } from 'svelte/elements';
-import { call } from '$svelte-atoms/core/utils/function';
-import type { PresetEntryRecord, PresetEntryValue } from '$svelte-atoms/core/context/preset.svelte';
+import { call } from '$ixirjs/ui/utils/function';
+import type { PresetEntryRecord, PresetEntryValue } from '$ixirjs/ui/context/preset.svelte';
 
 // Merges an ordered list of PresetEntryRecords into a single record.
 // class/compounds/attachments: concatenated; variants: deep-merged; defaults: shallow-merged; other fields: last wins.

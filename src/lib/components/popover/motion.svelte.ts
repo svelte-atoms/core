@@ -1,4 +1,4 @@
-import { animate } from '$svelte-atoms/core/shared';
+import { animate } from '$ixirjs/ui/shared';
 import { untrack } from 'svelte';
 import { getPopoverPosition, PopoverBond } from './bond.svelte';
 

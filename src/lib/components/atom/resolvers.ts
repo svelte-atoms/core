@@ -1,6 +1,6 @@
 import type { ClassValue } from 'svelte/elements';
-import type { Bond } from '$svelte-atoms/core/shared';
-import type { PresetEntryRecord } from '$svelte-atoms/core/context/preset.svelte';
+import type { Bond } from '$ixirjs/ui/shared';
+import type { PresetEntryRecord } from '$ixirjs/ui/context/preset.svelte';
 import type { ResolvedProps } from './utils/cache';
 import type { FoldedPresentation } from './utils/fold';
 import type { Variants } from './types';

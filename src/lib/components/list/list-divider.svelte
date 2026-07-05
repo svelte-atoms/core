@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import { Divider } from '$svelte-atoms/core/components/divider';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
+	import { Divider } from '$ixirjs/ui/components/divider';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
 
 	let {
 		class: klass = '',

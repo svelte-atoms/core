@@ -3,9 +3,9 @@ import { render } from 'vitest-browser-svelte';
 import Probe, {
 	capturedBond,
 	resetCapturedBond
-} from '$svelte-atoms/core/test/components/context-menu/context-menu-atom-probe.test.svelte';
+} from '$ixirjs/ui/test/components/context-menu/context-menu-atom-probe.test.svelte';
 import { ContextMenuBond } from './bond.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import { PopoverVirtualTriggerAtom } from '../popover';
 
 describe('ContextMenu component-owned Atoms', () => {

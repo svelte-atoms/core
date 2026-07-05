@@ -6,7 +6,7 @@ import {
 	bondContextKey,
 	type BondStateProps,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/bond';
 import {
 	adoptStateHost,
 	attachAccessor,
@@ -16,7 +16,7 @@ import {
 	resolveState,
 	stateProps,
 	warnPartCompositionConflicts
-} from '$svelte-atoms/core/shared/authoring/define-runtime';
+} from '$ixirjs/ui/shared/authoring/define-runtime';
 
 // bond: any lets atoms declare a narrower view without variance errors.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

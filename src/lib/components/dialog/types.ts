@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { PortalBond, ZIndexInput } from '$svelte-atoms/core/components/portal';
+import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
+import type { PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
 import type { DialogBond, DialogBondProps } from './bond.svelte';
 
 export interface DialogSnippetProps extends SnippetProps {

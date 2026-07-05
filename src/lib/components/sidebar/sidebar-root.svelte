@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { type Base } from '$svelte-atoms/core/components/atom';
-	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { type Base } from '$ixirjs/ui/components/atom';
+	import Teleport from '$ixirjs/ui/components/portal/teleport.svelte';
 	import { SidebarBond } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';

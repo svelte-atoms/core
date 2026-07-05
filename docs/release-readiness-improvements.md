@@ -2,7 +2,7 @@
 
 Date: 2026-06-28
 
-Assumption: "relate" means "release". This file records the product-owner and senior-engineer release-readiness pass for `@svelte-atoms/core`.
+Assumption: "relate" means "release". This file records the product-owner and senior-engineer release-readiness pass for `@ixirjs/ui`.
 
 ## Current Recommendation
 

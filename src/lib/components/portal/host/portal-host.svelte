@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { ActivePortal, Portal } from '$svelte-atoms/core/components/portal';
+	import { ActivePortal, Portal } from '$ixirjs/ui/components/portal';
 	import HtmlAtom from '../../atom/html-atom.svelte';
 	// import { OverlayBond } from './bond.svelte';
 

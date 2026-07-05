@@ -4,10 +4,10 @@
 	import { Button } from '../../button';
 	import { Avatar } from '../../avatar';
 	import { DataGrid as ADataGrid } from '../../datagrid';
-	import CopyIcon from '$svelte-atoms/core/icons/icon-copy.svelte';
-	import CloseIcon from '$svelte-atoms/core/icons/icon-close.svelte';
-	import MoreIcon from '$svelte-atoms/core/icons/icon-more-vert.svelte';
-	import ArrowIcon from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
+	import CopyIcon from '$ixirjs/ui/icons/icon-copy.svelte';
+	import CloseIcon from '$ixirjs/ui/icons/icon-close.svelte';
+	import MoreIcon from '$ixirjs/ui/icons/icon-more-vert.svelte';
+	import ArrowIcon from '$ixirjs/ui/icons/icon-arrow-down.svelte';
 	import { Icon } from '../../icon';
 
 	const { Story } = defineMeta({

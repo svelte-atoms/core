@@ -1,9 +1,9 @@
 import type { Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
-import type { ComponentBase, SnippetProps } from '$svelte-atoms/core/components/atom';
+import type { ComponentBase, SnippetProps } from '$ixirjs/ui/components/atom';
 import type { Day, CalendarRange } from '../calendar/types';
 import type { DatePickerBond } from './bond.svelte';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { Factory } from '$ixirjs/ui/types';
 
 // DatePicker Snippet Props
 export interface DatePickerSnippetProps extends SnippetProps {

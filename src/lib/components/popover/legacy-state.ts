@@ -1,7 +1,7 @@
 import type { ComputePositionReturn } from '@floating-ui/dom';
-import type { Atom } from '$svelte-atoms/core/shared/bond';
-import { overlayIsOpen } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
-import type { OverlayView } from '$svelte-atoms/core/components/portal/host';
+import type { Atom } from '$ixirjs/ui/shared/bond';
+import { overlayIsOpen } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import type { OverlayView } from '$ixirjs/ui/components/portal/host';
 
 type PopoverLegacyStateSurface = {
 	position?: ComputePositionReturn;

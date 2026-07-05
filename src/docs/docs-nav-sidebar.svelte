@@ -2,7 +2,7 @@
 	import type { PageContent } from './content-sidebar.svelte';
 	import ContentSidebar from './content-sidebar.svelte';
 	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
-	import { DURATION } from '$svelte-atoms/core';
+	import { DURATION } from '$ixirjs/ui';
 
 	type Props = {
 		data: PageContent[];

@@ -1,6 +1,6 @@
 <script lang="ts" module>
-	import type { DropdownMenuBond } from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-	import type { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
+	import type { DropdownMenuBond } from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
+	import type { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
 
 	export let capturedBond: DropdownMenuBond | undefined;
 
@@ -10,8 +10,8 @@
 </script>
 
 <script lang="ts">
-	import { Root } from '$svelte-atoms/core/components/root';
-	import { DropdownMenu } from '$svelte-atoms/core/components/dropdown-menu';
+	import { Root } from '$ixirjs/ui/components/root';
+	import { DropdownMenu } from '$ixirjs/ui/components/dropdown-menu';
 
 	function capture(bond: DropdownMenuBond | undefined): string {
 		capturedBond = bond;

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { closeOnEscape, ignoreEscape, clearThenClose } from './escape.svelte';
-import { INPUT } from '$svelte-atoms/core/shared';
+import { INPUT } from '$ixirjs/ui/shared';
 import type { OverlayView } from '../types';
 
 function mockBond(input?: { clear: () => boolean }) {

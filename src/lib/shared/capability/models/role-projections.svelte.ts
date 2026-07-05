@@ -5,12 +5,12 @@ export type AriaCurrentValue = boolean | 'page' | 'step' | 'location' | 'date' |
 export type ProjectionAccessor<T> = T | ((ctx: unknown, role: string) => T);
 
 export const ORIENTATION_PROJECTION = sharedCapabilityKey<void>(
-	'@svelte-atoms/cap:orientation-projection'
+	'@ixirjs/cap:orientation-projection'
 );
 export const DISABLED_PROJECTION = sharedCapabilityKey<void>(
-	'@svelte-atoms/cap:disabled-projection'
+	'@ixirjs/cap:disabled-projection'
 );
-export const CURRENT_PROJECTION = sharedCapabilityKey<void>('@svelte-atoms/cap:current-projection');
+export const CURRENT_PROJECTION = sharedCapabilityKey<void>('@ixirjs/cap:current-projection');
 
 export interface OrientationProjectionOptions {
 	roles?: readonly string[];

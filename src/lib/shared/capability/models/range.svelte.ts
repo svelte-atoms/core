@@ -26,7 +26,7 @@ export interface RangeValueModel {
 	decrement(amount?: number): void;
 }
 
-export const RANGE_VALUE = sharedCapabilityKey<RangeValueModel>('@svelte-atoms/cap:range-value');
+export const RANGE_VALUE = sharedCapabilityKey<RangeValueModel>('@ixirjs/cap:range-value');
 
 export function createRangeValue(backing: RangeValueBacking): RangeValueModel {
 	return {

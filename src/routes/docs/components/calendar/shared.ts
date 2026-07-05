@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   'calendar.root': () => ({ class: 'inline-block' }),
@@ -38,8 +38,8 @@ export const metadata = {
 		'A headless-ish calendar that owns month pivote and selection state. Compose Root + Header + Body + Day to render the grid; the bond drives navigation and selection.',
 	componentType: 'compound' as const,
 	status: 'beta' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Calendar } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Calendar } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Calendar' }],
 	useCases,
 	examples: {

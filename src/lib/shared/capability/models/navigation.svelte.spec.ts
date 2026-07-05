@@ -149,7 +149,7 @@ describe('capability introspection + requires (#6, #3)', () => {
 		new NavAtom(bond).role('container'); // first projection triggers the check
 
 		expect(warn).toHaveBeenCalledWith(
-			expect.stringContaining('requires slot "@svelte-atoms/cap:roving"')
+			expect.stringContaining('requires slot "@ixirjs/cap:roving"')
 		);
 		warn.mockRestore();
 	});

@@ -1,13 +1,13 @@
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import { DataGridBond, type IDataGrid } from '../bond.svelte';
 import { getDatagridHeaderContext } from '../context';
-import { rowColumnCellLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+import { rowColumnCellLink } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -32,7 +32,7 @@ type DataGridRowBondView = DataGridRowBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DATAGRID_ROW_ROOT = sharedCapabilityKey<void>('@svelte-atoms/datagrid-row:root');
+const DATAGRID_ROW_ROOT = sharedCapabilityKey<void>('@ixirjs/datagrid-row:root');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

@@ -1,9 +1,9 @@
 import type { Snippet } from 'svelte';
 import type { TransitionConfig } from 'svelte/transition';
 import type { DropdownMenuItemAtom } from './bond.svelte';
-import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { ClassValue } from '$ixirjs/ui/utils';
 import type { Base, HtmlAtomProps } from '../../atom';
-import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
+import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
 
 export interface DropdownMenuItemProps<
 	E extends keyof HTMLElementTagNameMap = 'div',

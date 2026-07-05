@@ -1,11 +1,11 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { DataGrid as DataGridCmp } from '..';
-	import { Select } from '$svelte-atoms/core/components/select';
-	import MoreVerticalIcon from '$svelte-atoms/core/icons/icon-more-vert.svelte';
-	import ArrowDownIcon from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { container } from '$svelte-atoms/core/runes/container.svelte';
+	import { Select } from '$ixirjs/ui/components/select';
+	import MoreVerticalIcon from '$ixirjs/ui/icons/icon-more-vert.svelte';
+	import ArrowDownIcon from '$ixirjs/ui/icons/icon-arrow-down.svelte';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import { container } from '$ixirjs/ui/runes/container.svelte';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/DataGrid',

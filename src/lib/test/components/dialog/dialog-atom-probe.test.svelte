@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { DialogBond } from '$svelte-atoms/core/components/dialog/bond.svelte';
+	import type { DialogBond } from '$ixirjs/ui/components/dialog/bond.svelte';
 
 	export let capturedBond: DialogBond | undefined;
 
@@ -9,8 +9,8 @@
 </script>
 
 <script lang="ts">
-	import { Root } from '$svelte-atoms/core/components/root';
-	import { Dialog } from '$svelte-atoms/core/components/dialog';
+	import { Root } from '$ixirjs/ui/components/root';
+	import { Dialog } from '$ixirjs/ui/components/dialog';
 
 	function capture(bond: DialogBond | undefined): string {
 		capturedBond = bond;

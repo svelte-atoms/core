@@ -3,8 +3,8 @@
 	import type { SelectItemProps } from './types';
 	import { SelectBond } from '../bond.svelte';
 	import { List } from '../../list';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const select = SelectBond.getOrThrow('<SelectItem> must be used within a <Select>.');
 

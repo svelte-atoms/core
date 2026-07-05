@@ -6,11 +6,11 @@
 		HtmlAtom,
 		type HtmlAtomProps,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import type { Override, Factory } from '$svelte-atoms/core/types';
+	} from '$ixirjs/ui/components/atom';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import type { Override, Factory } from '$ixirjs/ui/types';
 	import { FormBond, type FormProps } from './bond.svelte';
-	import type { PresetKey } from '$svelte-atoms/core/context/preset.svelte';
+	import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
 
 	// Available on both the renderless and renderfull branches (preset is otherwise only on the
 	// renderfull `HtmlAtomProps` side, and validator was undeclared).

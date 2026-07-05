@@ -1,6 +1,6 @@
-import { clickAction } from '$svelte-atoms/core/attachments/event.svelte';
-import { createBondAttachment } from '$svelte-atoms/core/components/internal/attachments.svelte';
-import { DISCLOSURE } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
+import { clickAction } from '$ixirjs/ui/attachments/event.svelte';
+import { createBondAttachment } from '$ixirjs/ui/components/internal/attachments.svelte';
+import { DISCLOSURE } from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
 import { SidebarBond } from './bond.svelte';
 
 export const slideover = createBondAttachment<SidebarBond>(SidebarBond);

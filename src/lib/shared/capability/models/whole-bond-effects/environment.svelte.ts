@@ -2,22 +2,22 @@ import {
 	defineEffectCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
 	listen,
 	resolveDocument,
 	resolveWindow,
 	type DocumentSource,
 	type WindowSource
-} from '$svelte-atoms/core/shared/capability/models/whole-bond-effects/shared';
+} from '$ixirjs/ui/shared/capability/models/whole-bond-effects/shared';
 
-export const MEDIA_QUERY = sharedCapabilityKey<MediaQuerySurface>('@svelte-atoms/cap:media-query');
+export const MEDIA_QUERY = sharedCapabilityKey<MediaQuerySurface>('@ixirjs/cap:media-query');
 export const REDUCED_MOTION = sharedCapabilityKey<MediaQuerySurface>(
-	'@svelte-atoms/cap:reduced-motion'
+	'@ixirjs/cap:reduced-motion'
 );
 export const POINTER_MODALITY = sharedCapabilityKey<PointerModalitySurface>(
-	'@svelte-atoms/cap:pointer-modality'
+	'@ixirjs/cap:pointer-modality'
 );
 
 export interface MediaQueryCapabilityOptions {

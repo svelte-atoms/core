@@ -1,6 +1,6 @@
-export * from '$svelte-atoms/core/shared/capability/models/interaction-policies/activation.svelte';
-export * from '$svelte-atoms/core/shared/capability/models/interaction-policies/gestures.svelte';
-export * from '$svelte-atoms/core/shared/capability/models/interaction-policies/pointer.svelte';
+export * from '$ixirjs/ui/shared/capability/models/interaction-policies/activation.svelte';
+export * from '$ixirjs/ui/shared/capability/models/interaction-policies/gestures.svelte';
+export * from '$ixirjs/ui/shared/capability/models/interaction-policies/pointer.svelte';
 export type {
 	DragAxis,
 	DragPolicyDetail,
@@ -8,4 +8,4 @@ export type {
 	PolicyGuard,
 	SwipeDirection,
 	TrackPressDetail
-} from '$svelte-atoms/core/shared/capability/models/interaction-policies/shared';
+} from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';

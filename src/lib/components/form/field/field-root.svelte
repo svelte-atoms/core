@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { onDestroy } from 'svelte';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
-	import { bindBond } from '$svelte-atoms/core/shared/bond/bind.svelte';
-	import { HtmlAtom, mergeAtomProps, type Base } from '$svelte-atoms/core/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { HtmlAtom, mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
 	import { FieldBond, FieldRootAtom, type FieldStateProps } from './bond.svelte';
 	import type { FieldRootProps } from '../types';
 	import { FormBond } from '../bond.svelte';

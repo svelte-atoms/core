@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { ToastBond } from './bond.svelte';
 	import type { ToastRootProps } from './types';
-	import { bindBond, createAtomInstance } from '$svelte-atoms/core/shared';
+	import { bindBond, createAtomInstance } from '$ixirjs/ui/shared';
 
 	let {
 		open = $bindable(true),

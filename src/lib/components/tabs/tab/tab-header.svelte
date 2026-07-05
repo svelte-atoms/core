@@ -3,9 +3,9 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { TabHeaderProps } from '../types';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { TabBond, TabHeaderAtom } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	const bond = TabBond.getOrThrow('TabHeader must be used within a Tab component.');
 

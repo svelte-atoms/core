@@ -1,5 +1,5 @@
 <script>
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
 	import { Input } from '../input';
 
 	let { class: klass = '', children, preset = undefined, ...restProps } = $props();

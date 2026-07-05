@@ -195,7 +195,7 @@ describe('Bond[Symbol.toStringTag] (ADR 0005 D1)', () => {
 
 describe('Bond[Symbol.hasInstance] (ADR 0005 D4)', () => {
 	// Simulate a bond from a duplicate package copy via a plain object carrying the registered brand symbol.
-	const BOND_BRAND = Symbol.for('@svelte-atoms/bond:brand');
+	const BOND_BRAND = Symbol.for('@ixirjs/bond:brand');
 	const fromOtherCopy = { [BOND_BRAND]: true };
 
 	it('recognises a normal bond as an instance of the base', () => {

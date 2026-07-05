@@ -2,9 +2,9 @@
 	import {
 		resolveControlPreset,
 		writeInputValue
-	} from '$svelte-atoms/core/components/input/shared';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import { InputBond } from '$svelte-atoms/core/components/input/bond.svelte';
+	} from '$ixirjs/ui/components/input/shared';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import { InputBond } from '$ixirjs/ui/components/input/bond.svelte';
 	import {
 		buildPhoneMasked,
 		deletePhoneDigitsFromCursor,
@@ -13,11 +13,11 @@
 		phoneDigitSlotKinds,
 		phoneMaskMaxDigits,
 		phoneOverlaySpans
-	} from '$svelte-atoms/core/components/input/phone-mask';
+	} from '$ixirjs/ui/components/input/phone-mask';
 	import type {
 		InputPhoneControlProps,
 		PhoneSpan as Span
-	} from '$svelte-atoms/core/components/input/types';
+	} from '$ixirjs/ui/components/input/types';
 
 	const bond = InputBond.get();
 

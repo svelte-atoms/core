@@ -1,9 +1,9 @@
-# @svelte-atoms/core
+# @ixirjs/ui
 
 Accessible Svelte 5 infrastructure for reusable component systems.
 
-[![npm version](https://img.shields.io/npm/v/@svelte-atoms/core.svg)](https://www.npmjs.com/package/@svelte-atoms/core)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/svelte-atoms/core)
+[![npm version](https://img.shields.io/npm/v/@ixirjs/ui.svg)](https://www.npmjs.com/package/@ixirjs/ui)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ixirjs/ui)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## What It Provides
@@ -18,7 +18,7 @@ Accessible Svelte 5 infrastructure for reusable component systems.
 
 ```svelte
 <script lang="ts">
-	import { Button, Popover } from '@svelte-atoms/core';
+	import { Button, Popover } from '@ixirjs/ui';
 </script>
 
 <Popover.Root>
@@ -30,16 +30,16 @@ Accessible Svelte 5 infrastructure for reusable component systems.
 ## Install
 
 ```bash
-npm install @svelte-atoms/core
+npm install @ixirjs/ui
 # or
-bun add @svelte-atoms/core
+bun add @ixirjs/ui
 ```
 
 ## Links
 
 - [Documentation](https://sacore.netlify.app/)
 - [Storybook](https://statuesque-boba-0fb888.netlify.app/)
-- [GitHub](https://github.com/svelte-atoms/core)
+- [GitHub](https://github.com/ixirjs/ui)
 
 ## Development
 
@@ -50,4 +50,4 @@ bun run build
 bun run check
 ```
 
-MIT © [Svelte Atoms](https://github.com/svelte-atoms)
+MIT © [Svelte Atoms](https://github.com/ixirjs)

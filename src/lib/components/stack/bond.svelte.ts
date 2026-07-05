@@ -1,5 +1,5 @@
-import { Bond, Atom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, Atom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import { tick, untrack } from 'svelte';
 
 // -----------------------------------------------------------------------------

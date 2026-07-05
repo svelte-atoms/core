@@ -1,4 +1,4 @@
-import { clickoutDrawer, Input, type Preset } from '$svelte-atoms/core';
+import { clickoutDrawer, Input, type Preset } from '$ixirjs/ui';
 import { createAttachmentKey } from 'svelte/attachments';
 
 const buttonVariants = () => ({

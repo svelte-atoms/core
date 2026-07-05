@@ -6,8 +6,8 @@
 	import type { AnySnippet, Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import { getPreset } from '$ixirjs/ui/context';
+	import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
 	import SnippetAdapter from './snippet.svelte';
 	import * as resolvers from './resolvers';
 	import {

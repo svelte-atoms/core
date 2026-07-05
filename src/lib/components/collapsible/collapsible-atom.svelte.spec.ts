@@ -3,8 +3,8 @@ import { render } from 'vitest-browser-svelte';
 import Probe, {
 	capturedBond,
 	resetCapturedBond
-} from '$svelte-atoms/core/test/components/collapsible/collapsible-atom-probe.test.svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+} from '$ixirjs/ui/test/components/collapsible/collapsible-atom-probe.test.svelte';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	CollapsibleBond,
 	CollapsibleBodyAtom,
@@ -51,13 +51,13 @@ describe('Collapsible component-owned Atoms', () => {
 				?.node('header')
 				?.describeCapabilities()
 				.map((cap) => cap.description)
-		).toContain('@svelte-atoms/collapsible:header');
+		).toContain('@ixirjs/collapsible:header');
 		expect(
 			bond
 				?.node('body')
 				?.describeCapabilities()
 				.map((cap) => cap.description)
-		).toContain('@svelte-atoms/collapsible:body');
+		).toContain('@ixirjs/collapsible:body');
 
 		unmount();
 
@@ -75,14 +75,14 @@ describe('Collapsible component-owned Atoms', () => {
 		}
 
 		expect(header.describeCapabilities().map((cap) => cap.description)).toContain(
-			'@svelte-atoms/collapsible:header'
+			'@ixirjs/collapsible:header'
 		);
 		expect(header.spread.role).toBe('button');
 		expect(header.spread.tabindex).toBe(-1);
 		expect(header.spread['aria-disabled']).toBe('true');
 
 		expect(body.describeCapabilities().map((cap) => cap.description)).toContain(
-			'@svelte-atoms/collapsible:body'
+			'@ixirjs/collapsible:body'
 		);
 		expect(body.spread.role).toBe('region');
 		expect(body.spread.inert).toBe(true);

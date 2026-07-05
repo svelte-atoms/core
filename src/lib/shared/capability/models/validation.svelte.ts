@@ -1,6 +1,6 @@
 import { defineCapability, sharedCapabilityKey, type Capability } from '../capability';
 
-export const VALIDATION = sharedCapabilityKey<ValidationModel>('@svelte-atoms/cap:validation');
+export const VALIDATION = sharedCapabilityKey<ValidationModel>('@ixirjs/cap:validation');
 
 export interface ValidationError {
 	path: (string | number)[];

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { mergeAtomProps } from '$svelte-atoms/core/components/atom';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
+	import { Input } from '$ixirjs/ui/components/input';
 	import { ComboboxBond, ComboboxControlAtom } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
-	import { INPUT } from '$svelte-atoms/core/shared';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { INPUT } from '$ixirjs/ui/shared';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	const bond = ComboboxBond.getOrThrow(
 		'ComboboxControl must be used within a Combobox'

@@ -2,8 +2,8 @@
 	import { DEV } from 'esm-env';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { TeleportProps } from './types';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import type { HtmlElementTagName, HtmlElementType } from '$ixirjs/ui/components/element';
 	import { PortalsBond, resolvePortal } from './portals';
 	import { port } from './port';
 
@@ -24,7 +24,7 @@
 	$effect(() => {
 		if (DEV && typeof portal === 'string' && !portalBond) {
 			console.warn(
-				`[svelte-atoms] <Teleport portal="${portal}">: no portal registered with this id; nothing is teleported.`
+				`[ixirjs] <Teleport portal="${portal}">: no portal registered with this id; nothing is teleported.`
 			);
 		}
 	});

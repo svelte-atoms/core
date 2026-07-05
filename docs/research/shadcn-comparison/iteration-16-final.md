@@ -1,4 +1,4 @@
-# Iteration 16 — FINAL synthesis: shadcn-svelte ↔ @svelte-atoms/core
+# Iteration 16 — FINAL synthesis: shadcn-svelte ↔ @ixirjs/ui
 
 _Date: 2026-06-22 · The capstone. A standalone consolidation of iterations 1–15. Read this alone for the full picture; the numbered iterations are the evidence._
 
@@ -6,7 +6,7 @@ _Date: 2026-06-22 · The capstone. A standalone consolidation of iterations 1–
 
 ## 1. The core difference in one paragraph
 
-shadcn-svelte and @svelte-atoms/core share the **same visual DNA** — identical oklch CSS-variable token contract, Tailwind, cva-style variants — but invert the philosophy. **shadcn ships source you vendor and own** (CLI copies ~50-line files into your repo; behavior comes from bits-ui; zero runtime deps; no package API to break). **svelte-atoms ships an installed, versioned package** with a class-based **Bond / BondState / legacy Bond-owned Atom / Capability** runtime, a context-driven per-slot **preset** theming layer, and a heavily-memoized presentation kernel.
+shadcn-svelte and @ixirjs/ui share the **same visual DNA** — identical oklch CSS-variable token contract, Tailwind, cva-style variants — but invert the philosophy. **shadcn ships source you vendor and own** (CLI copies ~50-line files into your repo; behavior comes from bits-ui; zero runtime deps; no package API to break). **svelte-atoms ships an installed, versioned package** with a class-based **Bond / BondState / legacy Bond-owned Atom / Capability** runtime, a context-driven per-slot **preset** theming layer, and a heavily-memoized presentation kernel.
 
 ## 2. The meta-pattern (the single most important finding)
 

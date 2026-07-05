@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   chip: () => ({
@@ -44,8 +44,8 @@ export const metadata = {
 		'A small inline element that renders a label with a dismissible close button. The default close button fires `onclose`, or supply a `closeButton` snippet to fully replace it.',
 	componentType: 'simple' as const,
 	status: 'beta' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Chip, ChipCloseButton } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Chip, ChipCloseButton } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Chip' }],
 	useCases,
 	examples: {

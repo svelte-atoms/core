@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SelectBond, SelectPlaceholderAtom } from './bond.svelte';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	const bond = SelectBond.get();
 

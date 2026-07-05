@@ -2,7 +2,7 @@
 
 **Status:** Historical design proposal, superseded by the current docs  
 **Date:** 2026-06-27  
-**Scope:** Conceptual architecture, terminology, behavior model, and migration plan for evolving `@svelte-atoms/core` from the current `Atom / Bond / BondState / legacy Bond-owned Atom` model into a capability-driven model centered on `Atom`, `Bond`, and `Capability`.
+**Scope:** Conceptual architecture, terminology, behavior model, and migration plan for evolving `@ixirjs/ui` from the current `Atom / Bond / BondState / legacy Bond-owned Atom` model into a capability-driven model centered on `Atom`, `Bond`, and `Capability`.
 
 > This file records the design discussion that led to the current model. Do not use it as the
 > public guide. Current docs use these terms: Atom Components create runtime Atoms, Bonds coordinate

@@ -2,20 +2,20 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/capability/capability';
-import type { Bond } from '$svelte-atoms/core/shared/bond';
-import { DISCLOSURE } from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
+} from '$ixirjs/ui/shared/capability/capability';
+import type { Bond } from '$ixirjs/ui/shared/bond';
+import { DISCLOSURE } from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
 import {
 	clearKnownSurfaces,
 	isDisabled,
 	shouldSkipPolicy,
 	type PolicyAction,
 	type PolicyGuard
-} from '$svelte-atoms/core/shared/capability/models/interaction-policies/shared';
+} from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const FOCUS_TRIGGER = sharedCapabilityKey<void>('@svelte-atoms/cap:focus-trigger');
-export const ACTIVATION_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:activation-policy');
-export const CLEAR_POLICY = sharedCapabilityKey<void>('@svelte-atoms/cap:clear-policy');
+export const FOCUS_TRIGGER = sharedCapabilityKey<void>('@ixirjs/cap:focus-trigger');
+export const ACTIVATION_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:activation-policy');
+export const CLEAR_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:clear-policy');
 
 export interface ActivationPolicyOptions {
 	role?: string;

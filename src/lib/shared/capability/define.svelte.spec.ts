@@ -23,8 +23,8 @@ import { useCapabilities } from './use.svelte';
 // escape hatch) folded into a Capability, plus the surface-access (#3/#4) and setup-guard (#5)
 // primitives it pairs with. These specs lock the seam the 9-issue pass introduced.
 
-const MODEL = sharedCapabilityKey<{ value: number }>('@svelte-atoms/test:dc:model');
-const DEP = sharedCapabilityKey<{ tag: string }>('@svelte-atoms/test:dc:dep');
+const MODEL = sharedCapabilityKey<{ value: number }>('@ixirjs/test:dc:model');
+const DEP = sharedCapabilityKey<{ tag: string }>('@ixirjs/test:dc:dep');
 
 class S extends BondState<BondStateProps> {
 	constructor() {

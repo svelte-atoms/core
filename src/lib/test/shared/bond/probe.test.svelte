@@ -8,9 +8,9 @@
 </script>
 
 <script lang="ts">
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond/use-atom.svelte';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond/use-atom.svelte';
 	import { untrack } from 'svelte';
-	import type { Bond } from '$svelte-atoms/core/shared/bond/bond.svelte';
+	import type { Bond } from '$ixirjs/ui/shared/bond/bond.svelte';
 
 	type ProbeProps = { bond: Bond; tick?: number };
 

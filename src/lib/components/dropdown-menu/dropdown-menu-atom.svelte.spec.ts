@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import Probe, {
 	capturedBond,
 	resetCapturedBond
-} from '$svelte-atoms/core/test/components/dropdown-menu/dropdown-menu-atom-probe.test.svelte';
+} from '$ixirjs/ui/test/components/dropdown-menu/dropdown-menu-atom-probe.test.svelte';
 import { DropdownMenuBond, DropdownMenuItemAtom as DropdownMenuSlotItemAtom } from './bond.svelte';
 import { DropdownMenuItemAtom as DropdownMenuRenderedItemAtom } from './item/bond.svelte';
 import { PopoverTailAtom, PopoverIndicatorAtom, PopoverOverlayAtom } from '../popover/bond.svelte';

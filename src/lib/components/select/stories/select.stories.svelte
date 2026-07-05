@@ -1,9 +1,9 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Select as ASelect, type SelectBond, type SelectSelection } from '..';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { Input } from '$ixirjs/ui/components/input';
 	import { flip } from 'svelte/animate';
-	import { openOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { openOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Select',

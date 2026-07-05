@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { mergePresetProps } from '$svelte-atoms/core/components/atom';
-	import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
-	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
+	import { mergePresetProps } from '$ixirjs/ui/components/atom';
+	import { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
+	import { Trigger } from '$ixirjs/ui/components/popover/atoms';
 	import {
 		closeOverlay,
 		openOverlay
-	} from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	} from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const popoverBond = PopoverBond.get();
 

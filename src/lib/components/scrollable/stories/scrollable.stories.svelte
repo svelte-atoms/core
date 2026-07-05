@@ -2,7 +2,7 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Scrollable as Scrollable_ } from '..';
 	import { ScrollableBond } from '../bond.svelte';
-	import { on } from '$svelte-atoms/core/attachments/event.svelte';
+	import { on } from '$ixirjs/ui/attachments/event.svelte';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Scrollable',

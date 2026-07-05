@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { animate } from '$svelte-atoms/core/shared';
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { animate } from '$ixirjs/ui/shared';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import IconArrowDown from '$ixirjs/ui/icons/icon-arrow-down.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { AccordionItemBond, AccordionItemIndicatorAtom } from './bond.svelte';
 	import type { AccordionItemIndicatorProps } from './types';
 

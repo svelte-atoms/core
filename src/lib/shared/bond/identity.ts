@@ -1,5 +1,5 @@
 // Symbol.for survives duplicate copies and HMR; forgeable by design, guards forks not adversaries.
-export const BOND_BRAND: unique symbol = Symbol.for('@svelte-atoms/bond:brand');
+export const BOND_BRAND: unique symbol = Symbol.for('@ixirjs/bond:brand');
 
 // OrdinaryHasInstance: exact prototype semantics for subclass checks, bypassed only at base Bond.
 export function ordinaryHasInstance(ctor: unknown, value: unknown): boolean {

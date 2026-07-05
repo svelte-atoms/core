@@ -2,7 +2,7 @@
 	import {
 		PortalBond,
 		type PortalBondProps
-	} from '$svelte-atoms/core/components/portal/bond.svelte';
+	} from '$ixirjs/ui/components/portal/bond.svelte';
 
 	export let capturedBond: PortalBond | undefined;
 
@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { Portal, Portals } from '$svelte-atoms/core/components/portal';
+	import { Portal, Portals } from '$ixirjs/ui/components/portal';
 
 	function captureFactory(props: PortalBondProps): PortalBond {
 		capturedBond = PortalBond.create(props);

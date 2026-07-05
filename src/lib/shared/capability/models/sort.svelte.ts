@@ -28,7 +28,7 @@ export interface SortModelOptions {
 	cycle?: readonly SortDirectionState[];
 }
 
-export const SORT = sharedCapabilityKey<SortModel>('@svelte-atoms/cap:sort');
+export const SORT = sharedCapabilityKey<SortModel>('@ixirjs/cap:sort');
 
 export function createSort(backing: SortBacking, options: SortModelOptions = {}): SortModel {
 	const cycle = options.cycle ?? ['asc', 'desc', undefined];

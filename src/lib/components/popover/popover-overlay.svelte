@@ -7,8 +7,8 @@
 		PopoverOverlayAtom,
 		popoverNode
 	} from './bond.svelte';
-	import { createAtomInstance, type Atom } from '$svelte-atoms/core/shared/bond';
-	import { overlayIsOpen } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
+	import { overlayIsOpen } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 	import type { PopoverOverlayProps } from './types';
 	import { untrack } from 'svelte';
 

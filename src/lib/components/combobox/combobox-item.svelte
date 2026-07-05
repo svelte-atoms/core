@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ComboboxBond } from './bond.svelte';
-	import { Item } from '$svelte-atoms/core/components/select/atoms';
-	import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
+	import { Item } from '$ixirjs/ui/components/select/atoms';
+	import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
 	const bond = ComboboxBond.getOrThrow(
 		'ComboboxItem must be used within a Combobox'

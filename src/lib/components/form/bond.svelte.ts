@@ -1,5 +1,5 @@
 import type { FieldBond } from './field/bond.svelte';
-import { bondContextKey, Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
+import { bondContextKey, Bond, type BondStateProps } from '$ixirjs/ui/shared/bond';
 
 // -----------------------------------------------------------------------------
 // Public types

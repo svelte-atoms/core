@@ -1,6 +1,6 @@
 import type { OverlayView } from '../types';
 import { FOCUS, type FocusPolicySurface } from './focus.svelte';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 import { overlayIsOpen, overlayNode } from './overlay-view';
 
 // State-reactive focus capture/restore for an overlay. Call once from the root component.

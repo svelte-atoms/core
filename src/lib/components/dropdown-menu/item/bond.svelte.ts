@@ -1,10 +1,10 @@
-import { closeOverlay } from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
-import { Atom } from '$svelte-atoms/core/shared/bond';
+import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 import { nanoid } from 'nanoid';
 import type { DropdownMenuBond } from '../bond.svelte';
 
@@ -22,7 +22,7 @@ export type DropdownMenuItemAtomProps = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@svelte-atoms/dropdown-menu:item-node');
+const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:item-node');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

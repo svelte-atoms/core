@@ -6,7 +6,7 @@ export { default as Root } from './popover-dialog-root.svelte';
 export { default as Content } from './popover-dialog-content.svelte';
 
 // Popover's trigger (won the `trigger` slot in the fusion) — click toggles, ARIA = dialog.
-export { Trigger } from '../popover/atoms';
+export { Trigger, Tail } from '../popover/atoms';
 
 // Dialog's modal parts (won their slots) — rendered inside Content's backdrop.
 export { Header, Body, Footer, CloseButton } from '../dialog/atoms';

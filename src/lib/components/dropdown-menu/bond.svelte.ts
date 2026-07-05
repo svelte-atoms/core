@@ -6,27 +6,27 @@ import {
 	type PopoverBondProps,
 	type PopoverDomElements,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
+} from '$ixirjs/ui/components/popover/bond.svelte';
 import {
 	closeOverlay,
 	overlayIsOpen
-} from '$svelte-atoms/core/components/portal/host/policies/overlay-view';
-import { Atom, defineAtom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf, type BondSpec } from '$svelte-atoms/core/shared';
+} from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import { Atom, defineAtom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
 import {
 	createRovingFocus,
 	rovingCapability,
 	type RovingFocus
-} from '$svelte-atoms/core/shared/capability/models/roving.svelte';
-import { navigationCapability } from '$svelte-atoms/core/shared/capability/models/navigation.svelte';
-import { typeaheadCapability } from '$svelte-atoms/core/shared/capability/models/typeahead.svelte';
-import { clickTrigger } from '$svelte-atoms/core/components/portal/host';
+} from '$ixirjs/ui/shared/capability/models/roving.svelte';
+import { navigationCapability } from '$ixirjs/ui/shared/capability/models/navigation.svelte';
+import { typeaheadCapability } from '$ixirjs/ui/shared/capability/models/typeahead.svelte';
+import { clickTrigger } from '$ixirjs/ui/components/portal/host';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
-} from '$svelte-atoms/core/shared/capability';
+} from '$ixirjs/ui/shared/capability';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -129,9 +129,9 @@ type DropdownMenuBondView = DropdownMenuBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DROPDOWN_MENU_CONTENT = sharedCapabilityKey<void>('@svelte-atoms/dropdown-menu:content');
-const DROPDOWN_MENU_TRIGGER = sharedCapabilityKey<void>('@svelte-atoms/dropdown-menu:trigger');
-const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@svelte-atoms/dropdown-menu:item');
+const DROPDOWN_MENU_CONTENT = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:content');
+const DROPDOWN_MENU_TRIGGER = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:trigger');
+const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:item');
 
 // -----------------------------------------------------------------------------
 // Atom definitions

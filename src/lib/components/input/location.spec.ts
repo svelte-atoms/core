@@ -5,7 +5,7 @@ import {
 	isValidLongitude,
 	locationCoordsValid,
 	parseLocationCoords
-} from '$svelte-atoms/core/components/input/location';
+} from '$ixirjs/ui/components/input/location';
 
 describe('location input helpers', () => {
 	it('parses decimal coordinates with separators and direction suffixes', () => {

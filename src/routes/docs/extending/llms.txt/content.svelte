@@ -23,7 +23,7 @@ behavior as a capability. ## Extend A Component
 gives the new component its own name and context identity.
 
 {codeBlock(
-	`import { defineBond, DropdownMenuBond } from '@svelte-atoms/core';
+	`import { defineBond, DropdownMenuBond } from '@ixirjs/ui';
 
 export const CommandMenuBond = defineBond({
   parts: [DropdownMenuBond],
@@ -40,7 +40,7 @@ export type CommandMenuBond = InstanceType<typeof CommandMenuBond>;`,
 {inlineCode('fuse')} unions atom registries and concatenates capabilities. Slot collisions resolve last-wins.
 
 {codeBlock(
-	`import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@svelte-atoms/core';
+	`import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@ixirjs/ui';
 
 export const PopoverDialogBond = fuse({
   name: 'popover-dialog',
@@ -75,7 +75,7 @@ component that renders a part creates a local Atom with {inlineCode('createAtomI
   createAtomInstance,
   defineAtomCapability,
   bondContextKey
-} from '@svelte-atoms/core';
+} from '@ixirjs/ui';
 import { getContext, setContext } from 'svelte';
 
 export type TilesBondProps = { id?: string; value?: string };
@@ -125,7 +125,7 @@ const item = createAtomInstance('item', {
 capabilities handle one node's local presentation, DOM behavior, and lifecycle.
 
 {codeBlock(
-	`import { capabilityKey, defineBondCapability, defineAtomCapability } from '@svelte-atoms/core';
+	`import { capabilityKey, defineBondCapability, defineAtomCapability } from '@ixirjs/ui';
 
 export const BUSY = capabilityKey<{ readonly busy: boolean }>('@acme/cap:busy');
 

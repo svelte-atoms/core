@@ -1,4 +1,4 @@
-import { animate, type Easing } from '$svelte-atoms/core/shared';
+import { animate, type Easing } from '$ixirjs/ui/shared';
 import { DrawerBond } from '.';
 import { untrack } from 'svelte';
 

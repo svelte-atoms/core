@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getRadioGroupContext } from './context';
 	import { Stack } from '../stack';
-	import { toClassValue } from '$svelte-atoms/core/utils';
-	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { toClassValue } from '$ixirjs/ui/utils';
+	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion.svelte';
 
 	const radioGroupContext = getRadioGroupContext();

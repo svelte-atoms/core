@@ -3,17 +3,17 @@ import {
 	definePolicyCapability,
 	sharedCapabilityKey,
 	type Capability
-} from '$svelte-atoms/core/shared/bond';
-import { containsTarget, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/bond';
+import { containsTarget, isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 import type { OverlayView } from '../types';
 import { isTopOverlay } from './escape-stack.svelte';
 import { closeOverlay, overlayIsDisabled, overlayIsOpen } from './overlay-view';
 
 export const OUTSIDE_PRESS = sharedCapabilityKey<OutsidePressSurface>(
-	'@svelte-atoms/cap:outside-press'
+	'@ixirjs/cap:outside-press'
 );
 export const BACKDROP_PRESS = sharedCapabilityKey<BackdropPressHandler>(
-	'@svelte-atoms/cap:backdrop-press'
+	'@ixirjs/cap:backdrop-press'
 );
 
 export type DismissPressEvent = MouseEvent | PointerEvent;

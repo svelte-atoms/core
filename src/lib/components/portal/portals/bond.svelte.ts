@@ -1,9 +1,9 @@
 import type { Snippet } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import type { PortalBond } from '../bond.svelte';
-import type { Factory } from '$svelte-atoms/core/types';
-import { Bond, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import type { Factory } from '$ixirjs/ui/types';
+import { Bond, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 
 // -----------------------------------------------------------------------------
 // Public types

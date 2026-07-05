@@ -28,7 +28,7 @@ export interface GeometryProjectionContext {
 	key?: string | undefined;
 }
 
-export const GEOMETRY = sharedCapabilityKey<GeometryModel>('@svelte-atoms/cap:geometry');
+export const GEOMETRY = sharedCapabilityKey<GeometryModel>('@ixirjs/cap:geometry');
 
 export function createGeometry(backing?: Partial<GeometryBacking>): GeometryModel {
 	const rects = new Map<string, GeometryRect>();

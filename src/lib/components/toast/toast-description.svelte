@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { ToastBond } from './bond.svelte';
 	import type { ToastDescriptionProps } from './types';
 

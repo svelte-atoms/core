@@ -3,7 +3,7 @@
 	generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
 	import { DataGridBond } from '../bond.svelte';
-	import { mergePresetProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import type { DatagridCellProps } from '../types';
 
 	const bond = DataGridBond.get() as DataGridBond<T> | undefined;

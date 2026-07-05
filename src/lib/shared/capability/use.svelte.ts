@@ -37,7 +37,7 @@ export function useCapabilities(bond: Bond | undefined): void {
 			} catch (teardownError) {
 				if (DEV) {
 					console.error(
-						'[svelte-atoms] capability setup failed, and a previously registered teardown also failed.',
+						'[ixirjs] capability setup failed, and a previously registered teardown also failed.',
 						teardownError
 					);
 				}

@@ -1,7 +1,7 @@
 <script module lang="ts">
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Tooltip as Tooltip_ } from '..';
-	import { Button } from '$svelte-atoms/core/components/button';
+	import { Button } from '$ixirjs/ui/components/button';
 	import type { Placement } from '@floating-ui/dom';
 
 	const { Story } = defineMeta({

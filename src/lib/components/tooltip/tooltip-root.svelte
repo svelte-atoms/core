@@ -1,7 +1,7 @@
 <script lang="ts">
-	import PopoverRoot from '$svelte-atoms/core/components/popover/popover-root.svelte';
-	import type { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
-	import type { PopoverRootProps } from '$svelte-atoms/core/components/popover/types';
+	import PopoverRoot from '$ixirjs/ui/components/popover/popover-root.svelte';
+	import type { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
+	import type { PopoverRootProps } from '$ixirjs/ui/components/popover/types';
 	import { TooltipBond, type TooltipBondProps } from './bond.svelte';
 
 	let { open = $bindable(false), ...restProps }: PopoverRootProps = $props();

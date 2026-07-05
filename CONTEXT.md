@@ -1,4 +1,4 @@
-# Context — @svelte-atoms/core
+# Context — @ixirjs/ui
 
 Shared vocabulary for this codebase. Keep entries one-line where possible. New
 terms get added here when they're load-bearing; stale terms get removed.
@@ -37,7 +37,7 @@ normalized surface consumers read.
 inherited `share()` / `static get()` / `static set()` on `Bond` (polymorphic
 `this`, keyed off `CONTEXT_KEY`). A subclass only declares
 `static CONTEXT_KEY = bondContextKey('<name>')` — it never re-implements the
-trio. Keys are canonical (`@svelte-atoms/context/<name>`); don't hand-write the
+trio. Keys are canonical (`@ixirjs/context/<name>`); don't hand-write the
 string. The only bonds that legitimately _don't_ define their own key are the
 overlay-family bonds (menu, dropdown-menu, select, combobox) that deliberately
 share `popover`'s context slot by inheriting `PopoverBond.CONTEXT_KEY`.

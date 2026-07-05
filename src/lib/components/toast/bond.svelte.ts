@@ -1,13 +1,13 @@
-import { Bond, Atom } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared/authoring/define.svelte';
+import { Bond, Atom } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared/authoring/define.svelte';
 import {
 	createDisclosure,
 	disclosureCapability,
 	disclosureClose,
 	type Disclosure
-} from '$svelte-atoms/core/shared/capability/models/disclosure.svelte';
-import type { DisclosureStateProps } from '$svelte-atoms/core/shared/capability/models/disclosure-state.svelte';
-import { labelledControl } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+} from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
+import type { DisclosureStateProps } from '$ixirjs/ui/shared/capability/models/disclosure-state.svelte';
+import { labelledControl } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types

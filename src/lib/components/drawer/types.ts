@@ -1,7 +1,7 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base, SnippetProps } from '$svelte-atoms/core/components/atom';
-import type { Factory } from '$svelte-atoms/core/types';
-import type { PortalBond, ZIndexInput } from '$svelte-atoms/core/components/portal';
+import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
+import type { Factory } from '$ixirjs/ui/types';
+import type { PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
 import type { DrawerBond } from './bond.svelte';
 
 // Declaration-merge into these to add app-specific props per drawer part.

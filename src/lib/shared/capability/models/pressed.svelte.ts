@@ -13,7 +13,7 @@ export interface PressedModel {
 	toggle(): void;
 }
 
-export const PRESSED = sharedCapabilityKey<PressedModel>('@svelte-atoms/cap:pressed');
+export const PRESSED = sharedCapabilityKey<PressedModel>('@ixirjs/cap:pressed');
 
 export function createPressed(backing: PressedBacking): PressedModel {
 	return {

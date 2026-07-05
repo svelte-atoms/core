@@ -17,7 +17,7 @@ import {
 	pressable,
 	type BondStateProps
 } from './index';
-import AtomProbe from '$svelte-atoms/core/test/shared/bond/atom-probe.test.svelte';
+import AtomProbe from '$ixirjs/ui/test/shared/bond/atom-probe.test.svelte';
 
 const MODEL = capabilityKey<{ value: number }>('atom-test-model');
 
@@ -133,7 +133,7 @@ describe('Atom', () => {
 		expect(onPress).toHaveBeenCalledTimes(2);
 		expect(node.capability(DATA_STATE)?.meta).toMatchObject({ kind: 'projection' });
 		expect(node.describeCapabilities().map((capability) => capability.description)).toContain(
-			'@svelte-atoms/atom:data-state'
+			'@ixirjs/atom:data-state'
 		);
 	});
 

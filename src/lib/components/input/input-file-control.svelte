@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { InputBond } from './bond.svelte';
 	import { writeInputFiles } from './shared';
 	import type { InputFileControlProps } from './types';

@@ -1,4 +1,4 @@
-import { cn, type ClassValue } from '$svelte-atoms/core/utils';
+import { cn, type ClassValue } from '$ixirjs/ui/utils';
 import { PRESET_SKIP, VARIANTS_SKIP } from './constants';
 import type { ResolvedProps } from './cache';
 

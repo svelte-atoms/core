@@ -1,5 +1,5 @@
 import { bench, describe } from 'vitest';
-import { type ClassValue } from '$svelte-atoms/core/utils';
+import { type ClassValue } from '$ixirjs/ui/utils';
 import { mergeClassesWithPreset } from './classes';
 import { extractRestProps } from './props';
 import type { ResolvedProps } from './cache';

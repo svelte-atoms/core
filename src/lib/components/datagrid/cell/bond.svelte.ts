@@ -1,7 +1,7 @@
-import { Bond, defineAtom, type BondStateProps } from '$svelte-atoms/core/shared/bond';
-import { defineBond, type BondOf } from '$svelte-atoms/core/shared';
+import { Bond, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import { DataGridBond, type IDataGrid } from '../bond.svelte';
-import { rowColumnCellLink } from '$svelte-atoms/core/shared/capability/models/relationship.svelte';
+import { rowColumnCellLink } from '$ixirjs/ui/shared/capability/models/relationship.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types

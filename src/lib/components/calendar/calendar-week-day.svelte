@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '$svelte-atoms/core/utils';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { cn } from '$ixirjs/ui/utils';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 	import { CalendarBond } from './bond.svelte';
 	import { untrack } from 'svelte';

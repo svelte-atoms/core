@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { addMonths, format, isToday, startOfDay, subMonths } from 'date-fns';
 	import type { CalendarRange, CalendarRootProps, Day, Month } from './types';
 	import { CalendarBond } from './bond.svelte';
 	import { mergePresetProps, HtmlAtom } from '../atom';
 
 	import './calendar.css';
-	import { bindBond } from '$svelte-atoms/core/shared';
+	import { bindBond } from '$ixirjs/ui/shared';
 
 	let {
 		class: klass = '',

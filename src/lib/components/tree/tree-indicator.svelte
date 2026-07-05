@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { animate as runAnimation } from '$svelte-atoms/core/shared';
-	import { createAtomInstance } from '$svelte-atoms/core/shared/bond';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { animate as runAnimation } from '$ixirjs/ui/shared';
+	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { TreeBond } from './bond.svelte';
 	import type { TreeIndicatorProps } from './types';
 
