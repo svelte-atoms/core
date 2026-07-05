@@ -114,7 +114,7 @@ const preset = createPreset({
 	{metadata}
 	{frontmatter}
 	prev={{ label: 'Combobox', href: '/docs/components/combobox' }}
-	next={{ label: 'DataGrid', href: '/docs/components/datagrid' }}
+	next={{ label: 'DatePicker', href: '/docs/components/date-picker' }}
 >
 	{#snippet examples()}
 		<DocExample
