@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DropdownBond } from './bond.svelte';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { Input } from '$ixirjs/ui/components/input';
 	import type { DropdownQueryProps } from './types';
 
 	const bond = DropdownBond.get() as DropdownBond;

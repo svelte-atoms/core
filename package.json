@@ -1,14 +1,14 @@
 {
-	"name": "@svelte-atoms/core",
+	"name": "@ixirjs/ui",
 	"version": "1.0.0-alpha.46",
 	"description": "A modular, accessible, and extensible Svelte UI component library.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/svelte-atoms/core.git"
+		"url": "git+https://github.com/ixirjs/ui.git"
 	},
-	"homepage": "https://github.com/svelte-atoms/core#readme",
+	"homepage": "https://github.com/ixirjs/ui#readme",
 	"bugs": {
-		"url": "https://github.com/svelte-atoms/core/issues"
+		"url": "https://github.com/ixirjs/ui/issues"
 	},
 	"author": "Abdel <rioman19@gmail.com>",
 	"license": "MIT",
@@ -227,6 +227,16 @@
 			"types": "./dist/components/dropdown-menu/item/index.d.ts",
 			"svelte": "./dist/components/dropdown-menu/item/index.js",
 			"default": "./dist/components/dropdown-menu/item/index.js"
+		},
+		"./context": {
+			"types": "./dist/context/index.d.ts",
+			"svelte": "./dist/context/index.js",
+			"default": "./dist/context/index.js"
+		},
+		"./context/preset": {
+			"types": "./dist/context/preset.svelte.d.ts",
+			"svelte": "./dist/context/preset.svelte.js",
+			"default": "./dist/context/preset.svelte.js"
 		},
 		"./context-menu": {
 			"types": "./dist/components/context-menu/index.d.ts",

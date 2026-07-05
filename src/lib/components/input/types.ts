@@ -1,6 +1,6 @@
 import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
 import type { Snippet } from 'svelte';
-import type { Override } from '$svelte-atoms/core/types';
+import type { Override } from '$ixirjs/ui/types';
 
 // ============================================================================
 // Input Snippet Props (Extensible)

@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import type { ClassValue } from 'svelte/elements';
-import { mergePresetRecords, resolvePreset } from '$svelte-atoms/core/components/atom/utils/preset';
-import type { Base } from '$svelte-atoms/core/components/atom';
+import { mergePresetRecords, resolvePreset } from '$ixirjs/ui/components/atom/utils/preset';
+import type { Base } from '$ixirjs/ui/components/atom';
 import type { Bond } from '../shared';
 import type { Attachment } from 'svelte/attachments';
 
@@ -43,7 +43,7 @@ export type PresetEntry = (
  * @example
  * ```ts
  * // my-app/presets.d.ts
- * declare module '@svelte-atoms/core/context/preset' {
+ * declare module '@ixirjs/ui/context/preset' {
  *   interface PresetModuleMap {
  *     'my-badge': PresetEntry;
  *     'my-badge.icon': PresetEntry;

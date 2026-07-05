@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { SelectBond, SelectBondState, type SelectStateProps } from './bond.svelte';
 	import type { SelectRootProps } from './types';
 

@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { SidebarBond, SidebarBondState, type SidebarBondProps } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
 	import { ZLayer } from '../portal/zlayer.svelte';

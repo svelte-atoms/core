@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import AvatarCmp from './avatar.svelte';
-	import CalendarRegularIcon from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
+	import CalendarRegularIcon from '$ixirjs/ui/icons/icon-arrow-down.svelte';
 
 	const { Story } = defineMeta({
 		title: 'ATOMS/Avatar'

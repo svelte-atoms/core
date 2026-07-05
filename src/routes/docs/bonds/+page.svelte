@@ -2,7 +2,7 @@
 	import { Section, CodeBlock, DocCallout } from '$docs/components';
 	import { Button } from '$lib/components/button';
 
-	const defineStateCode = `import { type BondStateProps } from '@svelte-atoms/core';
+	const defineStateCode = `import { type BondStateProps } from '@ixirjs/ui';
 
 // 1. Describe the props your component exposes
 export type MyComponentStateProps = BondStateProps & {
@@ -25,7 +25,7 @@ export class MyComponentState extends BondState<MyComponentStateProps> {
   toggle() { this.props.open = !this.props.open; }
 }`;
 
-	const defineBondCode = `import { Bond, BondAtom, BondState } from '@svelte-atoms/core';
+	const defineBondCode = `import { Bond, BondAtom, BondState } from '@ixirjs/ui';
 import { getContext, setContext } from 'svelte';
 
 // BondAtom subclasses — each one captures one DOM element automatically
@@ -81,7 +81,7 @@ export class MyComponentBond extends Bond<
 }`;
 
 	const rootComponentCode = `<script lang="ts">
-  import { defineState, defineProperty } from '@svelte-atoms/core';
+  import { defineState, defineProperty } from '@ixirjs/ui';
   import { MyComponentBond, MyComponentState } from './bond.svelte';
   import type { MyComponentStateProps } from './bond.svelte';
 
@@ -143,7 +143,7 @@ function _factory(props: typeof bondProps) {
   return new MyComponentBond(new MyComponentState(() => props));
 }`;
 
-	const reactivePropsCode = `import { defineState, defineProperty } from '@svelte-atoms/core';
+	const reactivePropsCode = `import { defineState, defineProperty } from '@ixirjs/ui';
 
 let open = $bindable(false);
 let disabled = false;

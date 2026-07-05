@@ -2,7 +2,7 @@
 	lang="ts"
 	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { DropdownMenuItemAtom, type DropdownMenuItemAtomProps } from './bond.svelte';
 	import { DropdownMenuBond } from '../bond.svelte';
 	import type { DropdownMenuItemProps } from './types';

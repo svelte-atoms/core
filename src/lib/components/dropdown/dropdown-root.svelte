@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { DropdownBond, DropdownBondState, type DropdownStateProps } from './bond.svelte';
 	import type { DropdownRootProps } from './types';
 

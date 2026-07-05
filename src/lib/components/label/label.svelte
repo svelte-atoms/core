@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'label', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type ElementType, type Base } from '$ixirjs/ui/components/atom';
 	import type { LabelProps } from './types';
 
 	type Element = ElementType<E>;

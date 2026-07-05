@@ -1,4 +1,4 @@
-import { clickout } from '$svelte-atoms/core/attachments/clickout.svelte';
+import { clickout } from '$ixirjs/ui/attachments/clickout.svelte';
 import { DrawerBond } from './bond.svelte';
 
 export function drawer(callback: (node: HTMLElement, bond?: DrawerBond) => any) {

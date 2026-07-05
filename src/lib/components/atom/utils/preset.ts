@@ -1,10 +1,10 @@
 import { merge } from 'es-toolkit';
 import type { ClassValue } from 'svelte/elements';
-import { call } from '$svelte-atoms/core/utils/function';
+import { call } from '$ixirjs/ui/utils/function';
 import type {
 	PresetEntryRecord,
 	PresetEntryValue
-} from '$svelte-atoms/core/context/preset.svelte';
+} from '$ixirjs/ui/context/preset.svelte';
 
 /**
  * Merges an ordered list of {@link PresetEntryRecord}s into a single record.

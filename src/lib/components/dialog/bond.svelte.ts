@@ -1,11 +1,11 @@
 import { getContext, setContext, untrack } from 'svelte';
-import { focusTrap, getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+import { focusTrap, getElementId } from '$ixirjs/ui/utils/dom.svelte';
 import {
 	Bond,
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type DialogBondProps = BondStateProps & {
 	open: boolean;

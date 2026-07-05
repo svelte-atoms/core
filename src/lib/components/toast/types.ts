@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base } from '$ixirjs/ui/components/atom';
 import type { ToastBond, ToastBondProps } from './bond.svelte';
 
 // ============================================================================

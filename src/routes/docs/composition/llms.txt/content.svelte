@@ -22,7 +22,7 @@ Svelte Atoms favors composition over monolithic components.
 ## Base Composition with {inlineCode('base')}
 
 {codeBlock(`<script lang="ts">
-  import { Button, Popover } from '@svelte-atoms/core';
+  import { Button, Popover } from '@ixirjs/ui';
 </script>
 
 <Popover.Root>
@@ -37,7 +37,7 @@ Svelte Atoms favors composition over monolithic components.
 ## Compose forms from focused atoms
 
 {codeBlock(`<script lang="ts">
-  import { Field, Input } from '@svelte-atoms/core';
+  import { Field, Input } from '@ixirjs/ui';
 </script>
 
 <Field.Root name="password">
@@ -49,7 +49,7 @@ Svelte Atoms favors composition over monolithic components.
 ## Compose selection UIs
 
 {codeBlock(`<script lang="ts">
-  import { Select, Button } from '@svelte-atoms/core';
+  import { Select, Button } from '@ixirjs/ui';
 </script>
 
 <Select.Root>

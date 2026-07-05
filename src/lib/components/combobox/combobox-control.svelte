@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, untrack } from 'svelte';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { Input } from '$ixirjs/ui/components/input';
 	import { ComboboxBond } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
 

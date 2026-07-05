@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Dialog as ADialog } from '.';
-	import { Select } from '$svelte-atoms/core/components/select';
+	import { Select } from '$ixirjs/ui/components/select';
 	import { Button } from '../button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories

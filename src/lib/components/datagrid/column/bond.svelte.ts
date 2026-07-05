@@ -1,12 +1,12 @@
 import { getContext, setContext } from 'svelte';
-import type { Direction, SortableType } from '$svelte-atoms/core/types';
+import type { Direction, SortableType } from '$ixirjs/ui/types';
 import { DataGridBond } from '../bond.svelte';
 import {
 	Bond,
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type DataGridColumnBondProps = BondStateProps & {
 	id: string;

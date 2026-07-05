@@ -3,7 +3,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 import { getContext, setContext, tick, untrack } from 'svelte';
 
 export type StackStateProps = BondStateProps & {

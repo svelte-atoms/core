@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { startOfDay } from 'date-fns';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { Root } from '../popover/atoms';
 	import type { CalendarRange } from '../calendar/types';
 	import { DatePickerBond, DatePickerBondState, type DatePickerBondProps } from './bond.svelte';

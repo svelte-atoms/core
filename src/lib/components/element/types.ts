@@ -1,6 +1,6 @@
 import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
-import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { ClassValue } from '$ixirjs/ui/utils';
 import type { Snippet } from 'svelte';
 
 // ============================================================================

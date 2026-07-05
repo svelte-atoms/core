@@ -28,7 +28,7 @@ export type PopoverStrategyProps = {
  * ```svelte
  * <!-- MyStrategy.svelte -->
  * <script lang="ts">
- *   import type { PopoverStrategyProps } from '@svelte-atoms/core/popover';
+ *   import type { PopoverStrategyProps } from '@ixirjs/ui/popover';
  *   
  *   let { bond, trigger, content, open }: PopoverStrategyProps = $props();
  *   

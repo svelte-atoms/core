@@ -6,8 +6,8 @@ import {
 	PopoverTriggerAtom,
 	type PopoverDomElements,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/components/popover/bond.svelte';
+import { BondAtom } from '$ixirjs/ui/shared/bond.svelte';
 import type { DropdownMenuItemControllerInterface } from './item/controller.svelte';
 
 export type DropdownMenuBondProps = PopoverStateProps;

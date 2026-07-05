@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { clickoutDrawer, clickoutPopover, colorScheme, Input } from '$lib';
 	import { setPreset, type Preset } from '$lib/context';
-	import Root from '$svelte-atoms/core/components/root/root.svelte';
+	import Root from '$ixirjs/ui/components/root/root.svelte';
 	import { createAttachmentKey } from 'svelte/attachments';
 	import type { PopoverBond } from '../../dist';
 
@@ -190,7 +190,7 @@
 	setPreset(preset);
 </script>
 
-<Root class={['svelte-atoms-story-root', scheme.current === 'dark' ? 'dark' : 'light']}>
+<Root class={['ixirjs-story-root', scheme.current === 'dark' ? 'dark' : 'light']}>
 	<div class="flex min-h-full w-full flex-col items-center justify-center overflow-y-auto p-4">
 		{@render children?.()}
 	</div>

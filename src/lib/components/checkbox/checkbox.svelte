@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
+	import CheckmarkRegularIcon from '$ixirjs/ui/icons/icon-checkmark.svelte';
 	import type { CheckboxProps } from './types';
 	import { animateCheckboxIndicator } from './motion';
 	import './checkbox.css';

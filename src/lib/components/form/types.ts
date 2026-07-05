@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
-import type { Factory } from '$svelte-atoms/core/types';
+import type { HtmlAtomProps, Base } from '$ixirjs/ui/components/atom';
+import type { Factory } from '$ixirjs/ui/types';
 import type { FormBond } from './bond.svelte';
 import type { FieldBond, FieldStateProps } from './field/bond.svelte';
 

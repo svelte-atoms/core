@@ -1,5 +1,5 @@
 <script>
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 
 	let {
 		class: klass = '',

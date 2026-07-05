@@ -6,9 +6,9 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { PortalOuterProps } from './types';
 	import { PortalsBond, PortalBond, PortalState, type PortalStateProps } from '.';
-	import { RootBond } from '$svelte-atoms/core/components/root';
-	import { HtmlAtom, type ElementType, type Base } from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { RootBond } from '$ixirjs/ui/components/root';
+	import { HtmlAtom, type ElementType, type Base } from '$ixirjs/ui/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 
 	type Element = ElementType<E>;
 

@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { Button } from '$svelte-atoms/core/components/button';
-	import { Input } from '$svelte-atoms/core/components/input';
-	import { Badge } from '$svelte-atoms/core/components/badge';
-	import { Alert } from '$svelte-atoms/core/components/alert';
-	import { Tabs, Tab } from '$svelte-atoms/core/components/tabs';
-	import { Select } from '$svelte-atoms/core/components/select';
-	import { DropdownMenu } from '$svelte-atoms/core/components/dropdown-menu';
-	import { animateSidebarContent, Sidebar } from '$svelte-atoms/core/components/sidebar';
+	import { Button } from '$ixirjs/ui/components/button';
+	import { Input } from '$ixirjs/ui/components/input';
+	import { Badge } from '$ixirjs/ui/components/badge';
+	import { Alert } from '$ixirjs/ui/components/alert';
+	import { Tabs, Tab } from '$ixirjs/ui/components/tabs';
+	import { Select } from '$ixirjs/ui/components/select';
+	import { DropdownMenu } from '$ixirjs/ui/components/dropdown-menu';
+	import { animateSidebarContent, Sidebar } from '$ixirjs/ui/components/sidebar';
 	import { goto } from '$app/navigation';
 	import TooltipDemo from './demos/tooltip-demo.svelte';
 	import PopoverDemo from './demos/popover-demo.svelte';
 	import DialogDemo from './demos/dialog-demo.svelte';
 	import DrawerDemo from './demos/drawer-demo.svelte';
-	import { mergePreset } from '$svelte-atoms/core/context/preset.svelte';
+	import { mergePreset } from '$ixirjs/ui/context/preset.svelte';
 
 	let tabValue = $state('account');
 	let selectOpen = $state(false);
@@ -25,18 +25,18 @@
 	let packageManager = $state<'npm' | 'pnpm' | 'yarn' | 'bun'>('bun');
 
 	const installCommands = {
-		npm: 'npm install @svelte-atoms/core',
-		pnpm: 'pnpm add @svelte-atoms/core',
-		yarn: 'yarn add @svelte-atoms/core',
-		bun: 'bun add @svelte-atoms/core'
+		npm: 'npm install @ixirjs/ui',
+		pnpm: 'pnpm add @ixirjs/ui',
+		yarn: 'yarn add @ixirjs/ui',
+		bun: 'bun add @ixirjs/ui'
 	};
 
 	function copyCode() {
 		const snippets = [
 			installCommands[packageManager] as string,
-			`import '@svelte-atoms/core/root.css';`,
-			`import { setPreset } from '@svelte-atoms/core';\n\nsetPreset({\n  button: () => ({\n    class: 'px-4 py-2 rounded-lg',\n    variants: { ... }\n  })\n});`,
-			`import { Button } from '@svelte-atoms/core/components/button';`
+			`import '@ixirjs/ui/root.css';`,
+			`import { setPreset } from '@ixirjs/ui';\n\nsetPreset({\n  button: () => ({\n    class: 'px-4 py-2 rounded-lg',\n    variants: { ... }\n  })\n});`,
+			`import { Button } from '@ixirjs/ui/components/button';`
 		];
 		navigator.clipboard.writeText(snippets[activeStep]);
 		copied = true;
@@ -95,7 +95,7 @@
 			<Button variant="outline" class="gap-2 px-5" onclick={() => goto('/docs')}>
 				Browse components
 			</Button>
-			<Button variant="ghost" class="gap-2 px-5" onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}>
+			<Button variant="ghost" class="gap-2 px-5" onclick={() => window.open('https://github.com/ixirjs/ui', '_blank')}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
 					<path d="M9 18c-4.51 2-5-2-7-2"/>
@@ -558,7 +558,7 @@
 					<div class="ml-4">
 						<span class="text-[#ff7b72]">import</span>
 						<span class="text-[#e6edf3]"> </span>
-						<span class="text-[#a5d6ff]">'@svelte-atoms/core/root.css'</span>
+						<span class="text-[#a5d6ff]">'@ixirjs/ui/root.css'</span>
 						<span class="text-[#e6edf3]">;</span>
 					</div>
 					<div><span class="text-[#7ee787]">&lt;/script&gt;</span></div>
@@ -571,7 +571,7 @@
 						<span class="text-[#d2a8ff]">setPreset</span>
 						<span class="text-[#e6edf3]">{' }'}</span>
 						<span class="text-[#ff7b72]"> from </span>
-						<span class="text-[#a5d6ff]">'@svelte-atoms/core'</span>
+						<span class="text-[#a5d6ff]">'@ixirjs/ui'</span>
 						<span class="text-[#e6edf3]">;</span>
 					</div>
 					<div class="mt-2 ml-4">
@@ -604,7 +604,7 @@
 						<span class="text-[#d2a8ff]">Button</span>
 						<span class="text-[#e6edf3]">{' }'}</span>
 						<span class="text-[#ff7b72]"> from </span>
-						<span class="text-[#a5d6ff]">'@svelte-atoms/core/components/button'</span>
+						<span class="text-[#a5d6ff]">'@ixirjs/ui/components/button'</span>
 						<span class="text-[#e6edf3]">;</span>
 					</div>
 					<div><span class="text-[#7ee787]">&lt;/script&gt;</span></div>
@@ -661,7 +661,7 @@
 					<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
 				</svg>
 			</Button>
-			<Button variant="outline" class="gap-2 px-6" onclick={() => window.open('https://github.com/svelte-atoms/core', '_blank')}>
+			<Button variant="outline" class="gap-2 px-6" onclick={() => window.open('https://github.com/ixirjs/ui', '_blank')}>
 				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
 					<path d="M9 18c-4.51 2-5-2-7-2"/>

@@ -1,5 +1,5 @@
 import { animate, type Easing } from 'motion';
-import { DURATION } from '$svelte-atoms/core/shared';
+import { DURATION } from '$ixirjs/ui/shared';
 import { SidebarBond } from '.';
 
 type AnimateSidebarContentParams = {

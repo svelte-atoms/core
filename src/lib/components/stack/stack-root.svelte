@@ -6,8 +6,8 @@
 		type ElementType,
 		type HtmlAtomProps,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	} from '$ixirjs/ui/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { StackBond, StackState } from './bond.svelte';
 	import './stack.css';
 

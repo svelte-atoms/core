@@ -1,14 +1,14 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { LayerBond, LayerBondState } from './bond.svelte';
-	import { RootBond } from '$svelte-atoms/core/components/root/bond.svelte';
+	import { RootBond } from '$ixirjs/ui/components/root/bond.svelte';
 	import {
 		HtmlAtom,
 		type ElementType,
 		type HtmlAtomProps,
 		type Base
-	} from '$svelte-atoms/core/components/atom';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	} from '$ixirjs/ui/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 
 	type Element = ElementType<E>;
 

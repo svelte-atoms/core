@@ -1,7 +1,7 @@
 const compositionCode = `
 <script lang="ts">
-  import { HtmlAtom } from '@svelte-atoms/core';
-  import { Button } from '@svelte-atoms/core/button';
+  import { HtmlAtom } from '@ixirjs/ui';
+  import { Button } from '@ixirjs/ui/button';
 <\/script>
 
 <!-- Use Button as base, add custom styles -->
@@ -11,7 +11,7 @@ const compositionCode = `
 
 const animationCode = `
 <script lang="ts">
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { HtmlAtom } from '@ixirjs/ui';
   import { fade, slide } from 'svelte/transition';
   
   let show = $state(true);
@@ -28,7 +28,7 @@ const animationCode = `
 
 const customComponentCode = `
 <script lang="ts">
-  import { HtmlAtom, type HtmlAtomProps } from '@svelte-atoms/core';
+  import { HtmlAtom, type HtmlAtomProps } from '@ixirjs/ui';
   
   type Props = HtmlAtomProps<'button'> & {
     variant?: 'primary' | 'secondary' | 'danger';
@@ -59,7 +59,7 @@ const customComponentCode = `
 </HtmlAtom>`.trim();
 
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   atom: () => ({
@@ -103,14 +103,14 @@ const useCases = [
 
 export const metadata = {
 	title: 'Atom - Svelte Atoms',
-	description: 'The foundational building block for all svelte-atoms components.',
+	description: 'The foundational building block for all @ixirjs/ui components.',
 	componentTitle: 'Atom',
 	componentDescription:
 		'Foundational building block providing polymorphic HTML with preset styling and Bond integration.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { BondAtom } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { BondAtom } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Atom' }],
 	useCases,
 	examples: {

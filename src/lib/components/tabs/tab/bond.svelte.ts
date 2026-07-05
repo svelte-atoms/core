@@ -1,13 +1,13 @@
 import { getContext, setContext, untrack } from 'svelte';
 import { TabsBond, TabsBondState } from '../bond.svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { portal } from '$svelte-atoms/core/attachments/portal.svelte';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
+import { portal } from '$ixirjs/ui/attachments/portal.svelte';
 import {
 	Bond,
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type TabBondProps<
 	T,

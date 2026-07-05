@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
 	import type { TabDescriptionProps } from '../types';
-	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom as Atom, type Base } from '$ixirjs/ui/components/atom';
 	import { TabBond } from './bond.svelte';
 
 	const bond = TabBond.get();

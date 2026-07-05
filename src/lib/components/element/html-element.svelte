@@ -1,7 +1,7 @@
 <script lang="ts" generics="T extends HtmlElementTagName">
 	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import type { ElementType, HtmlElementProps, HtmlElementTagName } from './types';
 
 	type Element = ElementType<T>;

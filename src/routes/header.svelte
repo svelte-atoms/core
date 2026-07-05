@@ -61,7 +61,7 @@
 
 			<!-- GitHub — icon + label on lg, icon-only on sm -->
 			<a
-				href="https://github.com/svelte-atoms/core"
+				href="https://github.com/ixirjs/ui"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors"

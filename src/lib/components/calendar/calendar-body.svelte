@@ -2,7 +2,7 @@
 	import { backInOut } from 'svelte/easing';
 	import CalendarDay from './calendar-day.svelte';
 	import { CalendarBond } from './bond.svelte';
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { HtmlAtom } from '../atom';
 
 	const calendarBond = CalendarBond.get();

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import type { BadgeProps } from './types';
 
 	let { class: klass = '', as = 'span', children = undefined, ...restProps }: BadgeProps = $props();

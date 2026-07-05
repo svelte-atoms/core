@@ -42,7 +42,7 @@ Bonds are the foundation for complex components in Svelte Atoms. They encapsulat
 ### Step 1: Define Props Type
 
 {codeBlock(`
-import { BondStateProps } from '@svelte-atoms/core';
+import { BondStateProps } from '@ixirjs/ui';
 
 // Define the props type for your bond state
 export type MyComponentStateProps = BondStateProps & {
@@ -64,7 +64,7 @@ export type MyComponentDomElements = {
 
 ### Step 3: Create BondState Class
 
-{codeBlock(`import { BondState } from '@svelte-atoms/core';
+{codeBlock(`import { BondState } from '@ixirjs/ui';
 
 // Create the BondState class to manage reactive state
 export class MyComponentState<
@@ -95,7 +95,7 @@ export class MyComponentState<
 
 ### Step 4: Create Bond Class
 
-{codeBlock(`import { Bond } from '@svelte-atoms/core';
+{codeBlock(`import { Bond } from '@ixirjs/ui';
 import { getContext, setContext } from 'svelte';
 
 // Create the Bond class to manage elements and props
@@ -197,7 +197,7 @@ export class MyComponentBond<
 
 ### Reactive Props with defineState
 
-{codeBlock(`import { defineState, defineProperty } from '@svelte-atoms/core/utils';
+{codeBlock(`import { defineState, defineProperty } from '@ixirjs/ui/utils';
 
 let open = $bindable(false);
 

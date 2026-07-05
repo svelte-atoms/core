@@ -5,7 +5,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type StepBondProps = BondStateProps & {
 	index: number;

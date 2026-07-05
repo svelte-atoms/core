@@ -1,4 +1,4 @@
-import type { Bond } from '$svelte-atoms/core/shared';
+import type { Bond } from '$ixirjs/ui/shared';
 
 export type ResolvedProps = Record<string, unknown>;
 

@@ -6,7 +6,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 import type { TabBond } from './tab/bond.svelte';
 
 export type TabsBondProps<T extends Record<string, unknown> = Record<string, unknown>> =

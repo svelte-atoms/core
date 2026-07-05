@@ -18,7 +18,7 @@
 <div class="bg-foreground/10">Subtle background</div>`;
 
 
-	const cnExample = `import { cn } from '@svelte-atoms/core/utils';
+	const cnExample = `import { cn } from '@ixirjs/ui/utils';
 
 // Resolves Tailwind conflicts — last one wins
 cn('px-2 py-1', 'px-4');
@@ -79,8 +79,8 @@ ${'<'}Button
 ${'<'}/Button>`;
 
 	const variantBasicExample = `${'<'}script lang="ts">
-  import { defineVariants } from '@svelte-atoms/core/utils';
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { defineVariants } from '@ixirjs/ui/utils';
+  import { HtmlAtom } from '@ixirjs/ui';
 
   const buttonVariants = defineVariants({
     class: 'inline-flex items-center justify-center rounded-md font-medium',

@@ -1,5 +1,5 @@
 const presetCode = `
-import { createPreset } from '@svelte-atoms/core';
+import { createPreset } from '@ixirjs/ui';
 
 const preset = createPreset({
 	toast: () => ({
@@ -77,8 +77,8 @@ export const metadata = {
 		'Temporary notification that appears at the screen edge for non-intrusive feedback and system messages.',
 	componentType: 'simple' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Toast, Toaster } from '@svelte-atoms/core/toast';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Toast, Toaster } from '@ixirjs/ui/toast';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Toast' }],
 	useCases,
 	componentsSummary,

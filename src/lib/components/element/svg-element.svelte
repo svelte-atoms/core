@@ -4,7 +4,7 @@
 	import { untrack } from 'svelte';
 	import type { SVGAttributes } from 'svelte/elements';
 	import { createAttachmentKey } from 'svelte/attachments';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import type { ElementType, SvgElementProps, SvgElementTagName } from './types';
 
 	type Element = ElementType<T>;

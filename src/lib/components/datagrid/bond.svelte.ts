@@ -5,7 +5,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 import { nanoid } from 'nanoid';
 import type { DataGridRowBond } from './row/bond.svelte';
 import type { DataGridColumnBond } from './column/bond.svelte';

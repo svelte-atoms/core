@@ -64,8 +64,8 @@ Installation and import instructions with copy functionality.
 
 ```svelte
 <Installation
-	packageName="@svelte-atoms/core"
-	importCode="import {Accordion} from '@svelte-atoms/core/accordion';"
+	packageName="@ixirjs/ui"
+	importCode="import {Accordion} from '@ixirjs/ui/accordion';"
 />
 ```
 
@@ -233,8 +233,8 @@ API reference table for component props.
 
 	<Section title="Installation">
 		<Installation
-			packageName="@svelte-atoms/core"
-			importCode="import {YourComponent} from '@svelte-atoms/core/your-component';"
+			packageName="@ixirjs/ui"
+			importCode="import {YourComponent} from '@ixirjs/ui/your-component';"
 		/>
 	</Section>
 

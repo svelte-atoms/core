@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { toClassValue } from '$ixirjs/ui/utils';
 
 	let { class: klass = '', children = undefined, ...restProps } = $props();
 </script>

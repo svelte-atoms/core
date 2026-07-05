@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { toClassValue } from '$svelte-atoms/core/utils';
+	import { toClassValue } from '$ixirjs/ui/utils';
 	import { HtmlAtom } from '../atom';
 
 	let {

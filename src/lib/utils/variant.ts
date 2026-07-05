@@ -1,5 +1,5 @@
 /**
- * Variant System for @svelte-atoms/core
+ * Variant System for @ixirjs/ui
  *
  * A simple, single-function approach to defining component variants.
  * Define variants once, use everywhere with full type safety and bond state access.
@@ -13,7 +13,7 @@
  */
 
 import type { ClassValue } from 'svelte/elements';
-import type { Bond } from '$svelte-atoms/core/shared';
+import type { Bond } from '$ixirjs/ui/shared';
 
 /**
  * Internal symbol used to tag functions returned by `defineVariants`.

@@ -5,9 +5,9 @@ import {
 	BondState,
 	type BondStateProps,
 	type BondVirtualElement
-} from '$svelte-atoms/core/shared/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared';
-import { focus, focusTrap, getElementId, isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
+import { BondAtom } from '$ixirjs/ui/shared';
+import { focus, focusTrap, getElementId, isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 import type { PortalBond } from '../portal';
 import type { PopoverStrategy } from './strategy-types';
 

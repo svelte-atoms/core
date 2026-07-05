@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
-	import { DURATION } from '$svelte-atoms/core/shared';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import CheckmarkRegularIcon from '$ixirjs/ui/icons/icon-checkmark.svelte';
+	import { DURATION } from '$ixirjs/ui/shared';
 	import { circOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 

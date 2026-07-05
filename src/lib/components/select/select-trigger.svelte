@@ -1,6 +1,6 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { Trigger } from '$ixirjs/ui/components/popover/atoms';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { SelectBond } from './bond.svelte';
 	import type { SelectTriggerProps } from './types';
 

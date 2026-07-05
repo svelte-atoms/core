@@ -17,11 +17,11 @@
 
 # Variants System
 
-The current variants API is {inlineCode('defineVariants')} from {inlineCode('@svelte-atoms/core')}.
+The current variants API is {inlineCode('defineVariants')} from {inlineCode('@ixirjs/ui')}.
 
 ## Basic variant definition
 
-{codeBlock(`import { defineVariants } from '@svelte-atoms/core';
+{codeBlock(`import { defineVariants } from '@ixirjs/ui';
 
 const buttonVariants = defineVariants({
   class: 'inline-flex items-center justify-center rounded-md font-medium transition-colors',
@@ -46,7 +46,7 @@ const buttonVariants = defineVariants({
 ## Applying variants in a component
 
 {codeBlock(`<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
+  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
 
   const variants = defineVariants({
     class: 'rounded-md',
@@ -86,7 +86,7 @@ const buttonVariants = defineVariants({
 
 Use {inlineCode('setPreset')} for global defaults and keep per-component variants local:
 
-{codeBlock(`import { setPreset } from '@svelte-atoms/core';
+{codeBlock(`import { setPreset } from '@ixirjs/ui';
 
 setPreset({
   button: () => ({

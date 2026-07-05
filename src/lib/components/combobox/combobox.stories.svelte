@@ -1,8 +1,8 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Combobox as ACombobox } from '.';
-	import { Input } from '$svelte-atoms/core/components/input';
-	import { Divider } from '$svelte-atoms/core/components/divider';
+	import { Input } from '$ixirjs/ui/components/input';
+	import { Divider } from '$ixirjs/ui/components/divider';
 	import { filterSelectData as filterDropdownData } from '../select';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories

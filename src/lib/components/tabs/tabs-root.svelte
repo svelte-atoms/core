@@ -3,8 +3,8 @@
 	generics="D extends string, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
 	import { TabsBond, TabsBondState, type TabsBondProps } from './bond.svelte';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import { HtmlAtom as Atom, type Base } from '$ixirjs/ui/components/atom';
 	import type { TabsRootProps } from './types';
 
 	let {

@@ -2,10 +2,10 @@
 	lang="ts"
 	generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base"
 >
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { MenuItemAtom, type MenuItemAtomProps } from './bond.svelte';
 	import { MenuBond } from '../bond.svelte';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import type { MenuItemProps } from './types';
 
 	const menu = MenuBond.get();

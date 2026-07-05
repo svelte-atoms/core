@@ -1,4 +1,4 @@
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+import { BondAtom } from '$ixirjs/ui/shared/bond.svelte';
 import { nanoid } from 'nanoid';
 import type { SelectBond } from '../bond.svelte';
 

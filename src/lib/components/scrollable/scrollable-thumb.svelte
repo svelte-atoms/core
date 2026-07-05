@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { ScrollableBond } from './bond.svelte';
 	import type { ScrollableThumbProps } from './types';
 

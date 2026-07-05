@@ -1,4 +1,4 @@
-import type { HtmlAtomProps, Base } from '$svelte-atoms/core/components/atom';
+import type { HtmlAtomProps, Base } from '$ixirjs/ui/components/atom';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ContextMenuTriggerProps<

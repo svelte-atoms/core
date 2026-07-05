@@ -12,7 +12,7 @@ const config = {
 		}),
 		alias: {
 			$docs: 'src/docs',
-			'$svelte-atoms/core': 'src/lib'
+			'$ixirjs/ui': 'src/lib'
 		}
 	},
 	extensions: ['.svelte', '.svx'],

@@ -1,5 +1,5 @@
 <script lang="ts" generics="B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	let { class: klass = '', as = 'div', children = undefined, ...restProps } = $props();
 </script>

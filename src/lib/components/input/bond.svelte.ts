@@ -1,6 +1,6 @@
 import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond.svelte';
 
 export type InputStateProps = BondStateProps & {
 	value?: string | number | Date;

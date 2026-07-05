@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { PortalBond, PortalsBond } from '$svelte-atoms/core/components/portal';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName } from '$svelte-atoms/core/components/element';
-	import { clickout } from '$svelte-atoms/core/attachments';
+	import { PortalBond, PortalsBond } from '$ixirjs/ui/components/portal';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
+	import { clickout } from '$ixirjs/ui/attachments';
 	import { PopoverBond } from './bond.svelte';
 	import { animatePopoverContent } from './motion.svelte';
 	import type { PopoverContentProps } from './types';

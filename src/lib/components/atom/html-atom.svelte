@@ -2,11 +2,11 @@
 	import type { Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import { getPreset } from '$ixirjs/ui/context';
+	import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
 	import SnippetRenderer from './snippet-renderer.svelte';
 	import type { Component } from 'svelte';
-	import type { ClassValue } from '$svelte-atoms/core/utils';
+	import type { ClassValue } from '$ixirjs/ui/utils';
 	import {
 		resolvePreset,
 		resolveLocalVariants,
