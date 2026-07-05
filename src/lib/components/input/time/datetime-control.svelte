@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
+	import { getPreset } from '$ixirjs/ui/context';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
 	import { untrack } from 'svelte';
 	import { InputBond } from '../bond.svelte';
 	import type { InputDateTimeControlProps, InputDateControlProps } from '../types';
@@ -11,7 +11,7 @@
 		maxDaysInMonth, mergeParts,
 		type DateTimeParts,
 	} from './shared';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
+	import { resolvePreset } from '$ixirjs/ui/components/atom';
 
 	const bond = InputBond.get();
 

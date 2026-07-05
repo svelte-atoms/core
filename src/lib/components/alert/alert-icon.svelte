@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { type Base, HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import { type Base, HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { AlertBond } from './bond.svelte';
 	import type { AlertIconProps } from './types';
 

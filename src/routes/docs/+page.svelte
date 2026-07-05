@@ -82,19 +82,19 @@
 			n: '1',
 			title: 'Install the package',
 			lang: 'bash' as const,
-			code: 'bun add @svelte-atoms/core'
+			code: 'bun add @ixirjs/ui'
 		},
 		{
 			n: '2',
 			title: 'Import styles in your layout',
 			lang: 'typescript' as const,
-			code: "// +layout.svelte\nimport '@svelte-atoms/core/tw';"
+			code: "// +layout.svelte\nimport '@ixirjs/ui/tw';"
 		},
 		{
 			n: '3',
 			title: 'Import and use components',
 			lang: 'svelte' as const,
-			code: "<script>\n  import { Button } from '@svelte-atoms/core/button';\n<" + "/script>\n\n<Button>Click me</Button>"
+			code: "<script>\n  import { Button } from '@ixirjs/ui/button';\n<" + "/script>\n\n<Button>Click me</Button>"
 		}
 	];
 </script>

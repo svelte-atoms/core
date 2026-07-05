@@ -5,8 +5,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
 	import type { ScrollableContainerProps } from './types';
 	import { ScrollableBond } from './bond.svelte';
-	import { resizeObserver } from '$svelte-atoms/core/attachments/resize-observer.svelte';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { resizeObserver } from '$ixirjs/ui/attachments/resize-observer.svelte';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import './scrollable-container.css';
 
 	let {

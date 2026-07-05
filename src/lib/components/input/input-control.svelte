@@ -1,10 +1,10 @@
 <script lang="ts" generics="B extends Base = Base">
-	import { on } from '$svelte-atoms/core/attachments/event.svelte';
-	import { getPreset } from '$svelte-atoms/core/context';
-	import { resolvePreset } from '$svelte-atoms/core/components/atom';
-	import { cn, toClassValue } from '$svelte-atoms/core/utils';
-	import type { PresetModuleName } from '$svelte-atoms/core/context/preset.svelte';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { on } from '$ixirjs/ui/attachments/event.svelte';
+	import { getPreset } from '$ixirjs/ui/context';
+	import { resolvePreset } from '$ixirjs/ui/components/atom';
+	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputControlProps } from './types';
 	import { untrack } from 'svelte';

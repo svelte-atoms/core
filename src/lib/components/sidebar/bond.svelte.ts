@@ -4,7 +4,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type SidebarBondProps<T extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {

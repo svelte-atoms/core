@@ -1,7 +1,7 @@
 import { createAttachmentKey } from 'svelte/attachments';
 import { getContext, setContext } from 'svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
+import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond.svelte';
 
 export type CardBondProps = BondStateProps & {
 	disabled?: boolean;

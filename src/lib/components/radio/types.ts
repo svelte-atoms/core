@@ -1,5 +1,5 @@
 import { type Component, type Snippet } from 'svelte';
-import { type HtmlAtomProps, type SnippetProps } from '$svelte-atoms/core/components/atom';
+import { type HtmlAtomProps, type SnippetProps } from '$ixirjs/ui/components/atom';
 
 // ============================================================================
 // Radio Snippet Props (Extensible)

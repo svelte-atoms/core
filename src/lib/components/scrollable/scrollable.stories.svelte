@@ -3,7 +3,7 @@
 	import { Scrollable as Scrollable_ } from '.';
 	import { animate } from 'motion';
 	import { ScrollableBond } from './bond.svelte';
-	import { on } from '$svelte-atoms/core/attachments/event.svelte';
+	import { on } from '$ixirjs/ui/attachments/event.svelte';
 
 	const { Story } = defineMeta({
 		title: 'ATOMS/Scrollable',

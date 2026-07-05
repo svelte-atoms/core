@@ -2,7 +2,7 @@ import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import { nanoid } from 'nanoid';
 import { SelectBond, SelectBondState, type SelectStateProps } from '../bond.svelte';
-import type { DropdownMenuItemControllerInterface } from '$svelte-atoms/core/components/dropdown-menu/item/controller.svelte';
+import type { DropdownMenuItemControllerInterface } from '$ixirjs/ui/components/dropdown-menu/item/controller.svelte';
 
 export type SelectItemProps<T = unknown> = {
 	readonly id: string;

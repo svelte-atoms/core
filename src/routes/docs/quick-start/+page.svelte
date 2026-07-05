@@ -8,10 +8,10 @@
 	let copied = $state(false);
 
 	const installCommands: Record<string, string> = {
-		npm: 'npm install @svelte-atoms/core',
-		pnpm: 'pnpm add @svelte-atoms/core',
-		yarn: 'yarn add @svelte-atoms/core',
-		bun: 'bun add @svelte-atoms/core'
+		npm: 'npm install @ixirjs/ui',
+		pnpm: 'pnpm add @ixirjs/ui',
+		yarn: 'yarn add @ixirjs/ui',
+		bun: 'bun add @ixirjs/ui'
 	};
 
 	function copy() {
@@ -152,7 +152,7 @@
 	<Section.Header>
 		<Section.Title>Installation</Section.Title>
 		<Section.Subtitle>
-			Install <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-mono">@svelte-atoms/core</code> with your preferred package manager.
+			Install <code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-sm font-mono">@ixirjs/ui</code> with your preferred package manager.
 		</Section.Subtitle>
 	</Section.Header>
 
@@ -240,7 +240,7 @@
 			<DocCodeBlock filepath="src/app.css" language="CSS" code={appCssCode} />
 			<div class="mt-3">
 				<DocCallout variant="note" title="Source scanning">
-					Include <code class="font-mono text-xs">node_modules/@svelte-atoms/core/**/*</code> in your Tailwind source so library utility classes are detected.
+					Include <code class="font-mono text-xs">node_modules/@ixirjs/ui/**/*</code> in your Tailwind source so library utility classes are detected.
 				</DocCallout>
 			</div>
 		</div>
@@ -331,7 +331,7 @@
 			Check the GitHub repository for examples, open issues, and discussions.
 		</p>
 		<a
-			href="https://github.com/svelte-atoms/core"
+			href="https://github.com/ixirjs/ui"
 			target="_blank"
 			rel="noopener noreferrer"
 			class="text-primary inline-flex items-center gap-2 text-sm font-medium hover:underline"

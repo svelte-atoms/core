@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   popover: () => ({
@@ -79,8 +79,8 @@ export const metadata = {
 		'Floating panel displaying rich content near a trigger element for contextual information or actions.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Popover } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Popover } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Popover' }],
 	useCases,
 	componentsSummary,

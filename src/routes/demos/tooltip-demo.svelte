@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Tooltip } from '$svelte-atoms/core/components/tooltip';
-	import { Button } from '$svelte-atoms/core/components/button';
+	import { Tooltip } from '$ixirjs/ui/components/tooltip';
+	import { Button } from '$ixirjs/ui/components/button';
 
 	let open = $state(false);
 </script>

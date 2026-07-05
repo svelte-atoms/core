@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { Icon } from '$svelte-atoms/core/components/icon';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { Icon } from '$ixirjs/ui/components/icon';
 	import type { AvatarProps } from './types';
 	import './avatar.css';
 

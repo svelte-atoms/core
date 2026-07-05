@@ -22,7 +22,7 @@
 Some components are used directly as a single export:
 
 {codeBlock(`<script lang="ts">
-  import { Button } from '@svelte-atoms/core';
+  import { Button } from '@ixirjs/ui';
 </script>
 
 <Button variant="primary">Save</Button>`, 'svelte')}
@@ -32,7 +32,7 @@ Some components are used directly as a single export:
 Compound components are exposed as namespaces with focused atoms:
 
 {codeBlock(`<script lang="ts">
-  import { Popover, Button } from '@svelte-atoms/core';
+  import { Popover, Button } from '@ixirjs/ui';
 </script>
 
 <Popover.Root>
@@ -53,7 +53,7 @@ Use {inlineCode('base={...}')} to layer behavior from one component into another
 ## 4) Field + Input integration
 
 {codeBlock(`<script lang="ts">
-  import { Field, Input } from '@svelte-atoms/core';
+  import { Field, Input } from '@ixirjs/ui';
 </script>
 
 <Field.Root name="email">

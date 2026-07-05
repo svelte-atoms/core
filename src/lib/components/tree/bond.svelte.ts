@@ -4,9 +4,9 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 import { untrack } from 'svelte';
-import { isBrowser } from '$svelte-atoms/core/utils/dom.svelte';
+import { isBrowser } from '$ixirjs/ui/utils/dom.svelte';
 
 export type TreeBondProps = BondStateProps & {
 	open: boolean;

@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap='dialog', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import Teleport from '$svelte-atoms/core/components/portal/teleport.svelte';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import Teleport from '$ixirjs/ui/components/portal/teleport.svelte';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { DrawerBond, DrawerBondState, type DrawerBondProps } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
 	import { ActivePortal, ZLayer } from '../portal';

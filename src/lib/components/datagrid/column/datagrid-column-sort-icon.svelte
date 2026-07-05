@@ -1,9 +1,9 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap, B extends Base = Base">
 	import { animate as motion } from 'motion';
-	import { Icon } from '$svelte-atoms/core/components/icon';
+	import { Icon } from '$ixirjs/ui/components/icon';
 	import { DataGridColumnBond } from './bond.svelte.ts';
-	import IconArrowDown from '$svelte-atoms/core/icons/icon-arrow-down.svelte';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import IconArrowDown from '$ixirjs/ui/icons/icon-arrow-down.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	const bond = DataGridColumnBond.get();
 

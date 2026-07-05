@@ -5,7 +5,7 @@ import {
 	BondState,
 	type BondElements,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type LayerBondProps = BondStateProps & {
 	readonly rest?: Record<string, unknown>;

@@ -23,7 +23,7 @@
 		related: ['menu', 'dropdown-menu', 'popover']
 	};
 
-	const presetCode = `import { createPreset } from '@svelte-atoms/core';
+	const presetCode = `import { createPreset } from '@ixirjs/ui';
 
 const preset = createPreset({
   'context-menu.trigger': () => ({
@@ -42,8 +42,8 @@ const preset = createPreset({
 		componentDescription: 'Right-click activated menu that appears at cursor position. Ideal for contextual actions and shortcuts.',
 		componentType: 'compound',
 		status: 'stable',
-		packageName: '@svelte-atoms/core',
-		importCode: `import { ContextMenu } from '@svelte-atoms/core/context-menu';`,
+		packageName: '@ixirjs/ui',
+		importCode: `import { ContextMenu } from '@ixirjs/ui/context-menu';`,
 		breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Context Menu' }],
 		presetCode,
 		accessibility: [

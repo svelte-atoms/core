@@ -83,7 +83,7 @@ Organize classes in a predictable order for better readability:
 The {inlineCode('cn()')} utility intelligently merges class names and resolves conflicts:
 
 {codeBlock(`
-import { cn } from '@svelte-atoms/core/utils';
+import { cn } from '@ixirjs/ui/utils';
 
 // Resolves conflicts automatically
 cn('px-2 py-1', 'px-4'); 
@@ -172,8 +172,8 @@ Define reusable style variants at the component level:
 {codeBlock(`
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-  import { defineVariants } from '@svelte-atoms/core/utils';
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { defineVariants } from '@ixirjs/ui/utils';
+  import { HtmlAtom } from '@ixirjs/ui';
 
   const buttonVariants = defineVariants({
     class: 'inline-flex items-center justify-center rounded-md font-medium',
@@ -312,7 +312,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 {codeBlock(`
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-  import { HtmlAtom, defineVariants } from '@svelte-atoms/core';
+  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
   
   const variants = defineVariants({
     class: 'inline-flex items-center justify-center rounded-md font-medium transition-colors',
@@ -353,7 +353,7 @@ Use the {inlineCode('style')} attribute for dynamic values:
 {codeBlock(`
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { HtmlAtom } from '@ixirjs/ui';
   
   let { class: klass, ...props } = $props();
 </script>
@@ -471,7 +471,7 @@ function getButtonClasses(variant: string, size: string) {
 
 {codeBlock(`
 <script>
-  import { cn } from '@svelte-atoms/core/utils';
+  import { cn } from '@ixirjs/ui/utils';
   
   $inspect(cn('base', isActive && 'active'));
   // See what classes are actually applied

@@ -4,8 +4,8 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
-import { getElementId } from '$svelte-atoms/core/utils/dom.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
+import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
 
 export type ToastBondProps = BondStateProps & {
 	open: boolean;

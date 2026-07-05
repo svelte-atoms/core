@@ -1,6 +1,6 @@
 import { animate } from 'motion';
 import { CollapsibleBond } from '.';
-import { DURATION } from '$svelte-atoms/core/shared';
+import { DURATION } from '$ixirjs/ui/shared';
 
 export type AnimateCollapsibleBodyParams = {
 	duration?: number;

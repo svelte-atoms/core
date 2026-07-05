@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import type { FieldBond } from './field/bond.svelte';
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond.svelte';
 
 export type FormProps<Extension extends Record<string, unknown> = Record<string, unknown>> =
 	BondStateProps & {

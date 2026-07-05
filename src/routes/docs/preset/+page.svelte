@@ -4,7 +4,7 @@
 	import { metadata } from './shared';
 
 	const globalPresetCode = `// +layout.svelte (App Root)
-import { setPreset } from '@svelte-atoms/core/context';
+import { setPreset } from '@ixirjs/ui/context';
 
 setPreset({
   button: () => ({
@@ -37,7 +37,7 @@ setPreset({
 });`;
 
 	const routePresetCode = `// routes/dashboard/+layout.svelte
-import { setPreset } from '@svelte-atoms/core/context';
+import { setPreset } from '@ixirjs/ui/context';
 
 // Extends and overrides the global preset
 setPreset({
@@ -60,8 +60,8 @@ setPreset({
 
 	const componentPresetCode = `<!-- components/Settings.svelte -->
 <script>
-  import { setPreset } from '@svelte-atoms/core/context';
-  import { Card } from '@svelte-atoms/core';
+  import { setPreset } from '@ixirjs/ui/context';
+  import { Card } from '@ixirjs/ui';
 
   setPreset({
     'card.title': () => ({
@@ -76,7 +76,7 @@ setPreset({
   </Card.Header>
 </Card.Root>`;
 
-	const dynamicPresetCode = `import { setPreset } from '@svelte-atoms/core/context';
+	const dynamicPresetCode = `import { setPreset } from '@ixirjs/ui/context';
 
 setPreset({
   // Returning a function makes the preset reactive to bond state
@@ -117,7 +117,7 @@ setPreset({
 
 	const placeholderCode = `<!-- In your component -->
 <script>
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { HtmlAtom } from '@ixirjs/ui';
   let { class: klass = '' } = $props();
 <\x2Fscript>
 
@@ -168,7 +168,7 @@ setPreset({
 // Result: all variants available (primary, secondary, gradient, outline)
 // All sizes available (sm, md, xl)`;
 
-	const presetEntryTypeCode = `import { setPreset } from '@svelte-atoms/core/context';
+	const presetEntryTypeCode = `import { setPreset } from '@ixirjs/ui/context';
 
 // PresetEntry: (bond: Bond | null) => PresetEntryValue | Array<PresetEntryValue>
 // PresetEntryValue: PresetEntryRecord | (() => PresetEntryRecord)

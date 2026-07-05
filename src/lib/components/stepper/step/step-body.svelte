@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { StepBond } from './bond.svelte';
 	import { StepperBond } from '../bond.svelte';
 	import type { StepContentProps } from './types';

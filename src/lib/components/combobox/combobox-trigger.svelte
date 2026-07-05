@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { ComboboxBond } from './bond.svelte';
-	import { Trigger } from '$svelte-atoms/core/components/select/atoms';
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import { Trigger } from '$ixirjs/ui/components/select/atoms';
+	import type { Base } from '$ixirjs/ui/components/atom';
 
 	const bond = ComboboxBond.get();
 

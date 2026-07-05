@@ -6,7 +6,7 @@
  * @example
  * ```svelte
  * <script>
- *   import { reducedMotion } from '@svelte-atoms/core';
+ *   import { reducedMotion } from '@ixirjs/ui';
  *
  *   const motion = reducedMotion();
  * </script>

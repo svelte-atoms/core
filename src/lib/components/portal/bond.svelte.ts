@@ -5,7 +5,7 @@ import {
 	BondAtom,
 	type BondElements,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 
 export type PortalStateProps = BondStateProps & {
 	id: string;

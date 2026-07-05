@@ -1,7 +1,7 @@
-import { DURATION } from '$svelte-atoms/core/shared';
+import { DURATION } from '$ixirjs/ui/shared';
 import { animate, easeInOut } from 'motion';
 import { DialogBond } from './bond.svelte';
-import { promiseWithResolvers } from '$svelte-atoms/core/utils/promise.svelte';
+import { promiseWithResolvers } from '$ixirjs/ui/utils/promise.svelte';
 
 type AnimateDialogRootParams = {
 	duration?: number;

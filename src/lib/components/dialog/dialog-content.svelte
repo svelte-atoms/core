@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { DialogBond } from './bond.svelte';
 	import type { DialogContentProps } from './types';
 	import { animateDialogContent } from './motion.svelte';

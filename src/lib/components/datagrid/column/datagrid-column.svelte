@@ -1,8 +1,8 @@
 <script lang="ts" generics="T = unknown, E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { nanoid } from 'nanoid';
 	import { untrack } from 'svelte';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import {
 		DataGridColumnBond,
 		DataGridColumnBondState,

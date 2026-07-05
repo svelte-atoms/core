@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PortalsStateProps } from './bond.svelte';
 	import { PortalsBond, PortalsState } from './bond.svelte';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 
 	let { id, factory = _factory, children = undefined } = $props();
 

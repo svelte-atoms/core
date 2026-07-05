@@ -3,10 +3,10 @@
 </script>
 
 <script lang="ts">
-	import { cn, defineState, defineProperty } from '$svelte-atoms/core/utils';
-	import { ActivePortal, Portal, Portals } from '$svelte-atoms/core/components/portal';
-	import { HtmlAtom as Atom } from '$svelte-atoms/core/components/atom';
-	import { HtmlElement, SvgElement } from '$svelte-atoms/core/components/element';
+	import { cn, defineState, defineProperty } from '$ixirjs/ui/utils';
+	import { ActivePortal, Portal, Portals } from '$ixirjs/ui/components/portal';
+	import { HtmlAtom as Atom } from '$ixirjs/ui/components/atom';
+	import { HtmlElement, SvgElement } from '$ixirjs/ui/components/element';
 	import { RootBond, RootBondState, type RootStateProps } from './bond.svelte';
 	import type { RootProps } from './types';
 
@@ -29,7 +29,7 @@
 	const renderers = defineState<Renderers>([
 		defineProperty('html', () => {
 			if (!html) {
-				import('$svelte-atoms/core/components/element/html-element.svelte').then((mod) => {
+				import('$ixirjs/ui/components/element/html-element.svelte').then((mod) => {
 					html = mod.default;
 				});
 			}
@@ -38,7 +38,7 @@
 		}),
 		defineProperty('svg', () => {
 			if (!svg) {
-				import('$svelte-atoms/core/components/element/svg-element.svelte').then((mod) => {
+				import('$ixirjs/ui/components/element/svg-element.svelte').then((mod) => {
 					svg = mod.default;
 				});
 			}

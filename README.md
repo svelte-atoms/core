@@ -1,25 +1,12 @@
-# @svelte-atoms/core
-
-> ⚠️ **Package renamed:** `@svelte-atoms/core` has moved to [`@ixirjs/ui`](https://www.npmjs.com/package/@ixirjs/ui).
->
-> This package is deprecated and no longer maintained. To migrate:
->
-> ```bash
-> npm uninstall @svelte-atoms/core
-> npm install @ixirjs/ui
-> ```
->
-> Then update your imports from `'@svelte-atoms/core'` to `'@ixirjs/ui'`.
->
-> Source: [github.com/ixirjs/ui](https://github.com/ixirjs/ui)
+# @ixirjs/ui
 
 > A modern, headless, and accessible Svelte 5 UI component library built for composability and extensibility.
 
-[![npm version](https://img.shields.io/npm/v/@svelte-atoms/core.svg)](https://www.npmjs.com/package/@svelte-atoms/core)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/svelte-atoms/core)
+[![npm version](https://img.shields.io/npm/v/@ixirjs/ui.svg)](https://www.npmjs.com/package/@ixirjs/ui)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ixirjs/ui)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Why Svelte Atoms?
+## Why @ixirjs/ui?
 
 - **🎯 Headless First** - Complete styling control with sensible defaults
 - **🔗 Bond Architecture** - Self-contained state management with context-based communication
@@ -31,12 +18,12 @@
 ## Quick Start
 
 ```bash
-npm install @svelte-atoms/core
+npm install @ixirjs/ui
 ```
 
 ```svelte
 <script lang="ts">
-	import { Button, Dialog } from '@svelte-atoms/core';
+	import { Button, Dialog } from '@ixirjs/ui';
 
 	let open = $state(false);
 </script>
@@ -66,7 +53,7 @@ Transform any component into another element or wrap it with custom logic:
 
 ```svelte
 <script lang="ts">
-	import { Button, Popover, Input } from '@svelte-atoms/core';
+	import { Button, Popover, Input } from '@ixirjs/ui';
 </script>
 
 <!-- Button as Popover trigger -->
@@ -112,7 +99,7 @@ All components expose typed snippet props for maximum flexibility:
 Create reusable variants locally or globally:
 
 ```typescript
-import { defineVariants } from '@svelte-atoms/core/utils';
+import { defineVariants } from '@ixirjs/ui/utils';
 
 const buttonVariants = defineVariants({
 	class: 'inline-flex items-center justify-center rounded-md',
@@ -149,14 +136,14 @@ const buttonVariants = defineVariants({
 
 - **[Full Documentation](https://sacore.netlify.app/)** - Guides, API references, and examples
 - **[Storybook](https://statuesque-boba-0fb888.netlify.app/)** - Interactive component playground
-- **[GitHub](https://github.com/svelte-atoms/core)** - Source code and issues
+- **[GitHub](https://github.com/ixirjs/ui)** - Source code and issues
 
 ## Development
 
 ```bash
 # Clone and install
-git clone https://github.com/svelte-atoms/core.git
-cd core
+git clone https://github.com/ixirjs/ui.git
+cd ui
 bun install
 
 # Start dev server
@@ -168,5 +155,5 @@ bun run build
 
 ## License
 
-MIT © [Svelte Atoms Team](https://github.com/svelte-atoms)
+MIT © [ixirjs](https://github.com/ixirjs)
 

@@ -1,9 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { StepBond, StepBondState, type StepBondProps } from './bond.svelte';
 	import type { StepRootProps } from './types';
-	import type { Factory } from '$svelte-atoms/core/types';
+	import type { Factory } from '$ixirjs/ui/types';
 	import { onDestroy } from 'svelte';
 
 	let {

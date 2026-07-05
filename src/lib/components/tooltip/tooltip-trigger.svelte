@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
-	import { Trigger } from '$svelte-atoms/core/components/popover/atoms';
+	import { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
+	import { Trigger } from '$ixirjs/ui/components/popover/atoms';
 
 	const popoverBond = PopoverBond.get();
 

@@ -15,13 +15,13 @@
 
 <FrontMatter {frontmatter} />
 
-# Import Guide for @svelte-atoms/core
+# Import Guide for @ixirjs/ui
 
 ## Golden Rule
 
-Import public APIs from {inlineCode('@svelte-atoms/core')}.
+Import public APIs from {inlineCode('@ixirjs/ui')}.
 
-{codeBlock(`import { Button, Popover, Select, Input, Form, Field } from '@svelte-atoms/core';`, 'typescript')}
+{codeBlock(`import { Button, Popover, Select, Input, Form, Field } from '@ixirjs/ui';`, 'typescript')}
 
 ## Current Import Patterns
 
@@ -29,13 +29,13 @@ Import public APIs from {inlineCode('@svelte-atoms/core')}.
 
 Use direct named exports for single components:
 
-{codeBlock(`import { Button, Badge, Avatar, Kbd } from '@svelte-atoms/core';`, 'typescript')}
+{codeBlock(`import { Button, Badge, Avatar, Kbd } from '@ixirjs/ui';`, 'typescript')}
 
 ### Namespaced component families
 
 Many compound components are exported as namespaces:
 
-{codeBlock(`import { Popover, Select, DropdownMenu, Input, Field } from '@svelte-atoms/core';`, 'typescript')}
+{codeBlock(`import { Popover, Select, DropdownMenu, Input, Field } from '@ixirjs/ui';`, 'typescript')}
 
 Then use atoms from each namespace:
 
@@ -48,7 +48,7 @@ Then use atoms from each namespace:
 
 ### Utilities and context helpers
 
-{codeBlock(`import { cn, defineVariants, setPreset } from '@svelte-atoms/core';`, 'typescript')}
+{codeBlock(`import { cn, defineVariants, setPreset } from '@ixirjs/ui';`, 'typescript')}
 
 ## Recommended Structure
 
@@ -59,7 +59,7 @@ Then use atoms from each namespace:
 ## Common Mistakes
 
 {list([
-	'Default imports from @svelte-atoms/core (the package uses named exports).',
+	'Default imports from @ixirjs/ui (the package uses named exports).',
 	'Importing from private source paths like src/lib/... in application code.',
 	'Mixing deprecated aliases when a canonical namespace exists.',
 	'Using lowercase component names in imports.'
@@ -67,4 +67,4 @@ Then use atoms from each namespace:
 
 ## Correct vs Incorrect
 
-{codeBlock(`// Incorrect\nimport Button from '@svelte-atoms/core';\nimport { Button } from '@svelte-atoms/core/components/button';\n\n// Correct\nimport { Button, Popover } from '@svelte-atoms/core';`, 'typescript')}
+{codeBlock(`// Incorrect\nimport Button from '@ixirjs/ui';\nimport { Button } from '@ixirjs/ui/components/button';\n\n// Correct\nimport { Button, Popover } from '@ixirjs/ui';`, 'typescript')}

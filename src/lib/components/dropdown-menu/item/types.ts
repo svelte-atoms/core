@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { DropdownMenuItemController } from './controller.svelte';
-import type { ClassValue } from '$svelte-atoms/core/utils';
+import type { ClassValue } from '$ixirjs/ui/utils';
 import type { Base, HtmlAtomProps } from '../../atom';
 
 export interface DropdownMenuItemProps<

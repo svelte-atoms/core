@@ -8,7 +8,7 @@ Steps are typically used within a `Stepper.Root` component to create multi-step 
 
 ```svelte
 <script>
-  import { Stepper, Step } from '@svelte-atoms/core';
+  import { Stepper, Step } from '@ixirjs/ui';
 </script>
 
 <Stepper.Root>

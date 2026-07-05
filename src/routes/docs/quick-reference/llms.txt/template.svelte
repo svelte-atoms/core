@@ -19,7 +19,7 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Component } from '@svelte-atoms/core/components/component';
+	import { Component } from '@ixirjs/ui/components/component';
 </script>
 
 <Component.Root>
@@ -30,7 +30,7 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
+	import { Dropdown } from '@ixirjs/ui/components/dropdown';
 
 	let value = $state<string[]>([]);
 </script>
@@ -49,49 +49,49 @@
 
 | Component    | Import                                                              | Basic Usage                                    | Props                          |
 | ------------ | ------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------ |
-| **Input**    | {inlineCode("import { Input } from '@svelte-atoms/core/components/input'")}       | {inlineCode('<Input.Root type="text" placeholder="..." />')} | {inlineCode('type')}, {inlineCode('value')}, {inlineCode('placeholder')} |
-| **Textarea** | {inlineCode("import { Textarea } from '@svelte-atoms/core/components/textarea'")} | {inlineCode('<Textarea.Root placeholder="..." />')}          | {inlineCode('value')}, {inlineCode('placeholder')}, {inlineCode('rows')} |
-| **Checkbox** | {inlineCode("import { Checkbox } from '@svelte-atoms/core/components/checkbox'")} | {inlineCode('<Checkbox.Root bind:checked />')}               | {inlineCode('checked')}, {inlineCode('disabled')}          |
-| **Radio**    | {inlineCode("import { Radio } from '@svelte-atoms/core/components/radio'")}       | {inlineCode('<Radio.Root value="..." bind:group />')}        | {inlineCode('value')}, {inlineCode('group')}               |
-| **Form**     | {inlineCode("import { Form } from '@svelte-atoms/core/components/form'")}         | {inlineCode('<Form.Root><Form.Field /></Form.Root>')}        | {inlineCode('onsubmit')}                     |
+| **Input**    | {inlineCode("import { Input } from '@ixirjs/ui/components/input'")}       | {inlineCode('<Input.Root type="text" placeholder="..." />')} | {inlineCode('type')}, {inlineCode('value')}, {inlineCode('placeholder')} |
+| **Textarea** | {inlineCode("import { Textarea } from '@ixirjs/ui/components/textarea'")} | {inlineCode('<Textarea.Root placeholder="..." />')}          | {inlineCode('value')}, {inlineCode('placeholder')}, {inlineCode('rows')} |
+| **Checkbox** | {inlineCode("import { Checkbox } from '@ixirjs/ui/components/checkbox'")} | {inlineCode('<Checkbox.Root bind:checked />')}               | {inlineCode('checked')}, {inlineCode('disabled')}          |
+| **Radio**    | {inlineCode("import { Radio } from '@ixirjs/ui/components/radio'")}       | {inlineCode('<Radio.Root value="..." bind:group />')}        | {inlineCode('value')}, {inlineCode('group')}               |
+| **Form**     | {inlineCode("import { Form } from '@ixirjs/ui/components/form'")}         | {inlineCode('<Form.Root><Form.Field /></Form.Root>')}        | {inlineCode('onsubmit')}                     |
 
 ### Interactive Components
 
 | Component     | Import                                                                | Basic Usage                                                                       | State Binding              |
 | ------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------- |
-| **Button**    | {inlineCode("import { Button } from '@svelte-atoms/core/components/button'")}       | {inlineCode('<Button.Root onclick={...}>Text</Button.Root>')}                                   | -                          |
-| **Dropdown**  | {inlineCode("import { Dropdown } from '@svelte-atoms/core/components/dropdown'")}   | {inlineCode('<Dropdown.Root><Dropdown.List><Dropdown.Item /></Dropdown.List></Dropdown.Root>')} | {inlineCode('bind:value')}               |
-| **Combobox**  | {inlineCode("import { Combobox } from '@svelte-atoms/core/components/combobox'")}   | {inlineCode('<Combobox.Root><Combobox.Input /><Combobox.List /></Combobox.Root>')}              | {inlineCode('bind:value')}, {inlineCode('bind:query')} |
-| **Accordion** | {inlineCode("import { Accordion } from '@svelte-atoms/core/components/accordion'")} | {inlineCode('<Accordion.Root><Accordion.Item /></Accordion.Root>')}                             | {inlineCode('bind:value')}               |
-| **Tabs**      | {inlineCode("import { Tabs } from '@svelte-atoms/core/components/tabs'")}           | {inlineCode('<Tabs.Root><Tabs.Header /><Tabs.Body /></Tabs.Root>')}                             | {inlineCode('bind:value')}               |
-| **Tree**      | {inlineCode("import { Tree } from '@svelte-atoms/core/components/tree'")}           | {inlineCode('<Tree.Root><Tree.Header /><Tree.Body /></Tree.Root>')}                             | {inlineCode('bind:open')}                |
+| **Button**    | {inlineCode("import { Button } from '@ixirjs/ui/components/button'")}       | {inlineCode('<Button.Root onclick={...}>Text</Button.Root>')}                                   | -                          |
+| **Dropdown**  | {inlineCode("import { Dropdown } from '@ixirjs/ui/components/dropdown'")}   | {inlineCode('<Dropdown.Root><Dropdown.List><Dropdown.Item /></Dropdown.List></Dropdown.Root>')} | {inlineCode('bind:value')}               |
+| **Combobox**  | {inlineCode("import { Combobox } from '@ixirjs/ui/components/combobox'")}   | {inlineCode('<Combobox.Root><Combobox.Input /><Combobox.List /></Combobox.Root>')}              | {inlineCode('bind:value')}, {inlineCode('bind:query')} |
+| **Accordion** | {inlineCode("import { Accordion } from '@ixirjs/ui/components/accordion'")} | {inlineCode('<Accordion.Root><Accordion.Item /></Accordion.Root>')}                             | {inlineCode('bind:value')}               |
+| **Tabs**      | {inlineCode("import { Tabs } from '@ixirjs/ui/components/tabs'")}           | {inlineCode('<Tabs.Root><Tabs.Header /><Tabs.Body /></Tabs.Root>')}                             | {inlineCode('bind:value')}               |
+| **Tree**      | {inlineCode("import { Tree } from '@ixirjs/ui/components/tree'")}           | {inlineCode('<Tree.Root><Tree.Header /><Tree.Body /></Tree.Root>')}                             | {inlineCode('bind:open')}                |
 
 ### Overlay Components
 
 | Component   | Import                                                            | Basic Usage                                                           | State Binding |
 | ----------- | ----------------------------------------------------------------- | --------------------------------------------------------------------- | ------------- |
-| **Dialog**  | {inlineCode("import { Dialog } from '@svelte-atoms/core/components/dialog'")}   | {inlineCode('<Dialog.Root><Dialog.Content /></Dialog.Root>')}                       | {inlineCode('bind:open')}   |
-| **Drawer**  | {inlineCode("import { Drawer } from '@svelte-atoms/core/components/drawer'")}   | {inlineCode('<Drawer.Root><Drawer.Content /></Drawer.Root>')}                       | {inlineCode('bind:open')}   |
-| **Popover** | {inlineCode("import { Popover } from '@svelte-atoms/core/components/popover'")} | {inlineCode('<Popover.Root><Popover.Trigger /><Popover.Content /></Popover.Root>')} | {inlineCode('bind:open')}   |
-| **Tooltip** | {inlineCode("import { Tooltip } from '@svelte-atoms/core/components/tooltip'")} | {inlineCode('<Tooltip.Root><Tooltip.Trigger /><Tooltip.Content /></Tooltip.Root>')} | -             |
-| **Toast**   | {inlineCode("import { Toast } from '@svelte-atoms/core/components/toast'")}     | {inlineCode('<Toast.Root><Toast.Title /><Toast.Description /></Toast.Root>')}       | -             |
+| **Dialog**  | {inlineCode("import { Dialog } from '@ixirjs/ui/components/dialog'")}   | {inlineCode('<Dialog.Root><Dialog.Content /></Dialog.Root>')}                       | {inlineCode('bind:open')}   |
+| **Drawer**  | {inlineCode("import { Drawer } from '@ixirjs/ui/components/drawer'")}   | {inlineCode('<Drawer.Root><Drawer.Content /></Drawer.Root>')}                       | {inlineCode('bind:open')}   |
+| **Popover** | {inlineCode("import { Popover } from '@ixirjs/ui/components/popover'")} | {inlineCode('<Popover.Root><Popover.Trigger /><Popover.Content /></Popover.Root>')} | {inlineCode('bind:open')}   |
+| **Tooltip** | {inlineCode("import { Tooltip } from '@ixirjs/ui/components/tooltip'")} | {inlineCode('<Tooltip.Root><Tooltip.Trigger /><Tooltip.Content /></Tooltip.Root>')} | -             |
+| **Toast**   | {inlineCode("import { Toast } from '@ixirjs/ui/components/toast'")}     | {inlineCode('<Toast.Root><Toast.Title /><Toast.Description /></Toast.Root>')}       | -             |
 
 ### Layout Components
 
 | Component   | Import                                                            | Basic Usage                                                          | Props              |
 | ----------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------ |
-| **Card**    | {inlineCode("import { Card } from '@svelte-atoms/core/components/card'")}       | {inlineCode('<Card.Root><Card.Header /><Card.Body /><Card.Footer /></Card.Root>')} | -                  |
-| **Stack**   | {inlineCode("import { Stack } from '@svelte-atoms/core/components/stack'")}     | {inlineCode('<Stack.Root direction="vertical" gap={4}>...</Stack.Root>')}          | {inlineCode('direction')}, {inlineCode('gap')} |
-| **List**    | {inlineCode("import { List } from '@svelte-atoms/core/components/list'")}       | {inlineCode('<List.Root><List.Item /></List.Root>')}                               | {inlineCode('type')}             |
-| **Divider** | {inlineCode("import { Divider } from '@svelte-atoms/core/components/divider'")} | {inlineCode('<Divider.Root />')}                                                   | {inlineCode('orientation')}      |
+| **Card**    | {inlineCode("import { Card } from '@ixirjs/ui/components/card'")}       | {inlineCode('<Card.Root><Card.Header /><Card.Body /><Card.Footer /></Card.Root>')} | -                  |
+| **Stack**   | {inlineCode("import { Stack } from '@ixirjs/ui/components/stack'")}     | {inlineCode('<Stack.Root direction="vertical" gap={4}>...</Stack.Root>')}          | {inlineCode('direction')}, {inlineCode('gap')} |
+| **List**    | {inlineCode("import { List } from '@ixirjs/ui/components/list'")}       | {inlineCode('<List.Root><List.Item /></List.Root>')}                               | {inlineCode('type')}             |
+| **Divider** | {inlineCode("import { Divider } from '@ixirjs/ui/components/divider'")} | {inlineCode('<Divider.Root />')}                                                   | {inlineCode('orientation')}      |
 
 ### Display Components
 
 | Component  | Import                                                          | Basic Usage                           | Props        |
 | ---------- | --------------------------------------------------------------- | ------------------------------------- | ------------ |
-| **Avatar** | {inlineCode("import { Avatar } from '@svelte-atoms/core/components/avatar'")} | {inlineCode('<Avatar.Root src="..." alt="..." />')} | {inlineCode('src')}, {inlineCode('alt')} |
-| **Badge**  | {inlineCode("import { Badge } from '@svelte-atoms/core/components/badge'")}   | {inlineCode('<Badge.Root>Text</Badge.Root>')}       | {inlineCode('variant')}    |
-| **Icon**   | {inlineCode("import { Icon } from '@svelte-atoms/core/components/icon'")}     | {inlineCode('<Icon src={IconComponent} />')}        | {inlineCode('src')}        |
+| **Avatar** | {inlineCode("import { Avatar } from '@ixirjs/ui/components/avatar'")} | {inlineCode('<Avatar.Root src="..." alt="..." />')} | {inlineCode('src')}, {inlineCode('alt')} |
+| **Badge**  | {inlineCode("import { Badge } from '@ixirjs/ui/components/badge'")}   | {inlineCode('<Badge.Root>Text</Badge.Root>')}       | {inlineCode('variant')}    |
+| **Icon**   | {inlineCode("import { Icon } from '@ixirjs/ui/components/icon'")}     | {inlineCode('<Icon src={IconComponent} />')}        | {inlineCode('src')}        |
 
 ## 🔧 Common Props
 
@@ -144,20 +144,6 @@
 
 ## 🎭 Animation Examples
 
-### With @svelte-atoms/vibra
-
-{codeBlock(`<script>
-	import { animate } from '@svelte-atoms/vibra';
-
-	function handleEnter(el) {
-		return animate(el, { opacity: [0, 1], y: [-20, 0] }, { duration: 0.3 });
-	}
-</script>
-
-<Dialog.Root bind:open enter={handleEnter}>
-	<Dialog.Content>...</Dialog.Content>
-</Dialog.Root>`, 'svelte')}
-
 ### With GSAP
 
 {codeBlock(`<script>
@@ -178,9 +164,9 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Form } from '@svelte-atoms/core/components/form';
-	import { Input } from '@svelte-atoms/core/components/input';
-	import { Button } from '@svelte-atoms/core/components/button';
+	import { Form } from '@ixirjs/ui/components/form';
+	import { Input } from '@ixirjs/ui/components/input';
+	import { Button } from '@ixirjs/ui/components/button';
 
 	let formData = $state({ email: '', password: '' });
 </script>
@@ -207,8 +193,8 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Dialog } from '@svelte-atoms/core/components/dialog';
-	import { Button } from '@svelte-atoms/core/components/button';
+	import { Dialog } from '@ixirjs/ui/components/dialog';
+	import { Button } from '@ixirjs/ui/components/button';
 
 	let open = $state(false);
 </script>
@@ -234,7 +220,7 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
+	import { Dropdown } from '@ixirjs/ui/components/dropdown';
 
 	let selected = $state<string[]>([]);
 </script>
@@ -255,7 +241,7 @@
 
 {codeBlock(`<script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	import { Tabs } from '@svelte-atoms/core/components/tabs';
+	import { Tabs } from '@ixirjs/ui/components/tabs';
 
 	let activeTab = $state('tab1');
 </script>
@@ -294,7 +280,7 @@
 
 {codeBlock(`<!-- CORRECT -->
 <script>
-	import { Dropdown } from '@svelte-atoms/core/components/dropdown';
+	import { Dropdown } from '@ixirjs/ui/components/dropdown';
 	let selected = $state([]);
 </script>
 

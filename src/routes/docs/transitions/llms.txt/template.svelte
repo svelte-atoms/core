@@ -10,34 +10,8 @@
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const close = '</' + 'script>';
 
-	const motionExample = `${open}
-	import { Component, toTransitionConfig } from '@svelte-atoms/core';
-	import { animate } from '@svelte-atoms/vibra';
-${close}
-
-<Component
-	initial={(node) => {
-		node.style.opacity = '0';
-		node.style.height = '0';
-	}}
-	enter={(node) => {
-		const animation = animate(
-			node,
-			{ opacity: 1, height: 'auto' },
-			{ duration: 0.2, easing: 'linear' }
-		);
-		return toTransitionConfig(animation);
-	}}
-	exit={(node) => {
-		const animation = animate(node, { opacity: 0, height: 0 }, { duration: 0.2, easing: 'linear' });
-		return toTransitionConfig(animation);
-	}}
->
-	<!-- Content -->
-</Component>`;
-
 	const svelteTransitionsExample = `${open}
-	import { Component } from '@svelte-atoms/core';
+	import { Component } from '@ixirjs/ui';
 	import { slide, fade } from 'svelte/transition';
 ${close}
 
@@ -49,8 +23,7 @@ ${close}
 </Component>`;
 
 	const accordionExample = `${open}
-	import { Accordion, AccordionItem, toTransitionConfig } from '@svelte-atoms/core';
-	import { animate } from '@svelte-atoms/vibra';
+	import { Accordion, AccordionItem, toTransitionConfig } from '@ixirjs/ui';
 ${close}
 
 <Accordion>
@@ -60,8 +33,10 @@ ${close}
 				<div>Item Header</div>
 				<AccordionItem.Indicator
 					animate={(node, isOpen) => {
-						const animation = animate(node, { rotate: isOpen ? 180 : 0 }, { duration: 0.2 });
-						return { duration: 0.2 * 1000, delay: 0 };
+						return {
+							duration: 200,
+							css: (t) => \`transform: rotate(\${t * (isOpen ? 180 : 0)}deg)\`
+						};
 					}}
 				/>
 			</AccordionItem.Header>
@@ -73,7 +48,7 @@ ${close}
 </Accordion>`;
 
 	const customAnimationExample = `${open}
-	import { Component } from '@svelte-atoms/core';
+	import { Component } from '@ixirjs/ui';
 
 	function customEnter(node) {
 		// Your custom animation logic
@@ -98,7 +73,7 @@ ${close}
 
 # Transitions & Animations
 
-Most components in {inlineCode('@svelte-atoms/core')} support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using {inlineCode('@svelte-atoms/vibra')}, Svelte transitions, or custom animation libraries.
+Most components in {inlineCode('@ixirjs/ui')} support custom transitions and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using Svelte transitions or custom animation libraries.
 
 ## Animation Hooks
 
@@ -108,12 +83,6 @@ Components that support transitions typically provide these props:
 - {inlineCode('enter')} - Define the enter animation when element appears
 - {inlineCode('exit')} - Define the exit animation when element disappears
 - {inlineCode('animate')} - Define animations that run when the element's state changes
-
-## Using @svelte-atoms/vibra (Recommended)
-
-The recommended approach is to use {inlineCode('@svelte-atoms/vibra')} with the {inlineCode('toTransitionConfig')} helper:
-
-{codeBlock(motionExample, 'svelte')}
 
 ## Using Svelte Transitions
 

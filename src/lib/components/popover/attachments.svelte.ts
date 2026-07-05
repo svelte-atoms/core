@@ -1,5 +1,5 @@
 import { PopoverBond } from './bond.svelte';
-import { clickout as gclickout } from '$svelte-atoms/core/attachments/clickout.svelte';
+import { clickout as gclickout } from '$ixirjs/ui/attachments/clickout.svelte';
 
 export function popover(callback: (node: HTMLElement, bond?: PopoverBond) => any) {
 	const bond = PopoverBond.get();

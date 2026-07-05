@@ -1,4 +1,4 @@
-import { PopoverBond } from '$svelte-atoms/core/components/popover/bond.svelte';
+import { PopoverBond } from '$ixirjs/ui/components/popover/bond.svelte';
 
 export function tooltip(callback: (node: HTMLElement, tab?: PopoverBond) => any) {
 	const bond = PopoverBond.get();

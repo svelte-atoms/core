@@ -4,7 +4,7 @@
 >
 	import type { TabHeaderProps } from '../types';
 	import { TabBond } from './bond.svelte';
-	import { HtmlAtom as Atom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom as Atom, type Base } from '$ixirjs/ui/components/atom';
 
 	const bond = TabBond.get();
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
-	import { DURATION } from '$svelte-atoms/core';
+	import { DURATION } from '$ixirjs/ui';
 
 	type TocEntry = { id: string; text: string };
 

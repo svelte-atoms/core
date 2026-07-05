@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { nanoid } from 'nanoid';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { TabBond, TabBondState, type TabBondProps } from './bond.svelte';
 	import { TabsBond } from '../bond.svelte';
 	import { untrack, type Snippet } from 'svelte';

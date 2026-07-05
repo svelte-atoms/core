@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Menu as AMenu } from '.';
-	import { Button } from '$svelte-atoms/core/components/button';
+	import { Button } from '$ixirjs/ui/components/button';
 
 	// More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 	const { Story } = defineMeta({

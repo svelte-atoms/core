@@ -3,7 +3,7 @@ import {
 	PopoverState,
 	type PopoverDomElements,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
+} from '$ixirjs/ui/components/popover/bond.svelte';
 import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 import type { CalendarBond, CalendarBondProps } from '../calendar/bond.svelte';

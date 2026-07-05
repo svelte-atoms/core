@@ -4,8 +4,8 @@
 >
 	import type { Component } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
-	import type { HtmlElementTagName, HtmlElementType } from '$svelte-atoms/core/components/element';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import type { HtmlElementTagName, HtmlElementType } from '$ixirjs/ui/components/element';
 	import type { IconProps } from './types';
 	import './icon.css';
 

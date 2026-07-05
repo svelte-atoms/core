@@ -7,8 +7,8 @@ import {
 	// DropdownMenuItemAtom,
 	type DropdownMenuBondElements,
 	type DropdownMenuBondProps
-} from '$svelte-atoms/core/components/dropdown-menu/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
+import { BondAtom } from '$ixirjs/ui/shared/bond.svelte';
 import type { SelectItemAtom } from './item/bond.svelte';
 
 export type SelectStateProps = DropdownMenuBondProps & {

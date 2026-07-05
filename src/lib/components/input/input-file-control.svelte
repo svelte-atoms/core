@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { InputBond } from './bond.svelte';
 	import type { InputFileControlProps } from './types';
 

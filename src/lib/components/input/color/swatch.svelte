@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { InputBond } from '../bond.svelte';
-	import { Swatch } from '$svelte-atoms/core/components/swatch';
+	import { Swatch } from '$ixirjs/ui/components/swatch';
 
 	const bond = InputBond.get();
 

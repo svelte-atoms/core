@@ -97,19 +97,19 @@ Dive deeper into composition patterns, animations, and building custom component
 
 ## Getting Help
 
-- **GitHub Issues**: Report bugs and request features on [GitHub](https://github.com/svelte-atoms/core)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/svelte-atoms/core/discussions)
+- **GitHub Issues**: Report bugs and request features on [GitHub](https://github.com/ixirjs/ui)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/ixirjs/ui/discussions)
 - **Documentation**: Full API docs, examples, and best practices in this guide
 
 ## Quick Start
 
 The fastest way to get started:
 
-{codeBlock(`npm install @svelte-atoms/core`, 'bash')}
+{codeBlock(`npm install @ixirjs/ui`, 'bash')}
 
 Install a component:
 
-{codeBlock(`npx svelte-atoms install button`, 'bash')}
+{codeBlock(`npx ixirjs install button`, 'bash')}
 
 Use it in your Svelte app:
 
@@ -144,7 +144,7 @@ For detailed setup instructions, see the [Quick Start Guide](/docs/quick-start/l
 
 ## License
 
-MIT © [Svelte Atoms Contributors](https://github.com/svelte-atoms/core/graphs/contributors)
+MIT © [Svelte Atoms Contributors](https://github.com/ixirjs/ui/graphs/contributors)
 
 ---
 

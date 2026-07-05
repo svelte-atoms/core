@@ -1,4 +1,4 @@
-import type { HtmlAtomProps } from '$svelte-atoms/core/components/atom/types';
+import type { HtmlAtomProps } from '$ixirjs/ui/components/atom/types';
 
 // ============================================================================
 // Button Component Props (Extensible)

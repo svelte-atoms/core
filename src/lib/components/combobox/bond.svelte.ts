@@ -1,10 +1,10 @@
-import { type PopoverDomElements } from '$svelte-atoms/core/components/popover/bond.svelte';
+import { type PopoverDomElements } from '$ixirjs/ui/components/popover/bond.svelte';
 import {
 	DropdownBond,
 	DropdownBondState,
 	type DropdownStateProps
-} from '$svelte-atoms/core/components/dropdown/bond.svelte';
-import { BondAtom } from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/components/dropdown/bond.svelte';
+import { BondAtom } from '$ixirjs/ui/shared/bond.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { nanoid } from 'nanoid';
 import type { ComboboxSelection } from './types';

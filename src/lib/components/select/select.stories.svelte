@@ -1,7 +1,7 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Select as ASelect } from '.';
-	import { Input } from '$svelte-atoms/core/components/input';
+	import { Input } from '$ixirjs/ui/components/input';
 	import { flip } from 'svelte/animate';
 	import { filterSelectData } from './runes.svelte';
 

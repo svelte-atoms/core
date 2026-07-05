@@ -1,9 +1,9 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import { Alert as AAlert } from './index';
-	import { Button } from '$svelte-atoms/core/components/button';
-	import { Icon } from '$svelte-atoms/core/components/icon';
-	import { cn } from '$svelte-atoms/core/utils';
+	import { Button } from '$ixirjs/ui/components/button';
+	import { Icon } from '$ixirjs/ui/components/icon';
+	import { cn } from '$ixirjs/ui/utils';
 
 	const { Story } = defineMeta({
 		title: 'Atoms/Alert',

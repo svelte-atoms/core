@@ -1,10 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { Base } from '$svelte-atoms/core/components/atom';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Trigger } from '../popover/atoms';
 	import { DropdownMenuBond } from '../dropdown-menu/bond.svelte';
 	import type { ContextMenuTriggerProps } from './types';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
+	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond.svelte';
 
 	type ElementType = HTMLElementTagNameMap[E];
 

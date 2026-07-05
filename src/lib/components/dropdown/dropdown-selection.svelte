@@ -1,5 +1,5 @@
 <script lang="ts" generics="T extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { type Base } from '$svelte-atoms/core/components/atom';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { DropdownBond } from './bond.svelte';
 	import type { DropdownSelectionProps } from './types';
 	import { Chip } from '../chip';

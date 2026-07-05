@@ -1,9 +1,9 @@
 <script module lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$svelte-atoms/core/components/atom';
-	import { defineState, defineProperty } from '$svelte-atoms/core/utils/state';
-	import type { Override, Factory } from '$svelte-atoms/core/types';
+	import { HtmlAtom, type HtmlAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import { defineState, defineProperty } from '$ixirjs/ui/utils/state';
+	import type { Override, Factory } from '$ixirjs/ui/types';
 	import { FormBond, FormBondState, type FormProps } from './bond.svelte';
 
 	type CommonProps = {

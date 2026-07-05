@@ -1,4 +1,4 @@
-import { Bond, BondState, type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
+import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond.svelte';
 import { getContext, setContext } from 'svelte';
 import { createAttachmentKey } from 'svelte/attachments';
 

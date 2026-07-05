@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn, defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { cn, defineProperty, defineState } from '$ixirjs/ui/utils';
 	import { addMonths, format, isToday, startOfDay, subMonths } from 'date-fns';
 	import type { CalendarRange, CalendarRootProps, Day, Month } from './types';
 	import { CalendarBond, CalendarBondState, type CalendarBondProps } from './bond.svelte';

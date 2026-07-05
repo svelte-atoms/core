@@ -32,7 +32,7 @@ Supported hooks:
 ## Native Svelte transitions
 
 {codeBlock(`<script lang="ts">
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { HtmlAtom } from '@ixirjs/ui';
   import { fade, slide } from 'svelte/transition';
 
   let open = $state(true);
@@ -50,7 +50,7 @@ Supported hooks:
 ## Reactive animation with external libraries
 
 {codeBlock(`<script lang="ts">
-  import { HtmlAtom } from '@svelte-atoms/core';
+  import { HtmlAtom } from '@ixirjs/ui';
   import gsap from 'gsap';
 
   let open = $state(false);

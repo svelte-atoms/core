@@ -86,13 +86,13 @@ Here's how an atom works with a simple example:
 ### 1. Import an Atom
 
 {codeBlock(`
-import { HtmlAtom } from '@svelte-atoms/core';
+import { HtmlAtom } from '@ixirjs/ui';
 `, 'typescript')}
 
 ### 2. Define Variants (Optional)
 
 {codeBlock(`
-import { defineVariants } from '@svelte-atoms/core/utils';
+import { defineVariants } from '@ixirjs/ui/utils';
 
 const buttonVariants = defineVariants({
   variants: {

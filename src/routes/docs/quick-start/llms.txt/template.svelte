@@ -30,19 +30,19 @@ Before getting started, make sure your project meets the following requirements:
 
 ## Installation
 
-Install {inlineCode('@svelte-atoms/core')} using your preferred package manager:
+Install {inlineCode('@ixirjs/ui')} using your preferred package manager:
 
 {codeBlock(`# npm
-npm install @svelte-atoms/core
+npm install @ixirjs/ui
 
 # pnpm
-pnpm add @svelte-atoms/core
+pnpm add @ixirjs/ui
 
 # yarn
-yarn add @svelte-atoms/core
+yarn add @ixirjs/ui
 
 # bun
-bun add @svelte-atoms/core`, 'bash')}
+bun add @ixirjs/ui`, 'bash')}
 
 ## Configuration
 
@@ -59,7 +59,7 @@ Import the internal style file in your root layout file:
 
 {codeBlock(`<!-- src/routes/+layout.svelte -->
 <script>
-  import '@svelte-atoms/core/styles/internal.css';
+  import '@ixirjs/ui/styles/internal.css';
 </script>
 
 <slot />`, 'svelte')}
@@ -126,7 +126,7 @@ Configure Tailwind CSS and CSS variables for theming:
 Set up global component presets for consistent styling:
 
 {codeBlock(`// src/preset.ts
-import { setPreset } from '@svelte-atoms/core/context';
+import { setPreset } from '@ixirjs/ui/context';
 
 setPreset({
   button: () => ({
@@ -150,7 +150,7 @@ Then import this preset in your root layout:
 
 {codeBlock(`<!-- src/routes/+layout.svelte -->
 <script>
-  import '@svelte-atoms/core/styles/internal.css';
+  import '@ixirjs/ui/styles/internal.css';
   import '../preset';
 </script>
 
@@ -162,8 +162,8 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 
 {codeBlock(`<!-- src/routes/+page.svelte -->
 <script>
-  import { Button } from '@svelte-atoms/core/components/button';
-  import { Card } from '@svelte-atoms/core/components/card';
+  import { Button } from '@ixirjs/ui/components/button';
+  import { Card } from '@ixirjs/ui/components/card';
   
   let count = $state(0);
 </script>
@@ -206,7 +206,7 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 **Problem:** Components render but have no styles.
 
 **Solution:** 
-- Ensure you imported {inlineCode('@svelte-atoms/core/styles/internal.css')} in your root layout
+- Ensure you imported {inlineCode('@ixirjs/ui/styles/internal.css')} in your root layout
 - Verify Tailwind CSS is configured correctly
 - Check that CSS variables are defined in your {inlineCode('app.css')}
 
@@ -224,7 +224,7 @@ Now you're ready to use Svelte Atoms components! Here's a simple example:
 **Problem:** Can't import components or utilities.
 
 **Solution:**
-- Ensure {inlineCode('@svelte-atoms/core')} is installed correctly
+- Ensure {inlineCode('@ixirjs/ui')} is installed correctly
 - Try deleting {inlineCode('node_modules')} and reinstalling
 - Check your package manager version
 
@@ -292,7 +292,7 @@ export default {
 ### Button Variants
 
 {codeBlock(`<script>
-  import { Button } from '@svelte-atoms/core/components/button';
+  import { Button } from '@ixirjs/ui/components/button';
 </script>
 
 <div class="flex gap-2">
@@ -305,10 +305,10 @@ export default {
 ### Form Example
 
 {codeBlock(`<script>
-  import { Form } from '@svelte-atoms/core/components/form';
-  import { Input } from '@svelte-atoms/core/components/input';
-  import { Label } from '@svelte-atoms/core/components/label';
-  import { Button } from '@svelte-atoms/core/components/button';
+  import { Form } from '@ixirjs/ui/components/form';
+  import { Input } from '@ixirjs/ui/components/input';
+  import { Label } from '@ixirjs/ui/components/label';
+  import { Button } from '@ixirjs/ui/components/button';
   
   let email = $state('');
   
@@ -332,8 +332,8 @@ export default {
 ### Dialog Example
 
 {codeBlock(`<script>
-  import { Dialog } from '@svelte-atoms/core/components/dialog';
-  import { Button } from '@svelte-atoms/core/components/button';
+  import { Dialog } from '@ixirjs/ui/components/dialog';
+  import { Button } from '@ixirjs/ui/components/button';
   
   let open = $state(false);
 </script>
@@ -379,14 +379,14 @@ export default {
 - [Styling Guide](/docs/styling) - Master the styling system
 - [Preset System](/docs/preset) - Learn about global theming
 - [Accessibility](/docs/accessibility) - Build accessible applications
-- [GitHub Repository](https://github.com/svelte-atoms/core) - Source code and issues
+- [GitHub Repository](https://github.com/ixirjs/ui) - Source code and issues
 
 ## Get Help
 
 If you run into issues:
 
 1. Check the [Component Documentation](/docs/components)
-2. Search [GitHub Issues](https://github.com/svelte-atoms/core/issues)
+2. Search [GitHub Issues](https://github.com/ixirjs/ui/issues)
 3. Join the community discussions
 4. Read the troubleshooting guide
 

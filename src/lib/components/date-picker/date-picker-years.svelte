@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { animate } from 'motion';
 	import { getYear, setYear } from 'date-fns';
-	import { cn } from '$svelte-atoms/core/utils';
+	import { cn } from '$ixirjs/ui/utils';
 	import { DatePickerBond } from './bond.svelte';
 	import type { DatePickerYearsProps } from './types';
 	import { HtmlAtom } from '../atom';

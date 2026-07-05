@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@svelte-atoms/core';
+import { setPreset } from '@ixirjs/ui';
 
 const preset = setPreset({
   input: () => ({
@@ -232,8 +232,8 @@ export const metadata = {
 		'Flexible input component with icons, placeholders, and all HTML input types.',
 	componentType: 'compound' as const,
 	status: 'stable' as const,
-	packageName: '@svelte-atoms/core',
-	importCode: "import { Input } from '@svelte-atoms/core';",
+	packageName: '@ixirjs/ui',
+	importCode: "import { Input } from '@ixirjs/ui';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Input' }],
 	useCases,
 	componentsSummary,

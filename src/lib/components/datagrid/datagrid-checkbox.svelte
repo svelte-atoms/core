@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Checkbox } from '$svelte-atoms/core/components/checkbox';
+	import { Checkbox } from '$ixirjs/ui/components/checkbox';
 	import { DataGridBond } from './bond.svelte';
 	import { DataGridRowBond } from './row/bond.svelte';
 	import type { DatagridCheckboxProps } from './types';

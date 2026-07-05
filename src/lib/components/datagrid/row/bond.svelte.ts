@@ -4,7 +4,7 @@ import {
 	BondState,
 	BondAtom,
 	type BondStateProps
-} from '$svelte-atoms/core/shared/bond.svelte';
+} from '$ixirjs/ui/shared/bond.svelte';
 import { DataGridBond } from '../bond.svelte';
 import { getDatagridHeaderContext } from '../context';
 

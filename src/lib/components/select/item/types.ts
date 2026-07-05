@@ -1,5 +1,5 @@
 import type { Snippet } from 'svelte';
-import type { DropdownMenuItemProps } from '$svelte-atoms/core/components/dropdown-menu/item/types';
+import type { DropdownMenuItemProps } from '$ixirjs/ui/components/dropdown-menu/item/types';
 import type { SelectItemController } from './controller.svelte';
 
 export interface SelectItemProps<T = unknown>

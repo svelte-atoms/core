@@ -4,7 +4,7 @@ import {
 	PopoverState,
 	type PopoverDomElements,
 	type PopoverStateProps
-} from '$svelte-atoms/core/components/popover/bond.svelte';
+} from '$ixirjs/ui/components/popover/bond.svelte';
 import type { MenuItemControllerInterface } from './item/controller.svelte';
 import type { MenuItemAtom } from './item/bond.svelte';
 

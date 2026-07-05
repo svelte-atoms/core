@@ -2,8 +2,8 @@
 	import { untrack } from 'svelte';
 	import { PopoverState, PopoverBond } from './bond.svelte';
 	import type { PopoverStateProps } from './bond.svelte';
-	import { type BondStateProps } from '$svelte-atoms/core/shared/bond.svelte';
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
+	import { type BondStateProps } from '$ixirjs/ui/shared/bond.svelte';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
 	import type { PopoverRootProps } from './types';
 	import { DialogBond } from '../dialog/bond.svelte';
 	import { DrawerBond } from '../drawer';

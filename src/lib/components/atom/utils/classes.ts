@@ -1,4 +1,4 @@
-import { cn, type ClassValue } from '$svelte-atoms/core/utils';
+import { cn, type ClassValue } from '$ixirjs/ui/utils';
 
 /**
  * Merges user-supplied class, preset class, and resolved variant class into a

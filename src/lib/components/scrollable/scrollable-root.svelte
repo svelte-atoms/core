@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends import('./bond.svelte').ScrollableBond = import('./bond.svelte').ScrollableBond">
-	import { defineProperty, defineState } from '$svelte-atoms/core/utils';
-	import { HtmlAtom } from '$svelte-atoms/core/components/atom';
+	import { defineProperty, defineState } from '$ixirjs/ui/utils';
+	import { HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { ScrollableBond, ScrollableState, type ScrollableBondProps } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
 	

@@ -1,9 +1,9 @@
 export const metadata = {
-	title: '@svelte-atoms/core Documentation',
-	description: 'Complete documentation for @svelte-atoms/core - a modern UI component library for Svelte 5.',
+	title: '@ixirjs/ui Documentation',
+	description: 'Complete documentation for @ixirjs/ui - a modern UI component library for Svelte 5.',
 	pageTitle: 'Documentation',
 	pageDescription:
-		'@svelte-atoms/core is a modern UI component library built with Svelte 5, TypeScript, and Tailwind CSS. It provides a comprehensive set of headless components with full accessibility, keyboard navigation, and flexible styling through variants and presets.',
+		'@ixirjs/ui is a modern UI component library built with Svelte 5, TypeScript, and Tailwind CSS. It provides a comprehensive set of headless components with full accessibility, keyboard navigation, and flexible styling through variants and presets.',
 	breadcrumbs: [{ label: 'Docs' }],
 
 	overview:

@@ -3,7 +3,7 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { HtmlAtom, type Base } from '$svelte-atoms/core/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { AlertBond } from './bond.svelte';
 	import type { AlertCloseButtonProps } from './types';
 	import { Icon } from '../icon';

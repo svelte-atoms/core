@@ -9,7 +9,7 @@
 		type ComputePositionConfig
 	} from '@floating-ui/dom';
 	import { PopoverBond, type PopoverParams } from '../bond.svelte';
-	import type { BondVirtualElement } from '$svelte-atoms/core/shared/bond.svelte';
+	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond.svelte';
 
 	const bond = PopoverBond.get();
 
