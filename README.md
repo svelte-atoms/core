@@ -1,5 +1,18 @@
 # @svelte-atoms/core
 
+> ⚠️ **Package renamed:** `@svelte-atoms/core` has moved to [`@ixirjs/ui`](https://www.npmjs.com/package/@ixirjs/ui).
+>
+> This package is deprecated and no longer maintained. To migrate:
+>
+> ```bash
+> npm uninstall @svelte-atoms/core
+> npm install @ixirjs/ui
+> ```
+>
+> Then update your imports from `'@svelte-atoms/core'` to `'@ixirjs/ui'`.
+>
+> Source: [github.com/ixirjs/ui](https://github.com/ixirjs/ui)
+
 > A modern, headless, and accessible Svelte 5 UI component library built for composability and extensibility.
 
 [![npm version](https://img.shields.io/npm/v/@svelte-atoms/core.svg)](https://www.npmjs.com/package/@svelte-atoms/core)
