@@ -5,9 +5,9 @@ terms get added here when they're load-bearing; stale terms get removed.
 
 ## Architectural vocabulary
 
-See `~/.claude/skills/improve-codebase-architecture/LANGUAGE.md` for the full
-glossary (module, interface, depth, seam, adapter, leverage, locality). Use
-those terms exactly — don't substitute "component", "service", "boundary".
+See the `codebase-design` skill for the full glossary (module, interface, depth,
+seam, adapter, leverage, locality). Use those terms exactly — don't substitute
+"component", "service", "boundary".
 
 ## Library concepts
 
@@ -131,12 +131,13 @@ Sub-components retrieve via `FooBond.get()` (also inherited). See §"Bond contex
 plumbing".
 
 **`base` / `as` / preset cascade** — props on `HtmlAtom` that govern what
-component renders and how variants/presets merge. Order: `fallback → preset →
+component renders and how variants/presets merge. Order: `defaults → preset →
 variants → restProps` (last wins). This precedence is contract; tests in
-`src/lib/components/atom/presentation.spec.ts` pin it. The eleven-stage
-pipeline lives in `presentation.ts` as `presentationStages(input)` returning
-thunks; `html-atom.svelte` wraps each in `$derived.by` to keep reactivity
-granular.
+`src/lib/components/atom/resolvers.spec.ts` and `utils/fold.spec.ts` pin it. The
+staged pipeline lives in `atom/resolvers.ts` (`resolvePreset`, `resolveLocalVariants`,
+`resolveVariants`, `foldLayers`, `resolveClass`, `resolveBase`, `resolveAs`,
+`resolveRestProps`); `html-atom.svelte` wraps each stage in its own `$derived` to keep
+reactivity granular. Current binding notes live in `src/lib/shared/README.md` and child READMEs.
 
 **`Bond.namespace` vs `Bond.preset`** — two _distinct_ identities, kept
 separate on purpose:
@@ -146,8 +147,8 @@ separate on purpose:
   to `name`; compound bonds override it (`combobox`, `select`).
 - **`preset`** (on the Bond) — the dotted preset _base path_. Source of truth
   for atom preset keys. Defaults to `namespace` (correct for single-level
-  components: `popover.content`, `dropdown-menu.list`, `alert.close-button` —
-  dots separate _hierarchy levels_, hyphens stay _inside_ a level). Genuinely
+  components: `popover.content`, `dropdown-menu.list`, `alert.close` — dots
+  separate _hierarchy levels_, hyphens stay _inside_ a level). Genuinely
   **nested child bonds** override it because their preset depth exceeds their
   hyphenated namespace: `accordion-item` (namespace) → `accordion.item`
   (`bond.preset`).
@@ -157,7 +158,7 @@ the **root** atom maps to the bare base (`accordion`, `accordion.item`); every
 other atom appends its `name` (`accordion.item.header`). (`bond.preset` is the
 bond-level base; `atom.preset` is the atom-level full key — same name, two
 layers.) A re-exported atom re-namespaces automatically (combobox reusing the
-popover arrow → `combobox.arrow`).
+popover tail → `combobox.tail`).
 
 Components consume this as the **default**, caller overrides:
 `preset: preset ?? atom.preset`. Don't restate the literal key in the `.svelte`
@@ -220,7 +221,7 @@ fully decoupled from any bond.
 with insertion-order reactive `values`, `get/has/indexOf/size`, and
 `set(id, bond) → cleanup`.
 
-**A Collection IS a capability** (ADR 0007, resolving 0006's deferred item).
+**A Collection IS a capability.**
 `collection(kind)` lazily registers a `collectionCapability<T>(kind)` at slot
 `collection:<kind>` in the single `#capabilities` home — there is **no** parallel
 `#collections` map. The `Collection` is the capability's `surface`, exactly as
