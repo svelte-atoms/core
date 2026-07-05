@@ -4,7 +4,7 @@
 	import { PortalHost } from '$svelte-atoms/core/components/portal/host';
 	import type { SlideoverContentProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { animateDrawerContent, type DrawerSide } from './motion';
+	import { animateDrawerContent, type DrawerSide } from './motion.svelte';
 
 	type Element = HTMLElementTagNameMap[E];
 

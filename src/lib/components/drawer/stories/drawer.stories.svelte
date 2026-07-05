@@ -33,7 +33,7 @@
 </script>
 
 <script lang="ts">
-	import { animateDrawerContent } from '../motion';
+	import { animateDrawerContent } from '../motion.svelte';
 
 	let isOpen = $state(false);
 

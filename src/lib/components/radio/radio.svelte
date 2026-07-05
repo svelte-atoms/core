@@ -3,7 +3,7 @@
 	import { Stack } from '../stack';
 	import { toClassValue } from '$svelte-atoms/core/utils';
 	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
-	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion';
+	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion.svelte';
 
 	const radioGroupContext = getRadioGroupContext();
 

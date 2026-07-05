@@ -12,7 +12,7 @@
 		ZLayer,
 		type ZIndexInput
 	} from '../portal';
-	import { animateDrawerRoot } from './motion';
+	import { animateDrawerRoot } from './motion.svelte';
 	import { bindBond, useCapabilities } from '$svelte-atoms/core/shared';
 
 	type Element = HTMLElementTagNameMap[E];

@@ -3,7 +3,7 @@
 	import { mergePresetProps, HtmlAtom } from '$svelte-atoms/core/components/atom';
 	import CheckmarkRegularIcon from '$svelte-atoms/core/icons/icon-checkmark.svelte';
 	import type { CheckboxProps } from './types';
-	import { animateCheckboxIndicator } from './motion';
+	import { animateCheckboxIndicator } from './motion.svelte';
 	import './checkbox.css';
 	import { Input } from '../input';
 
