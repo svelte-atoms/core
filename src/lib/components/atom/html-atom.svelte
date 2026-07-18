@@ -35,6 +35,7 @@
 		bond = undefined,
 		variants = undefined,
 		defaults = undefined,
+		motion: motionProp = undefined,
 		oninit = undefined,
 		children: children = undefined,
 		...restProps
@@ -58,12 +59,14 @@
 		class: () => klass,
 		as: () => as,
 		base: () => base,
+		motion: () => motionProp,
 		restProps: () => restProps
 	});
 	const finalKlass = $derived(presentation.class);
 	const finalBase = $derived(presentation.base);
 	const finalAs = $derived(presentation.as);
 	const finalRestProps = $derived(presentation.attrs);
+	const finalMotion = $derived(presentation.motion);
 
 	const atom = $derived(rootBond?.props?.renderers?.html ?? HtmlElement);
 
@@ -72,7 +75,7 @@
 	// Component identity and props are separate signals so prop changes do not remount the renderer.
 	const RendererComponent = $derived(resolveRendererComponent(renderTarget, SnippetAdapter));
 	const rendererProps = $derived.by(() =>
-		resolveRendererProps(renderTarget, finalKlass, finalAs, finalRestProps, {
+		resolveRendererProps(renderTarget, finalKlass, finalAs, finalRestProps, finalMotion, {
 			presentationResolved: renderTarget.kind === 'component' && renderTarget.component === atom
 		})
 	);

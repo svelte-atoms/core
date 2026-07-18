@@ -16,6 +16,7 @@
 		preset: presetKey = undefined,
 		variants = undefined,
 		defaults = undefined,
+		motion: motionProp = undefined,
 		global = true,
 		initial = undefined,
 		enter = undefined,
@@ -30,7 +31,7 @@
 
 	let node = $state<Element>();
 	// with an enter transition, defer animate() until it ends
-	let hasEntered = $state(!(untrack(() => enter) ?? false));
+	let hasEntered = $state<boolean | undefined>();
 
 	$effect(() => {
 		if (!node) return;
@@ -43,21 +44,37 @@
 		};
 	});
 
-	$effect(() => {
-		if (!hasEntered) return;
-		if (!node) return;
-
-		animate?.(node);
-	});
-
 	const attachmentKey = createAttachmentKey();
+	const directMotion = $derived.by(() => {
+		if (motionProp === null) return null;
+		return {
+			initial: motionProp?.initial !== undefined ? motionProp.initial : initial,
+			enter: motionProp?.enter !== undefined ? motionProp.enter : enter,
+			exit: motionProp?.exit !== undefined ? motionProp.exit : exit,
+			animate: motionProp?.animate !== undefined ? motionProp.animate : animate
+		};
+	});
 	const presentation = createPresentation({
 		preset: () => presetKey,
 		variants: () => variants,
 		defaults: () => defaults,
+		motion: () => directMotion,
 		class: () => klass,
 		as: () => as,
 		restProps: () => restProps
+	});
+	const resolvedMotion = $derived(presentation.motion);
+
+	$effect(() => {
+		if (hasEntered !== undefined || !resolvedMotion) return;
+		hasEntered = !resolvedMotion.enter;
+	});
+
+	$effect(() => {
+		if (!hasEntered || !node) return;
+		const currentNode = node;
+		const cleanup = resolvedMotion?.animate?.(currentNode);
+		return () => stopAnimation(cleanup, currentNode);
 	});
 	const finalKlass = $derived(cn(toClassValue(presentation.class)));
 	const finalAs = $derived(presentation.as as T);
@@ -79,13 +96,24 @@
 	const transitionSnippet = $derived(global ? globalTransition : localTransition);
 
 	function enterTransition(node: Element) {
-		initial?.(node);
+		resolvedMotion?.initial?.(node);
 
-		return enter?.(node) ?? {};
+		return resolvedMotion?.enter?.(node) ?? {};
 	}
 
 	function exitTransition(node: Element) {
-		return exit?.(node) ?? {};
+		return resolvedMotion?.exit?.(node) ?? {};
+	}
+
+	function stopAnimation(cleanup: unknown, currentNode: Element) {
+		if (typeof cleanup === 'function') {
+			cleanup(currentNode);
+			return;
+		}
+
+		if (!cleanup || typeof cleanup !== 'object' || !('stop' in cleanup)) return;
+		const stop = cleanup.stop;
+		if (typeof stop === 'function') stop.call(cleanup);
 	}
 </script>
 

@@ -14,6 +14,7 @@
 		preset: presetKey = undefined,
 		variants = undefined,
 		defaults = undefined,
+		motion: motionProp = undefined,
 		__resolvedPresentation = false,
 		global = true,
 		initial = undefined,
@@ -30,7 +31,7 @@
 
 	let node = $state<Element>();
 	// with an enter transition, defer animate() until it ends
-	let hasEntered = $state(!(untrack(() => enter) ?? false));
+	let hasEntered = $state<boolean | undefined>();
 	// guards initial() to a single mount-time invocation
 	let hasInitialized = false;
 
@@ -46,11 +47,16 @@
 	});
 
 	$effect(() => {
+		if (hasEntered !== undefined || !resolvedMotion) return;
+		hasEntered = !resolvedMotion.enter;
+	});
+
+	$effect(() => {
 		if (!hasEntered) return;
 		if (!node) return;
 
 		const currentNode = node;
-		const cleanup = animate?.(currentNode);
+		const cleanup = resolvedMotion?.animate?.(currentNode);
 		return () => stopAnimation(cleanup, currentNode);
 	});
 
@@ -60,21 +66,32 @@
 
 	// Renderer mode is an initialization-only internal prop from HtmlAtom.
 	const resolvedPresentation = untrack(() => __resolvedPresentation);
+	const directMotion = $derived.by(() => {
+		if (motionProp === null) return null;
+		return {
+			initial: motionProp?.initial !== undefined ? motionProp.initial : initial,
+			enter: motionProp?.enter !== undefined ? motionProp.enter : enter,
+			exit: motionProp?.exit !== undefined ? motionProp.exit : exit,
+			animate: motionProp?.animate !== undefined ? motionProp.animate : animate
+		};
+	});
 	const presentation = resolvedPresentation
 		? undefined
 		: createPresentation({
 				preset: () => presetKey,
 				variants: () => variants,
 				defaults: () => defaults,
+				motion: () => directMotion,
 				class: () => klass,
 				as: () => as,
 				restProps: () => restProps
 			});
+	const resolvedMotion = $derived(resolvedPresentation ? directMotion : presentation?.motion);
 	const finalKlass = $derived(
 		withDefaultBorder(resolvedPresentation ? toClassValue(klass) : (presentation?.class ?? ''))
 	);
 	const finalAs = $derived(String(resolvedPresentation ? as : (presentation?.as ?? as)));
-	const hasTransitions = $derived(!!(enter ?? exit));
+	const hasTransitions = $derived(!!(resolvedMotion?.enter ?? resolvedMotion?.exit));
 	const transitionSnippet = $derived(
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition
 	);
@@ -101,18 +118,18 @@
 	}
 
 	function enterTransition(node: Element) {
-		return enter?.(node) ?? {};
+		return resolvedMotion?.enter?.(node) ?? {};
 	}
 
 	function exitTransition(node: Element) {
-		return exit?.(node) ?? {};
+		return resolvedMotion?.exit?.(node) ?? {};
 	}
 
 	function applyInitial(node: Element) {
 		if (!node) return;
 		if (hasInitialized) return;
 		hasInitialized = true;
-		untrack(() => initial?.(node!));
+		untrack(() => resolvedMotion?.initial?.(node!));
 	}
 
 	function stopAnimation(cleanup: unknown, currentNode: Element) {

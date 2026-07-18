@@ -1,5 +1,5 @@
 import type { Bond } from '$ixirjs/ui/shared';
-import type { PresetKey, PresetEntryRecord } from '$ixirjs/ui/preset';
+import type { Motion, PresetKey, PresetEntryRecord, ResolvedMotion } from '$ixirjs/ui/preset';
 import type { ClassValue } from 'svelte/elements';
 import type { Variants } from './types';
 import * as resolvers from './resolvers';
@@ -12,7 +12,7 @@ import { getPreset } from '$ixirjs/ui/context';
  * derived values without copying the caller's rest-props proxy; each resolver remains tracked at
  * the component-owned boundary.
  */
-export type PresentationOptions = {
+export type PresentationOptions<E extends Element = Element> = {
 	preset?: () => PresetKey | undefined;
 	bond?: () => Bond | undefined;
 	variants?: () => Variants | undefined;
@@ -22,6 +22,8 @@ export type PresentationOptions = {
 	base?: (() => unknown) | undefined;
 	/** Additional known component props used to select preset variants without leaking them as attrs. */
 	variantProps?: (() => Record<string, unknown>) | undefined;
+	/** Explicit consumer motion, kept separate from the rest-props proxy. */
+	motion?: (() => Motion<E> | null | undefined) | undefined;
 	restProps: () => Record<string, unknown>;
 };
 
@@ -29,11 +31,14 @@ export type PresentationView = {
 	readonly preset: PresetEntryRecord | undefined;
 	readonly class: string;
 	readonly attrs: Record<string | symbol, unknown>;
+	readonly motion: ResolvedMotion;
 	readonly as: unknown;
 	readonly base: unknown;
 };
 
-export function createPresentation(options: PresentationOptions): PresentationView {
+export function createPresentation<E extends Element = Element>(
+	options: PresentationOptions<E>
+): PresentationView {
 	const preset = $derived.by(() =>
 		resolvers.resolvePreset(options.preset?.(), options.bond?.(), getPreset)
 	);
@@ -49,7 +54,13 @@ export function createPresentation(options: PresentationOptions): PresentationVi
 		resolvers.resolveVariants(preset, localVariants, options.bond?.(), variantProps)
 	);
 	const folded = $derived.by(() =>
-		resolvers.foldLayers(preset, mergedVariants, options.restProps(), options.defaults?.())
+		resolvers.foldLayers(
+			preset,
+			mergedVariants,
+			options.restProps(),
+			options.defaults?.(),
+			options.motion?.()
+		)
 	);
 
 	return {
@@ -61,6 +72,9 @@ export function createPresentation(options: PresentationOptions): PresentationVi
 		},
 		get attrs() {
 			return folded.attrs;
+		},
+		get motion() {
+			return folded.motion;
 		},
 		get as() {
 			return resolvers.resolveAs(options.as?.(), preset);

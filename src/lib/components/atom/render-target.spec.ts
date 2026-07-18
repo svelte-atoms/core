@@ -93,4 +93,13 @@ describe('renderer adapter contract', () => {
 		expect(props.as).toBe('button');
 		expect(props['data-tone']).toBe('neutral');
 	});
+
+	it('passes resolved motion separately from folded attrs', () => {
+		const target = { kind: 'component', component: namedComponent } as const;
+		const enter = () => ({ duration: 100 });
+		const props = resolveRendererProps(target, 'rounded', 'div', {}, { enter });
+
+		expect(props.motion).toEqual({ enter });
+		expect(props.enter).toBe(enter);
+	});
 });

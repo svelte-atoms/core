@@ -2,6 +2,7 @@ import type { ClassValue } from 'svelte/elements';
 import type { Bond } from '$ixirjs/ui/shared';
 import type {
 	FallbackPreset,
+	Motion,
 	PresetEntry,
 	PresetEntryRecord,
 	PresetKey,
@@ -63,14 +64,15 @@ export function resolveVariants(
 	);
 }
 
-export function foldLayers(
+export function foldLayers<E extends Element = Element>(
 	preset: PresetEntryRecord | undefined,
 	variants: ResolvedProps | undefined,
 	restProps: Record<string, unknown>,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	defaults: Record<string, any> | undefined
+	defaults: Record<string, any> | undefined,
+	consumerMotion?: Motion<E> | null
 ): FoldedPresentation {
-	return utils.foldPresentation(defaults, preset, variants, restProps);
+	return utils.foldPresentation(defaults, preset, variants, restProps, consumerMotion);
 }
 
 export function resolveClass(

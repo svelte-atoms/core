@@ -1,4 +1,5 @@
 import type { Component, Snippet } from 'svelte';
+import type { ResolvedMotion } from '$ixirjs/ui/preset';
 
 export type ComponentBaseValue = Component;
 export type SnippetBaseValue = Snippet;
@@ -74,13 +75,15 @@ export function resolveRendererProps(
 	klass: unknown,
 	as: unknown,
 	attrs: RendererProps,
+	motion: ResolvedMotion | undefined = undefined,
 	options: { presentationResolved?: boolean } = {}
 ): RendererProps {
 	const props = {
 		class: klass,
 		as,
 		...(options.presentationResolved ? { __resolvedPresentation: true } : {}),
-		...attrs
+		...attrs,
+		...(motion && Object.keys(motion).length > 0 ? { motion, ...motion } : {})
 	};
 	if (target.kind === 'snippet') return { snippet: target.snippet, ...props };
 	return props;
