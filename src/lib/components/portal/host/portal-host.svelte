@@ -2,8 +2,6 @@
 	import type { Snippet } from 'svelte';
 	import { ActivePortal, Portal } from '$ixirjs/ui/components/portal';
 	import HtmlAtom from '../../atom/html-atom.svelte';
-	// import { OverlayBond } from './bond.svelte';
-
 	const ID = $props.id();
 
 	// Host-owned portal shared via context so nested overlays default to it, not the global root
@@ -15,11 +13,6 @@
 		children,
 		...restProps
 	}: { id?: string; children?: Snippet; [key: string]: unknown } = $props();
-
-	// Read the outer host BEFORE creating our own bond, so delegation captures the right outer isOpen.
-	// const outerHost = OverlayBond.get();
-	// const overlayBond = outerHost ? OverlayBond.create(outerHost) : undefined;
-	// overlayBond?.share();
 
 	const id = $derived(idProp ?? `portal-host.${ID}`);
 </script>

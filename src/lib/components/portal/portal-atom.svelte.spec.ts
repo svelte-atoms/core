@@ -17,8 +17,8 @@ describe('Portal component-owned Atoms', () => {
 		expect(portal).toBeDefined();
 		expect(portal).toBeInstanceOf(PortalBond);
 
-		const root = portal?.node('root');
-		const inner = portal?.node('inner');
+		const root = portal?.nodeByPart('root');
+		const inner = portal?.nodeByPart('inner');
 
 		expect(root).toBeInstanceOf(PortalRootAtom);
 		expect(inner).toBeInstanceOf(PortalInnerAtom);
@@ -27,15 +27,12 @@ describe('Portal component-owned Atoms', () => {
 		}
 		expect(portal?.boundaryElement).toBe(inner?.element);
 
-		const legacyRoot = portal?.root();
-		const legacyInner = portal?.inner();
-		expect(legacyRoot).toBeInstanceOf(PortalRootAtom);
-		expect(legacyInner).toBeInstanceOf(PortalInnerAtom);
-		expect(legacyRoot).not.toBe(root);
-		expect(legacyInner).not.toBe(inner);
+		expect(portal?.nodeByPart('root')).toBe(root);
+		expect(portal?.nodeByPart('inner')).toBe(inner);
 
 		unmount();
 
-		expect(portal?.nodes()).toEqual([]);
+		expect(portal?.nodesByPart('root')).toEqual([]);
+		expect(portal?.nodesByPart('inner')).toEqual([]);
 	});
 });

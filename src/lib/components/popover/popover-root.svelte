@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { PopoverBond, type PopoverBondProps } from './bond.svelte';
 	import { OverlayBond } from '$ixirjs/ui/components/portal/host';
-	import { useCapabilities } from '$ixirjs/ui/shared/capability/use.svelte';
 	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
 	import type { PopoverRootProps } from './types';
 
@@ -16,6 +15,7 @@
 		position = 'absolute',
 		portal = undefined,
 		factory = defaultFactory,
+		onopenchange = undefined,
 		children = undefined,
 		...restProps
 	}: PopoverRootProps = $props();
@@ -25,13 +25,23 @@
 	}
 
 	let openState = $derived(open);
+	const callbackState = { bond: undefined as PopoverBond | undefined };
 
 	const binding = bindBond<PopoverBond>((props) => factory(props), {
 		open: [
 			() => openState && (owner?.isOpen ?? true),
 			(v) => {
+				const changed = !Object.is(openState, v);
 				openState = v;
 				open = openState;
+
+				const callbackBond = callbackState.bond;
+				if (changed && callbackBond) {
+					onopenchange?.(openState, {
+						bond: callbackBond,
+						...callbackBond.takeOpenChangeContext()
+					});
+				}
 			}
 		],
 		disabled: () => disabled,
@@ -45,12 +55,7 @@
 		rest: () => restProps
 	});
 	const bond = binding.bond.share();
-
-	// Activate the bond's capability setups: the focus capability captures activeElement on open
-	// and restores it on close (so every overlay rendering via this Root gets it automatically),
-	// and the escape capability enrolls this overlay in the topmost-open-overlay stack so only
-	// the frontmost surface acts on Escape.
-	useCapabilities(bond);
+	callbackState.bond = bond;
 
 	export function getBond() {
 		return bond;

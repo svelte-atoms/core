@@ -23,6 +23,18 @@ describe('focus policies', () => {
 		expect(typeof content?.onmount).toBe('function');
 	});
 
+	it('trappedFocus does not trap Tab for a non-modal overlay', () => {
+		const handlers = trappedFocus().behavior!('surface')!.handlers!({ modal: false } as never) as {
+			onkeydown?: (event: KeyboardEvent) => void;
+		};
+		let prevented = false;
+		handlers.onkeydown?.({
+			key: 'Tab',
+			preventDefault: () => (prevented = true)
+		} as unknown as KeyboardEvent);
+		expect(prevented).toBe(false);
+	});
+
 	it('focusOnOpen projects only the content onmount (no Tab trap)', () => {
 		const cap = focusOnOpen();
 		expect(cap.meta).toMatchObject({ projects: ['content'] });

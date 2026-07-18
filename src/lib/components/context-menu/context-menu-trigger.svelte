@@ -1,11 +1,13 @@
-<script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
+<script
+	lang="ts"
+	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
+>
 	import { mergePresetProps } from '$ixirjs/ui/components/atom';
 	import type { Base } from '$ixirjs/ui/components/atom';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { Trigger } from '../popover/atoms';
 	import { PopoverVirtualTriggerAtom } from '../popover';
-	import { openOverlay } from '../portal/host/policies/overlay-view';
 	import { ContextMenuBond } from './bond.svelte';
 	import type { ContextMenuTriggerProps } from './types';
 	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond';
@@ -27,7 +29,7 @@
 
 	let {
 		preset = undefined,
-		onclick = null,
+		onclick = undefined,
 		oncontextmenu = undefined,
 		class: klass = '',
 		...restProps
@@ -35,15 +37,16 @@
 
 	const triggerProps = $derived(mergePresetProps(preset, 'context-menu.trigger', restProps));
 
-	function handleContextMenu(ev: MouseEvent) {
+	function handleClick(event: MouseEvent) {
+		onclick?.(event as MouseEvent & { currentTarget: EventTarget & ElementType });
+		// ContextMenu opens only from the native contextmenu gesture, never from Popover's click trigger.
+		if (!event.defaultPrevented) event.preventDefault();
+	}
+
+	function handleContextMenu(ev: MouseEvent & { currentTarget: EventTarget & ElementType }) {
+		oncontextmenu?.(ev);
+		if (ev.defaultPrevented) return;
 		ev.preventDefault();
-
-		const event = new MouseEvent('contextmenu', ev) as MouseEvent & {
-			currentTarget: MouseEvent & ElementType;
-		};
-		oncontextmenu?.(event);
-
-		if (event.defaultPrevented) return;
 
 		const virtualElement = {
 			getBoundingClientRect: () =>
@@ -62,13 +65,14 @@
 
 		virtualTriggerAtom.element = virtualElement;
 
-		openOverlay(bond);
+		bond.stageOpenChange({ event: ev, reason: 'context-menu' });
+		bond.open();
 	}
 </script>
 
 <Trigger
 	class={['cursor-context-menu', klass]}
-	onclick={onclick ?? undefined}
+	onclick={handleClick}
 	oncontextmenu={handleContextMenu}
 	{...triggerProps}
 />

@@ -8,5 +8,8 @@ export const dialog = createBondAttachment<DialogBond>(DialogBond);
 // Attachment: close the dialog on click (unless the handler preventDefaults). Mirrors closeDrawer.
 export function closeDialog(onclick?: (ev: MouseEvent) => void) {
 	const bond = DialogBond.get();
-	return clickAction(() => (bond?.surface(DISCLOSURE) ?? bond)?.close(), onclick);
+	return clickAction((event) => {
+		bond?.stageOpenChange({ event, reason: 'close-trigger' });
+		(bond?.surface(DISCLOSURE) ?? bond)?.close();
+	}, onclick);
 }

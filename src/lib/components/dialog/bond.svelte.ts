@@ -10,11 +10,14 @@ import {
 	OverlayBond,
 	ModalContentAtom,
 	ModalRootAtom,
+	ESCAPE,
+	escapePolicy,
 	modalCapabilities,
 	TRIGGER,
 	type ModalOverlayElements,
 	type OverlayStateProps
 } from '$ixirjs/ui/components/portal/host';
+import type { StateChangeContext } from '$ixirjs/ui/types';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -38,8 +41,23 @@ export type DialogBondElements = ModalOverlayElements & {
 export class DialogBondBase<
 	Props extends DialogBondProps = DialogBondProps
 > extends OverlayBond<Props> {
+	#openChangeContext: Pick<StateChangeContext, 'event' | 'reason'> | undefined;
+
 	constructor(props: Props, name = 'dialog') {
 		super(props, name);
+	}
+
+	stageOpenChange(context: Pick<StateChangeContext, 'event' | 'reason'>): void {
+		this.#openChangeContext = context;
+		queueMicrotask(() => {
+			if (this.#openChangeContext === context) this.#openChangeContext = undefined;
+		});
+	}
+
+	takeOpenChangeContext(): Pick<StateChangeContext, 'event' | 'reason'> {
+		const context = this.#openChangeContext ?? {};
+		this.#openChangeContext = undefined;
+		return context;
 	}
 }
 
@@ -53,8 +71,16 @@ type DialogBondView = DialogBondBase<DialogBondProps>;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DIALOG_TITLE = sharedCapabilityKey<void>('@ixirjs/dialog:title');
-const DIALOG_BODY = sharedCapabilityKey<void>('@ixirjs/dialog:body');
+const DIALOG_TITLE = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dialog',
+	name: 'title',
+	version: 1
+});
+const DIALOG_BODY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dialog',
+	name: 'body',
+	version: 1
+});
 
 // Root atom for modal overlays. The shared modal capability wires ARIA, inert, focus, and escape.
 
@@ -148,24 +174,19 @@ function dialogBodyPresentation() {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const DialogBondImpl = defineBond<
-	{
-		root: typeof DialogRootAtom;
-		content: typeof DialogContentAtom;
-		header: typeof DialogHeaderAtom;
-		title: typeof DialogTitleAtom;
-		description: typeof DialogDescriptionAtom;
-		body: typeof DialogBodyAtom;
-		footer: typeof DialogFooterAtom;
-		closeButton: { atom: typeof DialogCloseAtom; key: 'close' };
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof DialogBondBase
->({
+export const DialogBond = defineBond({
 	name: 'dialog',
 	base: DialogBondBase,
-	capabilities: () => modalCapabilities().filter((c) => c.slot !== TRIGGER),
+	capabilities: () => [
+		...modalCapabilities().filter(
+			(capability) => capability.slot !== TRIGGER && capability.slot !== ESCAPE
+		),
+		escapePolicy((bond, event) => {
+			const dialog = bond as DialogBondBase;
+			dialog.stageOpenChange({ event, reason: 'escape' });
+			dialog.close();
+		})
+	],
 	atoms: {
 		root: DialogRootAtom,
 		content: DialogContentAtom,
@@ -174,29 +195,16 @@ const DialogBondImpl = defineBond<
 		description: DialogDescriptionAtom,
 		body: DialogBodyAtom,
 		footer: DialogFooterAtom,
-		closeButton: { atom: DialogCloseAtom, key: 'close' }
+		closeButton: { atom: DialogCloseAtom, part: 'close' }
 	}
 });
 
 // Propagate OverlayBond's context key transitively so fused bonds (e.g. PopoverDialogBond) re-share it.
-Object.defineProperty(DialogBondImpl, 'CONTEXT_KEYS', {
-	value: [DialogBondImpl.CONTEXT_KEY, OverlayBond.CONTEXT_KEY],
+Object.defineProperty(DialogBond, 'CONTEXT_KEYS', {
+	value: [DialogBond.CONTEXT_KEY, OverlayBond.CONTEXT_KEY],
 	writable: true,
 	configurable: true
 });
 
 // Instance type of the dialog bond — paired with the const above (value + type).
-export type DialogBond = BondOf<typeof DialogBondImpl>;
-
-interface DialogBondConstructor {
-	new (props: DialogBondProps): DialogBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof DialogBondImpl)['spec'];
-	get(): DialogBond | undefined;
-	getOrThrow(message?: string): DialogBond;
-	set(bond: DialogBond): DialogBond;
-	create(props: DialogBondProps): DialogBond;
-}
-
-export const DialogBond = DialogBondImpl as unknown as DialogBondConstructor;
+export type DialogBond = BondOf<typeof DialogBond>;

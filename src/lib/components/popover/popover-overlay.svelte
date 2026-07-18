@@ -1,61 +1,43 @@
 <script lang="ts">
-	import { Teleport, ZLayer } from '../portal';
-	import {
-		createPopoverAtom,
-		getPopoverPosition,
-		PopoverBond,
-		PopoverOverlayAtom,
-		popoverNode
-	} from './bond.svelte';
+	import { PortalSurface } from '../portal';
+	import { createPopoverAtom, getPopoverPosition, PopoverBond, popoverNode } from './bond.svelte';
 	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
 	import { overlayIsOpen } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 	import type { PopoverOverlayProps } from './types';
-	import { untrack } from 'svelte';
 
 	const bond = PopoverBond.getOrThrow('<Popover.Overlay /> must be used within a <Popover />');
 	const isOpen = $derived(overlayIsOpen(bond));
 
 	const strategy = $derived(getPopoverPosition(bond)?.strategy ?? 'absolute');
 
-	// CSS position matching the strategy's coordinate basis.
-	const positionStyle = $derived(strategy === 'fixed' ? 'position: fixed;' : 'position: absolute;');
+	// CSS position and transform matching the strategy's coordinate basis. Keeping the computed
+	// transform in the reactive presentation layer makes the surface update when floating-ui
+	// publishes its first position after PortalSurface attaches the node.
 
 	let {
 		portal,
 		layer: layerName = 'positioned',
-		order: _order = undefined,
+		order = undefined,
 		children = undefined,
 		'z-index': zIndex = undefined,
 		...restProps
 	}: PopoverOverlayProps = $props();
 
-	// Stacking layer; captures parent elevation from context. `order` pins it relative
-	// to a ZLayer anchor. Both fixed for the overlay's lifetime.
-	const parentLayer = ZLayer.tryGet();
-	const layer = new ZLayer(
-		untrack(() => layerName),
-		() => 0
-	).share();
-
-	const z = $derived((parentLayer?.value ?? 0) + layer.value);
-
 	const overlayAtom = createAtomInstance<Atom<PopoverBond, HTMLElement>, PopoverBond, HTMLElement>(
 		'overlay',
 		{
 			bond,
-			factory: (owner) =>
-				createPopoverAtom(
-					owner as PopoverBond,
-					'overlay',
-					(popover) => new PopoverOverlayAtom(popover)
-				)
+			factory: (owner) => createPopoverAtom(owner as PopoverBond, 'overlay')
 		}
 	);
 
-	const overlayProps = $derived({
-		...(overlayAtom.spread as Record<string, unknown>),
-		...restProps
-	} as Record<string, unknown>);
+	const overlayProps = $derived.by((): Record<string, unknown> => {
+		const { style: _style, ...props } = {
+			...(overlayAtom.spread as Record<string, unknown>),
+			...restProps
+		};
+		return props as Record<string, unknown>;
+	});
 
 	// Transform + opacity from the current floating-ui position.
 	function calculatePosition() {
@@ -67,10 +49,14 @@
 
 		const { placement, x = 0, y = 0, middlewareData } = position;
 
-		// Anchor scrolled off-screen: hide and keep the last transform
-		if (middlewareData?.hide?.referenceHidden) {
-			return { opacity: '0' };
-		}
+		// Hide only when the reference has crossed the resolved boundary. Floating UI reports an
+		// edge-touching reference as hidden too, but a zero offset still represents a visible anchor.
+		const hiddenOffsets = middlewareData?.hide?.referenceHiddenOffsets;
+		const referenceOutside =
+			middlewareData?.hide?.referenceHidden &&
+			hiddenOffsets &&
+			Object.values(hiddenOffsets).some((offset) => offset > 0);
+		if (referenceOutside) return { opacity: '0' };
 
 		const offset = bond.props.offset;
 		const openState = +isOpen;
@@ -99,43 +85,28 @@
 		};
 	}
 
-	function initial(node: HTMLElement) {
-		const styles = calculatePosition();
-
-		// Hide until positioned to avoid ghosting
-		if (!styles) {
-			node.style.opacity = '0';
-			return;
-		}
-
-		node.style.opacity = styles.opacity;
-		// No transform when the anchor is hidden — keep the last position
-		if (styles.transform) node.style.transform = styles.transform;
-	}
-
-	function animate(node: HTMLElement) {
-		void bond.props.open; // track open state for reactivity
-
-		const styles = calculatePosition();
-
-		if (!styles) {
-			return;
-		}
-
-		node.style.opacity = styles.opacity;
-		// No transform when the anchor is hidden — keep the last position
-		if (styles.transform) node.style.transform = styles.transform;
-	}
+	const surfaceStyle = $derived.by(() => {
+		const position = calculatePosition();
+		return [
+			strategy === 'fixed' ? 'position: fixed' : 'position: absolute',
+			position?.transform && `transform: ${position.transform}`,
+			`opacity: ${position?.opacity ?? '0'}`
+		]
+			.filter(Boolean)
+			.join('; ');
+	});
 </script>
 
-<Teleport
+<PortalSurface
+	owner={bond}
+	band={layerName}
+	{order}
 	{portal}
 	as="div"
 	class="top-0 left-0 h-min w-fit outline-none pointer-events-none"
-	style="z-index: {typeof zIndex === 'function' ? zIndex(z) : (zIndex ?? z)}; {positionStyle}"
-	{initial}
-	{animate}
+	style={surfaceStyle}
+	z-index={zIndex}
 	{...overlayProps}
 >
 	{@render children?.({ popover: bond })}
-</Teleport>
+</PortalSurface>

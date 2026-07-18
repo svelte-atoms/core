@@ -4,12 +4,10 @@
 >
 	import { Icon } from '$ixirjs/ui/components/icon';
 	import Close from '$ixirjs/ui/icons/icon-close.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { DialogBond, DialogCloseAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { DialogBond } from './bond.svelte';
 	import type { DialogCloseButtonProps } from './types';
-
-	const bond = DialogBond.getOrThrow('<Dialog.Close /> must be used within a <Dialog.Root />');
 
 	let {
 		class: klass = '',
@@ -17,27 +15,37 @@
 		as = 'button' as E,
 		children = undefined,
 		onclick = undefined,
+		onkeydown = undefined,
 		...restProps
 	}: DialogCloseButtonProps<E, B> = $props();
 
-	const atom = createAtomInstance<DialogCloseAtom, DialogBond, HTMLElement>('close', {
-		bond,
-		factory: (owner) => new DialogCloseAtom(owner as DialogBond)
+	const part = usePart(DialogBond, 'closeButton', () => restProps, {
+		message: '<Dialog.Close /> must be used within a <Dialog.Root />',
+		preset: () => preset
 	});
-
-	const closePreset = $derived(preset ?? `${bond.preset}.close`);
+	const bond = part.bond;
 	const defaults = $derived({
 		type: as === 'button' ? 'button' : undefined,
 		role: as === 'button' ? undefined : 'button',
 		tabindex: as === 'button' ? undefined : 0
 	});
-	const closeProps = $derived(mergeAtomProps(atom, closePreset, restProps));
 
-	function onclick_(ev: MouseEvent) {
-		onclick?.(ev);
-		if (ev.defaultPrevented) return;
+	function onclick_(event: MouseEvent) {
+		onclick?.(event);
+		if (event.defaultPrevented) return;
 
-		(closeProps.onclick as ((ev: MouseEvent) => void) | undefined)?.(ev);
+		bond.stageOpenChange({ event, reason: 'close-button' });
+		(part.props.onclick as ((event: MouseEvent) => void) | undefined)?.(event);
+	}
+
+	function onkeydown_(event: KeyboardEvent) {
+		onkeydown?.(event);
+		if (event.defaultPrevented) return;
+
+		if (event.key === 'Enter' || event.key === ' ') {
+			bond.stageOpenChange({ event, reason: 'close-button' });
+		}
+		(part.props.onkeydown as ((event: KeyboardEvent) => void) | undefined)?.(event);
 	}
 </script>
 
@@ -46,8 +54,9 @@
 	{bond}
 	{defaults}
 	class={['cursor-pointer', '$preset', klass]}
-	{...closeProps}
+	{...part.props}
 	onclick={onclick_}
+	onkeydown={onkeydown_}
 >
 	{#if children}
 		{@render children?.({ dialog: bond })}

@@ -24,18 +24,20 @@ function fakeBond(initial: { open?: boolean; disabled?: boolean } = {}) {
 	const trigger = document.createElement('button');
 	const backdrop = document.createElement('div');
 	const outside = document.createElement('div');
+	let isOpen = initial.open ?? true;
 	const close = vi.fn(() => {
-		state.isOpen = false;
+		isOpen = false;
 	});
-	const state = {
-		isOpen: initial.open ?? true,
-		isDisabled: initial.disabled ?? false,
-		close
-	};
 
 	return {
 		bond: {
-			state,
+			get isOpen() {
+				return isOpen;
+			},
+			isDisabled: initial.disabled ?? false,
+			open: vi.fn(),
+			close,
+			toggle: vi.fn(),
 			elements: { content, trigger, backdrop }
 		} as unknown as OverlayView,
 		content,

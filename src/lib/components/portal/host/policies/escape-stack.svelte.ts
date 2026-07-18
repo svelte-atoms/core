@@ -1,35 +1,45 @@
+import { PortalsBond, type PortalsBond as PortalsBondView } from '../../portals';
 import type { OverlayView } from '../types';
 import { overlayIsOpen } from './overlay-view';
 
-// Focus-ordered registry of currently-open overlays. Under Portal containment
-// overlays DOM-nest, so one Escape keydown bubbles through both surfaces' handlers;
-// this stack coordinates so only the topmost overlay acts. Read synchronously in the keydown
-// handler, so a plain array (not a reactive store) is correct.
-const stack: OverlayView[] = [];
+// Fallback stack for tests and legacy callers outside a <Portals> context. Production roots
+// capture PortalsBond during component setup, then keep overlay ordering scoped per app root.
+const fallbackStack: OverlayView[] = [];
+const overlayPortals = new WeakMap<OverlayView, PortalsBondView>();
 
 // Enroll `bond` as the topmost open overlay; returns an unenroll thunk for `return enrollOverlay(bond)`
 // from an $effect. Re-enrolling an already-present bond moves it back to the top (defensive).
-export function enrollOverlay(bond: OverlayView): () => void {
-	remove(bond);
-	stack.push(bond);
-	return () => remove(bond);
+export function enrollOverlay(bond: OverlayView, portals?: PortalsBondView): () => void {
+	if (portals) {
+		overlayPortals.set(bond, portals);
+		const unenroll = portals.enrollOverlay(bond);
+		return () => {
+			unenroll();
+			if (overlayPortals.get(bond) === portals) overlayPortals.delete(bond);
+		};
+	}
+	remove(fallbackStack, bond);
+	fallbackStack.push(bond);
+	return () => remove(fallbackStack, bond);
 }
 
 // May `bond` act on Escape? True when it is the top of the stack OR not enrolled at all
 // (opted-out overlays and unit-test bonds still act; only a higher enrolled overlay suppresses one below).
 export function isTopOverlay(bond: OverlayView): boolean {
-	const i = stack.indexOf(bond);
+	const portals = overlayPortals.get(bond);
+	if (portals) return portals.isTopOverlay(bond);
+	const i = fallbackStack.indexOf(bond);
 	if (i === -1) return true;
-	return i === stack.length - 1;
+	return i === fallbackStack.length - 1;
 }
 
 // Test seam for the module-global stack. Production code should unenroll via the cleanup returned
 // by enrollOverlay(); tests can reset leaked state without depending on private array identity.
 export function resetEscapeStackForTest(): void {
-	stack.splice(0);
+	fallbackStack.splice(0);
 }
 
-function remove(bond: OverlayView): void {
+function remove(stack: OverlayView[], bond: OverlayView): void {
 	const i = stack.indexOf(bond);
 	if (i !== -1) stack.splice(i, 1);
 }
@@ -38,9 +48,10 @@ function remove(bond: OverlayView): void {
 // open→close or unmount. Call once from the root component; not calling it opts out of coordination.
 export function useEscapeStack(bond: OverlayView | undefined): void {
 	if (!bond) return;
+	const portals = PortalsBond.get();
 
 	$effect(() => {
 		if (!overlayIsOpen(bond)) return;
-		return enrollOverlay(bond);
+		return enrollOverlay(bond, portals);
 	});
 }

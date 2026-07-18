@@ -51,7 +51,9 @@
 				bind:open={defaultOpen}
 				disabled={args.disabled}
 				duration={args.duration}
-				onclose={() => (defaultOpen = false)}
+				onopenchange={(open) => {
+					if (!open) defaultOpen = false;
+				}}
 			>
 				<Toast_.Title>Notification</Toast_.Title>
 				<Toast_.Description>
@@ -71,7 +73,12 @@
 	<ol class="fixed bottom-4 right-4 flex flex-col-reverse gap-2" aria-live="polite">
 		{#each toaster.toasts as item (item.id)}
 			{@const data = item.data as ToastData}
-			<Toast_.Root open={true} onclose={() => toaster.dismiss(item.id)}>
+			<Toast_.Root
+				open={true}
+				onopenchange={(open) => {
+					if (!open) toaster.dismiss(item.id);
+				}}
+			>
 				<Toast_.Title>{data.title}</Toast_.Title>
 				{#if data.description}
 					<Toast_.Description>{data.description}</Toast_.Description>
@@ -157,7 +164,9 @@
 		<Toast_.Root
 			bind:open={autoDismissOpen}
 			duration={3000}
-			onclose={() => (autoDismissOpen = false)}
+			onopenchange={(open) => {
+				if (!open) autoDismissOpen = false;
+			}}
 		>
 			<Toast_.Title>Auto-dismiss</Toast_.Title>
 			<Toast_.Description>Disappears after 3 seconds.</Toast_.Description>

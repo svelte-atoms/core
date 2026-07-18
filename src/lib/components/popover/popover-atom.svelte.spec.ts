@@ -26,11 +26,11 @@ describe('Popover component-owned Atoms', () => {
 		expect(popover?.isOpen).toBe(true);
 		expect(popover?.shouldTrackPosition).toBe(true);
 
-		const trigger = popover?.node('trigger');
-		const overlay = popover?.node('overlay');
-		const content = popover?.node('content');
-		const tail = popover?.node('tail');
-		const indicator = popover?.node('indicator');
+		const trigger = popover?.nodeByPart('trigger');
+		const overlay = popover?.nodeByPart('overlay');
+		const content = popover?.nodeByPart('content');
+		const tail = popover?.nodeByPart('tail');
+		const indicator = popover?.nodeByPart('indicator');
 
 		expect(trigger).toBeInstanceOf(PopoverTriggerAtom);
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
@@ -40,7 +40,11 @@ describe('Popover component-owned Atoms', () => {
 		for (const node of [trigger, overlay, content, tail, indicator]) {
 			expect(node).toBeInstanceOf(Atom);
 		}
-		expect(popover?.nodes()).toHaveLength(5);
+		expect(popover?.nodesByPart('trigger')).toEqual([trigger]);
+		expect(popover?.nodesByPart('overlay')).toEqual([overlay]);
+		expect(popover?.nodesByPart('content')).toEqual([content]);
+		expect(popover?.nodesByPart('tail')).toEqual([tail]);
+		expect(popover?.nodesByPart('indicator')).toEqual([indicator]);
 
 		expect(overlay?.spread.role).toBe('dialog');
 		expect(overlay?.spread['data-active']).toBe(true);
@@ -49,11 +53,11 @@ describe('Popover component-owned Atoms', () => {
 		expect(indicator?.spread['aria-hidden']).toBe(true);
 
 		const legacyNodes = [
-			popover?.trigger(),
-			popover?.overlay(),
-			popover?.content(),
-			popover?.tail(),
-			popover?.indicator()
+			popover?.nodeByPart('trigger'),
+			popover?.nodeByPart('overlay'),
+			popover?.nodeByPart('content'),
+			popover?.nodeByPart('tail'),
+			popover?.nodeByPart('indicator')
 		];
 		for (const node of legacyNodes) {
 			expect(node).toBeInstanceOf(Atom);
@@ -64,6 +68,8 @@ describe('Popover component-owned Atoms', () => {
 
 		unmount();
 
-		expect(popover?.nodes()).toEqual([]);
+		for (const part of ['trigger', 'overlay', 'content', 'tail', 'indicator']) {
+			expect(popover?.nodesByPart(part)).toEqual([]);
+		}
 	});
 });

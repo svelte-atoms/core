@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends HtmlElementTagName, B extends Base = Base">
-	import { PortalBond, PortalsBond, resolvePortal } from '$ixirjs/ui/components/portal';
-	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { PortalBond, PortalsBond, resolveTeleportTarget } from '$ixirjs/ui/components/portal';
+	import { HtmlAtom, mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
 	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
 	import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
 	import {
@@ -8,13 +8,7 @@
 		type DismissPressEvent,
 		type OverlayView
 	} from '$ixirjs/ui/components/portal/host';
-	import {
-		createPopoverAtom,
-		getPopoverPosition,
-		PopoverBond,
-		PopoverContentAtom,
-		popoverNode
-	} from './bond.svelte';
+	import { createPopoverAtom, getPopoverPosition, PopoverBond, popoverNode } from './bond.svelte';
 	import { animatePopoverContent } from './motion.svelte';
 	import type { PopoverContentProps } from './types';
 	import Floating from './strategies/floating.svelte';
@@ -25,7 +19,7 @@
 	// Resolve the configured portal (id or bond); fall back to the ambient PortalBond when
 	// none is configured or the id is unknown.
 	const activePortalBond = $derived(
-		resolvePortal(PortalsBond.get(), bond.props.portal) ?? PortalBond.get()
+		resolveTeleportTarget(PortalsBond.get(), bond.props.portal, PortalBond.get())
 	);
 
 	let {
@@ -41,8 +35,6 @@
 		maxWidth = undefined,
 		style = undefined,
 		'z-index': zIndex = undefined,
-		// swallowed: defaults is an internal HtmlAtom layer for this part.
-		defaults: _defaults = undefined,
 		// swallowed: old fallback prop is removed; keep it off the DOM spread.
 		fallback: _fallback = undefined,
 		...restProps
@@ -56,27 +48,19 @@
 		'content',
 		{
 			bond,
-			factory: (owner) =>
-				createPopoverAtom(
-					owner as PopoverBond,
-					'content',
-					(popover) => new PopoverContentAtom(popover)
-				)
+			factory: (owner) => createPopoverAtom(owner as PopoverBond, 'content')
 		}
 	);
 	const outsidePress = $derived(bond.surface(OUTSIDE_PRESS));
 
-	const presentation = $derived({ preset: preset ?? atom.preset });
-
 	$effect(() => {
-		return outsidePress?.configure(
-			onclickoutside
-				? {
-						onDismiss: (ev: DismissPressEvent, overlay: OverlayView) =>
-							onclickoutside(ev as PointerEvent, overlay as PopoverBond)
-					}
-				: {}
-		);
+		return outsidePress?.configure({
+			onDismiss: (event: DismissPressEvent, overlay: OverlayView) => {
+				const popover = overlay as PopoverBond;
+				popover.stageOpenChange({ event, reason: 'outside-press' });
+				onclickoutside?.(event as PointerEvent, popover);
+			}
+		});
 	});
 
 	// Trigger measurements, in px. Lazy: only read by function sizers (raw-string paths skip it).
@@ -115,15 +99,14 @@
 	);
 
 	const contentProps = $derived({
-		...atom.spread,
-		style: sizeStyle,
-		...restProps
+		...mergeAtomProps(atom, preset, restProps),
+		style: sizeStyle
 	});
 </script>
 
-<Floating />
+<Floating portal={activePortalBond} />
 
-<Overlay portal={activePortalBond ?? 'root.l0'} {layer} {order} as="div" z-index={zIndex}>
+<Overlay portal={activePortalBond} {layer} {order} as="div" z-index={zIndex}>
 	<HtmlAtom
 		{bond}
 		{defaults}
@@ -132,7 +115,6 @@
 			'$preset',
 			klass
 		]}
-		{...presentation}
 		{...contentProps}
 	>
 		{@render children?.({ popover: bond })}

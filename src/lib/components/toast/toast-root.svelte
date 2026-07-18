@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
-	import { ToastBond } from './bond.svelte';
+	import { ToastBond, ToastRootAtom } from './bond.svelte';
 	import type { ToastRootProps } from './types';
 	import { bindBond, createAtomInstance } from '$ixirjs/ui/shared';
 
@@ -9,16 +9,16 @@
 		open = $bindable(true),
 		disabled = false,
 		duration = 0,
-		dismissible: _dismissible,
+		dismissible = true,
 		preset = undefined,
 		factory = (props) => ToastBond.create(props),
 		children = undefined,
-		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
-		onclose: _onclose = undefined,
+		onopenchange = undefined,
 		...restProps
 	}: ToastRootProps<E, B> = $props();
 
 	let openState = $derived(open);
+	const callbackState = { bond: undefined as ToastBond | undefined };
 
 	const binding = bindBond<ToastBond>(
 		(props) => factory(props),
@@ -26,19 +26,30 @@
 			open: [
 				() => openState,
 				(v) => {
+					const changed = !Object.is(openState, v);
 					openState = v;
 					open = openState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onopenchange?.(openState, {
+							bond: callbackBond,
+							...callbackBond.takeOpenChangeContext()
+						});
+					}
 				}
 			],
-			disabled: () => disabled
+			disabled: () => disabled,
+			dismissible: () => dismissible
 		},
 		{ preset: () => preset }
 	);
 
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance('root', {
 		bond,
-		factory: (owner) => owner!.root()
+		factory: (owner) => new ToastRootAtom(owner!)
 	});
 
 	const rootProps = $derived(
@@ -49,6 +60,7 @@
 	$effect(() => {
 		if (!openState || duration <= 0) return;
 		const handle = setTimeout(() => {
+			bond.stageOpenChange({ reason: 'timeout' });
 			bond.close();
 		}, duration);
 		return () => clearTimeout(handle);

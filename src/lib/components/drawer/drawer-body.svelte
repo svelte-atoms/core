@@ -2,7 +2,8 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { DrawerBodyProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -12,13 +13,13 @@
 		...restProps
 	}: DrawerBodyProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const bond = DrawerBond.getOrThrow('<Drawer.Body /> must be used within a <Drawer.Root />');
-
-	const atom = bond?.body();
-
-	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const part = usePart(DrawerBond, 'body', () => restProps, {
+		message: '<Drawer.Body /> must be used within a <Drawer.Root />',
+		preset: () => preset
+	});
+	const bond = part.bond;
 </script>
 
-<HtmlAtom {bond} {...bodyProps}>
+<HtmlAtom {bond} {...part.props}>
 	{@render children?.({ drawer: bond })}
 </HtmlAtom>

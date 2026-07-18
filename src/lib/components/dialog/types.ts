@@ -1,6 +1,7 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
-import type { PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
+import type { LayerRelation, PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
+import type { StateChangeCallback } from '$ixirjs/ui/types';
 import type { DialogBond, DialogBondProps } from './bond.svelte';
 
 export interface DialogSnippetProps extends SnippetProps {
@@ -16,11 +17,15 @@ export interface DialogProps<
 	open?: boolean;
 	disabled?: boolean;
 	'z-index'?: ZIndexInput;
-	// 'modal' closes on backdrop click (default); 'non-modal' keeps it open.
+	/** Position relative to a named portal elevation anchor. */
+	order?: LayerRelation;
+	/** Modal (default) traps focus and blocks the background; non-modal preserves background access. */
 	type?: 'modal' | 'non-modal' | undefined;
 	portal?: string | PortalBond;
 	factory?: (props: DialogBondProps) => DialogBond;
-	onclick?: (ev: MouseEvent, bond: DialogBond) => void;
+	onopenchange?: StateChangeCallback<boolean, DialogBond> | undefined;
+	/** Native click handler for the rendered dialog element. */
+	onclick?: ((event: MouseEvent) => void) | undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -63,6 +68,7 @@ export interface DialogCloseButtonProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
 > extends HtmlAtomProps<E, B, DialogChildren> {
-	// Explicit so the close button can intercept it (HtmlAtomProps' index signature would type it `{}`).
-	onclick?: (event: MouseEvent) => void;
+	// Explicit so the close button can preserve native handlers before built-in activation.
+	onclick?: ((event: MouseEvent) => void) | undefined;
+	onkeydown?: ((event: KeyboardEvent) => void) | undefined;
 }

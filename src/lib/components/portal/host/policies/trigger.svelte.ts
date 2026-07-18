@@ -14,7 +14,7 @@ import {
 } from './overlay-view';
 
 // Public slot key for trigger gesture policies (click/hover/contextmenu/manual share the slot, last-wins).
-export const TRIGGER = sharedCapabilityKey('@ixirjs/cap:trigger');
+export const TRIGGER = sharedCapabilityKey({ owner: '@ixirjs/cap', name: 'trigger', version: 1 });
 
 export type HoverTriggerOptions = {
 	// Delay before opening on pointer-enter, ms. Default 200.

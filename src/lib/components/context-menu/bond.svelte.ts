@@ -3,7 +3,8 @@ import {
 	DropdownMenuBondBase,
 	type DropdownMenuBondProps
 } from '$ixirjs/ui/components/dropdown-menu/bond.svelte';
-import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { manualTrigger } from '$ixirjs/ui/components/portal/host';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -31,27 +32,10 @@ const contextMenuSpec = {
 	parts: [DropdownMenuBond],
 	name: 'context-menu',
 	base: ContextMenuBondBase,
-	atoms: {}
-} satisfies BondSpec<Record<never, never>, typeof ContextMenuBondBase>;
+	atoms: {},
+	capabilities: () => [manualTrigger({ ariaHasPopup: 'menu' })]
+};
 
-const ContextMenuBondImpl = defineBond<
-	Record<never, never>,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof ContextMenuBondBase
->(contextMenuSpec);
+export const ContextMenuBond = defineBond(contextMenuSpec);
 
-export type ContextMenuBond = BondOf<typeof ContextMenuBondImpl>;
-
-interface ContextMenuBondConstructor {
-	new (props: ContextMenuBondProps): ContextMenuBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof ContextMenuBondImpl)['spec'];
-	get(): ContextMenuBond | undefined;
-	getOrThrow(message?: string): ContextMenuBond;
-	set(bond: ContextMenuBond): ContextMenuBond;
-	create(props: ContextMenuBondProps): ContextMenuBond;
-}
-
-export const ContextMenuBond = ContextMenuBondImpl as unknown as ContextMenuBondConstructor;
+export type ContextMenuBond = BondOf<typeof ContextMenuBond>;

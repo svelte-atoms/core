@@ -1,7 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { ToastBond } from './bond.svelte';
 	import type { ToastDescriptionProps } from './types';
+	import { usePart } from '$ixirjs/ui/shared';
 
 	let {
 		as = 'p' as E,
@@ -10,13 +11,12 @@
 		...restProps
 	}: ToastDescriptionProps<E, B> = $props();
 
-	const bond = ToastBond.get();
-
-	const atom = bond?.description();
-
-	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const part = usePart(ToastBond, 'description', () => restProps, {
+		message: '<Toast.Description /> must be used within a <Toast.Root />',
+		preset: () => preset
+	});
 </script>
 
-<HtmlAtom {as} {bond} {...descriptionProps}>
-	{@render children?.({ toast: bond })}
+<HtmlAtom {as} bond={part.bond} {...part.props}>
+	{@render children?.({ toast: part.bond })}
 </HtmlAtom>

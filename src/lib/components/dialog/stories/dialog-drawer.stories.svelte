@@ -58,7 +58,7 @@
 						class="bg-background flex h-full w-72 flex-col border-l"
 						animate={animateDrawerContent()}
 						{@attach clickoutDrawer((_, bond) => {
-							bond?.state?.close?.();
+							bond?.close?.();
 						})}
 					>
 						<!-- justify-between keeps the close button pinned top-right beside the title block. -->

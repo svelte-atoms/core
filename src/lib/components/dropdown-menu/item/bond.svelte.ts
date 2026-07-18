@@ -1,4 +1,3 @@
-import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 import { Atom } from '$ixirjs/ui/shared/bond';
 import {
 	defineAtomCapability,
@@ -22,7 +21,11 @@ export type DropdownMenuItemAtomProps = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:item-node');
+const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dropdown-menu',
+	name: 'item-node',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -79,8 +82,12 @@ export class DropdownMenuItemAtom<B extends DropdownMenuBond = DropdownMenuBond>
 		};
 	}
 
-	close() {
-		closeOverlay(this.#menuBond);
+	close(event?: Event) {
+		this.#menuBond.stageOpenChange({
+			...(event ? { event } : {}),
+			reason: 'item-select'
+		});
+		this.#menuBond.close();
 	}
 }
 
@@ -106,8 +113,10 @@ function dropdownMenuItemPresentation<B extends DropdownMenuBond>(
 				tabIndex: disabled() ? -1 : 0
 			}),
 			handlers: (_node, bond) => ({
-				onclick: () => {
-					if (bond) closeOverlay(bond);
+				onclick: (event: MouseEvent) => {
+					if (!bond) return;
+					bond.stageOpenChange({ event, reason: 'item-select' });
+					bond.close();
 				}
 			})
 		}

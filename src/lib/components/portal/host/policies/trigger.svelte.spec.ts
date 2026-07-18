@@ -3,10 +3,15 @@ import { clickTrigger, hoverTrigger, contextMenuTrigger, manualTrigger } from '.
 import type { OverlayView } from '../types';
 
 function mockBond(isOpen = false, isDisabled = false) {
-	const state = { open: vi.fn(), close: vi.fn(), toggle: vi.fn(), isOpen, isDisabled };
-	return { id: 'b1', namespace: 'popover', state } as unknown as OverlayView & {
-		state: typeof state;
-	};
+	return {
+		id: 'b1',
+		namespace: 'popover',
+		isOpen,
+		isDisabled,
+		open: vi.fn(),
+		close: vi.fn(),
+		toggle: vi.fn()
+	} as unknown as OverlayView;
 }
 
 describe('clickTrigger', () => {
@@ -14,21 +19,21 @@ describe('clickTrigger', () => {
 		const bond = mockBond();
 		const h = clickTrigger().behavior!('trigger')!.handlers!(bond);
 		(h.onclick as (ev: MouseEvent) => void)({ button: 0, defaultPrevented: false } as MouseEvent);
-		expect(bond.state.toggle).toHaveBeenCalledTimes(1);
+		expect(bond.toggle).toHaveBeenCalledTimes(1);
 	});
 
 	it('onclick ignores right-click', () => {
 		const bond = mockBond();
 		const h = clickTrigger().behavior!('trigger')!.handlers!(bond);
 		(h.onclick as (ev: MouseEvent) => void)({ button: 2, defaultPrevented: false } as MouseEvent);
-		expect(bond.state.toggle).not.toHaveBeenCalled();
+		expect(bond.toggle).not.toHaveBeenCalled();
 	});
 
 	it('onclick ignores defaultPrevented events', () => {
 		const bond = mockBond();
 		const h = clickTrigger().behavior!('trigger')!.handlers!(bond);
 		(h.onclick as (ev: MouseEvent) => void)({ button: 0, defaultPrevented: true } as MouseEvent);
-		expect(bond.state.toggle).not.toHaveBeenCalled();
+		expect(bond.toggle).not.toHaveBeenCalled();
 	});
 
 	it('Enter and Space toggle', () => {
@@ -43,7 +48,7 @@ describe('clickTrigger', () => {
 			key: ' ',
 			preventDefault: prevent
 		} as unknown as KeyboardEvent);
-		expect(bond.state.toggle).toHaveBeenCalledTimes(2);
+		expect(bond.toggle).toHaveBeenCalledTimes(2);
 		expect(prevent).toHaveBeenCalledTimes(2);
 	});
 
@@ -54,7 +59,7 @@ describe('clickTrigger', () => {
 			key: 'Tab',
 			preventDefault: () => undefined
 		} as unknown as KeyboardEvent);
-		expect(bond.state.toggle).not.toHaveBeenCalled();
+		expect(bond.toggle).not.toHaveBeenCalled();
 	});
 });
 
@@ -65,9 +70,9 @@ describe('hoverTrigger', () => {
 		const b = hoverTrigger({ openDelay: 50, closeDelay: 50 }).behavior!('trigger')!;
 		const h = b.handlers!(bond) as { onpointerenter: () => void };
 		h.onpointerenter();
-		expect(bond.state.open).not.toHaveBeenCalled();
+		expect(bond.open).not.toHaveBeenCalled();
 		vi.advanceTimersByTime(50);
-		expect(bond.state.open).toHaveBeenCalledTimes(1);
+		expect(bond.open).toHaveBeenCalledTimes(1);
 		vi.useRealTimers();
 	});
 
@@ -77,9 +82,9 @@ describe('hoverTrigger', () => {
 		const b = hoverTrigger({ openDelay: 50, closeDelay: 100 }).behavior!('trigger')!;
 		const h = b.handlers!(bond) as { onpointerleave: () => void };
 		h.onpointerleave();
-		expect(bond.state.close).not.toHaveBeenCalled();
+		expect(bond.close).not.toHaveBeenCalled();
 		vi.advanceTimersByTime(100);
-		expect(bond.state.close).toHaveBeenCalledTimes(1);
+		expect(bond.close).toHaveBeenCalledTimes(1);
 		vi.useRealTimers();
 	});
 
@@ -92,9 +97,9 @@ describe('hoverTrigger', () => {
 		vi.advanceTimersByTime(50);
 		h.onpointerleave(); // cancels pending open
 		vi.advanceTimersByTime(50); // past original open delay — should NOT fire
-		expect(bond.state.open).not.toHaveBeenCalled();
+		expect(bond.open).not.toHaveBeenCalled();
 		vi.advanceTimersByTime(50); // closeDelay fires
-		expect(bond.state.close).toHaveBeenCalledTimes(1);
+		expect(bond.close).toHaveBeenCalledTimes(1);
 		vi.useRealTimers();
 	});
 
@@ -107,7 +112,7 @@ describe('hoverTrigger', () => {
 		h.onpointerenter();
 		(cleanup as () => void)();
 		vi.advanceTimersByTime(200);
-		expect(bond.state.open).not.toHaveBeenCalled();
+		expect(bond.open).not.toHaveBeenCalled();
 		vi.useRealTimers();
 	});
 });
@@ -123,7 +128,7 @@ describe('contextMenuTrigger', () => {
 			preventDefault: prevent
 		} as unknown as MouseEvent);
 		expect(prevent).toHaveBeenCalledTimes(1);
-		expect(bond.state.open).toHaveBeenCalledTimes(1);
+		expect(bond.open).toHaveBeenCalledTimes(1);
 	});
 });
 

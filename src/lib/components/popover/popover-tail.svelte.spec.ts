@@ -18,7 +18,6 @@ describe('Popover.Tail placement geometry', () => {
 		const triggerRect = rect('[data-kind="popover-trigger"]');
 		const tailRect = rect('[data-kind="popover-tail"]');
 		const svgRect = rect('[data-kind="popover-tail"] svg');
-
 		expect(center(tailRect, 'x')).toBeGreaterThanOrEqual(triggerRect.left - 1.5);
 		expect(center(tailRect, 'x')).toBeLessThanOrEqual(triggerRect.right + 1.5);
 		expect(Math.abs(center(tailRect, 'x') - center(triggerRect, 'x'))).toBeLessThanOrEqual(1.5);
@@ -60,7 +59,6 @@ describe('Popover.Tail placement geometry', () => {
 			);
 			const triggerStart = axis === 'x' ? triggerRect.left : triggerRect.top;
 			const triggerEnd = axis === 'x' ? triggerRect.right : triggerRect.bottom;
-
 			expect(Math.abs(center(tailRect, axis) - expectedCenter)).toBeLessThanOrEqual(1.5);
 			expect(center(tailRect, axis)).toBeGreaterThanOrEqual(triggerStart - 1.5);
 			expect(center(tailRect, axis)).toBeLessThanOrEqual(triggerEnd + 1.5);
@@ -90,7 +88,6 @@ describe('Popover.Tail placement geometry', () => {
 		let tailRect = rect('[data-kind="popover-tail"]');
 		let svgRect = rect('[data-kind="popover-tail"] svg');
 		let tailOverlap = tailOverlapData();
-
 		expect(Math.abs(tailRect.right - (contentRect.left + tailOverlap))).toBeLessThanOrEqual(1.5);
 		expect(Math.abs(svgRect.right - (contentRect.left + tailOverlap))).toBeLessThanOrEqual(1.5);
 		expect(Math.abs(svgRect.left - triggerRect.right)).toBeLessThanOrEqual(1.5);

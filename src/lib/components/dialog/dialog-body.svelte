@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { DialogBodyProps } from './types';
-	import { DialogBodyAtom, DialogBond } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { DialogBond } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 
 	let {
 		class: klass,
@@ -11,16 +11,13 @@
 		...restProps
 	}: DialogBodyProps<E, B> = $props();
 
-	const bond = DialogBond.getOrThrow('<Dialog.Body /> must be used within a <Dialog.Root />');
-
-	const atom = createAtomInstance<DialogBodyAtom, DialogBond, HTMLElement>('body', {
-		bond,
-		factory: (owner) => new DialogBodyAtom(owner as DialogBond)
+	const part = usePart(DialogBond, 'body', () => restProps, {
+		message: '<Dialog.Body /> must be used within a <Dialog.Root />',
+		preset: () => preset
 	});
-
-	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
-<HtmlAtom {bond} class={['px-4 py-2', '$preset', klass]} {...bodyProps}>
+<HtmlAtom {bond} class={['px-4 py-2', '$preset', klass]} {...part.props}>
 	{@render children?.({ dialog: bond })}
 </HtmlAtom>

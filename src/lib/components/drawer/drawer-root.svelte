@@ -1,19 +1,12 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap='dialog', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import Teleport from '$ixirjs/ui/components/portal/teleport.svelte';
+	import { ActivePortal, PortalSurface } from '$ixirjs/ui/components/portal';
 	import type { Base } from '$ixirjs/ui/components/atom';
-	import { DrawerBond } from './bond.svelte';
+	import { DrawerBond, DrawerRootAtom } from './bond.svelte';
 	import type { SlideoverRootProps } from './types';
-	import {
-		ActivePortal,
-		PortalBond,
-		PortalsBond,
-		resolvePortal,
-		ZLayer,
-		type ZIndexInput
-	} from '../portal';
 	import { animateDrawerRoot } from './motion.svelte';
-	import { bindBond, useCapabilities } from '$ixirjs/ui/shared';
+	import { bindBond, createAtomInstance } from '$ixirjs/ui/shared';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 
 	type Element = HTMLElementTagNameMap[E];
 
@@ -26,10 +19,9 @@
 		disabled = false,
 		portal = undefined,
 		position = 'fixed',
-		// +1 in the `modal` band so a Drawer wins over a sibling Dialog (+0).
-		'z-index': zindex = 1,
-		// swallowed: kept out of restProps (would attach as a native DOM `close` listener). Not yet wired to the close flow.
-		onclose: _onclose = undefined,
+		'z-index': zindex = undefined,
+		order = undefined,
+		onopenchange = undefined,
 		// swallowed: defaults is an internal HtmlAtom layer, not a public Drawer.Root override.
 		defaults: _defaults = undefined,
 		// swallowed: old fallback prop is removed; keep it off the DOM spread.
@@ -41,20 +33,7 @@
 	}: SlideoverRootProps<E, B> & Omit<HTMLAttributes<Element>, 'children'> = $props();
 
 	let openState = $derived(open);
-
-	// Resolve the configured portal (id or bond); fall back to the ambient PortalBond when
-	// none is configured or the id is unknown.
-	const activePortalBond = $derived(resolvePortal(PortalsBond.get(), portal) ?? PortalBond.get());
-
-	const baseLayer = new ZLayer('modal', () => 0);
-	// HTMLAttributes<E> intersection narrows 'z-index' to exclude functions in this component;
-	// cast inside $derived.by so the read stays reactive and the type is correct.
-	const layerOffset = $derived.by(() => {
-		const z = zindex as ZIndexInput | undefined;
-		if (typeof z === 'function') return z(baseLayer.value) - baseLayer.value;
-		return typeof z === 'number' && Number.isFinite(z) ? z : 0;
-	});
-	const layer = new ZLayer('modal', () => layerOffset).share();
+	const callbackState = { bond: undefined as DrawerBond | undefined };
 
 	const binding = bindBond<DrawerBond>(
 		(props) => factory(props),
@@ -62,8 +41,17 @@
 			open: [
 				() => openState,
 				(v) => {
+					const changed = !Object.is(openState, v);
 					openState = v;
 					open = openState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onopenchange?.(openState, {
+							bond: callbackBond,
+							...callbackBond.takeOpenChangeContext()
+						});
+					}
 				}
 			],
 			disabled: () => disabled,
@@ -72,27 +60,25 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 
-	// Activate the bond's capability setups: the focus capability captures activeElement on
-	// open and restores it on close, and the escape capability enrolls this overlay in the
-	// topmost-open-overlay stack so only the frontmost surface acts on Escape.
-	useCapabilities(bond);
+	const rootAtom = createAtomInstance<DrawerRootAtom, DrawerBond>('root', {
+		bond,
+		factory: (owner) => new DrawerRootAtom(owner!)
+	});
 
 	const defaults = {
 		animate: animateDrawerRoot({}),
 		initial: animateDrawerRoot({ duration: 0 })
 	};
 
-	const rootProps = $derived({
-		...binding?.props,
-		...restProps
-	});
+	const rootProps = $derived(
+		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
+	);
 
 	$effect(() => {
-		if (bond.elements.root instanceof HTMLDialogElement) {
-			if (openState) {
-				bond.elements.root?.show?.();
-			}
+		if (bond.elements.root instanceof HTMLDialogElement && bond.isOpen) {
+			bond.elements.root.show?.();
 		}
 	});
 
@@ -101,20 +87,24 @@
 	}
 </script>
 
-<Teleport
-	portal={activePortalBond ?? 'root.l0'}
+<PortalSurface
+	owner={bond}
+	band="modal"
+	{order}
+	{portal}
+	z-index={zindex}
 	class={[
 		'pointer-events-none inset-0 h-full w-full overflow-hidden bg-transparent',
 		!openState && 'pointer-events-none',
 		'$preset',
 		klass
 	]}
-	style="position: {position}; z-index: {layer.value};"
+	style="position: {position};"
 	closeby="none"
 	{defaults}
 	{...rootProps}
 >
-	<ActivePortal portal={activePortalBond ?? 'root.l0'}>
+	<ActivePortal>
 		{@render children?.({ drawer: bond })}
 	</ActivePortal>
-</Teleport>
+</PortalSurface>

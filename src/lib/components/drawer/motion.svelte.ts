@@ -39,7 +39,7 @@ export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
 	const bond = untrack(() => DrawerBond.get());
 
 	// side is set in Drawer.Root
-	const side = bond?.state.props.side ?? 'right';
+	const side = bond?.props.side ?? 'right';
 
 	const position = getSidePosition(side);
 	const hidden = getHiddenTransform(side);
@@ -47,7 +47,7 @@ export function animateDrawerContent(params: AnimateDrawerContentParams = {}) {
 	let animated = false;
 
 	return (node: HTMLElement) => {
-		const isOpen = bond?.state.props.open ?? false;
+		const isOpen = bond?.props.open ?? false;
 
 		// Apply hidden state before any animation to prevent FOUC.
 		if (!animated) {
@@ -155,7 +155,7 @@ export function animateDrawerRoot(params: AnimateDrawerRootParams = {}) {
 
 	return (node: HTMLElement) => {
 		const bond = DrawerBond.get();
-		const isOpen = bond?.state.props.open ?? false;
+		const isOpen = bond?.props.open ?? false;
 
 		animate(node, { opacity: +isOpen }, { duration, ease, delay });
 	};

@@ -18,16 +18,13 @@ describe('ContextMenu component-owned Atoms', () => {
 		expect(contextMenu).toBeDefined();
 		expect(contextMenu).toBeInstanceOf(ContextMenuBond);
 
-		const virtualTrigger = contextMenu?.node('virtual-trigger');
+		const virtualTrigger = contextMenu?.nodeByPart('virtual-trigger');
 
 		expect(virtualTrigger).toBeInstanceOf(PopoverVirtualTriggerAtom);
 		expect(virtualTrigger).toBeInstanceOf(Atom);
-		expect(
-			(contextMenu as unknown as Record<'virtual-trigger', () => Atom>)['virtual-trigger']()
-		).toBeInstanceOf(PopoverVirtualTriggerAtom);
 
 		unmount();
 
-		expect(contextMenu?.node('virtual-trigger')).toBeUndefined();
+		expect(contextMenu?.nodeByPart('virtual-trigger')).toBeUndefined();
 	});
 });

@@ -1,15 +1,21 @@
 import { type ComputePositionReturn, type Placement } from '@floating-ui/dom';
 import { Atom, defineAtom, type BondVirtualElement } from '$ixirjs/ui/shared/bond';
-import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { resolveBondPart } from '$ixirjs/ui/shared/authoring/metadata';
 import {
+	ESCAPE,
+	OUTSIDE_PRESS,
 	OverlayBond,
 	OverlayTriggerAtom,
+	escapePolicy,
+	outsidePressPolicy,
 	positionedCapabilities,
 	trappedFocus,
 	type OverlayStateProps,
 	type OverlayView,
 	type PositionedOverlayElements
 } from '$ixirjs/ui/components/portal/host';
+import type { StateChangeContext } from '$ixirjs/ui/types';
 import type { PortalBond } from '$ixirjs/ui/components/portal';
 import type { PopoverStrategy } from '$ixirjs/ui/components/popover/strategy-types';
 import {
@@ -26,7 +32,7 @@ export {
 	popoverNode,
 	setPopoverTracking,
 	shouldTrackPopoverPosition
-} from '$ixirjs/ui/components/popover/legacy-state';
+} from '$ixirjs/ui/components/popover/position-state';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -38,12 +44,12 @@ export type PopoverParams = {
 		params: { x: number; y: number; dx: number; dy: number; open: boolean; offset: number }
 	) => void;
 
-	onchange?: (node: HTMLElement, params: ComputePositionReturn) => void;
+	onpositionchange?: (node: HTMLElement, params: ComputePositionReturn) => void;
 };
 
 export type PopoverEngineCleanup = () => void;
 export type PopoverEngineParams = Record<string, unknown> & {
-	onchange?: (node: HTMLElement, position: ComputePositionReturn) => void;
+	onpositionchange?: (node: HTMLElement, position: ComputePositionReturn) => void;
 };
 export type PopoverEngine = (
 	bond: PopoverBond
@@ -85,11 +91,23 @@ export type PopoverDomElements = PositionedOverlayElements & {
 // -----------------------------------------------------------------------------
 
 // Positioned defaults (click trigger, escape, restore-to-trigger) + trapped-focus override.
-// Shared by PopoverBond constructor and popoverSpec so they never drift.
+// The final same-slot policies enrich dismissals with their originating event/reason.
 function popoverCapabilities() {
 	return [
-		...positionedCapabilities(),
-		trappedFocus({ restoreFocus: 'trigger', captureFocusOnOpen: false })
+		...positionedCapabilities().filter(
+			(capability) => capability.slot !== ESCAPE && capability.slot !== OUTSIDE_PRESS
+		),
+		trappedFocus({ restoreFocus: 'trigger', captureFocusOnOpen: false }),
+		escapePolicy((bond, event) => {
+			const popover = bond as PopoverBondBase;
+			popover.stageOpenChange({ event, reason: 'escape' });
+			popover.close();
+		}),
+		outsidePressPolicy({
+			event: 'click',
+			onDismiss: (event, bond) =>
+				(bond as PopoverBondBase).stageOpenChange({ event, reason: 'outside-press' })
+		})
 	];
 }
 
@@ -103,6 +121,7 @@ export class PopoverBondBase<
 	Props extends PopoverBondProps = PopoverBondProps
 > extends OverlayBond<Props> {
 	position = $state<ComputePositionReturn>();
+	#openChangeContext: Pick<StateChangeContext, 'event' | 'reason'> | undefined;
 	// Whether position should be actively computed. Defaults to `open`; can be overridden
 	// to keep computing while hiding or to start computing on hover before open.
 	tracking = $state<boolean | undefined>(undefined);
@@ -113,6 +132,19 @@ export class PopoverBondBase<
 
 	constructor(props: Props, name = 'popover') {
 		super(props, name);
+	}
+
+	stageOpenChange(context: Pick<StateChangeContext, 'event' | 'reason'>): void {
+		this.#openChangeContext = context;
+		queueMicrotask(() => {
+			if (this.#openChangeContext === context) this.#openChangeContext = undefined;
+		});
+	}
+
+	takeOpenChangeContext(): Pick<StateChangeContext, 'event' | 'reason'> {
+		const context = this.#openChangeContext ?? {};
+		this.#openChangeContext = undefined;
+		return context;
 	}
 
 	#createComputed() {
@@ -143,12 +175,11 @@ type PopoverHTMLElementNode = Atom<PopoverBond, HTMLElement>;
 
 export function createPopoverAtom<N extends PopoverHTMLElementNode>(
 	bond: PopoverBond,
-	key: string,
-	fallback: (bond: PopoverBond) => N
+	key: string
 ): N {
-	const method = (bond as unknown as Record<string, unknown>)[key];
-	if (typeof method === 'function') return method.call(bond) as N;
-	return fallback(bond);
+	const part = resolveBondPart(bond.constructor, key);
+	const atom = new (part.Ctor as new (bond: PopoverBond) => N)(bond);
+	return (part.role ? atom.role(part.role) : atom) as N;
 }
 
 // -----------------------------------------------------------------------------
@@ -238,50 +269,15 @@ export const popoverSpec = {
 		indicator: PopoverIndicatorAtom
 	},
 	capabilities: popoverCapabilities
-} satisfies BondSpec<
-	{
-		trigger: typeof PopoverTriggerAtom;
-		'virtual-trigger': typeof PopoverVirtualTriggerAtom;
-		overlay: typeof PopoverOverlayAtom;
-		content: typeof PopoverContentAtom;
-		tail: typeof PopoverTailAtom;
-		indicator: typeof PopoverIndicatorAtom;
-	},
-	typeof PopoverBondBase
->;
+};
 
-const PopoverBondImpl = defineBond<
-	{
-		trigger: typeof PopoverTriggerAtom;
-		'virtual-trigger': typeof PopoverVirtualTriggerAtom;
-		overlay: typeof PopoverOverlayAtom;
-		content: typeof PopoverContentAtom;
-		tail: typeof PopoverTailAtom;
-		indicator: typeof PopoverIndicatorAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof PopoverBondBase
->(popoverSpec);
+export const PopoverBond = defineBond(popoverSpec);
 
 // Propagate OverlayBond's owner context through composed families that share Popover's context.
-Object.defineProperty(PopoverBondImpl, 'CONTEXT_KEYS', {
-	value: [PopoverBondImpl.CONTEXT_KEY, OverlayBond.CONTEXT_KEY],
+Object.defineProperty(PopoverBond, 'CONTEXT_KEYS', {
+	value: [PopoverBond.CONTEXT_KEY, OverlayBond.CONTEXT_KEY],
 	writable: true,
 	configurable: true
 });
 
-export type PopoverBond = BondOf<typeof PopoverBondImpl>;
-
-interface PopoverBondConstructor {
-	new (props: PopoverBondProps): PopoverBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof PopoverBondImpl)['spec'];
-	get(): PopoverBond | undefined;
-	getOrThrow(message?: string): PopoverBond;
-	set(bond: PopoverBond): PopoverBond;
-	create(props: PopoverBondProps): PopoverBond;
-}
-
-export const PopoverBond = PopoverBondImpl as unknown as PopoverBondConstructor;
+export type PopoverBond = BondOf<typeof PopoverBond>;

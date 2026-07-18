@@ -1,6 +1,6 @@
 import type { Component, Snippet } from 'svelte';
 import type { Placement } from '@floating-ui/dom';
-import type { Factory } from '$ixirjs/ui/types';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
 import type { PopoverBond } from './bond.svelte';
 import type { Base, HtmlAtomProps } from '../atom';
 import type { HtmlElementTagName } from '../element';
@@ -19,6 +19,7 @@ export interface PopoverRootProps {
 	portal?: string | PortalBond;
 	extend?: Record<string, unknown>;
 	factory?: Factory<PopoverBond>;
+	onopenchange?: StateChangeCallback<boolean, PopoverBond> | undefined;
 	children?: PopoverChildren;
 }
 
@@ -34,7 +35,7 @@ export interface PopoverOverlayProps<
 	E extends HtmlElementTagName = 'div',
 	B extends Base = Base
 > extends TeleportProps<E, B, PopoverChildren> {
-	portal: string | PortalBond;
+	portal?: string | PortalBond | undefined;
 	/** Semantic z-index layer for the floating content. Defaults to `'popover'`. */
 	layer?: LayerInput | undefined;
 	/**
@@ -126,6 +127,8 @@ export interface PopoverTriggerProps<
 	T extends keyof HTMLElementTagNameMap,
 	B extends Base = Base
 > extends HtmlAtomProps<T, B, PopoverChildren> {
-	// Explicit so the trigger can intercept it (HtmlAtomProps' index signature would type it `{}`).
-	onpointerenter?: (event: PointerEvent) => void;
+	// Explicit so the trigger can preserve native handlers before built-in activation.
+	onclick?: ((event: MouseEvent) => void) | undefined;
+	onkeydown?: ((event: KeyboardEvent) => void) | undefined;
+	onpointerenter?: ((event: PointerEvent) => void) | undefined;
 }

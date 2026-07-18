@@ -111,7 +111,7 @@
 					class="flex h-full w-80 flex-col border-r"
 					animate={animateDrawerContent()}
 					{@attach clickoutDrawer((_, bond) => {
-						bond?.state?.close?.();
+						bond?.close?.();
 					})}
 				>
 					<Drawer_.Header>
@@ -213,7 +213,7 @@
 				class="flex h-full w-80 flex-col border-r"
 				animate={animateDrawerContent()}
 				{@attach clickoutDrawer((_, bond) => {
-					bond?.state?.close?.();
+					bond?.close?.();
 				})}
 			>
 				<Drawer_.Header>
@@ -257,7 +257,7 @@
 				class="flex h-full w-80 flex-col border-l"
 				animate={animateDrawerContent()}
 				{@attach clickoutDrawer((_, bond) => {
-					bond?.state?.close?.();
+					bond?.close?.();
 				})}
 			>
 				<Drawer_.Header>
@@ -307,7 +307,7 @@
 				class="flex w-full flex-col border-b p-6"
 				animate={animateDrawerContent()}
 				{@attach clickoutDrawer((_, bond) => {
-					bond?.state?.close?.();
+					bond?.close?.();
 				})}
 			>
 				<Drawer_.Header variant="plain" class="mb-4">
@@ -346,7 +346,7 @@
 				class="flex w-full flex-col border-t p-6"
 				animate={animateDrawerContent()}
 				{@attach clickoutDrawer((_, bond) => {
-					bond?.state?.close?.();
+					bond?.close?.();
 				})}
 			>
 				<Drawer_.Header variant="plain" class="mb-4">

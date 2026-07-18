@@ -7,12 +7,9 @@ import {
 	type PopoverDomElements,
 	type PopoverStateProps
 } from '$ixirjs/ui/components/popover/bond.svelte';
-import {
-	closeOverlay,
-	overlayIsOpen
-} from '$ixirjs/ui/components/portal/host/policies/overlay-view';
+import { overlayIsOpen } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 import { Atom, defineAtom } from '$ixirjs/ui/shared/bond';
-import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	createRovingFocus,
 	rovingCapability,
@@ -129,9 +126,21 @@ type DropdownMenuBondView = DropdownMenuBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const DROPDOWN_MENU_CONTENT = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:content');
-const DROPDOWN_MENU_TRIGGER = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:trigger');
-const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>('@ixirjs/dropdown-menu:item');
+const DROPDOWN_MENU_CONTENT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dropdown-menu',
+	name: 'content',
+	version: 1
+});
+const DROPDOWN_MENU_TRIGGER = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dropdown-menu',
+	name: 'trigger',
+	version: 1
+});
+const DROPDOWN_MENU_ITEM = sharedCapabilityKey<void>({
+	owner: '@ixirjs/dropdown-menu',
+	name: 'item',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -241,7 +250,8 @@ function dropdownMenuItemPresentation<B extends DropdownMenuBondView>() {
 
 					if (ev.key === 'Enter' || ev.key === ' ') {
 						ev.preventDefault();
-						closeOverlay(bond);
+						bond.stageOpenChange({ event: ev, reason: 'item-select' });
+						bond.close();
 					}
 				}
 			})
@@ -263,43 +273,14 @@ const dropdownMenuSpec = {
 		item: DropdownMenuItemAtom
 	},
 	capabilities: () => [clickTrigger({ ariaHasPopup: 'menu' })]
-} satisfies BondSpec<
-	{
-		content: { atom: typeof DropdownMenuContentAtom; role: 'container' };
-		trigger: typeof DropdownMenuTriggerAtom;
-		item: typeof DropdownMenuItemAtom;
-	},
-	typeof DropdownMenuBondBase
->;
+};
 
 // DropdownMenuBond — flat composition over PopoverBond.
 // Adds roving-focus, overrides content/trigger roles, adds `item` slot.
-const DropdownMenuBondImpl = defineBond<
-	{
-		content: { atom: typeof DropdownMenuContentAtom; role: 'container' };
-		trigger: typeof DropdownMenuTriggerAtom;
-		item: typeof DropdownMenuItemAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof DropdownMenuBondBase
->(dropdownMenuSpec);
+export const DropdownMenuBond = defineBond(dropdownMenuSpec);
 
 // Instance type — paired with the `const` (value + type).
-export type DropdownMenuBond = BondOf<typeof DropdownMenuBondImpl>;
-
-interface DropdownMenuBondConstructor {
-	new (props: DropdownMenuBondProps): DropdownMenuBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof DropdownMenuBondImpl)['spec'];
-	get(): DropdownMenuBond | undefined;
-	getOrThrow(message?: string): DropdownMenuBond;
-	set(bond: DropdownMenuBond): DropdownMenuBond;
-	create(props: DropdownMenuBondProps): DropdownMenuBond;
-}
-
-export const DropdownMenuBond = DropdownMenuBondImpl as unknown as DropdownMenuBondConstructor;
+export type DropdownMenuBond = BondOf<typeof DropdownMenuBond>;
 
 // -----------------------------------------------------------------------------
 // Public types

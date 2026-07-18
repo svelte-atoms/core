@@ -9,17 +9,26 @@ export const drawer = createBondAttachment<DrawerBond>(DrawerBond);
 
 export function toggleDrawer(onclick?: (ev: MouseEvent) => void) {
 	const bond = DrawerBond.get();
-	return clickAction(() => (bond?.surface(DISCLOSURE) ?? bond)?.toggle(), onclick);
+	return clickAction((event) => {
+		bond?.stageOpenChange({ event, reason: 'trigger' });
+		(bond?.surface(DISCLOSURE) ?? bond)?.toggle();
+	}, onclick);
 }
 
 export function openDrawer(onclick?: (ev: MouseEvent) => void) {
 	const bond = DrawerBond.get();
-	return clickAction(() => (bond?.surface(DISCLOSURE) ?? bond)?.open(), onclick);
+	return clickAction((event) => {
+		bond?.stageOpenChange({ event, reason: 'trigger' });
+		(bond?.surface(DISCLOSURE) ?? bond)?.open();
+	}, onclick);
 }
 
 export function closeDrawer(onclick?: (ev: MouseEvent) => void) {
 	const bond = DrawerBond.get();
-	return clickAction(() => (bond?.surface(DISCLOSURE) ?? bond)?.close(), onclick);
+	return clickAction((event) => {
+		bond?.stageOpenChange({ event, reason: 'close-trigger' });
+		(bond?.surface(DISCLOSURE) ?? bond)?.close();
+	}, onclick);
 }
 
 export function clickoutDrawer(onclickout?: (ev: PointerEvent, bond?: DrawerBond) => void) {
@@ -43,6 +52,7 @@ export function clickoutDrawer(onclickout?: (ev: PointerEvent, bond?: DrawerBond
 				return;
 			}
 
+			bond.stageOpenChange({ event: ev, reason: 'outside-press' });
 			bond.close();
 		},
 		{

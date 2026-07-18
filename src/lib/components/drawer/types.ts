@@ -1,7 +1,7 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
-import type { Factory } from '$ixirjs/ui/types';
-import type { PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
+import type { LayerRelation, PortalBond, ZIndexInput } from '$ixirjs/ui/components/portal';
 import type { DrawerBond } from './bond.svelte';
 
 // Declaration-merge into these to add app-specific props per drawer part.
@@ -43,12 +43,16 @@ export type DrawerChildren = Snippet<[DrawerSnippetProps]>;
 export interface SlideoverRootProps<E extends keyof HTMLElementTagNameMap, B extends Base = Base>
 	extends HtmlAtomProps<E, B, DrawerChildren>, DrawerExtendProps {
 	'z-index'?: ZIndexInput;
+	/** Position relative to a named portal elevation anchor. */
+	order?: LayerRelation;
 	open?: boolean;
 	disabled?: boolean;
 	side?: 'left' | 'right' | 'top' | 'bottom';
 	position?: 'absolute' | 'fixed';
 	portal?: string | PortalBond;
-	onclose?: ((event: Event, bond: DrawerBond) => void) | undefined;
+	/** Native close event handler for the rendered dialog element. */
+	onclose?: ((event: Event) => void) | undefined;
+	onopenchange?: StateChangeCallback<boolean, DrawerBond> | undefined;
 	factory?: Factory<DrawerBond>;
 }
 

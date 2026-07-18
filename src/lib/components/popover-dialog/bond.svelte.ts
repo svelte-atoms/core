@@ -1,5 +1,5 @@
 import { fuse, type BondOf } from '$ixirjs/ui/shared';
-import { popoverSpec, PopoverTriggerAtom } from '../popover/bond.svelte';
+import { PopoverBond, PopoverTriggerAtom } from '../popover/bond.svelte';
 import {
 	DialogBond,
 	DialogBondBase,
@@ -20,26 +20,18 @@ export type PopoverDialogBondProps = DialogBondProps;
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const PopoverDialogBondImpl = fuse({
+export const PopoverDialogBond = fuse({
 	name: 'popover-dialog',
 	base: DialogBondBase,
-	parts: [{ spec: popoverSpec }, DialogBond],
+	parts: [PopoverBond, DialogBond],
 	atoms: { trigger: PopoverTriggerAtom }
 });
 
 // Narrows fuse()'s default props slot so PropsOf resolves correctly.
-export type PopoverDialogBond = BondOf<typeof PopoverDialogBondImpl> &
+export type PopoverDialogBond = BondOf<typeof PopoverDialogBond> &
 	DialogBondInstance & {
 		readonly __props?: PopoverDialogBondProps;
 		readonly props: PopoverDialogBondProps;
 	};
 
 // Constructor facade (TabsBond pattern): re-types new/get/set to prop-narrowed instance.
-interface PopoverDialogBondConstructor {
-	new (props: PopoverDialogBondProps): PopoverDialogBond;
-	readonly CONTEXT_KEY: string;
-	get(): PopoverDialogBond | undefined;
-	set(bond: PopoverDialogBond): PopoverDialogBond;
-}
-
-export const PopoverDialogBond = PopoverDialogBondImpl as unknown as PopoverDialogBondConstructor;

@@ -4,7 +4,8 @@
 	import type { TeleportProps } from './types';
 	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import type { HtmlElementTagName, HtmlElementType } from '$ixirjs/ui/components/element';
-	import { PortalsBond, resolvePortal } from './portals';
+	import { PortalBond } from './bond.svelte';
+	import { describePortalTarget, PortalsBond, resolveTeleportTarget } from './portals';
 	import { port } from './port';
 
 	type Element = HtmlElementType<E>;
@@ -13,18 +14,17 @@
 		$props();
 
 	const portalsBond = PortalsBond.get();
+	const ambientPortal = $derived(PortalBond.get());
 
-	const portalBond = $derived(resolvePortal(portalsBond, portal));
+	const portalBond = $derived(resolveTeleportTarget(portalsBond, portal, ambientPortal));
 
 	const targetElement = $derived(portalBond?.boundaryElement);
 
-	const ui = $derived(targetElement ? content : undefined);
-
-	// Warn (in an effect, after registration settles) when a string id never resolves.
+	// Warn (in an effect, after registration settles) when no target element resolves.
 	$effect(() => {
-		if (DEV && typeof portal === 'string' && !portalBond) {
+		if (DEV && !targetElement) {
 			console.warn(
-				`[ixirjs] <Teleport portal="${portal}">: no portal registered with this id; nothing is teleported.`
+				`[ixirjs] <Teleport${describePortalTarget(portal)}>: no portal target resolved; nothing is teleported.`
 			);
 		}
 	});
@@ -34,12 +34,8 @@
 	}
 </script>
 
-{#snippet content()}
+{#if targetElement && portalBond}
 	<HtmlAtom {@attach teleport} as={as as E} {base} {...restProps}>
-		{#if portalBond}
-			{@render children?.({ portal: portalBond })}
-		{/if}
+		{@render children?.({ portal: portalBond })}
 	</HtmlAtom>
-{/snippet}
-
-{@render ui?.()}
+{/if}

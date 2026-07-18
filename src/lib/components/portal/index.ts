@@ -6,12 +6,14 @@ export {
 	PortalInnerAtom,
 	PortalRootAtom,
 	type PortalBondProps,
+	type PortalElevationEntry,
 	type PortalStateProps
 } from './bond.svelte';
 export { port } from './port';
 export {
 	ZLayer,
 	LAYER_BASE,
+	resolveZIndexOffset,
 	type LayerName,
 	type LayerInput,
 	type LayerRelation,
@@ -20,5 +22,6 @@ export {
 
 export { default as ActivePortal } from './active-portal.svelte';
 export { default as Teleport } from './teleport.svelte';
+export { PortalSurface } from './surface';
 
 export * from './portals';

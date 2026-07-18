@@ -8,7 +8,7 @@ import { overlayIsOpen, overlayNode } from './overlay-view';
 export function useFocusRestore(bond: OverlayView | undefined): void {
 	if (!bond) return;
 
-	const focusSurface = bond.state.surface(FOCUS);
+	const focusSurface = bond.surface(FOCUS);
 	let restoreTarget: HTMLElement | null = null;
 	let wasOpen = false;
 

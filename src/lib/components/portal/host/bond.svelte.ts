@@ -1,10 +1,5 @@
 import { setContext } from 'svelte';
-import {
-	Bond,
-	bondContextKey,
-	defineAtom,
-	type BondStateProps
-} from '$ixirjs/ui/shared/bond';
+import { Bond, bondContextKey, defineAtom, type BondStateProps } from '$ixirjs/ui/shared/bond';
 import {
 	createDisclosure,
 	disclosureCapability,
@@ -23,6 +18,7 @@ import type { OverlayView } from './types';
 type OverlayReadableProps = BondStateProps & {
 	open?: boolean;
 	disabled?: boolean;
+	modal?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -62,6 +58,10 @@ export class OverlayBond<
 
 	get isDisabled(): boolean {
 		return (this.props as OverlayReadableProps).disabled ?? false;
+	}
+
+	get modal(): boolean {
+		return (this.props as OverlayReadableProps).modal ?? true;
 	}
 
 	open(): void {

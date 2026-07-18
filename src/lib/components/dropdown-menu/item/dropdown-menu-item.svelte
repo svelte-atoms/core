@@ -3,6 +3,7 @@
 	import { DropdownMenuBond } from '../bond.svelte';
 	import type { DropdownMenuItemProps } from './types';
 	import { List } from '../../list';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 
 	const menu = DropdownMenuBond.getOrThrow(
@@ -26,22 +27,18 @@
 	});
 
 	const atom = createAtomInstance<DropdownMenuItemAtom<typeof menu>, typeof menu, HTMLElement>(
-		() => `item-${id}`,
+		undefined,
 		{
-			bond: () => menu,
+			resolveKey: () => `item-${id}`,
+			resolveBond: () => menu,
 			required: true,
 			register: { key: 'item', cardinality: 'many' },
 			factory: () => new DropdownMenuItemAtom<typeof menu>(itemProps, menu)
 		}
 	);
 
-	const presentation = $derived({ preset: preset ?? atom.preset });
-
 	// Atom spread (attrs + handlers + element attachment + roving projection) plus custom props.
-	const itemAttrs = $derived({
-		...atom.spread,
-		...restProps
-	});
+	const itemAttrs = $derived(mergeAtomProps(atom, preset, restProps));
 
 	// Register the item into the bond so roving focus / keyboard navigation can see
 	// it. Stable (outside the reactive `spread`), so it never feeds the mount loop.
@@ -63,7 +60,7 @@
 
 		ev.preventDefault();
 
-		atom.close();
+		atom.close(ev);
 	}
 
 	export function getController() {
@@ -79,7 +76,6 @@
 	]
 		.filter(Boolean)
 		.join(' ')}
-	{...presentation}
 	{...itemAttrs}
 	onclick={handleClick}
 >

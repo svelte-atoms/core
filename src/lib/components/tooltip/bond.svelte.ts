@@ -3,7 +3,7 @@ import {
 	PopoverBondBase,
 	type PopoverBondProps
 } from '$ixirjs/ui/components/popover/bond.svelte';
-import { defineBond, type BondOf, type BondSpec } from '$ixirjs/ui/shared';
+import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -33,26 +33,8 @@ const tooltipSpec = {
 	name: 'tooltip',
 	base: PopoverBondBase,
 	atoms: {}
-} satisfies BondSpec<Record<never, never>, typeof PopoverBondBase>;
+};
 
-const TooltipBondImpl = defineBond<
-	Record<never, never>,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof PopoverBondBase
->(tooltipSpec);
+export const TooltipBond = defineBond(tooltipSpec);
 
-export type TooltipBond = BondOf<typeof TooltipBondImpl>;
-
-interface TooltipBondConstructor {
-	new (props: TooltipBondProps): TooltipBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof TooltipBondImpl)['spec'];
-	get(): TooltipBond | undefined;
-	getOrThrow(message?: string): TooltipBond;
-	set(bond: TooltipBond): TooltipBond;
-	create(props: TooltipBondProps): TooltipBond;
-}
-
-export const TooltipBond = TooltipBondImpl as unknown as TooltipBondConstructor;
+export type TooltipBond = BondOf<typeof TooltipBond>;

@@ -7,7 +7,9 @@ function fakeBond(isOpen = false, isDisabled = false) {
 	return {
 		id: 'b1',
 		namespace: 'popover',
-		state: { isOpen, isDisabled, toggle: vi.fn() }
+		isOpen,
+		isDisabled,
+		toggle: vi.fn()
 	} as unknown as OverlayView;
 }
 
@@ -46,9 +48,7 @@ describe('clickTrigger — trigger policy', () => {
 		const bond = fakeBond();
 		const handlers = clickTrigger().behavior!('trigger')!.handlers!(bond);
 		(handlers.onclick as (e: Event) => void)({ button: 0, defaultPrevented: false } as MouseEvent);
-		expect(
-			(bond as unknown as { state: { toggle: ReturnType<typeof vi.fn> } }).state.toggle
-		).toHaveBeenCalled();
+		expect((bond as unknown as { toggle: ReturnType<typeof vi.fn> }).toggle).toHaveBeenCalled();
 	});
 
 	it('projects nothing for non-trigger roles', () => {

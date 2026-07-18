@@ -1,3 +1,6 @@
+import { DEV } from 'esm-env';
+import { untrack } from 'svelte';
+import { SvelteMap } from 'svelte/reactivity';
 import {
 	Atom,
 	Bond,
@@ -6,6 +9,14 @@ import {
 	type BondStateProps
 } from '$ixirjs/ui/shared/bond';
 import { defineBond, type BondOf } from '$ixirjs/ui/shared';
+import { PortalsBond } from './portals';
+import {
+	LAYER_BASE,
+	resolveZIndexOffset,
+	type LayerInput,
+	type LayerRelation,
+	type ZIndexInput
+} from './zlayer.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -22,22 +33,84 @@ export type PortalElements = BondElements & {
 	inner?: HTMLElement;
 };
 
+export type PortalElevationEntry = {
+	band: LayerInput;
+	relation?: LayerRelation | undefined;
+	rank?: number | undefined;
+	'z-index'?: ZIndexInput | undefined;
+};
+
 // -----------------------------------------------------------------------------
 // Bond implementation
 // -----------------------------------------------------------------------------
 
 export class PortalBondBase<Props extends PortalBondProps = PortalBondProps> extends Bond<Props> {
+	#anchors = new SvelteMap<string, () => number>();
+	#portals: PortalsBond | undefined;
+
 	constructor(props: Props) {
 		super(props, 'portal');
+		try {
+			this.#portals = PortalsBond.get();
+		} catch {
+			this.#portals = undefined;
+		}
 	}
 
-	// The teleport sink and the floating-ui boundary are the same element: the Inner once mounted,
-	// else the Outer.
+	// The teleport sink and floating-ui boundary are the same element.
 	get boundaryElement(): HTMLElement | undefined {
-		return (
-			(this.node('inner')?.element as HTMLElement | undefined) ??
-			(this.node('root')?.element as HTMLElement | undefined)
-		);
+		return this.sinkElement;
+	}
+
+	get sinkElement(): HTMLElement | undefined {
+		return this.nodeByPart('inner')?.element as HTMLElement | undefined;
+	}
+
+	anchor(name: string, value: () => number): () => void {
+		return untrack(() => {
+			if (DEV && this.#anchors.has(name)) {
+				console.warn(
+					`[ixirjs] Portal "${this.props.id}" already has a layer anchor named "${name}".`
+				);
+			}
+			this.#anchors.set(name, value);
+			return () => {
+				if (this.#anchors.get(name) === value) this.#anchors.delete(name);
+			};
+		});
+	}
+
+	readAnchor(name: string): number | undefined {
+		return this.#anchors.get(name)?.();
+	}
+
+	elevation(entry: PortalElevationEntry): number {
+		const natural =
+			this.#anchorRelative(entry.relation) ?? this.#band(entry.band) + (entry.rank ?? 0);
+		return natural + resolveZIndexOffset(entry['z-index'], natural);
+	}
+
+	#anchorRelative(relation: LayerRelation | undefined): number | undefined {
+		if (!relation) return undefined;
+		if (relation.below !== undefined) {
+			const anchor = this.readAnchor(relation.below);
+			if (anchor !== undefined) return anchor - 1;
+		}
+		if (relation.above !== undefined) {
+			const anchor = this.readAnchor(relation.above);
+			if (anchor !== undefined) return anchor + 1;
+		}
+		return undefined;
+	}
+
+	#band(input: LayerInput): number {
+		if (this.#portals) return this.#portals.band(input);
+		if (typeof input === 'number') return input;
+		const base = LAYER_BASE[input as keyof typeof LAYER_BASE];
+		if (base === undefined) {
+			throw new Error(`[PortalBond] Unknown layer band "${input}".`);
+		}
+		return base;
 	}
 }
 
@@ -59,7 +132,7 @@ export class PortalRootAtom extends Atom<PortalBondView, HTMLElement> {
 	override get attrs() {
 		return {
 			...super.attrs,
-			id: this.bond.id
+			id: this.requireBond().id
 		};
 	}
 }
@@ -71,28 +144,10 @@ export type PortalInnerAtom = InstanceType<typeof PortalInnerAtom>;
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const PortalBondImpl = defineBond<
-	{ root: typeof PortalRootAtom; inner: typeof PortalInnerAtom },
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof PortalBondBase
->({
+export const PortalBond = defineBond({
 	name: 'portal',
 	base: PortalBondBase,
 	atoms: { root: PortalRootAtom, inner: PortalInnerAtom }
 });
 
-export type PortalBond = BondOf<typeof PortalBondImpl>;
-
-interface PortalBondConstructor {
-	new (props: PortalBondProps): PortalBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof PortalBondImpl)['spec'];
-	get(): PortalBond | undefined;
-	getOrThrow(message?: string): PortalBond;
-	set(bond: PortalBond): PortalBond;
-	create(props: PortalBondProps): PortalBond;
-}
-
-export const PortalBond = PortalBondImpl as unknown as PortalBondConstructor;
+export type PortalBond = BondOf<typeof PortalBond>;

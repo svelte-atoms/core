@@ -5,7 +5,7 @@ import { FOCUS } from './focus.svelte';
 import type { OverlayView } from '../types';
 import type { OverlayKnobs } from '../types';
 
-// Validates useFocusRestore (ADR 0003): capture on closed→open, restore on open→closed, driven by bond.state.isOpen.
+// Validates useFocusRestore (ADR 0003): capture on closed→open, restore on open→closed, driven by bond.isOpen.
 // Mocks only the surface the behavior reads — no full bond instantiation.
 
 const created: HTMLElement[] = [];
@@ -28,15 +28,16 @@ function mockOverlay(
 	let open = $state(false);
 	const focusSurface = { strategy: undefined, ...focus };
 	const bond = {
-		state: {
-			get isOpen() {
-				return open;
-			},
-			// Restore config lives on the focus capability's surface — read via the canonical
-			// state.surface() accessor (#3).
-			surface: (slot: symbol) => (slot === FOCUS ? focusSurface : undefined)
+		get isOpen() {
+			return open;
 		},
-		node: (key: string) => ({ element: key === 'trigger' ? trigger : undefined })
+		isDisabled: false,
+		open: () => undefined,
+		close: () => undefined,
+		toggle: () => undefined,
+		// Restore config lives on the focus capability's surface.
+		surface: (slot: symbol) => (slot === FOCUS ? focusSurface : undefined),
+		nodeByPart: (key: string) => ({ element: key === 'trigger' ? trigger : undefined })
 	} as unknown as OverlayView;
 	return {
 		bond,

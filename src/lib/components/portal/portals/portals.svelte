@@ -12,7 +12,7 @@
 	const bond = binding.bond.share();
 
 	function defaultFactory(props: PortalsStateProps) {
-		return PortalsBond.create(props).share();
+		return PortalsBond.create(props);
 	}
 </script>
 

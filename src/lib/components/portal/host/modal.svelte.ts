@@ -1,14 +1,18 @@
 import { Atom, type BondElements } from '$ixirjs/ui/shared/bond';
 import type { OverlayView } from './types';
-import { getElementId } from '$ixirjs/ui/utils/dom.svelte';
-import { overlayIsDisabled, overlayIsOpen } from './policies/overlay-view';
+import {
+	overlayIsDisabled,
+	overlayIsModal,
+	overlayIsOpen,
+	overlayNode
+} from './policies/overlay-view';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type AtomHost
 } from '$ixirjs/ui/shared/capability';
 
-const MODAL_ROOT = sharedCapabilityKey<void>('@ixirjs/modal:root');
+const MODAL_ROOT = sharedCapabilityKey<void>({ owner: '@ixirjs/modal', name: 'root', version: 1 });
 
 // Root atom for modal overlays. Wires the ARIA dialog contract; .role('surface') folds in escape + focus handlers.
 export class ModalRootAtom<B extends OverlayView = OverlayView> extends Atom<B, HTMLElement> {
@@ -33,20 +37,21 @@ function modalRootPresentation<B extends OverlayView>() {
 		behavior: {
 			attrs: (_node, bond) => {
 				if (!bond) return {};
-				const titleId = getElementId(bond.id, `${bond.name}-title`);
-				const descriptionId = getElementId(bond.id, `${bond.name}-description`);
-				const hasTitle = !!bond.elements.title;
-				const hasDescription = !!bond.elements.description;
+				const titleId = overlayNode(bond, 'title')?.id;
+				const descriptionId = overlayNode(bond, 'description')?.id;
+				const hasTitle = titleId !== undefined;
+				const hasDescription = descriptionId !== undefined;
 				const isOpen = overlayIsOpen(bond);
 				const isDisabled = overlayIsDisabled(bond);
+				const modal = overlayIsModal(bond);
 				const isActive = isOpen && !isDisabled;
 
 				return {
 					role: 'dialog',
-					'aria-modal': true,
+					'aria-modal': modal ? true : undefined,
 					'aria-labelledby': hasTitle ? titleId : undefined,
 					'aria-describedby': hasDescription ? descriptionId : undefined,
-					inert: !isActive ? '' : undefined,
+					inert: modal && !isActive ? '' : undefined,
 					tabindex: -1,
 					'data-open': isOpen
 				};

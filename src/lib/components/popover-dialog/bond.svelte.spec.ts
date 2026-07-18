@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { PopoverDialogBond, type PopoverDialogBondProps } from './bond.svelte';
 import { PopoverTriggerAtom, PopoverOverlayAtom } from '../popover/bond.svelte';
-import { DialogContentAtom, DialogRootAtom, DialogTitleAtom } from '../dialog/bond.svelte';
+import {
+	DialogBodyAtom,
+	DialogContentAtom,
+	DialogDescriptionAtom,
+	DialogFooterAtom,
+	DialogHeaderAtom,
+	DialogRootAtom,
+	DialogTitleAtom
+} from '../dialog/bond.svelte';
 import { FOCUS } from '$ixirjs/ui/components/portal/host';
 import type { Preset } from '$ixirjs/ui/context';
 
@@ -45,20 +53,20 @@ describe('PopoverDialogBond — fuse(Popover, Dialog) (§9.4.1)', () => {
 	it('defaults fused atom presets to the popover-dialog base', () => {
 		const bond = makeBond();
 
-		expect(bond.trigger().preset).toBe('popover-dialog.trigger');
-		expect(bond.content?.().preset).toBe('popover-dialog.content');
-		expect(bond.header?.().preset).toBe('popover-dialog.header');
-		expect(bond.title?.().preset).toBe('popover-dialog.title');
-		expect(bond.description?.().preset).toBe('popover-dialog.description');
-		expect(bond.body?.().preset).toBe('popover-dialog.body');
-		expect(bond.footer?.().preset).toBe('popover-dialog.footer');
+		expect(new PopoverTriggerAtom(bond).preset).toBe('popover-dialog.trigger');
+		expect(new DialogContentAtom(bond).preset).toBe('popover-dialog.content');
+		expect(new DialogHeaderAtom(bond).preset).toBe('popover-dialog.header');
+		expect(new DialogTitleAtom(bond).preset).toBe('popover-dialog.title');
+		expect(new DialogDescriptionAtom(bond).preset).toBe('popover-dialog.description');
+		expect(new DialogBodyAtom(bond).preset).toBe('popover-dialog.body');
+		expect(new DialogFooterAtom(bond).preset).toBe('popover-dialog.footer');
 	});
 
 	it('keeps the overlay disclosure contract so the popover trigger opens the dialog', () => {
 		const props = $state<PopoverDialogBondProps>({ open: false, disabled: false });
 		const bond = new PopoverDialogBond(props);
 
-		(bond.trigger().spread.onclick as (event: MouseEvent) => void)({
+		(new PopoverTriggerAtom(bond).spread.onclick as (event: MouseEvent) => void)({
 			button: 0,
 			defaultPrevented: false
 		} as MouseEvent);
@@ -68,31 +76,31 @@ describe('PopoverDialogBond — fuse(Popover, Dialog) (§9.4.1)', () => {
 	});
 
 	it("trigger is popover's (own override beats dialog's on the key)", () => {
-		expect(makeBond().trigger()).toBeInstanceOf(PopoverTriggerAtom);
+		expect(new PopoverTriggerAtom(makeBond())).toBeInstanceOf(PopoverTriggerAtom);
 	});
 
 	it('root/content/title come from dialog — the modal presentation (part-2 wins)', () => {
 		const bond = makeBond();
 		// `!`: root/title come from the Dialog part; fuse()'s type doesn't surface every part-2 slot
 		// accessor as non-undefined (composed-parts typing gap), but they exist at runtime.
-		expect(bond.root?.()).toBeInstanceOf(DialogRootAtom);
-		expect(bond.content?.()).toBeInstanceOf(DialogContentAtom);
-		expect(bond.title?.()).toBeInstanceOf(DialogTitleAtom);
+		expect(new DialogRootAtom(bond)).toBeInstanceOf(DialogRootAtom);
+		expect(new DialogContentAtom(bond)).toBeInstanceOf(DialogContentAtom);
+		expect(new DialogTitleAtom(bond)).toBeInstanceOf(DialogTitleAtom);
 	});
 
 	it('modal focus wins the slot: trappedFocus + restoreFocus "previous" (dialog, not popover)', () => {
-		const focus = makeBond().state.capability(FOCUS)?.surface;
+		const focus = makeBond().capability(FOCUS)?.surface;
 		expect(focus?.restoreFocus).toBe('previous'); // dialog modal beats popover's 'trigger'
 		expect(focus?.captureFocusOnOpen).toBe(true);
 	});
 
 	it('trigger projects the disclosure ARIA (aria-haspopup dialog, aria-expanded)', () => {
-		const spread = makeBond().trigger().spread;
+		const spread = new PopoverTriggerAtom(makeBond()).spread;
 		expect(spread['aria-haspopup']).toBe('dialog');
 		expect(spread['aria-expanded']).toBe(false);
 	});
 
 	it("popover's floating atoms come along but are inert (present, never rendered by the modal)", () => {
-		expect(makeBond().overlay?.()).toBeInstanceOf(PopoverOverlayAtom);
+		expect(new PopoverOverlayAtom(makeBond())).toBeInstanceOf(PopoverOverlayAtom);
 	});
 });

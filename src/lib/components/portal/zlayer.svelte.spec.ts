@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { ZLayer, LAYER_BASE } from './zlayer.svelte';
+import { PortalBond } from './bond.svelte';
+import { PortalsBond } from './portals';
+import { ZLayer, LAYER_BASE, resolveZIndexOffset } from './zlayer.svelte';
+
+function makePortals(id = 'root') {
+	const props = $state({ id });
+	return PortalsBond.create(props);
+}
+
+function makePortal(id = 'local') {
+	const props = $state({ id });
+	return PortalBond.create(props);
+}
 
 // `value` resolution and parent elevation are exercised through the explicit
 // `parent` constructor argument. Context wiring (tryGet/share) is the same code
@@ -23,6 +35,21 @@ describe('ZLayer.value', () => {
 		expect(layer.value).toBe(LAYER_BASE.modal);
 		offset = 10;
 		expect(layer.value).toBe(LAYER_BASE.modal + 10);
+	});
+});
+
+describe('resolveZIndexOffset', () => {
+	it('treats a number as an offset from the natural layer', () => {
+		expect(resolveZIndexOffset(3, LAYER_BASE.modal)).toBe(3);
+	});
+
+	it('treats a function as final z-index from the natural layer', () => {
+		expect(resolveZIndexOffset((natural) => natural + 7, LAYER_BASE.modal)).toBe(7);
+	});
+
+	it('falls back to zero for missing or non-finite inputs', () => {
+		expect(resolveZIndexOffset(undefined, LAYER_BASE.modal)).toBe(0);
+		expect(resolveZIndexOffset(Number.NaN, LAYER_BASE.modal)).toBe(0);
 	});
 });
 
@@ -57,23 +84,32 @@ describe('ZLayer parent elevation', () => {
 	});
 });
 
-describe('ZLayer registry', () => {
-	it('pre-registers the built-in layers', () => {
+describe('ZLayer band scopes', () => {
+	it('resolves built-in bases without an owner', () => {
 		expect(ZLayer.resolve('ambient')).toBe(LAYER_BASE.ambient);
+		expect(new ZLayer('ambient', undefined, undefined).value).toBe(LAYER_BASE.ambient);
 	});
 
-	it('resolves a registered custom layer by name', () => {
-		ZLayer.register('command-palette', 600);
-		expect(ZLayer.resolve('command-palette')).toBe(600);
-		expect(new ZLayer('command-palette', undefined, undefined).value).toBe(600);
+	it('keeps custom bands scoped to their Portals owner', () => {
+		const left = makePortals('left');
+		const right = makePortals('right');
+
+		left.registerBand('command-palette', 600);
+		right.registerBand('command-palette', 700);
+
+		expect(left.band('command-palette')).toBe(600);
+		expect(right.band('command-palette')).toBe(700);
 	});
 
-	it('lets register override a built-in base', () => {
-		ZLayer.register('ambient', 999);
-		expect(new ZLayer('ambient', undefined, undefined).value).toBe(999);
-		// Restore so the override does not leak into other tests.
-		ZLayer.register('ambient', LAYER_BASE.ambient);
-		expect(ZLayer.resolve('ambient')).toBe(LAYER_BASE.ambient);
+	it('keeps built-in overrides scoped to their Portals owner', () => {
+		const overridden = makePortals('overridden');
+		const untouched = makePortals('untouched');
+
+		overridden.registerBand('ambient', 999);
+
+		expect(overridden.band('ambient')).toBe(999);
+		expect(untouched.band('ambient')).toBe(LAYER_BASE.ambient);
+		expect(new ZLayer('ambient', undefined, undefined).value).toBe(LAYER_BASE.ambient);
 	});
 
 	it('throws a helpful error for an unknown layer name', () => {
@@ -83,57 +119,77 @@ describe('ZLayer registry', () => {
 	});
 });
 
-// Relative ordering against a registered reactive anchor — e.g. a popover beneath a sticky header.
-describe('ZLayer relative ordering (anchors)', () => {
+// Relative ordering uses the owning Portal's scoped anchor registry — e.g. a popover beneath a
+// sticky header. This exercises the scoped APIs directly instead of relying on module-global state.
+describe('ZLayer relative ordering (portal-local anchors)', () => {
 	it('falls back to the additive base when the anchor is not registered', () => {
-		const layer = new ZLayer('positioned', undefined, undefined, { below: 'sticky-header' });
-		expect(layer.value).toBe(LAYER_BASE.positioned);
+		const portal = makePortal();
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'sticky-header' } })).toBe(
+			LAYER_BASE.positioned
+		);
 	});
 
-	it('orders just below a registered anchor', () => {
-		const off = ZLayer.anchor('toolbar', () => 100);
-		const layer = new ZLayer('positioned', undefined, undefined, { below: 'toolbar' });
-		expect(layer.value).toBe(99);
+	it('orders just below and above a registered anchor', () => {
+		const portal = makePortal();
+		const off = portal.anchor('toolbar', () => 100);
+
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'toolbar' } })).toBe(99);
+		expect(portal.elevation({ band: 'positioned', relation: { above: 'toolbar' } })).toBe(101);
 		off();
 	});
 
-	it('orders just above a registered anchor', () => {
-		const off = ZLayer.anchor('toolbar', () => 100);
-		const layer = new ZLayer('positioned', undefined, undefined, { above: 'toolbar' });
-		expect(layer.value).toBe(101);
-		off();
+	it('keeps anchors local to their Portal owner', () => {
+		const left = makePortal('left');
+		const right = makePortal('right');
+		left.anchor('toolbar', () => 100);
+		right.anchor('toolbar', () => 200);
+
+		expect(left.elevation({ band: 'positioned', relation: { below: 'toolbar' } })).toBe(99);
+		expect(right.elevation({ band: 'positioned', relation: { below: 'toolbar' } })).toBe(199);
 	});
 
 	it('adds the user offset on top of the relative value', () => {
-		const off = ZLayer.anchor('toolbar', () => 100);
-		const layer = new ZLayer('positioned', () => 5, undefined, { below: 'toolbar' });
-		expect(layer.value).toBe(99 + 5);
+		const portal = makePortal();
+		const off = portal.anchor('toolbar', () => 100);
+
+		expect(
+			portal.elevation({
+				band: 'positioned',
+				relation: { below: 'toolbar' },
+				'z-index': 5
+			})
+		).toBe(104);
 		off();
 	});
 
 	it('reads the anchor lazily on every access', () => {
+		const portal = makePortal();
 		let z = 50;
-		const off = ZLayer.anchor('moving', () => z);
-		const layer = new ZLayer('positioned', undefined, undefined, { below: 'moving' });
-		expect(layer.value).toBe(49);
+		const off = portal.anchor('moving', () => z);
+
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'moving' } })).toBe(49);
 		z = 200;
-		expect(layer.value).toBe(199);
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'moving' } })).toBe(199);
 		off();
 	});
 
 	it('reverts to the additive base after the anchor unregisters', () => {
-		const off = ZLayer.anchor('toolbar', () => 100);
-		const layer = new ZLayer('positioned', undefined, undefined, { below: 'toolbar' });
-		expect(layer.value).toBe(99);
+		const portal = makePortal();
+		const off = portal.anchor('toolbar', () => 100);
+
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'toolbar' } })).toBe(99);
 		off();
-		expect(layer.value).toBe(LAYER_BASE.positioned);
+		expect(portal.elevation({ band: 'positioned', relation: { below: 'toolbar' } })).toBe(
+			LAYER_BASE.positioned
+		);
 	});
 
 	it('readAnchor returns the current value or undefined', () => {
-		expect(ZLayer.readAnchor('absent')).toBeUndefined();
-		const off = ZLayer.anchor('present', () => 7);
-		expect(ZLayer.readAnchor('present')).toBe(7);
+		const portal = makePortal();
+		expect(portal.readAnchor('absent')).toBeUndefined();
+		const off = portal.anchor('present', () => 7);
+		expect(portal.readAnchor('present')).toBe(7);
 		off();
-		expect(ZLayer.readAnchor('present')).toBeUndefined();
+		expect(portal.readAnchor('present')).toBeUndefined();
 	});
 });

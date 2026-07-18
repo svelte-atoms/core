@@ -4,12 +4,15 @@ import {
 	ModalRootAtom,
 	ModalContentAtom,
 	OverlayBond,
+	ESCAPE,
+	escapePolicy,
 	modalCapabilities,
 	TRIGGER,
 	type ModalOverlayElements,
 	type OverlayStateProps,
 	type OverlayView
 } from '$ixirjs/ui/components/portal/host';
+import type { StateChangeContext } from '$ixirjs/ui/types';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -30,13 +33,40 @@ export type DrawerBondElements = ModalOverlayElements & {
 	backdrop?: HTMLElement;
 };
 
+// -----------------------------------------------------------------------------
+// Bond implementation
+// -----------------------------------------------------------------------------
+
+export class DrawerBondBase<
+	Props extends DrawerBondProps = DrawerBondProps
+> extends OverlayBond<Props> {
+	#openChangeContext: Pick<StateChangeContext, 'event' | 'reason'> | undefined;
+
+	constructor(props: Props, name = 'drawer') {
+		super(props, name);
+	}
+
+	stageOpenChange(context: Pick<StateChangeContext, 'event' | 'reason'>): void {
+		this.#openChangeContext = context;
+		queueMicrotask(() => {
+			if (this.#openChangeContext === context) this.#openChangeContext = undefined;
+		});
+	}
+
+	takeOpenChangeContext(): Pick<StateChangeContext, 'event' | 'reason'> {
+		const context = this.#openChangeContext ?? {};
+		this.#openChangeContext = undefined;
+		return context;
+	}
+}
+
 // Narrow view type breaks the atom↔bond cycle through defineBond.
 
 // -----------------------------------------------------------------------------
 // Internal types
 // -----------------------------------------------------------------------------
 
-type DrawerBondView = OverlayView & OverlayBond<DrawerBondProps>;
+type DrawerBondView = OverlayView & DrawerBondBase;
 
 // Overlays aria-hidden and data-active on the modal ARIA contract.
 
@@ -46,8 +76,8 @@ type DrawerBondView = OverlayView & OverlayBond<DrawerBondProps>;
 
 export class DrawerRootAtom extends ModalRootAtom<DrawerBondView> {
 	override get attrs() {
-		const isOpen = this.bond.isOpen;
-		const isDisabled = this.bond.isDisabled;
+		const isOpen = this.requireBond().isOpen;
+		const isDisabled = this.requireBond().isDisabled;
 		const isActive = isOpen && !isDisabled;
 		return {
 			...super.attrs,
@@ -85,7 +115,7 @@ export class DrawerTitleAtom extends Atom<DrawerBondView> {
 	override get attrs() {
 		return {
 			...super.attrs,
-			id: getElementId(this.bond.id, 'drawer-title'),
+			id: getElementId(this.requireBond().id, 'drawer-title'),
 			role: 'heading',
 			'aria-level': 2
 		};
@@ -99,7 +129,7 @@ export class DrawerDescriptionAtom extends Atom<DrawerBondView> {
 	override get attrs() {
 		return {
 			...super.attrs,
-			id: getElementId(this.bond.id, 'drawer-description')
+			id: getElementId(this.requireBond().id, 'drawer-description')
 		};
 	}
 }
@@ -141,6 +171,14 @@ export class DrawerBackdropAtom extends Atom<DrawerBondView> {
 			'aria-hidden': true
 		};
 	}
+	override get handlers() {
+		return {
+			...super.handlers,
+			onclick: (event: MouseEvent) => {
+				this.requireBond().stageOpenChange({ event, reason: 'backdrop-press' });
+			}
+		};
+	}
 }
 
 // Controlled slide-out modal (no trigger — use PopoverDialog for that); modalCapabilities() minus trigger.
@@ -149,24 +187,19 @@ export class DrawerBackdropAtom extends Atom<DrawerBondView> {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const DrawerBondImpl = defineBond<
-	{
-		root: typeof DrawerRootAtom;
-		content: typeof DrawerContentAtom;
-		header: typeof DrawerHeaderAtom;
-		title: typeof DrawerTitleAtom;
-		description: typeof DrawerDescriptionAtom;
-		body: typeof DrawerBodyAtom;
-		footer: typeof DrawerFooterAtom;
-		backdrop: typeof DrawerBackdropAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof OverlayBond
->({
+const DrawerBondDefinition = defineBond({
 	name: 'drawer',
-	base: OverlayBond,
-	capabilities: () => modalCapabilities().filter((c) => c.slot !== TRIGGER),
+	base: DrawerBondBase,
+	capabilities: () => [
+		...modalCapabilities().filter(
+			(capability) => capability.slot !== TRIGGER && capability.slot !== ESCAPE
+		),
+		escapePolicy((bond, event) => {
+			const drawer = bond as DrawerBondBase;
+			drawer.stageOpenChange({ event, reason: 'escape' });
+			drawer.close();
+		})
+	],
 	atoms: {
 		root: DrawerRootAtom,
 		content: DrawerContentAtom,
@@ -179,16 +212,23 @@ const DrawerBondImpl = defineBond<
 	}
 });
 
-export type DrawerBond = BondOf<typeof DrawerBondImpl> & OverlayBond<DrawerBondProps>;
+export type DrawerBond = BondOf<typeof DrawerBondDefinition> & DrawerBondBase<DrawerBondProps>;
 
-interface DrawerBondConstructor {
+// `typeof OverlayBond` uses its default generic argument. Preserve Drawer props at the
+// static boundary; TypeScript cannot infer that argument from the class value.
+interface DrawerBondGenericFacade {
 	new (props: DrawerBondProps): DrawerBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof DrawerBondImpl)['spec'];
 	get(): DrawerBond | undefined;
 	getOrThrow(message?: string): DrawerBond;
+	optional(): DrawerBond | undefined;
+	required(message?: string): DrawerBond;
 	set(bond: DrawerBond): DrawerBond;
 	create(props: DrawerBondProps): DrawerBond;
 }
 
-export const DrawerBond = DrawerBondImpl as unknown as DrawerBondConstructor;
+// Replace only generic-sensitive signatures. The mapped original retains defineBond's
+// untouched statics and definition phantom metadata while dropping its construct signature.
+type DrawerBondConstructor = Omit<typeof DrawerBondDefinition, keyof DrawerBondGenericFacade> &
+	DrawerBondGenericFacade;
+
+export const DrawerBond = DrawerBondDefinition as unknown as DrawerBondConstructor;

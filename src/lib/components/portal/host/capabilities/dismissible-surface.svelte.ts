@@ -16,9 +16,11 @@ export type DismissibleSurfaceCapabilityBundle = readonly Capability[] & {
 	readonly meta: CapabilityMetadata & { readonly layer: 2; readonly kind: 'focused' };
 };
 
-export const DISMISSIBLE_SURFACE = sharedCapabilityKey<readonly Capability[]>(
-	'@ixirjs/cap:focused:dismissible-surface'
-);
+export const DISMISSIBLE_SURFACE = sharedCapabilityKey<readonly Capability[]>({
+	owner: '@ixirjs/cap',
+	name: 'focused:dismissible-surface',
+	version: 1
+});
 
 export interface DismissibleSurfaceCapabilityOptions {
 	escape?: Capability<EscapeHandler> | false;

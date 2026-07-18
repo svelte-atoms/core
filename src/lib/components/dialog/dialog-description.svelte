@@ -1,8 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 	import type { DialogDescriptionProps } from './types';
-	import { DialogBond, DialogDescriptionAtom } from './bond.svelte';
+	import { DialogBond } from './bond.svelte';
 
 	let {
 		preset = undefined,
@@ -11,18 +11,13 @@
 		...restProps
 	}: DialogDescriptionProps<E, B> = $props();
 
-	const bond = DialogBond.getOrThrow(
-		'<Dialog.Description /> must be used within a <Dialog.Root />'
-	);
-
-	const atom = createAtomInstance<DialogDescriptionAtom, DialogBond, HTMLElement>('description', {
-		bond,
-		factory: (owner) => new DialogDescriptionAtom(owner as DialogBond)
+	const part = usePart(DialogBond, 'description', () => restProps, {
+		message: '<Dialog.Description /> must be used within a <Dialog.Root />',
+		preset: () => preset
 	});
-
-	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
-<HtmlAtom {as} {bond} {...descriptionProps}>
+<HtmlAtom {as} {bond} {...part.props}>
 	{@render children?.({ dialog: bond })}
 </HtmlAtom>

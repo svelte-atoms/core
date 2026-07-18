@@ -2,11 +2,10 @@
 	import type { HTMLAttributes } from 'svelte/elements';
 	import type { SlideoverFooterProps } from './types';
 	import { DrawerBond } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 
 	type Element = HTMLElementTagNameMap[E];
-
-	const bond = DrawerBond.getOrThrow('<Drawer.Footer /> must be used within a <Drawer.Root />');
 
 	let {
 		preset = undefined,
@@ -14,11 +13,13 @@
 		...restProps
 	}: SlideoverFooterProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const atom = bond?.footer();
-
-	const footerProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const part = usePart(DrawerBond, 'footer', () => restProps, {
+		message: '<Drawer.Footer /> must be used within a <Drawer.Root />',
+		preset: () => preset
+	});
+	const bond = part.bond;
 </script>
 
-<HtmlAtom {bond} {...footerProps}>
+<HtmlAtom {bond} {...part.props}>
 	{@render children?.({ drawer: bond })}
 </HtmlAtom>

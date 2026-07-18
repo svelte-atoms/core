@@ -1,12 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import { type Base } from '$ixirjs/ui/components/atom';
 	import { PortalHost } from '$ixirjs/ui/components/portal/host';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { DialogBond, DialogContentAtom } from './bond.svelte';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { DialogBond } from './bond.svelte';
 	import type { DialogContentProps } from './types';
 	import { animateDialogContent } from './motion.svelte';
-
-	const bond = DialogBond.getOrThrow('<Dialog.Content /> must be used within a <Dialog.Root />');
 
 	let {
 		class: klass = '',
@@ -19,12 +17,11 @@
 		animate: animateDialogContent()
 	};
 
-	const atom = createAtomInstance<DialogContentAtom, DialogBond, HTMLElement>('content', {
-		bond,
-		factory: (owner) => new DialogContentAtom(owner as DialogBond)
+	const part = usePart(DialogBond, 'content', () => restProps, {
+		message: '<Dialog.Content /> must be used within a <Dialog.Root />',
+		preset: () => preset
 	});
-
-	const dialogProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
 <PortalHost
@@ -35,7 +32,7 @@
 	]}
 	{bond}
 	{defaults}
-	{...dialogProps}
+	{...part.props}
 >
 	{@render children?.({ dialog: bond })}
 </PortalHost>

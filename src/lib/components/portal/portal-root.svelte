@@ -54,12 +54,7 @@
 	// svelte-ignore state_referenced_locally
 	const unregister = portalsBond?.registerPortal(id, bond);
 
-	$effect(() => {
-		return () => {
-			unregister?.();
-			bond.destroy();
-		};
-	});
+	$effect(() => unregister);
 
 	export function getBond() {
 		return bond;

@@ -1,19 +1,21 @@
 <script lang="ts">
 	import { DEV } from 'esm-env';
 	import type { ActivePortalProps } from './types';
-	import { PortalsBond, resolvePortal } from './portals';
+	import { PortalBond } from './bond.svelte';
+	import { describePortalTarget, PortalsBond, resolveTeleportTarget } from './portals';
 
 	let { portal, children }: ActivePortalProps = $props();
 
 	const portalsBond = PortalsBond.get();
+	const ambientPortal = $derived(PortalBond.get());
 
-	const activePortal = $derived(resolvePortal(portalsBond, portal));
+	const activePortal = $derived(resolveTeleportTarget(portalsBond, portal, ambientPortal));
 
-	// Warn (in an effect, after registration settles) when a string id never resolves.
+	// Warn (in an effect, after registration settles) when no portal resolves.
 	$effect(() => {
-		if (DEV && typeof portal === 'string' && !activePortal) {
+		if (DEV && !activePortal) {
 			console.warn(
-				`[ixirjs] <ActivePortal portal="${portal}">: no portal registered with this id; rendering nothing.`
+				`[ixirjs] <ActivePortal${describePortalTarget(portal)}>: no portal target resolved; rendering nothing.`
 			);
 		}
 	});
@@ -23,13 +25,5 @@
 		return children?.(...args);
 	}
 </script>
-
-<!-- Snippet-or-undefined: shares the portal into context from inside the rendered block, so local
-     enter/exit transitions still play. {#snippet} is a proper Snippet type (no casting needed),
-     and {void share()} fires it synchronously before children render without emitting DOM text. -->
-<!-- {#snippet proxy()}
-	{void }
-	{@render children?.()}
-{/snippet} -->
 
 {@render (activePortal ? proxy : undefined)?.()}

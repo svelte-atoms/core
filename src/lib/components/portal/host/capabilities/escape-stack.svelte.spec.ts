@@ -9,10 +9,10 @@ import type { OverlayView } from '../types';
 
 // Minimal Overlay-ish stub: identity + just what the escape behavior reads.
 function fakeBond(isDisabled = false) {
-	return { state: { isDisabled, close: vi.fn() } } as unknown as OverlayView;
+	return { isDisabled, close: vi.fn() } as unknown as OverlayView;
 }
 const closeSpy = (bond: OverlayView) =>
-	(bond as unknown as { state: { close: ReturnType<typeof vi.fn> } }).state.close;
+	(bond as unknown as { close: ReturnType<typeof vi.fn> }).close;
 
 function press(handlers: Record<string, unknown>, key: string) {
 	const ev = { key, preventDefault: vi.fn() } as unknown as KeyboardEvent;

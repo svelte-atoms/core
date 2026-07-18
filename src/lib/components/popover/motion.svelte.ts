@@ -49,7 +49,7 @@ export function animatePopoverContent(params: AnimatePopoverContentParams = {}) 
 			const [side = 'bottom', alignment = ''] = placement?.split('-') ?? ['bottom', ''];
 
 			const offset = untrack(() => bond?.props.offset ?? 0);
-			const hasTail = untrack(() => Boolean(bond?.node('tail')));
+			const hasTail = untrack(() => Boolean(bond?.nodeByPart('tail')));
 
 			const transformOrigin = getTransformOrigin(side, alignment);
 

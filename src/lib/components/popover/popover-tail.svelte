@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { HtmlAtom, mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
 	import { createAtomInstance, type Atom } from '$ixirjs/ui/shared/bond';
-	import { createPopoverAtom, PopoverTailAtom, PopoverBond } from './bond.svelte';
+	import { createPopoverAtom, PopoverBond } from './bond.svelte';
 	import { popoverTailGeometry } from './presentation.svelte';
 	import type { PopoverTailProps } from './types';
 
@@ -20,8 +20,7 @@
 		'tail',
 		{
 			bond,
-			factory: (owner) =>
-				createPopoverAtom(owner as PopoverBond, 'tail', (popover) => new PopoverTailAtom(popover)),
+			factory: (owner) => createPopoverAtom(owner as PopoverBond, 'tail'),
 			capabilities: [popoverTailGeometry({ padding: () => padding, size: () => size })]
 		}
 	);

@@ -16,7 +16,7 @@ export function animateDialogContent(params: AnimateDialogContentParams = {}) {
 		// Read bond inside the callback so it works outside component init
 		const bond = DialogBond.get();
 
-		const isOpen = bond?.state.props.open ?? false;
+		const isOpen = bond?.props.open ?? false;
 
 		if (isOpen) {
 			const rootElement = bond?.elements.root;

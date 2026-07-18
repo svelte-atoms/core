@@ -1,19 +1,23 @@
 import type { Bond, BondStateProps, BondVirtualElement } from '$ixirjs/ui/shared/bond';
 
-// Minimal bond shape overlay capabilities depend on. Migrated overlays expose lifecycle on the
-// Bond; legacy overlays can satisfy this by delegating to their state during their migration slice.
+// Minimal bond shape overlay capabilities depend on. Overlay state and lifecycle live directly on
+// the Bond; callers do not need a compatibility state facade.
 export type OverlayView = Bond & {
-	readonly isOpen?: boolean;
-	readonly isDisabled?: boolean;
-	open?: () => void;
-	close?: () => void;
-	toggle?: () => void;
+	readonly isOpen: boolean;
+	readonly isDisabled: boolean;
+	/** Defaults to true so existing overlay bonds retain modal behavior. */
+	readonly modal?: boolean;
+	open: () => void;
+	close: () => void;
+	toggle: () => void;
 };
 
 // Minimum shape every overlay state must satisfy. Flavours extend with their own props.
 export type OverlayStateProps = BondStateProps & {
 	open: boolean;
 	disabled?: boolean;
+	/** Whether this overlay applies modal ARIA, focus, and document effects. */
+	modal?: boolean;
 	readonly rest?: Record<string, unknown>;
 };
 

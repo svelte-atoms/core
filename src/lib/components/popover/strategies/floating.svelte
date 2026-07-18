@@ -9,15 +9,16 @@
 		type PopoverParams
 	} from '../bond.svelte';
 	import type { BondVirtualElement } from '$ixirjs/ui/shared/bond';
-	import { PortalBond } from '$ixirjs/ui/components/portal';
+	import type { PortalBond } from '$ixirjs/ui/components/portal';
+
+	let { portal = undefined }: { portal?: PortalBond | undefined } = $props();
 
 	const bond = PopoverBond.get();
 
 	type AutoUpdate = typeof floating.autoUpdate;
 
-	// In-scope Portal; its boundary clips the overlay to this Portal.
-	const portalBond = PortalBond.get();
-	const boundary = $derived(portalBond?.boundaryElement);
+	// The content-resolved Portal owns both the teleport sink and floating boundary.
+	const boundary = $derived(portal?.sinkElement);
 
 	const tracking = $derived(bond ? shouldTrackPopoverPosition(bond) : false);
 	const reference = $derived(
@@ -33,8 +34,8 @@
 	// CSS positioning strategy, set explicitly by the consumer via the `position` root prop.
 	const position = $derived<Strategy>(bond?.props.position ?? 'absolute');
 
-	$effect.pre(() => {
-		// Re-run once the Portal boundary resolves (it may mount after this popover).
+	$effect(() => {
+		// Run after PortalSurface commits its attachment so floating-ui measures the canonical sink.
 		void boundary;
 
 		if (!bond || !reference || !overlay || !tracking) return;
@@ -55,8 +56,8 @@
 				return;
 			}
 
-			// Middleware stack. flip/shift/hide measure overflow against `boundary` — the in-scope
-			// Portal's clip box — so the overlay stays inside it, not the viewport.
+			// Middleware stack. flip/shift/hide measure overflow against the resolved Portal sink,
+			// so positioning and porting share the same containment boundary.
 			const middleware: ComputePositionConfig['middleware'] = [
 				floating.offset(ofs),
 				floating.flip({
@@ -83,14 +84,15 @@
 				middleware.push(floating.arrow({ element: tailElement }));
 			}
 
-			// Hide the overlay when the anchor scrolls out of view, skipping layout work.
-			middleware.push(floating.hide());
+			// Hide the overlay when the anchor leaves the resolved Portal boundary.
+			middleware.push(floating.hide({ boundary: boundary ?? 'clippingAncestors' }));
 
-			const onchangeCallback = props.onchange as PopoverParams['onchange'];
+			const onpositionchange = props.onpositionchange as PopoverParams['onpositionchange'];
 
 			const compute = async () => {
 				const position = await floating.computePosition(reference, overlay, {
 					placement: placement ?? 'bottom',
+
 					middleware,
 					strategy
 				});
@@ -106,7 +108,7 @@
 					x,
 					y
 				});
-				onchangeCallback?.(overlay, position);
+				onpositionchange?.(overlay, position);
 
 				// Publish the trigger's measured size as CSS vars so content can match it — via a
 				// class (`min-w-[var(--sa-anchor-width)]`) or the sizing props

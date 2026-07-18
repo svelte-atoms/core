@@ -8,7 +8,11 @@ import { isTopOverlay, useEscapeStack } from './escape-stack.svelte';
 import type { OverlayView, EscapeOutcome } from '../types';
 import { closeOverlay, overlayIsDisabled } from './overlay-view';
 
-export const ESCAPE = sharedCapabilityKey<EscapeHandler>('@ixirjs/cap:escape');
+export const ESCAPE = sharedCapabilityKey<EscapeHandler>({
+	owner: '@ixirjs/cap',
+	name: 'escape',
+	version: 1
+});
 
 export type { EscapeOutcome };
 
@@ -29,7 +33,7 @@ export function escapePolicy(
 			docs: 'Escape-key dismissal policy with overlay stack enrollment setup.'
 		},
 		// Whole-bond effect: enroll this overlay in the escape stack while open,
-		// run via `useCapabilities` like the focus capability's restore setup — no per-root hook.
+		// run by bindBond's lifecycle owner like focus restore — no per-root hook.
 		setup: (bond) => useEscapeStack(bond as OverlayView),
 		roles: {
 			surface: () => ({
@@ -64,7 +68,7 @@ export const ignoreEscape: Capability<EscapeHandler> = escapePolicy(() => {
 // First Escape clears input; second Escape closes. For Combobox and Select.
 export const clearThenClose: Capability<EscapeHandler> = escapePolicy(
 	(bond) => {
-		if (bond.state.surface(INPUT)?.clear()) return;
+		if (bond.surface(INPUT)?.clear()) return;
 		closeOverlay(bond);
 	},
 	{ requires: [INPUT] }

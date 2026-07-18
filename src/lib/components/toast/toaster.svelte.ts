@@ -49,7 +49,7 @@ const [get, set] = createContext<Toaster>();
  *   {@const layer = new ZLayer('ambient')}
  *   <ol class="fixed bottom-4 right-4 …" style="z-index: {layer.value}" aria-live="polite">
  *     {#each toaster.toasts as item (item.id)}
- *       <Toast.Root open onclose={() => toaster.dismiss(item.id)}>…</Toast.Root>
+ *       <Toast.Root open onopenchange={(open) => !open && toaster.dismiss(item.id)}>…</Toast.Root>
  *     {/each}
  *   </ol>
  * </Teleport>
