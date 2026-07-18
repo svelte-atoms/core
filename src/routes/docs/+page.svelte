@@ -94,7 +94,7 @@
 			n: '2',
 			title: 'Import styles in your layout',
 			lang: 'typescript' as const,
-			code: "// +layout.svelte\nimport '@ixirjs/ui/styles/root';"
+			code: "// +layout.svelte\nimport '@ixirjs/ui/styles/root.css';"
 		},
 		{
 			n: '3',
