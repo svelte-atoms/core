@@ -7,6 +7,7 @@ import {
 	type SpecOf,
 	type StateOf
 } from './define.svelte';
+import { resolveBondPart } from './metadata';
 import {
 	createSelection,
 	selectionCapability,
@@ -136,10 +137,10 @@ describe('defineBond — atom spec affordances', () => {
 		expect(new NodeItemAtom(bond)).toBeInstanceOf(NodeItemAtom);
 	});
 
-	it('keeps declaration aliases and roles in metadata without runtime methods', () => {
+	it('keeps declaration aliases, roles, and cardinality in metadata without runtime methods', () => {
 		const Aliased = defineBond({
 			name: 'aliased',
-			atoms: { dismiss: { atom: RootAtom, part: 'close' } }
+			atoms: { dismiss: { atom: RootAtom, part: 'close', cardinality: 'many' } }
 		});
 		const Roled = defineBond({
 			name: 'roled',
@@ -150,6 +151,10 @@ describe('defineBond — atom spec affordances', () => {
 		const aliased = new Aliased(new TState()) as unknown as Record<string, unknown>;
 		const roled = new Roled(new TState());
 		expect(aliased.dismiss).toBeUndefined();
+		expect(resolveBondPart(Aliased, 'dismiss')).toMatchObject({
+			part: 'close',
+			cardinality: 'many'
+		});
 		expect(new RootAtom(roled).role('container').spread['aria-multiselectable']).toBe(true);
 	});
 

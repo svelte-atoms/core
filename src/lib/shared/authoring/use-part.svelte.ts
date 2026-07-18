@@ -81,7 +81,7 @@ export function usePart(
 	const atom = createAtomInstance(part.part, {
 		bond,
 		required: !optional,
-		register: { key: part.part },
+		register: { key: part.part, cardinality: part.cardinality },
 		factory: (owner) => {
 			const instance = new (part.Ctor as AtomConstructor)(owner);
 			return part.role ? instance.role(part.role) : instance;

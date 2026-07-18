@@ -25,6 +25,7 @@ export function resolveBondPart(definition: object, slot: string) {
 		name: spec.name,
 		Ctor: typeof entry === 'function' ? entry : entry.atom,
 		part: typeof entry === 'function' ? slot : (entry.part ?? slot),
-		role: typeof entry === 'function' ? undefined : entry.role
+		role: typeof entry === 'function' ? undefined : entry.role,
+		cardinality: typeof entry === 'function' ? 'single' : (entry.cardinality ?? 'single')
 	};
 }

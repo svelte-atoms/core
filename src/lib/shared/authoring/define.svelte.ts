@@ -5,7 +5,8 @@ import {
 	type Atom,
 	bondContextKey,
 	type BondStateProps,
-	type Capability
+	type Capability,
+	type NodeCardinality
 } from '$ixirjs/ui/shared/bond';
 import {
 	adoptStateHost,
@@ -23,7 +24,15 @@ export type AtomConstructor = new (bond: any) => Atom<any, any>;
 
 // `part` names the declarative slot. Atom identity stays owned by its constructor and
 // registration is owned by createAtomInstance({ register }); neither is overloaded here.
-export type AtomSpec = AtomConstructor | { atom: AtomConstructor; part?: string; role?: string };
+export type AtomSpec =
+	| AtomConstructor
+	| {
+			atom: AtomConstructor;
+			part?: string;
+			role?: string;
+			/** Registration policy belongs to the declared part, not its Svelte call site. */
+			cardinality?: NodeCardinality;
+	  };
 type AtomMap = Record<string, AtomSpec>;
 
 export type AtomInstance<E> = E extends AtomConstructor

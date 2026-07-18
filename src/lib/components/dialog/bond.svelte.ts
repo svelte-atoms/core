@@ -190,12 +190,12 @@ export const DialogBond = defineBond({
 	atoms: {
 		root: DialogRootAtom,
 		content: DialogContentAtom,
-		header: DialogHeaderAtom,
+		header: { atom: DialogHeaderAtom, cardinality: 'many' },
 		title: DialogTitleAtom,
 		description: DialogDescriptionAtom,
-		body: DialogBodyAtom,
-		footer: DialogFooterAtom,
-		closeButton: { atom: DialogCloseAtom, part: 'close' }
+		body: { atom: DialogBodyAtom, cardinality: 'many' },
+		footer: { atom: DialogFooterAtom, cardinality: 'many' },
+		closeButton: { atom: DialogCloseAtom, part: 'close', cardinality: 'many' }
 	}
 });
 

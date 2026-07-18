@@ -203,11 +203,11 @@ const DrawerBondDefinition = defineBond({
 	atoms: {
 		root: DrawerRootAtom,
 		content: DrawerContentAtom,
-		header: DrawerHeaderAtom,
+		header: { atom: DrawerHeaderAtom, cardinality: 'many' },
 		title: DrawerTitleAtom,
 		description: DrawerDescriptionAtom,
-		body: DrawerBodyAtom,
-		footer: DrawerFooterAtom,
+		body: { atom: DrawerBodyAtom, cardinality: 'many' },
+		footer: { atom: DrawerFooterAtom, cardinality: 'many' },
 		backdrop: DrawerBackdropAtom
 	}
 });
