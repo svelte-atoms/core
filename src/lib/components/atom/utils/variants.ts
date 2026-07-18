@@ -31,6 +31,7 @@ export function resolveVariants(
 
 	const classes: ClassValue[] = [];
 	const attributes: Record<string, unknown> = {};
+	let motion: unknown;
 
 	if (baseClass) classes.push(baseClass);
 
@@ -49,6 +50,7 @@ export function resolveVariants(
 			} else if (typeof resolved === 'object' && resolved !== null) {
 				const src = resolved as Record<string | symbol, unknown>;
 				if ('class' in resolved) classes.push(src.class as ClassValue);
+				if (Object.hasOwn(src, 'motion')) motion = src.motion;
 				// Variant values may publish ordinary DOM attrs as well as classes.
 				for (const attr in resolved) {
 					if (!Object.hasOwn(resolved, attr) || VARIANTS_SKIP.has(attr)) continue;
@@ -74,7 +76,11 @@ export function resolveVariants(
 		}
 	}
 
-	return { class: classes, ...attributes };
+	return {
+		class: classes,
+		...(motion !== undefined ? { motion } : {}),
+		...attributes
+	};
 }
 
 type PresetDefCacheEntry = {

@@ -68,4 +68,19 @@ describe('mergePresetRecords', () => {
 		]);
 		expect(result).toEqual({ class: 'safe', attrs: { 'data-safe': 'yes' } });
 	});
+
+	it('merges motion phases with last-writer-wins semantics', () => {
+		const firstEnter = () => ({ duration: 100 });
+		const secondAnimate = () => undefined;
+		const result = mergePresetRecords([
+			{ motion: { enter: firstEnter, exit: () => ({}) } },
+			{ motion: { enter: null, animate: secondAnimate } }
+		]);
+
+		expect(result?.motion).toEqual({
+			enter: null,
+			exit: expect.any(Function),
+			animate: secondAnimate
+		});
+	});
 });

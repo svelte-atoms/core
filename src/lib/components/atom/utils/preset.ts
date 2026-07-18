@@ -1,6 +1,11 @@
 import { merge } from 'es-toolkit';
 import type { ClassValue } from 'svelte/elements';
-import type { MergedPresetLayers, PresetEntryRecord, PresetEntryValue } from '$ixirjs/ui/preset';
+import type {
+	MergedPresetLayers,
+	Motion,
+	PresetEntryRecord,
+	PresetEntryValue
+} from '$ixirjs/ui/preset';
 
 // Merge ordered preset records. Only the closed public fields participate.
 export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRecord | undefined {
@@ -17,6 +22,7 @@ export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRec
 		if (record.compounds?.length) compounds.push(...record.compounds);
 		if (record.variants) variantsList.push(record.variants);
 		if (record.attrs) result.attrs = { ...result.attrs, ...record.attrs };
+		if (record.motion !== undefined) result.motion = mergeMotion(result.motion, record.motion);
 		if (record.defaults) result.defaults = { ...result.defaults, ...record.defaults };
 		if (record.render) result.render = { ...result.render, ...record.render };
 	}
@@ -27,6 +33,17 @@ export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRec
 		let variants: Record<string, Record<string, unknown>> = {};
 		for (const layer of variantsList) variants = merge(variants, layer);
 		result.variants = variants;
+	}
+	return result;
+}
+
+function mergeMotion(base: Motion | null | undefined, next: Motion | null): Motion | null {
+	if (next === null) return null;
+	const result: Motion = base && base !== null ? { ...base } : {};
+	for (const key of ['initial', 'enter', 'exit', 'animate'] as const) {
+		if (Object.hasOwn(next, key) && next[key] !== undefined) {
+			(result as Record<string, unknown>)[key] = next[key];
+		}
 	}
 	return result;
 }

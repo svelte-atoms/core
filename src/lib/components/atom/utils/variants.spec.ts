@@ -74,7 +74,13 @@ describe('resolveVariants', () => {
 				class: '',
 				variants: {
 					state: {
-						open: { class: 'is-open', 'data-state': 'open', 'aria-expanded': true, role: 'button' }
+						open: {
+							class: 'is-open',
+							'data-state': 'open',
+							'aria-expanded': true,
+							role: 'button',
+							motion: { enter: () => ({ duration: 100 }) }
+						}
 					}
 				},
 				compounds: [],
@@ -88,6 +94,7 @@ describe('resolveVariants', () => {
 			'aria-expanded': true,
 			role: 'button'
 		});
+		expect(result.motion).toMatchObject({ enter: expect.any(Function) });
 	});
 
 	it('does not publish attachment symbols or reserved presentation fields', () => {

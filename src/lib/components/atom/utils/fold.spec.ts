@@ -48,4 +48,36 @@ describe('foldPresentation', () => {
 		expect(out.presetClass).toBe('preset');
 		expect(out.variantClass).toEqual(['variant']);
 	});
+
+	it('folds motion into a separate renderer channel', () => {
+		const initial = () => undefined;
+		const enter = () => ({ duration: 100 });
+		const exit = () => ({ duration: 200 });
+		const animate = () => undefined;
+		const out = foldPresentation(
+			{ motion: { initial } },
+			{ attrs: { animate: 'not-an-attr' }, motion: { enter } },
+			{ motion: { exit } },
+			{ motion: { animate }, 'data-kept': 'yes' }
+		);
+
+		expect(out.motion).toEqual({ initial, enter, exit, animate });
+		expect(out.attrs).toEqual({ 'data-kept': 'yes' });
+	});
+
+	it('lets null disable a motion phase while undefined inherits it', () => {
+		const presetEnter = () => ({ duration: 100 });
+		const consumerExit = () => ({ duration: 200 });
+		const inherited = foldPresentation(
+			undefined,
+			{ motion: { enter: presetEnter, exit: () => ({}) } },
+			undefined,
+			{},
+			{ enter: undefined, exit: null, animate: consumerExit }
+		);
+
+		expect(inherited.motion.enter).toBe(presetEnter);
+		expect(inherited.motion.exit).toBeUndefined();
+		expect(inherited.motion.animate).toBe(consumerExit);
+	});
 });
