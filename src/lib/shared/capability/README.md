@@ -7,20 +7,29 @@ Reusable behavior for Bonds and Atoms.
 
 ## Files
 
-| File                               | Purpose                                                        |
-| ---------------------------------- | -------------------------------------------------------------- |
-| [`capability.ts`](./capability.ts) | Capability types, keys, define/decorate helpers, role context. |
-| [`use.svelte.ts`](./use.svelte.ts) | Activates Bond capability setup and teardown.                  |
-| [`models/`](./models)              | Built-in capability models and recipes.                        |
+| File                                       | Purpose                                                        |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| [`capability.ts`](./capability.ts)         | Capability types, keys, define/decorate helpers, role context. |
+| [`runtime.svelte.ts`](./runtime.svelte.ts) | Shared dependency, activation, rollback, and teardown runtime. |
+| [`models/`](./models)                      | Built-in capability models and recipes.                        |
 
 ## Usage Notes
 
-- Register Bond capabilities with `bond.capability(...)`; activate setup once with
-  `useCapabilities(bond)`.
+- Register Bond capabilities in the Bond constructor with `bond.capability(...)`, or use
+  `bond.registerCapabilities(recipe)` for a bundle/recipe. Both preserve declaration order and use
+  last-wins per slot. The root publishes context explicitly with `binding.bond.share()`;
+  `bindBond(...)` activates capabilities and destroys the lifecycle owner with the root component.
+  Normal roots do not call `useCapabilities()` or `destroy()` themselves.
 - Pass Atom capabilities to `createAtomInstance(..., { capabilities })` or register them with
-  `atom.capability(...)`.
-- Prefer `defineCapability(...)` / `defineAtomCapability(...)` over hand-written literals.
+  `atom.capability(...)`. `createAtomInstance` registers the Atom with its Bond before setup, so setup
+  can resolve itself through `bond.nodeByPart(...)` or `bond.nodeByRole(...)`.
+- Bond and Atom hosts use the same internal runtime. `requires` is strict: missing slots and cycles
+  throw before setup. Setup follows stable topological order; setup failure unwinds transactionally.
+  Disposal is LIFO, continues after failures, and reports failures as `AggregateError`.
+- Prefer `defineCapability(...)` / `defineAtomCapability(...)` over hand-written literals. Their
+  metadata records `host: 'bond'` or `host: 'atom'`; a Bond `effect` is whole-bond setup, while Atom
+  setup is initialization-local (use behavior `onmount` for an element-mounted lifecycle hook).
 - Use `decorateCapability(...)` / `decorateAtomCapability(...)` when replacing behavior you do not
-  own.
+  own. `requiresRoles` remains advisory because atom roles appear lazily during rendering.
 
 The public barrel is [`index.ts`](./index.ts).
