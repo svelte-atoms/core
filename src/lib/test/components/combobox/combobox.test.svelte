@@ -13,6 +13,7 @@
 <!-- Items are rendered directly under Root (no popover Content) so the test exercises the
      item-click → selection path without depending on portal/positioning. -->
 <Combobox.Root {multiple} bind:values keys={items.map((i) => i.value)}>
+	<Combobox.Placeholder data-testid="placeholder">Choose a language</Combobox.Placeholder>
 	<Combobox.Selections>
 		{#snippet children({ selections })}
 			{#each selections as selection (selection.id)}

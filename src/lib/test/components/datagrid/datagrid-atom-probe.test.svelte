@@ -1,8 +1,5 @@
 <script lang="ts" module>
-	import {
-		DataGridBond,
-		type DataGridBondProps
-	} from '$ixirjs/ui/components/datagrid/bond.svelte';
+	import { DataGridBond, type DataGridBondProps } from '$ixirjs/ui/components/datagrid/bond.svelte';
 	import {
 		DataGridColumnBond,
 		type DataGridColumnBondProps

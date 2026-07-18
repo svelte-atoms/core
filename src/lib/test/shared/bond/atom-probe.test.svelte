@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		createAtomInstance,
-		type AtomCapabilityEntry,
-		type Bond
-	} from '$ixirjs/ui/shared/bond';
+	import { createAtomInstance, type AtomCapabilityEntry, type Bond } from '$ixirjs/ui/shared/bond';
 
 	let {
 		bond,
@@ -17,10 +13,11 @@
 		capabilities?: readonly AtomCapabilityEntry[];
 	} = $props();
 
-	const node = createAtomInstance(() => nodeKey, {
-		bond: () => bond,
-		required: () => required,
-		capabilities: () => capabilities
+	const node = createAtomInstance(undefined, {
+		resolveKey: () => nodeKey,
+		resolveBond: () => bond,
+		resolveRequired: () => required,
+		resolveCapabilities: () => capabilities
 	});
 </script>
 

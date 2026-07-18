@@ -1,13 +1,9 @@
 <script lang="ts">
+	import { onDestroy, untrack } from 'svelte';
 	import type { Bond } from '$ixirjs/ui/shared/bond';
-	import { useCapabilities } from '$ixirjs/ui/shared/capability/use.svelte';
 
-	type Props = { bond: Bond };
-
-	const { bond }: Props = $props();
-
-	// svelte-ignore state_referenced_locally
-	useCapabilities(bond);
+	let { bond }: { bond: Bond } = $props();
+	const owner = untrack(() => bond);
+	owner.activateCapabilities(owner);
+	onDestroy(() => owner.destroy());
 </script>
-
-<div data-testid="capability-probe"></div>

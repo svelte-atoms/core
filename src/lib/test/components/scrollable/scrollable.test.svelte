@@ -25,9 +25,9 @@
 			<Scrollable.Thumb orientation="vertical" data-testid="thumb" />
 		</Scrollable.Track>
 
-		<output data-testid="bond-scroll-y">{scrollable.state.props.scrollY}</output>
-		<output data-testid="bond-scroll-height">{scrollable.state.props.scrollHeight}</output>
-		<output data-testid="bond-client-height">{scrollable.state.props.clientHeight}</output>
+		<output data-testid="bond-scroll-y">{scrollable.props.scrollY}</output>
+		<output data-testid="bond-scroll-height">{scrollable.props.scrollHeight}</output>
+		<output data-testid="bond-client-height">{scrollable.props.clientHeight}</output>
 		<output data-testid="bond-can-scroll-y">{String(scrollable.canScrollY)}</output>
 	{/snippet}
 </Scrollable.Root>

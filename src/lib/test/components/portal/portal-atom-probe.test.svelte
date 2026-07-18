@@ -1,8 +1,5 @@
 <script lang="ts" module>
-	import {
-		PortalBond,
-		type PortalBondProps
-	} from '$ixirjs/ui/components/portal/bond.svelte';
+	import { PortalBond, type PortalBondProps } from '$ixirjs/ui/components/portal/bond.svelte';
 
 	export let capturedBond: PortalBond | undefined;
 
