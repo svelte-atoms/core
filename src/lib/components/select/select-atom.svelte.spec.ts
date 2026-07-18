@@ -20,14 +20,14 @@ describe('Select component-owned Atoms', () => {
 		expect(select).toBeInstanceOf(SelectBond);
 		expect(select?.isOpen).toBe(true);
 
-		const trigger = select?.node('trigger');
-		const overlay = select?.node('overlay');
-		const content = select?.node('content');
-		const placeholder = select?.node('placeholder');
-		const query = select?.node('query');
-		const item = select?.node('item');
-		const tail = select?.node('tail');
-		const indicator = select?.node('indicator');
+		const trigger = select?.nodeByPart('trigger');
+		const overlay = select?.nodeByPart('overlay');
+		const content = select?.nodeByPart('content');
+		const placeholder = select?.nodeByPart('placeholder');
+		const query = select?.nodeByPart('query');
+		const item = select?.nodeByPart('item');
+		const tail = select?.nodeByPart('tail');
+		const indicator = select?.nodeByPart('indicator');
 
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
 		expect(placeholder).toBeInstanceOf(SelectPlaceholderAtom);
@@ -45,30 +45,20 @@ describe('Select component-owned Atoms', () => {
 		expect(item?.spread.role).toBe('option');
 		expect(select?.items.get('alpha')).toBe(item);
 
-		const generated = select as unknown as Record<
-			'trigger' | 'overlay' | 'content' | 'placeholder' | 'query' | 'item' | 'tail' | 'indicator',
-			() => Atom
-		>;
-		const generatedNodes = [
-			generated.trigger(),
-			generated.overlay(),
-			generated.content(),
-			generated.placeholder(),
-			generated.query(),
-			generated.item(),
-			generated.tail(),
-			generated.indicator()
-		];
-		expect(generatedNodes[1]).toBeInstanceOf(PopoverOverlayAtom);
-		expect(generatedNodes[3]).toBeInstanceOf(SelectPlaceholderAtom);
-		expect(generatedNodes[4]).toBeInstanceOf(SelectQueryAtom);
-		for (const node of generatedNodes) {
-			expect(node).toBeInstanceOf(Atom);
-		}
-
 		unmount();
 
-		expect(select?.nodes()).toEqual([]);
+		for (const part of [
+			'trigger',
+			'overlay',
+			'content',
+			'placeholder',
+			'query',
+			'item',
+			'tail',
+			'indicator'
+		]) {
+			expect(select?.nodesByPart(part)).toEqual([]);
+		}
 		expect(select?.items.get('alpha')).toBeUndefined();
 	});
 });

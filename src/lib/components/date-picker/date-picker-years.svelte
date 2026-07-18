@@ -12,7 +12,7 @@
 		'<DatePicker.Years /> must be used within a <DatePicker.Root />'
 	);
 
-	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
+	const pivote = $derived(datePicker?.props.pivote ?? new Date());
 
 	let pivoteYear = $derived(pivote.getFullYear());
 
@@ -69,9 +69,9 @@
 	}
 
 	function handleYearSelect(year: number) {
-		if (!datePicker?.state.props.pivote) return;
-		const current = datePicker.state.props.pivote;
-		datePicker.state.props.pivote = setYear(current, year);
+		if (!datePicker?.props.pivote) return;
+		const current = datePicker.props.pivote;
+		datePicker.props.pivote = setYear(current, year);
 
 		datePicker.closeYearsPicker();
 	}

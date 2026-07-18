@@ -11,7 +11,7 @@
 		'<DatePicker.Months /> must be used within a <DatePicker.Root />'
 	);
 
-	const pivote = $derived(datePicker?.state.props.pivote ?? new Date());
+	const pivote = $derived(datePicker?.props.pivote ?? new Date());
 
 	const currentYear = $derived(getYear(pivote));
 	const currentMonth = $derived(getMonth(pivote));
@@ -62,9 +62,9 @@
 	}
 
 	function handleMonthSelect(monthIndex: number) {
-		if (!datePicker?.state.props.pivote) return;
-		const current = datePicker.state.props.pivote;
-		datePicker.state.props.pivote = setMonth(current, monthIndex);
+		if (!datePicker?.props.pivote) return;
+		const current = datePicker.props.pivote;
+		datePicker.props.pivote = setMonth(current, monthIndex);
 
 		datePicker.closeMonthsPicker();
 	}

@@ -10,7 +10,7 @@
 		DataGridColumnRootAtom,
 		type DataGridColumnBondProps
 	} from './bond.svelte';
-	import type { DatagridColumnProps } from '../types';
+	import type { DatagridColumnProps, SortBy } from '../types';
 
 	const ID = $props.id();
 
@@ -59,29 +59,19 @@
 		return DataGridColumnBond.create<T>(props);
 	}
 
-	function onclick_(ev: Event) {
-		const onClick = onclick as
-			| ((event: MouseEvent & { currentTarget: EventTarget & HTMLDivElement }) => void)
-			| undefined;
-		onClick?.(ev as MouseEvent & { currentTarget: EventTarget & HTMLDivElement });
+	function handleClick(event: MouseEvent) {
+		const onClick = onclick as ((event: MouseEvent) => void) | undefined;
+		onClick?.(event);
+		if (event.defaultPrevented || !isSortable) return;
 
-		if (!ev.defaultPrevented) {
-			if (!isSortable) {
-				return;
-			}
+		direction = direction === 'asc' ? 'desc' : 'asc';
 
-			if (direction === 'asc') {
-				direction = 'desc';
-			} else {
-				direction = 'asc';
-			}
-
-			if (typeof sortable === 'string') {
-				onsort?.(new CustomEvent('sort'), { field: sortable, direction });
-			} else {
-				onsort?.(new CustomEvent('sort'), { direction });
-			}
-		}
+		const sort: SortBy = {
+			id: bond.id,
+			direction,
+			...(typeof sortable === 'string' ? { by: sortable } : {})
+		};
+		onsort?.(sort, { bond, event, reason: 'click' });
 	}
 </script>
 
@@ -93,7 +83,7 @@
 			'$preset',
 			klass
 		]}
-		onclick={onclick_}
+		onclick={handleClick}
 		{...columnProps}
 	>
 		{@render children?.({ column: bond })}

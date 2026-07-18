@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { cn } from '$ixirjs/ui/utils';
 	import { addMonths, format, isToday, startOfDay, subMonths } from 'date-fns';
 	import type { CalendarRange, CalendarRootProps, Day, Month } from './types';
 	import { CalendarBond } from './bond.svelte';
-	import { mergePresetProps, HtmlAtom } from '../atom';
+	import { mergeAtomProps, HtmlAtom } from '../atom';
 
 	import './calendar.css';
-	import { bindBond } from '$ixirjs/ui/shared';
+	import { bindBond, createAtomInstance } from '$ixirjs/ui/shared';
+	import { untrack } from 'svelte';
+	import { CalendarRootAtom } from './atoms.svelte';
 
 	let {
 		class: klass = '',
@@ -21,14 +22,20 @@
 		type = 'single',
 		// swallowed: kept out of the props spread (not forwarded to the element)
 		extend: _extend = {},
-		onchange = undefined,
+		onvaluechange = undefined,
+		onrangechange = undefined,
+		onpivotechange = undefined,
 		factory = (props) => CalendarBond.create(props),
 		children = undefined,
 		...restProps
 	}: CalendarRootProps = $props();
 
-	let rangeState = $derived<CalendarRange>(range);
+	// `value` is the controlled source in single mode; seed it from the legacy range input once.
+	let valueState = $derived(value);
+	if (untrack(() => valueState) === undefined) valueState = untrack(() => range[0]);
+	let rangeState = $derived<CalendarRange>(type === 'single' ? [valueState, undefined] : range);
 	let pivoteState = $derived(pivote);
+	const callbackState = { bond: undefined as CalendarBond | undefined };
 
 	const monthCurrentDays = $derived(generator(pivoteState));
 
@@ -125,57 +132,52 @@
 		return new Date(year, month + 1, 0).getDate();
 	}
 
+	function rangesEqual(left: CalendarRange, right: CalendarRange) {
+		return Object.is(left[0], right[0]) && Object.is(left[1], right[1]);
+	}
+
+	function commitRange(nextRange: CalendarRange) {
+		const previousRange = rangeState;
+		const previousValue = previousRange[0];
+		const rangeChanged = !rangesEqual(previousRange, nextRange);
+		const valueChanged = !Object.is(previousValue, nextRange[0]);
+
+		rangeState = nextRange;
+		valueState = rangeState[0];
+		range = rangeState;
+		value = valueState;
+		start = rangeState[0];
+		end = rangeState[1];
+
+		const callbackBond = callbackState.bond;
+		if (!callbackBond) return;
+		if (type === 'range') {
+			if (rangeChanged) onrangechange?.(rangeState, { bond: callbackBond });
+		} else if (valueChanged) {
+			onvaluechange?.(rangeState[0], { bond: callbackBond });
+		}
+	}
+
 	const binding = bindBond<CalendarBond>(
 		(props) => factory(props),
 		{
-			range: [
-				() => rangeState,
-				(v: CalendarRange) => {
-					rangeState = v;
-					range = rangeState;
-					value = rangeState[0];
-					start = rangeState[0];
-					end = rangeState[1];
-					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
-				}
-			],
-			value: [
-				() => rangeState?.[0],
-				(v) => {
-					rangeState = [v, rangeState[1]];
-					range = rangeState;
-					value = v;
-					start = v;
-					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
-				}
-			],
+			range: [() => rangeState, commitRange],
+			value: [() => rangeState[0], (v) => commitRange([v, rangeState[1]])],
 			pivote: [
 				() => pivoteState,
 				(v) => {
+					const changed = !Object.is(pivoteState, v);
 					pivoteState = v as Date;
 					pivote = pivoteState;
-					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onpivotechange?.(pivoteState, { bond: callbackBond });
+					}
 				}
 			],
-			start: [
-				() => rangeState?.[0],
-				(v) => {
-					rangeState = [v, rangeState[1]];
-					range = rangeState;
-					start = v;
-					value = v;
-					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
-				}
-			],
-			end: [
-				() => rangeState?.[1],
-				(v: Date | undefined) => {
-					rangeState = [rangeState[0], v];
-					range = rangeState;
-					end = v;
-					onchange?.(new CustomEvent('change'), { range: rangeState, pivote: pivoteState });
-				}
-			],
+			start: [() => rangeState[0], (v) => commitRange([v, rangeState[1]])],
+			end: [() => rangeState[1], (v: Date | undefined) => commitRange([rangeState[0], v])],
 			min: [() => min, (v: Date | undefined) => (min = v)],
 			max: [() => max, (v: Date | undefined) => (max = v)],
 			type: () => type ?? 'single',
@@ -186,16 +188,23 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 
-	const rootProps = $derived(
-		mergePresetProps(preset, 'calendar', { ...bond.root().spread, ...restProps })
-	);
+	const rootAtom = createAtomInstance<CalendarRootAtom, CalendarBond>('root', {
+		bond,
+		factory: (owner) => new CalendarRootAtom(owner as CalendarBond)
+	});
+	const rootProps = $derived(mergeAtomProps(rootAtom, preset ?? 'calendar', restProps));
 
 	export function getBond() {
 		return bond;
 	}
 </script>
 
-<HtmlAtom class={cn('h-fit w-full gap-px', klass)} data-atom="calendar-root" {...rootProps}>
+<HtmlAtom
+	class={['h-fit w-full gap-px', '$preset', klass]}
+	data-atom="calendar-root"
+	{...rootProps}
+>
 	{@render children?.({ calendar: bond })}
 </HtmlAtom>

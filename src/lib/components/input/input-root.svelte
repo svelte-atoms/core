@@ -1,5 +1,5 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { InputBond, type InputStateProps } from './bond.svelte';
+	import { InputBond, InputRootAtom, type InputStateProps } from './bond.svelte';
 	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
@@ -46,7 +46,7 @@
 	const bond = binding.bond.share();
 	const rootAtom = createAtomInstance('root', {
 		bond,
-		factory: (owner) => owner!.root()
+		factory: (owner) => new InputRootAtom(owner!)
 	});
 	const rootProps = $derived(
 		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })

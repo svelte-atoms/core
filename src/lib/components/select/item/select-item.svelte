@@ -3,6 +3,7 @@
 	import type { SelectItemProps } from './types';
 	import { SelectBond } from '../bond.svelte';
 	import { List } from '../../list';
+	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { closeOverlay } from '$ixirjs/ui/components/portal/host/policies/overlay-view';
 
@@ -21,9 +22,6 @@
 		...restProps
 	}: SelectItemProps<D> = $props();
 
-	// `atom`'s name is value-specific (`item-<value>`), so use the shared item preset key.
-	const presentation = $derived({ preset: preset ?? 'select.item' });
-
 	const itemProps = $derived({
 		id,
 		value,
@@ -31,9 +29,10 @@
 	} as SelectItemAtomProps<D>);
 
 	const atom = createAtomInstance<SelectItemAtom<D, typeof select>, typeof select, HTMLElement>(
-		() => `item-${value}`,
+		undefined,
 		{
-			bond: () => select,
+			resolveKey: () => `item-${value}`,
+			resolveBond: () => select,
 			required: true,
 			register: { key: 'item', cardinality: 'many' },
 			factory: () => new SelectItemAtom<D, typeof select>(itemProps, select)
@@ -43,10 +42,8 @@
 	const isHighlighted = $derived(atom.isHighlighted);
 	const isSelected = $derived(atom.isSelected);
 
-	const itemAttrs = $derived({
-		...atom.spread,
-		...restProps
-	});
+	// `atom`'s name is value-specific (`item-<value>`), so use the shared item preset key.
+	const itemAttrs = $derived(mergeAtomProps(atom, preset ?? 'select.item', restProps));
 
 	// Register into select state; unregister on teardown.
 	$effect.pre(() => {
@@ -84,7 +81,6 @@
 	]
 		.filter(Boolean)
 		.join(' ')}
-	{...presentation}
 	{...itemAttrs}
 	onclick={handleClick}
 >

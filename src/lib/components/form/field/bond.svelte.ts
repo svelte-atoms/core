@@ -5,21 +5,14 @@ import {
 	sharedCapabilityKey,
 	type AtomHost
 } from '$ixirjs/ui/shared/capability';
-import {
-	errorMessageLink,
-	labelledControl
-} from '$ixirjs/ui/shared/capability/models/relationship.svelte';
+import { fieldCapabilities } from '$ixirjs/ui/shared/capability/models/archetypes.svelte';
 import {
 	createValidation,
-	validationCapability,
 	type ValidationError,
 	type ValidationModel,
 	type ValidationResult
 } from '$ixirjs/ui/shared/capability/models/validation.svelte';
-import {
-	createStatus,
-	statusCapability
-} from '$ixirjs/ui/shared/capability/models/status.svelte';
+import { createStatus } from '$ixirjs/ui/shared/capability/models/status.svelte';
 
 // -----------------------------------------------------------------------------
 // Public types
@@ -154,11 +147,14 @@ export class FieldBondBase<Props extends FieldStateProps = FieldStateProps> exte
 
 	constructor(props: Props, name = 'field') {
 		super(props, name);
-		// label ↔ control a11y linkage: control gets aria-labelledby, label gets `for`.
-		this.capability(labelledControl({ nativeFor: true }));
-		this.capability(validationCapability(this.validation));
-		this.capability(errorMessageLink({ invalid: () => this.validation.isInvalid }));
-		this.capability(statusCapability(this.status, { roles: ['control'] }));
+		this.registerCapabilities(
+			fieldCapabilities({
+				validation: this.validation,
+				labelled: { nativeFor: true },
+				status: this.status,
+				statusOptions: { roles: ['control'] }
+			})
+		);
 	}
 
 	get value() {
@@ -253,7 +249,7 @@ type FieldBondView = FieldBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const FIELD_ROOT = sharedCapabilityKey<void>('@ixirjs/field:root');
+const FIELD_ROOT = sharedCapabilityKey<void>({ owner: '@ixirjs/field', name: 'root', version: 1 });
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -292,11 +288,11 @@ function fieldRootPresentation() {
 		behavior: {
 			attrs: (_node, bond) => {
 				const hasErrors = (bond?.errors.length ?? 0) > 0;
-				const description = bond?.atomByRole(hasErrors ? 'error' : 'description')?.id;
+				const description = bond?.nodeByRole(hasErrors ? 'error' : 'description')?.id;
 
 				return {
 					role: 'group',
-					'aria-labelledby': bond?.atomByRole('label')?.id,
+					'aria-labelledby': bond?.nodeByRole('label')?.id,
 					'aria-describedby': description,
 					'aria-invalid': `${hasErrors}`
 				};
@@ -311,17 +307,7 @@ function fieldRootPresentation() {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const FieldBondImpl = defineBond<
-	{
-		root: typeof FieldRootAtom;
-		label: { atom: typeof FieldLabelAtom; role: 'label' };
-		control: { atom: typeof FieldControlAtom; role: 'control' };
-		description: { atom: typeof FieldDescriptionAtom; role: 'description' };
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof FieldBondBase
->({
+export const FieldBond = defineBond({
 	name: 'field',
 	base: FieldBondBase,
 	atoms: {
@@ -333,16 +319,4 @@ const FieldBondImpl = defineBond<
 });
 
 // Instance type — paired with the const above.
-export type FieldBond = BondOf<typeof FieldBondImpl>;
-
-interface FieldBondConstructor {
-	new (props: FieldStateProps): FieldBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof FieldBondImpl)['spec'];
-	get(): FieldBond | undefined;
-	getOrThrow(message?: string): FieldBond;
-	set(bond: FieldBond): FieldBond;
-	create(props: FieldStateProps): FieldBond;
-}
-
-export const FieldBond = FieldBondImpl as unknown as FieldBondConstructor;
+export type FieldBond = BondOf<typeof FieldBond>;

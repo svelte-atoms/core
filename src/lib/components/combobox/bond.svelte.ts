@@ -12,7 +12,6 @@ import {
 	inputCapability,
 	defineAtomCapability,
 	sharedCapabilityKey,
-	type BondSpec,
 	type AtomHost
 } from '$ixirjs/ui/shared';
 import { SvelteMap } from 'svelte/reactivity';
@@ -137,7 +136,11 @@ type ComboboxBondView = ComboboxBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const COMBOBOX_CONTROL = sharedCapabilityKey<void>('@ixirjs/combobox:control');
+const COMBOBOX_CONTROL = sharedCapabilityKey<void>({
+	owner: '@ixirjs/combobox',
+	name: 'control',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -204,29 +207,11 @@ const comboboxSpec = {
 	atoms: {
 		control: ComboboxControlAtom
 	}
-} satisfies BondSpec<{ control: typeof ComboboxControlAtom }, typeof ComboboxBondBase>;
+};
 
 // ComboboxBond — flat composition over DropdownBond, adds an editable control atom.
 // 'input' capability, ClearThenClose escape, and trigger are all inherited from Select.
-const ComboboxBondImpl = defineBond<
-	{ control: typeof ComboboxControlAtom },
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof ComboboxBondBase
->(comboboxSpec);
+export const ComboboxBond = defineBond(comboboxSpec);
 
 // Instance type — paired with the const above (value + type).
-export type ComboboxBond = BondOf<typeof ComboboxBondImpl>;
-
-interface ComboboxBondConstructor {
-	new (props: ComboboxBondProps): ComboboxBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof ComboboxBondImpl)['spec'];
-	get(): ComboboxBond | undefined;
-	getOrThrow(message?: string): ComboboxBond;
-	set(bond: ComboboxBond): ComboboxBond;
-	create(props: ComboboxBondProps): ComboboxBond;
-}
-
-export const ComboboxBond = ComboboxBondImpl as unknown as ComboboxBondConstructor;
+export type ComboboxBond = BondOf<typeof ComboboxBond>;

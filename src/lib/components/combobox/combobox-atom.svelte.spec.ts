@@ -21,15 +21,15 @@ describe('Combobox component-owned Atoms', () => {
 		expect(combobox).toBeInstanceOf(ComboboxBond);
 		expect(combobox?.isOpen).toBe(true);
 
-		const trigger = combobox?.node('trigger');
-		const overlay = combobox?.node('overlay');
-		const content = combobox?.node('content');
-		const placeholder = combobox?.node('placeholder');
-		const control = combobox?.node('control');
-		const query = combobox?.node('query');
-		const item = combobox?.node('item');
-		const tail = combobox?.node('tail');
-		const indicator = combobox?.node('indicator');
+		const trigger = combobox?.nodeByPart('trigger');
+		const overlay = combobox?.nodeByPart('overlay');
+		const content = combobox?.nodeByPart('content');
+		const placeholder = combobox?.nodeByPart('placeholder');
+		const control = combobox?.nodeByPart('control');
+		const query = combobox?.nodeByPart('query');
+		const item = combobox?.nodeByPart('item');
+		const tail = combobox?.nodeByPart('tail');
+		const indicator = combobox?.nodeByPart('indicator');
 
 		expect(overlay).toBeInstanceOf(PopoverOverlayAtom);
 		expect(placeholder).toBeInstanceOf(SelectPlaceholderAtom);
@@ -58,40 +58,21 @@ describe('Combobox component-owned Atoms', () => {
 		expect(item?.spread.role).toBe('option');
 		expect(combobox?.items.get('alpha')).toBe(item);
 
-		const generated = combobox as unknown as Record<
-			| 'trigger'
-			| 'overlay'
-			| 'content'
-			| 'placeholder'
-			| 'control'
-			| 'query'
-			| 'item'
-			| 'tail'
-			| 'indicator',
-			() => Atom
-		>;
-		const generatedNodes = [
-			generated.trigger(),
-			generated.overlay(),
-			generated.content(),
-			generated.placeholder(),
-			generated.control(),
-			generated.query(),
-			generated.item(),
-			generated.tail(),
-			generated.indicator()
-		];
-		expect(generatedNodes[1]).toBeInstanceOf(PopoverOverlayAtom);
-		expect(generatedNodes[3]).toBeInstanceOf(SelectPlaceholderAtom);
-		expect(generatedNodes[4]).toBeInstanceOf(ComboboxControlAtom);
-		expect(generatedNodes[5]).toBeInstanceOf(SelectQueryAtom);
-		for (const node of generatedNodes) {
-			expect(node).toBeInstanceOf(Atom);
-		}
-
 		unmount();
 
-		expect(combobox?.nodes()).toEqual([]);
+		for (const part of [
+			'trigger',
+			'overlay',
+			'content',
+			'placeholder',
+			'control',
+			'query',
+			'item',
+			'tail',
+			'indicator'
+		]) {
+			expect(combobox?.nodesByPart(part)).toEqual([]);
+		}
 		expect(combobox?.items.get('alpha')).toBeUndefined();
 	});
 });

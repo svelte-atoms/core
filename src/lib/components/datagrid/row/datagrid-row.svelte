@@ -49,8 +49,9 @@
 		return DataGridRowBond.create<T>(props);
 	}
 
-	function handleClick(ev: Event) {
-		onclick?.(ev, { row: bond });
+	function handleClick(event: MouseEvent) {
+		const onClick = onclick as ((event: MouseEvent) => void) | undefined;
+		onClick?.(event);
 	}
 </script>
 

@@ -3,7 +3,7 @@ import type { Placement } from '@floating-ui/dom';
 import type { ComponentBase, SnippetProps } from '$ixirjs/ui/components/atom';
 import type { Day, CalendarRange } from '../calendar/types';
 import type { DatePickerBond } from './bond.svelte';
-import type { Factory } from '$ixirjs/ui/types';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
 
 // DatePicker Snippet Props
 export interface DatePickerSnippetProps extends SnippetProps {
@@ -61,5 +61,9 @@ export interface DatePickerRootProps {
 	offset?: number;
 	factory?: Factory<DatePickerBond>;
 	children?: DatePickerChildren;
+	onopenchange?: StateChangeCallback<boolean, DatePickerBond>;
+	onvaluechange?: StateChangeCallback<Date | undefined, DatePickerBond>;
+	onrangechange?: StateChangeCallback<CalendarRange, DatePickerBond>;
+	onpivotechange?: StateChangeCallback<Date, DatePickerBond>;
 	[key: string]: unknown;
 }

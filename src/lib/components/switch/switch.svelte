@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
-	import type { SwitchProps } from './types';
+	import { createPresentation } from '$ixirjs/ui/components/atom/presentation.svelte';
+	import type { SwitchProps, SwitchThumbSnippetProps } from './types';
 
 	let {
 		class: klass = '',
@@ -12,24 +13,40 @@
 		value,
 		preset = undefined,
 		onclick = undefined,
-		onchange = undefined,
+		oncheckedchange = undefined,
 		children = undefined,
+		thumbContent = undefined,
 		...restProps
 	}: SwitchProps & HTMLAttributes<HTMLButtonElement> = $props();
 
 	const switchProps = $derived(mergePresetProps(preset, 'switch', restProps));
+	const thumbPresentation = createPresentation({
+		preset: () => 'switch.thumb',
+		class: () => [
+			'switch-thumb bg-background pointer-events-none block h-4 w-4 rounded-full shadow-sm transition-transform duration-200',
+			checked ? 'translate-x-6' : 'translate-x-1'
+		],
+		variantProps: () => ({ checked }),
+		restProps: () => ({ 'data-checked': checked })
+	});
+	const thumbProps = $derived({
+		class: thumbPresentation.class,
+		...thumbPresentation.attrs
+	} as Record<string, unknown>);
 
-	function handleClick(ev: MouseEvent) {
-		if (disabled) return;
+	function handleClick(event: MouseEvent) {
+		onclick?.(event);
 
-		onclick?.(ev);
-
-		if (ev.defaultPrevented) return;
+		if (disabled || event.defaultPrevented) return;
 
 		checked = !checked;
-		onchange?.(ev, { checked });
+		oncheckedchange?.(checked, { event });
 	}
 </script>
+
+{#snippet defaultThumb({ props }: SwitchThumbSnippetProps)}
+	<span {...props}></span>
+{/snippet}
 
 <HtmlAtom
 	as="button"
@@ -62,16 +79,7 @@
 	/>
 
 	<!-- Thumb -->
-	<HtmlAtom
-		preset="switch.thumb"
-		as="span"
-		class={[
-			'switch-thumb bg-background pointer-events-none block h-4 w-4 rounded-full shadow-sm transition-transform duration-200',
-			checked ? 'translate-x-6' : 'translate-x-1',
-			'$preset'
-		]}
-		data-checked={checked}
-	/>
+	{@render (thumbContent ?? defaultThumb)({ checked, props: thumbProps })}
 </HtmlAtom>
 
 {#if children}

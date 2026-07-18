@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolveControlPreset, writeInputValue } from './shared';
+	import { inputChangeContext, resolveControlPreset, writeInputValue } from './shared';
 	import { clamp } from '$ixirjs/ui/utils/math';
 	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import { InputBond } from './bond.svelte';
@@ -19,11 +19,17 @@
 		preset: presetKey = 'input.otp',
 		onchange = undefined,
 		oninput = undefined,
+		onvaluechange = undefined,
 		oncomplete = undefined,
 		...restProps
 	}: InputOtpControlProps = $props();
 
-	const preset = resolveControlPreset(() => presetKey, bond);
+	const preset = resolveControlPreset(
+		() => presetKey,
+		bond,
+		() => restProps,
+		() => toClassValue(klass, bond)
+	);
 
 	let slotEls = $state<Array<HTMLInputElement | undefined>>([]);
 
@@ -56,14 +62,13 @@
 		slotEls[clamp(index, 0, length - 1)]?.focus();
 	}
 
-	function emit(ev: Event) {
-		const detail = { value };
-		oninput?.(ev, detail);
-		if (isFull) {
-			onchange?.(ev, detail);
-			if (!wasFull) {
-				oncomplete?.(value);
-			}
+	function emit(event: Event) {
+		onvaluechange?.(
+			value,
+			inputChangeContext(bond, event, event.type === 'paste' ? 'paste' : 'input')
+		);
+		if (isFull && !wasFull) {
+			oncomplete?.(value);
 		}
 		wasFull = isFull;
 	}
@@ -159,10 +164,11 @@
 		'inline-flex items-center gap-1',
 		bond && 'h-full py-1 px-1',
 		disabled && 'cursor-not-allowed opacity-50',
-		preset?.class,
-		toClassValue(klass, bond)
+		preset.class
 	)}
-	{...restProps}
+	{...preset.attrs}
+	{oninput}
+	{onchange}
 >
 	{#each slots as slotVal, i (i)}
 		{#if groupSize !== undefined && i > 0 && i % groupSize === 0}

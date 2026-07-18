@@ -345,7 +345,7 @@
 						<CalendarModule.Day {day}>
 							{#snippet children({ calendar })}
 								<div class="flex items-center justify-center size-full">
-									{#if eventDays.has(startOfDay(day.date).getTime()) && !calendar.state.isDaySelected(day)}
+									{#if eventDays.has(startOfDay(day.date).getTime()) && !calendar.isDaySelected(day)}
 										<span
 											class="text-[0.82em] leading-none underline underline-offset-2 decoration-primary/70 decoration-[1.5px]"
 											>{day.dayOfMonth}</span
@@ -640,7 +640,7 @@
 									{#snippet children({ calendar })}
 										<div class="flex flex-col items-center justify-center size-full gap-0.5">
 											<span class="text-[0.75em] leading-none">{day.dayOfMonth}</span>
-											{#if eventDays.has(startOfDay(day.date).getTime()) && !calendar.state.isDaySelected(day)}
+											{#if eventDays.has(startOfDay(day.date).getTime()) && !calendar.isDaySelected(day)}
 												<span class="w-1 h-1 rounded-full bg-primary/70"></span>
 											{:else}
 												<span class="w-1 h-1"></span>
@@ -808,7 +808,7 @@
 						{@const avail = day.offmonth || day.disabled ? undefined : availabilityData.get(ts)}
 						<CalendarModule.Day {day} class={avail === 'full' ? 'pointer-events-none' : ''}>
 							{#snippet children({ calendar })}
-								{@const selected = calendar.state.isDaySelected(day)}
+								{@const selected = calendar.isDaySelected(day)}
 								<div class="flex flex-col items-center justify-center size-full gap-px">
 									<span
 										class={[
@@ -890,7 +890,7 @@
 				class="aspect-auto h-full flex p-0 hover:bg-transparent hover:text-foreground/80"
 			>
 				{#snippet children({ calendar })}
-					{@const selected = calendar.state.isDaySelected(day)}
+					{@const selected = calendar.isDaySelected(day)}
 					{@const events = plannerEvents.get(startOfDay(day.date).getTime()) ?? []}
 					<div
 						class={[

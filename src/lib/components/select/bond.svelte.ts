@@ -15,7 +15,6 @@ import {
 	defineAtomCapability,
 	sharedCapabilityKey,
 	type BondOf,
-	type BondSpec,
 	type AtomHost
 } from '$ixirjs/ui/shared';
 import {
@@ -37,7 +36,7 @@ export type SelectStateProps = DropdownMenuBondProps & {
 	label?: string;
 	multiple?: boolean;
 	keys?: string[];
-	// Reactive search/filter text; read/written by `createBondFilter` and bound to the `'input'` capability's `query` target.
+	// Reactive search/filter text; read by `filterSelectData` and bound to the `'input'` capability's `query` target.
 	query?: string;
 };
 
@@ -72,7 +71,7 @@ export class SelectBondBase<
 		// `interactive: false` — the item keeps its own click (select + close).
 		this.capability(selectionCapability(this.#selection, { interactive: false }));
 		// Filter input (role 'input'/'query'): text is the bond-owned `query` prop (the
-		// `createBondFilter` source). Filter-only — no `value` field; Combobox adds one (last-wins).
+		// `filterSelectData` source). Filter-only — no `value` field; Combobox adds one (last-wins).
 		this.capability(
 			inputCapability(
 				createInput({
@@ -130,7 +129,11 @@ type SelectBondView = SelectBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const SELECT_CONTENT = sharedCapabilityKey<void>('@ixirjs/select:content');
+const SELECT_CONTENT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/select',
+	name: 'content',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -208,45 +211,14 @@ const selectSpec = {
 		query: SelectQueryAtom
 	},
 	capabilities: () => [clickTrigger({ ariaHasPopup: 'listbox' }), clearThenClose]
-} satisfies BondSpec<
-	{
-		content: { atom: typeof SelectContentAtom; role: 'container' };
-		placeholder: typeof SelectPlaceholderAtom;
-		value: typeof SelectValueAtom;
-		query: typeof SelectQueryAtom;
-	},
-	typeof SelectBondBase
->;
+};
 
 // SelectBond — flat composition over `DropdownMenuBond`: listbox content, placeholder/value/query
 // atoms, trigger `aria-haspopup='listbox'`, `ClearThenClose` clears query on Escape.
-const SelectBondImpl = defineBond<
-	{
-		content: { atom: typeof SelectContentAtom; role: 'container' };
-		placeholder: typeof SelectPlaceholderAtom;
-		value: typeof SelectValueAtom;
-		query: typeof SelectQueryAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof SelectBondBase
->(selectSpec);
+export const SelectBond = defineBond(selectSpec);
 
 // Instance type paired with the `const`; item-data precision lives on `SelectBondBase`/`SelectItemAtom` generics.
-export type SelectBond<ItemData = unknown> = BondOf<typeof SelectBondImpl> &
+export type SelectBond<ItemData = unknown> = BondOf<typeof SelectBond> &
 	SelectBondBase<SelectStateProps, ItemData>;
-
-interface SelectBondConstructor {
-	new (props: SelectStateProps): SelectBond;
-	readonly CONTEXT_KEY: string;
-	readonly CONTEXT_KEYS?: readonly string[];
-	readonly spec: (typeof SelectBondImpl)['spec'];
-	get(): SelectBond | undefined;
-	getOrThrow(message?: string): SelectBond;
-	set(bond: SelectBond): SelectBond;
-	create(props: SelectStateProps): SelectBond;
-}
-
-export const SelectBond = SelectBondImpl as unknown as SelectBondConstructor;
 
 export { closeOverlay };

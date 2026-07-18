@@ -65,14 +65,14 @@ describe('FieldBond — label ↔ control linkage via labelledControl', () => {
 	it('registers validation and status as Layer 1 capabilities', () => {
 		const bond = makeField();
 
-		expect(bond.state.capability(VALIDATION)?.surface).toBe(bond.validation);
-		expect(bond.state.capability(VALIDATION)?.meta).toMatchObject({
+		expect(bond.capability(VALIDATION)?.surface).toBe(bond.validation);
+		expect(bond.capability(VALIDATION)?.meta).toMatchObject({
 			layer: 1,
 			kind: 'model',
 			projects: ['control', 'error']
 		});
-		expect(bond.state.capability(STATUS)?.surface).toBe(bond.status);
-		expect(bond.state.capability(STATUS)?.meta).toMatchObject({
+		expect(bond.capability(STATUS)?.surface).toBe(bond.status);
+		expect(bond.capability(STATUS)?.meta).toMatchObject({
 			layer: 1,
 			kind: 'projection',
 			projects: ['control']
@@ -129,16 +129,18 @@ describe('FieldBond — label ↔ control linkage via labelledControl', () => {
 		for (const node of [root, label, control, description]) {
 			expect(node).toBeInstanceOf(Atom);
 		}
-		expect(bond.node('root')).toBe(root);
-		expect(bond.node('label')).toBe(label);
-		expect(bond.node('control')).toBe(control);
-		expect(bond.node('description')).toBe(description);
+		expect(bond.nodeByPart('root')).toBe(root);
+		expect(bond.nodeByPart('label')).toBe(label);
+		expect(bond.nodeByPart('control')).toBe(control);
+		expect(bond.nodeByPart('description')).toBe(description);
 		expect(control.spread['aria-labelledby']).toBe(label.id);
 		expect(label.spread.for).toBe(control.id);
 		expect(root.spread['aria-labelledby']).toBe(label.id);
 		expect(root.spread['aria-describedby']).toBe(description.id);
 
 		for (let i = unmounts.length - 1; i >= 0; i--) unmounts[i]!();
-		expect(bond.nodes()).toEqual([]);
+		for (const part of ['root', 'label', 'control', 'description']) {
+			expect(bond.nodesByPart(part)).toEqual([]);
+		}
 	});
 });

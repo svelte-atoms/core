@@ -4,14 +4,14 @@
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { CalendarBond } from './bond.svelte';
 	import type { CalendarDayProps } from './types';
-	import { mergePresetProps, HtmlAtom } from '../atom';
+	import { mergeAtomProps, HtmlAtom } from '../atom';
 	import { untrack } from 'svelte';
 
 	const calendarBond = CalendarBond.get();
 
-	const selectedDateStart = $derived(calendarBond?.state.props.start);
-	const selectedDateEnd = $derived(calendarBond?.state.props.end);
-	const isRange = $derived(calendarBond?.state.props.type === 'range');
+	const selectedDateStart = $derived(calendarBond?.props.start);
+	const selectedDateEnd = $derived(calendarBond?.props.end);
+	const isRange = $derived(calendarBond?.props.type === 'range');
 
 	let {
 		class: klass = '',
@@ -23,16 +23,15 @@
 		...restProps
 	}: CalendarDayProps = $props();
 	const atom = calendarBond
-		? createAtomInstance(() => `day-${day.id}`, {
+		? createAtomInstance(undefined, {
+				resolveKey: () => `day-${day.id}`,
 				bond: calendarBond,
 				factory: (owner) => owner!.day(day),
 				register: { key: untrack(() => `day-${day.id}`) }
 			})
 		: undefined;
 
-	const dayProps = $derived(
-		mergePresetProps(preset, 'calendar.day', { ...atom?.spread, ...restProps })
-	);
+	const dayProps = $derived(mergeAtomProps(atom, preset ?? 'calendar.day', restProps));
 
 	const isSelected = $derived.by(() => {
 		if (selectedDateEnd && selectedDateStart) {
@@ -46,7 +45,7 @@
 		if (day.disabled) return;
 
 		if (isRange) {
-			const start = calendarBond?.state.props.start;
+			const start = calendarBond?.props.start;
 			if (!start) {
 				calendarBond?.selectStart(new Date(day.date));
 				return;

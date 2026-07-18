@@ -282,7 +282,7 @@
 	</div>
 </Story>
 
-<!-- 3. Searchable — built-in `Select.Query` filter box + `createBondFilter`. Escape clears the
+<!-- 3. Searchable — built-in `Select.Query` filter box + `filterSelectData`. Escape clears the
      query first (ClearThenClose), then closes. Shows the empty / no-results state. -->
 <Story name="Searchable">
 	<div class="flex flex-col gap-2" style="width: 320px;">

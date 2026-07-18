@@ -1,11 +1,12 @@
-<script lang="ts">
-	import { getRadioGroupContext } from './context';
+<script lang="ts" generics="T = string">
+	import { getRadioGroupContext, type RadioCheckedChangeListener } from './context';
 	import { Stack } from '../stack';
 	import { toClassValue } from '$ixirjs/ui/utils';
 	import { mergePresetProps, HtmlAtom } from '$ixirjs/ui/components/atom';
 	import { animateRadioIndicatorIn, animateRadioIndicatorOut } from './motion.svelte';
+	import type { RadioProps } from './types';
 
-	const radioGroupContext = getRadioGroupContext();
+	const radioGroupContext = getRadioGroupContext<T>();
 
 	let {
 		class: klass = '',
@@ -19,9 +20,10 @@
 		readonly = false,
 		onchange = undefined,
 		oninput = undefined,
+		oncheckedchange = undefined,
 		checkedContent = undefined,
 		...restProps
-	} = $props();
+	}: RadioProps<T> = $props();
 
 	const radioProps = $derived(mergePresetProps(preset, 'radio', restProps));
 
@@ -51,29 +53,57 @@
 		isChecked ? (checkedContent ? customCheckedContent : defaultCheckedContent) : undefined
 	);
 
-	function handleChange(ev: Event) {
-		const checked = (ev.currentTarget as HTMLInputElement)?.checked ?? false;
+	const notifyChecked: RadioCheckedChangeListener = (nextChecked, event) => {
+		oncheckedchange?.(nextChecked, { event });
+	};
 
-		onchange?.(ev, {
-			checked,
-			value: checked,
-			type: 'boolean'
-		});
+	$effect(() => {
+		if (!radioGroupContext || value === undefined) return;
+		return radioGroupContext.register(value, notifyChecked);
+	});
+
+	let hasStandaloneInitialized = false;
+	let previousStandaloneChecked = false;
+	let pendingStandaloneEvent: Event | undefined;
+
+	$effect(() => {
+		if (radioGroupContext) return;
+
+		const nextChecked = isChecked;
+		if (hasStandaloneInitialized && previousStandaloneChecked !== nextChecked) {
+			if (pendingStandaloneEvent) notifyChecked(nextChecked, pendingStandaloneEvent);
+			else oncheckedchange?.(nextChecked, {});
+		}
+
+		previousStandaloneChecked = nextChecked;
+		pendingStandaloneEvent = undefined;
+		hasStandaloneInitialized = true;
+	});
+
+	function handleChange(event: Event) {
+		onchange?.(event);
 	}
 
-	function handleInput(ev: Event) {
-		const currentTarget = ev.currentTarget as HTMLInputElement;
-		const _checked = currentTarget?.checked ?? false;
+	function select(event: Event) {
+		if (value === undefined) return false;
 
-		oninput?.(ev, {
-			checked: _checked,
-			value: _checked,
-			type: 'boolean'
-		});
-
-		if (ev.defaultPrevented) {
-			return;
+		if (radioGroupContext) {
+			return radioGroupContext.select(value, event, notifyChecked);
 		}
+
+		if (Object.is(group, value)) return false;
+		group = value;
+		return true;
+	}
+
+	function handleInput(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+		oninput?.(event);
+
+		if (!input.checked) return;
+
+		if (!radioGroupContext) pendingStandaloneEvent = event;
+		if (!select(event) && !radioGroupContext) pendingStandaloneEvent = undefined;
 	}
 </script>
 

@@ -7,6 +7,7 @@
 		parseLocationCoords
 	} from '$ixirjs/ui/components/input/location';
 	import {
+		inputChangeContext,
 		resolveControlPreset,
 		writeInputValue
 	} from '$ixirjs/ui/components/input/shared';
@@ -29,10 +30,16 @@
 		preset: presetKey = 'input.location',
 		onchange = undefined,
 		oninput = undefined,
+		onvaluechange = undefined,
 		...restProps
 	}: InputLocationControlProps = $props();
 
-	const preset = resolveControlPreset(() => presetKey, bond);
+	const preset = resolveControlPreset(
+		() => presetKey,
+		bond,
+		() => restProps,
+		() => toClassValue(klass, bond)
+	);
 
 	let inputEl = $state<HTMLInputElement>();
 	let scrollLeft = $state(0);
@@ -63,17 +70,32 @@
 		}
 	});
 
-	// Input / change handlers
-	function handleInput(ev: Event) {
-		const input = ev.currentTarget as HTMLInputElement;
-		value = input.value;
+	function commitValue(next: string, event: Event, reason: string) {
+		value = next;
+		const coords = parseLocationCoords(value);
+		if (coords && isValidLatitude(coords.lat) && isValidLongitude(coords.lng)) {
+			lat = coords.lat;
+			lng = coords.lng;
+		} else if (!value.trim()) {
+			lat = undefined;
+			lng = undefined;
+		}
+
 		writeInputValue(bond, value);
-		syncScroll();
-		oninput?.(ev, { lat, lng, value });
+		onvaluechange?.(value, inputChangeContext(bond, event, reason, { lat, lng }));
 	}
 
-	function handleChange(ev: Event) {
-		onchange?.(ev, { lat, lng, value });
+	// Input / change handlers
+	function handleInput(event: Event) {
+		oninput?.(event);
+		if (event.defaultPrevented) return;
+
+		commitValue((event.currentTarget as HTMLInputElement).value, event, 'input');
+		syncScroll();
+	}
+
+	function handleChange(event: Event) {
+		onchange?.(event);
 	}
 
 	function syncScroll() {
@@ -93,14 +115,9 @@
 		ev.preventDefault();
 		const pasted = ev.clipboardData?.getData('text') ?? '';
 		const coords = parseLocationCoords(pasted);
-		if (coords) {
-			value = `${coords.lat}, ${coords.lng}`;
-		} else {
-			value = pasted;
-		}
-		if (inputEl) inputEl.value = value;
-		writeInputValue(bond, value);
-		oninput?.(new Event('input'), { lat, lng, value });
+		const next = coords ? `${coords.lat}, ${coords.lng}` : pasted;
+		if (inputEl) inputEl.value = next;
+		commitValue(next, ev, 'paste');
 	}
 </script>
 
@@ -111,8 +128,7 @@
 			aria-hidden="true"
 			class={cn(
 				'pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre px-2 font-mono text-sm',
-				preset?.class,
-				toClassValue(klass, bond)
+				preset.class
 			)}
 		>
 			<span style="transform: translateX(-{scrollLeft}px)">
@@ -144,15 +160,14 @@
 				? 'text-foreground placeholder:text-muted-foreground'
 				: 'text-transparent placeholder:text-transparent',
 			disabled && 'cursor-not-allowed opacity-50',
-			preset?.class,
-			toClassValue(klass, bond)
+			preset.class
 		)}
+		{...preset.attrs}
 		oninput={handleInput}
 		onchange={handleChange}
 		onscroll={syncScroll}
 		onpaste={handlePaste}
 		onfocus={handleFocus}
 		onblur={handleBlur}
-		{...restProps}
 	/>
 </span>

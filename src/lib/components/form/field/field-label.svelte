@@ -1,10 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'label', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { FieldBond, FieldLabelAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { FieldBond } from './bond.svelte';
 	import type { FieldLabelProps } from '../types';
-
-	const bond = FieldBond.get();
 
 	let {
 		class: klass = '',
@@ -13,16 +11,13 @@
 		...restProps
 	}: FieldLabelProps<E, B> = $props();
 
-	const atom = bond
-		? createAtomInstance<FieldLabelAtom, FieldBond, HTMLElement>('label', {
-				bond,
-				factory: (owner) => new FieldLabelAtom(owner as FieldBond).role('label')
-			})
-		: undefined;
-
-	const labelProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const part = usePart(FieldBond, 'label', () => restProps, {
+		message: '<Field.Label /> must be used within a <Field.Root />',
+		preset: () => preset
+	});
+	const bond = part.bond;
 </script>
 
-<HtmlAtom {bond} class={['flex', '$preset', klass]} {...labelProps}>
+<HtmlAtom {bond} class={['flex', '$preset', klass]} {...part.props}>
 	{@render children?.({ field: bond })}
 </HtmlAtom>

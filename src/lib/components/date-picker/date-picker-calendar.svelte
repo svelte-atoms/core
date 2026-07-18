@@ -31,19 +31,34 @@
 
 	const calendarProps = $derived(mergePresetProps(preset, 'datepicker.calendar', restProps));
 
-	function handleChange(_: CustomEvent, { range, pivote }: { range: CalendarRange; pivote: Date }) {
-		if (!datePickerBond) return;
+	function handleValueChange(value: Date | undefined) {
+		if (datePickerBond) datePickerBond.props.value = value;
+	}
 
-		datePickerBond.state.props.range = range;
-		datePickerBond.state.props.pivote = pivote;
+	function handleRangeChange(range: CalendarRange) {
+		if (datePickerBond) datePickerBond.props.range = range;
+	}
+
+	function handlePivoteChange(pivote: Date) {
+		if (datePickerBond) datePickerBond.props.pivote = pivote;
 	}
 </script>
 
 <Content
 	class={['relative overflow-hidden p-0 max-w-[96svw] md:max-w-xs', klass]}
 	base={Root}
-	onchange={handleChange}
 	{...calendarProps}
+	value={datePickerBond?.props.value}
+	range={datePickerBond?.props.range ?? [undefined, undefined]}
+	pivote={datePickerBond?.props.pivote ?? new Date()}
+	start={datePickerBond?.props.start}
+	end={datePickerBond?.props.end}
+	min={datePickerBond?.props.min}
+	max={datePickerBond?.props.max}
+	type={datePickerBond?.props.type ?? 'single'}
+	onvaluechange={handleValueChange}
+	onrangechange={handleRangeChange}
+	onpivotechange={handlePivoteChange}
 >
 	<HtmlAtom base={Header} class="col-span-full" />
 	<HtmlAtom base={Weekdays} class="border-0" />

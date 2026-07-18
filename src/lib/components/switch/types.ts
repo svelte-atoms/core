@@ -1,9 +1,15 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps } from '$ixirjs/ui/components/atom';
+import type { StateChangeCallback } from '$ixirjs/ui/types';
 
 // Extend to add custom switch properties in your application.
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SwitchExtendProps {}
+
+export interface SwitchThumbSnippetProps {
+	checked: boolean;
+	props: Record<string, unknown>;
+}
 
 export interface SwitchProps extends HtmlAtomProps<'button'>, SwitchExtendProps {
 	// On state.
@@ -17,6 +23,12 @@ export interface SwitchProps extends HtmlAtomProps<'button'>, SwitchExtendProps 
 	value?: string;
 	// Label content.
 	children?: Snippet<[]>;
-	onclick?: (ev?: MouseEvent) => void;
-	onchange?: (ev?: Event, options?: { checked: boolean }) => void;
+	// Replace the internal thumb while preserving the resolved presentation props.
+	thumbContent?: Snippet<[SwitchThumbSnippetProps]>;
+	// Semantic state callback; runs after `checked` commits.
+	oncheckedchange?: StateChangeCallback<boolean, never, MouseEvent>;
+	// Native DOM callbacks retain their event-only signatures.
+	onclick?: (event: MouseEvent) => void;
+	oninput?: (event: Event) => void;
+	onchange?: (event: Event) => void;
 }

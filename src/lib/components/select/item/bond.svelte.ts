@@ -23,7 +23,11 @@ export type SelectItemAtomProps<T = unknown> = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const SELECT_ITEM = sharedCapabilityKey<void>('@ixirjs/select:item-node');
+const SELECT_ITEM = sharedCapabilityKey<void>({
+	owner: '@ixirjs/select',
+	name: 'item-node',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions

@@ -13,7 +13,7 @@
 
 	const headerProps = $derived(mergePresetProps(preset, 'datepicker.header', restProps));
 
-	const calendarBondProps = $derived(datePickerBond?.state?.props);
+	const calendarBondProps = $derived(datePickerBond?.props);
 
 	const pivote = $derived(calendarBondProps?.pivote ?? new Date());
 

@@ -14,6 +14,7 @@ export interface TextareaRootProps<
 
 export interface TextareaInputProps {
 	value?: string;
+	autoResize?: boolean;
 	placeholder?: string;
 	disabled?: boolean;
 	readonly?: boolean;

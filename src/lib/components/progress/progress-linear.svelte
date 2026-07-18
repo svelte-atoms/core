@@ -25,8 +25,7 @@
 		as="div"
 		class={[
 			'progress-fill bg-foreground h-full rounded-full transition-[width] duration-300',
-			isIndeterminate && 'animate-progress-indeterminate w-1/3',
-			'$preset'
+			isIndeterminate && 'animate-progress-indeterminate w-1/3'
 		]}
 		style={p !== null ? `width: ${p}%` : undefined}
 	/>
@@ -49,7 +48,7 @@
 	<HtmlElement
 		preset="progress.linear.track"
 		as="div"
-		class="progress-track bg-input border-none p-0.5 h-2 w-full overflow-hidden rounded-full border $preset"
+		class="progress-track bg-input border-none p-0.5 h-2 w-full overflow-hidden rounded-full border"
 	>
 		{@render defaultLinearFill({ percent })}
 	</HtmlElement>

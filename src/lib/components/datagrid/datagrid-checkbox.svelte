@@ -54,10 +54,11 @@
 
 		const allIds = [...(datagridBond?.rows.keys ?? [])];
 
+		const context = ev ? { event: ev } : undefined;
 		if (checked === true) {
-			datagridBond?.select(allIds);
+			datagridBond?.select(allIds, context);
 		} else {
-			datagridBond?.unselect(allIds);
+			datagridBond?.unselect(allIds, context);
 		}
 	}
 
@@ -68,10 +69,11 @@
 		handleCallbacks(currentEvent, checked);
 		if (currentEvent.defaultPrevented || !rowId) return;
 
+		const context = ev ? { event: ev } : undefined;
 		if (checked) {
-			datagridRowBond?.select();
+			datagridRowBond?.select(context);
 		} else {
-			datagridRowBond?.unselect();
+			datagridRowBond?.unselect(context);
 		}
 	}
 </script>

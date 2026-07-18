@@ -4,10 +4,7 @@
 	import type { SelectSelectionProps } from './types';
 	import { Chip } from '../chip';
 	import { HtmlAtom } from '../atom';
-
-	const bond = SelectBond.getOrThrow('SelectSelection must be used within a Select');
-
-	const isMultiple = $derived(bond.props.multiple);
+	import { usePart } from '$ixirjs/ui/shared';
 
 	let {
 		class: klass = '',
@@ -20,10 +17,11 @@
 		...restProps
 	}: SelectSelectionProps<T, B> = $props();
 
-	const atom = bond.value();
-
-	const presentation = $derived({ preset: preset ?? atom.preset });
-
+	const part = usePart(SelectBond, 'value', () => restProps, {
+		message: 'SelectSelection must be used within a Select',
+		preset: () => preset
+	});
+	const isMultiple = $derived(part.bond.props.multiple);
 	const _base = $derived((base ?? isMultiple) ? Chip : undefined);
 
 	function handleClose(ev: Event) {
@@ -37,7 +35,7 @@
 
 <HtmlAtom
 	{as}
-	{bond}
+	bond={part.bond}
 	base={_base}
 	class={[
 		'select-value border-border inline-flex h-6 flex-nowrap items-center gap-1 rounded-sm px-2 whitespace-nowrap',
@@ -45,8 +43,7 @@
 		klass
 	]}
 	onclose={handleClose}
-	{...presentation}
-	{...restProps}
+	{...part.props}
 >
 	{#if children}
 		{@render children?.()}

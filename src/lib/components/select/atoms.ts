@@ -6,4 +6,4 @@ export { default as Query } from './select-query.svelte';
 export { default as Selection } from './select-selection.svelte';
 export { default as Selections } from './select-selections.svelte';
 export { Tail, Indicator } from '../popover/atoms';
-export { Content, List, Divider, Title, Group } from '../dropdown-menu/atoms';
+export { Content, Divider, Title, Group } from '../dropdown-menu/atoms';

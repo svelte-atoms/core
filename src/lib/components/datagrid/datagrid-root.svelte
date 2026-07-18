@@ -16,11 +16,17 @@
 		template = undefined,
 		fallbackTemplate = 'auto',
 		factory = defaultFactory,
+		onvalueschange = undefined,
 		children = undefined,
 		...restProps
 	}: DatagridRootProps<T, E, B> = $props();
 
 	let valuesState = $derived<string[]>(values);
+	const callbackState = { bond: undefined as DataGridBond<T> | undefined };
+
+	function sameValues(left: readonly string[], right: readonly string[]) {
+		return left.length === right.length && left.every((item, index) => item === right[index]);
+	}
 
 	const binding = bindBond<DataGridBond<T>>(
 		(props) => factory(props),
@@ -29,14 +35,25 @@
 			values: [
 				() => valuesState,
 				(v) => {
-					valuesState = v ?? [];
+					const nextValues = v ?? [];
+					const changed = !sameValues(valuesState, nextValues);
+					valuesState = nextValues;
 					values = valuesState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onvalueschange?.(valuesState, {
+							bond: callbackBond,
+							...callbackBond.takeValuesChangeContext()
+						});
+					}
 				}
 			]
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance<DataGridRootAtom, DataGridBond<T>>('root', {
 		bond,
 		factory: (owner) => new DataGridRootAtom(owner as DataGridBond<T>)

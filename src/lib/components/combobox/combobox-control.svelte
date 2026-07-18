@@ -1,14 +1,8 @@
 <script lang="ts">
-	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
 	import { Input } from '$ixirjs/ui/components/input';
-	import { ComboboxBond, ComboboxControlAtom } from './bond.svelte';
+	import { ComboboxBond } from './bond.svelte';
 	import type { ComboboxControlProps } from './types';
-	import { INPUT } from '$ixirjs/ui/shared';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-
-	const bond = ComboboxBond.getOrThrow(
-		'ComboboxControl must be used within a Combobox'
-	) as ComboboxBond;
+	import { INPUT, usePart } from '$ixirjs/ui/shared';
 
 	let {
 		value = $bindable(),
@@ -17,16 +11,14 @@
 		...restProps
 	}: ComboboxControlProps = $props();
 
-	// Trigger control is the `value` box (the `'input'` capability's `value` field): shows the
-	// selection, setting it commits. Filtering lives in a separate `Combobox.Query` (`query` field).
-	const input = $derived(bond.surface(INPUT));
-
-	const atom = createAtomInstance<ComboboxControlAtom, ComboboxBond, HTMLInputElement>('control', {
-		bond,
-		factory: (owner) => new ComboboxControlAtom(owner as ComboboxBond)
+	const part = usePart(ComboboxBond, 'control', () => restProps, {
+		message: 'ComboboxControl must be used within a Combobox',
+		preset: () => preset
 	});
 
-	const comboboxProps = $derived(mergeAtomProps(atom, preset, restProps));
+	// Trigger control is the `value` box (the `'input'` capability's `value` field): shows the
+	// selection, setting it commits. Filtering lives in a separate `Combobox.Query` (`query` field).
+	const input = $derived(part.bond.surface(INPUT));
 </script>
 
 <Input.Control
@@ -38,5 +30,5 @@
 		}
 	}
 	class={['border-border flex-1 py-1', '$preset', klass]}
-	{...comboboxProps}
+	{...part.props}
 />

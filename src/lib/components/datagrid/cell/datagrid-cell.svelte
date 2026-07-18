@@ -36,8 +36,9 @@
 
 	const isHidden = $derived(column?.props.hidden ?? false);
 
-	function handleClick(ev: Event) {
-		onclick?.(ev, { ...(bond && { cell: bond }) });
+	function handleClick(event: MouseEvent) {
+		const onClick = onclick as ((event: MouseEvent) => void) | undefined;
+		onClick?.(event);
 	}
 </script>
 

@@ -6,6 +6,12 @@ import ComboboxTest from '$ixirjs/ui/test/components/combobox/combobox.test.svel
 // Regression: item click must commit a selection. The old combobox-item preventDefaulted the
 // click and toggled a never-set controller; it now commits via the combobox bond.
 describe('Combobox — item click commits a selection', () => {
+	it('keeps the placeholder visible for an empty single-select value', async () => {
+		render(ComboboxTest);
+
+		await expect.element(page.getByTestId('placeholder')).toHaveTextContent('Choose a language');
+	});
+
 	it('renders a chip after clicking an item (multi-select)', async () => {
 		render(ComboboxTest, { multiple: true });
 

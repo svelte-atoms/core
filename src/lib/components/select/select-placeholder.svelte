@@ -1,34 +1,22 @@
 <script lang="ts">
-	import { SelectBond, SelectPlaceholderAtom } from './bond.svelte';
+	import { SelectBond } from './bond.svelte';
 	import { HtmlAtom } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-
-	const bond = SelectBond.get();
+	import { usePart } from '$ixirjs/ui/shared';
+	import type { PresetKey } from '$ixirjs/ui/preset';
 
 	let {
 		class: klass = '',
-		preset = undefined as string | string[] | undefined,
+		preset = undefined as PresetKey | undefined,
 		children = undefined,
 		...restProps
 	} = $props();
 
-	const atom = bond
-		? createAtomInstance<SelectPlaceholderAtom, SelectBond, HTMLElement>('placeholder', {
-				bond,
-				factory: (owner) => new SelectPlaceholderAtom(owner as SelectBond)
-			})
-		: undefined;
-
-	const hasValue = $derived(!!bond?.props.values?.length);
-
-	const presentation = $derived({
-		preset: preset ?? atom?.preset ?? 'select.placeholder'
+	const part = usePart(SelectBond, 'placeholder', () => restProps, {
+		message: '<Select.Placeholder /> must be used within a <Select.Root />',
+		preset: () => preset
 	});
-
-	const placeholderProps = $derived({
-		...atom?.spread,
-		...restProps
-	});
+	const bond = part.bond;
+	const hasValue = $derived(!!bond.props.values?.length);
 </script>
 
 {#if !hasValue}
@@ -39,8 +27,7 @@
 			'$preset',
 			klass
 		]}
-		{...presentation}
-		{...placeholderProps}
+		{...part.props}
 	>
 		{@render children?.()}
 	</HtmlAtom>

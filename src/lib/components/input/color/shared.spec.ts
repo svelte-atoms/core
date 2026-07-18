@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-	buildColor,
-	detectFormat,
-	parseColor
-} from '$ixirjs/ui/components/input/color/shared';
+import { buildColor, detectFormat, parseColor } from '$ixirjs/ui/components/input/color/shared';
 
 describe('color parsing and building', () => {
 	it('parses short hex with alpha and builds normalized hex', () => {

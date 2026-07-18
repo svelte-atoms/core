@@ -1,9 +1,4 @@
-import {
-	Bond,
-	defineAtom,
-	type BondStateProps,
-	type Capability
-} from '$ixirjs/ui/shared/bond';
+import { Bond, defineAtom, type BondStateProps, type Capability } from '$ixirjs/ui/shared/bond';
 import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import type { Collection } from '$ixirjs/ui/shared/bond/collection.svelte';
 import {
@@ -12,6 +7,7 @@ import {
 	SELECTION,
 	type SelectionModel
 } from '$ixirjs/ui/shared/capability/models/selection.svelte';
+import type { StateChangeContext } from '$ixirjs/ui/types';
 import { nanoid } from 'nanoid';
 
 // -----------------------------------------------------------------------------
@@ -23,16 +19,6 @@ export type DataGridBondProps<T = unknown> = BondStateProps & {
 	template?: string;
 	values?: string[];
 	selection?: T[];
-};
-
-/** @deprecated Use `DataGridBondProps` instead. */
-export type DataGridStateProps<T = unknown> = DataGridBondProps<T>;
-
-export type DataGridElements = {
-	root: HTMLElement;
-	header: HTMLElement;
-	body: HTMLElement;
-	footer: HTMLElement;
 };
 
 export interface IDataGridRow<T = unknown> {
@@ -56,12 +42,13 @@ export interface IDataGrid<T = unknown> {
 	readonly selectedRows: readonly IDataGridRow<T>[];
 	readonly sortableColumns: readonly IDataGridColumn[];
 	readonly template: string;
-	select(ids: string[]): void;
-	unselect(ids: string[]): void;
+	select(ids: string[], context?: Pick<StateChangeContext, 'event'>): void;
+	unselect(ids: string[], context?: Pick<StateChangeContext, 'event'>): void;
 	isSelected(id: string): boolean;
 	mountRow(id: string, row: IDataGridRow<T>): () => void;
 	mountColumn(id: string, col: IDataGridColumn): () => void;
 	selectionCapability(): Capability | undefined;
+	takeValuesChangeContext(): Pick<StateChangeContext, 'event'>;
 }
 
 // -----------------------------------------------------------------------------
@@ -92,6 +79,7 @@ export type DataGridFooterAtom = InstanceType<typeof DataGridFooterAtom>;
 
 class DataGridBondBase<T = unknown> extends Bond<DataGridBondProps<T>> implements IDataGrid<T> {
 	readonly #id: string = nanoid();
+	#valuesChangeContext: Pick<StateChangeContext, 'event'> | undefined;
 
 	// Row-selection over props.values; mode fixed to 'multiple' to preserve legacy accumulation behaviour.
 	#selection: SelectionModel<string> = createSelection<string>({
@@ -157,12 +145,30 @@ class DataGridBondBase<T = unknown> extends Bond<DataGridBondProps<T>> implement
 		return this.rows.set(id, item);
 	}
 
-	select(ids: string[]): void {
-		this.#selection.select(ids);
+	select(ids: string[], context?: Pick<StateChangeContext, 'event'>): void {
+		this.#commitSelectionContext(context, () => this.#selection.select(ids));
 	}
 
-	unselect(ids: string[]): void {
-		this.#selection.deselect(ids);
+	unselect(ids: string[], context?: Pick<StateChangeContext, 'event'>): void {
+		this.#commitSelectionContext(context, () => this.#selection.deselect(ids));
+	}
+
+	takeValuesChangeContext(): Pick<StateChangeContext, 'event'> {
+		const context = this.#valuesChangeContext ?? {};
+		this.#valuesChangeContext = undefined;
+		return context;
+	}
+
+	#commitSelectionContext(
+		context: Pick<StateChangeContext, 'event'> | undefined,
+		commit: () => void
+	): void {
+		this.#valuesChangeContext = context;
+		try {
+			commit();
+		} finally {
+			this.#valuesChangeContext = undefined;
+		}
 	}
 
 	isSelected(id: string): boolean {
@@ -178,17 +184,7 @@ class DataGridBondBase<T = unknown> extends Bond<DataGridBondProps<T>> implement
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const DataGridBondImpl = defineBond<
-	{
-		root: typeof DataGridRootAtom;
-		header: typeof DataGridHeaderAtom;
-		body: typeof DataGridBodyAtom;
-		footer: typeof DataGridFooterAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof DataGridBondBase
->({
+const DataGridBondDefinition = defineBond({
 	name: 'datagrid',
 	base: DataGridBondBase,
 	atoms: {
@@ -203,7 +199,7 @@ const DataGridBondImpl = defineBond<
 // Public types
 // -----------------------------------------------------------------------------
 
-export type DataGridBond<T = unknown> = BondOf<typeof DataGridBondImpl> & {
+export type DataGridBond<T = unknown> = BondOf<typeof DataGridBondDefinition> & {
 	readonly __props?: DataGridBondProps<T>;
 	readonly rows: Collection<IDataGridRow<T>>;
 	readonly columns: Collection<IDataGridColumn>;
@@ -217,13 +213,24 @@ export type DataGridBond<T = unknown> = BondOf<typeof DataGridBondImpl> & {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-interface DataGridBondConstructor {
+// TS cannot retain a class value's type parameter through `typeof DataGridBondDefinition`; this
+// minimal static facade preserves generic construction and context lookup ergonomics.
+interface DataGridBondGenericFacade {
 	new <T = unknown>(props: DataGridBondProps<T>): DataGridBond<T>;
-	readonly CONTEXT_KEY: string;
 	get<T = unknown>(): DataGridBond<T> | undefined;
 	getOrThrow<T = unknown>(message?: string): DataGridBond<T>;
+	optional<T = unknown>(): DataGridBond<T> | undefined;
+	required<T = unknown>(message?: string): DataGridBond<T>;
 	set<T = unknown>(bond: DataGridBond<T>): DataGridBond<T>;
 	create<T = unknown>(props: DataGridBondProps<T>): DataGridBond<T>;
 }
 
-export const DataGridBond = DataGridBondImpl as unknown as DataGridBondConstructor;
+// Replace only generic-sensitive signatures. The mapped original retains defineBond's
+// untouched statics and definition phantom metadata while dropping its construct signature.
+type DataGridBondConstructor = Omit<
+	typeof DataGridBondDefinition,
+	keyof DataGridBondGenericFacade
+> &
+	DataGridBondGenericFacade;
+
+export const DataGridBond = DataGridBondDefinition as unknown as DataGridBondConstructor;

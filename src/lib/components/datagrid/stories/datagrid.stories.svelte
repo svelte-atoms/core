@@ -1,6 +1,6 @@
 <script module>
 	import { defineMeta } from '@storybook/addon-svelte-csf';
-	import { DataGrid as DataGridCmp } from '..';
+	import { DataGrid as DataGridCmp, type SortBy } from '..';
 	import { Select } from '$ixirjs/ui/components/select';
 	import MoreVerticalIcon from '$ixirjs/ui/icons/icon-more-vert.svelte';
 	import ArrowDownIcon from '$ixirjs/ui/icons/icon-arrow-down.svelte';
@@ -158,8 +158,8 @@
 	const datagridContainer = container();
 
 	// --- Sortable Columns story state ---
-	// `onsort` reports the column's `sortable` field id + the toggled `direction`;
-	// we keep it in `sortBy` and derive the ordered rows from it (the grid never mutates data).
+	// `onsort` reports the column id, its `sortable` field, and committed direction;
+	// we keep that semantic value in `sortBy` and derive the ordered rows (the grid never mutates data).
 	type SortField = 'name' | 'role' | 'department';
 	let sortBy = $state<{ field: SortField; direction: 'asc' | 'desc' }>({
 		field: 'name',
@@ -172,8 +172,8 @@
 		return direction === 'desc' ? ordered.reverse() : ordered;
 	});
 
-	function handleSort(_ev: CustomEvent, options: { field?: string; direction: 'asc' | 'desc' }) {
-		if (options.field) sortBy = { field: options.field as SortField, direction: options.direction };
+	function handleSort(sort: SortBy) {
+		if (sort.by) sortBy = { field: sort.by as SortField, direction: sort.direction };
 	}
 
 	// --- Empty State story ---
@@ -250,11 +250,11 @@
 								>
 									<Icon src={MoreVerticalIcon} />
 								</Select.Trigger>
-								<Select.List>
+								<Select.Content>
 									<Select.Item value="view">View Profile</Select.Item>
 									<Select.Item value="edit">Edit</Select.Item>
 									<Select.Item value="remove">Remove</Select.Item>
-								</Select.List>
+								</Select.Content>
 							</DataGridCmp.Cell>
 						</DataGridCmp.Row>
 					{/each}
@@ -276,8 +276,8 @@
 </Story>
 
 <!-- Sortable columns: `sortable="<field>"` marks a column clickable; clicking toggles its
-     `direction` and fires `onsort` with `{ field, direction }`. The story owns the ordering —
-     it sorts a copy from `sortBy` and never mutates the source rows. -->
+     `direction` and fires `onsort` with `{ id, by, direction }` plus the real click event in
+     callback context. The story owns the ordering and never mutates source rows. -->
 <Story name="Sortable Columns">
 	<div class="flex w-lg flex-col gap-2">
 		{#snippet sortIcon(field: SortField)}

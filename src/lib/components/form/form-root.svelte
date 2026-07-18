@@ -1,43 +1,9 @@
-<script module lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { HTMLAttributes } from 'svelte/elements';
-	import {
-		mergePresetProps,
-		HtmlAtom,
-		type HtmlAtomProps,
-		type Base
-	} from '$ixirjs/ui/components/atom';
-	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
-	import type { Override, Factory } from '$ixirjs/ui/types';
-	import { FormBond, type FormProps } from './bond.svelte';
-	import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
-
-	// Available on both the renderless and renderfull branches (preset is otherwise only on the
-	// renderfull `HtmlAtomProps` side, and validator was undeclared).
-	type CommonProps = {
-		factory?: Factory<FormBond>;
-		validator?: unknown;
-		preset?: PresetKey;
-	};
-
-	type RenderlessProps = {
-		renderless?: true;
-		children?: Snippet<[{ form: FormBond }]>;
-	};
-
-	type RenderfullProps<B extends Base = Base> = Override<
-		HtmlAtomProps<'form', B>,
-		{
-			renderless?: false;
-			children?: Snippet<[{ form: FormBond }]>;
-		}
-	>;
-
-	export type FormRootProps<B extends Base = Base> = CommonProps &
-		(RenderlessProps | RenderfullProps<B>);
-</script>
-
 <script lang="ts" generics="B extends Base = Base">
+	import { mergePresetProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
+	import { FormBond, type FormProps } from './bond.svelte';
+	import type { FormRootProps } from './types';
+
 	let {
 		class: klass = '',
 		renderless = false,
@@ -46,7 +12,7 @@
 		children = undefined,
 		preset = undefined,
 		...restProps
-	}: FormRootProps<B> & HTMLAttributes<HTMLFormElement> = $props();
+	}: FormRootProps<B> = $props();
 
 	const formProps = $derived(mergePresetProps(preset, 'form', restProps));
 

@@ -23,6 +23,7 @@
 		initial,
 		onchange,
 		oninput,
+		oncheckedchange,
 		onblur,
 		onfocus,
 		onclick = undefined,
@@ -42,44 +43,42 @@
 		isIndeterminate ? indeterminateSnippet : showCheckmark ? checkedSnippet : undefined
 	);
 
-	function handleChange(ev: Event) {
-		onchange?.(ev, {
-			checked: checked
-		});
+	function handleChange(event: Event) {
+		onchange?.(event);
 	}
 
-	function handleInput(ev: Event) {
-		oninput?.(ev, {
-			checked: checked
-		});
+	function handleInput(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+		const nextChecked = input.checked;
+		const changed = checked !== nextChecked;
+
+		checked = nextChecked;
+		indeterminate = input.indeterminate;
+		oninput?.(event);
+
+		if (changed) {
+			oncheckedchange?.(nextChecked, { event });
+		}
 	}
 
-	function handleClick(ev: MouseEvent) {
+	function handleClick(event: MouseEvent) {
 		if (disabled) return;
 
-		// Click forwarded by the native input (e.g. clicking surrounding <label> text); bind:checked already owns that toggle.
-		if (ev.target === checkboxElement) {
+		// Click forwarded by the native input (e.g. clicking surrounding <label> text); the input event owns the commit.
+		if (event.target === checkboxElement) {
 			return;
 		}
 
-		onclick?.(ev);
+		onclick?.(event);
 
-		if (ev.defaultPrevented) {
+		if (event.defaultPrevented) {
 			return;
 		}
 
-		// We own the toggle below. preventDefault stops an ancestor <label> from forwarding this click to the
-		// hidden input and toggling a second time; stopPropagation would NOT, since forwarding is a default action.
-		ev.preventDefault();
-
-		if (indeterminate) {
-			indeterminate = false;
-			checked = true;
-		} else {
-			checked = !checked;
-		}
-
-		handleInput(ev);
+		// Delegate the state transition to the native input so oninput/onchange receive real DOM events.
+		// Prevent the ancestor label's default forwarding from toggling the input a second time.
+		event.preventDefault();
+		checkboxElement?.click();
 	}
 </script>
 
