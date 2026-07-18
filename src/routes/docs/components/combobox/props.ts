@@ -81,6 +81,30 @@ export const comboboxRootProps: PropDefinition[] = [
 		description: 'Combobox content. Receives the ComboboxBond instance for custom composition.'
 	},
 	{
+		name: 'onopenchange',
+		type: 'StateChangeCallback<boolean, ComboboxBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after open state commits.'
+	},
+	{
+		name: 'onvaluechange',
+		type: 'StateChangeCallback<unknown, ComboboxBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected value commits in single mode.'
+	},
+	{
+		name: 'onvalueschange',
+		type: 'StateChangeCallback<unknown[], ComboboxBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected values commit in multiple mode.'
+	},
+	{
+		name: 'onquerychange',
+		type: 'StateChangeCallback<string, ComboboxBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the filter query commits.'
+	},
+	{
 		name: '...atomProps',
 		type: 'HtmlAtomProps',
 		default: '-',

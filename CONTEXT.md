@@ -16,10 +16,10 @@ values, mutation methods, context, capabilities, and the registry of rendered
 Atoms. Implemented in `src/lib/shared/bond/bond.svelte.ts`. A compound component
 family has one root Bond; nested families can have child Bonds.
 
-**BondState** — an internal compatibility helper. Do not teach it as a public
-authoring concept. New code puts shared state, derived values, mutation methods,
-collections, and capability lookup on `Bond` itself. `bond.state` remains as a
-compatibility alias for older internals while they migrate.
+**BondState** — an experimental state host accepted by legacy/custom Bond constructors and by
+`defineBond({ state })`. Do not teach it as the common public authoring path. New code puts shared
+state, derived values, mutation methods, collections, and capability lookup on `Bond` itself; there
+is no instance-level `bond.state` facade.
 
 **State-surface naming.** The **verb namespace is reserved for imperative
 methods** that mutate — `open()`, `close()`, `toggle()`, `select()`. State is
@@ -35,12 +35,10 @@ normalized surface consumers read.
 
 **Bond context plumbing** — a bond family is published to Svelte context via the
 inherited `share()` / `static get()` / `static set()` on `Bond` (polymorphic
-`this`, keyed off `CONTEXT_KEY`). A subclass only declares
-`static CONTEXT_KEY = bondContextKey('<name>')` — it never re-implements the
-trio. Keys are canonical (`@ixirjs/context/<name>`); don't hand-write the
-string. The only bonds that legitimately _don't_ define their own key are the
-overlay-family bonds (menu, dropdown-menu, select, combobox) that deliberately
-share `popover`'s context slot by inheriting `PopoverBond.CONTEXT_KEY`.
+`this`, keyed off `CONTEXT_KEY`). `defineBond(...)` generates a canonical key
+(`@ixirjs/context/<name>`) for an ordinary definition; `extends:` inherits its
+parent key. A raw Bond class declares `static CONTEXT_KEY = bondContextKey('<name>')`
+but never re-implements the trio. Don't hand-write the string.
 
 **Atom Component** — the Svelte component that renders a part such as Root,
 Trigger, Content, Item, Header, or Body.
@@ -48,8 +46,8 @@ Trigger, Content, Item, Header, or Body.
 **Atom** — the runtime object owned by an Atom Component. It owns one DOM element
 ref, attrs, handlers, attachment lifecycle, role projection, and atom-local
 capabilities. Rendered Svelte parts create Atoms with `createAtomInstance(...)`
-and register them with their Bond. Generated part methods remain compatibility
-adapters for older authoring code.
+and register them with their Bond. Definitions retain atom metadata only; there are no generated detached-Atom constructors. Rendered
+parts use `createAtomInstance(...)`/`usePart(...)`, and mounted consumers use registry queries.
 
 **Capability** — a reusable behavior unit installed on a Bond or an Atom. Bond
 capabilities own shared state, cross-atom coordination, role projection, and
@@ -84,8 +82,8 @@ Merge rules:
 - `attrs` merge **after** the atom's own (last wins), like presets.
 - `handlers` are **chained** on key collision (atom first, then each behavior) —
   behavior augments rather than clobbers; both run.
-- `onmount` runs as an extra spread attachment alongside the atom's own; return a
-  cleanup. `ClickTrigger` is proven to round-trip through this seam unchanged.
+- `onmount` joins the Atom's single stable attachment transaction. Own, Bond-projected,
+  and Atom-capability hooks mount in dependency order and clean up in reverse order.
 
 **Channel-B reactivity invariant** — Atoms read Bond state **live and tracked**;
 the _component_ owns the reactivity boundary by reading `atom.spread` inside a
@@ -98,15 +96,14 @@ the _component_ owns the reactivity boundary by reading `atom.spread` inside a
 - `get handlers()` returns closures only. Read state **inside the handler body**
   (event-time), never above the `return` (derive-time) — a derive-time read
   captures a stale value into the closure.
-- `untrack` is legitimate **only** for one-shot snapshots: bond construction
-  (`untrack(() => factory()).share()`) and mount-time reads in `onmount`. Those
-  must _not_ become reactive dependencies.
+- `untrack` is legitimate **only** for one-shot snapshots: bond construction inside
+  `bindBond(...)` and mount-time reads in `onmount`. Those must _not_ become reactive
+  dependencies.
 
 **Node registry** — internal microtask-flushed `StagedMap` inside Bond.
-`bond.register(node)` records rendered Atoms. `bond.node(key)` returns the first
-registered Atom for a slot or role; `bond.nodes(key)` returns all matching
-registered Atoms. Generated part methods and `bond.atom('key', ...)` are
-compatibility adapters, not the preferred path for rendered components.
+`bond.register(node)` records rendered Atoms. Read through the explicit query matching
+intent: `nodeByPart(name)`, `nodesByPart(name)`, or `nodeByRole(role)`. The ambiguous
+`node()`/`nodes()` aliases and generated part methods were removed before 1.0.
 
 The microtask-flush is **load-bearing — do not "simplify" it away**:
 
@@ -114,7 +111,7 @@ The microtask-flush is **load-bearing — do not "simplify" it away**:
   straight to a reactive map there throws `state_unsafe_mutation`, so writes are
   staged in a plain `#pending` Map and flushed in a microtask.
 - the map must still be reactive because a `$derived` reading one
-  atom's element via `bond.node('content')?.element` must re-run when _that_ atom
+  atom's element via `bond.nodeByPart('content')?.element` must re-run when _that_ atom
   registers later (cross-atom lookups: trigger→content, focus restore→trigger).
 - hence `get()` reads `#atoms` first (to register the reactive dep) before
   falling back to `#pending`. Removing either half breaks one of these.
@@ -124,11 +121,14 @@ instance, not while computing `spread`. Svelte keys attachments by symbol
 identity; reminting a symbol on every spread read would rerun mount/cleanup and
 break lifecycle locality.
 
-**Share** — the convention for setting a Bond into Svelte context. `share()` is
-**inherited** from the base `Bond` (it sets context under the subclass's
-`CONTEXT_KEY` via polymorphic `this`); a Bond no longer reimplements it.
-Sub-components retrieve via `FooBond.get()` (also inherited). See §"Bond context
-plumbing".
+**Share** — the low-level operation that sets a Bond into Svelte context. Normal roots
+use `bindBond(...)` to construct, activate, and destroy the Bond, then explicitly publish it
+with `binding.bond.share()` at the context boundary. Sub-components retrieve via `FooBond.get()`
+or `usePart(...)`. See §"Bond context plumbing".
+
+**Preset record** — the closed presentation contract `{ class, attrs, variants,
+compounds, defaults, render? }`, authored with `definePreset(...)`. Presets do not own
+attachments or lifecycle; that behavior belongs in capabilities.
 
 **`base` / `as` / preset cascade** — props on `HtmlAtom` that govern what
 component renders and how variants/presets merge. Order: `defaults → preset →
@@ -163,11 +163,9 @@ popover tail → `combobox.tail`).
 Components consume this as the **default**, caller overrides:
 `preset: preset ?? atom.preset`. Don't restate the literal key in the `.svelte`
 — the atom owns it. The `preset` prop is typed `PresetKey`, which also accepts
-an explicit fallback chain (`string[]`) resolved first-registered-wins by
-`presentationStages.preset`. Collection-item atoms (`SelectItemAtom`,
-dropdown-menu item) carry an instance-specific `name` (`item-<value>`), so they
-read the shared `*.item` preset from the bond's canonical `item()` atom instead
-of their own `.preset`.
+an explicit fallback chain from `fallbackPreset(...)`, resolved first-registered-wins by
+`presentationStages.preset`. Collection-item components pass the canonical shared item
+preset explicitly rather than calling deprecated generated Atom methods.
 
 ## Overlay architecture
 
@@ -178,6 +176,20 @@ Dropdown Menu, Select, and Combobox all use disclosure behavior.
 **OverlayBond** — the shared base for overlay families. It owns the open/close
 surface and common overlay props. Concrete overlays add their own capabilities,
 part atoms, and positioning or modal behavior.
+
+**Portal** — an in-place containment scope and mount target, not a body-detached escape hatch. A portal owns the DOM place where teleported content paints; host portals keep nested overlays scrolling, clipping, and stacking with their host.
+
+**Port** — the low-level synchronous DOM re-parenting primitive (`port(node, target)`). It moves a node into a target element and returns cleanup; higher-level components own target resolution and diagnostics.
+
+**Teleport** — the current component that ports content into a portal target. Target precedence is explicit `portal` prop → ambient portal from context → root portal (`root.l0`). It renders nothing until a target element exists.
+
+**Portal host / sink** — the host is the in-flow relative wrapper; the sink is the absolute portal element inside it. The sink is also the floating-ui boundary, so positioning and containment use one DOM element.
+
+**Containment scope** — the DOM and stacking context a portal keeps overlays inside. A popover opened inside a dialog should target the dialog's host portal by default, not the document body.
+
+**ZLayer / band** — the current elevation model. Built-in bands are `base`, `positioned`, `modal`, and `ambient`; `ZLayer.value` computes the natural z-index from the band, parent layer, relation, and offset.
+
+**Layer anchor / relation** — a named z reference registered with `ZLayer.anchor(...)`; a relation (`{ below }` or `{ above }`) pins a layer just below or above that anchor. Use it for sticky-under/sticky-over cases instead of magic z constants.
 
 **Portal host capabilities** — reusable overlay policies in
 `src/lib/components/portal/host/capabilities` and
@@ -205,10 +217,12 @@ The Svelte-prefixed suffix lands in Vitest's browser project (Playwright +
 Chromium), where `$state` runes work. Pure (no-rune) specs use `*.spec.ts` and
 run in the node project.
 
-**Per-bond checklist** — each `bond.svelte.spec.ts` covers: (1) Bond method
+**Per-bond checklist** — each colocated browser Bond spec covers: (1) Bond method
 mutates props; (2) `atom.spread` is reactive; (3) handlers transition state
-when invoked; (4) atom identity is stable (cache); (5) strategy substitution
-alters behavior.
+when invoked; (4) rendered Atom identity/registration is stable; (5) capability
+or strategy substitution alters behavior; (6) teardown unregisters; (7) a required
+descendant fails outside root context; and (8) relationship projection is asserted through
+spread attrs. Collapsible is the canonical example.
 
 **Adapter specs** — each strategy adapter (ClickTrigger, hoverTrigger,
 CloseOnEscape, ClearThenClose, TrappedFocus, FocusOnOpen, NoFocus) has a spec

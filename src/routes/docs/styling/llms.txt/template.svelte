@@ -71,7 +71,6 @@ directly on components:
     'sizing-classes',         // w-full, px-4, etc.
     'visual-classes',         // bg-primary, border, etc.
     isOpen && 'conditional',  // Conditional classes
-    '$preset',                // Preset placeholder
     klass                     // User overrides (highest priority)
   ]}
 />
@@ -247,8 +246,8 @@ const accordionVariants = defineVariants((bond) => ({
   class: 'border rounded-md transition-all',
   variants: {
     state: {
-      open: bond?.state?.isOpen ? 'bg-accent' : 'bg-background',
-      active: bond?.state?.isActive ? 'border-primary' : 'border-border'
+      open: bond?.isOpen ? 'bg-accent' : 'bg-background',
+      active: bond?.isActive ? 'border-primary' : 'border-border'
     }
   }
 }));
@@ -265,12 +264,11 @@ const accordionVariants = defineVariants((bond) => ({
   preset="button"
   class={[
     'component-defaults',
-    '$preset',  // Replaced with preset classes
     klass       // User classes override
   ]}
 />
 
-<!-- Without $preset (preset at start) -->
+<!-- Preset classes are inserted automatically -->
 <HtmlAtom
   preset="button"
   class={['component-classes', klass]}
@@ -322,7 +320,8 @@ const accordionVariants = defineVariants((bond) => ({
 	`
 <script lang="ts">
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
+  import { HtmlAtom } from '@ixirjs/ui';
+import { defineVariants } from '@ixirjs/ui/utils';
   
   const variants = defineVariants({
     class: 'inline-flex items-center justify-center rounded-md font-medium transition-colors',

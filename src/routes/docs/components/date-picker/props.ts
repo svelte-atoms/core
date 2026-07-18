@@ -31,6 +31,12 @@ export const datePickerRootProps: PropDefinition[] = [
 		description: 'Tuple form of the range bounds (bindable).'
 	},
 	{
+		name: 'pivote',
+		type: 'Date',
+		default: 'new Date()',
+		description: 'The month currently in view (bindable).'
+	},
+	{
 		name: 'min / max',
 		type: 'Date | undefined',
 		default: 'undefined',
@@ -47,6 +53,30 @@ export const datePickerRootProps: PropDefinition[] = [
 		type: 'number',
 		default: '2',
 		description: 'Pixel gap between the trigger and the calendar popover.'
+	},
+	{
+		name: 'onopenchange',
+		type: 'StateChangeCallback<boolean, DatePickerBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after open state commits.'
+	},
+	{
+		name: 'onvaluechange',
+		type: 'StateChangeCallback<Date | undefined, DatePickerBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected date commits in single mode.'
+	},
+	{
+		name: 'onrangechange',
+		type: 'StateChangeCallback<CalendarRange, DatePickerBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected range commits in range mode.'
+	},
+	{
+		name: 'onpivotechange',
+		type: 'StateChangeCallback<Date, DatePickerBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the visible month pivote commits.'
 	},
 	{
 		name: 'children',

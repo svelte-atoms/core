@@ -1,4 +1,4 @@
-const presetCode = `import { setPreset } from '@ixirjs/ui';
+const presetCode = `import { setPreset } from '@ixirjs/ui/preset';
 
 const preset = setPreset({
   button: () => ({

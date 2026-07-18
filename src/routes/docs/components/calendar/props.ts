@@ -37,10 +37,22 @@ export const calendarRootProps: PropDefinition[] = [
 		description: 'Constrain selectable dates to an inclusive range.'
 	},
 	{
-		name: 'onchange',
-		type: '((ev: CustomEvent, params: { range; pivote }) => void) | undefined',
+		name: 'onvaluechange',
+		type: 'StateChangeCallback<Date | undefined, CalendarBond> | undefined',
 		default: 'undefined',
-		description: 'Fired when the selection changes.'
+		description: 'Fired after the selected date commits in single mode.'
+	},
+	{
+		name: 'onrangechange',
+		type: 'StateChangeCallback<CalendarRange, CalendarBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected range commits in range mode.'
+	},
+	{
+		name: 'onpivotechange',
+		type: 'StateChangeCallback<Date, CalendarBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the visible month pivote commits.'
 	},
 	{
 		name: 'children',

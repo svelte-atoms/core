@@ -24,12 +24,12 @@
 	const requirements = [
 		{
 			name: 'Svelte 5',
-			detail: 'Runes API required',
+			detail: '^5.46.4 or later',
 			icon: 'svelte'
 		},
 		{
 			name: 'Tailwind CSS v4',
-			detail: 'CSS-first config',
+			detail: 'CSS-first configuration',
 			icon: 'tailwind'
 		},
 		{
@@ -296,7 +296,7 @@
 	<Section.Header>
 		<Section.Title>Configuration</Section.Title>
 		<Section.Subtitle
-			>Three quick steps to wire up styles, Tailwind, and component defaults.</Section.Subtitle
+			>Three quick steps to wire up foundation styles, Tailwind, and component defaults.</Section.Subtitle
 		>
 	</Section.Header>
 
@@ -311,9 +311,10 @@
 			<div class="bg-border mt-2 w-px flex-1"></div>
 		</div>
 		<div class="pb-10 pt-0.5">
-			<p class="text-foreground mb-1 text-sm font-semibold">Import internal styles</p>
+			<p class="text-foreground mb-1 text-sm font-semibold">Import foundation styles</p>
 			<p class="text-muted-foreground mb-4 text-sm">
-				Add the style import to your root layout so base component styles load on every page.
+				Add the public foundation stylesheet to your root layout so the library’s design tokens load
+				on every page.
 			</p>
 			<DocCodeBlock filepath="src/routes/+layout.svelte" language="Svelte" code={layoutCode} />
 			<div class="mt-3">
@@ -345,8 +346,10 @@
 			<DocCodeBlock filepath="src/app.css" language="CSS" code={appCssCode} />
 			<div class="mt-3">
 				<DocCallout variant="note" title="Source scanning">
-					Include <code class="font-mono text-xs">node_modules/@ixirjs/ui/**/*</code> in your
-					Tailwind source so library utility classes are detected.
+					Use <code class="font-mono text-xs"
+						>@source './../node_modules/@ixirjs/ui/**/*.{'{'}js,ts,svelte{'}'}';</code
+					>
+					so Tailwind detects library utility classes.
 				</DocCallout>
 			</div>
 		</div>
@@ -383,8 +386,8 @@
 
 	<div class="mt-3">
 		<DocCallout variant="success" title="You're ready">
-			Components are fully styled and keyboard-accessible out of the box. No additional setup
-			required.
+			Button includes a built-in presentation baseline. Add preset entries or classes as you use
+			more components.
 		</DocCallout>
 	</div>
 </Section.Root>

@@ -29,9 +29,9 @@
 		related: ['menu', 'dropdown-menu', 'popover']
 	};
 
-	const presetCode = `import { createPreset } from '@ixirjs/ui';
+	const presetCode = `import { definePreset } from '@ixirjs/ui/preset';
 
-const preset = createPreset({
+const preset = definePreset({
   'context-menu.trigger': () => ({
     class: 'cursor-context-menu select-none'
   }),
@@ -50,15 +50,14 @@ const preset = createPreset({
 		componentType: 'compound',
 		status: 'stable',
 		packageName: '@ixirjs/ui',
-		importCode: `import { ContextMenu } from '@ixirjs/ui/context-menu';`,
+		importCode: `import { ContextMenu } from '@ixirjs/ui';`,
 		breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Context Menu' }],
 		presetCode,
 		accessibility: [
 			'Right-click or Shift+F10 opens the menu on the trigger element',
 			'Arrow keys navigate menu items',
 			'Enter or Space activates a focused item',
-			'Escape closes the menu',
-			'Tab exits the menu and returns focus to normal flow'
+			'Escape closes the menu'
 		],
 		useCases: [
 			{
@@ -81,7 +80,12 @@ const preset = createPreset({
 				description: 'Captures right-click and opens at pointer coordinates'
 			},
 			{ name: 'ContextMenu.Content', description: 'Floating menu container' },
-			{ name: 'ContextMenu.Item', description: 'Actionable item with keyboard support' }
+			{ name: 'ContextMenu.Item', description: 'Actionable item with keyboard support' },
+			{ name: 'ContextMenu.Divider', description: 'Visual separator between items' },
+			{ name: 'ContextMenu.Group', description: 'Logical group of menu items' },
+			{ name: 'ContextMenu.Title', description: 'Label for a menu-item group' },
+			{ name: 'ContextMenu.Indicator', description: 'Popover state indicator' },
+			{ name: 'ContextMenu.Tail', description: 'Optional popover tail' }
 		]
 	};
 

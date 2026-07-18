@@ -2,7 +2,8 @@
 	import { Section, CodeBlock, DocCallout } from '$docs/components';
 
 	// ── Extend an existing component ───────────────────────────────────────────
-	const extendCode = `import { defineBond, DropdownMenuBond } from '@ixirjs/ui';
+	const extendCode = `import { DropdownMenuBond } from '@ixirjs/ui/experimental';
+import { defineBond } from '@ixirjs/ui/shared';
 
 // A command-palette flavour of dropdown-menu.
 // parts: reuses the parent Bond's atoms, capabilities, and behavior.
@@ -16,14 +17,14 @@ export const CommandMenuBond = defineBond({
 export type CommandMenuBond = InstanceType<typeof CommandMenuBond>;`;
 
 	// ── Fuse two components into one ───────────────────────────────────────────
-	const fuseCode = `import { fuse, PopoverBond, DialogBond, PopoverTriggerAtom } from '@ixirjs/ui';
+	const fuseCode = `import { DialogBond, PopoverBond } from '@ixirjs/ui/experimental';
+import { fuse } from '@ixirjs/ui/shared';
 
-// PopoverDialog — a Popover trigger that opens Dialog's MODAL content.
-// \`fuse\` is the closure property of the composition model: bond + bond = bond.
+// PopoverDialog — a new family composed from two existing definitions.
 export const PopoverDialogBond = fuse({
-  name: 'popover-dialog',                    // rebrand: fresh namespace / preset / context key
-  parts: [PopoverBond, DialogBond],          // atoms UNION, capabilities CONCAT (last-wins per slot)
-  atoms: { trigger: PopoverTriggerAtom },    // curate the union — keep Popover's richer trigger
+  name: 'popover-dialog',
+  parts: [PopoverBond, DialogBond], // ordered union; later slots win
+  atoms: {}
 });
 export type PopoverDialogBond = InstanceType<typeof PopoverDialogBond>;`;
 
@@ -40,62 +41,50 @@ export type PopoverDialogBond = InstanceType<typeof PopoverDialogBond>;`;
 </PopoverDialog.Root>`;
 
 	// ── Author a brand-new bond ────────────────────────────────────────────────
-	const defineBondCode = `import {
-  Bond,
-  Atom,
+	const defineBondCode = `import { Bond, defineAtom } from '@ixirjs/ui/experimental';
+import {
   createAtomInstance,
   defineAtomCapability,
-  bondContextKey
-} from '@ixirjs/ui';
-import { getContext, setContext } from 'svelte';
+  defineBond,
+  roles
+} from '@ixirjs/ui/shared';
 
 export type TilesBondProps = { id?: string; value?: string };
 
-export class TilesBond extends Bond<TilesBondProps> {
-  static CONTEXT_KEY = bondContextKey('tiles');
-
-  constructor(props: TilesBondProps) {
-    super(props, 'tiles');
-  }
-
-  select(value: string) {
-    this.props.value = value;
-  }
-
-  static required() {
-    const bond = getContext<TilesBond | undefined>(TilesBond.CONTEXT_KEY);
-    if (!bond) throw new Error('Tiles parts must be rendered inside <Tiles.Root>.');
-    return bond;
-  }
-
-  share(): this {
-    return setContext(TilesBond.CONTEXT_KEY, this);
-  }
+class TilesBondBase extends Bond<TilesBondProps> {
+  select(value: string) { this.props.value = value; }
 }
 
-export class TileItemAtom extends Atom<TilesBond, HTMLButtonElement> {
-  constructor(bond: TilesBond | undefined) {
-    super(bond, 'item');
-  }
-}
+const TilesRootAtom = defineAtom('root');
+const TileItemAtom = defineAtom('item');
 
-const optionRole = defineAtomCapability({
-  behavior: () => ({ attrs: () => ({ role: 'option' }) })
+export const TilesBond = defineBond({
+  name: 'tiles',
+  base: TilesBondBase,
+  atoms: {
+    root: TilesRootAtom,
+    item: { atom: TileItemAtom, role: roles.item }
+  }
 });
 
-// In Tile.Item.svelte:
+const optionPresentation = defineAtomCapability({
+  behavior: { attrs: () => ({ role: 'option' }) }
+});
+
+// In Tile.Item.svelte — creation and lookup are explicit:
+const bond = TilesBond.required();
 const item = createAtomInstance('item', {
-  bond: () => TilesBond.required(),
+  bond,
   register: { cardinality: 'many' },
-  factory: (bond) => new TileItemAtom(bond),
-  capabilities: [optionRole]
+  factory: (owner) => new TileItemAtom(owner!),
+  capabilities: [optionPresentation]
 });`;
 
 	// ── Use the built-in stateful capabilities ─────────────────────────────────
 	const builtinsCode = `import {
   createRovingFocus, rovingCapability,
   createSelection, selectionCapability,
-} from '@ixirjs/ui';
+} from '@ixirjs/ui/shared';
 
 // "Which item is highlighted" (keyboard nav) — owns its own active index;
 // the item list + id→item resolution are injected.
@@ -120,11 +109,13 @@ capabilities: () => [
 	// ── Write your own capability ──────────────────────────────────────────────
 	const capabilityCode = `import {
   capabilityKey,
+  customRole,
   defineBondCapability,
   defineAtomCapability
-} from '@ixirjs/ui';
+} from '@ixirjs/ui/shared';
 
 export const BUSY = capabilityKey<{ readonly busy: boolean }>('@acme/cap:busy');
+const status = customRole<'status', void>({ owner: '@acme/widgets', name: 'status' });
 
 // Bond capability: shared state, cross-node coordination, or whole-bond effects.
 export function busyCapability(isBusy: () => boolean) {
@@ -132,20 +123,20 @@ export function busyCapability(isBusy: () => boolean) {
     slot: BUSY,
     surface: { get busy() { return isBusy(); } },
     roles: {
-      status: () => ({ attrs: () => ({ 'aria-busy': isBusy() }) })
+      [status]: () => ({ attrs: () => ({ 'aria-busy': isBusy() }) })
     }
   });
 }
 
 // Atom capability: one node's local presentation, DOM behavior, or lifecycle.
-export const statusRole = defineAtomCapability({
-  behavior: (node) => ({
-    attrs: () => ({ role: 'status', 'data-atom': node.name })
-  })
+export const statusPresentation = defineAtomCapability({
+  behavior: {
+    attrs: (node) => ({ role: 'status', 'data-atom': node.name })
+  }
 });
 
 // register on a Bond:     this.capability(busyCapability(() => this.props.loading))
-// register on an Atom: createAtomInstance('status', { capabilities: [statusRole] })`;
+// register on an Atom: createAtomInstance('status', { capabilities: [statusPresentation] })`;
 </script>
 
 <svelte:head>
@@ -163,7 +154,11 @@ export const statusRole = defineAtomCapability({
 			Every compound component has a <strong>Bond</strong> that coordinates rendered
 			<strong>Atoms</strong> and shared <strong>capabilities</strong>. Because a bond spec is data,
 			the set of bonds is closed under combination: you can extend one, fuse two, author a new one,
-			and project shared behavior as a capability over the same public seam.
+			and project shared behavior as a capability over the same public seam. Concrete component Bond
+			definitions are expert APIs imported from
+			<code class="bg-muted text-foreground rounded px-1.5 py-0.5 text-xs"
+				>@ixirjs/ui/experimental</code
+			>.
 		</Section.Subtitle>
 	</Section.Header>
 

@@ -13,6 +13,13 @@ export const dialogProps: PropDefinition[] = [
 		description: 'Controls whether the dialog is visible. Bind this prop for controlled usage.'
 	},
 	{
+		name: 'onopenchange',
+		type: 'StateChangeCallback<boolean, DialogBond> | undefined',
+		default: 'undefined',
+		description:
+			'Called after a real open-state transition commits; dismissal events and reasons are included when available.'
+	},
+	{
 		name: 'disabled',
 		type: 'boolean | undefined',
 		default: 'false',

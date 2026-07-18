@@ -16,17 +16,11 @@ const config = {
 			'$ixirjs/ui': 'src/lib',
 			'$ixirjs/ui/*': 'src/lib/*',
 			'@ixirjs/ui': 'src/lib',
-			'@ixirjs/ui/attachments/*': 'src/lib/attachments/*',
-			'@ixirjs/ui/components/*': 'src/lib/components/*',
-			'@ixirjs/ui/context': 'src/lib/context',
-			'@ixirjs/ui/context/*': 'src/lib/context/*',
-			'@ixirjs/ui/shared': 'src/lib/shared',
-			'@ixirjs/ui/shared/*': 'src/lib/shared/*',
-			'@ixirjs/ui/types': 'src/lib/types',
-			'@ixirjs/ui/types/*': 'src/lib/types/*',
-			'@ixirjs/ui/utils': 'src/lib/utils',
-			'@ixirjs/ui/utils/*': 'src/lib/utils/*',
-			'@ixirjs/ui/*': 'src/lib/components/*'
+			'@ixirjs/ui/preset': 'src/lib/preset',
+			'@ixirjs/ui/shared': 'src/lib/public/shared.ts',
+			'@ixirjs/ui/experimental': 'src/lib/public/experimental.ts',
+			'@ixirjs/ui/utils': 'src/lib/public/utils.ts',
+			'@ixirjs/ui/components/*': 'src/lib/public/components/*'
 		}
 	},
 	extensions: ['.svelte', '.svx'],

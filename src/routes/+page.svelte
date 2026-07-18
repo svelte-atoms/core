@@ -33,8 +33,8 @@
 	function copyCode() {
 		const snippets = [
 			installCommands[packageManager] as string,
-			`import '@ixirjs/ui/root.css';`,
-			`import { setPreset } from '@ixirjs/ui';\n\nsetPreset({\n  button: () => ({\n    class: 'px-4 py-2 rounded-lg',\n    variants: { ... }\n  })\n});`,
+			`import '@ixirjs/ui/styles/root.css';`,
+			`import { setPreset } from '@ixirjs/ui/preset';\n\nsetPreset({\n  button: () => ({\n    class: 'px-4 py-2 rounded-lg',\n    variants: { ... }\n  })\n});`,
 			`import { Button } from '@ixirjs/ui/components/button';`
 		];
 		navigator.clipboard.writeText(snippets[activeStep] ?? '');
@@ -457,7 +457,7 @@
 					>
 				</div>
 				<div class="flex-1">
-					<Tabs.Root bind:value={tabValue} onchange={() => {}} class="">
+					<Tabs.Root bind:value={tabValue} onvaluechange={() => {}} class="">
 						<Tabs.Header class="border-border border-b text-sm">
 							<Tab.Root value="account">
 								<Tab.Header>Account</Tab.Header>
@@ -781,7 +781,7 @@
 					<div class="ml-4">
 						<span class="text-[#ff7b72]">import</span>
 						<span class="text-[#e6edf3]"> </span>
-						<span class="text-[#a5d6ff]">'@ixirjs/ui/root.css'</span>
+						<span class="text-[#a5d6ff]">'@ixirjs/ui/styles/root.css'</span>
 						<span class="text-[#e6edf3]">;</span>
 					</div>
 					<div><span class="text-[#7ee787]">&lt;/script&gt;</span></div>

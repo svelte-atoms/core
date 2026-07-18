@@ -154,13 +154,13 @@ export const metadata = {
 <!-- Supports: Enter, Space -->
 
 <!-- Menu component -->
-<Menu.Root>
-  <Menu.Trigger base={Button}>Open Menu</Menu.Trigger>
-  <Menu.List>
-    <Menu.Item>Option 1</Menu.Item>
-    <Menu.Item>Option 2</Menu.Item>
-  </Menu.List>
-</Menu.Root>
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger base={Button}>Open Menu</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item>Option 1</DropdownMenu.Item>
+    <DropdownMenu.Item>Option 2</DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>
 <!-- Supports: Arrow keys, Enter, Escape -->
 
 <!-- Tabs component -->
@@ -352,16 +352,16 @@ export const metadata = {
 </Button>
 
 <!-- Menu item with disabled state -->
-<Menu.Root>
-  <Menu.Trigger base={Button}>Menu</Menu.Trigger>
-  <Menu.List>
-    <Menu.Item disabled>
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger base={Button}>Menu</DropdownMenu.Trigger>
+  <DropdownMenu.Content>
+    <DropdownMenu.Item disabled>
       <!-- aria-disabled="true" -->
       <!-- tabindex="-1" to skip in navigation -->
       Disabled Option
-    </Menu.Item>
-  </Menu.List>
-</Menu.Root>
+    </DropdownMenu.Item>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>
 
 <!-- Form input with disabled state -->
 <Input disabled />
@@ -461,7 +461,7 @@ export const metadata = {
 
 <!-- Use presets to apply test IDs globally -->
 <script>
-  import { setPreset } from '@ixirjs/ui/context';
+  import { setPreset } from '@ixirjs/ui/preset';
   
   setPreset({
     button: () => ({

@@ -96,16 +96,16 @@ ${close}
 
 <FrontMatter {frontmatter} />
 
-# Transitions & Animations Most components in {inlineCode('@ixirjs/ui')} support custom transitions
-and animations through lifecycle hooks. This allows you to create smooth enter/exit animations using {inlineCode(
+# Transitions & Animations Most components in {inlineCode('@ixirjs/ui')} support custom transitions and
+animations through lifecycle hooks. This allows you to create smooth enter/exit animations using {inlineCode(
 	'@ixirjs/vibra'
 )}, Svelte transitions, or custom animation libraries. ## Animation Hooks Components that support
 transitions typically provide these props: - {inlineCode('initial')} - Set the initial state before the
 element is mounted - {inlineCode('enter')} - Define the enter animation when element appears - {inlineCode(
 	'exit'
 )} - Define the exit animation when element disappears - {inlineCode('animate')} - Define animations that
-run when the element's state changes ## Using @ixirjs/vibra (Recommended) The recommended approach
-is to use {inlineCode('@ixirjs/vibra')} with the {inlineCode('toTransitionConfig')} helper:
+run when the element's state changes ## Using @ixirjs/vibra (Recommended) The recommended approach is
+to use {inlineCode('@ixirjs/vibra')} with the {inlineCode('toTransitionConfig')} helper:
 
 {codeBlock(motionExample, 'svelte')}
 

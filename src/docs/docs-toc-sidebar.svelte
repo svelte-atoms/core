@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { animateDrawerContent, Drawer } from '$lib/components/drawer';
-	import { DURATION } from '$ixirjs/ui';
+	import { DURATION } from '$ixirjs/ui/shared/motion';
 
 	type TocEntry = { id: string; text: string };
 
@@ -58,12 +58,19 @@
 {/if}
 
 <!-- Mobile: Drawer from right -->
-<Drawer.Root bind:open {onclose} side="right" class="lg:hidden z-50">
+<Drawer.Root
+	bind:open
+	onopenchange={(nextOpen) => {
+		if (!nextOpen) onclose?.();
+	}}
+	side="right"
+	class="lg:hidden z-50"
+>
 	{#snippet children({ drawer })}
 		<Drawer.Backdrop
 			class={[
 				'duration-75 bg-black/0 transition-[backdrop-filter]',
-				drawer.state.props.open ? 'backdrop-grayscale-100' : ''
+				drawer.props.open ? 'backdrop-grayscale-100' : ''
 			]}
 		/>
 		<Drawer.Content

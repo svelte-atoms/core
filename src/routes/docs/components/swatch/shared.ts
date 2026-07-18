@@ -13,7 +13,7 @@ export const metadata = {
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@ixirjs/ui',
-	importCode: "import { Swatch } from '@ixirjs/ui/swatch';",
+	importCode: "import { Swatch } from '@ixirjs/ui/components/swatch';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Swatch' }],
 	examples: {},
 	accessibility: accessibilityFeatures

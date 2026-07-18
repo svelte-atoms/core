@@ -1,8 +1,4 @@
-import { clickoutDrawer, clickoutPopover, Input } from '$lib';
-import { closeOverlay } from '$lib/components/portal/host/policies/overlay-view';
-import type { PopoverBond } from '$lib/components/popover';
 import type { Preset } from '$lib/context';
-import { createAttachmentKey } from 'svelte/attachments';
 
 /**
  * Minimalist preset for Storybook stories.
@@ -45,18 +41,18 @@ export const storiesPreset: Partial<Preset> = {
 	// Accordion — one unified card, items separated by hairline dividers (root base
 	// already supplies `bg-card flex list-none flex-col`). -----------------------------
 	accordion: () => ({
-		as: 'ul',
+		render: { as: 'ul' },
 		class: 'w-full max-w-md divide-y divide-border overflow-hidden rounded-lg border'
 	}),
-	'accordion.item': () => ({ as: 'li' }),
-	'accordion.item.header': (bond) => {
+	'accordion.item': () => ({ render: { as: 'li' } }),
+	'accordion.item.header': ({ bond }) => {
 		const itemBond = bond as { isActive?: boolean } | undefined;
-		return () => ({
+		return {
 			class: [
 				'justify-between gap-3 px-3 py-3 text-sm font-medium transition-colors hover:bg-foreground/5',
 				itemBond?.isActive ? 'text-foreground' : 'text-muted-foreground'
 			]
-		});
+		};
 	},
 	'accordion.item.body': () => ({
 		class: 'overflow-hidden text-sm text-muted-foreground'
@@ -175,23 +171,14 @@ export const storiesPreset: Partial<Preset> = {
 	// Popover / menu / dropdown surfaces + items ------------------------------------
 	// Content defaults to a prose panel (`p-3`, relaxed leading). The `menu` variant retightens
 	// it to a command surface (`p-1`) for a list of rows — stories pick the min-width per case.
-	'popover.content': (bond) => {
-		const isAutoClosable = (bond as unknown as PopoverBond)?.state?.props?.rest?.autoClose ?? false;
-		return {
-			class: `${SURFACE} max-w-sm p-3 text-sm leading-relaxed`,
-			variants: {
-				variant: {
-					menu: { class: 'p-1' }
-				}
-			},
-			[createAttachmentKey()]: (node: HTMLElement) => {
-				if (!isAutoClosable) return;
-				return clickoutPopover((_, atom) => {
-					closeOverlay(atom);
-				})(node);
+	'popover.content': () => ({
+		class: `${SURFACE} max-w-sm p-3 text-sm leading-relaxed`,
+		variants: {
+			variant: {
+				menu: { class: 'p-1' }
 			}
-		};
-	},
+		}
+	}),
 	// Trigger looks live here as named variants so stories select one with `variant="…"` instead of
 	// re-spelling the surface look inline. The trigger base already ships `flex w-fit rounded-md p-2`;
 	// each variant overrides shape/padding/colour and stories append only per-instance layout
@@ -223,14 +210,6 @@ export const storiesPreset: Partial<Preset> = {
 	}),
 	'popover.tail': () => ({ class: 'text-border' }),
 	'popover.indicator': () => ({ class: 'size-4 shrink-0 text-muted-foreground' }),
-	'menu.content': () => ({
-		class: MENU_SURFACE,
-		[createAttachmentKey()]: clickoutPopover((_, atom) => {
-			closeOverlay(atom);
-		})
-	}),
-	'dropdown.trigger': () => ({ base: Input.Root }),
-	'dropdown.item': () => ({ class: ITEM }),
 	'combobox.item': () => ({
 		class: ITEM,
 		variants: {
@@ -314,12 +293,7 @@ export const storiesPreset: Partial<Preset> = {
 	'dialog.footer': () => ({ class: 'flex justify-end gap-2 border-t border-border px-5 py-4' }),
 
 	// Drawer ------------------------------------------------------------------------
-	'drawer.content': () => ({
-		class: 'border-border bg-card shadow-xl',
-		[createAttachmentKey()]: clickoutDrawer((_, bond) => {
-			bond?.state?.close?.();
-		})
-	}),
+	'drawer.content': () => ({ class: 'border-border bg-card shadow-xl' }),
 	// Header defaults to a bordered strip; the `plain` variant drops the rule for headers that
 	// manage their own spacing (Top/Bottom drawers).
 	'drawer.header': () => ({

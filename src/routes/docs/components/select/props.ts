@@ -118,10 +118,28 @@ export const selectRootProps: PropDefinition[] = [
 		description: 'Children'
 	},
 	{
+		name: 'onopenchange',
+		type: 'StateChangeCallback<boolean, SelectBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after open state commits.'
+	},
+	{
+		name: 'onvaluechange',
+		type: 'StateChangeCallback<T | undefined, SelectBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected value commits in single mode.'
+	},
+	{
+		name: 'onvalueschange',
+		type: 'StateChangeCallback<T[], SelectBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the selected values commit in multiple mode.'
+	},
+	{
 		name: 'onquerychange',
-		type: '((query: string) => void) | undefined',
-		default: "''",
-		description: 'Onquerychange'
+		type: 'StateChangeCallback<string, SelectBond> | undefined',
+		default: 'undefined',
+		description: 'Fired after the filter query commits.'
 	}
 ];
 

@@ -61,10 +61,10 @@ Composition with {inlineCode('base')}
     <Select.Placeholder>Select a value</Select.Placeholder>
   </Select.Trigger>
   <Select.Content>
-    <Select.List>
+    <Select.Content>
       <Select.Item value="a">Option A</Select.Item>
       <Select.Item value="b">Option B</Select.Item>
-    </Select.List>
+    </Select.Content>
   </Select.Content>
 </Select.Root>`,
 	'svelte'

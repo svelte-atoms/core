@@ -27,12 +27,25 @@ Accessible Svelte 5 infrastructure for reusable component systems.
 </Popover.Root>
 ```
 
+## Prerequisites
+
+- Svelte `^5.46.4`
+- Tailwind CSS v4 for the documented CSS-first styling setup
+- Node.js 18+
+
 ## Install
 
 ```bash
 npm install @ixirjs/ui
 # or
 bun add @ixirjs/ui
+```
+
+For Tailwind v4, scan the package classes from your application stylesheet:
+
+```css
+@import 'tailwindcss';
+@source './../node_modules/@ixirjs/ui/**/*.{js,ts,svelte}';
 ```
 
 ## Links

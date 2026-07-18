@@ -21,7 +21,8 @@ improves UX. ## Minimal component skeleton
 
 {codeBlock(
 	`<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
+  import { HtmlAtom } from '@ixirjs/ui';
+import { defineVariants } from '@ixirjs/ui/utils';
 
   const badgeVariants = defineVariants({
     class: 'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium',

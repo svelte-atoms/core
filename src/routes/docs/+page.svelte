@@ -94,14 +94,14 @@
 			n: '2',
 			title: 'Import styles in your layout',
 			lang: 'typescript' as const,
-			code: "// +layout.svelte\nimport '@ixirjs/ui/tw';"
+			code: "// +layout.svelte\nimport '@ixirjs/ui/styles/root';"
 		},
 		{
 			n: '3',
 			title: 'Import and use components',
 			lang: 'svelte' as const,
 			code:
-				"<script>\n  import { Button } from '@ixirjs/ui/button';\n<" +
+				"<script>\n  import { Button } from '@ixirjs/ui/components/button';\n<" +
 				'/script>\n\n<Button>Click me</Button>'
 		}
 	];

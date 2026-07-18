@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Lint, typecheck, test, build
+    name: Lint, typecheck, test, lifecycle, build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,8 +38,20 @@ jobs:
       - name: E2E tests
         run: bun run test:e2e
 
+      - name: Component lifecycle audit
+        run: bun run audit:components
+
+      - name: Bond runtime audit
+        run: bun run audit:bond-runtime
+
       - name: Build
         run: bun run build
 
-      - name: Package
-        run: bunx svelte-package && bunx publint
+      - name: Package exports
+        run: bun run test:exports
+
+      - name: Packed documentation examples
+        run: bun run verify:packed-docs
+
+      - name: Storybook build
+        run: bun run storybook:build

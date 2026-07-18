@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { colorScheme } from '$lib';
-	import { setPreset } from '$lib/context';
+	import { colorScheme } from '$lib/runes';
+	import { setPreset } from '$lib/preset';
 	import Root from '$ixirjs/ui/components/root/root.svelte';
 	import { storiesPreset } from './stories-preset';
 

@@ -1,14 +1,19 @@
 export const layoutCode = `<script>
-  import '@ixirjs/ui/styles/tw';
-  import './app.css'; // Override @ixirjs/ui styles here
+  import '@ixirjs/ui/styles/root.css';
+  import '../app.css'; // Override the foundation tokens here
+  import { defaultPreset, setPreset } from '@ixirjs/ui/preset';
+  import { preset } from '../preset';
 
-  let { children } = $props;
+  let { children } = $props();
+
+  setPreset(defaultPreset);
+  setPreset(preset);
 </script>
 
 {@render children?.()}`;
 
 export const appCssCode = `@import 'tailwindcss';
-@source './../node_modules/@ixirjs/ui/**/*.{js,ts,svelte}'
+@source './../node_modules/@ixirjs/ui/**/*.{js,ts,svelte}';
 
 :root {
 	--background: oklch(1 0 0);
@@ -129,7 +134,7 @@ export const appCssCode = `@import 'tailwindcss';
 }
 `;
 
-export const presetCode = `import { type Preset } from '@ixirjs/ui';
+export const presetCode = `import type { Preset } from '@ixirjs/ui/preset';
 
 export const preset: Partial<Preset> = {
   button: () => ({

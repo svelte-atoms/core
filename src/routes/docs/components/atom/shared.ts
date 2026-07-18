@@ -1,7 +1,7 @@
 const compositionCode = `
 <script lang="ts">
   import { HtmlAtom } from '@ixirjs/ui';
-  import { Button } from '@ixirjs/ui/button';
+  import { Button } from '@ixirjs/ui/components/button';
 </script>
 
 <!-- Use Button as base, add custom styles -->
@@ -28,7 +28,7 @@ const animationCode = `
 
 const customComponentCode = `
 <script lang="ts">
-  import { HtmlAtom, type HtmlAtomProps } from '@ixirjs/ui';
+  import { HtmlAtom, type HtmlAtomProps } from '@ixirjs/ui/components/atom';
   
   type Props = HtmlAtomProps<'button'> & {
     variant?: 'primary' | 'secondary' | 'danger';
@@ -59,7 +59,7 @@ const customComponentCode = `
 </HtmlAtom>`.trim();
 
 const presetCode = `
-import { setPreset } from '@ixirjs/ui';
+import { setPreset } from '@ixirjs/ui/preset';
 
 const preset = setPreset({
   atom: () => ({

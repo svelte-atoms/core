@@ -8,6 +8,13 @@ export const popoverRootProps: PropDefinition[] = [
 		description: 'Open'
 	},
 	{
+		name: 'onopenchange',
+		type: 'StateChangeCallback<boolean, PopoverBond> \\| undefined',
+		default: 'undefined',
+		description:
+			'Called after a real open-state transition commits; dismissal events and reasons are included when available.'
+	},
+	{
 		name: 'disabled',
 		type: 'boolean \\| undefined',
 		default: 'false',

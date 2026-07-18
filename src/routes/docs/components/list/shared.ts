@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@ixirjs/ui/context';
+import { setPreset } from '@ixirjs/ui/preset';
 
 // Basic preset configuration
 setPreset({

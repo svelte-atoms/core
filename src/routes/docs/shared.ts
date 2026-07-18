@@ -144,7 +144,6 @@ export const metadata = {
 				description: 'Breadcrumb component'
 			},
 			{ title: 'Link', href: '/docs/components/link/llms.txt', description: 'Link component' },
-			{ title: 'Menu', href: '/docs/components/menu/llms.txt', description: 'Menu component' },
 			{
 				title: 'Sidebar',
 				href: '/docs/components/sidebar/llms.txt',
@@ -215,9 +214,9 @@ export const metadata = {
 				description: 'Popover component'
 			},
 			{
-				title: 'Dropdown',
-				href: '/docs/components/dropdown/llms.txt',
-				description: 'Dropdown component'
+				title: 'Dropdown Menu',
+				href: '/docs/components/dropdown-menu/llms.txt',
+				description: 'Dropdown menu component'
 			},
 			{
 				title: 'Tooltip',

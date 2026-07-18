@@ -1,6 +1,7 @@
 // Private: Code examples
 const anatomyCode = `<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
+  import { HtmlAtom } from '@ixirjs/ui';
+import { defineVariants } from '@ixirjs/ui/utils';
   
 
   let { ...restProps } = $props();
@@ -44,7 +45,8 @@ const anatomyCode = `<script lang="ts">
 <!-- plus configuration defined in the preset, so the output may look different -->`.trim();
 
 const customButtonCode = `<script lang="ts">
-  import { HtmlAtom, defineVariants } from '@ixirjs/ui';
+  import { HtmlAtom } from '@ixirjs/ui';
+import { defineVariants } from '@ixirjs/ui/utils';
   
   let { 
     variant = 'primary',
@@ -94,7 +96,7 @@ const customCardCode = `<script lang="ts">
 
 const presetUsageCode = `<script lang="ts">
   import { HtmlAtom } from '@ixirjs/ui';
-  import { setPreset } from '@ixirjs/ui/context';
+  import { setPreset } from '@ixirjs/ui/preset';
   
   // Define global preset
   setPreset({

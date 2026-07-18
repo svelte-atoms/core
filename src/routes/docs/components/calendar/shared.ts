@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@ixirjs/ui';
+import { setPreset } from '@ixirjs/ui/preset';
 
 const preset = setPreset({
   'calendar.root': () => ({ class: 'inline-block' }),

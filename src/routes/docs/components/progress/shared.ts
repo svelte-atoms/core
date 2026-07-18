@@ -1,5 +1,5 @@
 const presetCode = `
-import { setPreset } from '@ixirjs/ui';
+import { setPreset } from '@ixirjs/ui/preset';
 
 setPreset({
   'progress.linear': () => ({
@@ -61,7 +61,7 @@ export const metadata = {
 	componentType: 'simple' as const,
 	status: 'stable' as const,
 	packageName: '@ixirjs/ui',
-	importCode: "import { ProgressLinear, ProgressCircular } from '@ixirjs/ui/progress';",
+	importCode: "import { ProgressLinear, ProgressCircular } from '@ixirjs/ui/components/progress';",
 	breadcrumbs: [{ label: 'Components', href: '/docs/components' }, { label: 'Progress' }],
 	useCases,
 	examples: {

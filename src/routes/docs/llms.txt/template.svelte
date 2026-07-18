@@ -79,8 +79,8 @@ architecture — install components, own the code - **Storybook Integration** �
 explorer with interactive examples - **Documentation** — Comprehensive guides, API docs, and best
 practices ## Getting Help - **GitHub Issues**: Report bugs and request features on
 [GitHub](https://github.com/ixirjs/ui) - **Discussions**: Ask questions in [GitHub
-Discussions](https://github.com/ixirjs/ui/discussions) - **Documentation**: Full API docs,
-examples, and best practices in this guide ## Quick Start The fastest way to get started:
+Discussions](https://github.com/ixirjs/ui/discussions) - **Documentation**: Full API docs, examples,
+and best practices in this guide ## Quick Start The fastest way to get started:
 
 {codeBlock(`npm install @ixirjs/ui`, 'bash')}
 
@@ -106,6 +106,6 @@ it works - Easy to customize and extend - Great DX with TypeScript and Svelte **
 Accessible by default - Works with keyboard and screen readers - Respects motion preferences -
 High-quality, polished interactions **For Teams** - Consistent component behavior across projects -
 Sharable design systems - Easy theme switching and customization - Production-ready code ## License
-MIT © [Svelte Atoms Contributors](https://github.com/ixirjs/ui/graphs/contributors) ---
-Ready to build? Start with the [Quick Start Guide](/docs/quick-start/llms.txt) or explore the
-[component library](#component-library).
+MIT © [Svelte Atoms Contributors](https://github.com/ixirjs/ui/graphs/contributors) --- Ready to
+build? Start with the [Quick Start Guide](/docs/quick-start/llms.txt) or explore the [component
+library](#component-library).
