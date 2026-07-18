@@ -4,6 +4,7 @@ import {
 	Bond,
 	BondState,
 	sharedCapabilityKey,
+	defineCapability,
 	type Behavior,
 	type Capability,
 	type BondStateProps
@@ -13,10 +14,10 @@ import Comp, { tally, resetTally } from '$ixirjs/ui/test/shared/bond/probe.test.
 // Regression for the spread attachment-key churn: Atom.spread must NOT re-mint attachment keys
 // on each access, or Svelte tears down and re-runs every onmount on every reactive update that
 // re-reads spread. We probe via a capability that projects an onmount onto role 'item'.
-const SLOT = sharedCapabilityKey('@ixirjs/test:mount-probe');
+const SLOT = sharedCapabilityKey({ owner: '@ixirjs/test', name: 'mount-probe', version: 1 });
 
 function probeCapability(): Capability {
-	return {
+	return defineCapability({
 		slot: SLOT,
 		behavior(role): Behavior | undefined {
 			if (role !== 'item') return undefined;
@@ -29,7 +30,7 @@ function probeCapability(): Capability {
 				}
 			};
 		}
-	};
+	});
 }
 
 class ProbeState extends BondState<BondStateProps> {
@@ -41,7 +42,7 @@ class ProbeState extends BondState<BondStateProps> {
 class ProbeBond extends Bond {
 	constructor(state: ProbeState) {
 		super(state, 'probe');
-		this.state.capability(probeCapability());
+		this.capability(probeCapability());
 	}
 }
 

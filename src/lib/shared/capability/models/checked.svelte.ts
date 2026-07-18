@@ -17,7 +17,11 @@ export interface CheckedModel {
 	toggle(): void;
 }
 
-export const CHECKED = sharedCapabilityKey<CheckedModel>('@ixirjs/cap:checked');
+export const CHECKED = sharedCapabilityKey<CheckedModel>({
+	owner: '@ixirjs/cap',
+	name: 'checked',
+	version: 1
+});
 
 export function createChecked(backing: CheckedBacking): CheckedModel {
 	return {

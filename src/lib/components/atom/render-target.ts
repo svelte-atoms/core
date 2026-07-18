@@ -73,9 +73,15 @@ export function resolveRendererProps(
 	target: RenderTarget,
 	klass: unknown,
 	as: unknown,
-	attrs: RendererProps
+	attrs: RendererProps,
+	options: { presentationResolved?: boolean } = {}
 ): RendererProps {
-	const props = { class: klass, as, ...attrs };
+	const props = {
+		class: klass,
+		as,
+		...(options.presentationResolved ? { __resolvedPresentation: true } : {}),
+		...attrs
+	};
 	if (target.kind === 'snippet') return { snippet: target.snippet, ...props };
 	return props;
 }

@@ -106,12 +106,11 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 	}
 	class TBond extends Bond<BondStateProps> {
 		static CONTEXT_KEY = bondContextKey('test-roving');
+		readonly model: TState;
+
 		constructor(state: TState) {
 			super(state, 'test');
-		}
-
-		override get state(): TState {
-			return super.state as TState;
+			this.model = state;
 		}
 	}
 	class TAtom extends Atom<TBond> {
@@ -131,8 +130,8 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 
 	it('container reflects the active item id (mapped to a DOM id)', () => {
 		const bond = new TBond(new TState());
-		bond.state.capability(
-			rovingCapability(bond.state.roving, {
+		bond.capability(
+			rovingCapability(bond.model.roving, {
 				itemDomId: (id) => `item-${id}`,
 				orientation: 'vertical'
 			})
@@ -142,29 +141,29 @@ describe('rovingCapability — aria-activedescendant projection onto the contain
 		expect(container.spread['aria-activedescendant']).toBeUndefined(); // nothing active
 		expect(container.spread['aria-orientation']).toBe('vertical');
 
-		bond.state.roving.next(); // → 'a'
+		bond.model.roving.next(); // → 'a'
 		expect(container.spread['aria-activedescendant']).toBe('item-a');
-		bond.state.roving.next(); // → 'b'
+		bond.model.roving.next(); // → 'b'
 		expect(container.spread['aria-activedescendant']).toBe('item-b');
 	});
 
 	it('defaults itemDomId to identity', () => {
 		const bond = new TBond(new TState());
-		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.capability(rovingCapability(bond.model.roving));
 		const container = new TAtom(bond, 'list').role('container');
-		bond.state.roving.goto('c');
+		bond.model.roving.goto('c');
 		expect(container.spread['aria-activedescendant']).toBe('c');
 	});
 
 	it('item reflects whether it is the highlighted one (boolean data-highlighted)', () => {
 		const bond = new TBond(new TState());
-		bond.state.capability(rovingCapability(bond.state.roving));
+		bond.capability(rovingCapability(bond.model.roving));
 		const itemB = new TAtom(bond, 'b').role('item', 'b');
 
 		expect(itemB.spread['data-highlighted']).toBe(false); // nothing active
-		bond.state.roving.goto('a');
+		bond.model.roving.goto('a');
 		expect(itemB.spread['data-highlighted']).toBe(false); // a active, not b
-		bond.state.roving.goto('b');
+		bond.model.roving.goto('b');
 		expect(itemB.spread['data-highlighted']).toBe(true); // b active → highlighted
 	});
 });
@@ -203,5 +202,16 @@ describe('RovingFocus — reactive over the injected list', () => {
 		flushSync();
 		expect(seen).toBeNull();
 		dispose();
+	});
+
+	it('preserves active identity across a temporary removal and reinsertion', () => {
+		const { backing, setIds } = makeBacking(['a', 'b']);
+		const r = createRovingFocus(backing);
+		r.goto('b');
+
+		setIds(['a']);
+		expect(r.activeId).toBeNull();
+		setIds(['a', 'b']);
+		expect(r.activeId).toBe('b');
 	});
 });

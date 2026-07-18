@@ -1,10 +1,21 @@
 export {
-	type PresetModuleName as ModuleName,
-	type PresetModuleMap,
-	type Preset,
-	type PresetEntryRecord,
-	type PresetEntry,
+	definePreset,
+	fallbackPreset,
 	getPreset,
+	mergePreset,
+	mergePresetLayers,
 	setPreset,
-	mergePreset
+	type BuiltInPresetModuleMap,
+	type FallbackPreset,
+	type MergedPresetLayers,
+	type Preset,
+	type PresetContext,
+	type PresetEntry,
+	type PresetEntryRecord,
+	type PresetEntryValue,
+	type PresetKey,
+	type PresetModuleMap,
+	type PresetModuleName,
+	type PresetRender
 } from './preset.svelte';
+export { BUILT_IN_PRESET_KEYS, type BuiltInPresetName } from '../preset/manifest';

@@ -39,7 +39,7 @@ describe('sortCapability', () => {
 		});
 		const cap = sortCapability(sort);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const name = bond.addAtom('name', 'column', 'name');
 		const age = bond.addAtom('age', 'column', { field: 'age' });
 
@@ -51,18 +51,27 @@ describe('sortCapability', () => {
 			projects: ['column']
 		});
 		expect(name.spread.role).toBe('columnheader');
-		expect(name.spread['aria-sort']).toBe('none');
+		expect(name.spread['aria-sort']).toBeUndefined();
+		expect(name.spread.tabindex).toBe(0);
 
 		(name.spread.onclick as () => void)();
 		expect(sort.field).toBe('name');
 		expect(sort.direction).toBe('asc');
 		expect(name.spread['aria-sort']).toBe('ascending');
 		expect(name.spread['data-sort']).toBe('asc');
-		expect(age.spread['aria-sort']).toBe('none');
+		expect(age.spread['aria-sort']).toBeUndefined();
 
-		(name.spread.onclick as () => void)();
+		const enter = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true });
+		(name.spread.onkeydown as (event: KeyboardEvent) => void)(enter);
+		expect(enter.defaultPrevented).toBe(true);
 		expect(sort.direction).toBe('desc');
 		expect(name.spread['aria-sort']).toBe('descending');
+
+		(name.spread.onkeydown as (event: KeyboardEvent) => void)(
+			new KeyboardEvent('keydown', { key: ' ', cancelable: true })
+		);
+		expect(sort.direction).toBeUndefined();
+		expect(name.spread['aria-sort']).toBeUndefined();
 	});
 
 	it('cycles back to unsorted and can clear state explicitly', () => {

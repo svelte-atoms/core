@@ -72,6 +72,30 @@ describe('createValidation', () => {
 		expect(validation.isValidating).toBe(false);
 		expect(validation.errors).toEqual([error]);
 	});
+
+	it('keeps the latest async result and pending state when validations settle out of order', async () => {
+		const resolvers: Array<(result: ValidationResult) => void> = [];
+		const validation = createValidation({
+			validateAsync: () =>
+				new Promise<ValidationResult>((done) => {
+					resolvers.push(done);
+				})
+		});
+
+		const first = validation.validateAsync();
+		const second = validation.validateAsync();
+		expect(validation.isValidating).toBe(true);
+
+		resolvers[0]!({ success: false, errors: [error] });
+		await first;
+		expect(validation.isValidating).toBe(true);
+		expect(validation.errors).toEqual([]);
+
+		resolvers[1]!({ success: true, errors: [] });
+		await second;
+		expect(validation.isValidating).toBe(false);
+		expect(validation.errors).toEqual([]);
+	});
 });
 
 describe('validationCapability', () => {
@@ -84,7 +108,7 @@ describe('validationCapability', () => {
 		});
 		const cap = validationCapability(validation);
 		const bond = new TestBond();
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(VALIDATION);

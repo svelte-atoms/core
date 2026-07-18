@@ -5,26 +5,66 @@ import {
 	type Capability
 } from '../capability';
 import type { Bond } from '../../bond';
-import { DISCLOSURE, type Disclosure } from './disclosure.svelte';
+import { DISCLOSURE } from './disclosure.svelte';
 
-export const TRIGGER_CONTENT = sharedCapabilityKey<void>('@ixirjs/cap:trigger-content');
-export const TAB_PANEL = sharedCapabilityKey<void>('@ixirjs/cap:tab-panel');
-export const ERROR_MESSAGE = sharedCapabilityKey<void>('@ixirjs/cap:error-message');
-export const ROW_COLUMN_CELL = sharedCapabilityKey<void>('@ixirjs/cap:row-column-cell');
-export const TREE_ITEM_GROUP = sharedCapabilityKey<void>('@ixirjs/cap:tree-item-group');
-export const ACTIVE_DESCENDANT = sharedCapabilityKey<void>('@ixirjs/cap:active-descendant');
-export const MENU_SUBMENU = sharedCapabilityKey<void>('@ixirjs/cap:menu-submenu');
-export const OPTION_COLLECTION = sharedCapabilityKey<void>('@ixirjs/cap:option-collection');
-export const HEADING_SECTION = sharedCapabilityKey<void>('@ixirjs/cap:heading-section');
-export const LIVE_REGION = sharedCapabilityKey<void>('@ixirjs/cap:live-region');
+export const TRIGGER_CONTENT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'trigger-content',
+	version: 1
+});
+export const TAB_PANEL = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'tab-panel',
+	version: 1
+});
+export const ERROR_MESSAGE = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'error-message',
+	version: 1
+});
+export const ROW_COLUMN_CELL = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'row-column-cell',
+	version: 1
+});
+export const TREE_ITEM_GROUP = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'tree-item-group',
+	version: 1
+});
+export const ACTIVE_DESCENDANT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'active-descendant',
+	version: 1
+});
+export const MENU_SUBMENU = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'menu-submenu',
+	version: 1
+});
+export const OPTION_COLLECTION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'option-collection',
+	version: 1
+});
+export const HEADING_SECTION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'heading-section',
+	version: 1
+});
+export const LIVE_REGION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'live-region',
+	version: 1
+});
 
 // Private slot key (not exported from the public barrel): labelledControl is a behavior-only linkage
 // nobody retrieves by key, so it stays unforgeable — the private seam.
-export const LABELLED = capabilityKey('labelled');
+export const LABELLED = capabilityKey<void>('labelled');
 
 // Reusable a11y linkage between roles. Where atoms must cross-reference each other's ids
 // (label/control, trigger/content, tab/tabpanel, …), the wiring resolves siblings via
-// `bond.atomByRole(role)`.
+// `bond.nodeByRole(role)`.
 
 export interface TriggerContentOptions {
 	// `aria-haspopup` on the trigger (menus, listboxes, dialogs). Omitted by default.
@@ -36,10 +76,7 @@ export interface TriggerContentOptions {
 // Trigger ↔ content disclosure linkage — the most repeated a11y pattern.
 // 'trigger' → aria-controls + aria-expanded (+ optional aria-haspopup).
 // 'content' → aria-labelledby (+ optional role). Slot 'trigger-content'.
-export function triggerContentLink(
-	disclosure: Disclosure,
-	options: TriggerContentOptions = {}
-): Capability<void> {
+export function triggerContentLink(options: TriggerContentOptions = {}): Capability<void> {
 	return defineRelationshipCapability<void>({
 		slot: TRIGGER_CONTENT,
 		requires: [DISCLOSURE],
@@ -50,15 +87,18 @@ export function triggerContentLink(
 		},
 		roles: {
 			trigger: () => ({
-				attrs: (bond) => ({
-					'aria-controls': bond.atomByRole('content')?.id,
-					'aria-expanded': disclosure.isOpen,
-					...(options.haspopup ? { 'aria-haspopup': options.haspopup } : {})
-				})
+				attrs: (bond) => {
+					const disclosure = bond.requireSurface(DISCLOSURE);
+					return {
+						'aria-controls': bond.nodeByRole('content')?.id,
+						'aria-expanded': disclosure.isOpen,
+						...(options.haspopup ? { 'aria-haspopup': options.haspopup } : {})
+					};
+				}
 			}),
 			content: () => ({
 				attrs: (bond) => ({
-					'aria-labelledby': bond.atomByRole('trigger')?.id,
+					'aria-labelledby': bond.nodeByRole('trigger')?.id,
 					...(options.contentRole ? { role: options.contentRole } : {})
 				})
 			})
@@ -86,8 +126,8 @@ export function labelledControl(options: LabelledControlOptions = {}): Capabilit
 		roles: {
 			control: () => ({
 				attrs: (bond) => {
-					const label = bond.atomByRole('label')?.id;
-					const description = bond.atomByRole('description')?.id;
+					const label = bond.nodeByRole('label')?.id;
+					const description = bond.nodeByRole('description')?.id;
 					return {
 						...(label ? { 'aria-labelledby': label } : {}),
 						...(description ? { 'aria-describedby': description } : {})
@@ -96,7 +136,7 @@ export function labelledControl(options: LabelledControlOptions = {}): Capabilit
 			}),
 			// nativeFor emits the real `for` attr only when opted in; otherwise the label role is a no-op.
 			label: () =>
-				options.nativeFor ? { attrs: (bond) => ({ for: bond.atomByRole('control')?.id }) } : {},
+				options.nativeFor ? { attrs: (bond) => ({ for: bond.nodeByRole('control')?.id }) } : {},
 			description: () => ({})
 		}
 	});
@@ -120,7 +160,7 @@ export function tabPanelLink(options: TabPanelLinkOptions = {}): Capability<void
 			tab: () => ({
 				attrs: (bond) => ({
 					role: 'tab',
-					'aria-controls': bond.atomByRole('tabpanel')?.id,
+					'aria-controls': bond.nodeByRole('tabpanel')?.id,
 					'aria-selected': selected(bond)
 				})
 			}),
@@ -129,7 +169,7 @@ export function tabPanelLink(options: TabPanelLinkOptions = {}): Capability<void
 					const isSelected = selected(bond);
 					return {
 						role: 'tabpanel',
-						'aria-labelledby': bond.atomByRole('tab')?.id,
+						'aria-labelledby': bond.nodeByRole('tab')?.id,
 						hidden: isSelected ? undefined : true,
 						tabindex: isSelected ? 0 : -1
 					};
@@ -147,7 +187,7 @@ export interface ErrorMessageLinkOptions {
 }
 
 export function errorMessageLink(options: ErrorMessageLinkOptions = {}): Capability<void> {
-	const invalid = (bond: Bond) => options.invalid?.(bond) ?? Boolean(bond.atomByRole('error'));
+	const invalid = (bond: Bond) => options.invalid?.(bond) ?? Boolean(bond.nodeByRole('error'));
 	return defineRelationshipCapability<void>({
 		slot: ERROR_MESSAGE,
 		meta: {
@@ -159,7 +199,7 @@ export function errorMessageLink(options: ErrorMessageLinkOptions = {}): Capabil
 			control: () => ({
 				attrs: (bond) => {
 					if (!invalid(bond)) return {};
-					const error = bond.atomByRole('error')?.id;
+					const error = bond.nodeByRole('error')?.id;
 					return {
 						...(error ? { 'aria-errormessage': error, 'aria-invalid': 'true' } : {})
 					};
@@ -215,10 +255,10 @@ export function rowColumnCellLink(options: RowColumnCellLinkOptions = {}): Capab
 								: undefined);
 					const headers =
 						normalizeHeaders(explicit) ??
-						joinIds([bond.atomByRole('row')?.id, bond.atomByRole('column')?.id]);
+						joinIds([bond.nodeByRole('row')?.id, bond.nodeByRole('column')?.id]);
 					return {
 						role: 'gridcell',
-						...(headers ? { headers } : {})
+						...(headers ? { 'aria-labelledby': headers } : {})
 					};
 				}
 			})
@@ -226,7 +266,7 @@ export function rowColumnCellLink(options: RowColumnCellLinkOptions = {}): Capab
 	});
 }
 
-export function treeItemGroupLink(disclosure: Disclosure): Capability<void> {
+export function treeItemGroupLink(): Capability<void> {
 	return defineRelationshipCapability<void>({
 		slot: TREE_ITEM_GROUP,
 		requires: [DISCLOSURE],
@@ -239,14 +279,14 @@ export function treeItemGroupLink(disclosure: Disclosure): Capability<void> {
 			treeitem: () => ({
 				attrs: (bond) => ({
 					role: 'treeitem',
-					'aria-controls': bond.atomByRole('treegroup')?.id,
-					'aria-expanded': disclosure.isOpen
+					'aria-controls': bond.nodeByRole('treegroup')?.id,
+					'aria-expanded': bond.requireSurface(DISCLOSURE).isOpen
 				})
 			}),
 			treegroup: () => ({
 				attrs: (bond) => ({
 					role: 'group',
-					'aria-labelledby': bond.atomByRole('treeitem')?.id
+					'aria-labelledby': bond.nodeByRole('treeitem')?.id
 				})
 			})
 		}
@@ -275,7 +315,9 @@ export function activeDescendantLink(options: ActiveDescendantLinkOptions = {}):
 			if (targetRoles.includes(role)) {
 				return {
 					attrs: (bond) => ({
-						'aria-activedescendant': options.activeId?.(bond) ?? bond.atomByRole(itemRole)?.id
+						'aria-activedescendant': options.activeId
+							? options.activeId(bond)
+							: bond.nodeByRole(itemRole)?.id
 					})
 				};
 			}
@@ -307,7 +349,7 @@ export function menuSubmenuRelationship(
 			menuitem: () => ({
 				attrs: (bond) => ({
 					role: 'menuitem',
-					'aria-controls': bond.atomByRole('submenu')?.id,
+					'aria-controls': bond.nodeByRole('submenu')?.id,
 					'aria-haspopup': haspopup,
 					'aria-expanded': options.expanded?.(bond)
 				})
@@ -315,7 +357,7 @@ export function menuSubmenuRelationship(
 			submenu: () => ({
 				attrs: (bond) => ({
 					role: submenuRole,
-					'aria-labelledby': bond.atomByRole('menuitem')?.id
+					'aria-labelledby': bond.nodeByRole('menuitem')?.id
 				})
 			})
 		}
@@ -345,7 +387,8 @@ export function optionCollectionRelationship(
 			collection: () => ({
 				attrs: (bond) => {
 					const optionIds =
-						normalizeHeaders(options.optionIds?.(bond)) ?? bond.atomByRole('option')?.id;
+						normalizeHeaders(options.optionIds?.(bond)) ??
+						joinIds(bond.nodesByPart('option').map((option) => option.id));
 					return {
 						role: collectionRole,
 						...(optionIds ? { 'aria-owns': optionIds } : {})
@@ -386,8 +429,8 @@ export function headingSectionRelationship(
 				return {
 					attrs: (bond) => ({
 						...(options.targetRole ? { role: options.targetRole } : {}),
-						'aria-labelledby': bond.atomByRole(headingRole)?.id,
-						'aria-describedby': bond.atomByRole(descriptionRole)?.id
+						'aria-labelledby': bond.nodeByRole(headingRole)?.id,
+						'aria-describedby': bond.nodeByRole(descriptionRole)?.id
 					})
 				};
 			}
@@ -424,8 +467,8 @@ export function liveRegionRelationship(
 					'aria-live': politeness,
 					'aria-atomic': atomic ? 'true' : 'false',
 					'aria-relevant': options.relevant,
-					'aria-labelledby': bond.atomByRole('title')?.id,
-					'aria-describedby': bond.atomByRole('description')?.id
+					'aria-labelledby': bond.nodeByRole('title')?.id,
+					'aria-describedby': bond.nodeByRole('description')?.id
 				})
 			}),
 			title: () => ({}),
@@ -434,6 +477,3 @@ export function liveRegionRelationship(
 		}
 	});
 }
-
-export const rowColumnRelationship = rowColumnCellLink;
-export const treeGroupRelationship = treeItemGroupLink;

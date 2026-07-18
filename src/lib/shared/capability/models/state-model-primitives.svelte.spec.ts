@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { flushSync } from 'svelte';
 import { Bond, Atom, BondState, bondContextKey, type BondStateProps } from '../../bond';
 import {
 	createDateSelection,
@@ -72,7 +73,7 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = pressedCapability(pressed);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(PRESSED);
@@ -98,12 +99,13 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = rangeValueCapability(range);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(RANGE_VALUE);
 		expect(range.percent).toBe(50);
 		expect(control.spread.role).toBe('slider');
+		expect(control.spread.tabindex).toBe(0);
 		expect(control.spread['aria-valuenow']).toBe(10);
 		expect(control.spread['data-percent']).toBe(50);
 
@@ -111,6 +113,20 @@ describe('remaining Layer 1 state/model primitives', () => {
 			new KeyboardEvent('keydown', { key: 'ArrowRight' })
 		);
 		expect(state.range).toBe(15);
+
+		state.range = 100;
+		expect(range.value).toBe(20);
+		expect(control.spread['aria-valuenow']).toBe(20);
+	});
+
+	it('removes a disabled slider from the tab order', () => {
+		const range = createRangeValue({ value: () => 10, disabled: () => true });
+		const bond = new TestBond();
+		bond.capability(rangeValueCapability(range));
+		const control = bond.addAtom('control', 'control');
+
+		expect(control.spread.tabindex).toBe(-1);
+		expect(control.spread['aria-disabled']).toBe('true');
 	});
 
 	it('loadingCapability exposes pending, settled, stale, and error state', () => {
@@ -122,7 +138,7 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = loadingCapability(loading);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(LOADING);
@@ -149,7 +165,7 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = paginationCapability(pagination);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const container = bond.addAtom('container', 'container');
 		const previous = bond.addAtom('previous', 'previous');
 		const next = bond.addAtom('next', 'next');
@@ -162,6 +178,15 @@ describe('remaining Layer 1 state/model primitives', () => {
 		(next.spread.onclick as () => void)();
 		expect(state.page).toBe(2);
 		expect(previous.spread['aria-disabled']).toBeUndefined();
+
+		state.total = -1;
+		state.page = Number.NaN;
+		state.pageSize = Number.POSITIVE_INFINITY;
+		expect(pagination.total).toBe(0);
+		expect(pagination.page).toBe(1);
+		expect(pagination.pageSize).toBe(1);
+		expect(pagination.startIndex).toBe(0);
+		expect(pagination.endIndex).toBe(0);
 	});
 
 	it('viewportCapability exposes size, scroll, and visible range', () => {
@@ -173,7 +198,7 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = viewportCapability(viewport);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const container = bond.addAtom('container', 'container');
 
 		expect(cap.slot).toBe(VIEWPORT);
@@ -196,16 +221,26 @@ describe('remaining Layer 1 state/model primitives', () => {
 		const geometry = createGeometry();
 		const cap = geometryCapability(geometry);
 		const bond = new TestBond();
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control', 'thumb');
 
 		expect(cap.slot).toBe(GEOMETRY);
 		expect(control.spread['data-rect-width']).toBeUndefined();
 
+		let projectedWidth: unknown;
+		const dispose = $effect.root(() => {
+			$effect(() => {
+				projectedWidth = control.spread['data-rect-width'];
+			});
+		});
+		flushSync();
+
 		geometry.setRect('thumb', rect);
+		flushSync();
 		expect(geometry.keys()).toEqual(['thumb']);
-		expect(control.spread['data-rect-width']).toBe(30);
+		expect(projectedWidth).toBe(30);
 		expect(control.spread['data-rect-bottom']).toBe(42);
+		dispose();
 	});
 
 	it('dateSelectionCapability exposes single date, range, and visible month state', () => {
@@ -219,18 +254,20 @@ describe('remaining Layer 1 state/model primitives', () => {
 		});
 		const cap = dateSelectionCapability(selection);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(DATE_SELECTION);
-		selection.select(new Date('2026-06-26T00:00:00.000Z'));
+		selection.select(new Date(2026, 5, 26));
 		expect(control.spread['data-date']).toBe('2026-06-26');
+		expect(selection.isRange).toBe(false);
+		expect(control.spread['data-range']).toBeUndefined();
 
-		selection.selectRange(
-			new Date('2026-06-01T00:00:00.000Z'),
-			new Date('2026-06-30T00:00:00.000Z')
-		);
-		selection.setVisibleMonth(new Date('2026-06-01T00:00:00.000Z'));
+		selection.select(new Date(2026, 5, 1));
+		expect(control.spread['data-date']).toBe('2026-06-01');
+
+		selection.selectRange(new Date(2026, 5, 1), new Date(2026, 5, 30));
+		selection.setVisibleMonth(new Date(2026, 5, 1));
 		expect(control.spread['data-range']).toBe('');
 		expect(control.spread['data-range-start']).toBe('2026-06-01');
 		expect(control.spread['data-visible-month']).toBe('2026-06');

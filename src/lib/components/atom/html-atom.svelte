@@ -6,10 +6,8 @@
 	import type { AnySnippet, Base, HtmlAtomProps } from './types';
 	import { RootBond } from '../root';
 	import { HtmlElement } from '../element';
-	import { getPreset } from '$ixirjs/ui/context';
-	import type { PresetModuleName } from '$ixirjs/ui/context/preset.svelte';
 	import SnippetAdapter from './snippet.svelte';
-	import * as resolvers from './resolvers';
+	import { createPresentation } from './presentation.svelte';
 	import {
 		resolveRendererComponent,
 		resolveRendererProps,
@@ -27,9 +25,6 @@
 		// Internal defaults layer: applied before preset/variants/rest so presets and users can override.
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		defaults?: Record<string, any> | undefined;
-		// Deprecated direct-HtmlAtom alias for `defaults`; ordinary component parts strip it.
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		fallback?: Record<string, any> | undefined;
 	};
 
 	let {
@@ -40,7 +35,6 @@
 		bond = undefined,
 		variants = undefined,
 		defaults = undefined,
-		fallback = undefined,
 		oninit = undefined,
 		children: children = undefined,
 		...restProps
@@ -55,33 +49,32 @@
 		() => oninit
 	);
 
-	// One $derived per cascade stage so each tracks only the props its stage reads.
-	const preset = $derived.by(() =>
-		resolvers.resolvePreset(presetKey as PresetModuleName | PresetModuleName[], bond, getPreset)
-	);
-	const localVariants = $derived(resolvers.resolveLocalVariants(variants, bond, restProps));
-	const mergedVariants = $derived.by(() =>
-		resolvers.resolveVariants(preset, localVariants, bond, restProps)
-	);
-	const defaultsLayer = $derived(defaults ?? fallback);
-	// The merge kernel: ONE walk over defaults → preset → variants → rest.
-	// Class string and spread attrs both come from it.
-	const folded = $derived.by(() =>
-		resolvers.foldLayers(preset, mergedVariants, restProps, defaultsLayer)
-	);
-	const finalKlass = $derived(resolvers.resolveClass(klass, folded));
-	const finalBase = $derived(resolvers.resolveBase(base, preset));
-	const finalAs = $derived(resolvers.resolveAs(as, preset));
-	const finalRestProps = $derived(folded.attrs);
+	// Full HtmlAtom and lightweight native/SVG adapters share this presentation seam.
+	const presentation = createPresentation({
+		preset: () => presetKey,
+		bond: () => bond,
+		variants: () => variants,
+		defaults: () => defaults,
+		class: () => klass,
+		as: () => as,
+		base: () => base,
+		restProps: () => restProps
+	});
+	const finalKlass = $derived(presentation.class);
+	const finalBase = $derived(presentation.base);
+	const finalAs = $derived(presentation.as);
+	const finalRestProps = $derived(presentation.attrs);
 
-	const atom = $derived(rootBond?.state?.props?.renderers?.html ?? HtmlElement);
+	const atom = $derived(rootBond?.props?.renderers?.html ?? HtmlElement);
 
 	// Render-target normalization names the component/snippet decision in one place.
 	const renderTarget = $derived(resolveRenderTarget(finalBase, atom));
 	// Component identity and props are separate signals so prop changes do not remount the renderer.
 	const RendererComponent = $derived(resolveRendererComponent(renderTarget, SnippetAdapter));
 	const rendererProps = $derived.by(() =>
-		resolveRendererProps(renderTarget, finalKlass, finalAs, finalRestProps)
+		resolveRendererProps(renderTarget, finalKlass, finalAs, finalRestProps, {
+			presentationResolved: renderTarget.kind === 'component' && renderTarget.component === atom
+		})
 	);
 
 	function forwardChildren(...args: unknown[]) {

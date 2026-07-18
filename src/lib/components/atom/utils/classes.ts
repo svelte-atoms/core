@@ -150,7 +150,7 @@ function mergeJoined(
 	if (typeof userClass === 'string') {
 		const lastIdx = userClass.lastIndexOf(PLACEHOLDER);
 		if (lastIdx === -1) {
-			return twMerge(userClass + ' ' + v);
+			return twMerge((presetClass ?? '') + ' ' + v + ' ' + userClass);
 		}
 		const before = stripPlaceholders(userClass.slice(0, lastIdx));
 		const after = stripPlaceholders(userClass.slice(lastIdx + PLACEHOLDER_LEN));
@@ -158,7 +158,7 @@ function mergeJoined(
 	}
 
 	if (userClass == null) {
-		return twMerge(v);
+		return twMerge((presetClass ?? '') + ' ' + v);
 	}
 
 	// Array of strings (falsy items allowed). Single pass: find the LAST exact
@@ -186,7 +186,7 @@ function mergeJoined(
 		if (!item) continue;
 		joined += ' ' + (item as string);
 	}
-	if (placeholderIdx === -1) joined += ' ' + v;
+	if (placeholderIdx === -1) joined = ' ' + (presetClass ?? '') + ' ' + v + joined;
 	return twMerge(joined);
 }
 
@@ -201,7 +201,7 @@ function computeMerged(
 	if (typeof userClass === 'string') {
 		const lastIdx = userClass.lastIndexOf(PLACEHOLDER);
 		if (lastIdx === -1) {
-			return cn(userClass, variantClass ?? '');
+			return cn(presetClass ?? '', variantClass ?? '', userClass);
 		}
 		const before = stripPlaceholders(userClass.slice(0, lastIdx));
 		const after = stripPlaceholders(userClass.slice(lastIdx + PLACEHOLDER_LEN));
@@ -210,7 +210,7 @@ function computeMerged(
 
 	// no user class
 	if (userClass == null) {
-		return cn(variantClass ?? '');
+		return cn(presetClass ?? '', variantClass ?? '');
 	}
 
 	// array user class — the component-root shape
@@ -234,7 +234,7 @@ function computeMerged(
 		}
 
 		if (placeholderIdx === -1) {
-			return cn(userClass, variantClass ?? '');
+			return cn(presetClass ?? '', variantClass ?? '', userClass);
 		}
 
 		// Exact-item placeholder: splice preset + variant classes in its place.
@@ -254,8 +254,8 @@ function computeMerged(
 	return computeMerged(clsx(userClass as never), presetClass, variantClass);
 }
 
-// Merges userClass + presetClass + variantClass into a Tailwind-safe string. The last `$preset`
-// placeholder controls the injection point; earlier sentinels are discarded.
+// Merges preset + variant + consumer classes automatically. Internal component templates may
+// still provide the private placement token to keep base classes before the preset layer.
 export function mergeClassesWithPreset(
 	userClass: string | ClassValue | undefined,
 	presetClass: ClassValue | undefined,

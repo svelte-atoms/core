@@ -13,9 +13,21 @@ import {
 	type PolicyGuard
 } from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const FOCUS_TRIGGER = sharedCapabilityKey<void>('@ixirjs/cap:focus-trigger');
-export const ACTIVATION_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:activation-policy');
-export const CLEAR_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:clear-policy');
+export const FOCUS_TRIGGER = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'focus-trigger',
+	version: 1
+});
+export const ACTIVATION_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'activation-policy',
+	version: 1
+});
+export const CLEAR_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'clear-policy',
+	version: 1
+});
 
 export interface ActivationPolicyOptions {
 	role?: string;

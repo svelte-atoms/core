@@ -1,7 +1,8 @@
-import type { BondState, Capability } from '../bond';
+import type { Capability } from '../bond';
 import {
 	defineBond,
 	type AtomSpec,
+	type AtomsOf,
 	type BondBaseClass,
 	type BondSpec,
 	type DefinedBondClass,
@@ -9,46 +10,47 @@ import {
 	type StateCtor
 } from './define.svelte';
 
-export type AtomsOf<P> = P extends { readonly spec: BondSpec<infer A> } ? A : Record<string, never>;
+// Compatibility extraction aliases. `AtomsOf` now understands composition itself.
+export type AtomsOfPart<P> =
+	P extends DefinedBondClass<infer S> ? AtomsOf<S> : Record<never, never>;
+export type MergeAtoms<Parts extends readonly FusablePart[]> = AtomsOf<{
+	name: string;
+	atoms: Record<never, never>;
+	parts: Parts;
+}>;
 
-export type MergeAtoms<Parts extends readonly FusablePart[]> = Parts extends readonly [
-	infer Head,
-	...infer Tail
-]
-	? Tail extends readonly FusablePart[]
-		? AtomsOf<Head> & MergeAtoms<Tail>
-		: AtomsOf<Head>
-	: Record<string, never>;
-
+/** A convenient `parts:`-only spelling of defineBond. */
 export interface FuseSpec<
-	Parts extends readonly FusablePart[],
-	Own extends Record<string, AtomSpec>,
-	State extends BondState
+	Parts extends readonly FusablePart[] = readonly FusablePart[],
+	Own extends Record<string, AtomSpec> = Record<never, never>
 > {
 	name: string;
 	parts: Parts;
 	atoms?: Own;
-	capabilities?: (state: State) => Capability[];
+	capabilities?: (state: unknown) => Capability[];
 	preset?: string;
 	base?: BondBaseClass;
-	// Generic State keeps explicit args so State threads precisely (e.g. SelectBond).
-	state?: StateCtor<State>;
+	state?: StateCtor;
 }
 
-export function fuse<
-	const Parts extends readonly FusablePart[],
-	Own extends Record<string, AtomSpec> = Record<string, never>,
-	State extends BondState = BondState
->(spec: FuseSpec<Parts, Own, State>): DefinedBondClass<MergeAtoms<Parts> & Own, State> {
-	return defineBond<MergeAtoms<Parts> & Own, State, BondBaseClass>({
-		name: spec.name,
-		parts: spec.parts as readonly FusablePart[],
-		atoms: (spec.atoms ?? {}) as MergeAtoms<Parts> & Own,
-		...(spec.capabilities
-			? { capabilities: spec.capabilities as (state: BondState) => Capability[] }
-			: {}),
-		...(spec.preset ? { preset: spec.preset } : {}),
-		...(spec.base ? { base: spec.base } : {}),
-		...(spec.state ? { state: spec.state as StateCtor<State> } : {})
-	}) as unknown as DefinedBondClass<MergeAtoms<Parts> & Own, State>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- inference-only callable constraint
+type AnyCapabilityFactory = (state: any) => Capability[];
+
+type NormalizeFuse<S extends FuseSpec> = Omit<
+	S,
+	'atoms' | 'base' | 'capabilities' | 'state' | 'preset'
+> & {
+	atoms: S extends { atoms: infer A extends Record<string, AtomSpec> } ? A : Record<never, never>;
+} & (S extends { base: infer Base extends BondBaseClass } ? { base: Base } : Record<never, never>) &
+	(S extends { capabilities: infer Capabilities extends AnyCapabilityFactory }
+		? { capabilities: Capabilities }
+		: Record<never, never>) &
+	(S extends { state: infer State extends StateCtor } ? { state: State } : Record<never, never>) &
+	(S extends { preset: infer Preset extends string } ? { preset: Preset } : Record<never, never>);
+
+export function fuse<const S extends FuseSpec>(spec: S): DefinedBondClass<NormalizeFuse<S>> {
+	return defineBond({
+		...spec,
+		atoms: spec.atoms ?? {}
+	} as unknown as BondSpec) as unknown as DefinedBondClass<NormalizeFuse<S>>;
 }

@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { mergeClassesWithPreset } from './classes';
 
 describe('mergeClassesWithPreset', () => {
-	it('merges user and variant classes without a placeholder', () => {
-		const result = mergeClassesWithPreset('text-sm', 'bg-white', 'font-bold');
-		expect(result).toBe('text-sm font-bold');
+	it('inserts preset and variant classes automatically before consumer classes', () => {
+		const result = mergeClassesWithPreset('text-sm p-4', 'bg-white p-2', 'font-bold');
+		expect(result).toBe('bg-white font-bold text-sm p-4');
 	});
 
 	it('injects preset class at $preset placeholder position', () => {
@@ -22,9 +22,9 @@ describe('mergeClassesWithPreset', () => {
 		expect(result).toBe('a b PRESET c');
 	});
 
-	it('handles undefined userClass gracefully', () => {
+	it('includes preset classes when the consumer class is absent', () => {
 		const result = mergeClassesWithPreset(undefined, 'bg-white', 'font-bold');
-		expect(result).toBe('font-bold');
+		expect(result).toBe('bg-white font-bold');
 	});
 
 	it('handles all-undefined inputs without throwing', () => {
@@ -65,9 +65,9 @@ describe('mergeClassesWithPreset — array user class (the component-root shape)
 		);
 	});
 
-	it('handles arrays without a placeholder like plain strings (preset only via variants)', () => {
+	it('automatically inserts preset classes for arrays without a placement token', () => {
 		const result = mergeClassesWithPreset(['text-sm', 'font-mono'], 'bg-white', 'font-bold');
-		expect(result).toBe('text-sm font-mono font-bold');
+		expect(result).toBe('bg-white font-bold text-sm font-mono');
 	});
 
 	it('handles a placeholder embedded inside a longer array item', () => {

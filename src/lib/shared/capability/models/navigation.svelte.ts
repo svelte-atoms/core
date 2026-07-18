@@ -4,7 +4,7 @@ import { ROVING, type RovingFocus } from './roving.svelte';
 // Private slot key (process-unique Symbol, not exported from the public barrel): navigation is a
 // behavior-only policy that nobody retrieves by key, so it stays unforgeable — no consumer can name
 // the slot to replace it. The private seam.
-export const NAVIGATION = capabilityKey('navigation');
+export const NAVIGATION = capabilityKey<RovingFocus>('navigation');
 
 // Options for `navigationCapability`'s keydown projection.
 export interface NavigationProjectionOptions {

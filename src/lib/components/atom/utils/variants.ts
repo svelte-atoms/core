@@ -1,15 +1,7 @@
 import type { Bond } from '$ixirjs/ui/shared';
 import { type ClassValue, type VariantDefinition, VARIANT_DEF_TAG } from '$ixirjs/ui/utils';
-import {
-	type ResolvedProps,
-	getDefCacheMap,
-	getCachedOwnKeys,
-	getCompoundConditionKeys,
-	hasOwnKeysCached,
-	lruGet,
-	lruSet,
-	MAX_CACHE_SIZE
-} from './cache';
+import type { ResolvedProps } from './cache';
+import { VARIANTS_SKIP } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyVariantDefinition = VariantDefinition<any>;
@@ -25,37 +17,8 @@ function effectivePropValue(
 	return undefined;
 }
 
-// Builds a compact cache key from variant-relevant props; serializes primitives inline,
-// falls back to JSON.stringify only for rare object values.
-function buildVariantKey(
-	variantKeys: readonly string[],
-	props: Record<string, unknown>,
-	defaults: Record<string, unknown> | undefined
-): string {
-	let key = '';
-	for (const k of variantKeys) {
-		// Absent from both layers → no segment; present-but-undefined → 'u'.
-		let v: unknown;
-		if (Object.hasOwn(props, k)) v = props[k];
-		else if (defaults !== undefined && Object.hasOwn(defaults, k)) v = defaults[k];
-		else continue;
-		// Discriminate type so e.g. `"true"` and `true` don't collide.
-		const t = typeof v;
-		if (v === undefined) {
-			key += k + '=u|';
-		} else if (v === null) {
-			key += k + '=n|';
-		} else if (t === 'string' || t === 'number' || t === 'boolean') {
-			key += k + '=' + t[0] + ':' + (v as string | number | boolean) + '|';
-		} else {
-			key += k + '=o:' + JSON.stringify(v) + '|';
-		}
-	}
-	return key;
-}
-
-// Resolves a VariantDefinition to a ResolvedProps object, cached per-(def, bond, props key)
-// so repeated renders with the same inputs return the same reference.
+// Resolve on every tracked read. Variant maps and callbacks may themselves read reactive state;
+// reference-keyed result caches would bypass those reads and return stale presentation.
 export function resolveVariants(
 	def: AnyVariantDefinition,
 	bond: Bond | null | undefined,
@@ -63,29 +26,11 @@ export function resolveVariants(
 ): ResolvedProps {
 	const { variants: variantMap, compounds, defaults, class: baseClass } = def;
 
-	// Defaults read via effectivePropValue rather than a spread that would allocate on every call.
-	const effectiveDefaults = hasOwnKeysCached(defaults)
-		? (defaults as Record<string, unknown>)
-		: undefined;
-	const variantKeys = getCachedOwnKeys(variantMap as object | undefined);
-
-	// Fast path: no variants or compounds — cached per `def` so renders return the SAME object.
-	if (variantKeys.length === 0 && !compounds?.length) {
-		const fastMap = getDefCacheMap(def as unknown as object, bond);
-		const fastHit = lruGet(fastMap, '');
-		if (fastHit !== undefined) return fastHit;
-		const fastResult = { class: baseClass ? [baseClass] : [] } as ResolvedProps;
-		lruSet(fastMap, '', fastResult, MAX_CACHE_SIZE);
-		return fastResult;
-	}
-
-	const cacheKey = buildVariantKey(variantKeys, props, effectiveDefaults);
-	const cacheMap = getDefCacheMap(def as unknown as object, bond);
-	const hit = lruGet(cacheMap, cacheKey);
-	if (hit !== undefined) return hit;
+	const effectiveDefaults = defaults as Record<string, unknown> | undefined;
+	const variantKeys = Object.keys(variantMap ?? {});
 
 	const classes: ClassValue[] = [];
-	const attributes: Record<string | symbol, unknown> = {};
+	const attributes: Record<string, unknown> = {};
 
 	if (baseClass) classes.push(baseClass);
 
@@ -102,11 +47,12 @@ export function resolveVariants(
 			if (typeof resolved === 'string') {
 				classes.push(resolved);
 			} else if (typeof resolved === 'object' && resolved !== null) {
-				if ('class' in resolved) classes.push(resolved.class);
-				const syms = Object.getOwnPropertySymbols(resolved);
-				if (syms.length) {
-					const src = resolved as Record<string | symbol, unknown>;
-					for (const sym of syms) attributes[sym] = src[sym];
+				const src = resolved as Record<string | symbol, unknown>;
+				if ('class' in resolved) classes.push(src.class as ClassValue);
+				// Variant values may publish ordinary DOM attrs as well as classes.
+				for (const attr in resolved) {
+					if (!Object.hasOwn(resolved, attr) || VARIANTS_SKIP.has(attr)) continue;
+					attributes[attr] = src[attr];
 				}
 			}
 		}
@@ -115,7 +61,7 @@ export function resolveVariants(
 	if (compounds?.length) {
 		for (const compound of compounds) {
 			const compoundClass = compound.class;
-			const conditionKeys = getCompoundConditionKeys(compound);
+			const conditionKeys = Object.keys(compound).filter((key) => key !== 'class');
 			let matches = true;
 			for (const key of conditionKeys) {
 				if (effectivePropValue(props, effectiveDefaults, key) !== compound[key]) {
@@ -128,13 +74,19 @@ export function resolveVariants(
 		}
 	}
 
-	const result = { class: classes, ...attributes };
-	lruSet(cacheMap, cacheKey, result, MAX_CACHE_SIZE);
-	return result;
+	return { class: classes, ...attributes };
 }
 
-// Cache constructed preset variant defs by `presetVariants` reference for downstream cache hits.
-const presetDefCache = new WeakMap<object, AnyVariantDefinition>();
+type PresetDefCacheEntry = {
+	class: ClassValue | undefined;
+	compounds: Array<Record<string, unknown>> | undefined;
+	defaults: Record<string, unknown> | undefined;
+	definition: AnyVariantDefinition;
+};
+
+// A variants-map reference alone is not a complete cache key: reactive entries can change
+// class/compounds/defaults while retaining that map. Validate every semantic sibling.
+const presetDefCache = new WeakMap<object, PresetDefCacheEntry>();
 
 function getOrBuildPresetDef(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -146,41 +98,28 @@ function getOrBuildPresetDef(
 	presetDefaults: Record<string, any> | undefined
 ): AnyVariantDefinition {
 	const cached = presetDefCache.get(presetVariants);
-	if (cached) return cached;
-	const built = {
+	if (
+		cached &&
+		cached.class === presetClass &&
+		cached.compounds === presetCompounds &&
+		cached.defaults === presetDefaults
+	) {
+		return cached.definition;
+	}
+	const definition = {
 		class: presetClass ?? '',
 		variants: presetVariants,
 		compounds: presetCompounds ?? [],
 		defaults: presetDefaults ?? {}
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} as any as AnyVariantDefinition;
-	presetDefCache.set(presetVariants, built);
-	return built;
-}
-
-// Merge cache keyed by (presetResolved, localVariants) reference pair — both inputs are
-// reference-stable across renders, so the same merged object is returned without re-allocating.
-const mergeCache = new WeakMap<object, WeakMap<object, ResolvedProps>>();
-
-function getCachedMerge(
-	presetResolved: ResolvedProps,
-	localVariants: ResolvedProps
-): ResolvedProps | undefined {
-	const inner = mergeCache.get(presetResolved as unknown as object);
-	return inner?.get(localVariants as unknown as object);
-}
-
-function setCachedMerge(
-	presetResolved: ResolvedProps,
-	localVariants: ResolvedProps,
-	merged: ResolvedProps
-): void {
-	let inner = mergeCache.get(presetResolved as unknown as object);
-	if (!inner) {
-		inner = new WeakMap();
-		mergeCache.set(presetResolved as unknown as object, inner);
-	}
-	inner.set(localVariants as unknown as object, merged);
+	presetDefCache.set(presetVariants, {
+		class: presetClass,
+		compounds: presetCompounds,
+		defaults: presetDefaults,
+		definition
+	});
+	return definition;
 }
 
 // Merges preset variant defs with local resolved variants; local wins, classes concatenated preset-first.
@@ -221,74 +160,19 @@ export function mergeVariants(
 	// `localVariants` is guaranteed non-null in this branch.
 	const local = localVariants as ResolvedProps;
 
-	const cachedMerge = getCachedMerge(presetResolved, local);
-	if (cachedMerge !== undefined) return cachedMerge;
-
 	const presetClasses = Array.isArray(presetResolved.class)
 		? presetResolved.class
 		: [presetResolved.class];
 	const localClasses = Array.isArray(local.class) ? local.class : [local.class];
 
-	const merged: ResolvedProps = {
+	return {
 		...presetResolved,
 		...local,
 		class: [...presetClasses, ...localClasses].filter(Boolean)
 	};
-	setCachedMerge(presetResolved, local, merged);
-	return merged;
 }
 
-// Per-(fn, bond) cache for plain-function variants: memoizes last (snapshot, result) so
-// re-renders with equivalent primitive props return the same ResolvedProps reference.
-type PlainFnCacheEntry = { snapshot: string; result: ResolvedProps };
-
-const plainFnCacheBond = new WeakMap<object, WeakMap<object, PlainFnCacheEntry>>();
-const plainFnCacheNoBond = new WeakMap<object, PlainFnCacheEntry>();
-
-function getPlainFnEntry(fn: object, bond: Bond | null | undefined): PlainFnCacheEntry | undefined {
-	if (!bond) return plainFnCacheNoBond.get(fn);
-	const inner = plainFnCacheBond.get(fn);
-	return inner?.get(bond as unknown as object);
-}
-
-function setPlainFnEntry(
-	fn: object,
-	bond: Bond | null | undefined,
-	entry: PlainFnCacheEntry
-): void {
-	if (!bond) {
-		plainFnCacheNoBond.set(fn, entry);
-		return;
-	}
-	let inner = plainFnCacheBond.get(fn);
-	if (!inner) {
-		inner = new WeakMap();
-		plainFnCacheBond.set(fn, inner);
-	}
-	inner.set(bond as unknown as object, entry);
-}
-
-function snapshotPrimitiveProps(props: Record<string, unknown>): string | null {
-	let s = '';
-	// Unsorted: rest-props key order is stable across re-renders; a reordered-but-equal object
-	// only causes a spurious cache miss (recompute, not corruption), so sorting buys nothing.
-	const keys = Object.keys(props);
-	for (const k of keys) {
-		const v = props[k];
-		const t = typeof v;
-		if (v === null) {
-			s += k + '=n|';
-		} else if (t === 'string' || t === 'number' || t === 'boolean' || t === 'undefined') {
-			s += k + '=' + (t === 'undefined' ? 'u' : t[0]) + ':' + String(v) + '|';
-		} else {
-			// Non-primitive value: cannot safely structural-compare — bail out.
-			return null;
-		}
-	}
-	return s;
-}
-
-// Resolves local `variants`: VARIANT_DEF_TAG functions, plain functions (snapshot-cached), or raw defs.
+// Resolve local definitions inside the caller's tracking scope; functions may read live bond state.
 export function resolveLocalVariants(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	variants: any,
@@ -303,17 +187,7 @@ export function resolveLocalVariants(
 		return resolveVariants(resolvedConfig, bond, props);
 	}
 
-	if (typeof variants === 'function') {
-		const snapshot = snapshotPrimitiveProps(props);
-		if (snapshot !== null) {
-			const cached = getPlainFnEntry(variants, bond);
-			if (cached && cached.snapshot === snapshot) return cached.result;
-			const result = variants(bond, props);
-			setPlainFnEntry(variants, bond, { snapshot, result });
-			return result;
-		}
-		return variants(bond, props);
-	}
+	if (typeof variants === 'function') return variants(bond, props);
 
 	return resolveVariants(variants, bond, props);
 }

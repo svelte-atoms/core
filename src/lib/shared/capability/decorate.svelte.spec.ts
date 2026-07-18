@@ -3,6 +3,7 @@ import {
 	Bond,
 	BondState,
 	sharedCapabilityKey,
+	defineCapability,
 	decorateCapability,
 	type Behavior,
 	type Capability,
@@ -11,7 +12,16 @@ import {
 
 // decorateCapability lets a later registration WRAP the prior holder at a slot (delegate the rest)
 // instead of the default blind last-wins replace — the capability-layer dual of atom behavior chaining.
-const SLOT = sharedCapabilityKey<{ name: string }>('@ixirjs/test:decorate');
+const SLOT = sharedCapabilityKey<{ name: string }>({
+	owner: '@ixirjs/test',
+	name: 'decorate',
+	version: 1
+});
+const DEPENDENCY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/test',
+	name: 'decorate-dependency',
+	version: 1
+});
 
 class S extends BondState<BondStateProps> {
 	constructor() {
@@ -21,11 +31,11 @@ class S extends BondState<BondStateProps> {
 
 // Stand-in for a base policy (e.g. clickTrigger): projects on 'trigger' and 'label', has surface + requires.
 function baseCapability(): Capability<{ name: string }> {
-	return {
+	return defineCapability({
 		slot: SLOT,
 		meta: { layer: 1, kind: 'policy', projects: ['trigger', 'label'] },
 		surface: { name: 'base' },
-		requires: [SLOT],
+		requires: [DEPENDENCY],
 		behavior(role): Behavior | undefined {
 			if (role === 'trigger') {
 				return {
@@ -36,16 +46,21 @@ function baseCapability(): Capability<{ name: string }> {
 			if (role === 'label') return { attrs: () => ({ 'data-label': 1 }) };
 			return undefined;
 		}
-	};
+	});
 }
 
 // behaviorsForRole returns Behavior[]; attrs/handlers take the bond, which these probes ignore.
 const noBond = {} as Bond;
 
+function registerBase(state: S): void {
+	state.capability(defineCapability({ slot: DEPENDENCY }));
+	state.capability(baseCapability());
+}
+
 describe('decorateCapability', () => {
 	it('overrides one role while delegating the rest, keeping a single holder at the slot', () => {
 		const state = new S();
-		state.capability(baseCapability());
+		registerBase(state);
 		state.capability(
 			decorateCapability(SLOT, {
 				behavior: (role, _ctx, base) =>
@@ -74,18 +89,23 @@ describe('decorateCapability', () => {
 
 	it('preserves the prior surface and requires by default', () => {
 		const state = new S();
-		state.capability(baseCapability());
+		registerBase(state);
 		state.capability(decorateCapability(SLOT, { behavior: (_r, _c, base) => base }));
 
 		const live = state.capability(SLOT)!;
-		expect(live.meta).toEqual({ layer: 1, kind: 'policy', projects: ['trigger', 'label'] });
+		expect(live.meta).toEqual({
+			layer: 1,
+			kind: 'policy',
+			host: 'bond',
+			projects: ['trigger', 'label']
+		});
 		expect(live.surface).toEqual({ name: 'base' });
-		expect(live.requires).toEqual([SLOT]);
+		expect(live.requires).toEqual([DEPENDENCY]);
 	});
 
 	it('wraps the surface when a surface decoration is supplied', () => {
 		const state = new S();
-		state.capability(baseCapability());
+		registerBase(state);
 		state.capability(
 			decorateCapability(SLOT, { surface: (base) => ({ name: `${base?.name ?? ''}+dec` }) })
 		);
@@ -95,12 +115,14 @@ describe('decorateCapability', () => {
 
 	it('still supports blind replace for a plain (compose-less) capability', () => {
 		const state = new S();
-		state.capability(baseCapability());
-		state.capability({
-			slot: SLOT,
-			surface: { name: 'replacement' },
-			behavior: () => undefined
-		} satisfies Capability<{ name: string }>);
+		registerBase(state);
+		state.capability(
+			defineCapability({
+				slot: SLOT,
+				surface: { name: 'replacement' },
+				behavior: () => undefined
+			})
+		);
 
 		const live = state.capability(SLOT)!;
 		expect(live.surface).toEqual({ name: 'replacement' });

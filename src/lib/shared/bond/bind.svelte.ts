@@ -1,21 +1,17 @@
-import { untrack } from 'svelte';
+import { onDestroy, untrack } from 'svelte';
 import type { Bond } from './bond.svelte';
-import type { BondState } from './state.svelte';
 import type { BondStateProps } from './types';
 import { defineProperty, defineState, type StateDefiner } from '../../utils/state';
-import type { PresetKey } from '../../context/preset.svelte';
+import type { PresetKey } from '../../preset/types';
 
-// Extracts the props type from a Bond; props-owned defineBond bases should not need the
-// BondState compatibility slot for component binding.
+// Extracts the props type from a Bond; props-owned defineBond bases are inferred directly.
 type PropsOf<B extends Bond> = B extends { readonly __props?: infer P }
 	? P
 	: B extends { readonly props: infer P }
 		? P
 		: B extends Bond<infer P>
 			? P
-			: B extends { state: BondState<infer P> }
-				? P
-				: BondStateProps;
+			: BondStateProps;
 
 // Builds a bond from its assembled props cell object (the component's factory).
 export type BondFactory<B extends Bond> = (props: PropsOf<B>) => B;
@@ -70,6 +66,11 @@ export class BondBinding<B extends Bond = Bond> {
 		this.#props = assembled;
 		this.bond = untrack(() => factory(assembled));
 		this.#presetGetter = options?.preset;
+
+		// bindBond assembles props and owns activation/destruction. The component explicitly
+		// publishes the Bond with binding.bond.share() at its context boundary.
+		this.bond.activateCapabilities(this.bond);
+		onDestroy(() => this.bond.destroy());
 	}
 
 	get preset() {

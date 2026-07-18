@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import {
 	Atom,
@@ -39,6 +39,20 @@ class TestAtom extends Atom<TestBond> {
 	}
 }
 
+class LifecycleAtom extends TestAtom {
+	constructor(
+		bond: TestBond,
+		private readonly events: string[]
+	) {
+		super(bond, 'lifecycle');
+	}
+
+	override onmount(): () => void {
+		this.events.push('mount:own');
+		return () => this.events.push('cleanup:own');
+	}
+}
+
 describe('Atom', () => {
 	it('creates fixed-key atom classes with setup behavior', () => {
 		const ButtonAtom = defineAtom<TestBond, HTMLButtonElement>('button', (atom) => {
@@ -62,9 +76,48 @@ describe('Atom', () => {
 		const bond = new TestBond(new LegacyState({ id: 'enhanced-id' }));
 		const atom = new EnhancedAtom(bond);
 
+		expectTypeOf<typeof EnhancedAtom>().toEqualTypeOf<typeof TestAtom>();
 		expect(atom).toBeInstanceOf(TestAtom);
 		expect(atom.name).toBe('root');
 		expect(atom.spread['data-state']).toBe('enhanced');
+	});
+
+	it('creates optionally bonded atom classes from object options', () => {
+		let setupBond: TestBond | undefined;
+		const options = {
+			key: 'root',
+			namespace: 'standalone',
+			preset: 'standalone-preset',
+			id: 'node-id'
+		};
+		const StandaloneAtom = defineAtom<TestBond>(options, (_atom, bond) => {
+			setupBond = bond;
+		});
+		options.key = 'mutated';
+
+		const standalone = new StandaloneAtom();
+		expect(standalone.name).toBe('root');
+		expect(standalone.kind).toBe('standalone-root');
+		expect(standalone.id).toBe('standalone-root-node-id');
+		expect(standalone.preset).toBe('standalone-preset');
+		expect(standalone.spread['data-bond']).toBeUndefined();
+		expect(setupBond).toBeUndefined();
+
+		const bond = new TestBond({ id: 'bond-id' });
+		const bonded = new StandaloneAtom(bond);
+		expect(bonded.kind).toBe('atom-test-root');
+		expect(bonded.id).toBe('atom-test-root-bond-id');
+		expect(bonded.preset).toBe('atom-test');
+		expect(setupBond).toBe(bond);
+	});
+
+	it('uses and permits overriding an object-defined default Bond', () => {
+		const defaultBond = new TestBond({ id: 'default' });
+		const otherBond = new TestBond({ id: 'other' });
+		const GeneratedAtom = defineAtom<TestBond>({ key: 'item', bond: defaultBond });
+
+		expect(new GeneratedAtom().id).toBe('atom-test-item-default');
+		expect(new GeneratedAtom(otherBond).id).toBe('atom-test-item-other');
 	});
 
 	it('can exist without a Bond', () => {
@@ -81,6 +134,14 @@ describe('Atom', () => {
 
 		expect(() => node.role('trigger')).not.toThrow();
 		expect(node.hasRole('trigger')).toBe(true);
+	});
+
+	it('uses a bound user id as its relationship identity', () => {
+		const atom = new TestAtom(new TestBond({ id: 'relationship-id' }), 'content');
+		atom.bindId(() => 'custom-content');
+
+		expect(atom.id).toBe('custom-content');
+		expect(atom.spread.id).toBe('custom-content');
 	});
 
 	it('preserves stable attachment keys across spread reads', () => {
@@ -198,6 +259,7 @@ describe('Atom', () => {
 		const CONFLICT = capabilityKey('conflicting-atom-capability');
 		const node = new Atom(undefined, 'root');
 
+		node.capability(defineAtomCapability({ slot: NEED }));
 		node.capability(
 			defineAtomCapability({
 				slot: SLOT,
@@ -222,7 +284,6 @@ describe('Atom', () => {
 
 		void node.spread;
 
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('requires slot'));
 		expect(warn).toHaveBeenCalledWith(expect.stringContaining('conflicts with projection'));
 		warn.mockRestore();
 	});
@@ -240,6 +301,51 @@ describe('Atom', () => {
 		teardown?.();
 
 		expect(cleanup).toHaveBeenCalledTimes(1);
+	});
+
+	it('rejects atom missing requirements and cycles before setup', () => {
+		const missingSetup = vi.fn();
+		const missing = new Atom(undefined, 'missing');
+		missing.capability(
+			defineAtomCapability({
+				slot: capabilityKey('atom:missing:owner'),
+				requires: [capabilityKey('atom:missing:dependency')],
+				setup: missingSetup
+			})
+		);
+
+		expect(() => missing.setupCapabilities()).toThrow('which is not registered');
+		expect(missingSetup).not.toHaveBeenCalled();
+
+		const first = capabilityKey('atom:cycle:first');
+		const second = capabilityKey('atom:cycle:second');
+		const cycleSetup = vi.fn();
+		const cyclic = new Atom(undefined, 'cyclic');
+		cyclic.capability(defineAtomCapability({ slot: first, requires: [second], setup: cycleSetup }));
+		cyclic.capability(defineAtomCapability({ slot: second, requires: [first], setup: cycleSetup }));
+
+		expect(() => cyclic.setupCapabilities()).toThrow('dependency cycle');
+		expect(cycleSetup).not.toHaveBeenCalled();
+	});
+
+	it('disposes atom setup in LIFO order and aggregates failures', () => {
+		const events: string[] = [];
+		const node = new Atom(undefined, 'root');
+		for (const name of ['first', 'throws', 'last']) {
+			node.capability(
+				defineAtomCapability({
+					slot: capabilityKey(`atom:dispose:${name}`),
+					setup: () => () => {
+						events.push(name);
+						if (name === 'throws') throw new Error(name);
+					}
+				})
+			);
+		}
+
+		node.setupCapabilities();
+		expect(() => node.teardownCapabilities()).toThrow(AggregateError);
+		expect(events).toEqual(['last', 'throws', 'first']);
 	});
 
 	it('warns when atom capability setup is registered but never activated', () => {
@@ -294,25 +400,21 @@ describe('Bond registered Atom APIs', () => {
 
 		const unregister = bond.register(node);
 
-		expect(bond.node('trigger')).toBe(node);
-		expect(bond.nodes()).toEqual([node]);
+		expect(bond.nodeByPart('trigger')).toBe(node);
+		expect(bond.nodesByPart('trigger')).toEqual([node]);
 		expect(bond.elements.trigger).toBeUndefined();
 
 		unregister();
 
-		expect(bond.node('trigger')).toBeUndefined();
-		expect(bond.nodes()).toEqual([]);
+		expect(bond.nodeByPart('trigger')).toBeUndefined();
+		expect(bond.nodesByPart('trigger')).toEqual([]);
 	});
 
-	it('warns for duplicate single-node registrations', () => {
-		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+	it('rejects duplicate single-node registrations', () => {
 		const bond = new TestBond(new LegacyState());
 
 		bond.register(new Atom(bond, 'content'));
-		bond.register(new Atom(bond, 'content'));
-
-		expect(warn).toHaveBeenCalledWith(expect.stringContaining('multiple nodes'));
-		warn.mockRestore();
+		expect(() => bond.register(new Atom(bond, 'content'))).toThrow('multiple nodes');
 	});
 
 	it('supports many-node registration', () => {
@@ -324,7 +426,7 @@ describe('Bond registered Atom APIs', () => {
 		bond.register(first, { cardinality: 'many' });
 		bond.register(second, { cardinality: 'many' });
 
-		expect(bond.nodes('item')).toEqual([first, second]);
+		expect(bond.nodesByPart('item')).toEqual([first, second]);
 		expect(warn).not.toHaveBeenCalled();
 		warn.mockRestore();
 	});
@@ -336,7 +438,7 @@ describe('Bond registered Atom APIs', () => {
 
 		bond.register(node, { key: 'header' });
 
-		expect(bond.atomByRole('trigger')).toBe(node);
+		expect(bond.nodeByRole('trigger')).toBe(node);
 
 		warn.mockRestore();
 	});
@@ -351,7 +453,6 @@ describe('merged Bond authoring facade', () => {
 		expect(direct.props.id).toBe('direct-id');
 		expect(legacy.id).toBe('legacy-id');
 		expect(legacy.props.id).toBe('legacy-id');
-		expect(legacy.state).toBe(legacy);
 	});
 
 	it('exposes capability lookup on Bond', () => {
@@ -376,19 +477,49 @@ describe('createAtomInstance', () => {
 		const bond = new TestBond({ id: 'helper-id' });
 		const { unmount } = render(AtomProbe, { bond, nodeKey: 'content' });
 
-		const node = bond.node('content');
+		const node = bond.nodeByPart('content');
 		expect(node).toBeInstanceOf(Atom);
 		expect(node?.kind).toBe('atom-test-content');
 
 		unmount();
 
-		expect(bond.node('content')).toBeUndefined();
+		expect(bond.nodeByPart('content')).toBeUndefined();
 	});
 
-	it('installs atom capabilities and tears setup down on destroy', () => {
+	it('transactionally unwinds function-style initializers when a later initializer throws', () => {
+		const events: string[] = [];
+		const bond = new TestBond({ id: 'helper-transaction-id' });
+
+		expect(() =>
+			render(AtomProbe, {
+				bond,
+				nodeKey: 'transaction',
+				capabilities: [
+					() => {
+						events.push('setup:first');
+						return () => events.push('teardown:first');
+					},
+					() => {
+						events.push('setup:throws');
+						throw new Error('initializer failed');
+					}
+				]
+			})
+		).toThrow('initializer failed');
+		expect(events).toEqual(['setup:first', 'setup:throws', 'teardown:first']);
+		expect(bond.nodeByPart('transaction')).toBeUndefined();
+	});
+
+	it('registers before atom capability setup and tears setup down before unregistering', () => {
 		const bond = new TestBond({ id: 'helper-capability-id' });
 		const cleanup = vi.fn();
-		const setup = vi.fn(() => cleanup);
+		const setup = vi.fn((node: Atom) => {
+			expect(bond.nodeByPart('trigger')).toBe(node);
+			return () => {
+				expect(bond.nodeByPart('trigger')).toBe(node);
+				cleanup();
+			};
+		});
 
 		const { unmount } = render(AtomProbe, {
 			bond,
@@ -401,13 +532,81 @@ describe('createAtomInstance', () => {
 			]
 		});
 
-		const node = bond.node('trigger');
+		const node = bond.nodeByPart('trigger');
 		expect(node?.spread['data-helper']).toBe('ready');
 		expect(setup).toHaveBeenCalledWith(node, bond);
 
 		unmount();
 
 		expect(cleanup).toHaveBeenCalledTimes(1);
-		expect(bond.node('trigger')).toBeUndefined();
+		expect(bond.nodeByPart('trigger')).toBeUndefined();
+	});
+
+	it('runs every mount hook through one dependency-ordered attachment transaction', () => {
+		const events: string[] = [];
+		const bond = new TestBond({ id: 'mount-order' });
+		const bondMount = capabilityKey('mount:bond');
+		bond.capability(
+			defineCapability({
+				slot: bondMount,
+				roles: {
+					mount: () => ({
+						onmount: () => {
+							events.push('mount:bond');
+							return () => events.push('cleanup:bond');
+						}
+					})
+				}
+			})
+		);
+
+		const first = capabilityKey('mount:first');
+		const second = capabilityKey('mount:second');
+		const atom = new LifecycleAtom(bond, events);
+		atom.capability(
+			defineAtomCapability({
+				slot: second,
+				requires: [first],
+				behavior: {
+					onmount: () => {
+						events.push('mount:second');
+						return () => events.push('cleanup:second');
+					}
+				}
+			})
+		);
+		atom.capability(
+			defineAtomCapability({
+				slot: first,
+				behavior: {
+					onmount: () => {
+						events.push('mount:first');
+						return () => events.push('cleanup:first');
+					}
+				}
+			})
+		);
+		atom.setupCapabilities();
+		atom.role('mount');
+
+		const spread = atom.spread;
+		const symbols = Object.getOwnPropertySymbols(spread);
+		expect(symbols).toHaveLength(1);
+		const cleanup = (spread[symbols[0]!] as (node: HTMLDivElement) => () => void)(
+			document.createElement('div')
+		);
+		expect(events).toEqual(['mount:own', 'mount:bond', 'mount:first', 'mount:second']);
+
+		cleanup();
+		expect(events).toEqual([
+			'mount:own',
+			'mount:bond',
+			'mount:first',
+			'mount:second',
+			'cleanup:second',
+			'cleanup:first',
+			'cleanup:bond',
+			'cleanup:own'
+		]);
 	});
 });

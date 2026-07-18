@@ -13,7 +13,11 @@ export interface PressedModel {
 	toggle(): void;
 }
 
-export const PRESSED = sharedCapabilityKey<PressedModel>('@ixirjs/cap:pressed');
+export const PRESSED = sharedCapabilityKey<PressedModel>({
+	owner: '@ixirjs/cap',
+	name: 'pressed',
+	version: 1
+});
 
 export function createPressed(backing: PressedBacking): PressedModel {
 	return {

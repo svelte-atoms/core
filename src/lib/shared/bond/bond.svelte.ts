@@ -1,6 +1,5 @@
 import { getContext, setContext } from 'svelte';
 import { nanoid } from 'nanoid';
-import { DEV } from 'esm-env';
 import { StagedMap } from './staged-map.svelte';
 import { bondContextKey } from './context';
 import { Atom } from './atom.svelte';
@@ -22,7 +21,6 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 
 	#id: string;
 	#props: Props;
-	#legacyState: BondState | undefined;
 	#nodes = new StagedMap<NodeRegistration>();
 	#name: string;
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
@@ -33,21 +31,15 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 		super();
 		// Cross-copy identity brand; read by static [Symbol.hasInstance].
 		Object.defineProperty(this, BOND_BRAND, { value: true });
-		this.#legacyState = props instanceof BondState ? props : undefined;
-		this.#props = (this.#legacyState?.props ?? props ?? {}) as Props;
+		const legacyState = props instanceof BondState ? props : undefined;
+		this.#props = (legacyState?.props ?? props ?? {}) as Props;
 		this.#id = this.#props.id ?? nanoid(8);
 		this.#name = name ?? '';
-		if (this.#legacyState) this.#adoptLegacyState(this.#legacyState);
+		if (legacyState) this.#adoptLegacyState(legacyState);
 	}
 
 	get id() {
 		return this.props?.id ?? this.#id;
-	}
-
-	// Compatibility alias while older internals migrate from `bond.state.*` to `bond.*`.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	get state(): any {
-		return this;
 	}
 
 	get props() {
@@ -94,11 +86,11 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 			return () => this.unregister(node);
 		}
 
-		if (DEV && cardinality === 'single') {
+		if (cardinality === 'single') {
 			const duplicate = this.#nodes.values().find((registration) => registration.key === key)?.node;
 			if (duplicate && duplicate !== node) {
-				console.warn(
-					`[ixirjs] Bond("${this.name}").register("${key}") received multiple nodes for a single-node slot. Use { cardinality: 'many' } when this is intentional.`
+				throw new Error(
+					`[ixirjs] Bond("${this.name}").register("${key}") received multiple nodes for a single-node part. Use { cardinality: 'many' } when this is intentional.`
 				);
 			}
 		}
@@ -123,29 +115,24 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 		this.#nodes.delete(id);
 	}
 
-	node<N extends Atom = Atom>(key: string): N | undefined {
-		return this.nodes<N>(key)[0];
+	/** Exact registration-part lookup. */
+	nodeByPart<N extends Atom = Atom>(part: string): N | undefined {
+		return this.nodesByPart<N>(part)[0];
 	}
 
-	nodes<N extends Atom = Atom>(kind?: string): N[] {
+	/** Exact registration-part lookup for repeated parts. */
+	nodesByPart<N extends Atom = Atom>(part: string): N[] {
 		return this.#nodes
 			.values()
-			.filter((registration) => {
-				if (!kind) return true;
-				const node = registration.node;
-				return (
-					registration.key === kind ||
-					node.name === kind ||
-					node.kind === kind ||
-					node.hasRole(kind)
-				);
-			})
+			.filter((registration) => registration.key === part)
 			.map((registration) => registration.node as N);
 	}
 
-	// Find the atom playing role (e.g. for aria-controls cross-references).
-	atomByRole(role: string): Atom | undefined {
-		return this.node(role);
+	/** Exact role lookup; roles do not share the part/name namespace. */
+	nodeByRole<N extends Atom = Atom>(role: string): N | undefined {
+		return this.#nodes.values().find((registration) => registration.node.hasRole(role))?.node as
+			| N
+			| undefined;
 	}
 
 	// Thin aliases kept for Bond's public API; CapabilityRegistry owns surface()/requireSurface().
@@ -158,8 +145,12 @@ export abstract class Bond<Props extends BondPropsBase = BondPropsBase> extends 
 	}
 
 	destroy() {
-		this.#nodes.clear();
-		this.#nodeRegistrations.clear();
+		try {
+			this.destroyCapabilities();
+		} finally {
+			this.#nodes.clear();
+			this.#nodeRegistrations.clear();
+		}
 	}
 
 	#adoptLegacyState(state: BondState): void {

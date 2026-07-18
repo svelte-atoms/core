@@ -6,13 +6,10 @@ import {
 } from '$ixirjs/ui/shared/capability/models/disclosure.svelte';
 import { CollapsibleBond } from '$ixirjs/ui/components/collapsible/bond.svelte';
 import { TreeBond } from '$ixirjs/ui/components/tree/bond.svelte';
-import { ToastBond } from '$ixirjs/ui/components/toast/bond.svelte';
-import { DialogBond } from '$ixirjs/ui/components/dialog/bond.svelte';
-import { DrawerBond } from '$ixirjs/ui/components/drawer/bond.svelte';
-import {
-	PopoverBond,
-	type PopoverStateProps
-} from '$ixirjs/ui/components/popover/bond.svelte';
+import { ToastBond, ToastCloseAtom } from '$ixirjs/ui/components/toast/bond.svelte';
+import { DialogBond, DialogCloseAtom } from '$ixirjs/ui/components/dialog/bond.svelte';
+import { DrawerBond, DrawerBackdropAtom } from '$ixirjs/ui/components/drawer/bond.svelte';
+import { PopoverBond, type PopoverStateProps } from '$ixirjs/ui/components/popover/bond.svelte';
 import { SidebarBond } from '$ixirjs/ui/components/sidebar/bond.svelte';
 import { BACKDROP_PRESS, OUTSIDE_PRESS } from '$ixirjs/ui/components/portal/host';
 
@@ -103,7 +100,7 @@ describe('disclosure activation call sites', () => {
 		const bond = ToastBond.create(props);
 		const stopPropagation = vi.fn();
 
-		(bond.dismiss().spread.onclick as (ev: MouseEvent) => void)({
+		(new ToastCloseAtom(bond).role('close').spread.onclick as (ev: MouseEvent) => void)({
 			button: 0,
 			defaultPrevented: false,
 			stopPropagation
@@ -122,7 +119,7 @@ describe('disclosure activation call sites', () => {
 			projects: ['close']
 		});
 
-		(bond.closeButton().spread.onclick as (ev: MouseEvent) => void)({
+		(new DialogCloseAtom(bond).spread.onclick as (ev: MouseEvent) => void)({
 			button: 0,
 			defaultPrevented: false
 		} as unknown as MouseEvent);
@@ -135,13 +132,13 @@ describe('dismissal capability call sites', () => {
 		const props = $state({ open: true, disabled: false });
 		const bond = DrawerBond.create(props);
 
-		expect(bond.state.capability(BACKDROP_PRESS)?.meta).toMatchObject({
+		expect(bond.capability(BACKDROP_PRESS)?.meta).toMatchObject({
 			layer: 1,
 			kind: 'policy',
 			projects: ['backdrop']
 		});
 
-		(bond.backdrop().spread.onclick as (ev: MouseEvent) => void)({
+		(new DrawerBackdropAtom(bond).spread.onclick as (ev: MouseEvent) => void)({
 			button: 0,
 			defaultPrevented: false,
 			target: document.createElement('div')
@@ -153,10 +150,10 @@ describe('dismissal capability call sites', () => {
 		const props = $state(popoverProps({ open: true }));
 		const bond = PopoverBond.create(props);
 
-		expect(bond.state.capability(OUTSIDE_PRESS)?.meta).toMatchObject({
+		expect(bond.capability(OUTSIDE_PRESS)?.meta).toMatchObject({
 			layer: 1,
 			kind: 'policy'
 		});
-		expect(bond.state.surface(OUTSIDE_PRESS)?.handle).toEqual(expect.any(Function));
+		expect(bond.surface(OUTSIDE_PRESS)?.handle).toEqual(expect.any(Function));
 	});
 });

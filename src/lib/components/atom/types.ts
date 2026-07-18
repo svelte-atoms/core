@@ -1,7 +1,7 @@
 import type { Component, Snippet } from 'svelte';
 import type { HtmlElementTagName } from '$ixirjs/ui/components/element';
 import type { HtmlElementProps, ElementType } from '../element/types';
-import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
+import type { PresetKey } from '$ixirjs/ui/preset';
 import type { Bond } from '$ixirjs/ui/shared';
 import type { VariantDefinition } from '$ixirjs/ui/utils';
 import type { LifecycleAttachment } from './lifecycle.svelte';

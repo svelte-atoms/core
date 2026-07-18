@@ -1,5 +1,6 @@
 import { DEV } from 'esm-env';
 import { Bond, BondState, type BondStateProps } from '$ixirjs/ui/shared/bond';
+import { getBondSpec } from './metadata';
 import type {
 	AtomSpec,
 	FusablePart,
@@ -7,7 +8,7 @@ import type {
 	StatePropsOf
 } from '$ixirjs/ui/shared/authoring/define.svelte';
 
-// this.state lets subclasses self-construct under their own identity.
+// The static state constructor lets definitions self-construct under their own identity.
 function bondCreate(
 	this: (new (stateOrProps: BondState | BondStateProps) => Bond) & {
 		state?: StateCtor;
@@ -30,28 +31,6 @@ export function attachStateFactory(cls: object, StateClass: StateCtor | undefine
 		value: bondCreate,
 		writable: true,
 		configurable: true
-	});
-}
-
-export function attachAccessor(proto: object, methodName: string, entry: AtomSpec) {
-	const { Ctor, role } = resolveAtomSpec(methodName, entry);
-	Object.defineProperty(proto, methodName, {
-		value(this: Bond) {
-			const atom = new Ctor(this);
-			return role ? atom.role(role) : atom;
-		},
-		writable: true,
-		configurable: true,
-		enumerable: false
-	});
-}
-
-export function hideAccessor(proto: object, methodName: string) {
-	Object.defineProperty(proto, methodName, {
-		value: undefined,
-		writable: true,
-		configurable: true,
-		enumerable: false
 	});
 }
 
@@ -89,53 +68,36 @@ export function adoptStateHost(target: Bond, state: BondState): void {
 export function warnPartCompositionConflicts(
 	bondName: string,
 	parts: readonly FusablePart[],
-	ownAtoms: Record<string, AtomSpec>,
-	methods: Record<string, unknown> | undefined,
-	atomMethods: boolean
+	ownAtoms: Record<string, AtomSpec>
 ): void {
 	if (!DEV) return;
 
 	// Plain Maps: local DEV-only bookkeeping, not reactive state.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	const atomMethodSources = new Map<string, string>();
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const atomKeys = new Map<string, string>();
 
 	const noteAtom = (methodName: string, entry: AtomSpec, source: string): void => {
 		const { key } = resolveAtomSpec(methodName, entry);
-		if (atomMethods) {
-			const priorMethod = atomMethodSources.get(methodName);
-			if (priorMethod)
-				warnCompositionConflict(bondName, 'atom method', methodName, priorMethod, source);
-			atomMethodSources.set(methodName, source);
-		}
-
 		const priorKey = atomKeys.get(key);
 		if (priorKey) warnCompositionConflict(bondName, 'atom key', key, priorKey, source);
 		atomKeys.set(key, source);
 	};
 
 	for (const part of parts) {
-		const source = `part "${part.spec.name}"`;
-		for (const methodName of Object.keys(part.spec.atoms)) {
-			noteAtom(methodName, part.spec.atoms[methodName]!, source);
+		const partSpec = getBondSpec(part);
+		const source = `part "${partSpec.name}"`;
+		for (const methodName of Object.keys(partSpec.atoms)) {
+			noteAtom(methodName, partSpec.atoms[methodName]!, source);
 		}
 	}
 	for (const methodName of Object.keys(ownAtoms)) {
 		noteAtom(methodName, ownAtoms[methodName]!, `bond "${bondName}"`);
 	}
-	if (!atomMethods) return;
-	for (const methodName of Object.keys(methods ?? {})) {
-		const prior = atomMethodSources.get(methodName);
-		if (prior) warnCompositionConflict(bondName, 'method', methodName, prior, `bond "${bondName}"`);
-	}
 }
 
 function resolveAtomSpec(methodName: string, entry: AtomSpec) {
-	const Ctor = typeof entry === 'function' ? entry : entry.atom;
-	const key = typeof entry === 'function' ? methodName : (entry.key ?? methodName);
-	const role = typeof entry === 'function' ? undefined : entry.role;
-	return { Ctor, key, role };
+	const part = typeof entry === 'function' ? methodName : (entry.part ?? methodName);
+	return { key: part };
 }
 
 function isStateHost<State extends BondState>(value: State | StatePropsOf<State>): value is State {
@@ -207,7 +169,7 @@ function defineForwardedMember(
 
 function warnCompositionConflict(
 	bondName: string,
-	kind: 'atom method' | 'atom key' | 'method',
+	kind: 'atom key',
 	name: string,
 	prior: string,
 	next: string

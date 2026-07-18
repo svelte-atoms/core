@@ -1,12 +1,14 @@
 import {
 	definePolicyCapability,
 	sharedCapabilityKey,
-	type Capability
+	type Capability,
+	type CapabilityKey
 } from '$ixirjs/ui/shared/capability/capability';
 import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
 	capturePointer,
 	dragDetail,
+	releasePointer,
 	shouldSkipPolicy,
 	trackPressDetail,
 	type DragAxis,
@@ -15,9 +17,21 @@ import {
 	type TrackPressDetail
 } from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const THUMB_DRAG_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:thumb-drag');
-export const TRACK_PRESS_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:track-press');
-export const RESIZE_HANDLE_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:resize-handle');
+export const THUMB_DRAG_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'thumb-drag',
+	version: 1
+});
+export const TRACK_PRESS_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'track-press',
+	version: 1
+});
+export const RESIZE_HANDLE_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'resize-handle',
+	version: 1
+});
 
 export interface ThumbDragPolicyOptions {
 	role?: string;
@@ -98,7 +112,7 @@ export function resizeHandlePolicy(options: ResizeHandlePolicyOptions): Capabili
 }
 
 type PointerDragConfig = {
-	slot: symbol;
+	slot: CapabilityKey<void>;
 	role: string;
 	axis?: DragAxis | undefined;
 	disabled?: PolicyGuard | undefined;
@@ -125,25 +139,29 @@ function pointerDragPolicy(config: PointerDragConfig): Capability<void> {
 								if (shouldSkipPolicy(config.disabled, bond, event)) return;
 								start = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
 								capturePointer(event);
-								const detail = dragDetail(start, event, config.axis);
-								config.onStart?.(detail, bond, event);
+								config.onStart?.(dragDetail(start, event, config.axis), bond, event);
 							},
 							onpointermove: (event: PointerEvent) => {
 								if (!start || event.pointerId !== start.pointerId) return;
-								if (shouldSkipPolicy(config.disabled, bond, event)) return;
+								if (shouldSkipPolicy(config.disabled, bond, event)) {
+									releasePointer(event);
+									start = undefined;
+									return;
+								}
 								config.onMove(dragDetail(start, event, config.axis), bond, event);
 							},
 							onpointerup: (event: PointerEvent) => {
 								if (!start || event.pointerId !== start.pointerId) return;
-								const detail = dragDetail(start, event, config.axis);
+								const initial = start;
+								releasePointer(event);
 								start = undefined;
-								config.onEnd?.(detail, bond, event);
+								if (shouldSkipPolicy(config.disabled, bond, event)) return;
+								config.onEnd?.(dragDetail(initial, event, config.axis), bond, event);
 							},
 							onpointercancel: (event: PointerEvent) => {
 								if (!start || event.pointerId !== start.pointerId) return;
-								const detail = dragDetail(start, event, config.axis);
+								releasePointer(event);
 								start = undefined;
-								config.onEnd?.(detail, bond, event);
 							}
 						})
 					}

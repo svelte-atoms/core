@@ -117,14 +117,14 @@ describe('Bond node registry resolution', () => {
 		const root = new RootAtom(bond, 'root');
 		bond.register(root);
 
-		expect(bond.node('root')).toBe(root);
-		expect(bond.node('nope')).toBeUndefined();
+		expect(bond.nodeByPart('root')).toBe(root);
+		expect(bond.nodeByPart('nope')).toBeUndefined();
 	});
 
 	it('resolves a dynamic per-value atom registered by the component', () => {
 		const bond = new RegistryBond(makeState(), 'stack');
 		const apple = bond.item('apple');
-		expect(bond.node('item:apple')).toBe(apple);
+		expect(bond.nodeByPart('item:apple')).toBe(apple);
 		expect(apple).toBeInstanceOf(ItemAtom);
 		expect(apple.value).toBe('apple');
 	});
@@ -134,14 +134,24 @@ describe('Bond node registry resolution', () => {
 		const b = new RegistryBond(makeState(), 'stack');
 		expect(a.item('apple').value).toBe('apple');
 		expect(b.item('banana').value).toBe('banana');
-		expect(b.node('item:apple')).toBeUndefined();
+		expect(b.nodeByPart('item:apple')).toBeUndefined();
+	});
+
+	it('separates exact part and role lookups and rejects duplicate single parts', () => {
+		const bond = new TestBond(makeState(), 'registry');
+		const trigger = new RoleAtom(bond, 'trigger', 'trigger');
+		bond.register(trigger, { key: 'button' });
+		expect(bond.nodeByPart('button')).toBe(trigger);
+		expect(bond.nodesByPart('button')).toEqual([trigger]);
+		expect(bond.nodeByRole('trigger')).toBe(trigger);
+		expect(() => bond.register(new RootAtom(bond, 'button'))).toThrow('multiple nodes');
 	});
 });
 
-describe('Bond.atomByRole', () => {
+describe('Bond.nodeByRole', () => {
 	it('returns the first registered atom when multiple atoms play the same role', () => {
 		const bond = new TestBond(makeState(), 'roles');
-		bond.state.capability(
+		bond.capability(
 			defineCapability({ slot: capabilityKey('role-test'), roles: { trigger: () => ({}) } })
 		);
 		const first = new RoleAtom(bond, 'first', 'trigger');
@@ -150,9 +160,9 @@ describe('Bond.atomByRole', () => {
 		bond.register(first);
 		bond.register(second);
 
-		expect(bond.node('first')).toBe(first);
-		expect(bond.node('second')).toBe(second);
-		expect(bond.atomByRole('trigger')).toBe(first);
+		expect(bond.nodeByPart('first')).toBe(first);
+		expect(bond.nodeByPart('second')).toBe(second);
+		expect(bond.nodeByRole('trigger')).toBe(first);
 	});
 });
 
@@ -161,7 +171,7 @@ describe('Atom.role', () => {
 		const debug = vi.spyOn(console, 'debug').mockImplementation(() => {});
 		let clicks = 0;
 		const bond = new TestBond(makeState(), 'roles');
-		bond.state.capability(
+		bond.capability(
 			defineCapability({
 				slot: capabilityKey('role-idempotent'),
 				roles: {

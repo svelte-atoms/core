@@ -44,7 +44,7 @@ describe('role projection primitives', () => {
 		const cap = orientationProjection({
 			orientation: () => state.orientation
 		});
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const container = bond.addAtom('container', 'container');
 
 		expect(cap.slot).toBe(ORIENTATION_PROJECTION);
@@ -69,7 +69,7 @@ describe('role projection primitives', () => {
 			disabled: (ctx) => state.disabled || ctx === 'locked',
 			native: ['control']
 		});
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 		const item = bond.addAtom('item', 'item', 'locked');
 
@@ -91,7 +91,7 @@ describe('role projection primitives', () => {
 		const cap = currentProjection({
 			current: (ctx) => (ctx === state.current ? 'page' : undefined)
 		});
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const home = bond.addAtom('home', 'item', 'home');
 		const settings = bond.addAtom('settings', 'item', 'settings');
 

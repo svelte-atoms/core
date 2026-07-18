@@ -1,102 +1,51 @@
 import { describe, expect, it } from 'vitest';
 import { foldPresentation } from './fold';
 
-// Pins the merge kernel's contract (ADR 0004 D5):
-//     defaults → preset → variants → restProps   (each later layer wins)
-// for string and symbol keys, plus per-layer skip sets and class-axis capture.
-// resolvers.spec.ts pins the same order through the stage facade; this pins the kernel directly.
-
-describe('foldPresentation — cascade precedence', () => {
-	it('applies defaults < preset < variants < rest for string keys', () => {
+describe('foldPresentation', () => {
+	it('applies defaults < preset attrs < variants < consumer props', () => {
 		const out = foldPresentation(
 			{ 'data-tier': 'defaults', 'data-default': 'kept' },
-			{ 'data-tier': 'preset' },
-			{ 'data-tier': 'variant' },
+			{ attrs: { 'data-tier': 'preset', 'data-preset': 'kept' } },
+			{ 'data-tier': 'variant', 'data-variant': 'kept' },
 			{ 'data-tier': 'rest' }
 		);
-		expect(out.attrs['data-tier']).toBe('rest');
-		expect(out.attrs['data-default']).toBe('kept'); // un-overridden keys survive
+		expect(out.attrs).toMatchObject({
+			'data-tier': 'rest',
+			'data-default': 'kept',
+			'data-preset': 'kept',
+			'data-variant': 'kept'
+		});
 	});
 
-	it('applies the SAME precedence to symbol keys (documented, not incidental)', () => {
-		const sym = Symbol('attachment');
-		const out = foldPresentation(
-			{ [sym]: 'defaults' } as Record<string, unknown>,
-			{ [sym]: 'preset' } as Record<string, unknown>,
-			{ [sym]: 'variant' } as Record<string, unknown>,
-			{ [sym]: 'rest' } as Record<string, unknown>
-		);
-		expect(out.attrs[sym]).toBe('rest');
-	});
-
-	it('symbol from an earlier layer survives when later layers omit it', () => {
-		const sym = Symbol('preset-attachment');
-		const out = foldPresentation(
-			undefined,
-			{ [sym]: 'preset' } as Record<string, unknown>,
-			undefined,
-			{}
-		);
-		expect(out.attrs[sym]).toBe('preset');
-	});
-});
-
-describe('foldPresentation — skip sets', () => {
-	it('strips internal config keys from preset and defaults (PRESET_SKIP)', () => {
-		const layer = {
-			class: 'x',
-			base: 'x',
-			as: 'x',
+	it('never spreads top-level preset configuration or unsupported attachments', () => {
+		const malformed = {
+			class: 'preset-class',
+			attrs: { 'data-kept': 'yes', attachments: ['also-not-dom'] },
 			variants: {},
-			compounds: [],
 			defaults: {},
-			'data-kept': 'yes'
-		};
-		for (const out of [
-			foldPresentation(layer, undefined, undefined, {}),
-			foldPresentation(undefined, layer, undefined, {})
-		]) {
-			expect(out.attrs).not.toHaveProperty('class');
-			expect(out.attrs).not.toHaveProperty('base');
-			expect(out.attrs).not.toHaveProperty('as');
-			expect(out.attrs).not.toHaveProperty('variants');
-			expect(out.attrs).not.toHaveProperty('compounds');
-			expect(out.attrs).not.toHaveProperty('defaults');
-			expect(out.attrs['data-kept']).toBe('yes');
-		}
+			render: { as: 'span' },
+			attachments: ['not-supported'],
+			title: 'top-level-leak'
+		} as never;
+		const out = foldPresentation(undefined, malformed, undefined, {});
+		expect(out.attrs).toEqual({ 'data-kept': 'yes' });
 	});
 
-	it('strips variant-internal keys but allows `base`/`as` through (VARIANTS_SKIP)', () => {
-		const out = foldPresentation(
-			undefined,
-			undefined,
-			{ class: 'x', variants: {}, compounds: [], defaults: {}, as: 'span', 'data-v': '1' },
-			{}
-		);
-		expect(out.attrs).not.toHaveProperty('class');
-		expect(out.attrs).not.toHaveProperty('variants');
-		expect(out.attrs.as).toBe('span'); // VARIANTS_SKIP does not include as/base
-		expect(out.attrs['data-v']).toBe('1');
+	it('preserves symbol props from defaults, variants, and consumer props but not presets', () => {
+		const symbol = Symbol('lifecycle');
+		expect(
+			foldPresentation(
+				{ [symbol]: 'default' } as Record<string, unknown>,
+				{ attrs: { 'data-preset': true } },
+				{ [symbol]: 'variant' } as Record<string, unknown>,
+				{ [symbol]: 'consumer' } as Record<string, unknown>
+			).attrs[symbol]
+		).toBe('consumer');
 	});
 
-	it('skips nothing from restProps — the consumer spread is sovereign', () => {
-		const out = foldPresentation(undefined, undefined, undefined, { class: 'kept', as: 'kept' });
-		expect(out.attrs.class).toBe('kept');
-		expect(out.attrs.as).toBe('kept');
-	});
-});
-
-describe('foldPresentation — class-axis capture', () => {
-	it('captures preset.class and variants.class as separate fields', () => {
-		const out = foldPresentation(undefined, { class: 'preset-c' }, { class: ['variant-c'] }, {});
-		expect(out.presetClass).toBe('preset-c');
-		expect(out.variantClass).toEqual(['variant-c']);
-	});
-
-	it('returns undefined class fields when layers are absent', () => {
-		const out = foldPresentation(undefined, undefined, undefined, {});
-		expect(out.presetClass).toBeUndefined();
-		expect(out.variantClass).toBeUndefined();
-		expect(out.attrs).toEqual({});
+	it('captures preset and variant classes separately', () => {
+		const out = foldPresentation(undefined, { class: 'preset' }, { class: ['variant'] }, {});
+		expect(out.presetClass).toBe('preset');
+		expect(out.variantClass).toEqual(['variant']);
 	});
 });

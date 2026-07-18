@@ -14,7 +14,11 @@ export interface LoadingModel {
 	readonly error: unknown;
 }
 
-export const LOADING = sharedCapabilityKey<LoadingModel>('@ixirjs/cap:loading');
+export const LOADING = sharedCapabilityKey<LoadingModel>({
+	owner: '@ixirjs/cap',
+	name: 'loading',
+	version: 1
+});
 
 export function createLoading(backing: LoadingBacking): LoadingModel {
 	return {

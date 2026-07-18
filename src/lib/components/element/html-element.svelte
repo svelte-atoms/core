@@ -1,7 +1,9 @@
 <script lang="ts" generics="T extends HtmlElementTagName">
 	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import { toClassValue } from '$ixirjs/ui/utils';
+	import { withDefaultBorder } from './class';
+	import { createPresentation } from '../atom/presentation.svelte';
 	import type { ElementType, HtmlElementProps, HtmlElementTagName } from './types';
 
 	type Element = ElementType<T>;
@@ -9,6 +11,10 @@
 	let {
 		class: klass = '',
 		as = 'div' as T,
+		preset: presetKey = undefined,
+		variants = undefined,
+		defaults = undefined,
+		__resolvedPresentation = false,
 		global = true,
 		initial = undefined,
 		enter = undefined,
@@ -52,7 +58,22 @@
 		node = n;
 	};
 
-	const finalKlass = $derived(cn('border-border', toClassValue(klass)));
+	// Renderer mode is an initialization-only internal prop from HtmlAtom.
+	const resolvedPresentation = untrack(() => __resolvedPresentation);
+	const presentation = resolvedPresentation
+		? undefined
+		: createPresentation({
+				preset: () => presetKey,
+				variants: () => variants,
+				defaults: () => defaults,
+				class: () => klass,
+				as: () => as,
+				restProps: () => restProps
+			});
+	const finalKlass = $derived(
+		withDefaultBorder(resolvedPresentation ? toClassValue(klass) : (presentation?.class ?? ''))
+	);
+	const finalAs = $derived(String(resolvedPresentation ? as : (presentation?.as ?? as)));
 	const hasTransitions = $derived(!!(enter ?? exit));
 	const transitionSnippet = $derived(
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition
@@ -60,7 +81,7 @@
 
 	// attach transition-end handlers only when transitions exist — they can't fire on a bare element
 	const elementProps = $derived.by(() => {
-		const base = { ...restProps };
+		const base = resolvedPresentation ? { ...restProps } : { ...(presentation?.attrs ?? {}) };
 		if (hasTransitions) {
 			base.onintroend = handleIntroEnd;
 			base.onoutroend = handleExitEnd;
@@ -108,7 +129,7 @@
 
 {#snippet bareElement()}
 	<svelte:element
-		this={as}
+		this={finalAs}
 		{@attach applyInitial}
 		{@attach attachFunction}
 		class={finalKlass}
@@ -120,7 +141,7 @@
 
 {#snippet globalTransition()}
 	<svelte:element
-		this={as}
+		this={finalAs}
 		{@attach applyInitial}
 		{@attach attachFunction}
 		class={finalKlass}
@@ -134,7 +155,7 @@
 
 {#snippet localTransition()}
 	<svelte:element
-		this={as}
+		this={finalAs}
 		{@attach applyInitial}
 		{@attach attachFunction}
 		class={finalKlass}

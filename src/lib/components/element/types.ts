@@ -2,6 +2,8 @@ import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
 import type { ClassValue } from '$ixirjs/ui/utils';
 import type { Snippet } from 'svelte';
+import type { PresetKey } from '$ixirjs/ui/preset';
+import type { Variants } from '../atom/types';
 
 // Element tag names
 
@@ -92,6 +94,9 @@ export interface HtmlElementProps<
 	Children extends Snippet<unknown[]> = Snippet
 >
 	extends ElementProps<T>, HtmlElementEventProps {
+	preset?: PresetKey | undefined;
+	variants?: Variants | undefined;
+	defaults?: Record<string, unknown> | undefined;
 	children?: Children;
 }
 
@@ -103,5 +108,8 @@ export interface SvgElementProps<
 	Children extends Snippet<unknown[]> = Snippet
 >
 	extends ElementProps<T>, HtmlElementEventProps {
+	preset?: PresetKey | undefined;
+	variants?: Variants | undefined;
+	defaults?: Record<string, unknown> | undefined;
 	children?: Children;
 }

@@ -40,7 +40,7 @@ describe('progressValueCapability', () => {
 		});
 		const cap = progressValueCapability(progress);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const bar = bond.addAtom('bar', 'progressbar');
 
 		expect(cap.slot).toBe(PROGRESS_VALUE);
@@ -59,10 +59,23 @@ describe('progressValueCapability', () => {
 		expect(bar.spread['data-completed']).toBeUndefined();
 
 		state.value = 125;
+		expect(progress.value).toBe(100);
 		expect(progress.percent).toBe(100);
 		expect(progress.isCompleted).toBe(true);
+		expect(bar.spread['aria-valuenow']).toBe(100);
 		expect(bar.spread['data-percent']).toBe(100);
 		expect(bar.spread['data-completed']).toBe('');
+
+		state.value = Number.NaN;
+		expect(progress.isIndeterminate).toBe(true);
+		expect(bar.spread['aria-valuenow']).toBeUndefined();
+
+		state.min = 100;
+		state.max = 0;
+		state.value = 25;
+		expect(progress.min).toBe(0);
+		expect(progress.max).toBe(100);
+		expect(progress.value).toBe(25);
 	});
 
 	it('omits current value attrs for indeterminate progress', () => {
@@ -73,7 +86,7 @@ describe('progressValueCapability', () => {
 			max: () => state.max
 		});
 		const bond = new TestBond(state);
-		bond.state.capability(progressValueCapability(progress));
+		bond.capability(progressValueCapability(progress));
 		const bar = bond.addAtom('bar', 'progressbar');
 
 		expect(progress.isIndeterminate).toBe(true);

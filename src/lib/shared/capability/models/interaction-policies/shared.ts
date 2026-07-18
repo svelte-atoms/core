@@ -30,8 +30,8 @@ export interface TrackPressDetail {
 export function isDisabled(guard: PolicyGuard | undefined, bond: Bond, event?: Event): boolean {
 	if (typeof guard === 'boolean') return guard;
 	if (typeof guard === 'function') return guard(bond, event);
-	const state = bond.state as { isDisabled?: boolean; props?: { disabled?: boolean } };
-	return Boolean(state.isDisabled ?? state.props?.disabled ?? false);
+	const direct = bond as Bond & { isDisabled?: boolean; props: { disabled?: boolean } };
+	return Boolean(direct.isDisabled ?? direct.props.disabled ?? false);
 }
 
 export function shouldSkipPolicy(
@@ -40,7 +40,9 @@ export function shouldSkipPolicy(
 	event: Event
 ): boolean {
 	if (event.defaultPrevented) return true;
-	if ('button' in event && event.button === 2) return true;
+	if ('repeat' in event && event.repeat) return true;
+	if ('button' in event && typeof event.button === 'number' && event.button > 0) return true;
+	if ('isPrimary' in event && event.isPrimary === false) return true;
 	return isDisabled(guard, bond, event);
 }
 
@@ -90,6 +92,15 @@ export function trackPressDetail(event: PointerEvent): TrackPressDetail {
 export function capturePointer(event: PointerEvent): void {
 	const target = event.currentTarget as { setPointerCapture?: (pointerId: number) => void } | null;
 	target?.setPointerCapture?.(event.pointerId);
+}
+
+export function releasePointer(event: PointerEvent): void {
+	const target = event.currentTarget as {
+		hasPointerCapture?: (pointerId: number) => boolean;
+		releasePointerCapture?: (pointerId: number) => void;
+	} | null;
+	if (target?.hasPointerCapture?.(event.pointerId) === false) return;
+	target?.releasePointerCapture?.(event.pointerId);
 }
 
 function clampPercent(value: number): number {

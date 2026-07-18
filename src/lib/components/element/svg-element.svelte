@@ -5,6 +5,7 @@
 	import type { SVGAttributes } from 'svelte/elements';
 	import { createAttachmentKey } from 'svelte/attachments';
 	import { cn, toClassValue } from '$ixirjs/ui/utils';
+	import { createPresentation } from '../atom/presentation.svelte';
 	import type { ElementType, SvgElementProps, SvgElementTagName } from './types';
 
 	type Element = ElementType<T>;
@@ -12,6 +13,9 @@
 	let {
 		class: klass = '',
 		as = 'g',
+		preset: presetKey = undefined,
+		variants = undefined,
+		defaults = undefined,
 		global = true,
 		initial = undefined,
 		enter = undefined,
@@ -46,18 +50,29 @@
 		animate?.(node);
 	});
 
+	const attachmentKey = createAttachmentKey();
+	const presentation = createPresentation({
+		preset: () => presetKey,
+		variants: () => variants,
+		defaults: () => defaults,
+		class: () => klass,
+		as: () => as,
+		restProps: () => restProps
+	});
+	const finalKlass = $derived(cn(toClassValue(presentation.class)));
+	const finalAs = $derived(presentation.as as T);
 	const elementProps = $derived({
-		[createAttachmentKey()]: (n: Element) => {
+		[attachmentKey]: (n: Element) => {
 			node = n;
 		},
-		class: cn(toClassValue(klass)),
+		class: finalKlass,
 		onintroend: (ev: TransitionEvent) => {
 			onintroend?.(ev);
 			if (ev.defaultPrevented) return;
 
 			hasEntered = true;
 		},
-		...restProps
+		...presentation.attrs
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- loose passthrough spread onto a polymorphic element; `unknown` values can't satisfy attribute types
 	}) as Record<string, any>;
 
@@ -76,8 +91,8 @@
 
 {#snippet globalTransition()}
 	<svelte:element
-		this={as}
-		class={cn(toClassValue(klass))}
+		this={finalAs}
+		class={finalKlass}
 		in:enterTransition|global
 		out:exitTransition|global
 		{...elementProps}
@@ -88,8 +103,8 @@
 
 {#snippet localTransition()}
 	<svelte:element
-		this={as}
-		class={cn(toClassValue(klass))}
+		this={finalAs}
+		class={finalKlass}
 		in:enterTransition
 		out:exitTransition
 		{...elementProps}

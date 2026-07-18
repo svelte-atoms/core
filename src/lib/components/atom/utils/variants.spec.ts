@@ -68,11 +68,69 @@ describe('resolveVariants', () => {
 		expect(result.class).not.toContain('compound-class');
 	});
 
-	it('returns same reference for repeated identical inputs (cache hit)', () => {
-		const def = { class: '', variants: { size: { sm: 'text-sm' } }, compounds: [], defaults: {} };
-		const a = resolveVariants(def, null, { size: 'sm' });
-		const b = resolveVariants(def, null, { size: 'sm' });
-		expect(a).toBe(b);
+	it('publishes ordinary attributes from matching variant values', () => {
+		const result = resolveVariants(
+			{
+				class: '',
+				variants: {
+					state: {
+						open: { class: 'is-open', 'data-state': 'open', 'aria-expanded': true, role: 'button' }
+					}
+				},
+				compounds: [],
+				defaults: {}
+			},
+			null,
+			{ state: 'open' }
+		);
+		expect(result).toMatchObject({
+			'data-state': 'open',
+			'aria-expanded': true,
+			role: 'button'
+		});
+	});
+
+	it('does not publish attachment symbols or reserved presentation fields', () => {
+		const attachment = Symbol('attachment');
+		const result = resolveVariants(
+			{
+				class: '',
+				variants: {
+					state: {
+						open: {
+							attachments: ['leak'],
+							attrs: { title: 'leak' },
+							render: { as: 'button' },
+							as: 'button',
+							[attachment]: () => undefined,
+							'data-safe': true
+						}
+					}
+				},
+				compounds: [],
+				defaults: {}
+			},
+			null,
+			{ state: 'open' }
+		);
+		expect(result).not.toHaveProperty('attachments');
+		expect(result).not.toHaveProperty('attrs');
+		expect(result).not.toHaveProperty('render');
+		expect(result).not.toHaveProperty('as');
+		expect(Object.getOwnPropertySymbols(result)).toEqual([]);
+		expect(result['data-safe']).toBe(true);
+	});
+
+	it('observes in-place changes to a stable reactive definition', () => {
+		const def = {
+			class: '',
+			variants: { size: { sm: 'text-sm' } },
+			compounds: [],
+			defaults: { size: 'sm' }
+		};
+		expect(resolveVariants(def, null, {}).class).toContain('text-sm');
+		def.variants.size.sm = 'text-updated';
+		expect(resolveVariants(def, null, {}).class).toContain('text-updated');
 	});
 });
 
@@ -80,6 +138,41 @@ describe('mergeVariants', () => {
 	it('returns undefined when neither preset nor local variants exist', () => {
 		const result = mergeVariants(undefined, undefined, undefined, undefined, undefined, null, {});
 		expect(result).toBeUndefined();
+	});
+
+	it('invalidates the preset definition cache when sibling semantic fields change', () => {
+		const variants = { size: { sm: 'text-sm', lg: 'text-lg' } };
+		const first = mergeVariants(variants, 'first', [], { size: 'sm' }, undefined, null, {});
+		const second = mergeVariants(variants, 'second', [], { size: 'lg' }, undefined, null, {});
+		expect(first?.class).toContain('first');
+		expect(first?.class).toContain('text-sm');
+		expect(second?.class).toContain('second');
+		expect(second?.class).toContain('text-lg');
+		expect(second?.class).not.toContain('first');
+	});
+
+	it('invalidates cached compounds while retaining the variants map', () => {
+		const variants = { tone: { calm: 'calm' } };
+		const first = mergeVariants(
+			variants,
+			undefined,
+			[{ tone: 'calm', class: 'first-compound' }],
+			{},
+			undefined,
+			null,
+			{ tone: 'calm' }
+		);
+		const second = mergeVariants(
+			variants,
+			undefined,
+			[{ tone: 'calm', class: 'second-compound' }],
+			{},
+			undefined,
+			null,
+			{ tone: 'calm' }
+		);
+		expect(first?.class).toContain('first-compound');
+		expect(second?.class).toContain('second-compound');
 	});
 
 	it('concatenates preset and local classes', () => {

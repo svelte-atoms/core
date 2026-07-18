@@ -1,5 +1,14 @@
-// Internal atom config keys stripped before spreading preset props onto the DOM.
-export const PRESET_SKIP = new Set(['class', 'base', 'as', 'variants', 'compounds', 'defaults']);
+// Presentation configuration and unsupported lifecycle fields never reach a DOM spread.
+export const PRESET_SKIP = new Set([
+	'class',
+	'attrs',
+	'render',
+	'base',
+	'as',
+	'variants',
+	'compounds',
+	'defaults',
+	'attachments'
+]);
 
-// Internal config keys stripped before spreading resolved variant objects.
-export const VARIANTS_SKIP = new Set(['class', 'variants', 'compounds', 'defaults']);
+export const VARIANTS_SKIP = new Set(PRESET_SKIP);

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { render } from 'svelte/server';
-import PresetAliasProbe from '$ixirjs/ui/test/context/preset-alias.test.svelte';
+import PresetContextProbe from '$ixirjs/ui/test/context/preset-context.test.svelte';
 
-describe('preset aliases', () => {
-	it('canonicalizes deprecated close-button overrides so canonical lookups see them', () => {
-		const { body } = render(PresetAliasProbe);
-
-		expect(body).toContain('data-canonical="legacy-override"');
-		expect(body).toContain('data-legacy="legacy-override"');
-		expect(body).toContain('data-has-legacy="no"');
+describe('preset context', () => {
+	it('installs during initialization and layers entries explicitly', () => {
+		const { body } = render(PresetContextProbe);
+		expect(body).toContain('data-class="base override"');
+		expect(body).toContain('data-base="yes"');
+		expect(body).toContain('data-layer="yes"');
+		expect(body).toContain('data-role="link"');
 	});
 });

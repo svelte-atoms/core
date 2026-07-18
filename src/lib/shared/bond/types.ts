@@ -23,3 +23,21 @@ export type NodeRegistration<N extends Atom = Atom> = {
 	cardinality: NodeCardinality;
 	node: N;
 };
+
+/** Deliberate public view; registration and lifecycle administration stay internal-ready. */
+export type BondHandle = Pick<
+	Bond,
+	| 'id'
+	| 'name'
+	| 'namespace'
+	| 'preset'
+	| 'nodeByPart'
+	| 'nodesByPart'
+	| 'nodeByRole'
+	| 'get'
+	| 'require'
+>;
+
+/** Deliberate public view of a rendered part. */
+export type AtomHandle<E extends Element | BondVirtualElement = Element | BondVirtualElement> =
+	Pick<Atom<Bond, E>, 'id' | 'name' | 'kind' | 'preset' | 'element' | 'spread' | 'hasRole'>;

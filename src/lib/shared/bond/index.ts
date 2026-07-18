@@ -2,10 +2,17 @@
 export { Bond } from './bond.svelte';
 export { BondState } from './state.svelte';
 export { Atom, defineAtom } from './atom.svelte';
-export type { DefineAtomSetup, AtomOptions } from './atom.svelte';
+export type {
+	DefineAtomSetup,
+	DefineAtomOptions,
+	DefinedAtomClass,
+	AtomOptions
+} from './atom.svelte';
 export { bondContextKey } from './context';
 export type {
 	BondClass,
+	BondHandle,
+	AtomHandle,
 	BondElements,
 	BondStateProps,
 	BondVirtualElement,
@@ -14,7 +21,6 @@ export type {
 	NodeRegistration
 } from './types';
 export { bindBond, BondBinding, type BondBindingOptions } from './bind.svelte';
-export { bondFactory } from './factory';
 export {
 	createAtomInstance,
 	type AtomCapabilityEntry,
@@ -56,8 +62,6 @@ export {
 	type BondCapabilityConfig,
 	type CapabilityKey,
 	type SurfaceOf,
-	type RoleContexts,
-	type KnownRole,
 	type RoleCtxArgs,
 	type Capability,
 	type CapabilityEnvelope,

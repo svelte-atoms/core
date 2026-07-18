@@ -11,12 +11,12 @@ import {
 import {
 	selectableCollectionCapability,
 	navigableCollectionCapability,
-	filterableCollectionCapability,
+	typeaheadCollectionCapability,
 	labelledFieldCapability,
 	validatedControlCapability,
 	type LabelledFieldCapabilityOptions,
 	type ValidatedControlCapabilityOptions
-} from './focused.svelte';
+} from './bundles.svelte';
 import { type SelectionModel, type SelectionProjectionOptions } from './selection.svelte';
 import { type RovingFocus, type RovingProjectionOptions } from './roving.svelte';
 import { type NavigationProjectionOptions } from './navigation.svelte';
@@ -52,7 +52,7 @@ export interface ListboxCapabilitiesOptions<T = unknown> extends CollectionRecip
 	selection: SelectionModel<T>;
 	roving: RovingFocus<T>;
 	input?: InputModel;
-	selectionOptions?: SelectionProjectionOptions | undefined;
+	selectionOptions?: SelectionProjectionOptions<T> | undefined;
 	rovingOptions?: RovingProjectionOptions | undefined;
 	navigation?: NavigationProjectionOptions | undefined;
 	inputOptions?: InputProjectionOptions | undefined;
@@ -68,7 +68,7 @@ export interface MenuCapabilitiesOptions<T = unknown> extends CollectionRecipe<T
 
 export interface TabsCapabilitiesOptions<T = unknown> extends CollectionRecipe<T> {
 	selection: SelectionModel<T>;
-	selectionOptions?: SelectionProjectionOptions | undefined;
+	selectionOptions?: SelectionProjectionOptions<T> | undefined;
 	tabPanel?: TabPanelLinkOptions | undefined;
 }
 
@@ -76,7 +76,7 @@ export interface TreeCapabilitiesOptions<T = unknown> extends CollectionRecipe<T
 	selection: SelectionModel<T>;
 	roving: RovingFocus<T>;
 	disclosure?: Disclosure;
-	selectionOptions?: SelectionProjectionOptions | undefined;
+	selectionOptions?: SelectionProjectionOptions<T> | undefined;
 	rovingOptions?: RovingProjectionOptions | undefined;
 	navigation?: NavigationProjectionOptions | undefined;
 }
@@ -84,7 +84,7 @@ export interface TreeCapabilitiesOptions<T = unknown> extends CollectionRecipe<T
 export interface GridCapabilitiesOptions<T = unknown> extends CollectionRecipe<T> {
 	selection?: SelectionModel<T>;
 	roving?: RovingFocus<T>;
-	selectionOptions?: SelectionProjectionOptions | undefined;
+	selectionOptions?: SelectionProjectionOptions<T> | undefined;
 	rovingOptions?: RovingProjectionOptions | undefined;
 	navigation?: NavigationProjectionOptions | undefined;
 	rowColumnCell?: RowColumnCellLinkOptions | undefined;
@@ -135,17 +135,18 @@ export function listboxCapabilities<T = unknown>(
 	];
 	if (options.input) {
 		capabilities.push(
-			...filterableCollectionCapability({
+			...typeaheadCollectionCapability({
 				collection,
 				input: options.input,
 				roving: options.roving,
+				rovingOptions: options.rovingOptions,
 				inputOptions: options.inputOptions,
 				typeahead: options.typeahead
 			})
 		);
 	}
 	return defineArchetypeCapabilities(capabilities, {
-		docs: 'Layer 3 recipe for selectable, navigable, optionally filterable listbox behavior.'
+		docs: 'Layer 3 recipe for selectable, navigable, optionally searchable listbox behavior.'
 	});
 }
 
@@ -206,10 +207,7 @@ export function treeCapabilities<T = unknown>(
 		})
 	];
 	if (options.disclosure) {
-		capabilities.push(
-			disclosureCapability(options.disclosure),
-			treeItemGroupLink(options.disclosure)
-		);
+		capabilities.push(disclosureCapability(options.disclosure), treeItemGroupLink());
 	}
 	return defineArchetypeCapabilities(capabilities, {
 		docs: 'Layer 3 recipe for selectable, navigable tree behavior and tree item/group wiring.'
@@ -293,7 +291,7 @@ export function datePickerCapabilities<T = unknown>(
 ): ArchetypeCapabilities {
 	const capabilities: Capability[] = [
 		disclosureCapability(options.disclosure),
-		triggerContentLink(options.disclosure, {
+		triggerContentLink({
 			haspopup: 'dialog',
 			contentRole: 'dialog',
 			...options.triggerContent

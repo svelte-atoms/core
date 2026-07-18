@@ -29,7 +29,11 @@ export interface ViewportModel {
 	readonly visibleRange: ViewportRange | undefined;
 }
 
-export const VIEWPORT = sharedCapabilityKey<ViewportModel>('@ixirjs/cap:viewport');
+export const VIEWPORT = sharedCapabilityKey<ViewportModel>({
+	owner: '@ixirjs/cap',
+	name: 'viewport',
+	version: 1
+});
 
 export function createViewport(backing: ViewportBacking): ViewportModel {
 	return {

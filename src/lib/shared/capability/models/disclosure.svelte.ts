@@ -2,7 +2,8 @@ import {
 	defineModelCapability,
 	definePolicyCapability,
 	sharedCapabilityKey,
-	type Capability
+	type Capability,
+	type CapabilityKey
 } from '../capability';
 import type { Bond } from '../../bond';
 import { createSelection } from './selection.svelte';
@@ -22,10 +23,26 @@ export interface DisclosureBacking {
 	set(open: boolean): void;
 }
 
-export const DISCLOSURE = sharedCapabilityKey<Disclosure>('@ixirjs/cap:disclosure');
-export const DISCLOSURE_TRIGGER = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-trigger');
-export const DISCLOSURE_CLOSE = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-close');
-export const DISCLOSURE_TOGGLE = sharedCapabilityKey<void>('@ixirjs/cap:disclosure-toggle');
+export const DISCLOSURE = sharedCapabilityKey<Disclosure>({
+	owner: '@ixirjs/cap',
+	name: 'disclosure',
+	version: 1
+});
+export const DISCLOSURE_TRIGGER = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'disclosure-trigger',
+	version: 1
+});
+export const DISCLOSURE_CLOSE = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'disclosure-close',
+	version: 1
+});
+export const DISCLOSURE_TOGGLE = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'disclosure-toggle',
+	version: 1
+});
 
 export type DisclosureActivationAction = 'open' | 'close' | 'toggle';
 export type DisclosureActivationEvent = 'click' | 'pointerdown' | false;
@@ -115,12 +132,13 @@ type DisclosureActivationDefaults = DisclosureActivationOptions & {
 const DEFAULT_KEYS = ['Enter', ' '] as const;
 
 function disclosureActivationCapability(
-	slot: symbol,
+	slot: CapabilityKey<void>,
 	options: DisclosureActivationDefaults
 ): Capability<void> {
 	const role = options.role;
 	const eventName = options.event ?? 'click';
 	const keys = options.keys ?? DEFAULT_KEYS;
+	let skipNativeClick = false;
 
 	return definePolicyCapability<void>({
 		slot,
@@ -132,10 +150,18 @@ function disclosureActivationCapability(
 		behavior: (projectedRole) =>
 			projectedRole === role
 				? {
+						attrs: (bond) => {
+							const disabled = isDisclosureActivationDisabled(bond, options.disabled);
+							return disabled ? { disabled: true, 'aria-disabled': 'true', tabindex: -1 } : {};
+						},
 						handlers: (bond) => {
 							const handlers: Record<string, unknown> = {};
 							if (eventName) {
 								handlers[`on${eventName}`] = (ev: Event) => {
+									if (eventName === 'click' && skipNativeClick) {
+										skipNativeClick = false;
+										return;
+									}
 									if (shouldSkipActivation(bond, ev, options)) return;
 									activateDisclosure(bond, ev, options);
 								};
@@ -145,6 +171,10 @@ function disclosureActivationCapability(
 									if (!keys.includes(ev.key)) return;
 									if (shouldSkipActivation(bond, ev, options)) return;
 									if (options.preventDefaultOnKeys ?? true) ev.preventDefault();
+									else if (eventName === 'click') {
+										skipNativeClick = true;
+										queueMicrotask(() => (skipNativeClick = false));
+									}
 									activateDisclosure(bond, ev, options);
 								};
 							}
@@ -161,7 +191,9 @@ function shouldSkipActivation(
 	options: DisclosureActivationDefaults
 ): boolean {
 	if (event.defaultPrevented) return true;
-	if ('button' in event && event.button === 2) return true;
+	if ('repeat' in event && event.repeat) return true;
+	if ('button' in event && typeof event.button === 'number' && event.button > 0) return true;
+	if ('isPrimary' in event && event.isPrimary === false) return true;
 	if (isDisclosureActivationDisabled(bond, options.disabled)) return true;
 	return false;
 }

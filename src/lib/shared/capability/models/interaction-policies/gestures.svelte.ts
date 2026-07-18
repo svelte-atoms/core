@@ -5,14 +5,27 @@ import {
 } from '$ixirjs/ui/shared/capability/capability';
 import type { Bond } from '$ixirjs/ui/shared/bond';
 import {
+	isDisabled,
 	shouldSkipPolicy,
 	type PolicyGuard,
 	type SwipeDirection
 } from '$ixirjs/ui/shared/capability/models/interaction-policies/shared';
 
-export const REORDER_DRAG_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:reorder-drag');
-export const LONG_PRESS_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:long-press');
-export const SWIPE_POLICY = sharedCapabilityKey<void>('@ixirjs/cap:swipe');
+export const REORDER_DRAG_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'reorder-drag',
+	version: 1
+});
+export const LONG_PRESS_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'long-press',
+	version: 1
+});
+export const SWIPE_POLICY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'swipe',
+	version: 1
+});
 
 export interface ReorderDragPolicyOptions {
 	role?: string;
@@ -23,7 +36,7 @@ export interface ReorderDragPolicyOptions {
 
 export function reorderDragPolicy(options: ReorderDragPolicyOptions): Capability<void> {
 	const role = options.role ?? 'item';
-	let source: string | undefined;
+	let source: { id: string; bond: Bond } | undefined;
 
 	return definePolicyCapability<void>({
 		slot: REORDER_DRAG_POLICY,
@@ -34,26 +47,31 @@ export function reorderDragPolicy(options: ReorderDragPolicyOptions): Capability
 		behavior: (projectedRole, ctx) =>
 			projectedRole === role
 				? {
-						attrs: () => ({
-							draggable: true
+						attrs: (bond) => ({
+							draggable: !isDisabled(options.disabled, bond)
 						}),
 						handlers: (bond) => ({
 							ondragstart: (event: DragEvent) => {
+								source = undefined;
 								if (shouldSkipPolicy(options.disabled, bond, event)) return;
-								source = reorderId(options, ctx, bond);
-								if (source) event.dataTransfer?.setData('text/plain', source);
+								const id = reorderId(options, ctx, bond);
+								if (!id) return;
+								source = { id, bond };
+								event.dataTransfer?.setData('text/plain', id);
 							},
 							ondragover: (event: DragEvent) => {
-								if (shouldSkipPolicy(options.disabled, bond, event)) return;
+								if (shouldSkipPolicy(options.disabled, bond, event) || source?.bond !== bond)
+									return;
 								event.preventDefault();
 							},
 							ondrop: (event: DragEvent) => {
-								if (shouldSkipPolicy(options.disabled, bond, event)) return;
+								if (shouldSkipPolicy(options.disabled, bond, event) || source?.bond !== bond)
+									return;
 								event.preventDefault();
-								const from = source ?? event.dataTransfer?.getData('text/plain');
+								const from = source.id;
 								const to = reorderId(options, ctx, bond);
-								if (from && to && from !== to) options.onReorder(from, to, bond, event);
 								source = undefined;
+								if (to && from !== to) options.onReorder(from, to, bond, event);
 							},
 							ondragend: () => {
 								source = undefined;
@@ -75,10 +93,13 @@ export function longPressPolicy(options: LongPressPolicyOptions): Capability<voi
 	const role = options.role ?? 'control';
 	const delay = options.delay ?? 500;
 	let timer: ReturnType<typeof setTimeout> | undefined;
+	let pointerId: number | undefined;
 
-	const clear = () => {
+	const clear = (nextPointerId?: number) => {
+		if (nextPointerId !== undefined && pointerId !== nextPointerId) return;
 		if (timer !== undefined) clearTimeout(timer);
 		timer = undefined;
+		pointerId = undefined;
 	};
 
 	return definePolicyCapability<void>({
@@ -94,14 +115,17 @@ export function longPressPolicy(options: LongPressPolicyOptions): Capability<voi
 							onpointerdown: (event: PointerEvent) => {
 								clear();
 								if (shouldSkipPolicy(options.disabled, bond, event)) return;
+								pointerId = event.pointerId;
 								timer = setTimeout(() => {
 									timer = undefined;
+									pointerId = undefined;
+									if (shouldSkipPolicy(options.disabled, bond, event)) return;
 									options.onLongPress(bond, event);
 								}, delay);
 							},
-							onpointerup: clear,
-							onpointercancel: clear,
-							onpointerleave: clear
+							onpointerup: (event: PointerEvent) => clear(event.pointerId),
+							onpointercancel: (event: PointerEvent) => clear(event.pointerId),
+							onpointerleave: (event: PointerEvent) => clear(event.pointerId)
 						}),
 						onmount: () => clear
 					}
@@ -131,7 +155,7 @@ export function swipePolicy(options: SwipePolicyOptions): Capability<void> {
 	const role = options.role ?? 'surface';
 	const threshold = options.threshold ?? 30;
 	const directions = options.directions ?? ['left', 'right', 'up', 'down'];
-	let start: { x: number; y: number } | undefined;
+	let start: { pointerId: number; x: number; y: number } | undefined;
 
 	return definePolicyCapability<void>({
 		slot: SWIPE_POLICY,
@@ -145,22 +169,21 @@ export function swipePolicy(options: SwipePolicyOptions): Capability<void> {
 						handlers: (bond) => ({
 							onpointerdown: (event: PointerEvent) => {
 								if (shouldSkipPolicy(options.disabled, bond, event)) return;
-								start = { x: event.clientX, y: event.clientY };
+								start = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
 							},
 							onpointerup: (event: PointerEvent) => {
-								if (!start || shouldSkipPolicy(options.disabled, bond, event)) {
-									start = undefined;
-									return;
-								}
-								const detail = swipeDetail(start, event);
+								if (!start || event.pointerId !== start.pointerId) return;
+								const initial = start;
 								start = undefined;
+								if (shouldSkipPolicy(options.disabled, bond, event)) return;
+								const detail = swipeDetail(initial, event);
 								if (!detail) return;
 								if (!directions.includes(detail.direction)) return;
 								if (Math.max(Math.abs(detail.deltaX), Math.abs(detail.deltaY)) < threshold) return;
 								options.onSwipe(detail, bond, event);
 							},
-							onpointercancel: () => {
-								start = undefined;
+							onpointercancel: (event: PointerEvent) => {
+								if (start?.pointerId === event.pointerId) start = undefined;
 							}
 						})
 					}

@@ -40,7 +40,7 @@ describe('statusCapability', () => {
 			busy: () => state.busy
 		});
 		const cap = statusCapability(status, { roles: ['control'] });
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(STATUS);
@@ -69,7 +69,7 @@ describe('statusCapability', () => {
 	it('only projects the configured statuses and roles', () => {
 		const state = new TestState();
 		const bond = new TestBond(state);
-		bond.state.capability(
+		bond.capability(
 			statusCapability(createStatus({ disabled: () => state.disabled, busy: () => state.busy }), {
 				roles: ['button'],
 				statuses: ['disabled']

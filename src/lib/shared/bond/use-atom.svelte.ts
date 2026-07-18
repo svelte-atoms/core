@@ -2,20 +2,10 @@ import { onDestroy, untrack } from 'svelte';
 import { Atom } from './atom.svelte';
 import type { Bond } from './bond.svelte';
 import type { BondVirtualElement, NodeRegistrationOptions } from './types';
-import type { AtomCapability } from '../capability';
+import type { AnyCapabilitySurface, AtomCapability, CapabilitySetupResult } from '../capability';
 
-type MaybeGetter<T> = T | (() => T);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyAtom = Atom<any, any>;
-
-function resolve<T>(value: MaybeGetter<T>): T {
-	return typeof value === 'function' ? (value as () => T)() : value;
-}
-
-function toTeardown(live: Disposable | (() => void)): () => void {
-	if (typeof live === 'function') return live;
-	return () => live[Symbol.dispose]();
-}
 
 export type AtomCapabilityEntry<
 	N extends AnyAtom = Atom,
@@ -23,18 +13,23 @@ export type AtomCapabilityEntry<
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
 > =
 	| ((node: N, bond: B | undefined) => Disposable | (() => void) | void)
-	| AtomCapability<unknown, N, B, E>;
+	| AtomCapability<AnyCapabilitySurface, N, B, E>;
 
 export type CreateAtomInstanceOptions<
 	N extends AnyAtom = Atom,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
 > = {
-	bond?: MaybeGetter<B | undefined>;
-	required?: MaybeGetter<boolean | string>;
+	/** Plain one-shot input. Resolver names make one-shot lazy resolution explicit. */
+	resolveKey?: () => string;
+	bond?: B | undefined;
+	resolveBond?: () => B | undefined;
+	required?: boolean | string;
+	resolveRequired?: () => boolean | string;
 	register?: boolean | NodeRegistrationOptions;
 	factory?: (bond: B | undefined, key: string) => N;
-	capabilities?: MaybeGetter<readonly AtomCapabilityEntry<N, B, E>[]>;
+	capabilities?: readonly AtomCapabilityEntry<N, B, E>[];
+	resolveCapabilities?: () => readonly AtomCapabilityEntry<N, B, E>[];
 	namespace?: string;
 	preset?: string;
 	id?: string;
@@ -44,10 +39,13 @@ export function createAtomInstance<
 	N extends AnyAtom = Atom,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
->(key: MaybeGetter<string>, options: CreateAtomInstanceOptions<N, B, E> = {}): N {
-	const resolvedKey = resolve(key);
-	const bond = options.bond ? resolve(options.bond) : undefined;
-	const required = options.required ? resolve(options.required) : false;
+>(key: string | undefined, options: CreateAtomInstanceOptions<N, B, E> = {}): N {
+	const resolvedKey = options.resolveKey ? options.resolveKey() : key;
+	if (resolvedKey === undefined) throw new Error('[ixirjs] createAtomInstance requires a key.');
+	const bond = options.resolveBond ? options.resolveBond() : options.bond;
+	const required = options.resolveRequired
+		? options.resolveRequired()
+		: (options.required ?? false);
 	const requiredMessage = typeof required === 'string' ? required : undefined;
 
 	if (required && !bond) {
@@ -67,31 +65,47 @@ export function createAtomInstance<
 				}) as unknown as N)
 	);
 
-	const teardowns: Array<() => void> = [];
+	const initializers: Array<(node: N, bond: B | undefined) => CapabilitySetupResult> = [];
+	for (const capability of options.resolveCapabilities
+		? options.resolveCapabilities()
+		: (options.capabilities ?? [])) {
+		if (typeof capability === 'function') initializers.push(capability);
+		else node.capability(capability as AtomCapability<unknown, Atom, Bond, E>);
+	}
 
-	for (const capability of options.capabilities ? resolve(options.capabilities) : []) {
-		if (typeof capability === 'function') {
-			const live = capability(node, bond);
-			if (live) teardowns.push(toTeardown(live));
-			continue;
+	// Registration is the first owned resource. Atom capability setup runs only after the Bond can
+	// resolve the atom, then teardown reverses that sequence (capabilities before registration).
+	const unregister =
+		bond && options.register !== false
+			? bond.register(node, options.register === true ? undefined : options.register)
+			: undefined;
+
+	try {
+		node.setupCapabilities(
+			bond,
+			initializers.map((initialize) => () => initialize(node, bond))
+		);
+	} catch (error) {
+		unregister?.();
+		throw error;
+	}
+
+	onDestroy(() => {
+		const errors: unknown[] = [];
+		try {
+			node.teardownCapabilities();
+		} catch (error) {
+			errors.push(error);
 		}
-
-		node.capability(capability as AtomCapability<unknown, Atom, Bond, E>);
-	}
-
-	const capabilityTeardown = node.setupCapabilities(bond);
-	if (capabilityTeardown) teardowns.push(capabilityTeardown);
-
-	if (bond && options.register !== false) {
-		const registrationOptions = options.register === true ? undefined : options.register;
-		teardowns.push(bond.register(node, registrationOptions));
-	}
-
-	if (teardowns.length > 0) {
-		onDestroy(() => {
-			for (let i = teardowns.length - 1; i >= 0; i--) teardowns[i]!();
-		});
-	}
+		try {
+			unregister?.();
+		} catch (error) {
+			errors.push(error);
+		}
+		if (errors.length > 0) {
+			throw new AggregateError(errors, `[ixirjs] Atom("${node.name}") disposal failed.`);
+		}
+	});
 
 	return node;
 }

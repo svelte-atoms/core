@@ -1,7 +1,6 @@
 import type { Bond } from '../bond';
 import type { BondVirtualElement } from '../bond/types';
 
-// attrs and handlers are folded into spread through shared/bond/merge.ts.
 export interface Behavior<
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
@@ -20,8 +19,6 @@ export interface AtomHost<E extends Element | BondVirtualElement = Element | Bon
 	hasRole(role: string): boolean;
 }
 
-// Atom-hosted behavior runs on the Atom itself. Unlike role projections, it may be installed on
-// bondless nodes, so every callback receives the node and an optional bond.
 export interface AtomBehavior<
 	N = AtomHost,
 	B extends Bond = Bond,
@@ -32,54 +29,146 @@ export interface AtomBehavior<
 	onmount?(element: E, node: N, bond: B | undefined): void | (() => void);
 }
 
-// Phantom type makes the key the registry: capability(key) returns Capability<Surface> without a cast.
+/** Protocol carried by shared keys and descriptors. Bump only for incompatible runtime changes. */
+export const CAPABILITY_PROTOCOL_VERSION = 1;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- erased surface for heterogeneous registries
+export type AnyCapabilitySurface = any;
+
 declare const SURFACE: unique symbol;
-export type CapabilityKey<Surface = unknown> = symbol & { readonly [SURFACE]?: Surface };
+// The input and output positions make Surface invariant under strictFunctionTypes.
+export type CapabilityKey<Surface = AnyCapabilitySurface> = symbol & {
+	readonly [SURFACE]: (surface: Surface) => Surface;
+};
+export type SurfaceOf<K> = K extends CapabilityKey<infer S> ? S : never;
 
-export type SurfaceOf<K> = K extends CapabilityKey<infer S> ? S : unknown;
+export interface SharedCapabilityKeyOptions {
+	/** Package or organisation namespace, for example `@ixirjs` or `@acme/widgets`. */
+	owner: string;
+	/** Owner-local protocol name, for example `cap:disclosure`. */
+	name: string;
+	version: number;
+}
 
-// Unexported keys are unforgeable — the private seam.
+export interface SharedCapabilityKeyDeclaration extends SharedCapabilityKeyOptions {
+	readonly symbol: symbol;
+}
+
+const sharedKeyDeclarations = sharedRegistry();
+
+function sharedRegistry(): Map<symbol, SharedCapabilityKeyDeclaration> {
+	const registrySlot = Symbol.for('@ixirjs/capability/shared-key-registry');
+	const root = globalThis as typeof globalThis & {
+		[registrySlot]?: Map<symbol, SharedCapabilityKeyDeclaration>;
+	};
+	return (root[registrySlot] ??= new Map());
+}
+
+/** Creates an unshared, local key. Local descriptions are diagnostic-only. */
 export function capabilityKey<Surface = unknown>(description: string): CapabilityKey<Surface> {
 	return Symbol(description) as CapabilityKey<Surface>;
 }
 
-// Symbol.for survives duplicate library copies and HMR; forgeable by description — the public projection seam.
-// Namespace descriptions to avoid global registry collisions.
-export function sharedCapabilityKey<Surface = unknown>(
-	description: string
+/**
+ * Creates a cross-copy key. Identity deliberately excludes `version`: duplicate physical copies
+ * still converge through Symbol.for, while an incompatible declaration is diagnosed immediately.
+ */
+export function sharedCapabilityKey<Surface = AnyCapabilitySurface>(
+	options: SharedCapabilityKeyOptions
 ): CapabilityKey<Surface> {
-	return Symbol.for(description) as CapabilityKey<Surface>;
+	if (!options.owner.startsWith('@') || !options.name || !Number.isInteger(options.version)) {
+		throw new Error(
+			'[ixirjs] shared capability keys require a namespaced owner, non-empty name, and integer protocol version.'
+		);
+	}
+	const symbol = Symbol.for(`${options.owner}:${options.name}`);
+	const current = sharedKeyDeclarations.get(symbol);
+	if (current) {
+		if (
+			current.owner !== options.owner ||
+			current.name !== options.name ||
+			current.version !== options.version
+		) {
+			console.warn(
+				`[ixirjs] incompatible shared capability key declaration for "${options.owner}:${options.name}": protocol version ${current.version} is already registered, received ${options.version}.`
+			);
+		}
+	} else {
+		sharedKeyDeclarations.set(symbol, { ...options, symbol });
+	}
+	return symbol as CapabilityKey<Surface>;
 }
 
-// symbols don't stringify in templates or console output.
+export function sharedCapabilityKeyDeclaration(
+	key: CapabilityKey
+): SharedCapabilityKeyDeclaration | undefined {
+	return sharedKeyDeclarations.get(key);
+}
+
 export function slotName(slot: symbol): string {
 	return slot.description ?? slot.toString();
 }
 
-// item/input carry a string ctx; structural roles carry none. Custom roles fall through to optional unknown.
-export interface RoleContexts {
-	item: string;
-	input: string;
-	container: void;
-	content: void;
-	surface: void;
-	trigger: void;
-	label: void;
-	description: void;
-	control: void;
+// Role strings remain the internal dispatch representation. `roles` and `customRole` are the
+// collision-safe authoring values; raw strings are intentionally only accepted by dynamic APIs.
+declare const ROLE: unique symbol;
+export type Role<Name extends string = string, Context = unknown> = string & {
+	readonly [ROLE]: { readonly name: Name; readonly context: Context };
+};
+export interface CustomRoleOptions<Name extends string> {
+	owner: string;
+	name: Name;
 }
-export type KnownRole = keyof RoleContexts & string;
-// Drives .role() enforcement: void → no arg, ctx-bearing → required arg, custom → optional unknown.
-export type RoleCtxArgs<R extends string> = R extends KnownRole
-	? RoleContexts[R] extends void
-		? [ctx?: undefined]
-		: [ctx: RoleContexts[R]]
-	: [ctx?: unknown];
+function role<Name extends string, Context>(owner: string, name: Name): Role<Name, Context> {
+	// Built-ins retain their concise runtime projection names; custom roles are namespaced.
+	return (owner === '@ixirjs' ? name : `${owner}:role:${name}`) as Role<Name, Context>;
+}
+export const roles = {
+	item: role<'item', string>('@ixirjs', 'item'),
+	input: role<'input', string>('@ixirjs', 'input'),
+	container: role<'container', void>('@ixirjs', 'container'),
+	content: role<'content', void>('@ixirjs', 'content'),
+	surface: role<'surface', void>('@ixirjs', 'surface'),
+	trigger: role<'trigger', void>('@ixirjs', 'trigger'),
+	label: role<'label', void>('@ixirjs', 'label'),
+	description: role<'description', void>('@ixirjs', 'description'),
+	control: role<'control', void>('@ixirjs', 'control'),
+	close: role<'close', void>('@ixirjs', 'close'),
+	backdrop: role<'backdrop', void>('@ixirjs', 'backdrop'),
+	tab: role<'tab', void>('@ixirjs', 'tab'),
+	tabpanel: role<'tabpanel', void>('@ixirjs', 'tabpanel'),
+	treeitem: role<'treeitem', void>('@ixirjs', 'treeitem'),
+	treegroup: role<'treegroup', void>('@ixirjs', 'treegroup'),
+	row: role<'row', void>('@ixirjs', 'row'),
+	column: role<'column', string | undefined>('@ixirjs', 'column'),
+	cell: role<'cell', string | { headers?: string | readonly string[] } | undefined>(
+		'@ixirjs',
+		'cell'
+	),
+	error: role<'error', void>('@ixirjs', 'error')
+} as const;
+export type BuiltinRole = (typeof roles)[keyof typeof roles];
+export function customRole<Name extends string, Context = unknown>(
+	options: CustomRoleOptions<Name>
+): Role<Name, Context> {
+	if (!options.owner.startsWith('@') || !options.name) {
+		throw new Error('[ixirjs] custom roles require a namespaced owner and non-empty name.');
+	}
+	return role<Name, Context>(options.owner, options.name);
+}
+export type RoleCtxArgs<R> =
+	R extends Role<string, infer Context>
+		? [Context] extends [void]
+			? [ctx?: undefined]
+			: undefined extends Context
+				? [ctx?: Context]
+				: [ctx: Context]
+		: [ctx?: unknown];
+export type RoleCtx<R> = R extends Role<string, infer Context> ? Context : unknown;
 
 export type CapabilityLayer = 1 | 2 | 3;
-
+export type CapabilityHost = 'bond' | 'atom';
 export type CapabilitySetupResult = Disposable | (() => void) | void;
-
 export type CapabilityKind =
 	| 'model'
 	| 'projection'
@@ -91,156 +180,183 @@ export type CapabilityKind =
 	| 'bridge';
 
 export interface CapabilityMetadata {
-	// Layer 1 = primitive, Layer 2 = focused composition, Layer 3 = archetype recipe.
 	readonly layer?: CapabilityLayer;
+	readonly host?: CapabilityHost;
 	readonly kind?: CapabilityKind;
-	// Known role names this capability may project into.
 	readonly projects?: readonly string[];
-	// Atom roles expected to exist on the bond for the capability to make sense.
 	readonly requiresRoles?: readonly string[];
-	// Slots or role names this capability intentionally replaces or competes with.
 	readonly conflicts?: readonly (symbol | string)[];
 	readonly docs?: string;
 }
 
-// Common Layer 0 capability protocol: shared identity/metadata/surface/dependency envelope.
-// Bond and Atom capabilities keep host-specific behavior/setup signatures below.
-export interface CapabilityEnvelope<Surface = unknown> {
-	readonly slot?: symbol;
+export interface CapabilityEnvelope<Surface = AnyCapabilitySurface> {
+	readonly slot?: CapabilityKey<Surface>;
 	readonly meta?: CapabilityMetadata;
 	readonly surface?: Surface;
 	readonly requires?: readonly symbol[];
 }
 
-// Bond-hosted capabilities own shared state, coordination, role projection, and whole-bond setup.
-// They are the existing Capability runtime shape under an explicit host name.
-export interface BondCapability<Surface = unknown> extends CapabilityEnvelope<Surface> {
-	// CapabilityKey phantom drives typed retrieval via bond.capability(key) — not through this field.
-	readonly slot: symbol;
+const CAPABILITY_DESCRIPTOR = Symbol.for('@ixirjs/capability/descriptor');
+const capabilityDecorators = new WeakSet<object>();
+type DescriptorBrand<H extends CapabilityHost> = {
+	readonly [CAPABILITY_DESCRIPTOR]: H;
+	readonly protocol: typeof CAPABILITY_PROTOCOL_VERSION;
+};
+
+export interface BondCapability<Surface = AnyCapabilitySurface>
+	extends CapabilityEnvelope<Surface>, DescriptorBrand<'bond'> {
+	readonly slot: CapabilityKey<Surface>;
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
-	// Whole-bond effect run via useCapabilities(); home for document listeners and focus/escape plumbing.
 	setup?(bond: Bond): CapabilitySetupResult;
-	// When a slot is already held, the registry calls compose(prior) instead of replacing — wrap/delegate rather than rewrite. Built by decorateCapability().
 	compose?(prior: BondCapability<Surface>): BondCapability<Surface>;
 }
+export type Capability<Surface = AnyCapabilitySurface> = BondCapability<Surface>;
 
-// Compatibility name: the pre-vNext public `Capability` is a Bond-hosted capability.
-export type Capability<Surface = unknown> = BondCapability<Surface>;
-
-// Atom-hosted capabilities own per-atom presentation, local DOM behavior, and node lifecycle.
 export interface AtomCapability<
-	Surface = unknown,
+	Surface = AnyCapabilitySurface,
 	N = AtomHost,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
-> extends CapabilityEnvelope<Surface> {
+>
+	extends CapabilityEnvelope<Surface>, DescriptorBrand<'atom'> {
 	readonly behavior?: AtomBehavior<N, B, E>;
 	setup?(node: N, bond: B | undefined): CapabilitySetupResult;
 	compose?(prior: AtomCapability<Surface, N, B, E>): AtomCapability<Surface, N, B, E>;
 }
 
-// void roles → no ctx; ctx-bearing → typed; custom → unknown. Drives defineCapability's typed dispatch.
-export type RoleCtx<R extends string> = R extends KnownRole
-	? RoleContexts[R] extends void
-		? void
-		: RoleContexts[R]
-	: unknown;
+export type CapabilityRoleMap = Record<string, (ctx: unknown) => Behavior | undefined>;
 
-// Typed role → projection map. ctx is typed per role; no `ctx as T` casts.
-export type CapabilityRoleMap = {
-	[R in KnownRole]?: (ctx: RoleCtx<R>) => Behavior | undefined;
-} & {
-	// Custom roles: ctx is unknown. `never` param keeps these assignable alongside the typed known keys.
-	[role: string]: (ctx: never) => Behavior | undefined;
-};
-
-// Use roles: (typed map, preferred) or behavior: (raw escape hatch for dynamic role sets).
-export interface CapabilityConfig<Surface = unknown> {
-	slot: symbol;
+export interface CapabilityConfig<Surface = AnyCapabilitySurface> {
+	slot: CapabilityKey<Surface>;
 	meta?: CapabilityMetadata;
-	surface?: Surface;
+	surface?: NoInfer<Surface>;
 	requires?: readonly symbol[];
 	setup?(bond: Bond): CapabilitySetupResult;
 	compose?(prior: Capability<Surface>): Capability<Surface>;
-	// Preferred: typed role → projection map.
 	roles?: CapabilityRoleMap;
-	// Escape hatch: raw projection, for capabilities whose handled roles are computed at runtime.
 	behavior?(role: string, ctx?: unknown): Behavior | undefined;
 }
-
-export type BondCapabilityConfig<Surface = unknown> = CapabilityConfig<Surface>;
-
+export type BondCapabilityConfig<Surface = AnyCapabilitySurface> = CapabilityConfig<Surface>;
 export interface AtomCapabilityConfig<
-	Surface = unknown,
+	Surface = AnyCapabilitySurface,
 	N = AtomHost,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
 > {
-	slot?: symbol;
+	slot?: CapabilityKey<Surface>;
 	meta?: CapabilityMetadata;
-	surface?: Surface;
+	surface?: NoInfer<Surface>;
 	requires?: readonly symbol[];
 	behavior?: AtomBehavior<N, B, E>;
 	setup?(node: N, bond: B | undefined): CapabilitySetupResult;
 	compose?(prior: AtomCapability<Surface, N, B, E>): AtomCapability<Surface, N, B, E>;
 }
 
-// Canonical authoring entry point. Folds roles/behavior into the Capability the registry projects.
-export function defineCapability<Surface = unknown>(
+function brand<H extends CapabilityHost, T extends object>(
+	host: H,
+	descriptor: T
+): T & DescriptorBrand<H> {
+	Object.defineProperties(descriptor, {
+		[CAPABILITY_DESCRIPTOR]: { value: host },
+		protocol: { value: CAPABILITY_PROTOCOL_VERSION }
+	});
+	return Object.freeze(descriptor) as T & DescriptorBrand<H>;
+}
+
+export function defineCapability<Surface = AnyCapabilitySurface>(
 	config: CapabilityConfig<Surface>
 ): Capability<Surface> {
 	const { slot, meta, surface, requires, setup, compose, roles, behavior } = config;
 	const project =
-		behavior ?? (roles ? (role: string, ctx?: unknown) => roles[role]?.(ctx as never) : undefined);
-	return {
+		behavior ?? (roles ? (role: string, ctx?: unknown) => roles[role]?.(ctx) : undefined);
+	return brand('bond', {
 		slot,
-		...(meta ? { meta } : {}),
+		meta: { ...meta, host: 'bond' },
 		...(surface !== undefined ? { surface } : {}),
 		...(requires ? { requires } : {}),
 		...(setup ? { setup } : {}),
 		...(compose ? { compose } : {}),
 		...(project ? { behavior: project } : {})
-	} as Capability<Surface>;
+	});
 }
-
 export const defineBondCapability: typeof defineCapability = defineCapability;
 
 export function defineAtomCapability<
-	Surface = unknown,
+	Surface = AnyCapabilitySurface,
 	N = AtomHost,
 	B extends Bond = Bond,
 	E extends Element | BondVirtualElement = Element | BondVirtualElement
 >(config: AtomCapabilityConfig<Surface, N, B, E>): AtomCapability<Surface, N, B, E> {
-	return {
+	return brand('atom', {
 		...(config.slot ? { slot: config.slot } : {}),
-		...(config.meta ? { meta: config.meta } : {}),
+		meta: { ...config.meta, host: 'atom' },
 		...(config.surface !== undefined ? { surface: config.surface } : {}),
 		...(config.requires ? { requires: config.requires } : {}),
 		...(config.behavior ? { behavior: config.behavior } : {}),
 		...(config.setup ? { setup: config.setup } : {}),
 		...(config.compose ? { compose: config.compose } : {})
-	};
+	});
 }
 
-export type ModelCapabilityConfig<Surface = unknown> = Omit<
+function normalizeDescriptor<T extends CapabilityEnvelope>(
+	capability: T,
+	host: CapabilityHost,
+	expectedSlot?: symbol
+): T {
+	const candidate = capability as T & Partial<DescriptorBrand<CapabilityHost>>;
+	if (
+		!candidate ||
+		candidate[CAPABILITY_DESCRIPTOR] !== host ||
+		candidate.protocol !== CAPABILITY_PROTOCOL_VERSION
+	) {
+		throw new TypeError(
+			`[ixirjs] ${host} capability descriptors must be created by define${host === 'bond' ? 'Bond' : 'Atom'}Capability().`
+		);
+	}
+	if (candidate.meta?.host !== host) {
+		throw new TypeError(`[ixirjs] ${host} capability descriptor has an incompatible host.`);
+	}
+	if (expectedSlot !== undefined && candidate.slot !== expectedSlot) {
+		throw new TypeError('[ixirjs] capability composition must preserve its registered slot.');
+	}
+	return capability;
+}
+
+export function normalizeBondCapability<S>(
+	capability: Capability<S>,
+	expectedSlot?: CapabilityKey<S>
+): Capability<S> {
+	if (typeof capability.slot !== 'symbol') {
+		throw new TypeError('[ixirjs] bond capability descriptors require a slot.');
+	}
+	return normalizeDescriptor(capability, 'bond', expectedSlot);
+}
+export function normalizeAtomCapability<
+	S,
+	N,
+	B extends Bond,
+	E extends Element | BondVirtualElement
+>(
+	capability: AtomCapability<S, N, B, E>,
+	expectedSlot?: CapabilityKey<S>
+): AtomCapability<S, N, B, E> {
+	return normalizeDescriptor(capability, 'atom', expectedSlot);
+}
+
+// Taxonomy helpers constrain only the facets their names promise (for example models cannot
+// project or install effects). Remaining metadata is diagnostic/documentation, not a lifecycle tier.
+export type ModelCapabilityConfig<Surface = AnyCapabilitySurface> = Omit<
 	CapabilityConfig<Surface>,
 	'behavior' | 'roles' | 'setup' | 'compose' | 'meta'
-> & {
-	surface: Surface;
-	meta?: Omit<CapabilityMetadata, 'kind' | 'layer'>;
-};
-
-export type ProjectionCapabilityConfig<Surface = unknown> = Omit<
+> & { surface: Surface; meta?: Omit<CapabilityMetadata, 'kind' | 'layer'> };
+export type ProjectionCapabilityConfig<Surface = AnyCapabilitySurface> = Omit<
 	CapabilityConfig<Surface>,
 	'meta'
 > & {
 	roles: CapabilityRoleMap;
-	meta?: Omit<CapabilityMetadata, 'kind' | 'layer' | 'projects'> & {
-		projects?: readonly string[];
-	};
+	meta?: Omit<CapabilityMetadata, 'kind' | 'layer' | 'projects'> & { projects?: readonly string[] };
 };
-
-export type RelationshipCapabilityConfig<Surface = unknown> = Omit<
+export type RelationshipCapabilityConfig<Surface = AnyCapabilitySurface> = Omit<
 	CapabilityConfig<Surface>,
 	'meta'
 > & {
@@ -249,45 +365,37 @@ export type RelationshipCapabilityConfig<Surface = unknown> = Omit<
 		requiresRoles?: readonly string[];
 	};
 };
-
-export type PolicyCapabilityConfig<Surface = unknown> = Omit<CapabilityConfig<Surface>, 'meta'> & {
-	meta?: Omit<CapabilityMetadata, 'kind' | 'layer' | 'projects'> & {
-		projects?: readonly string[];
-	};
+export type PolicyCapabilityConfig<Surface = AnyCapabilitySurface> = Omit<
+	CapabilityConfig<Surface>,
+	'meta'
+> & {
+	meta?: Omit<CapabilityMetadata, 'kind' | 'layer' | 'projects'> & { projects?: readonly string[] };
 };
-
-export type EffectCapabilityConfig<Surface = unknown> = Omit<CapabilityConfig<Surface>, 'meta'> & {
+export type EffectCapabilityConfig<Surface = AnyCapabilitySurface> = Omit<
+	CapabilityConfig<Surface>,
+	'meta'
+> & {
 	setup: NonNullable<CapabilityConfig<Surface>['setup']>;
 	meta?: Omit<CapabilityMetadata, 'kind' | 'layer'>;
 };
-
 export interface FocusedCapabilityConfig {
-	slot: symbol;
+	slot: CapabilityKey<readonly Capability[]>;
 	capabilities: readonly Capability[];
 	meta?: Omit<CapabilityMetadata, 'kind' | 'layer'>;
 }
-
-export type ArchetypeCapabilities = readonly Capability[] & {
-	readonly meta: CapabilityMetadata;
-};
-
+export type ArchetypeCapabilities = readonly Capability[] & { readonly meta: CapabilityMetadata };
 function mergeMeta(
 	base: CapabilityMetadata,
 	meta: CapabilityMetadata | undefined
 ): CapabilityMetadata {
 	return meta ? { ...base, ...meta } : base;
 }
-
-export function defineModelCapability<Surface = unknown>(
+export function defineModelCapability<Surface = AnyCapabilitySurface>(
 	config: ModelCapabilityConfig<Surface>
 ): Capability<Surface> {
-	return defineCapability({
-		...config,
-		meta: mergeMeta({ layer: 1, kind: 'model' }, config.meta)
-	});
+	return defineCapability({ ...config, meta: mergeMeta({ layer: 1, kind: 'model' }, config.meta) });
 }
-
-export function defineProjectionCapability<Surface = unknown>(
+export function defineProjectionCapability<Surface = AnyCapabilitySurface>(
 	config: ProjectionCapabilityConfig<Surface>
 ): Capability<Surface> {
 	return defineCapability({
@@ -298,8 +406,7 @@ export function defineProjectionCapability<Surface = unknown>(
 		)
 	});
 }
-
-export function defineRelationshipCapability<Surface = unknown>(
+export function defineRelationshipCapability<Surface = AnyCapabilitySurface>(
 	config: RelationshipCapabilityConfig<Surface>
 ): Capability<Surface> {
 	return defineCapability({
@@ -307,8 +414,7 @@ export function defineRelationshipCapability<Surface = unknown>(
 		meta: mergeMeta({ layer: 1, kind: 'relationship' }, config.meta)
 	});
 }
-
-export function definePolicyCapability<Surface = unknown>(
+export function definePolicyCapability<Surface = AnyCapabilitySurface>(
 	config: PolicyCapabilityConfig<Surface>
 ): Capability<Surface> {
 	return defineCapability({
@@ -316,8 +422,7 @@ export function definePolicyCapability<Surface = unknown>(
 		meta: mergeMeta({ layer: 1, kind: 'policy' }, config.meta)
 	});
 }
-
-export function defineEffectCapability<Surface = unknown>(
+export function defineEffectCapability<Surface = AnyCapabilitySurface>(
 	config: EffectCapabilityConfig<Surface>
 ): Capability<Surface> {
 	return defineCapability({
@@ -326,35 +431,51 @@ export function defineEffectCapability<Surface = unknown>(
 	});
 }
 
+/** Last descriptor wins, while the first occurrence fixes the slot position. */
+export function normalizeCapabilities(capabilities: readonly Capability[]): Capability[] {
+	const indices = new Map<symbol, number>();
+	const normalized: Capability[] = [];
+	for (const capability of capabilities) {
+		const descriptor = normalizeBondCapability(capability);
+		const index = indices.get(descriptor.slot);
+		if (index === undefined) {
+			indices.set(descriptor.slot, normalized.length);
+			normalized.push(descriptor);
+		} else {
+			normalized[index] = descriptor;
+		}
+	}
+	return normalized;
+}
+
 export function defineFocusedCapability(
 	config: FocusedCapabilityConfig
 ): Capability<readonly Capability[]> {
+	// Markers are descriptive snapshots of the normalized members, never a registry source of truth.
+	const capabilities = Object.freeze(normalizeCapabilities(config.capabilities));
 	return defineCapability({
 		slot: config.slot,
-		surface: config.capabilities,
+		surface: capabilities,
 		meta: mergeMeta({ layer: 2, kind: 'focused' }, config.meta)
 	});
 }
-
 export function defineArchetypeCapabilities(
 	capabilities: readonly Capability[],
 	meta?: Omit<CapabilityMetadata, 'kind' | 'layer'>
 ): ArchetypeCapabilities {
-	return Object.assign([...capabilities], {
+	return Object.assign(normalizeCapabilities(capabilities), {
 		meta: mergeMeta({ layer: 3, kind: 'archetype' }, meta)
 	}) as ArchetypeCapabilities;
 }
 
 export interface CapabilityInfo {
 	slot: symbol;
-	// The slot key's description, for human-readable display (symbols don't stringify in templates).
 	description: string | undefined;
 	meta?: CapabilityMetadata;
 	hasSurface: boolean;
 	requires: readonly symbol[];
 	hasSetup: boolean;
 }
-
 export interface AtomCapabilityInfo {
 	slot: symbol | undefined;
 	description: string | undefined;
@@ -364,8 +485,6 @@ export interface AtomCapabilityInfo {
 	hasBehavior: boolean;
 	hasSetup: boolean;
 }
-
-// Per-role projection snapshot from one capability; produced by explainBondRole().
 export interface RoleProjectionInfo {
 	slot: symbol;
 	description: string | undefined;
@@ -374,15 +493,11 @@ export interface RoleProjectionInfo {
 	handlers?: Record<string, unknown>;
 	hasOnmount: boolean;
 }
-
-// Facets to override when decorating a slot. Omit a field to delegate it to the prior holder.
 export interface CapabilityDecoration<S> {
-	// base is the prior holder's Behavior for this role, undefined if it doesn't handle it.
 	behavior?(role: string, ctx: unknown, base: Behavior | undefined): Behavior | undefined;
 	surface?(base: S | undefined): S;
 	setup?(base: Capability<S>['setup']): Capability<S>['setup'];
 }
-
 export interface AtomCapabilityDecoration<
 	S,
 	N = AtomHost,
@@ -394,32 +509,38 @@ export interface AtomCapabilityDecoration<
 	setup?(base: AtomCapability<S, N, B, E>['setup']): AtomCapability<S, N, B, E>['setup'];
 }
 
-// Wrap a slot's current holder, delegating unmodified facets — register AFTER the base or compose fires on nothing.
+function decorator<T extends object>(capability: T): T {
+	capabilityDecorators.add(capability);
+	return capability;
+}
+export function isCapabilityDecorator(capability: Capability | AtomCapability): boolean {
+	return capabilityDecorators.has(capability);
+}
 export function decorateCapability<S>(
 	slot: CapabilityKey<S>,
 	decoration: CapabilityDecoration<S>
 ): Capability<S> {
-	return {
-		slot,
-		compose(prior) {
-			const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
-			const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
-			return {
-				slot,
-				behavior: (role, ctx) => {
-					const base = prior.behavior?.(role, ctx);
-					return decoration.behavior ? decoration.behavior(role, ctx, base) : base;
-				},
-				// Conditional spreads: under exactOptionalPropertyTypes, absent key != explicit undefined.
-				...(prior.meta ? { meta: prior.meta } : {}),
-				...(surface !== undefined ? { surface } : {}),
-				...(prior.requires ? { requires: prior.requires } : {}),
-				...(setup ? { setup } : {})
-			};
-		}
-	};
+	return decorator(
+		defineCapability({
+			slot,
+			compose(prior) {
+				const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
+				const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
+				return defineCapability({
+					slot,
+					...(prior.meta ? { meta: prior.meta } : {}),
+					...(surface !== undefined ? { surface } : {}),
+					...(prior.requires ? { requires: prior.requires } : {}),
+					...(setup ? { setup } : {}),
+					behavior: (role, ctx) => {
+						const base = prior.behavior?.(role, ctx);
+						return decoration.behavior ? decoration.behavior(role, ctx, base) : base;
+					}
+				});
+			}
+		})
+	);
 }
-
 export function decorateAtomCapability<
 	S,
 	N = AtomHost,
@@ -429,20 +550,22 @@ export function decorateAtomCapability<
 	slot: CapabilityKey<S>,
 	decoration: AtomCapabilityDecoration<S, N, B, E>
 ): AtomCapability<S, N, B, E> {
-	return {
-		slot,
-		compose(prior) {
-			const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
-			const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
-			const behavior = decoration.behavior ? decoration.behavior(prior.behavior) : prior.behavior;
-			return {
-				slot,
-				...(prior.meta ? { meta: prior.meta } : {}),
-				...(surface !== undefined ? { surface } : {}),
-				...(prior.requires ? { requires: prior.requires } : {}),
-				...(behavior ? { behavior } : {}),
-				...(setup ? { setup } : {})
-			};
-		}
-	};
+	return decorator(
+		defineAtomCapability({
+			slot,
+			compose(prior) {
+				const surface = decoration.surface ? decoration.surface(prior.surface) : prior.surface;
+				const setup = decoration.setup ? decoration.setup(prior.setup) : prior.setup;
+				const behavior = decoration.behavior ? decoration.behavior(prior.behavior) : prior.behavior;
+				return defineAtomCapability({
+					slot,
+					...(prior.meta ? { meta: prior.meta } : {}),
+					...(surface !== undefined ? { surface } : {}),
+					...(prior.requires ? { requires: prior.requires } : {}),
+					...(behavior ? { behavior } : {}),
+					...(setup ? { setup } : {})
+				});
+			}
+		})
+	);
 }

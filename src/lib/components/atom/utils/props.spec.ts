@@ -2,85 +2,46 @@ import { describe, expect, it, vi } from 'vitest';
 import { extractRestProps, mergeAtomProps } from './props';
 
 describe('extractRestProps', () => {
-	it('defaults are lowest priority — preset overrides them', () => {
-		const defaultAnimate = vi.fn();
-		const presetAnimate = vi.fn();
-
+	it('applies defaults < preset attrs < variants < consumer props', () => {
 		const result = extractRestProps(
-			{ animate: presetAnimate },
-			undefined,
-			{},
-			{ animate: defaultAnimate }
+			{ attrs: { role: 'button', 'data-tier': 'preset' } },
+			{ 'data-tier': 'variant' },
+			{ 'data-tier': 'consumer' },
+			{ 'data-tier': 'default', title: 'default-title' }
 		);
-
-		expect(result.animate).toBe(presetAnimate);
-	});
-
-	it('defaults are used when neither preset nor restProps provide the prop', () => {
-		const defaultAnimate = vi.fn();
-
-		const result = extractRestProps(undefined, undefined, {}, { animate: defaultAnimate });
-
-		expect(result.animate).toBe(defaultAnimate);
-	});
-
-	it('restProps is highest priority — overrides preset and defaults', () => {
-		const presetAnimate = vi.fn();
-		const userAnimate = vi.fn();
-
-		const result = extractRestProps({ animate: presetAnimate }, undefined, {
-			animate: userAnimate
+		expect(result).toMatchObject({
+			role: 'button',
+			'data-tier': 'consumer',
+			title: 'default-title'
 		});
-
-		expect(result.animate).toBe(userAnimate);
 	});
 
-	it('strips internal atom keys from preset', () => {
+	it('does not spread unsupported top-level preset fields or attachment arrays', () => {
 		const result = extractRestProps(
 			{
 				class: 'text-red',
-				base: 'div',
-				as: 'span',
-				variants: {},
-				compounds: [],
-				defaults: {},
-				role: 'button'
-			},
+				attrs: { 'data-safe': true, attachments: ['leak'] },
+				render: { as: 'span' },
+				attachments: ['leak'],
+				role: 'top-level-leak'
+			} as never,
 			undefined,
 			{}
 		);
-
-		expect(result.class).toBeUndefined();
-		expect(result.base).toBeUndefined();
-		expect(result.as).toBeUndefined();
-		expect(result.variants).toBeUndefined();
-		expect(result.role).toBe('button');
+		expect(result).toEqual({ 'data-safe': true });
 	});
 
-	it('preserves Symbol-keyed props from every layer', () => {
-		const sym = Symbol('attach');
-		const defaultVal = vi.fn();
-		const presetVal = vi.fn();
-		const restVal = vi.fn();
-
-		const defaults = {} as Record<symbol, unknown>;
-		defaults[sym] = defaultVal;
-
-		const preset = {} as Record<symbol, unknown>;
-		preset[sym] = presetVal;
-
-		const rest = {} as Record<symbol, unknown>;
-		rest[sym] = restVal;
-
-		// restProps wins
+	it('preserves symbol-keyed lifecycle props from non-preset layers', () => {
+		const symbol = Symbol('attach');
+		const defaultValue = vi.fn();
+		const restValue = vi.fn();
 		const result = extractRestProps(
-			preset as Record<string, unknown>,
 			undefined,
-			rest as Record<string, unknown>,
-			defaults as Record<string, unknown>
+			undefined,
+			{ [symbol]: restValue } as Record<string, unknown>,
+			{ [symbol]: defaultValue } as Record<string, unknown>
 		);
-
-		expect((result as Record<symbol, unknown>)[sym]).toBe(restVal);
+		expect((result as Record<symbol, unknown>)[symbol]).toBe(restValue);
 	});
 });
 
@@ -125,15 +86,29 @@ describe('mergeAtomProps', () => {
 		expect(Object.getOwnPropertySymbols(props)).toEqual([atomKey, userKey]);
 	});
 
-	it('strips defaults-layer props from ordinary component rest props', () => {
+	it('binds a custom id to the atom identity used by relationships', () => {
+		let idSource: (() => string | undefined) | undefined;
+		const props = mergeAtomProps(
+			{
+				spread: { id: 'generated-content' },
+				bindId: (source) => {
+					idSource = source;
+				}
+			},
+			'test.content',
+			{ id: 'custom-content' }
+		);
+
+		expect(props.id).toBe('custom-content');
+		expect(idSource?.()).toBe('custom-content');
+	});
+
+	it('strips the defaults layer from ordinary component rest props', () => {
 		const props = mergeAtomProps(undefined, 'test.root', {
 			defaults: { animate: vi.fn() },
-			fallback: { animate: vi.fn() },
 			'data-kept': 'yes'
 		});
-
 		expect(props).not.toHaveProperty('defaults');
-		expect(props).not.toHaveProperty('fallback');
 		expect(props['data-kept']).toBe('yes');
 	});
 });

@@ -24,9 +24,11 @@ export interface DateSelectionModel {
 	clear(): void;
 }
 
-export const DATE_SELECTION = sharedCapabilityKey<DateSelectionModel>(
-	'@ixirjs/cap:date-selection'
-);
+export const DATE_SELECTION = sharedCapabilityKey<DateSelectionModel>({
+	owner: '@ixirjs/cap',
+	name: 'date-selection',
+	version: 1
+});
 
 export function createDateSelection(backing: DateSelectionBacking): DateSelectionModel {
 	return {
@@ -47,7 +49,8 @@ export function createDateSelection(backing: DateSelectionBacking): DateSelectio
 			return state.start !== undefined || state.end !== undefined;
 		},
 		select(date) {
-			backing.set({ ...backing.get(), value: date, start: null, end: null });
+			const { start: _start, end: _end, ...state } = backing.get();
+			backing.set({ ...state, value: date });
 		},
 		selectRange(start, end) {
 			backing.set({ ...backing.get(), value: null, start, end });
@@ -96,9 +99,15 @@ export function dateSelectionCapability(
 }
 
 function dateAttr(date: Date | null): string | undefined {
-	return date ? date.toISOString().slice(0, 10) : undefined;
+	return date
+		? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+		: undefined;
 }
 
 function monthAttr(date: Date | null): string | undefined {
-	return date ? date.toISOString().slice(0, 7) : undefined;
+	return date ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}` : undefined;
+}
+
+function pad(value: number): string {
+	return String(value).padStart(2, '0');
 }

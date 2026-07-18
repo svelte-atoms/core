@@ -27,12 +27,11 @@ class TypeaheadState extends BondState<BondStateProps> {
 
 class TypeaheadBond extends Bond<BondStateProps> {
 	static CONTEXT_KEY = bondContextKey('test-typeahead');
+	readonly model: TypeaheadState;
+
 	constructor(state = new TypeaheadState()) {
 		super(state, 'test-typeahead');
-	}
-
-	override get state(): TypeaheadState {
-		return super.state as TypeaheadState;
+		this.model = state;
 	}
 }
 
@@ -43,8 +42,10 @@ class TypeaheadAtom extends Atom<TypeaheadBond> {
 }
 
 function seed(state: TypeaheadState) {
+	const nativeDisabled = document.createElement('button');
+	nativeDisabled.setAttribute('disabled', '');
 	state.items.set('alpha', { label: 'Alpha' });
-	state.items.set('beta', { label: 'Beta', disabled: true });
+	state.items.set('beta', { label: 'Beta', element: nativeDisabled } as Item);
 	state.items.set('bravo', { label: 'Bravo' });
 	state.items.set('charlie', { label: 'Charlie' });
 }
@@ -70,7 +71,7 @@ afterEach(() => {
 describe('typeaheadCapability', () => {
 	it('reports metadata, surface, and collection/roving requirements', () => {
 		const bond = new TypeaheadBond();
-		const cap = bond.state.requireCapability(TYPEAHEAD);
+		const cap = bond.requireCapability(TYPEAHEAD);
 
 		expect(cap.surface).toBeDefined();
 		expect(cap.requires).toEqual([collectionSlot('item'), ROVING]);
@@ -84,68 +85,68 @@ describe('typeaheadCapability', () => {
 	it('buffers printable keys and moves the roving focus to the matching item', () => {
 		vi.useFakeTimers();
 		const bond = new TypeaheadBond();
-		bond.state.markSetupConsumed();
-		seed(bond.state);
+		bond.markSetupConsumed();
+		seed(bond.model);
 
 		const content = new TypeaheadAtom(bond).role('container');
 
 		const b = key(content.spread, 'b');
-		expect(bond.state.roving.activeId).toBe('bravo');
+		expect(bond.model.roving.activeId).toBe('bravo');
 		expect(b.preventDefault).toHaveBeenCalled();
-		expect(bond.state.requireSurface(TYPEAHEAD).buffer).toBe('b');
+		expect(bond.requireSurface(TYPEAHEAD).buffer).toBe('b');
 
 		key(content.spread, 'r');
-		expect(bond.state.roving.activeId).toBe('bravo');
-		expect(bond.state.requireSurface(TYPEAHEAD).buffer).toBe('br');
+		expect(bond.model.roving.activeId).toBe('bravo');
+		expect(bond.requireSurface(TYPEAHEAD).buffer).toBe('br');
 
 		vi.advanceTimersByTime(700);
-		expect(bond.state.requireSurface(TYPEAHEAD).buffer).toBe('');
+		expect(bond.requireSurface(TYPEAHEAD).buffer).toBe('');
 
 		key(content.spread, 'a');
-		expect(bond.state.roving.activeId).toBe('alpha');
+		expect(bond.model.roving.activeId).toBe('alpha');
 	});
 
 	it('falls back to a fresh one-character search when the buffered query misses', () => {
 		const bond = new TypeaheadBond();
-		bond.state.markSetupConsumed();
-		seed(bond.state);
+		bond.markSetupConsumed();
+		seed(bond.model);
 
 		const content = new TypeaheadAtom(bond).role('container');
 
 		key(content.spread, 'x');
-		expect(bond.state.roving.activeId).toBeNull();
+		expect(bond.model.roving.activeId).toBeNull();
 		key(content.spread, 'c');
-		expect(bond.state.roving.activeId).toBe('charlie');
-		expect(bond.state.requireSurface(TYPEAHEAD).buffer).toBe('c');
+		expect(bond.model.roving.activeId).toBe('charlie');
+		expect(bond.requireSurface(TYPEAHEAD).buffer).toBe('c');
 	});
 
 	it('ignores default-prevented, modified, non-printable, and disabled searches', () => {
 		const bond = new TypeaheadBond();
-		bond.state.markSetupConsumed();
-		seed(bond.state);
+		bond.markSetupConsumed();
+		seed(bond.model);
 
 		const content = new TypeaheadAtom(bond).role('container');
 
 		key(content.spread, 'ArrowDown');
-		expect(bond.state.roving.activeId).toBeNull();
+		expect(bond.model.roving.activeId).toBeNull();
 		key(content.spread, 'b', { ctrlKey: true });
-		expect(bond.state.roving.activeId).toBeNull();
+		expect(bond.model.roving.activeId).toBeNull();
 		key(content.spread, 'b', { defaultPrevented: true });
-		expect(bond.state.roving.activeId).toBeNull();
+		expect(bond.model.roving.activeId).toBeNull();
 
 		key(content.spread, 'b');
-		expect(bond.state.roving.activeId).toBe('bravo');
+		expect(bond.model.roving.activeId).toBe('bravo');
 	});
 
 	it('projects to each configured role', () => {
 		const bond = new TypeaheadBond();
-		bond.state.markSetupConsumed();
-		seed(bond.state);
+		bond.markSetupConsumed();
+		seed(bond.model);
 
 		const trigger = new TypeaheadAtom(bond, 'trigger').role('trigger');
 		key(trigger.spread, 'c');
 
-		expect(bond.state.roving.activeId).toBe('charlie');
+		expect(bond.model.roving.activeId).toBe('charlie');
 	});
 
 	it('clears pending timeout state during setup teardown', () => {

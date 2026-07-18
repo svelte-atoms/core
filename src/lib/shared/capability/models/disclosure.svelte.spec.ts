@@ -165,7 +165,7 @@ describe('Disclosure activation policies', () => {
 		expect(state.open).toBe(true);
 	});
 
-	it('disclosureTrigger ignores disabled, defaultPrevented, and right-click events', () => {
+	it('disclosureTrigger ignores disabled, preempted, repeated, and non-primary activation events', () => {
 		const { atom, state } = activationFixture('trigger', disclosureTrigger());
 
 		state.props.disabled = true;
@@ -176,7 +176,10 @@ describe('Disclosure activation policies', () => {
 		(atom.spread.onclick as (ev: MouseEvent) => void)(clickEvent({ defaultPrevented: true }));
 		expect(state.open).toBe(false);
 
-		(atom.spread.onclick as (ev: MouseEvent) => void)(clickEvent({ button: 2 }));
+		(atom.spread.onclick as (ev: MouseEvent) => void)(clickEvent({ button: 1 }));
+		expect(state.open).toBe(false);
+
+		(atom.spread.onkeydown as (ev: KeyboardEvent) => void)(keyEvent('Enter', { repeat: true }));
 		expect(state.open).toBe(false);
 	});
 

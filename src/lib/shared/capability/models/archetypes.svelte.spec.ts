@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-	FILTERABLE_COLLECTION,
+	TYPEAHEAD_COLLECTION,
 	NAVIGABLE_COLLECTION,
 	ROW_COLUMN_CELL,
+	ROVING,
 	SELECTABLE_COLLECTION,
 	STATUS,
 	TAB_PANEL,
@@ -44,12 +45,14 @@ function roving() {
 }
 
 describe('Layer 3 archetype capability bundles', () => {
-	it('listboxCapabilities composes selectable, navigable, and optional filterable collection bundles', () => {
+	it('listboxCapabilities composes selectable, navigable, and optional typeahead bundles without slot replacement', () => {
 		let query = '';
+		const focus = roving();
 		const caps = listboxCapabilities({
 			kind: 'option',
 			selection: selection(),
-			roving: roving(),
+			roving: focus,
+			rovingOptions: { orientation: 'vertical' },
 			input: createInput({
 				query: {
 					get: () => query,
@@ -63,7 +66,14 @@ describe('Layer 3 archetype capability bundles', () => {
 		expect(slots).toContain(collectionSlot('option'));
 		expect(slots).toContain(SELECTABLE_COLLECTION);
 		expect(slots).toContain(NAVIGABLE_COLLECTION);
-		expect(slots).toContain(FILTERABLE_COLLECTION);
+		expect(slots).toContain(TYPEAHEAD_COLLECTION);
+		expect(new Set(slots).size).toBe(slots.length);
+		expect(
+			caps
+				.find((cap) => cap.slot === ROVING)
+				?.behavior?.('container')
+				?.attrs?.({} as never)
+		).toMatchObject({ 'aria-orientation': 'vertical' });
 	});
 
 	it('menuCapabilities composes navigable collection plus typeahead', () => {
@@ -108,6 +118,7 @@ describe('Layer 3 archetype capability bundles', () => {
 		expect(slots).toContain(SELECTABLE_COLLECTION);
 		expect(slots).toContain(NAVIGABLE_COLLECTION);
 		expect(slots).toContain(TREE_ITEM_GROUP);
+		expect(new Set(slots).size).toBe(slots.length);
 	});
 
 	it('gridCapabilities composes row/column/cell relationships with optional collection behaviors', () => {
@@ -122,6 +133,7 @@ describe('Layer 3 archetype capability bundles', () => {
 		expect(slots).toContain(ROW_COLUMN_CELL);
 		expect(slots).toContain(SELECTABLE_COLLECTION);
 		expect(slots).toContain(NAVIGABLE_COLLECTION);
+		expect(new Set(slots).size).toBe(slots.length);
 	});
 
 	it('toastCapabilities composes disclosure, close activation, label linkage, and optional status', () => {

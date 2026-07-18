@@ -13,6 +13,7 @@ export {
 	defineArchetypeCapabilities,
 	decorateCapability,
 	decorateAtomCapability,
+	type AnyCapabilitySurface,
 	type AtomBehavior,
 	type AtomCapability,
 	type AtomCapabilityConfig,
@@ -24,6 +25,7 @@ export {
 	type Capability,
 	type CapabilityConfig,
 	type CapabilityEnvelope,
+	type CapabilityHost,
 	type CapabilityLayer,
 	type CapabilityKind,
 	type CapabilityMetadata,
@@ -43,9 +45,6 @@ export {
 	type RoleCtx,
 	type RoleProjectionInfo,
 	type SurfaceOf,
-	type RoleContexts,
-	type KnownRole,
 	type RoleCtxArgs
 } from './capability';
-export { useCapabilities } from './use.svelte';
 export * from './models';

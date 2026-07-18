@@ -39,7 +39,7 @@ describe('checkedCapability', () => {
 		});
 		const cap = checkedCapability(checked);
 		const bond = new TestBond(state);
-		bond.state.capability(cap);
+		bond.capability(cap);
 		const control = bond.addAtom('control', 'control');
 
 		expect(cap.slot).toBe(CHECKED);
@@ -71,7 +71,7 @@ describe('checkedCapability', () => {
 			disabled: () => state.disabled
 		});
 		const bond = new TestBond(state);
-		bond.state.capability(checkedCapability(checked));
+		bond.capability(checkedCapability(checked));
 		const control = bond.addAtom('control', 'control');
 
 		(control.spread.onclick as () => void)();

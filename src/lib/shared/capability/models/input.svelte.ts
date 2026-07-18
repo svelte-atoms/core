@@ -2,7 +2,11 @@ import { defineProjectionCapability, sharedCapabilityKey, type Capability } from
 import { ROVING } from './roving.svelte';
 
 // Surface type travels with the key — capability(INPUT) is typed without a cast.
-export const INPUT = sharedCapabilityKey<InputModel>('@ixirjs/cap:input');
+export const INPUT = sharedCapabilityKey<InputModel>({
+	owner: '@ixirjs/cap',
+	name: 'input',
+	version: 1
+});
 
 export interface InputField {
 	get(): string;
@@ -21,7 +25,10 @@ export interface InputModel {
 
 export function createInput(fields: Record<string, InputField>): InputModel {
 	const primary = Object.keys(fields)[0]!;
-	const pick = (field?: string): InputField | undefined => fields[field ?? primary];
+	const pick = (field?: string): InputField | undefined => {
+		const key = field ?? primary;
+		return Object.hasOwn(fields, key) ? fields[key] : undefined;
+	};
 	return {
 		get: (field) => pick(field)?.get() ?? '',
 		set: (value, field) => pick(field)?.set(value),
@@ -76,14 +83,18 @@ export function inputCapability(
 						role: 'combobox',
 						'aria-autocomplete': autocomplete,
 						'aria-expanded': isExpanded?.(),
-						'aria-controls': bond.atomByRole(controls)?.id,
+						'aria-controls': bond.nodeByRole(controls)?.id,
 						'aria-activedescendant': active === null ? undefined : toDomId(active),
 						'aria-disabled': disabled,
+						disabled: disabled || undefined,
 						tabindex: disabled ? -1 : 0
 					};
 				},
 				handlers: () => ({
-					oninput: (ev: Event) => model.set((ev.currentTarget as HTMLInputElement).value, field)
+					oninput: (ev: Event) => {
+						if (isDisabled()) return;
+						model.set((ev.currentTarget as HTMLInputElement).value, field as string | undefined);
+					}
 				})
 			})
 		}

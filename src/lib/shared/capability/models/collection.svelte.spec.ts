@@ -74,7 +74,7 @@ describe('collectionCapability — positional ARIA (opt-in)', () => {
 		expect(cap.meta).toMatchObject({
 			layer: 1,
 			kind: 'projection',
-			projects: ['item', 'container']
+			projects: ['item']
 		});
 		const col = cap.surface;
 		col.set('a', { id: 'a' });
@@ -101,11 +101,11 @@ describe('collectionCapability — positional ARIA (opt-in)', () => {
 		});
 	});
 
-	it('projects setsize on role "container" and nothing on unknown roles', () => {
+	it('keeps positional ARIA on items and emits nothing on the container', () => {
 		const cap = collectionCapability('item', { positional: true });
 		cap.surface.set('a', {});
 		cap.surface.set('b', {});
-		expect(cap.behavior!('container')?.attrs?.({} as never)).toEqual({ 'aria-setsize': 2 });
+		expect(cap.behavior!('container')).toBeUndefined();
 		expect(cap.behavior!('whatever')).toBeUndefined();
 	});
 });

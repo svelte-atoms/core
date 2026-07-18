@@ -4,13 +4,21 @@ export type Orientation = 'horizontal' | 'vertical';
 export type AriaCurrentValue = boolean | 'page' | 'step' | 'location' | 'date' | 'time';
 export type ProjectionAccessor<T> = T | ((ctx: unknown, role: string) => T);
 
-export const ORIENTATION_PROJECTION = sharedCapabilityKey<void>(
-	'@ixirjs/cap:orientation-projection'
-);
-export const DISABLED_PROJECTION = sharedCapabilityKey<void>(
-	'@ixirjs/cap:disabled-projection'
-);
-export const CURRENT_PROJECTION = sharedCapabilityKey<void>('@ixirjs/cap:current-projection');
+export const ORIENTATION_PROJECTION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'orientation-projection',
+	version: 1
+});
+export const DISABLED_PROJECTION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'disabled-projection',
+	version: 1
+});
+export const CURRENT_PROJECTION = sharedCapabilityKey<void>({
+	owner: '@ixirjs/cap',
+	name: 'current-projection',
+	version: 1
+});
 
 export interface OrientationProjectionOptions {
 	roles?: readonly string[];
