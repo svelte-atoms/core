@@ -18,6 +18,7 @@ export type {
 	BuiltInPresetModuleMap,
 	FallbackPreset,
 	MergedPresetLayers,
+	Motion,
 	Preset,
 	PresetContext,
 	PresetEntry,
@@ -26,7 +27,8 @@ export type {
 	PresetKey,
 	PresetModuleMap,
 	PresetModuleName,
-	PresetRender
+	PresetRender,
+	ResolvedMotion
 } from './types';
 
 /** Defines a checked, partial theme against the public, augmentable preset registry. */

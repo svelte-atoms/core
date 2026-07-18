@@ -8,6 +8,7 @@ export {
 	type BuiltInPresetModuleMap,
 	type FallbackPreset,
 	type MergedPresetLayers,
+	type Motion,
 	type Preset,
 	type PresetContext,
 	type PresetEntry,
@@ -16,6 +17,7 @@ export {
 	type PresetKey,
 	type PresetModuleMap,
 	type PresetModuleName,
-	type PresetRender
+	type PresetRender,
+	type ResolvedMotion
 } from './preset.svelte';
 export { BUILT_IN_PRESET_KEYS, type BuiltInPresetName } from '../preset/manifest';

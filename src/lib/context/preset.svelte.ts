@@ -12,6 +12,7 @@ export type {
 	BuiltInPresetModuleMap,
 	FallbackPreset,
 	MergedPresetLayers,
+	Motion,
 	Preset,
 	PresetContext,
 	PresetEntry,
@@ -20,7 +21,8 @@ export type {
 	PresetKey,
 	PresetModuleMap,
 	PresetModuleName,
-	PresetRender
+	PresetRender,
+	ResolvedMotion
 } from '../preset/types';
 
 const CONTEXT_KEY = '@ixirjs/context/preset';

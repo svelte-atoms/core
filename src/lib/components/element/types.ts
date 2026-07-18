@@ -2,8 +2,10 @@ import type { HTMLAttributes, SVGAttributes } from 'svelte/elements';
 import type { TransitionConfig } from 'svelte/transition';
 import type { ClassValue } from '$ixirjs/ui/utils';
 import type { Snippet } from 'svelte';
-import type { PresetKey } from '$ixirjs/ui/preset';
+import type { Motion, PresetKey } from '$ixirjs/ui/preset';
 import type { Variants } from '../atom/types';
+
+export type { Motion } from '$ixirjs/ui/preset';
 
 // Element tag names
 
@@ -49,6 +51,9 @@ export interface ElementProps<T extends ElementTagName = ElementTagName> extends
 
 	// polymorphic tag override
 	as?: T | (string & {});
+
+	// Renderer-owned motion channels. The flat phase props below remain accepted for compatibility.
+	motion?: Motion<ElementType<T>> | null;
 
 	// emit styles as :global rather than scoped
 	global?: boolean;

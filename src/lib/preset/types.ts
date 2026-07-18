@@ -1,7 +1,25 @@
 import type { ClassValue } from 'svelte/elements';
+import type { TransitionConfig } from 'svelte/transition';
 import type { Base } from '$ixirjs/ui/components/atom';
 import type { Bond } from '$ixirjs/ui/shared';
 import type { BuiltInPresetName } from './manifest';
+
+export type MotionNodeFunction<T extends Element = Element> = (node: T) => unknown;
+export type MotionTransitionFunction<T extends Element = Element> = (
+	node: T
+) => Partial<TransitionConfig> | void;
+
+/** Renderer-owned motion channels. `null` explicitly disables a phase. */
+export interface Motion<T extends Element = Element> {
+	initial?: MotionNodeFunction<T> | null | undefined;
+	enter?: MotionTransitionFunction<T> | null | undefined;
+	exit?: MotionTransitionFunction<T> | null | undefined;
+	animate?: MotionNodeFunction<T> | null | undefined;
+}
+
+export type ResolvedMotion<T extends Element = Element> = {
+	[K in keyof Motion<T>]?: Exclude<Motion<T>[K], null>;
+};
 
 export interface PresetRender {
 	as?: string;
@@ -13,6 +31,7 @@ export interface PresetRender {
 export interface PresetEntryRecord {
 	class?: ClassValue;
 	attrs?: Record<string, unknown>;
+	motion?: Motion | null;
 	variants?: Record<string, Record<string, unknown>>;
 	compounds?: Array<Record<string, unknown>>;
 	defaults?: Record<string, unknown>;

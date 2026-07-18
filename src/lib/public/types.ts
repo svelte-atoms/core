@@ -182,6 +182,7 @@ export type {
 	HtmlElementProps,
 	HtmlElementTagName,
 	HtmlElementType,
+	Motion,
 	NodeFunction,
 	ScaleFadeParams,
 	SvgElementProps,
