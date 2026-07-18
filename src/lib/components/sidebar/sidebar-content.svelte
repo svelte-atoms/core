@@ -1,12 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import type { Base } from '$ixirjs/ui/components/atom';
 	import { PortalHost } from '$ixirjs/ui/components/portal/host';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { usePart } from '$ixirjs/ui/shared';
 	import { SidebarBond } from './bond.svelte';
 	import { animateSidebarContent } from './motion.svelte';
 	import type { SidebarRootProps } from './types';
-
-	const bond = SidebarBond.getOrThrow('<Sidebar.Content /> must be used within a <Sidebar.Root />');
 
 	let {
 		class: klass = '',
@@ -20,19 +18,17 @@
 		initial: animateSidebarContent({ '0': '0px', '1': 'auto', duration: 0 })
 	};
 
-	const atom = createAtomInstance('content', {
-		bond,
-		factory: (owner) => owner!.content()
+	const part = usePart(SidebarBond, 'content', () => restProps, {
+		message: '<Sidebar.Content /> must be used within a <Sidebar.Root />',
+		preset: () => preset
 	});
-
-	const contentProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <PortalHost
-	{bond}
+	bond={part.bond}
 	class={['bg-card max-h-screen overflow-visible', '$preset', klass]}
 	{defaults}
-	{...contentProps}
+	{...part.props}
 >
-	{@render children?.({ sidebar: bond })}
+	{@render children?.({ sidebar: part.bond })}
 </PortalHost>

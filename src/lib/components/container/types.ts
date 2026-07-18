@@ -10,7 +10,7 @@ export interface ContainerSnippetProps extends SnippetProps {
 
 export type ContainerChildren = Snippet<[ContainerSnippetProps]>;
 
-export interface ContainerProps extends HtmlAtomProps<'button', never, ContainerChildren> {
+export interface ContainerProps extends HtmlAtomProps<'div', never, ContainerChildren> {
 	type?: 'inline-size' | 'size';
 	name?: string;
 	clientWidth?: number;

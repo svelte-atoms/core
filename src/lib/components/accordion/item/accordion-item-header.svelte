@@ -1,7 +1,7 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { AccordionItemBond, AccordionItemHeaderAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { AccordionItemBond } from './bond.svelte';
 	import type { AccordionItemHeaderProps } from './types';
 
 	let {
@@ -12,16 +12,11 @@
 		...restProps
 	}: AccordionItemHeaderProps<E, B> = $props();
 
-	const bond = AccordionItemBond.get();
-
-	const atom = bond
-		? createAtomInstance<AccordionItemHeaderAtom, AccordionItemBond>('header', {
-				bond,
-				factory: (owner) => new AccordionItemHeaderAtom(owner as AccordionItemBond).role('trigger')
-			})
-		: undefined;
-
-	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const part = usePart(AccordionItemBond, 'header', () => restProps, {
+		message: '<AccordionItem.Header /> must be used within an <AccordionItem.Root />',
+		preset: () => preset
+	});
+	const bond = part.bond;
 </script>
 
 <HtmlAtom
@@ -33,7 +28,7 @@
 		klass
 	]}
 	tabindex={as !== 'button' ? 0 : undefined}
-	{...headerProps}
+	{...part.props}
 >
 	{#if bond}
 		{@render children?.({ accordionItem: bond })}

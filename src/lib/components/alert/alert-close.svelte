@@ -3,15 +3,13 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { AlertBond, AlertCloseAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertCloseButtonProps } from './types';
 	import { Icon } from '../icon';
 
 	type Element = HTMLElementTagNameMap[E];
-
-	const bond = AlertBond.get();
 
 	let {
 		class: klass = '',
@@ -21,17 +19,17 @@
 		...restProps
 	}: AlertCloseButtonProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const atom = createAtomInstance<AlertCloseAtom, AlertBond>('close', {
-		bond,
-		factory: (owner) => new AlertCloseAtom(owner)
+	const part = usePart(AlertBond, 'closeButton', () => restProps, {
+		context: 'optional',
+		preset: () => preset
 	});
+	const bond = part.bond;
 
 	const defaults = $derived({
 		type: as === 'button' ? 'button' : undefined,
 		role: as === 'button' ? undefined : 'button',
 		tabindex: as === 'button' ? undefined : 0
 	});
-	const closeButtonProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom
@@ -43,7 +41,7 @@
 		'$preset',
 		klass
 	]}
-	{...closeButtonProps}
+	{...part.props}
 >
 	{#if children}
 		{@render children({ alert: bond! })}

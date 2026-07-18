@@ -1,10 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { AlertBond, AlertDescriptionAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertDescriptionProps } from './types';
-
-	const bond = AlertBond.get();
 
 	let {
 		class: klass = '',
@@ -14,19 +12,18 @@
 		...restProps
 	}: AlertDescriptionProps<E, B> = $props();
 
-	const atom = createAtomInstance<AlertDescriptionAtom, AlertBond>('description', {
-		bond,
-		factory: (owner) => new AlertDescriptionAtom(owner).role('description')
+	const part = usePart(AlertBond, 'description', () => restProps, {
+		context: 'optional',
+		preset: () => preset
 	});
-
-	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
 <HtmlAtom
 	{bond}
 	class={['alert-description border-border mt-1 text-sm leading-relaxed', '$preset', klass]}
 	{as}
-	{...descriptionProps}
+	{...part.props}
 >
 	{@render children?.({ alert: bond! })}
 </HtmlAtom>

@@ -1,41 +1,49 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 	import { TreeBond } from './bond.svelte';
 	import type { TreeHeaderProps } from './types';
 
 	type Element = HTMLElementTagNameMap[E];
-
-	const bond = TreeBond.getOrThrow('<Tree.Header /> must be used within a <Tree.Root />');
 
 	let {
 		class: klass = '',
 		preset = undefined,
 		children = undefined,
 		onpointerdown = undefined,
+		onkeydown = undefined,
 		...restProps
 	}: TreeHeaderProps<E, B> & HTMLAttributes<Element> = $props();
 
-	const atom = createAtomInstance('header', {
-		bond,
-		factory: (owner) => owner!.header()
+	const part = usePart(TreeBond, 'header', () => restProps, {
+		message: '<Tree.Header /> must be used within a <Tree.Root />',
+		preset: () => preset
 	});
 
-	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
+	function handlePointerDown(event: PointerEvent & { currentTarget: EventTarget & Element }) {
+		onpointerdown?.(event);
+		if (event.defaultPrevented) return;
+		part.bond.stageOpenChange({ event, reason: 'trigger' });
+		(part.props.onpointerdown as ((event: PointerEvent) => void) | undefined)?.(event);
+	}
 
-	function handlePointerDown(ev: PointerEvent & { currentTarget: EventTarget & Element }) {
-		onpointerdown?.(ev);
-		if (ev.defaultPrevented) return;
-		(headerProps.onpointerdown as ((ev: PointerEvent) => void) | undefined)?.(ev);
+	function handleKeydown(event: KeyboardEvent & { currentTarget: EventTarget & Element }) {
+		onkeydown?.(event);
+		if (event.defaultPrevented) return;
+		if (event.key === 'Enter' || event.key === ' ') {
+			part.bond.stageOpenChange({ event, reason: 'trigger' });
+		}
+		(part.props.onkeydown as ((event: KeyboardEvent) => void) | undefined)?.(event);
 	}
 </script>
 
 <HtmlAtom
-	{bond}
+	bond={part.bond}
 	class={['cursor-pointer', '$preset', klass]}
-	{...headerProps}
+	{...part.props}
 	onpointerdown={handlePointerDown}
+	onkeydown={handleKeydown}
 >
-	{@render children?.({ tree: bond })}
+	{@render children?.({ tree: part.bond })}
 </HtmlAtom>

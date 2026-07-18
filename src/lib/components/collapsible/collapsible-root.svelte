@@ -13,11 +13,13 @@
 		data = undefined,
 		disabled = false,
 		factory = defaultFactory,
+		onopenchange = undefined,
 		children = undefined,
 		...restProps
 	}: CollapsibleRootProps<E, B> = $props();
 
 	let openState = $derived(open);
+	const callbackState = { bond: undefined as CollapsibleBond | undefined };
 
 	const binding = bindBond<CollapsibleBond>(
 		(props) => factory(props),
@@ -25,8 +27,14 @@
 			open: [
 				() => openState,
 				(v) => {
+					const changed = !Object.is(openState, v);
 					openState = v;
 					open = openState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onopenchange?.(openState, { bond: callbackBond });
+					}
 				}
 			],
 			data: () => data,
@@ -36,6 +44,7 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance<CollapsibleRootAtom, CollapsibleBond>('root', {
 		bond,
 		factory: (owner) => new CollapsibleRootAtom(owner as CollapsibleBond)

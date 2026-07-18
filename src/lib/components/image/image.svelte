@@ -2,6 +2,7 @@
 	import { mergePresetProps } from '$ixirjs/ui/components/atom';
 	import { toClassValue } from '$ixirjs/ui/utils';
 	import { HtmlAtom } from '../atom';
+	import type { ImageProps } from './types';
 
 	let {
 		class: klass = '',
@@ -10,7 +11,7 @@
 		children = undefined,
 		preset = undefined,
 		...restProps
-	} = $props();
+	}: ImageProps = $props();
 
 	let hasError = $state(false);
 

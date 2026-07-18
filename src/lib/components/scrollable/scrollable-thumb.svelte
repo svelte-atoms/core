@@ -1,6 +1,6 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergePresetProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { ScrollableBond } from './bond.svelte';
+	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { ScrollableBond, ScrollableThumbAtom } from './bond.svelte';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import type { ScrollableThumbProps } from './types';
 
@@ -15,14 +15,13 @@
 
 	const bond = ScrollableBond.getOrThrow('ScrollableThumb must be used within a ScrollableRoot');
 
-	const atom = createAtomInstance(() => (orientation === 'horizontal' ? 'thumbX' : 'thumbY'), {
+	const atom = createAtomInstance(undefined, {
+		resolveKey: () => (orientation === 'horizontal' ? 'thumbX' : 'thumbY'),
 		bond,
-		factory: (owner, key) => (key === 'thumbX' ? owner!.thumbX() : owner!.thumbY())
+		factory: (owner, key) => new ScrollableThumbAtom(owner!, key === 'thumbX' ? 'x' : 'y')
 	});
 
-	const thumbProps = $derived(
-		mergePresetProps(preset, 'scrollable.thumb', { ...atom.spread, ...restProps })
-	);
+	const thumbProps = $derived(mergeAtomProps(atom, preset ?? 'scrollable.thumb', restProps));
 </script>
 
 <HtmlAtom

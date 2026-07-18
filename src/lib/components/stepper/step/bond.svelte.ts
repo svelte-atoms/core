@@ -4,7 +4,8 @@ import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	defineAtomCapability,
 	sharedCapabilityKey,
-	type AtomHost
+	type AtomHost,
+	type CapabilityKey
 } from '$ixirjs/ui/shared/capability';
 
 // -----------------------------------------------------------------------------
@@ -39,11 +40,23 @@ export type StepBondElements = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const STEP_ROOT = sharedCapabilityKey<void>('@ixirjs/step:root');
-const STEP_INDICATOR = sharedCapabilityKey<void>('@ixirjs/step:indicator');
-const STEP_HEADER = sharedCapabilityKey<void>('@ixirjs/step:header');
-const STEP_BODY = sharedCapabilityKey<void>('@ixirjs/step:body');
-const STEP_SEPARATOR = sharedCapabilityKey<void>('@ixirjs/step:separator');
+const STEP_ROOT = sharedCapabilityKey<void>({ owner: '@ixirjs/step', name: 'root', version: 1 });
+const STEP_INDICATOR = sharedCapabilityKey<void>({
+	owner: '@ixirjs/step',
+	name: 'indicator',
+	version: 1
+});
+const STEP_HEADER = sharedCapabilityKey<void>({
+	owner: '@ixirjs/step',
+	name: 'header',
+	version: 1
+});
+const STEP_BODY = sharedCapabilityKey<void>({ owner: '@ixirjs/step', name: 'body', version: 1 });
+const STEP_SEPARATOR = sharedCapabilityKey<void>({
+	owner: '@ixirjs/step',
+	name: 'separator',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -126,7 +139,7 @@ function stepIndicatorPresentation() {
 	});
 }
 
-function stepStatusPresentation(slot: symbol, part: string) {
+function stepStatusPresentation(slot: CapabilityKey<void>, part: string) {
 	return defineAtomCapability<void, AtomHost, StepBondView>({
 		slot,
 		meta: {
@@ -228,20 +241,7 @@ class StepBondBase extends Bond<StepBondProps> {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const StepBondImpl = defineBond<
-	{
-		root: typeof StepRootAtom;
-		indicator: typeof StepIndicatorAtom;
-		header: typeof StepHeaderAtom;
-		title: typeof StepTitleAtom;
-		description: typeof StepDescriptionAtom;
-		body: typeof StepBodyAtom;
-		separator: typeof StepSeparatorAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof StepBondBase
->({
+export const StepBond = defineBond({
 	name: 'step',
 	preset: 'stepper.step',
 	base: StepBondBase,
@@ -256,16 +256,4 @@ const StepBondImpl = defineBond<
 	}
 });
 
-export type StepBond = BondOf<typeof StepBondImpl>;
-
-interface StepBondConstructor {
-	new (props: StepBondProps): StepBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof StepBondImpl)['spec'];
-	get(): StepBond | undefined;
-	getOrThrow(message?: string): StepBond;
-	set(bond: StepBond): StepBond;
-	create(props: StepBondProps): StepBond;
-}
-
-export const StepBond = StepBondImpl as unknown as StepBondConstructor;
+export type StepBond = BondOf<typeof StepBond>;

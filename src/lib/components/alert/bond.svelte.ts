@@ -112,20 +112,7 @@ class AlertBondBase extends Bond<AlertBondProps> {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const AlertBondImpl = defineBond<
-	{
-		root: { atom: typeof AlertRootAtom; role: 'control' };
-		icon: typeof AlertIconAtom;
-		title: { atom: typeof AlertTitleAtom; role: 'label' };
-		description: { atom: typeof AlertDescriptionAtom; role: 'description' };
-		content: typeof AlertContentAtom;
-		actions: typeof AlertActionsAtom;
-		closeButton: { atom: typeof AlertCloseAtom; key: 'close' };
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof AlertBondBase
->({
+export const AlertBond = defineBond({
 	name: 'alert',
 	base: AlertBondBase,
 	atoms: {
@@ -135,22 +122,8 @@ const AlertBondImpl = defineBond<
 		description: { atom: AlertDescriptionAtom, role: 'description' },
 		content: AlertContentAtom,
 		actions: AlertActionsAtom,
-		closeButton: { atom: AlertCloseAtom, key: 'close' }
+		closeButton: { atom: AlertCloseAtom, part: 'close' }
 	}
 });
 
-export type AlertBond = BondOf<typeof AlertBondImpl>;
-
-interface AlertBondConstructor {
-	new (props: AlertBondProps): AlertBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof AlertBondImpl)['spec'];
-	get(): AlertBond | undefined;
-	getOrThrow(message?: string): AlertBond;
-	optional(): AlertBond | undefined;
-	required(message?: string): AlertBond;
-	set(bond: AlertBond): AlertBond;
-	create(props: AlertBondProps): AlertBond;
-}
-
-export const AlertBond = AlertBondImpl as unknown as AlertBondConstructor;
+export type AlertBond = BondOf<typeof AlertBond>;

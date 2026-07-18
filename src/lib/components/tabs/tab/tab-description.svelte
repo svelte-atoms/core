@@ -1,10 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'p', B extends Base = Base">
 	import type { TabDescriptionProps } from '../types';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { TabBond, TabDescriptionAtom } from './bond.svelte';
-
-	const bond = TabBond.getOrThrow('TabDescription must be used within a Tab component.');
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { TabBond } from './bond.svelte';
 
 	let {
 		preset = undefined,
@@ -13,14 +11,12 @@
 		...restProps
 	}: TabDescriptionProps<E, B> = $props();
 
-	const atom = createAtomInstance<TabDescriptionAtom, TabBond, HTMLElement>('description', {
-		bond,
-		factory: (owner) => new TabDescriptionAtom(owner as TabBond)
+	const part = usePart(TabBond, 'description', () => restProps, {
+		message: 'TabDescription must be used within a Tab component.',
+		preset: () => preset
 	});
-
-	const descriptionProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom {bond} {as} {...descriptionProps}>
-	{@render children?.({ tab: bond })}
+<HtmlAtom bond={part.bond} {as} {...part.props}>
+	{@render children?.({ tab: part.bond })}
 </HtmlAtom>

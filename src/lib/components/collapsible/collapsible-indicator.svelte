@@ -1,16 +1,11 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { animate as runAnimation } from '$ixirjs/ui/shared';
 	import { Icon } from '$ixirjs/ui/components/icon';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 	import IconArrowDown from '$ixirjs/ui/icons/icon-arrow-down.svelte';
-	import { CollapsibleBond, CollapsibleIndicatorAtom } from './bond.svelte';
+	import { CollapsibleBond } from './bond.svelte';
 	import type { CollapsibleIndicatorProps } from './types';
-
-	const bond = CollapsibleBond.getOrThrow(
-		'<Collapsible.Indicator /> must be used within a <Collapsible.Root />'
-	);
-	const isOpen = $derived(bond?.state.props.open ?? false);
 
 	let {
 		class: klass = '',
@@ -19,13 +14,11 @@
 		children = undefined,
 		...restProps
 	}: CollapsibleIndicatorProps<E, B> = $props();
-	const atom = createAtomInstance<CollapsibleIndicatorAtom, CollapsibleBond>('indicator', {
-		bond,
-		required: true,
-		factory: (owner) => new CollapsibleIndicatorAtom(owner as CollapsibleBond)
+	const part = usePart(CollapsibleBond, 'indicator', () => restProps, {
+		message: '<Collapsible.Indicator /> must be used within a <Collapsible.Root />',
+		preset: () => preset
 	});
-
-	const indicatorProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const isOpen = $derived(part.bond.isOpen);
 
 	function defaultAnimate(node: HTMLElement) {
 		runAnimation(node, { rotate: 180 * +isOpen }, { duration: 0.3, ease: 'anticipate' });
@@ -33,13 +26,13 @@
 </script>
 
 <HtmlAtom
-	{bond}
+	bond={part.bond}
 	{animate}
 	class={['border-border flex size-4 items-center justify-center', '$preset', klass]}
-	{...indicatorProps}
+	{...part.props}
 >
 	{#if children}
-		{@render children?.({ collapsible: bond })}
+		{@render children?.({ collapsible: part.bond })}
 	{:else}
 		<Icon src={IconArrowDown} />
 	{/if}

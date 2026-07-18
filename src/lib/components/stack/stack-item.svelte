@@ -1,5 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { HtmlAtom, type HtmlAtomProps, type Base } from '$ixirjs/ui/components/atom';
+	import {
+		HtmlAtom,
+		mergeAtomProps,
+		type HtmlAtomProps,
+		type Base
+	} from '$ixirjs/ui/components/atom';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { StackBond } from './bond.svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
@@ -32,16 +37,15 @@
 
 	const zIndex = $derived(bond?.getZIndex(value) ?? 0);
 
-	const atom = createAtomInstance(() => `item:${value}`, {
+	const atom = createAtomInstance(undefined, {
+		resolveKey: () => `item:${value}`,
 		bond,
 		factory: (owner) => owner!.item(value),
 		register: { key: untrack(() => `item:${value}`) }
 	});
 
 	const itemProps = $derived({
-		preset: preset ?? 'stack.item',
-		...atom?.spread,
-		...restProps,
+		...mergeAtomProps(atom, preset ?? 'stack.item', restProps),
 		// Append the atom's z-index to any user-supplied style.
 		style: userStyle ? `${userStyle}; z-index: ${zIndex}` : `z-index: ${zIndex}`
 	});

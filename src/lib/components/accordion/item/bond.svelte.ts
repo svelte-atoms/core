@@ -54,7 +54,7 @@ export class AccordionItemBondBase extends Bond<AccordionItemBondProps> {
 		}
 		this.capability(disclosureCapability(this.#disclosure));
 		// trigger↔content a11y link: header gets aria-expanded/aria-controls, body gets aria-labelledby/role=region; ids resolved via the role registry.
-		this.capability(triggerContentLink(this.#disclosure, { contentRole: 'region' }));
+		this.capability(triggerContentLink({ contentRole: 'region' }));
 	}
 
 	get id() {
@@ -107,12 +107,26 @@ type AccordionItemBondView = AccordionItemBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const ACCORDION_ITEM_ROOT = sharedCapabilityKey<void>('@ixirjs/accordion-item:root');
-const ACCORDION_ITEM_HEADER = sharedCapabilityKey<void>('@ixirjs/accordion-item:header');
-const ACCORDION_ITEM_BODY = sharedCapabilityKey<void>('@ixirjs/accordion-item:body');
-const ACCORDION_ITEM_INDICATOR = sharedCapabilityKey<void>(
-	'@ixirjs/accordion-item:indicator'
-);
+const ACCORDION_ITEM_ROOT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/accordion-item',
+	name: 'root',
+	version: 1
+});
+const ACCORDION_ITEM_HEADER = sharedCapabilityKey<void>({
+	owner: '@ixirjs/accordion-item',
+	name: 'header',
+	version: 1
+});
+const ACCORDION_ITEM_BODY = sharedCapabilityKey<void>({
+	owner: '@ixirjs/accordion-item',
+	name: 'body',
+	version: 1
+});
+const ACCORDION_ITEM_INDICATOR = sharedCapabilityKey<void>({
+	owner: '@ixirjs/accordion-item',
+	name: 'indicator',
+	version: 1
+});
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -252,17 +266,7 @@ function accordionItemIndicatorPresentation() {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const AccordionItemBondImpl = defineBond<
-	{
-		root: typeof AccordionItemRootAtom;
-		header: { atom: typeof AccordionItemHeaderAtom; role: 'trigger' };
-		body: { atom: typeof AccordionItemBodyAtom; role: 'content' };
-		indicator: typeof AccordionItemIndicatorAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof AccordionItemBondBase
->({
+export const AccordionItemBond = defineBond({
 	name: 'accordion-item',
 	preset: 'accordion.item',
 	base: AccordionItemBondBase,
@@ -274,16 +278,4 @@ const AccordionItemBondImpl = defineBond<
 	}
 });
 
-export type AccordionItemBond = BondOf<typeof AccordionItemBondImpl>;
-
-interface AccordionItemBondConstructor {
-	new (props: AccordionItemBondProps): AccordionItemBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof AccordionItemBondImpl)['spec'];
-	get(): AccordionItemBond | undefined;
-	getOrThrow(message?: string): AccordionItemBond;
-	set(bond: AccordionItemBond): AccordionItemBond;
-	create(props: AccordionItemBondProps): AccordionItemBond;
-}
-
-export const AccordionItemBond = AccordionItemBondImpl as unknown as AccordionItemBondConstructor;
+export type AccordionItemBond = BondOf<typeof AccordionItemBond>;

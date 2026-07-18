@@ -13,7 +13,7 @@ export function animateCollapsibleBody(params: AnimateCollapsibleBodyParams = {}
 	return (node: HTMLElement) => {
 		const { duration = DURATION.fast / 1000, delay = 0, ease } = params;
 
-		const isOpen = bond?.state.props.open ?? false;
+		const isOpen = bond?.isOpen ?? false;
 
 		animate(
 			node,

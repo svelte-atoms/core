@@ -10,6 +10,7 @@
 		linear = false,
 		disabled = false,
 		orientation = 'horizontal',
+		onstepchange = undefined,
 		class: klass = '',
 		children = undefined,
 		factory = defaultFactory,
@@ -18,6 +19,7 @@
 	}: StepperRootProps<E, B> = $props();
 
 	let stepState = $derived(step);
+	const callbackState = { bond: undefined as StepperBond | undefined };
 
 	const binding = bindBond<StepperBond>(
 		(props) => factory(props),
@@ -25,8 +27,14 @@
 			step: [
 				() => stepState,
 				(v) => {
+					const changed = !Object.is(stepState, v);
 					stepState = v;
 					step = stepState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onstepchange?.(stepState, { bond: callbackBond });
+					}
 				}
 			],
 			linear: () => linear,
@@ -36,6 +44,7 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance<StepperRootAtom, StepperBond>('root', {
 		bond,
 		factory: (owner) => new StepperRootAtom(owner as StepperBond)

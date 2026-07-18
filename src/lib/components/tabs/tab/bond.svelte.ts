@@ -33,8 +33,8 @@ export type TabBondElement = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const TAB_HEADER = sharedCapabilityKey<void>('@ixirjs/tab:header');
-const TAB_BODY = sharedCapabilityKey<void>('@ixirjs/tab:body');
+const TAB_HEADER = sharedCapabilityKey<void>({ owner: '@ixirjs/tab', name: 'header', version: 1 });
+const TAB_BODY = sharedCapabilityKey<void>({ owner: '@ixirjs/tab', name: 'body', version: 1 });
 
 // Atoms type `this.bond` against TabBondBase to break the atom<->bond cycle.
 
@@ -181,16 +181,7 @@ class TabBondBase extends Bond<TabBondProps<unknown>> {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const TabBondImpl = defineBond<
-	{
-		header: typeof TabHeaderAtom;
-		body: typeof TabBodyAtom;
-		description: typeof TabDescriptionAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof TabBondBase
->({
+export const TabBond = defineBond({
 	name: 'tab',
 	base: TabBondBase,
 	atoms: {
@@ -204,7 +195,7 @@ const TabBondImpl = defineBond<
 // Public types
 // -----------------------------------------------------------------------------
 
-export type TabBond<T = unknown> = BondOf<typeof TabBondImpl> & {
+export type TabBond<T = unknown> = BondOf<typeof TabBond> & {
 	readonly props: TabBondProps<T>;
 	readonly tabs: ITabs<T> | undefined;
 };
@@ -212,14 +203,3 @@ export type TabBond<T = unknown> = BondOf<typeof TabBondImpl> & {
 // -----------------------------------------------------------------------------
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
-
-interface TabBondConstructor {
-	new <T = unknown>(props: TabBondProps<T>): TabBond<T>;
-	readonly CONTEXT_KEY: string;
-	get<T = unknown>(): TabBond<T> | undefined;
-	getOrThrow<T = unknown>(message?: string): TabBond<T>;
-	set<T = unknown>(bond: TabBond<T>): TabBond<T>;
-	create<T = unknown>(props: TabBondProps<T>): TabBond<T>;
-}
-
-export const TabBond = TabBondImpl as unknown as TabBondConstructor;

@@ -86,7 +86,7 @@
 
 			<!-- Layer list -->
 			<div class="flex flex-1 flex-col gap-1 p-2">
-				{#each [...(bond?.state.items ?? [])].reverse() as item (item.id)}
+				{#each [...(bond?.items ?? [])].reverse() as item (item.id)}
 					<button
 						class={[
 							'flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-all',
@@ -132,7 +132,7 @@
 					variant="outline"
 					size="sm"
 					class="flex-1 gap-1 text-xs"
-					onclick={() => bond?.state.bringForward(selected)}
+					onclick={() => bond?.bringForward(selected)}
 				>
 					<svg
 						viewBox="0 0 24 24"
@@ -151,7 +151,7 @@
 					variant="outline"
 					size="sm"
 					class="flex-1 gap-1 text-xs"
-					onclick={() => bond?.state.sendBackward(selected)}
+					onclick={() => bond?.sendBackward(selected)}
 				>
 					<svg
 						viewBox="0 0 24 24"
@@ -218,7 +218,7 @@
 			<!-- Breadcrumb order -->
 			<div class="text-muted-foreground flex items-center gap-1.5 text-xs">
 				<span class="text-foreground font-medium">Back to front:</span>
-				{#each bond?.state.items ?? [] as item, i (item.id)}
+				{#each bond?.items ?? [] as item, i (item.id)}
 					<span
 						class={[
 							'rounded px-2 py-0.5 text-xs font-medium',
@@ -227,7 +227,7 @@
 					>
 						{getLabel(item.id)}
 					</span>
-					{#if i < (bond?.state.items.length ?? 0) - 1}
+					{#if i < (bond?.items.length ?? 0) - 1}
 						<svg
 							viewBox="0 0 24 24"
 							fill="none"

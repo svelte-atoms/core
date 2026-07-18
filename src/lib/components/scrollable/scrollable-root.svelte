@@ -3,7 +3,7 @@
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
 	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
-	import { ScrollableBond, type ScrollableRootAtom } from './bond.svelte';
+	import { ScrollableBond, ScrollableRootAtom } from './bond.svelte';
 	import type { ScrollableRootProps } from './types';
 
 	let {
@@ -84,7 +84,7 @@
 	const bond: ScrollableBond = binding.bond.share();
 	const rootAtom = createAtomInstance<ScrollableRootAtom, ScrollableBond, HTMLElement>('root', {
 		bond,
-		factory: (owner) => owner!.root() as ScrollableRootAtom
+		factory: (owner) => new ScrollableRootAtom(owner!)
 	});
 	const rootProps = $derived(
 		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })

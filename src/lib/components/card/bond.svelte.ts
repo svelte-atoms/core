@@ -114,22 +114,7 @@ class CardBondBase extends Bond<CardBondProps> {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const CardBondImpl = defineBond<
-	{
-		root: { atom: typeof CardRootAtom; role: 'control' };
-		header: typeof CardHeaderAtom;
-		title: { atom: typeof CardTitleAtom; role: 'label' };
-		subtitle: typeof CardSubtitleAtom;
-		description: { atom: typeof CardDescriptionAtom; role: 'description' };
-		content: typeof CardContentAtom;
-		media: typeof CardMediaAtom;
-		actions: typeof CardActionsAtom;
-		footer: typeof CardFooterAtom;
-	},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof CardBondBase
->({
+export const CardBond = defineBond({
 	name: 'card',
 	base: CardBondBase,
 	atoms: {
@@ -145,18 +130,4 @@ const CardBondImpl = defineBond<
 	}
 });
 
-export type CardBond = BondOf<typeof CardBondImpl>;
-
-interface CardBondConstructor {
-	new (props: CardBondProps): CardBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof CardBondImpl)['spec'];
-	get(): CardBond | undefined;
-	getOrThrow(message?: string): CardBond;
-	optional(): CardBond | undefined;
-	required(message?: string): CardBond;
-	set(bond: CardBond): CardBond;
-	create(props: CardBondProps): CardBond;
-}
-
-export const CardBond = CardBondImpl as unknown as CardBondConstructor;
+export type CardBond = BondOf<typeof CardBond>;

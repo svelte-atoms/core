@@ -20,10 +20,10 @@
 		transparent && 'bg-transparent',
 		!vertical && 'my-6 w-full border-b',
 		vertical && 'mx-6 h-full border-r',
-		klass,
 		!vertical && 'mx-0',
 		vertical && 'my-0',
-		'$preset'
+		'$preset',
+		klass
 	]}
 	{...dividerProps}
 ></HtmlAtom>

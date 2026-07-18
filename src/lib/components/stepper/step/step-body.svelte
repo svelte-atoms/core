@@ -1,13 +1,10 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { StepBodyAtom, StepBond } from './bond.svelte';
+	import { type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { StepBond } from './bond.svelte';
 	import { StepperBond } from '../bond.svelte';
 	import type { StepContentProps } from './types';
 	import { Stack } from '../../stack';
-
-	const stepBond = StepBond.get();
-	const stepperBond = StepperBond.get();
 
 	let {
 		class: klass = '',
@@ -17,17 +14,17 @@
 		...restProps
 	}: StepContentProps<E, B> = $props();
 
-	const bodyAtom = stepBond
-		? createAtomInstance<StepBodyAtom, StepBond>('body', {
-				bond: stepBond,
-				factory: (owner) => new StepBodyAtom(owner as StepBond)
-			})
-		: undefined;
+	const part = usePart(StepBond, 'body', () => restProps, {
+		message: '<Step.Body /> must be used within a <Step.Root />',
+		preset: () => preset ?? 'stepper.step.content'
+	});
+	const stepBond = part.bond;
+	const stepperBond = StepperBond.get();
 
 	const contentProps = $derived({
 		class: klass,
 		base,
-		...mergeAtomProps(bodyAtom, preset ?? 'stepper.step.content', restProps)
+		...part.props
 	});
 
 	// Register content snippet with the stepper while mounted.

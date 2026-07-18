@@ -37,8 +37,8 @@
 					class={['pointer-events-none h-0 opacity-0', isOpen && 'pointer-events-auto']}
 				>
 					<div class="px-3 pb-3 text-sm text-muted-foreground">
-						ixirjs is a headless component library built on Svelte 5 runes, providing
-						accessible, composable primitives you can style to match your design system.
+						ixirjs is a headless component library built on Svelte 5 runes, providing accessible,
+						composable primitives you can style to match your design system.
 					</div>
 				</ACollapsible.Body>
 			{/snippet}

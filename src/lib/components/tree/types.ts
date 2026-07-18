@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base } from '$ixirjs/ui/components/atom';
-import type { Factory } from '$ixirjs/ui/types';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
 import type { TreeBond } from './bond.svelte';
 
 export type TreeRootProps<
@@ -14,6 +14,7 @@ export type TreeRootProps<
 	data?: any;
 	disabled?: boolean;
 	factory?: Factory<TreeBond>;
+	onopenchange?: StateChangeCallback<boolean, TreeBond> | undefined;
 	children?: Snippet<[{ tree: TreeBond }]>;
 };
 

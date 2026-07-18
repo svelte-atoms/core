@@ -1,12 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 	import type { CollapsibleHeaderProps } from './types';
-	import { CollapsibleBond, CollapsibleHeaderAtom } from './bond.svelte';
-
-	const bond = CollapsibleBond.getOrThrow(
-		'<Collapsible.Header /> must be used within a <Collapsible.Root />'
-	);
+	import { CollapsibleBond } from './bond.svelte';
 
 	let {
 		class: klass = '',
@@ -15,19 +11,16 @@
 		...restProps
 	}: CollapsibleHeaderProps<E, B> = $props();
 
-	const atom = createAtomInstance<CollapsibleHeaderAtom, CollapsibleBond>('header', {
-		bond,
-		required: true,
-		factory: (owner) => new CollapsibleHeaderAtom(owner as CollapsibleBond).role('trigger')
+	const part = usePart(CollapsibleBond, 'header', () => restProps, {
+		message: '<Collapsible.Header /> must be used within a <Collapsible.Root />',
+		preset: () => preset
 	});
-
-	const collapsibleProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
 <HtmlAtom
-	{bond}
+	bond={part.bond}
 	class={['border-border flex cursor-pointer items-center gap-2', '$preset', klass]}
-	{...collapsibleProps}
+	{...part.props}
 >
-	{@render children?.({ collapsible: bond })}
+	{@render children?.({ collapsible: part.bond })}
 </HtmlAtom>

@@ -1,10 +1,5 @@
 import type { Snippet } from 'svelte';
-import {
-	Bond,
-	defineAtom,
-	type BondStateProps,
-	type Capability
-} from '$ixirjs/ui/shared/bond';
+import { Bond, defineAtom, type BondStateProps, type Capability } from '$ixirjs/ui/shared/bond';
 import { defineBond, type BondOf } from '$ixirjs/ui/shared';
 import {
 	ariaRole,
@@ -65,7 +60,7 @@ type TabsBondView = TabsBondBase;
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const TABS_ROOT = sharedCapabilityKey<void>('@ixirjs/tabs:root');
+const TABS_ROOT = sharedCapabilityKey<void>({ owner: '@ixirjs/tabs', name: 'root', version: 1 });
 
 // -----------------------------------------------------------------------------
 // Atom definitions
@@ -145,7 +140,7 @@ class TabsBondBase extends Bond<TabsBondProps> implements ITabs {
 	}
 
 	get headerElement() {
-		return this.node('header')?.element as HTMLElement | undefined;
+		return this.nodeByPart('header')?.element as HTMLElement | undefined;
 	}
 
 	selectionCapability(): Capability | undefined {
@@ -223,12 +218,7 @@ class TabsBondBase extends Bond<TabsBondProps> implements ITabs {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const TabsBondImpl = defineBond<
-	{ root: typeof TabsRootAtom; header: typeof TabsHeaderAtom; body: typeof TabsBodyAtom },
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof TabsBondBase
->({
+export const TabsBond = defineBond({
 	name: 'tabs',
 	base: TabsBondBase,
 	atoms: { root: TabsRootAtom, header: TabsHeaderAtom, body: TabsBodyAtom }
@@ -238,7 +228,7 @@ const TabsBondImpl = defineBond<
 // Public types
 // -----------------------------------------------------------------------------
 
-export type TabsBond<T = unknown> = BondOf<typeof TabsBondImpl> & {
+export type TabsBond<T = unknown> = BondOf<typeof TabsBond> & {
 	readonly items: Collection<TabBond<T>>;
 	readonly selectedItem: TabBond<T> | undefined;
 	mountItem<I extends T>(id: string, item: TabBond<I>): () => void;
@@ -248,14 +238,3 @@ export type TabsBond<T = unknown> = BondOf<typeof TabsBondImpl> & {
 // -----------------------------------------------------------------------------
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
-
-interface TabsBondConstructor {
-	new <T = unknown>(props: TabsBondProps): TabsBond<T>;
-	readonly CONTEXT_KEY: string;
-	get<T = unknown>(): TabsBond<T> | undefined;
-	getOrThrow<T = unknown>(message?: string): TabsBond<T>;
-	set<T = unknown>(bond: TabsBond<T>): TabsBond<T>;
-	create<T = unknown>(props: TabsBondProps): TabsBond<T>;
-}
-
-export const TabsBond = TabsBondImpl as unknown as TabsBondConstructor;

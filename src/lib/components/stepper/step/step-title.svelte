@@ -1,10 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { StepBond, StepTitleAtom } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { StepBond } from './bond.svelte';
 	import type { StepTitleProps } from './types';
-
-	const bond = StepBond.getOrThrow('StepTitle must be used within a Step component.');
 
 	let {
 		class: klass = '',
@@ -13,14 +11,17 @@
 		...restProps
 	}: StepTitleProps<E, B> = $props();
 
-	const atom = createAtomInstance<StepTitleAtom, StepBond>('title', {
-		bond,
-		factory: (owner) => new StepTitleAtom(owner as StepBond)
+	const part = usePart(StepBond, 'title', () => restProps, {
+		message: 'StepTitle must be used within a Step component.',
+		preset: () => preset
 	});
-
-	const titleProps = $derived(mergeAtomProps(atom, preset, restProps));
 </script>
 
-<HtmlAtom as="div" class={['font-medium text-sm', '$preset', klass]} {...titleProps}>
-	{@render children?.({ step: bond })}
+<HtmlAtom
+	as="div"
+	bond={part.bond}
+	class={['font-medium text-sm', '$preset', klass]}
+	{...part.props}
+>
+	{@render children?.({ step: part.bond })}
 </HtmlAtom>

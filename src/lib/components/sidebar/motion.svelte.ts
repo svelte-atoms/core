@@ -23,7 +23,7 @@ export function animateSidebarContent(params: AnimateSidebarContentParams) {
 	const bond = SidebarBond.get();
 
 	return (node: HTMLElement) => {
-		const isOpen = bond?.state.props.open ?? false;
+		const isOpen = bond?.props.open ?? false;
 
 		const collapsedProp = axis === 'x' ? 'min-width' : 'min-height';
 		const prop = axis === 'x' ? 'width' : 'height';

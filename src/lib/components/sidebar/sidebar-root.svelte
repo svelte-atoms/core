@@ -4,7 +4,7 @@
 	import Teleport from '$ixirjs/ui/components/portal/teleport.svelte';
 	import { SidebarBond } from './bond.svelte';
 	import type { SidebarRootProps } from './types';
-	import { ZLayer } from '../portal/zlayer.svelte';
+	import { resolveZIndexOffset, ZLayer } from '../portal/zlayer.svelte';
 
 	let {
 		open = $bindable(false),
@@ -14,23 +14,19 @@
 		portal = undefined,
 		class: klass = '',
 		factory = (props) => SidebarBond.create(props),
+		onopenchange = undefined,
 		children = undefined,
 		...restProps
 	}: SidebarRootProps<E, B> = $props();
 
 	let openState = $derived(open);
+	const callbackState = { bond: undefined as SidebarBond | undefined };
 
 	// ZLayer only on the teleported path: in-flow has no stacking context to order,
 	// so it carries no layer. `overlay` is structural — read once at mount.
 	// svelte-ignore state_referenced_locally
 	const baseLayer = asOverlay ? new ZLayer('modal', () => 0) : undefined;
-	const layerOffset = $derived(
-		typeof zindex === 'function'
-			? zindex(baseLayer?.value ?? 0) - (baseLayer?.value ?? 0)
-			: typeof zindex === 'number' && Number.isFinite(zindex)
-				? zindex
-				: 0
-	);
+	const layerOffset = $derived(resolveZIndexOffset(zindex, baseLayer?.value ?? 0));
 	// svelte-ignore state_referenced_locally
 	const layer = asOverlay ? new ZLayer('modal', () => layerOffset).share() : undefined;
 
@@ -38,8 +34,17 @@
 		open: [
 			() => openState,
 			(v) => {
+				const changed = !Object.is(openState, v);
 				openState = v;
 				open = openState;
+
+				const callbackBond = callbackState.bond;
+				if (changed && callbackBond) {
+					onopenchange?.(openState, {
+						bond: callbackBond,
+						...callbackBond.takeOpenChangeContext()
+					});
+				}
 			}
 		],
 		disabled: () => disabled,
@@ -47,6 +52,7 @@
 		rest: () => restProps
 	});
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 
 	export function getBond() {
 		return bond;
@@ -58,7 +64,7 @@
 	<!-- Full-screen pointer-passthrough sink in the root Portal carrying the modal ZLayer;
 	     Sidebar.Content positions itself within it. -->
 	<Teleport
-		portal={portal ?? 'root.l0'}
+		{portal}
 		class={['pointer-events-none fixed inset-0', klass]}
 		style="z-index: {layer.value};"
 	>

@@ -26,6 +26,7 @@
 
 <script lang="ts">
 	import { delay } from 'es-toolkit';
+	import type { Component } from 'svelte';
 </script>
 
 <!-- Primary story: simulates a 2-second async load of a Button component -->
@@ -65,7 +66,7 @@
 <!-- Error state: the promise rejects so the error snippet is rendered -->
 <Story name="Error State">
 	<Lazy
-		promise={new Promise((_, reject) => {
+		promise={new Promise<Component>((_, reject) => {
 			setTimeout(() => reject(new Error('Network timeout')), 1500);
 		})}
 	>

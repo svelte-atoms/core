@@ -1,11 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
 	import { Icon } from '$ixirjs/ui/components/icon';
-	import { mergeAtomProps, type Base, HtmlAtom } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { AlertBond, AlertIconAtom } from './bond.svelte';
+	import { type Base, HtmlAtom } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { AlertBond } from './bond.svelte';
 	import type { AlertIconProps } from './types';
-
-	const bond = AlertBond.get();
 
 	let {
 		class: klass = '',
@@ -15,12 +13,11 @@
 		...restProps
 	}: AlertIconProps<E, B> = $props();
 
-	const atom = createAtomInstance<AlertIconAtom, AlertBond>('icon', {
-		bond,
-		factory: (owner) => new AlertIconAtom(owner)
+	const part = usePart(AlertBond, 'icon', () => restProps, {
+		context: 'optional',
+		preset: () => preset
 	});
-
-	const iconProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
 <HtmlAtom
@@ -31,7 +28,7 @@
 		'$preset',
 		klass
 	]}
-	{...iconProps}
+	{...part.props}
 >
 	{@render children?.({ alert: bond! })}
 </HtmlAtom>

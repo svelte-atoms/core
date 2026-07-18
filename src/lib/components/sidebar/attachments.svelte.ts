@@ -7,5 +7,8 @@ export const slideover = createBondAttachment<SidebarBond>(SidebarBond);
 
 export function toggleSidebar(onclick?: (ev: MouseEvent) => void) {
 	const bond = SidebarBond.get();
-	return clickAction(() => (bond?.surface(DISCLOSURE) ?? bond)?.toggle(), onclick);
+	return clickAction((event) => {
+		bond?.stageOpenChange({ event, reason: 'trigger' });
+		(bond?.surface(DISCLOSURE) ?? bond)?.toggle();
+	}, onclick);
 }

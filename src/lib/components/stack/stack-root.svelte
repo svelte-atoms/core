@@ -1,30 +1,23 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import type { HTMLAttributes } from 'svelte/elements';
-	import type { Factory } from '$ixirjs/ui/types';
-	import {
-		HtmlAtom,
-		type ElementType,
-		type HtmlAtomProps,
-		type Base
-	} from '$ixirjs/ui/components/atom';
-	import { mergeAtomProps } from '$ixirjs/ui/components/atom';
+	import { HtmlAtom, mergeAtomProps, type Base } from '$ixirjs/ui/components/atom';
 	import { bindBond } from '$ixirjs/ui/shared/bond/bind.svelte';
 	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { StackBond, type StackStateProps } from './bond.svelte';
+	import { StackBond, StackRootAtom, type StackStateProps } from './bond.svelte';
+	import type { StackRootProps } from './types';
 	import './stack.css';
-
-	type Element = ElementType<E>;
 
 	let {
 		value = $bindable<string | undefined>(undefined),
 		class: klass = '',
 		preset = undefined,
-		factory = (props: StackStateProps) => StackBond.create(props),
+		factory = defaultFactory,
+		onvaluechange = undefined,
 		children,
 		...restProps
-	}: HtmlAtomProps<E, B> & HTMLAttributes<Element> & { factory?: Factory<StackBond> } = $props();
+	}: StackRootProps<E, B> = $props();
 
 	let valueState = $derived<string | undefined>(value as string | undefined);
+	const callbackState = { bond: undefined as StackBond | undefined };
 
 	const binding = bindBond<StackBond>(
 		(props) => factory(props),
@@ -32,21 +25,32 @@
 			value: [
 				() => valueState,
 				(v) => {
+					const changed = !Object.is(valueState, v);
 					valueState = v;
 					value = valueState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						onvaluechange?.(valueState, { bond: callbackBond });
+					}
 				}
 			]
 		},
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance('root', {
 		bond,
-		factory: (owner) => owner!.root()
+		factory: (owner) => new StackRootAtom(owner!)
 	});
 	const rootProps = $derived(
 		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
 	);
+
+	function defaultFactory(props: StackStateProps) {
+		return StackBond.create(props);
+	}
 
 	export function getBond() {
 		return bond;
@@ -54,5 +58,5 @@
 </script>
 
 <HtmlAtom class={['stack-root', '$preset', klass]} {...rootProps}>
-	{@render children?.()}
+	{@render children?.({})}
 </HtmlAtom>

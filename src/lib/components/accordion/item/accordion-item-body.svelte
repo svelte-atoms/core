@@ -1,12 +1,9 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { AccordionItemBodyAtom, AccordionItemBond } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
+	import { AccordionItemBond } from './bond.svelte';
 	import { enterAccordionItemBody, exitAccordionItemBody } from './motion.svelte';
 	import type { AccordionItemBodyProps } from './types';
-
-	const bond = AccordionItemBond.get();
-	const isOpen = $derived(bond?.isOpen ?? false);
 
 	let {
 		class: klass = '',
@@ -22,16 +19,13 @@
 		exit: exitAccordionItemBody()
 	};
 
-	const atom = bond
-		? createAtomInstance<AccordionItemBodyAtom, AccordionItemBond>('body', {
-				bond,
-				factory: (owner) => new AccordionItemBodyAtom(owner as AccordionItemBond).role('content')
-			})
-		: undefined;
-
-	const bodyProps = $derived(mergeAtomProps(atom, preset, restProps));
-
-	const content = $derived(bond && isOpen ? body : undefined);
+	const part = usePart(AccordionItemBond, 'body', () => restProps, {
+		message: '<AccordionItem.Body /> must be used within an <AccordionItem.Root />',
+		preset: () => preset
+	});
+	const bond = part.bond;
+	const isOpen = $derived(bond.isOpen ?? false);
+	const content = $derived(isOpen ? body : undefined);
 </script>
 
 {#snippet body(accordionItem: AccordionItemBond)}
@@ -41,7 +35,7 @@
 		onmount={onmount?.bind(accordionItem)}
 		ondestroy={ondestroy?.bind(accordionItem)}
 		{defaults}
-		{...bodyProps}
+		{...part.props}
 	>
 		{@render children?.({ accordionItem })}
 	</HtmlAtom>

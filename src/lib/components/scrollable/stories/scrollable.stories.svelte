@@ -185,11 +185,11 @@
 						if (!scrollable) return;
 
 						const c1 = on('pointerenter', () => {
-							scrollable.state.props.open = true;
+							scrollable.props.open = true;
 						})(node);
 
 						const c2 = on('pointerleave', () => {
-							scrollable.state.props.open = false;
+							scrollable.props.open = false;
 						})(node);
 
 						return () => {
@@ -259,17 +259,15 @@
 					class="border-border bg-card/90 text-muted-foreground absolute left-2 top-2 z-50 rounded-md border p-2 text-xs backdrop-blur"
 				>
 					<p>
-						scrollY: <span class="text-foreground tabular-nums"
-							>{scrollable.state.props.scrollY}</span
-						>
+						scrollY: <span class="text-foreground tabular-nums">{scrollable.props.scrollY}</span>
 					</p>
 					<p>
 						scrollHeight:
-						<span class="text-foreground tabular-nums">{scrollable.state.props.scrollHeight}</span>
+						<span class="text-foreground tabular-nums">{scrollable.props.scrollHeight}</span>
 					</p>
 					<p>
 						clientHeight:
-						<span class="text-foreground tabular-nums">{scrollable.state.props.clientHeight}</span>
+						<span class="text-foreground tabular-nums">{scrollable.props.clientHeight}</span>
 					</p>
 					<p>canScrollY: <span class="text-foreground">{scrollable.canScrollY}</span></p>
 				</div>

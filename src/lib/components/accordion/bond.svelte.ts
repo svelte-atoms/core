@@ -37,7 +37,11 @@ export type AccordionItemHandle = {
 // Capability slots and shared helpers
 // -----------------------------------------------------------------------------
 
-const ACCORDION_ROOT = sharedCapabilityKey<void>('@ixirjs/accordion:root');
+const ACCORDION_ROOT = sharedCapabilityKey<void>({
+	owner: '@ixirjs/accordion',
+	name: 'root',
+	version: 1
+});
 
 // Narrow parent contract an item child depends on; keeps the child→parent seam stub-testable.
 
@@ -150,7 +154,6 @@ function accordionRootPresentation() {
 				const props = bond?.props;
 
 				return {
-					'aria-expand': props?.open ?? false,
 					'aria-disabled': props?.disabled ?? false,
 					'aria-multiselectable': props?.multiple ?? false
 				};
@@ -165,27 +168,10 @@ function accordionRootPresentation() {
 // Bond spec and constructor facade
 // -----------------------------------------------------------------------------
 
-const AccordionBondImpl = defineBond<
-	{ root: typeof AccordionRootAtom },
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	any,
-	typeof AccordionBondBase
->({
+export const AccordionBond = defineBond({
 	name: 'accordion',
 	base: AccordionBondBase,
 	atoms: { root: AccordionRootAtom }
 });
 
-export type AccordionBond = BondOf<typeof AccordionBondImpl>;
-
-interface AccordionBondConstructor {
-	new (props: AccordionBondProps): AccordionBond;
-	readonly CONTEXT_KEY: string;
-	readonly spec: (typeof AccordionBondImpl)['spec'];
-	get(): AccordionBond | undefined;
-	getOrThrow(message?: string): AccordionBond;
-	set(bond: AccordionBond): AccordionBond;
-	create(props: AccordionBondProps): AccordionBond;
-}
-
-export const AccordionBond = AccordionBondImpl as unknown as AccordionBondConstructor;
+export type AccordionBond = BondOf<typeof AccordionBond>;

@@ -1,7 +1,7 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
 import type { Factory, Override } from '$ixirjs/ui/types';
-import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
+import type { PresetKey } from '$ixirjs/ui/preset';
 import type { ScrollableBond } from './bond.svelte';
 
 // `Override` collapses HtmlAtomProps' named props into its index signature, so

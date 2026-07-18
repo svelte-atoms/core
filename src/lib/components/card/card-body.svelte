@@ -1,10 +1,8 @@
 <script lang="ts" generics="E extends keyof HTMLElementTagNameMap = 'div', B extends Base = Base">
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
+	import { usePart } from '$ixirjs/ui/shared';
 	import type { CardContentProps } from './types';
-	import { CardBond, CardContentAtom } from './bond.svelte';
-
-	const bond = CardBond.get();
+	import { CardBond } from './bond.svelte';
 
 	let {
 		class: klass = '',
@@ -13,18 +11,13 @@
 		...restProps
 	}: CardContentProps<E, B> = $props();
 
-	const atom = createAtomInstance<CardContentAtom, CardBond>('content', {
-		bond,
-		factory: (owner) => new CardContentAtom(owner)
+	const part = usePart(CardBond, 'content', () => restProps, {
+		context: 'optional',
+		preset: () => preset
 	});
-
-	const contentProps = $derived(mergeAtomProps(atom, preset, restProps));
+	const bond = part.bond;
 </script>
 
-<HtmlAtom
-	{bond}
-	class={['card-content border-border px-4 pb-4', '$preset', klass]}
-	{...contentProps}
->
+<HtmlAtom {bond} class={['card-content border-border px-4 pb-4', '$preset', klass]} {...part.props}>
 	{@render children?.()}
 </HtmlAtom>

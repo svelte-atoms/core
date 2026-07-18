@@ -3,41 +3,24 @@
 	generics="E extends keyof HTMLElementTagNameMap = 'button', B extends Base = Base"
 >
 	import type { TabHeaderProps } from '../types';
-	import { createAtomInstance } from '$ixirjs/ui/shared/bond';
-	import { TabBond, TabHeaderAtom } from './bond.svelte';
-	import { mergeAtomProps, HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
-
-	const bond = TabBond.getOrThrow('TabHeader must be used within a Tab component.');
-
-	const isActive = $derived(bond?.isActive);
-	const isDisabled = $derived(bond?.props.disabled);
+	import { usePart } from '$ixirjs/ui/shared';
+	import { TabBond } from './bond.svelte';
+	import { HtmlAtom, type Base } from '$ixirjs/ui/components/atom';
 
 	let {
 		class: klass = '',
 		preset = undefined,
 		children,
-		onclick,
 		...restProps
 	}: TabHeaderProps<E, B> = $props();
 
-	const atom = createAtomInstance<TabHeaderAtom, TabBond, HTMLElement>('header', {
-		bond,
-		factory: (owner) => new TabHeaderAtom(owner as TabBond)
+	const part = usePart(TabBond, 'header', () => restProps, {
+		message: 'TabHeader must be used within a Tab component.',
+		preset: () => preset
 	});
-
-	const headerProps = $derived(mergeAtomProps(atom, preset, restProps));
-
-	function handleClick(ev: PointerEvent) {
-		if (isDisabled) return;
-
-		onclick?.(ev, { tab: bond });
-
-		if (ev.defaultPrevented) {
-			return;
-		}
-
-		bond?.select();
-	}
+	const bond = part.bond;
+	const isActive = $derived(bond.isActive);
+	const isDisabled = $derived(bond.props.disabled);
 </script>
 
 <HtmlAtom
@@ -52,8 +35,7 @@
 	]}
 	type="button"
 	disabled={isDisabled}
-	onclick={handleClick}
-	{...headerProps}
+	{...part.props}
 >
 	{@render children?.({ tab: bond })}
 </HtmlAtom>

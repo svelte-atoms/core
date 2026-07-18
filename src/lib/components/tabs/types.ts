@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HtmlAtomProps, Base, SnippetProps } from '$ixirjs/ui/components/atom';
-import type { Factory } from '$ixirjs/ui/types';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
 import type { TabsBond } from './bond.svelte';
 import type { TabBond } from './tab/bond.svelte';
 
@@ -24,15 +24,15 @@ export interface TabsRootProps<
 > extends HtmlAtomProps<E, B, TabsChildren> {
 	value?: D;
 	factory?: Factory<TabsBond>;
-	onchange?: (value: D) => void;
+	// Semantic selection callback; native `onchange` remains a DOM event callback.
+	onvaluechange?: StateChangeCallback<D | undefined, TabsBond> | undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TabHeaderProps<
 	E extends keyof HTMLElementTagNameMap = 'button',
 	B extends Base = Base
-> extends HtmlAtomProps<E, B, TabChildren> {
-	onclick?: (ev: PointerEvent, context: { tab?: TabBond<unknown> }) => void;
-}
+> extends HtmlAtomProps<E, B, TabChildren> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TabBodyProps<

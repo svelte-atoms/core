@@ -13,6 +13,8 @@
 		multiple = false,
 		collapsible = false,
 		disabled = false,
+		onvaluechange = undefined,
+		onvalueschange = undefined,
 		children = undefined,
 		factory = defaultFactory,
 		preset = undefined,
@@ -21,6 +23,7 @@
 
 	let valueState = $derived<string | undefined>(value);
 	let valuesState = $derived<string[]>(values);
+	const callbackState = { bond: undefined as AccordionBond | undefined };
 
 	const binding = bindBond<AccordionBond>(
 		(props) => factory(props),
@@ -29,10 +32,25 @@
 			values: [
 				() => (multiple ? valuesState : ([valueState].filter(Boolean) as string[])),
 				(v) => {
+					const previousValues = multiple
+						? valuesState
+						: valueState === undefined
+							? []
+							: [valueState];
+					const changed = !sameValues(previousValues, v);
 					valuesState = v;
 					valueState = valuesState[0];
 					values = valuesState;
 					value = valueState;
+
+					const callbackBond = callbackState.bond;
+					if (changed && callbackBond) {
+						if (multiple) {
+							onvalueschange?.(valuesState, { bond: callbackBond });
+						} else {
+							onvaluechange?.(valueState, { bond: callbackBond });
+						}
+					}
 				}
 			],
 			multiple: () => multiple,
@@ -42,6 +60,7 @@
 		{ preset: () => preset }
 	);
 	const bond = binding.bond.share();
+	callbackState.bond = bond;
 	const rootAtom = createAtomInstance<AccordionRootAtom, AccordionBond>('root', {
 		bond,
 		factory: (owner) => new AccordionRootAtom(owner as AccordionBond)
@@ -49,6 +68,10 @@
 	const rootProps = $derived(
 		mergeAtomProps(rootAtom, preset, { ...binding.stateProps, ...restProps })
 	);
+
+	function sameValues(left: readonly string[], right: readonly string[]) {
+		return left.length === right.length && left.every((item, index) => item === right[index]);
+	}
 
 	function defaultFactory(props: AccordionBondProps) {
 		return AccordionBond.create(props);

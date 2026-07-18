@@ -1,8 +1,8 @@
 import type { Snippet } from 'svelte';
-import type { Factory } from '$ixirjs/ui/types';
+import type { Factory, StateChangeCallback } from '$ixirjs/ui/types';
 import type { SidebarBond } from './bond.svelte';
 import type { Base, HtmlAtomProps, SnippetProps } from '../atom';
-import type { ZIndexInput } from '../portal';
+import type { PortalBond, ZIndexInput } from '../portal';
 
 // Sidebar Snippet Props
 
@@ -25,9 +25,10 @@ export type SidebarRootProps<
 	 * Structural — read once at mount, not toggled at runtime.
 	 */
 	overlay?: boolean;
-	/** Teleport target when `overlay` is set (defaults to the root portal `'root.l0'`). */
-	portal?: string;
+	/** Teleport target when `overlay` is set; defaults through explicit → ambient → root. */
+	portal?: string | PortalBond;
 	factory?: Factory<SidebarBond>;
+	onopenchange?: StateChangeCallback<boolean, SidebarBond> | undefined;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

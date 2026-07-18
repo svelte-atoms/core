@@ -1,5 +1,5 @@
 import type { Component } from 'svelte';
-import type { PresetKey } from '$ixirjs/ui/context/preset.svelte';
+import type { PresetKey } from '$ixirjs/ui/preset';
 
 export interface AvatarProps {
 	class?: string;
