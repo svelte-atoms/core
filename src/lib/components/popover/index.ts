@@ -9,6 +9,7 @@ export {
 	popoverNode,
 	type TriggerParams,
 	PopoverTriggerAtom,
+	PopoverOverlayAtom,
 	PopoverContentAtom,
 	PopoverTailAtom,
 	PopoverIndicatorAtom,

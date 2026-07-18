@@ -30,7 +30,28 @@ export { Label } from './components/label';
 export { Lazy } from './components/lazy';
 export { Link } from './components/link';
 export { List } from './components/list';
-export { Popover } from './components/popover';
+// Popover's extension surface is available from the root entry: its Bond, Atom constructors,
+// component namespace, and public types are all part of the top-level contract.
+export {
+	Popover,
+	PopoverBond,
+	PopoverContentAtom,
+	PopoverIndicatorAtom,
+	PopoverOverlayAtom,
+	PopoverTailAtom,
+	PopoverTriggerAtom,
+	PopoverVirtualTriggerAtom
+} from './components/popover';
+export type {
+	PopoverBondProps,
+	PopoverDomElements,
+	PopoverEngine,
+	PopoverEngineCleanup,
+	PopoverEngineParams,
+	PopoverParams,
+	PopoverStateProps,
+	TriggerParams
+} from './components/popover/bond.svelte';
 export { PopoverDialog } from './components/popover-dialog';
 export { Portal, PortalSurface, Teleport, ZLayer } from './components/portal';
 export { ProgressCircular, ProgressLinear } from './components/progress';

@@ -42,7 +42,14 @@ const rootExports = [
 	'List',
 	'OtpInput',
 	'Popover',
+	'PopoverBond',
+	'PopoverContentAtom',
 	'PopoverDialog',
+	'PopoverIndicatorAtom',
+	'PopoverOverlayAtom',
+	'PopoverTailAtom',
+	'PopoverTriggerAtom',
+	'PopoverVirtualTriggerAtom',
 	'Portal',
 	'PortalSurface',
 	'ProgressCircular',
@@ -180,6 +187,8 @@ const componentFacades = import.meta.glob('./components/**/*.ts', { eager: true 
 describe('published source surfaces', () => {
 	it('keeps the root application surface curated', () => {
 		expect(Object.keys(root).sort()).toEqual([...rootExports].sort());
+		expect(root).toHaveProperty('PopoverBond');
+		expect(root).toHaveProperty('PopoverOverlayAtom');
 		expect(root).not.toHaveProperty('Bond');
 	});
 
