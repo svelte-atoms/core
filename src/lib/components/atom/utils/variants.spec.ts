@@ -97,6 +97,59 @@ describe('resolveVariants', () => {
 		expect(result.motion).toMatchObject({ enter: expect.any(Function) });
 	});
 
+	it('merges motion per phase across multiple active variant axes', () => {
+		const enter = () => ({ duration: 100 });
+		const exit = () => ({ duration: 200 });
+		const result = resolveVariants(
+			{
+				class: '',
+				variants: {
+					presence: { open: { motion: { enter } } },
+					direction: { left: { motion: { exit } } }
+				},
+				compounds: [],
+				defaults: {}
+			},
+			null,
+			{ presence: 'open', direction: 'left' }
+		);
+
+		expect(result.motion).toEqual({ enter, exit });
+	});
+
+	it('merges preset and local variant motion per phase', () => {
+		const enter = () => ({ duration: 100 });
+		const exit = () => ({ duration: 200 });
+		const result = mergeVariants(
+			{ presence: { open: { motion: { enter } } } },
+			undefined,
+			undefined,
+			undefined,
+			{ class: [], motion: { exit } },
+			null,
+			{ presence: 'open' }
+		);
+
+		expect(result?.motion).toEqual({ enter, exit });
+	});
+
+	it('accepts legacy flat phases in variant values without publishing them as attrs', () => {
+		const enter = () => ({ duration: 100 });
+		const result = resolveVariants(
+			{
+				class: '',
+				variants: { presence: { open: { enter } } },
+				compounds: [],
+				defaults: {}
+			},
+			null,
+			{ presence: 'open' }
+		);
+
+		expect(result.motion).toEqual({ enter });
+		expect(result).not.toHaveProperty('enter');
+	});
+
 	it('does not publish attachment symbols or reserved presentation fields', () => {
 		const attachment = Symbol('attachment');
 		const result = resolveVariants(

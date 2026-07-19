@@ -53,7 +53,7 @@ export interface ElementProps<T extends ElementTagName = ElementTagName> extends
 	as?: T | (string & {});
 
 	// Renderer-owned motion channels. The flat phase props below remain accepted for compatibility.
-	motion?: Motion<ElementType<T>> | null;
+	motion?: Motion<ElementType<T>> | null | undefined;
 
 	// emit styles as :global rather than scoped
 	global?: boolean;

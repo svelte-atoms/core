@@ -27,18 +27,18 @@ export type PresentationOptions<E extends Element = Element> = {
 	restProps: () => Record<string, unknown>;
 };
 
-export type PresentationView = {
+export type PresentationView<E extends Element = Element> = {
 	readonly preset: PresetEntryRecord | undefined;
 	readonly class: string;
 	readonly attrs: Record<string | symbol, unknown>;
-	readonly motion: ResolvedMotion;
+	readonly motion: ResolvedMotion<E>;
 	readonly as: unknown;
 	readonly base: unknown;
 };
 
 export function createPresentation<E extends Element = Element>(
 	options: PresentationOptions<E>
-): PresentationView {
+): PresentationView<E> {
 	const preset = $derived.by(() =>
 		resolvers.resolvePreset(options.preset?.(), options.bond?.(), getPreset)
 	);

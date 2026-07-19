@@ -67,17 +67,17 @@ describe('foldPresentation', () => {
 
 	it('lets null disable a motion phase while undefined inherits it', () => {
 		const presetEnter = () => ({ duration: 100 });
-		const consumerExit = () => ({ duration: 200 });
+		const consumerAnimate = () => undefined;
 		const inherited = foldPresentation(
 			undefined,
 			{ motion: { enter: presetEnter, exit: () => ({}) } },
 			undefined,
 			{},
-			{ enter: undefined, exit: null, animate: consumerExit }
+			{ enter: undefined, exit: null, animate: consumerAnimate }
 		);
 
 		expect(inherited.motion.enter).toBe(presetEnter);
 		expect(inherited.motion.exit).toBeUndefined();
-		expect(inherited.motion.animate).toBe(consumerExit);
+		expect(inherited.motion.animate).toBe(consumerAnimate);
 	});
 });

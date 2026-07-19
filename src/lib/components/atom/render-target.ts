@@ -70,12 +70,12 @@ export function resolveRendererComponent(
 	return target.kind === 'snippet' ? snippetAdapter : target.component;
 }
 
-export function resolveRendererProps(
+export function resolveRendererProps<E extends Element = Element>(
 	target: RenderTarget,
 	klass: unknown,
 	as: unknown,
 	attrs: RendererProps,
-	motion: ResolvedMotion | undefined = undefined,
+	motion: ResolvedMotion<E> | undefined = undefined,
 	options: { presentationResolved?: boolean } = {}
 ): RendererProps {
 	const props = {
@@ -83,7 +83,7 @@ export function resolveRendererProps(
 		as,
 		...(options.presentationResolved ? { __resolvedPresentation: true } : {}),
 		...attrs,
-		...(motion && Object.keys(motion).length > 0 ? { motion, ...motion } : {})
+		...(motion && Object.keys(motion).length > 0 ? { motion } : {})
 	};
 	if (target.kind === 'snippet') return { snippet: target.snippet, ...props };
 	return props;

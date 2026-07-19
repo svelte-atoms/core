@@ -100,6 +100,6 @@ describe('renderer adapter contract', () => {
 		const props = resolveRendererProps(target, 'rounded', 'div', {}, { enter });
 
 		expect(props.motion).toEqual({ enter });
-		expect(props.enter).toBe(enter);
+		expect(props).not.toHaveProperty('enter');
 	});
 });

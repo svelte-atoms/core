@@ -1,5 +1,6 @@
+import { MOTION_KEYS } from './motion';
+
 // Presentation configuration and renderer-owned motion fields never reach a DOM spread.
-export const MOTION_KEYS = ['initial', 'enter', 'exit', 'animate'] as const;
 export const MOTION_SKIP = new Set<string>(['motion', ...MOTION_KEYS]);
 
 export const PRESET_SKIP = new Set([

@@ -71,13 +71,13 @@ export function foldLayers<E extends Element = Element>(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	defaults: Record<string, any> | undefined,
 	consumerMotion?: Motion<E> | null
-): FoldedPresentation {
+): FoldedPresentation<E> {
 	return utils.foldPresentation(defaults, preset, variants, restProps, consumerMotion);
 }
 
 export function resolveClass(
 	klass: ClassValue | null | undefined,
-	folded: FoldedPresentation
+	folded: Pick<FoldedPresentation, 'presetClass' | 'variantClass'>
 ): string {
 	return utils.mergeClassesWithPreset(klass ?? undefined, folded.presetClass, folded.variantClass);
 }

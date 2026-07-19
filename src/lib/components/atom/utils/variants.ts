@@ -1,7 +1,9 @@
 import type { Bond } from '$ixirjs/ui/shared';
 import { type ClassValue, type VariantDefinition, VARIANT_DEF_TAG } from '$ixirjs/ui/utils';
+import type { Motion } from '$ixirjs/ui/preset';
 import type { ResolvedProps } from './cache';
 import { VARIANTS_SKIP } from './constants';
+import { extractMotion, mergeMotionConfig } from './motion';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyVariantDefinition = VariantDefinition<any>;
@@ -31,7 +33,7 @@ export function resolveVariants(
 
 	const classes: ClassValue[] = [];
 	const attributes: Record<string, unknown> = {};
-	let motion: unknown;
+	let motion: Motion | null | undefined;
 
 	if (baseClass) classes.push(baseClass);
 
@@ -50,7 +52,7 @@ export function resolveVariants(
 			} else if (typeof resolved === 'object' && resolved !== null) {
 				const src = resolved as Record<string | symbol, unknown>;
 				if ('class' in resolved) classes.push(src.class as ClassValue);
-				if (Object.hasOwn(src, 'motion')) motion = src.motion;
+				motion = mergeMotionConfig(motion, extractMotion(src));
 				// Variant values may publish ordinary DOM attrs as well as classes.
 				for (const attr in resolved) {
 					if (!Object.hasOwn(resolved, attr) || VARIANTS_SKIP.has(attr)) continue;
@@ -170,11 +172,13 @@ export function mergeVariants(
 		? presetResolved.class
 		: [presetResolved.class];
 	const localClasses = Array.isArray(local.class) ? local.class : [local.class];
+	const motion = mergeMotionConfig(extractMotion(presetResolved), extractMotion(local));
 
 	return {
 		...presetResolved,
 		...local,
-		class: [...presetClasses, ...localClasses].filter(Boolean)
+		class: [...presetClasses, ...localClasses].filter(Boolean),
+		...(motion !== undefined ? { motion } : {})
 	};
 }
 

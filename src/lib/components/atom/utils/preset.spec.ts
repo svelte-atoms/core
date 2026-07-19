@@ -83,4 +83,23 @@ describe('mergePresetRecords', () => {
 			animate: secondAnimate
 		});
 	});
+
+	it('preserves a global motion disable across later partial layers', () => {
+		const exit = () => ({ duration: 200 });
+		const result = mergePresetRecords([{ motion: null }, { motion: { exit } }]);
+
+		expect(result?.motion).toEqual({ initial: null, enter: null, exit, animate: null });
+	});
+
+	it('merges layered variant motion with the same per-phase rules', () => {
+		const exit = () => ({ duration: 200 });
+		const result = mergePresetRecords([
+			{ variants: { state: { open: { motion: null } } } },
+			{ variants: { state: { open: { motion: { exit } } } } }
+		]);
+
+		expect(result?.variants?.state?.open).toMatchObject({
+			motion: { initial: null, enter: null, exit, animate: null }
+		});
+	});
 });

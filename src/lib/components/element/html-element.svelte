@@ -1,9 +1,12 @@
 <script lang="ts" generics="T extends HtmlElementTagName">
 	import { untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import type { MotionTransitionFunction } from '$ixirjs/ui/preset';
 	import { toClassValue } from '$ixirjs/ui/utils';
 	import { withDefaultBorder } from './class';
 	import { createPresentation } from '../atom/presentation.svelte';
+	import { extractMotion, resolveMotionLayers } from '../atom/utils/motion';
+	import { stopMotion } from './motion-host';
 	import type { ElementType, HtmlElementProps, HtmlElementTagName } from './types';
 
 	type Element = ElementType<T>;
@@ -32,6 +35,12 @@
 	let node = $state<Element>();
 	// with an enter transition, defer animate() until it ends
 	let hasEntered = $state<boolean | undefined>();
+	// Transition callbacks can run after the component effect is paused for outro. Snapshot the
+	// resolved functions outside the reactive graph so teardown never reads an inert derived.
+	const transitionMotion: {
+		enter: MotionTransitionFunction<Element> | undefined;
+		exit: MotionTransitionFunction<Element> | undefined;
+	} = { enter: undefined, exit: undefined };
 	// guards initial() to a single mount-time invocation
 	let hasInitialized = false;
 
@@ -47,17 +56,16 @@
 	});
 
 	$effect(() => {
-		if (hasEntered !== undefined || !resolvedMotion) return;
-		hasEntered = !resolvedMotion.enter;
+		if (hasEntered !== undefined) return;
+		hasEntered = !resolvedEnter;
 	});
 
 	$effect(() => {
-		if (!hasEntered) return;
-		if (!node) return;
+		if (!hasEntered || !node) return;
 
 		const currentNode = node;
-		const cleanup = resolvedMotion?.animate?.(currentNode);
-		return () => stopAnimation(cleanup, currentNode);
+		const cleanup = resolvedAnimate?.(currentNode);
+		return () => stopMotion(cleanup, currentNode);
 	});
 
 	const attachFunction = (n: Element) => {
@@ -66,15 +74,9 @@
 
 	// Renderer mode is an initialization-only internal prop from HtmlAtom.
 	const resolvedPresentation = untrack(() => __resolvedPresentation);
-	const directMotion = $derived.by(() => {
-		if (motionProp === null) return null;
-		return {
-			initial: motionProp?.initial !== undefined ? motionProp.initial : initial,
-			enter: motionProp?.enter !== undefined ? motionProp.enter : enter,
-			exit: motionProp?.exit !== undefined ? motionProp.exit : exit,
-			animate: motionProp?.animate !== undefined ? motionProp.animate : animate
-		};
-	});
+	const directMotion = $derived(
+		extractMotion({ motion: motionProp, initial, enter, exit, animate })
+	);
 	const presentation = resolvedPresentation
 		? undefined
 		: createPresentation({
@@ -86,12 +88,22 @@
 				as: () => as,
 				restProps: () => restProps
 			});
-	const resolvedMotion = $derived(resolvedPresentation ? directMotion : presentation?.motion);
+	const resolvedMotion = $derived(
+		resolvedPresentation ? resolveMotionLayers<Element>([directMotion]) : presentation?.motion
+	);
+	const resolvedInitial = $derived(resolvedMotion?.initial);
+	const resolvedEnter = $derived(resolvedMotion?.enter);
+	const resolvedExit = $derived(resolvedMotion?.exit);
+	const resolvedAnimate = $derived(resolvedMotion?.animate);
+	$effect.pre(() => {
+		transitionMotion.enter = resolvedEnter;
+		transitionMotion.exit = resolvedExit;
+	});
 	const finalKlass = $derived(
 		withDefaultBorder(resolvedPresentation ? toClassValue(klass) : (presentation?.class ?? ''))
 	);
 	const finalAs = $derived(String(resolvedPresentation ? as : (presentation?.as ?? as)));
-	const hasTransitions = $derived(!!(resolvedMotion?.enter ?? resolvedMotion?.exit));
+	const hasTransitions = $derived(!!(resolvedEnter ?? resolvedExit));
 	const transitionSnippet = $derived(
 		!hasTransitions ? bareElement : global ? globalTransition : localTransition
 	);
@@ -118,29 +130,18 @@
 	}
 
 	function enterTransition(node: Element) {
-		return resolvedMotion?.enter?.(node) ?? {};
+		return transitionMotion.enter?.(node) ?? {};
 	}
 
 	function exitTransition(node: Element) {
-		return resolvedMotion?.exit?.(node) ?? {};
+		return transitionMotion.exit?.(node) ?? {};
 	}
 
 	function applyInitial(node: Element) {
 		if (!node) return;
 		if (hasInitialized) return;
 		hasInitialized = true;
-		untrack(() => resolvedMotion?.initial?.(node!));
-	}
-
-	function stopAnimation(cleanup: unknown, currentNode: Element) {
-		if (typeof cleanup === 'function') {
-			cleanup(currentNode);
-			return;
-		}
-
-		if (!cleanup || typeof cleanup !== 'object' || !('stop' in cleanup)) return;
-		const stop = cleanup.stop;
-		if (typeof stop === 'function') stop.call(cleanup);
+		untrack(() => resolvedInitial?.(node!));
 	}
 </script>
 

@@ -1,13 +1,14 @@
 import type { ClassValue } from 'svelte/elements';
 import type { Motion, PresetEntryRecord, ResolvedMotion } from '$ixirjs/ui/preset';
-import { MOTION_KEYS, MOTION_SKIP, PRESET_SKIP, VARIANTS_SKIP } from './constants';
+import { MOTION_SKIP, PRESET_SKIP, VARIANTS_SKIP } from './constants';
 import { getCachedOwnSymbols } from './cache';
+import { extractMotion, resolveMotionLayers } from './motion';
 
-export type FoldedPresentation = {
+export type FoldedPresentation<E extends Element = Element> = {
 	presetClass: ClassValue | undefined;
 	variantClass: ClassValue | undefined;
 	attrs: Record<string | symbol, unknown>;
-	motion: ResolvedMotion;
+	motion: ResolvedMotion<E>;
 };
 
 function copyStringKeys(
@@ -37,7 +38,7 @@ export function foldPresentation<E extends Element = Element>(
 	variants: Record<string, unknown> | undefined,
 	rest: Record<string, unknown>,
 	consumerMotion?: Motion<E> | null
-): FoldedPresentation {
+): FoldedPresentation<E> {
 	const attrs: Record<string | symbol, unknown> = {};
 
 	if (defaults) {
@@ -59,51 +60,12 @@ export function foldPresentation<E extends Element = Element>(
 		presetClass: preset?.class,
 		variantClass: variants?.class as ClassValue | undefined,
 		attrs,
-		motion: resolveMotion([
-			readMotion(defaults),
+		motion: resolveMotionLayers([
+			extractMotion(defaults),
 			preset?.motion,
-			readMotion(variants),
-			readMotion(rest),
+			extractMotion(variants),
+			extractMotion(rest),
 			consumerMotion
 		])
 	};
-}
-
-function readMotion(layer: Record<string, unknown> | undefined): Motion | null | undefined {
-	if (!layer) return undefined;
-	const nested = layer.motion;
-	if (nested === null) return null;
-
-	const nestedRecord =
-		typeof nested === 'object' && nested !== null ? (nested as Record<string, unknown>) : undefined;
-	const result: Motion = {};
-	let found = false;
-	for (const key of MOTION_KEYS) {
-		const value = nestedRecord && Object.hasOwn(nestedRecord, key) ? nestedRecord[key] : layer[key];
-		if (value === undefined) continue;
-		(result as Record<string, unknown>)[key] = value;
-		found = true;
-	}
-	return found ? result : undefined;
-}
-
-function resolveMotion<E extends Element>(
-	layers: Array<Motion | Motion<E> | null | undefined>
-): ResolvedMotion {
-	const motion: Record<string, unknown> = {};
-	for (const layer of layers) {
-		if (layer === null) {
-			for (const key of MOTION_KEYS) delete motion[key];
-			continue;
-		}
-		if (!layer) continue;
-		for (const key of MOTION_KEYS) {
-			if (!Object.hasOwn(layer, key)) continue;
-			const value = layer[key];
-			if (value === undefined) continue;
-			if (value === null) delete motion[key];
-			else motion[key] = value;
-		}
-	}
-	return motion as ResolvedMotion;
 }

@@ -3,9 +3,11 @@
 <script lang="ts" generics="T extends SvgElementTagName">
 	import { untrack } from 'svelte';
 	import type { SVGAttributes } from 'svelte/elements';
-	import { createAttachmentKey } from 'svelte/attachments';
+	import type { MotionTransitionFunction } from '$ixirjs/ui/preset';
 	import { cn, toClassValue } from '$ixirjs/ui/utils';
 	import { createPresentation } from '../atom/presentation.svelte';
+	import { extractMotion } from '../atom/utils/motion';
+	import { stopMotion } from './motion-host';
 	import type { ElementType, SvgElementProps, SvgElementTagName } from './types';
 
 	type Element = ElementType<T>;
@@ -25,6 +27,7 @@
 		onmount = undefined,
 		ondestroy = undefined,
 		onintroend = undefined,
+		onexitend = undefined,
 		children = undefined,
 		...restProps
 	}: SvgElementProps<T> & Omit<SVGAttributes<Element>, keyof SvgElementProps<T>> = $props();
@@ -32,6 +35,12 @@
 	let node = $state<Element>();
 	// with an enter transition, defer animate() until it ends
 	let hasEntered = $state<boolean | undefined>();
+	// Transition callbacks can run after the component effect is paused for outro. Snapshot the
+	// resolved functions outside the reactive graph so teardown never reads an inert derived.
+	const transitionMotion: {
+		enter: MotionTransitionFunction<Element> | undefined;
+		exit: MotionTransitionFunction<Element> | undefined;
+	} = { enter: undefined, exit: undefined };
 
 	$effect(() => {
 		if (!node) return;
@@ -44,16 +53,9 @@
 		};
 	});
 
-	const attachmentKey = createAttachmentKey();
-	const directMotion = $derived.by(() => {
-		if (motionProp === null) return null;
-		return {
-			initial: motionProp?.initial !== undefined ? motionProp.initial : initial,
-			enter: motionProp?.enter !== undefined ? motionProp.enter : enter,
-			exit: motionProp?.exit !== undefined ? motionProp.exit : exit,
-			animate: motionProp?.animate !== undefined ? motionProp.animate : animate
-		};
-	});
+	const directMotion = $derived(
+		extractMotion({ motion: motionProp, initial, enter, exit, animate })
+	);
 	const presentation = createPresentation({
 		preset: () => presetKey,
 		variants: () => variants,
@@ -64,62 +66,86 @@
 		restProps: () => restProps
 	});
 	const resolvedMotion = $derived(presentation.motion);
+	const resolvedInitial = $derived(resolvedMotion.initial);
+	const resolvedEnter = $derived(resolvedMotion.enter);
+	const resolvedExit = $derived(resolvedMotion.exit);
+	const resolvedAnimate = $derived(resolvedMotion.animate);
+	$effect.pre(() => {
+		transitionMotion.enter = resolvedEnter;
+		transitionMotion.exit = resolvedExit;
+	});
 
 	$effect(() => {
-		if (hasEntered !== undefined || !resolvedMotion) return;
-		hasEntered = !resolvedMotion.enter;
+		if (hasEntered !== undefined) return;
+		hasEntered = !resolvedEnter;
 	});
 
 	$effect(() => {
 		if (!hasEntered || !node) return;
 		const currentNode = node;
-		const cleanup = resolvedMotion?.animate?.(currentNode);
-		return () => stopAnimation(cleanup, currentNode);
+		const cleanup = resolvedAnimate?.(currentNode);
+		return () => stopMotion(cleanup, currentNode);
 	});
 	const finalKlass = $derived(cn(toClassValue(presentation.class)));
 	const finalAs = $derived(presentation.as as T);
-	const elementProps = $derived({
-		[attachmentKey]: (n: Element) => {
-			node = n;
-		},
-		class: finalKlass,
-		onintroend: (ev: TransitionEvent) => {
-			onintroend?.(ev);
-			if (ev.defaultPrevented) return;
-
-			hasEntered = true;
-		},
-		...presentation.attrs
+	const hasTransitions = $derived(!!(resolvedEnter ?? resolvedExit));
+	const elementProps = $derived.by(() => {
+		const props = { ...presentation.attrs };
+		if (hasTransitions) {
+			props.onintroend = handleIntroEnd;
+			props.onoutroend = handleExitEnd;
+		}
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- loose passthrough spread onto a polymorphic element; `unknown` values can't satisfy attribute types
-	}) as Record<string, any>;
+		return props as Record<string, any>;
+	});
+	const transitionSnippet = $derived(
+		!hasTransitions ? bareElement : global ? globalTransition : localTransition
+	);
 
-	const transitionSnippet = $derived(global ? globalTransition : localTransition);
+	function handleIntroEnd(ev: TransitionEvent) {
+		onintroend?.(ev);
+		if (ev.defaultPrevented) return;
+		hasEntered = true;
+	}
+
+	function handleExitEnd(ev: TransitionEvent) {
+		onexitend?.(ev);
+	}
 
 	function enterTransition(node: Element) {
-		resolvedMotion?.initial?.(node);
-
-		return resolvedMotion?.enter?.(node) ?? {};
+		return transitionMotion.enter?.(node) ?? {};
 	}
 
 	function exitTransition(node: Element) {
-		return resolvedMotion?.exit?.(node) ?? {};
+		return transitionMotion.exit?.(node) ?? {};
 	}
 
-	function stopAnimation(cleanup: unknown, currentNode: Element) {
-		if (typeof cleanup === 'function') {
-			cleanup(currentNode);
-			return;
-		}
+	function applyInitial(currentNode: Element) {
+		untrack(() => resolvedInitial?.(currentNode));
+	}
 
-		if (!cleanup || typeof cleanup !== 'object' || !('stop' in cleanup)) return;
-		const stop = cleanup.stop;
-		if (typeof stop === 'function') stop.call(cleanup);
+	function attachFunction(currentNode: Element) {
+		node = currentNode;
 	}
 </script>
+
+{#snippet bareElement()}
+	<svelte:element
+		this={finalAs}
+		{@attach applyInitial}
+		{@attach attachFunction}
+		class={finalKlass}
+		{...elementProps}
+	>
+		{@render children?.()}
+	</svelte:element>
+{/snippet}
 
 {#snippet globalTransition()}
 	<svelte:element
 		this={finalAs}
+		{@attach applyInitial}
+		{@attach attachFunction}
 		class={finalKlass}
 		in:enterTransition|global
 		out:exitTransition|global
@@ -132,6 +158,8 @@
 {#snippet localTransition()}
 	<svelte:element
 		this={finalAs}
+		{@attach applyInitial}
+		{@attach attachFunction}
 		class={finalKlass}
 		in:enterTransition
 		out:exitTransition

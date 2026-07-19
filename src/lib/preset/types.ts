@@ -4,21 +4,26 @@ import type { Base } from '$ixirjs/ui/components/atom';
 import type { Bond } from '$ixirjs/ui/shared';
 import type { BuiltInPresetName } from './manifest';
 
-export type MotionNodeFunction<T extends Element = Element> = (node: T) => unknown;
+export type MotionCleanup<T extends Element = Element> =
+	| void
+	| ((node: T) => void)
+	| { stop(): void };
+export type MotionInitialFunction<T extends Element = Element> = (node: T) => void;
 export type MotionTransitionFunction<T extends Element = Element> = (
 	node: T
 ) => Partial<TransitionConfig> | void;
+export type MotionAnimateFunction<T extends Element = Element> = (node: T) => MotionCleanup<T>;
 
 /** Renderer-owned motion channels. `null` explicitly disables a phase. */
 export interface Motion<T extends Element = Element> {
-	initial?: MotionNodeFunction<T> | null | undefined;
+	initial?: MotionInitialFunction<T> | null | undefined;
 	enter?: MotionTransitionFunction<T> | null | undefined;
 	exit?: MotionTransitionFunction<T> | null | undefined;
-	animate?: MotionNodeFunction<T> | null | undefined;
+	animate?: MotionAnimateFunction<T> | null | undefined;
 }
 
 export type ResolvedMotion<T extends Element = Element> = {
-	[K in keyof Motion<T>]?: Exclude<Motion<T>[K], null>;
+	[K in keyof Motion<T>]?: Exclude<Motion<T>[K], null | undefined>;
 };
 
 export interface PresetRender {
@@ -31,7 +36,7 @@ export interface PresetRender {
 export interface PresetEntryRecord {
 	class?: ClassValue;
 	attrs?: Record<string, unknown>;
-	motion?: Motion | null;
+	motion?: Motion | null | undefined;
 	variants?: Record<string, Record<string, unknown>>;
 	compounds?: Array<Record<string, unknown>>;
 	defaults?: Record<string, unknown>;

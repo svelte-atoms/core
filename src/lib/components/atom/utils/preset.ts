@@ -1,11 +1,7 @@
 import { merge } from 'es-toolkit';
 import type { ClassValue } from 'svelte/elements';
-import type {
-	MergedPresetLayers,
-	Motion,
-	PresetEntryRecord,
-	PresetEntryValue
-} from '$ixirjs/ui/preset';
+import type { MergedPresetLayers, PresetEntryRecord, PresetEntryValue } from '$ixirjs/ui/preset';
+import { extractMotion, mergeMotionConfig } from './motion';
 
 // Merge ordered preset records. Only the closed public fields participate.
 export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRecord | undefined {
@@ -22,7 +18,10 @@ export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRec
 		if (record.compounds?.length) compounds.push(...record.compounds);
 		if (record.variants) variantsList.push(record.variants);
 		if (record.attrs) result.attrs = { ...result.attrs, ...record.attrs };
-		if (record.motion !== undefined) result.motion = mergeMotion(result.motion, record.motion);
+		if (record.motion !== undefined) {
+			const motion = mergeMotionConfig(result.motion, record.motion);
+			if (motion !== undefined) result.motion = motion;
+		}
 		if (record.defaults) result.defaults = { ...result.defaults, ...record.defaults };
 		if (record.render) result.render = { ...result.render, ...record.render };
 	}
@@ -31,21 +30,37 @@ export function mergePresetRecords(records: PresetEntryRecord[]): PresetEntryRec
 	if (compounds.length) result.compounds = compounds;
 	if (variantsList.length) {
 		let variants: Record<string, Record<string, unknown>> = {};
-		for (const layer of variantsList) variants = merge(variants, layer);
+		for (const layer of variantsList) variants = mergePresetVariants(variants, layer);
 		result.variants = variants;
 	}
 	return result;
 }
 
-function mergeMotion(base: Motion | null | undefined, next: Motion | null): Motion | null {
-	if (next === null) return null;
-	const result: Motion = base && base !== null ? { ...base } : {};
-	for (const key of ['initial', 'enter', 'exit', 'animate'] as const) {
-		if (Object.hasOwn(next, key) && next[key] !== undefined) {
-			(result as Record<string, unknown>)[key] = next[key];
+function mergePresetVariants(
+	base: Record<string, Record<string, unknown>>,
+	next: Record<string, Record<string, unknown>>
+): Record<string, Record<string, unknown>> {
+	const result = merge(merge({}, base), next) as Record<string, Record<string, unknown>>;
+	for (const variantName in next) {
+		if (!Object.hasOwn(next, variantName)) continue;
+		for (const valueName in next[variantName]) {
+			if (!Object.hasOwn(next[variantName], valueName)) continue;
+			const baseValue = asRecord(base[variantName]?.[valueName]);
+			const nextValue = asRecord(next[variantName][valueName]);
+			const resultValue = asRecord(result[variantName]?.[valueName]);
+			if (!nextValue || !resultValue) continue;
+
+			const motion = mergeMotionConfig(extractMotion(baseValue), extractMotion(nextValue));
+			if (motion !== undefined) resultValue.motion = motion;
 		}
 	}
 	return result;
+}
+
+function asRecord(value: unknown): Record<string, unknown> | undefined {
+	return typeof value === 'object' && value !== null
+		? (value as Record<string, unknown>)
+		: undefined;
 }
 
 function isMergedPresetLayers(value: unknown): value is MergedPresetLayers {
